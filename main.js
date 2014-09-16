@@ -5,6 +5,13 @@ angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
     $urlRouterProvider.otherwise('/rules');
 
     $stateProvider
+      // Controller for testing. Won't show up in main menu.
+      .state('docs', {
+        url: '/docs',
+        controller: 'st2DocsCtrl',
+        templateUrl: 'apps/st2-docs/template.html'
+      })
+
       .state('act', {
         url: '/act',
         controller: 'st2ActCtrl',
@@ -40,6 +47,7 @@ angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
 angular.module('main')
   .controller('MainCtrl', function ($scope, $state) {
     $scope.state = $state;
+    $scope._ = _;
 
     // Don't forget to add a target for every href in menu
     // $scope.$on('$stateChangeStart', function (event, toState) {

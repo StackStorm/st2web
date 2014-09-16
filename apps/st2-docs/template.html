@@ -1,0 +1,24 @@
+<div class="st2-docs">
+  <h1>Rules</h1>
+
+  <h2>List rules</h2>
+
+  <pre>GET /rules</pre>
+  <pre class="st2-docs__well">{{ rules | json }}</pre>
+
+  <!-- <div class="st2-docs__rule" ng-repeat="rule in rules">
+    <dl ng-repeat="field in ruleFields">
+      <dt>{{ field }}</dt>
+      <dd>{{ rule | getProperty:field }}</dd>
+    </dl>
+  </div> -->
+
+  <p class="st2-docs__rule" ng-repeat="rule in rules">
+    The only rule we have out the box is called <code ng-bind="rule.name"></code>. It is a <code ng-bind="rule.description | lowercase"></code>.
+    It triggers the moment we are getting <code ng-bind="rule.trigger.type"></code> trigger with the parameter <span ng-repeat="(key, value) in rule.trigger.parameters"><code ng-bind="key"></code> equal to <code ng-bind="value"></code></span>.
+    Then it checks that payload field <span ng-repeat="(key, value) in rule.criteria"><code ng-bind="_.rest(key.split('.')).join('.')"></code> <code ng-bind="value.type"></code> to <code ng-bind="value.pattern"></code></span>.
+    And then, only if criteria has passed, launches the <code ng-bind="rule.action.name"></code> action with <span ng-repeat="(key, value) in rule.action.parameters"><code ng-bind="key"></code> as <code ng-bind="value"></code></span>.
+    The rule is <code ng-bind="rule.enabled && 'enabled' || 'disabled'"></code> by default. It also assigned with the ID of <code ng-bind="rule.id"></code>, but you should not rely on it too much since it's a subject to change on every new system.
+  </p>
+
+</div>

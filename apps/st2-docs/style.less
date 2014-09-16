@@ -1,0 +1,31 @@
+@import (reference) '/components/bootstrap/less/variables.less';
+@import (reference) '/components/bootstrap/less/mixins.less';
+
+@import (reference) '/components/bootstrap/less/code.less';
+@import (reference) '/components/bootstrap/less/wells.less';
+
+.st2-docs {
+  line-height: @line-height-base;
+
+  &__well:extend(.well) {}
+
+
+  dl {
+    margin: 0;
+  }
+
+  dt, dd {
+    display: inline-block;
+    margin: 0;
+  }
+
+  dt {
+    font-weight: bold;
+
+    &:after {
+      content: ': ';
+    }
+  }
+
+  code:extend(code) {}
+}

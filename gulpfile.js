@@ -7,12 +7,14 @@ var gulp = require('gulp')
   , es = require('event-stream')
   , less = require('gulp-less')
   , concat = require('gulp-concat')
-  , serve = require('gulp-serve')
+  , util = require('gulp-util')
   , prefix = require('gulp-autoprefixer')
   , fontelloUpdate = require('fontello-update')
+  , protractor = require('gulp-protractor').protractor
   ;
 
 var settings = {
+  port: 3000,
   dev: '.',
   js: ['apps/**/*.js', 'modules/**/*.js', 'main.js'],
   styles: {
@@ -54,6 +56,14 @@ gulp.task('scripts', function () {
     ;
 });
 
+gulp.task('font', function () {
+  return fontelloUpdate({
+    config: 'fontello.json',
+    fonts: 'font',
+    css: 'font'
+  });
+});
+
 gulp.task('styles', ['font'], function () {
   return gulp.src(settings.styles.src, { cwd: settings.dev })
     .pipe(less({ paths: [path.join(settings.dev, settings.styles.includes)] }))
@@ -66,7 +76,35 @@ gulp.task('styles', ['font'], function () {
     ;
 });
 
-gulp.task('serve', serve(__dirname));
+gulp.task('test', ['build', 'serve'], function (cb) {
+  gulp.src(['./tests/*.js'])
+    .pipe(protractor({
+      configFile: 'protractor.js',
+      args: ['--baseUrl', 'http://localhost:' + settings.port]
+    }))
+    .on('error', function (e) {
+      util.log('E2E test failed:', e.message);
+      cb();
+    })
+    .on('end', function () {
+      util.log('E2E test finished successfully');
+      cb();
+    });
+});
+
+gulp.task('serve', ['build'], function (cb) {
+  var express = require('express')
+    , http = require('http')
+    , app = express();
+
+  app.use(express.static(__dirname));
+
+  util.log('Server started on', settings.port, 'port');
+  http
+    .createServer(app)
+    .listen(settings.port, cb)
+    .unref();
+});
 
 
 gulp.task('watch', function () {
@@ -74,14 +112,5 @@ gulp.task('watch', function () {
   gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
-gulp.task('font', function () {
-  return fontelloUpdate({
-    config: 'fontello.json',
-    fonts: 'font',
-    css: 'font'
-  });
-});
-
-
 gulp.task('build', ['gulphint', 'scripts', 'font', 'styles']);
-gulp.task('default', ['build', 'watch', 'serve']);
+gulp.task('default', ['build', 'watch', 'serve', 'test']);
