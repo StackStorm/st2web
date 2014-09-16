@@ -1,0 +1,7 @@
+<div class="st2-buttons">
+  <button class="st2-buttons__secondary" ui-sref="ruleConstructor">Create new rule</button>
+</div>
+<h3 class="st2-rules__type">Active rules</h3>
+<div class="st2-rule" ng-repeat="rule in rules | filter:{enabled: true}" rule="rule"></div>
+<h3 class="st2-rules__type">Inactive Rules</h3>
+<div class="st2-rule" ng-repeat="rule in rules | filter:{enabled: false}" rule="rule"></div>

@@ -7,32 +7,32 @@ angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
     $stateProvider
       .state('act', {
         url: '/act',
-        controller: 'sk0ActCtrl',
-        templateUrl: 'apps/sk0-act/template.html',
+        controller: 'st2ActCtrl',
+        templateUrl: 'apps/st2-act/template.html',
         title: 'Act'
       })
 
       .state('rules', {
         url: '/rules',
-        templateUrl: 'apps/sk0-rules/template.html',
-        controller: 'sk0RulesCtrl',
+        templateUrl: 'apps/st2-rules/template.html',
+        controller: 'st2RulesCtrl',
         title: 'Rules'
       })
       .state('ruleConstructor', {
         url: '/rules/create',
-        templateUrl: 'apps/sk0-rules/edit.html',
-        controller: 'sk0RuleCreateCtrl'
+        templateUrl: 'apps/st2-rules/edit.html',
+        controller: 'st2RuleCreateCtrl'
       })
       .state('ruleEdit', {
         url: '/rules/:id',
-        templateUrl: 'apps/sk0-rules/edit.html',
-        controller: 'sk0RuleEditCtrl'
+        templateUrl: 'apps/st2-rules/edit.html',
+        controller: 'st2RuleEditCtrl'
       })
 
       .state('audit', {
         url: '/audit',
-        controller: 'sk0AuditCtrl',
-        templateUrl: 'apps/sk0-audit/template.html',
+        controller: 'st2AuditCtrl',
+        templateUrl: 'apps/st2-audit/template.html',
         title: 'Audit'
       });
   });

@@ -1,0 +1,20 @@
+<h3 class="st2-rule-setup__title">Setup {{ type }}:
+  <span class="st2-rule-setup__type">{{ inventoryIndex[name].title }}</span>
+</h3>
+
+<form ng-submit="submit()">
+  <div class="st2-auto-form"
+    spec="inventoryIndex[name].parameters"
+    result="formResults">
+  </div>
+  <div class="st2-buttons">
+    <input
+      class="st2-buttons__internal st2-buttons__secondary"
+      type="submit"
+      value="Change">
+    <input
+      class="st2-buttons__global st2-buttons__primary"
+      type="submit"
+      value="Next">
+    </div>
+</form>

@@ -1,0 +1,13 @@
+<div ng-class="{'st2-rule--expanded': open}">
+  <div class="st2-rule__title" ng-click="open = !open">
+    <span class="st2-rule__title-name">{{ rule.name }}</span>
+    <span class="st2-rule__trigger">{{ rule.trigger.type }}</span> →
+    <span class="st2-rule__action">{{ rule.action.name }}</span>
+  </div>
+  <p class="st2-rule__info">{{ rule.description }}</p>
+  <div class="st2-rule__buttons">
+    <span class="st2-rule__button st2-icon__cancel" ng-click="remove(rule)"></span>
+    <span class="st2-rule__button st2-icon__edit" ng-click="edit(rule)"></span>
+    <span class="st2-rule__button st2-icon__off" ng-click="toggle(rule)"></span>
+  </div>
+</div>

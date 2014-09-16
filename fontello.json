@@ -1,6 +1,6 @@
 {
 	"name": "ststanley",
-	"css_prefix_text": "sk0-icon__",
+	"css_prefix_text": "st2-icon__",
 	"css_use_suffix": false,
 	"hinting": true,
 	"units_per_em": 1000,
@@ -25,5 +25,5 @@
 			"src": "elusive"
 		}
 	],
-	"session": "bde9d98f38500765820677a167635c82"
+	"session": "83a03104d485266485639e977b98beb0"
 }

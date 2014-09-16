@@ -1,0 +1,7 @@
+<div class="st2-auto-form__description">
+  {{ spec.description }}<!-- FIX: not implemented yet. Revise after making changes in API. -->
+</div>
+<label class="st2-auto-form__line"
+  ng-repeat="field in spec"
+  ng-include="getFieldTemplate(field.type)">
+</label>
