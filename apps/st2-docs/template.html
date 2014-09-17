@@ -6,19 +6,103 @@
   <pre>GET /rules</pre>
   <pre class="st2-docs__well">{{ rules | json }}</pre>
 
-  <!-- <div class="st2-docs__rule" ng-repeat="rule in rules">
-    <dl ng-repeat="field in ruleFields">
-      <dt>{{ field }}</dt>
-      <dd>{{ rule | getProperty:field }}</dd>
-    </dl>
-  </div> -->
+  <p class="st2-docs__rules" ng-repeat="rule in rules">
+    The only rule we have out the box is called <code ng-bind="rule.name"></code>.
+    It is a <code ng-bind="rule.description | lowercase"></code>.
+    It triggers the moment we are getting
+    <code ng-bind="rule.trigger.type"></code>
+    trigger with the
+    <st2-iterator ng-repeat="(key, value) in rule.trigger.parameters"><!--#
+  #-->parameter
+      <code ng-bind="key"></code>
+      equal to
+      <code ng-bind="value"></code><!--#
+#--></st2-iterator>.
+    Then it checks that payload field
+    <st2-iterator ng-repeat="(key, value) in rule.criteria"><!--#
+  #--><code ng-bind="_.rest(key.split('.')).join('.')"></code>
+      <code ng-bind="value.type"></code>
+      to
+      <code ng-bind="value.pattern"></code><!--#
+#--></st2-iterator>.
+    And then, only if criteria has passed, launches the
+    <code ng-bind="rule.action.name"></code>
+    action with
+    <st2-iterator ng-repeat="(key, value) in rule.action.parameters"><!--#
+  #--><code ng-bind="key"></code>
+      as
+      <code ng-bind="value"></code><!--#
+#--></st2-iterator>.
+    The rule is <code ng-bind="rule.enabled && 'enabled' || 'disabled'"></code> by default.
+    It also assigned with the ID of <code ng-bind="rule.id"></code>,
+    but you should not rely on it too much since it's a subject to change on every new system.
+  </p>
 
-  <p class="st2-docs__rule" ng-repeat="rule in rules">
-    The only rule we have out the box is called <code ng-bind="rule.name"></code>. It is a <code ng-bind="rule.description | lowercase"></code>.
-    It triggers the moment we are getting <code ng-bind="rule.trigger.type"></code> trigger with the parameter <span ng-repeat="(key, value) in rule.trigger.parameters"><code ng-bind="key"></code> equal to <code ng-bind="value"></code></span>.
-    Then it checks that payload field <span ng-repeat="(key, value) in rule.criteria"><code ng-bind="_.rest(key.split('.')).join('.')"></code> <code ng-bind="value.type"></code> to <code ng-bind="value.pattern"></code></span>.
-    And then, only if criteria has passed, launches the <code ng-bind="rule.action.name"></code> action with <span ng-repeat="(key, value) in rule.action.parameters"><code ng-bind="key"></code> as <code ng-bind="value"></code></span>.
-    The rule is <code ng-bind="rule.enabled && 'enabled' || 'disabled'"></code> by default. It also assigned with the ID of <code ng-bind="rule.id"></code>, but you should not rely on it too much since it's a subject to change on every new system.
+
+  <h1>Actions</h1>
+
+  <h2>List actions</h2>
+
+  <pre>GET /actions</pre>
+  <pre class="st2-docs__well">{{ actions | json }}</pre>
+
+  <p class="st2-docs__actions">
+    At the moment, we have <code ng-bind="actions.length"></code> actions in the system:
+    <st2-iterator ng-repeat="action in actions"><!--#
+  #--><code ng-bind="action.name"></code>
+      action that
+      <code ng-bind="action.description | lowercase"></code><!--#
+#--></st2-iterator>.
+  </p>
+
+  <p>
+    Lets take one of those as an example.
+  </p>
+
+  <pre>GET /actions/{{ action.id }}</pre>
+  <pre class="st2-docs__well">{{ action | json }}</pre>
+
+  <p class="st2-docs__action">
+    This action is called
+    <code ng-bind="action.name"></code>
+    and it's a type of
+    <code ng-bind="action.runner_type"></code>.
+    This is an
+    <code ng-bind="action.description | lowercase"></code>
+    and it has a number of parameters you can execute it with:
+    <st2-iterator ng-repeat="(key, value) in action.parameters"><!--#
+  #--><code ng-bind="key"></code>
+      (<code ng-bind="value.type || value.enum.join()"></code>)<!--#
+#--></st2-iterator>.
+    <span ng-switch="action.required_parameters.length">
+      <span ng-switch-when="0">
+        None of them are required.
+      </span>
+    </span>
+    This action is <code ng-bind="action.enabled && 'enabled' || 'disabled'"></code> by default.
+  </p>
+
+
+  <h1>Triggers</h1>
+
+  <h2>List triggers</h2>
+
+  <pre>GET /triggers</pre>
+  <pre class="st2-docs__well">{{ triggers | json }}</pre>
+
+  <p class="st2-docs__triggers">
+    There is only <code ng-bind="triggers.length"></code> triggers in the system:
+    <st2-iterator ng-repeat="trigger in triggers"><!--#
+  #--><code ng-bind="trigger.name"></code>
+      of type
+      <code ng-bind="trigger.type"></code>
+      which fires only when
+      <st2-iterator ng-repeat="(key, value) in trigger.parameters"><!--#
+    #--><code ng-bind="key"></code>
+        is
+        <code ng-bind="value"></code><!--#
+  #--></st2-iterator><!--#
+#--></st2-iterator>.
   </p>
 
 </div>

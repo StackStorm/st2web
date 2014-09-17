@@ -13,6 +13,12 @@ var gulp = require('gulp')
   , protractor = require('gulp-protractor').protractor
   ;
 
+var express = require('express')
+  , http = require('http')
+  , app = express();
+
+app.use(express.static(__dirname));
+
 var settings = {
   port: 3000,
   dev: '.',
@@ -76,6 +82,24 @@ gulp.task('styles', ['font'], function () {
     ;
 });
 
+gulp.task('serve', ['build'], function (cb) {
+  http
+    .createServer(app)
+    .listen(settings.port, function () {
+      util.log('Server started on', settings.port, 'port');
+      cb();
+    })
+    .on('error', function (err) {
+      if (err.code === 'EADDRINUSE') {
+        util.log('Port', settings.port, 'is already taken by another process');
+        cb();
+      } else {
+        cb(err);
+      }
+    })
+    .unref();
+});
+
 gulp.task('test', ['build', 'serve'], function (cb) {
   gulp.src(['./tests/*.js'])
     .pipe(protractor({
@@ -90,20 +114,6 @@ gulp.task('test', ['build', 'serve'], function (cb) {
       util.log('E2E test finished successfully');
       cb();
     });
-});
-
-gulp.task('serve', ['build'], function (cb) {
-  var express = require('express')
-    , http = require('http')
-    , app = express();
-
-  app.use(express.static(__dirname));
-
-  util.log('Server started on', settings.port, 'port');
-  http
-    .createServer(app)
-    .listen(settings.port, cb)
-    .unref();
 });
 
 

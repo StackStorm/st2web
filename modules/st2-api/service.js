@@ -6,61 +6,30 @@ angular.module('main')
 
     var scope = $rootScope.$new();
 
-    function fetchInventory(type) {
-      var Resource = $resource(HOST + '/' + type)
-        , r = scope.$new();
-
-      r.index = {};
-      r.tree = {};
-
-      Resource.query().$promise.then(function (data) {
-        _.each(data, function (e) {
-          r.index[e.name] = e;
-          _.each(e.tags, function (tag) {
-            var current = r.tree[tag] = r.tree[tag] || {};
-            current.title = tag;
-            current.entities = (current.entities || []).concat([e]);
-          });
-        });
-
-        r.$$phase || r.$apply();
-      });
-
-      return r;
+    function buildResource (params, actions) {
+      return $resource(HOST + '/:resource/:id', params, _.defaults({}, {
+        list: {
+          method: 'GET',
+          isArray: true
+        },
+        create: {
+          method: 'POST'
+        },
+        get: {
+          method: 'GET'
+        },
+        update: {
+          method: 'PUT'
+        },
+        remove: {
+          method: 'DELETE'
+        }
+      }, actions));
     }
 
-    scope.rules = $resource(HOST + '/rules', {}, {
-      list: {
-        method: 'GET',
-        isArray: true
-      },
-      create: {
-        method: 'POST'
-      },
-      get: {
-        method: 'GET',
-        url: HOST + '/rules/:id'
-      },
-      update: {
-        method: 'PUT',
-        url: HOST + '/rules/:id'
-      },
-      remove: {
-        method: 'DELETE',
-        url: HOST + '/rules/:id'
-      },
-      activate: {
-        method: 'PUT',
-        url: HOST + '/rules/:id/enable'
-      },
-      deactivate: {
-        method: 'DELETE',
-        url: HOST + '/rules/:id/enable'
-      }
-    });
-
-    scope.triggers = fetchInventory('triggers');
-    scope.actions = fetchInventory('actions');
+    scope.rules = buildResource({ resource: 'rules' });
+    scope.actions = buildResource({ resource: 'actions' });
+    scope.triggers = buildResource({ resource: 'triggers' });
 
     return scope;
   }).filter('unwrap', function () {
