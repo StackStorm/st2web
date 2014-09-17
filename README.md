@@ -1,26 +1,24 @@
 Stanley UI
 ==========
 
-In general, you should be able to `make all` from the root of Stanley project to get it all going.
-
-If it's for some reason not working as it should, here is a full sequence of steps to make it work:
+Quick start
+-----------
 
 First of all, you need to make sure you have latest stable `node` and `npm` packages installed.
 
     $ node -v
-    v0.10.28
+    v0.10.32
 
     $ npm -v
-    1.3.6
+    1.4.9
 
 then you need to globally install `bower` and `gulp`
 
     $ npm install -g bower
     $ npm install -g gulp
 
-then you need to change your working directory to *stanley/web* and install the requirements
+then you need to install the requirements
 
-    $ cd stanley/web
     $ npm install
     $ bower install
 
@@ -28,6 +26,41 @@ and finally run build system to fetch the font, compile css and so on
 
     $ gulp
 
-At that point you should be able to point your browser to [host]:3000 and see the the page.
+At that point you should be able to point your browser to http://localhost:3000/ and see the the page.
 
-It should be noted that `make all` is calling `gulp build` which neither starts a server to serve the page nor mocks the API. If you intend not only to build this thing, but also preview it, you would have to call `gulp mockapi serve` or `gulp serve` or set up your own web server. Calling just `gulp` both mocks and serves so it's better suited for development, but will not pass CI.
+Build system
+------------
+
+While `gulp` runs the longest chain of tasks including style compiling, testing, spining up dev server and watching for changes, you can run all of them directly using `gulp <task>`. Some common tasks are:
+ - `gulp build` - just lint and compile all the stuff
+ - `gulp test` - build the project and then run e2e tests
+ - `gulp serve` - build the project and start serving it at 3000 port
+
+You can see the whole list of tasks in `gulpfile.js`.
+
+Testing
+-------
+
+For now, we don't have the UI to test, so we are using st2-docs application to make sure we are aware of any changes happening in Stanley API. Take it as some sort of a live guide.
+
+First of all, you need to make sure you have [Java Development Kit (JDK)][JDK] installed
+
+    $ java -version
+    java version "1.6.0_65"
+    Java(TM) SE Runtime Environment (build 1.6.0_65-b14-462-11M4609)
+    Java HotSpot(TM) 64-Bit Server VM (build 20.65-b04-462, mixed mode)
+
+[JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+Then, you would need to update and start a webdriver for Selenium tests to run on
+
+    $ node_modules/.bin/webdriver-manager update
+    $ node_modules/.bin/webdriver-manager start
+
+Or if you want, you can setup Selenium to [start as a launchd service][selguide].
+[selguide]: http://blog.richardknop.com/2013/06/installing-selenium-2-on-mac-os-as-service/
+
+You should also make sure, Stanley is running and in the stock state. For that, follow
+[devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/Stanley) README files.
+
+After that, `gulp test` should finish successfully. 
