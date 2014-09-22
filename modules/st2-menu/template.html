@@ -1,10 +1,14 @@
+<a href="#">
+  <img class="st2-menu__logo" src="img/logo.svg" alt="StackStorm Stanley">
+</a>
+
 <ul class="st2-menu__nav">
-  <li class="st2-menu__nav-item">
-    <a href="#">
-      <img class="st2-menu__logo" src="img/logo.svg" alt="StackStorm Stanley">
-    </a>
-  </li>
-  <li ng-repeat="route in state.get() | filter:isMain" class="st2-menu__nav-item">
-      <a href="#{{ route.url }}">{{ route.title }}</a>
+  <li ng-repeat="route in state.get() | filter:isMain" class="st2-menu__nav-item"
+  ng-class="isActive(route) && 'st2-menu__nav-item--active'">
+    <a href="#{{ route.url }}">{{ route.title }}</a>
   </li>
 </ul>
+
+<div class="st2-menu__user">
+  Logged in as John Doe
+</div>

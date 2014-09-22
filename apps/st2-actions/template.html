@@ -1,0 +1,12 @@
+<div class="st2-actions">
+  <ul class="st2-actions__list">
+    <li class="st2-actions__item" ng-repeat="action in actions"
+    ng-click="state.go('^.summary', {id: action.id})">
+      {{ action | json }}
+    </li>
+  </ul>
+</div>
+
+<div class="st2-summary" ui-view="summary">123</div>
+
+<div class="st2-details" ui-view="details"></div>

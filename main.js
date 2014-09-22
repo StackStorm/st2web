@@ -12,11 +12,38 @@ angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
         templateUrl: 'apps/st2-docs/template.html'
       })
 
-      .state('act', {
-        url: '/act',
-        controller: 'st2ActCtrl',
-        templateUrl: 'apps/st2-act/template.html',
-        title: 'Act'
+      .state('actions', {
+        abstract: true,
+        url: '/actions',
+        controller: 'st2ActionListCtrl',
+        templateUrl: 'apps/st2-actions/template.html',
+        title: 'Actions'
+      })
+      .state('actions.list', {
+        url: '',
+        template: 'none'
+      })
+      .state('actions.summary', {
+        url: '/:id',
+        views: {
+          summary: {
+            controller: 'st2ActionGetCtrl',
+            templateUrl: 'apps/st2-actions/summary.html'
+          }
+        }
+      })
+      .state('actions.details', {
+        url: '/:id/details',
+        views: {
+          summary: {
+            controller: 'st2ActionGetCtrl',
+            templateUrl: 'apps/st2-actions/summary.html'
+          },
+          details: {
+            controller: 'st2ActionGetCtrl',
+            templateUrl: 'apps/st2-actions/details.html'
+          }
+        }
       })
 
       .state('rules', {
@@ -25,23 +52,15 @@ angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
         controller: 'st2RulesCtrl',
         title: 'Rules'
       })
-      .state('ruleConstructor', {
-        url: '/rules/create',
-        templateUrl: 'apps/st2-rules/edit.html',
-        controller: 'st2RuleCreateCtrl'
-      })
-      .state('ruleEdit', {
-        url: '/rules/:id',
-        templateUrl: 'apps/st2-rules/edit.html',
-        controller: 'st2RuleEditCtrl'
+
+      .state('history', {
+        url: '/history',
+        controller: 'st2HistoryCtrl',
+        templateUrl: 'apps/st2-history/template.html',
+        title: 'History'
       })
 
-      .state('audit', {
-        url: '/audit',
-        controller: 'st2AuditCtrl',
-        templateUrl: 'apps/st2-audit/template.html',
-        title: 'Audit'
-      });
+      ;
   });
 
 angular.module('main')

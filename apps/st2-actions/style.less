@@ -1,0 +1,51 @@
+#panel {
+  height: 100%;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding: 10px;
+}
+
+.st2-actions {
+  #panel;
+
+  flex: 1;
+
+  &__list {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    list-style: none;
+    margin-bottom: 10px;
+
+    &:hover {
+      background-color: #ddd;
+      cursor: pointer;
+    }
+  }
+}
+
+.st2-summary {
+  #panel;
+
+  width: 320px;
+
+  background-color: rgba(0,0,0,0.6);
+  color: #eee;
+}
+
+.st2-details {
+  #panel;
+
+  width: 640px;
+
+  background-color: #F7F3DD;
+  color: #737373;
+
+  &:empty {
+    display: none;
+  }
+}

@@ -2,7 +2,12 @@
 @import "colors";
 
 .st2-menu {
-  #st2-layout > #center-column;
+  padding: 10px;
+  background-color: #222;
+  color: #eee;
+
+  display: flex;
+  align-items: center;
 
   &__logo {
     width: 30px;
@@ -10,25 +15,35 @@
 
   &__nav {
     #st2-layout > #ul-clean;
+
+    display: flex;
+    flex: 1;
+
+    margin: 0 20px;
   }
 
   &__nav-item {
-    display: inline-block;
-    padding: 10px 20px 10px 0;
-    font-size: 24px;
+    margin-right: 5px;
 
     a {
-      color: @nav-text;
+      color: #eee;
       text-decoration: none;
-      font-weight: bold;
-
-      &:hover {
-        text-decoration: underline;
-      }
+      padding: 8px 10px;
+      border-radius: 5px;
+      display: block;
     }
 
-    &--active {
-      text-decoration: underline;
+    &:hover a {
+      background-color: #eee;
+      color: #222;
     }
+
+    &--active a {
+      background-color: #428BCA;
+    }
+  }
+
+  &__user {
+
   }
 }

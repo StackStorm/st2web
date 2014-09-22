@@ -11,6 +11,10 @@ angular.module('main')
         scope.isMain = function (e) {
           return !!e.title;
         };
+
+        scope.isActive = function (e) {
+          return scope.state.includes(e);
+        };
       }
     };
 

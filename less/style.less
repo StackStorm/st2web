@@ -4,14 +4,21 @@
 @import "layout";
 @import "colors";
 
-body {
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
   background-color: @body-bg-color;
   font-size: 14px;
 }
 
-.main {
-  #st2-layout > #center-column;
+main {
   #st2-fonts > #body;
 
   position: relative;
+
+  display: flex;
+  flex: 1;
 }
+
