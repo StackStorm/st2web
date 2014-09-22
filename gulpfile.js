@@ -108,7 +108,7 @@ gulp.task('test', ['build', 'serve'], function (cb) {
     }))
     .on('error', function (e) {
       util.log('E2E test failed:', e.message);
-      cb();
+      cb(e);
     })
     .on('end', function () {
       util.log('E2E test finished successfully');
@@ -123,4 +123,4 @@ gulp.task('watch', function () {
 });
 
 gulp.task('build', ['gulphint', 'scripts', 'font', 'styles']);
-gulp.task('default', ['build', 'watch', 'serve', 'test']);
+gulp.task('default', ['build', 'watch', 'serve']);

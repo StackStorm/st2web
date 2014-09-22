@@ -31,7 +31,7 @@ At that point you should be able to point your browser to http://localhost:3000/
 Build system
 ------------
 
-While `gulp` runs the longest chain of tasks including style compiling, testing, spining up dev server and watching for changes, you can run all of them directly using `gulp <task>`. Some common tasks are:
+While `gulp` runs the longest chain of tasks including style compiling, spining up dev server and watching for changes, you can run all of them directly using `gulp <task>`. Some common tasks are:
  - `gulp build` - just lint and compile all the stuff
  - `gulp test` - build the project and then run e2e tests
  - `gulp serve` - build the project and start serving it at 3000 port
@@ -63,4 +63,4 @@ Or if you want, you can setup Selenium to [start as a launchd service][selguide]
 You should also make sure, Stanley is running and in the stock state. For that, follow
 [devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/Stanley) README files.
 
-After that, `gulp test` should finish successfully. 
+After that, `gulp test` should finish successfully.
