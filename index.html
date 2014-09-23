@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="main" ng-controller="MainCtrl">
+<html lang="en" ng-app="mockMain" ng-controller="MainCtrl">
 <head>
   <meta charset="utf-8">
   <title ng-bind="state.current.title"></title>
@@ -16,12 +16,15 @@
   <script src="components/angular/angular.js"></script>
   <script src="components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="components/angular-resource/angular-resource.js"></script>
+  <script src="components/angular-mocks/angular-mocks.js"></script>
   <script src="components/lodash/dist/lodash.js"></script>
   <script src="components/moment/moment.js"></script>
   <script src="components/angular-moment/angular-moment.js"></script>
   <!-- endbuild -->
   <!-- build:scripts -->
   <script src="main.js"></script>
+
+  <script src="modules/st2-mock-api/controller.js"></script>
 
   <script src="modules/st2-menu/directive.js"></script>
   <script src="modules/st2-auto-form/directive.js"></script>
