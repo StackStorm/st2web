@@ -1,4 +1,0 @@
-<h1>Summary</h1>
-{{ current | json }}
-<button ng-click="state.go('^.details', {id: current.id})" ng-show="state.includes('*.summary')">Details</button>
-<!-- TODO: '*.summary' should be '^.summary'. The bug expected to be fixed in angular-ui-router >0.2.11-->

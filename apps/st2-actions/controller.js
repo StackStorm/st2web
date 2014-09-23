@@ -1,14 +1,37 @@
 'use strict';
 angular.module('main')
+  .config(function ($stateProvider) {
 
-  // List actions
-  .controller('st2ActionListCtrl', function ($scope, st2Api) {
+    $stateProvider
+      .state('actions', {
+        abstract: true,
+        url: '/actions',
+        controller: 'st2ActionsCtrl',
+        templateUrl: 'apps/st2-actions/template.html',
+        title: 'Actions'
+      })
+      .state('actions.list', {
+        url: ''
+      })
+      .state('actions.summary', {
+        url: '/:id'
+      })
+      .state('actions.details', {
+        url: '/:id/details'
+      })
+
+      ;
+
+  });
+
+angular.module('main')
+
+  .controller('st2ActionsCtrl', function ($scope, st2Api) {
     $scope.actions = st2Api.actions.list();
-  })
 
-  // Get action
-  .controller('st2ActionGetCtrl', function ($scope, st2Api, $stateParams) {
-    $scope.current = st2Api.actions.get({ id: $stateParams.id });
+    $scope.$watch('state.params.id', function (id) {
+      $scope.current = id ? st2Api.actions.get({ id: id }) : null;
+    });
   })
 
   ;

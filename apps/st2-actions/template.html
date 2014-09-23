@@ -1,12 +1,26 @@
-<div class="st2-actions">
-  <ul class="st2-actions__list">
-    <li class="st2-actions__item" ng-repeat="action in actions"
-    ng-click="state.go('^.summary', {id: action.id})">
-      {{ action | json }}
-    </li>
-  </ul>
+<div class="st2-panel" ng-class="{'st2-panel--slide': state.includes('*.details')}">
+
+  <div class="st2-actions">
+
+    <ul class="st2-actions__list">
+      <li class="st2-actions__item" ng-repeat="action in actions"
+      ng-click="state.go('^.summary', {id: action.id})">
+        {{ action | json }}
+      </li>
+    </ul>
+
+    <div class="st2-panel__back-button" ng-click="state.go('^.summary', {id: current.id})"></div>
+  </div>
+
+  <div class="st2-summary">
+    <h1>Summary</h1>
+    {{ current | json }}
+    <button ng-click="state.go('^.details', {id: current.id})">Details</button>
+  </div>
+
 </div>
 
-<div class="st2-summary" ui-view="summary">123</div>
-
-<div class="st2-details" ui-view="details"></div>
+<div class="st2-details">
+  <h1>Details</h1>
+  {{ state.current | json }}
+</div>

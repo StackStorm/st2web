@@ -1,5 +1,19 @@
 'use strict';
 angular.module('main')
+  .config(function ($stateProvider) {
+
+    $stateProvider
+      // Controller for testing. Won't show up in main menu.
+      .state('docs', {
+        url: '/docs',
+        controller: 'st2DocsCtrl',
+        templateUrl: 'apps/st2-docs/template.html'
+      })
+
+      ;
+  });
+
+angular.module('main')
 
   // Docs controller
   .controller('st2DocsCtrl', function ($scope, st2Api) {
