@@ -58,7 +58,50 @@
   position: relative;
 
   flex: 1;
-
+  
+  .panel-default {
+    border: none;
+    border-radius: 0;
+  }
+  
+  .panel-heading {
+    background: #666;
+    border-bottom: 1px solid #999;
+    h2 {
+      color: white;
+      font-size: 15px;
+      text-transform: uppercase;
+      font-weight: 200;
+      font-family: Oswald;
+    }
+  }
+  
+  .panel-body {
+    padding: 0;
+  }
+  
+  .panel, .panel-heading, .panel-body, .table {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    
+    th {
+      border-bottom: none;
+    }
+    .odd {
+      background-color: #E9E9EC;
+    }
+    .even {
+      background-color: transparent;
+    }
+    .table-hover > tbody > tr:hover > td,
+    .table-hover > tbody > tr:hover > th {
+      background-color: #428bca;
+      color: white;
+    }
+  }
+  
   &__list {
     margin: 0;
     padding: 0;
