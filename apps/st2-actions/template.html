@@ -1,31 +1,40 @@
 <div class="st2-panel" ng-class="{'st2-panel--slide': state.includes('*.details')}">
 
-  <div class="st2-actions">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Machine Name</th>
-          <th>Human-friendly Name</th>
-          <th>Description</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody ng-repeat="action in actions">
-        <tr>
-          <td>{{ action.name }}</td>
-          <td>{{ action.runner_type }}</td>
-          <td>{{ action.description }}</td>
-          <td><span class="label label-warning">{{ action.enabled }}</span></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="st2-actions panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Category One</h2>
+    </div>
+    
+    <div class="panel-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Machine Name</th>
+            <th>Human-friendly Name</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr ng-class-odd="'odd'" ng-class-even="'even'" ng-repeat="action in actions" ng-click="state.go('^.summary', {id: action.id})">
+            <td>{{ action.name }}</td>
+            <td>{{ action.runner_type }}</td>
+            <td>{{ action.description }}</td>
+            <td><span class="label label-warning">{{ action.enabled }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+<!--
     <ul class="st2-actions__list">
       <li class="st2-actions__item" ng-repeat="action in actions"
       ng-click="state.go('^.summary', {id: action.id})">
         {{ action | json }}
       </li>
     </ul>
+-->
 
     <div class="st2-panel__back-button" ng-click="state.go('^.summary', {id: current.id})"></div>
   </div>
