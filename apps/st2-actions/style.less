@@ -10,10 +10,6 @@
 }
 
 .st2-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
-
   z-index: 2;
 
   width: 100%;
@@ -23,10 +19,12 @@
 
   background-color: #eee;
 
-  transition: left 2s;
+  transition: transform 2s;
+
+  transform: translate3d(0,0,0);
 
   &--slide {
-    left: -640px;
+    transform: translate3d(-640px,0,0);
   }
 
   &__back-button {
@@ -58,12 +56,12 @@
   position: relative;
 
   flex: 1;
-  
+
   .panel-default {
     border: none;
     border-radius: 0;
   }
-  
+
   .panel-heading {
     background: #666;
     border-bottom: 1px solid #999;
@@ -75,17 +73,17 @@
       font-family: Oswald;
     }
   }
-  
+
   .panel-body {
     padding: 0;
   }
-  
+
   .panel, .panel-heading, .panel-body, .table {
     border: none;
     border-radius: 0;
     box-shadow: none;
     margin: 0;
-    
+
     th {
       border-bottom: none;
     }
@@ -101,7 +99,7 @@
       color: white;
     }
   }
-  
+
   &__list {
     margin: 0;
     padding: 0;
