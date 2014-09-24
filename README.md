@@ -63,4 +63,4 @@ Or if you want, you can setup Selenium to [start as a launchd service][selguide]
 You should also make sure, Stanley is running and in the stock state. For that, follow
 [devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/Stanley) README files.
 
-After that, `gulp test` should finish successfully.
+After that, `gulp test` should finish successfully. Woila.
