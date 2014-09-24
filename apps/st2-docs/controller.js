@@ -26,6 +26,12 @@ angular.module('main')
     });
 
     $scope.triggers = st2Api.triggers.list();
+
+    $scope.triggerInstances = st2Api.triggerInstances.list();
+
+    $scope.actionExecutions = st2Api.actionExecutions.list();
+
+    $scope.ruleEnforcements = st2Api.ruleEnforcements.list();
   })
 
   .filter('getProperty', function () {

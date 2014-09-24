@@ -30,6 +30,9 @@ angular.module('main')
     scope.rules = buildResource({ resource: 'rules' });
     scope.actions = buildResource({ resource: 'actions' });
     scope.triggers = buildResource({ resource: 'triggers' });
+    scope.triggerInstances = buildResource({ resource: 'triggerinstances' });
+    scope.actionExecutions = buildResource({ resource: 'actionexecutions' });
+    scope.ruleEnforcements = buildResource({ resource: 'ruleenforcements' });
 
     return scope;
   }).filter('unwrap', function () {
