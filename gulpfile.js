@@ -11,6 +11,7 @@ var gulp = require('gulp')
   , prefix = require('gulp-autoprefixer')
   , fontelloUpdate = require('fontello-update')
   , protractor = require('gulp-protractor').protractor
+  , plumber = require('gulp-plumber')
   ;
 
 var express = require('express')
@@ -72,10 +73,8 @@ gulp.task('font', function () {
 
 gulp.task('styles', ['font'], function () {
   return gulp.src(settings.styles.src, { cwd: settings.dev })
+    .pipe(plumber())
     .pipe(less({ paths: [path.join(settings.dev, settings.styles.includes)] }))
-    .on('error', function(err) {
-      console.warn(err.message);
-    })
     .pipe(concat('style.css'))
     .pipe(prefix())
     .pipe(gulp.dest(path.join(settings.dev, settings.styles.dest)))
