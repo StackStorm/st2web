@@ -1,6 +1,24 @@
 <div class="st2-panel" ng-class="{'st2-panel--slide': state.includes('*.details')}">
 
   <div class="st2-actions">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Machine Name</th>
+          <th>Human-friendly Name</th>
+          <th>Description</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="action in actions">
+        <tr>
+          <td>{{ action.name }}</td>
+          <td>{{ action.runner_type }}</td>
+          <td>{{ action.description }}</td>
+          <td><span class="label label-warning">{{ action.enabled }}</span></td>
+        </tr>
+      </tbody>
+    </table>
 
     <ul class="st2-actions__list">
       <li class="st2-actions__item" ng-repeat="action in actions"
