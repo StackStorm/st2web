@@ -1,3 +1,13 @@
+@import (reference) '/components/bootstrap/less/variables.less';
+@import (reference) '/components/bootstrap/less/mixins.less';
+@import (reference) '/components/bootstrap/less/utilities.less';
+
+@import (reference) '/components/bootstrap/less/labels.less';
+@import (reference) '/components/bootstrap/less/buttons.less';
+@import (reference) '/components/bootstrap/less/panels.less';
+@import (reference) '/components/bootstrap/less/tables.less';
+@import (reference) '/components/bootstrap/less/type.less';
+
 #panel {
   height: 100%;
 
@@ -9,22 +19,16 @@
   padding: 10px;
 }
 
-.panel, .panel-heading, .panel-body, .table {
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  margin: 0;
-}
-
-.basic-button {
-  font-weight: 200;
-  opacity: 1;
-  font-family: Oswald;
-  text-transform: uppercase;
-}
-
-.label {
+.st2-label
+:extend(.label)
+:extend(.label-default) {
   font-size: 85%;
+
+  &--primary:extend(.label-primary) {}
+  &--success:extend(.label-success) {}
+  &--info:extend(.label-info) {}
+  &--warning:extend(.label-warning) {}
+  &--danger:extend(.label-danger) {}
 }
 
 .st2-panel {
@@ -41,10 +45,12 @@
 
   background-color: #eee;
 
-  transition: left 2s;
+  transition: transform 2s;
+
+  transform: translate3d(0,0,0);
 
   &--slide {
-    left: -640px;
+    transform: translate3d(-640px,0,0);
   }
 
   &__back-button {
@@ -77,15 +83,13 @@
 
   flex: 1;
 
-  .panel-default {
-    border: none;
-    border-radius: 0;
-  }
-
-  .panel-heading {
+  &__heading
+  :extend(.panel-heading) {
     background: #666;
     border-bottom: 1px solid #999;
-    h2 {
+
+    &-title
+    :extend(.panel-title) {
       color: white;
       font-size: 15px;
       text-transform: uppercase;
@@ -94,39 +98,35 @@
     }
   }
 
-  .panel-body {
-    padding: 0;
-
-    th {
+  &__table
+  :extend(table all)
+  :extend(.table all)
+  :extend(.table-hover all) {
+    th:extend(th all) {}
+    > thead > tr > th {
       border-bottom: none;
     }
-    .odd {
+    > tbody > tr:hover {
+      > td,
+      > th {
+        background-color: #428bca;
+        color: white;
+      }
+    }
+  }
+
+  &__table-row {
+    cursor: pointer;
+    user-select: none;
+
+    &--odd {
       background-color: #E9E9EC;
     }
-    .even {
+    &--even {
       background-color: transparent;
     }
-    .table-hover > tbody > tr:hover > td,
-    .table-hover > tbody > tr:hover > th {
-      background-color: #428bca;
-      color: white;
-    }
   }
 
-  &__list {
-    margin: 0;
-    padding: 0;
-  }
-
-  &__item {
-    list-style: none;
-    margin-bottom: 10px;
-
-    &:hover {
-      background-color: #ddd;
-      cursor: pointer;
-    }
-  }
 }
 
 .st2-summary {
@@ -138,33 +138,44 @@
   padding: 0;
   color: #ccc;
 
-  .panel {
-    background-color: transparent;
+  &__button
+  :extend(.btn)
+  :extend(.btn-primary) {
+    font-weight: 200;
+    opacity: 1;
+    font-family: Oswald;
+    text-transform: uppercase;
 
-    .panel-heading {
-      background: #666;
-      border-bottom: 1px solid #999;
+    &--right:extend(.pull-right) {}
+  }
 
-      h2 {
-        padding: 0;
-        margin: 6px 0 0 0;
-        color: white;
-        font-size: 15px;
-        text-transform: uppercase;
-        font-weight: 200;
-        font-family: Oswald;
-      }
+  &__heading
+  :extend(.panel-heading)
+  :extend(.clearfix all) {
+    border-bottom: 1px solid #999;
+
+    &-title
+    :extend(.pull-left) {
+      padding: 0;
+      margin: 6px 0 0 0;
+      color: white;
+      font-size: 15px;
+      text-transform: uppercase;
+      font-weight: 200;
+      font-family: Oswald;
     }
+  }
 
-    .panel-body {
-      padding: 20px;
-      
-      dt {
-        color: white;
-      }
-      dd {
-        margin-bottom: 20px;
-      }
+  &__body {
+    padding: 20px;
+
+    dt
+    :extend(dt) {
+      color: white;
+    }
+    dd
+    :extend(dd) {
+      margin-bottom: 20px;
     }
   }
 }
