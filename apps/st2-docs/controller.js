@@ -31,7 +31,7 @@ angular.module('main')
 
     $scope.actionExecutions = st2Api.actionExecutions.list();
 
-    $scope.ruleEnforcements = st2Api.ruleEnforcements.list();
+    $scope.history = st2Api.history.list();
   })
 
   .filter('getProperty', function () {

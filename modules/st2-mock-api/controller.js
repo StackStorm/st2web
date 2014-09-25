@@ -92,7 +92,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       'action': {
         'name': 'local',
         'parameters': {
-          'cmd': 'echo \'{{trigger}} from {{rule.trigger.type}}\' >> /tmp/st2.persons.out'
+          'cmd': 'echo \"{{trigger}} from {{rule.trigger.type}}\" >> /tmp/st2.persons.out'
         }
       },
       'id': '540ebdfa0640fd7065e903d5',
@@ -336,57 +336,250 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
     });
 
 
-    var ruleEnforcements = [
+    var history = [
       {
+        'action': {
+          'runner_type': 'run-local',
+          'name': 'local',
+          'parameters': {},
+          'required_parameters': [],
+          'enabled': true,
+          'entry_point': '',
+          'id': '540ebdfa0640fd7065e903d3',
+          'description': 'Action that executes an arbitrary Linux command on the localhost.'
+        },
         'action_execution': {
-          'id': '541008ae0640fd68d4a16e22'
+          'action': {
+            'id': '540ebdfa0640fd7065e903d3',
+            'name': 'local'
+          },
+          'callback': {},
+          'context': {},
+          'id': '541008ae0640fd68d4a16e22',
+          'parameters': {
+            'cmd': 'echo {"description": u"Sample rule dumping webhook payload to a file.", "enabled": True, "trigger": {"type": "st2.webhook", "id": "540ebdfa0640fd7065e903d4", "parameters": {u"url": u"person"}, "name": u"265a30b3-5990-4313-9a14-2ef0199f7f47"}, "criteria": {u"trigger.name": {u"pattern": u"Joe", u"type": u"equals"}}, "action": SON([("name", u"local"), ("parameters", {u"cmd": u"echo \"{{rule}}\" >> /tmp/st2.persons.out"})]), "id": "540ebdfa0640fd7065e903d5", "name": u"st2.person.joe"}\" >> /tmp/st2.persons.out',
+            'hosts': 'localhost',
+            'parallel': false,
+            'sudo': false
+          },
+          'result': {
+            'localhost': {
+              'failed': false,
+              'return_code': 0,
+              'stderr': '',
+              'stdout': '',
+              'succeeded': true
+            }
+          },
+          'start_timestamp': '2014-09-10 08:15:42.823000',
+          'status': 'complete'
         },
         'id': '541008ae0640fd68d6da360f',
         'rule': {
+          'description': 'Sample rule dumping webhook payload to a file.',
+          'enabled': true,
+          'trigger': {
+            'type': 'st2.webhook',
+            'parameters': {
+              'url': 'person'
+            }
+          },
+          'criteria': {
+            'trigger.name': {
+              'pattern': 'Joe',
+              'type': 'equals'
+            }
+          },
+          'action': {
+            'name': 'local',
+            'parameters': {
+              'cmd': 'echo \"{{trigger}} from {{rule.trigger.type}}\" >> /tmp/st2.persons.out'
+            }
+          },
           'id': '540ebdfa0640fd7065e903d5',
           'name': 'st2.person.joe'
+        },
+        'trigger': {
+          'type': 'st2.webhook',
+          'id': '540ebdfa0640fd7065e903d4',
+          'parameters': {
+            'url': 'person'
+          },
+          'name': '265a30b3-5990-4313-9a14-2ef0199f7f47'
         },
         'trigger_instance': {
           'id': '541008ae0640fd68d6da360e',
-          'name': null
+          'occurrence_time': '2014-09-10T08:15:42.724000',
+          'payload': {
+            'name': 'Joe'
+          },
+          'trigger': '265a30b3-5990-4313-9a14-2ef0199f7f47'
         }
-      },
-      {
+      }, {
+        'action': {
+          'runner_type': 'run-local',
+          'name': 'local',
+          'parameters': {},
+          'required_parameters': [],
+          'enabled': true,
+          'entry_point': '',
+          'id': '540ebdfa0640fd7065e903d3',
+          'description': 'Action that executes an arbitrary Linux command on the localhost.'
+        },
         'action_execution': {
-          'id': '541009710640fd69a8126362'
+          'action': {
+            'id': '540ebdfa0640fd7065e903d3',
+            'name': 'local'
+          },
+          'callback': {},
+          'context': {},
+          'id': '541009710640fd69a8126362',
+          'parameters': {
+            'cmd': 'echo \"{"description": u"Sample rule dumping webhook payload to a file.", "enabled": True, "trigger": {"type": "st2.webhook", "id": "540ebdfa0640fd7065e903d4", "parameters": {u"url": u"person"}, "name": u"265a30b3-5990-4313-9a14-2ef0199f7f47"}, "criteria": {u"trigger.name": {u"pattern": u"Joe", u"type": u"equals"}, u"rule.trigger.type": {u"pattern": u"st2.webhook", u"type": u"equals"}}, "action": SON([("name", u"local"), ("parameters", {u"cmd": u"echo \"{{rule}}\" >> /tmp/st2.persons.out"})]), "id": "540ebdfa0640fd7065e903d5", "name": u"st2.person.joe"}\" >> /tmp/st2.persons.out',
+            'hosts': 'localhost',
+            'parallel': false,
+            'sudo': false
+          },
+          'result': {
+            'localhost': {
+              'failed': false,
+              'return_code': 0,
+              'stderr': '',
+              'stdout': '',
+              'succeeded': true
+            }
+          },
+          'start_timestamp': '2014-09-10 08:18:57.652000',
+          'status': 'complete'
         },
         'id': '541009710640fd69ab95fce3',
         'rule': {
+          'description': 'Sample rule dumping webhook payload to a file.',
+          'enabled': true,
+          'trigger': {
+            'type': 'st2.webhook',
+            'parameters': {
+              'url': 'person'
+            }
+          },
+          'criteria': {
+            'trigger.name': {
+              'pattern': 'Joe',
+              'type': 'equals'
+            }
+          },
+          'action': {
+            'name': 'local',
+            'parameters': {
+              'cmd': 'echo \"{{trigger}} from {{rule.trigger.type}}\" >> /tmp/st2.persons.out'
+            }
+          },
           'id': '540ebdfa0640fd7065e903d5',
           'name': 'st2.person.joe'
+        },
+        'trigger': {
+          'type': 'st2.webhook',
+          'id': '540ebdfa0640fd7065e903d4',
+          'parameters': {
+            'url': 'person'
+          },
+          'name': '265a30b3-5990-4313-9a14-2ef0199f7f47'
         },
         'trigger_instance': {
           'id': '541009710640fd69ab95fce2',
-          'name': null
+          'occurrence_time': '2014-09-10T08:18:57.564000',
+          'payload': {
+            'name': 'Joe'
+          },
+          'trigger': '265a30b3-5990-4313-9a14-2ef0199f7f47'
         }
-      },
-      {
+      }, {
+        'action': {
+          'runner_type': 'run-local',
+          'name': 'local',
+          'parameters': {},
+          'required_parameters': [],
+          'enabled': true,
+          'entry_point': '',
+          'id': '540ebdfa0640fd7065e903d3',
+          'description': 'Action that executes an arbitrary Linux command on the localhost.'
+        },
         'action_execution': {
-          'id': '54100a180640fd6a7e59407e'
+          'action': {
+            'id': '540ebdfa0640fd7065e903d3',
+            'name': 'local'
+          },
+          'callback': {},
+          'context': {},
+          'id': '54100a180640fd6a7e59407e',
+          'parameters': {
+            'cmd': 'echo \"{u"name": u"Joe"} from st2.webhook\" >> /tmp/st2.persons.out',
+            'hosts': 'localhost',
+            'parallel': false,
+            'sudo': false
+          },
+          'result': {
+            'localhost': {
+              'failed': false,
+              'return_code': 0,
+              'stderr': '',
+              'stdout': '',
+              'succeeded': true
+            }
+          },
+          'start_timestamp': '2014-09-10 08:21:44.076000',
+          'status': 'complete'
         },
         'id': '54100a180640fd6a84f837ed',
         'rule': {
+          'description': 'Sample rule dumping webhook payload to a file.',
+          'enabled': true,
+          'trigger': {
+            'type': 'st2.webhook',
+            'parameters': {
+              'url': 'person'
+            }
+          },
+          'criteria': {
+            'trigger.name': {
+              'pattern': 'Joe',
+              'type': 'equals'
+            }
+          },
+          'action': {
+            'name': 'local',
+            'parameters': {
+              'cmd': 'echo \"{{trigger}} from {{rule.trigger.type}}\" >> /tmp/st2.persons.out'
+            }
+          },
           'id': '540ebdfa0640fd7065e903d5',
           'name': 'st2.person.joe'
         },
+        'trigger': {
+          'type': 'st2.webhook',
+          'id': '540ebdfa0640fd7065e903d4',
+          'parameters': {
+            'url': 'person'
+          },
+          'name': '265a30b3-5990-4313-9a14-2ef0199f7f47'
+        },
         'trigger_instance': {
           'id': '54100a170640fd6a84f837ec',
-          'name': null
+          'occurrence_time': '2014-09-10T08:21:43.995000',
+          'payload': {
+            'name': 'Joe'
+          },
+          'trigger': '265a30b3-5990-4313-9a14-2ef0199f7f47'
         }
       }
     ];
 
-    $httpBackend.whenGET('//172.168.50.50:9101/ruleenforcements').respond(ruleEnforcements);
+    $httpBackend.whenGET('//172.168.50.50:9101/history').respond(history);
 
-    _.each(ruleEnforcements, function (ruleEnforcement) {
+    _.each(history, function (record) {
       $httpBackend
-        .whenGET('//172.168.50.50:9101/ruleenforcements/' + ruleEnforcement.id)
-        .respond(ruleEnforcement);
+        .whenGET('//172.168.50.50:9101/history/' + record.id)
+        .respond(record);
     });
 
     // adds a new phone to the phones array

@@ -32,7 +32,7 @@ angular.module('main')
     scope.triggers = buildResource({ resource: 'triggers' });
     scope.triggerInstances = buildResource({ resource: 'triggerinstances' });
     scope.actionExecutions = buildResource({ resource: 'actionexecutions' });
-    scope.ruleEnforcements = buildResource({ resource: 'ruleenforcements' });
+    scope.history = buildResource({ resource: 'history' });
 
     return scope;
   }).filter('unwrap', function () {
