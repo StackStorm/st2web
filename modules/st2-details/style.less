@@ -6,6 +6,7 @@
 @import (reference) '/components/bootstrap/less/forms.less';
 @import (reference) '/components/bootstrap/less/tables.less';
 @import (reference) '/components/bootstrap/less/buttons.less';
+@import (reference) '/components/bootstrap/less/utilities.less';
 
 .st2-details {
   #st2-layout > #panel;
@@ -26,12 +27,15 @@
   &__form-group
   :extend(.form-group) {
     position: relative;
+    &--right:extend(.pull-right) {}
   }
 
   &__form-control
   :extend(.form-control) {
     width: 300px;
     padding: 0 0 0 10px;
+    margin-right: 10px;
+    &--left:extend(.pull-left) {}
   }
 
   &__help-block
@@ -110,5 +114,6 @@
     text-decoration: none;
 
     &--right:extend(.pull-right) {}
+    &--left:extend(.pull-left) {}
   }
 }
