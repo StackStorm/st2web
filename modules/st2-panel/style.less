@@ -1,0 +1,93 @@
+@import (reference) '/components/bootstrap/less/variables.less';
+@import (reference) '/components/bootstrap/less/mixins.less';
+
+@import (reference) '/components/bootstrap/less/tables.less';
+@import (reference) '/components/bootstrap/less/panels.less';
+
+.st2-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  background-color: #eee;
+
+  transition: transform 2s;
+
+  transform: translate3d(0,0,0);
+
+  &--slide {
+    transform: translate3d(-640px,0,0);
+  }
+
+  &__back-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    // activated only when the panel is slided
+    display: none;
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &--slide &__back-button {
+    display: block;
+  }
+
+  &__heading
+  :extend(.panel-heading) {
+    background: #666;
+    border-bottom: 1px solid #999;
+
+    &-title
+    :extend(.panel-title) {
+      color: white;
+      font-size: 15px;
+      text-transform: uppercase;
+      font-weight: 200;
+      font-family: Oswald;
+    }
+  }
+
+  &__table
+  :extend(table all)
+  :extend(.table all)
+  :extend(.table-hover all) {
+    th:extend(th all) {}
+    > thead > tr > th {
+      border-bottom: none;
+    }
+    > tbody > tr:hover {
+      > td,
+      > th {
+        background-color: #428bca;
+        color: white;
+      }
+    }
+  }
+
+  &__table-row {
+    cursor: pointer;
+    user-select: none;
+
+    &--odd {
+      background-color: #E9E9EC;
+    }
+    &--even {
+      background-color: transparent;
+    }
+  }
+}

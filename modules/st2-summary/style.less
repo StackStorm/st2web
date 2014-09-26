@@ -1,0 +1,61 @@
+@import "layout";
+
+@import (reference) '/components/bootstrap/less/variables.less';
+@import (reference) '/components/bootstrap/less/mixins.less';
+@import (reference) '/components/bootstrap/less/utilities.less';
+
+@import (reference) '/components/bootstrap/less/type.less';
+@import (reference) '/components/bootstrap/less/buttons.less';
+@import (reference) '/components/bootstrap/less/panels.less';
+
+
+.st2-summary {
+  #st2-layout > #panel;
+
+  width: 320px;
+
+  background: #666;
+  padding: 0;
+  color: #ccc;
+
+  &__button
+  :extend(.btn)
+  :extend(.btn-primary) {
+    font-weight: 200;
+    opacity: 1;
+    font-family: Oswald;
+    text-transform: uppercase;
+
+    &--right:extend(.pull-right) {}
+  }
+
+  &__heading
+  :extend(.panel-heading)
+  :extend(.clearfix all) {
+    border-bottom: 1px solid #999;
+
+    &-title
+    :extend(.pull-left) {
+      padding: 0;
+      margin: 6px 0 0 0;
+      color: white;
+      font-size: 15px;
+      text-transform: uppercase;
+      font-weight: 200;
+      font-family: Oswald;
+    }
+  }
+
+  &__body {
+    padding: 20px;
+
+    dt
+    :extend(dt) {
+      color: white;
+    }
+    dd
+    :extend(dd) {
+      margin-bottom: 20px;
+    }
+  }
+}
