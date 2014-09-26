@@ -183,6 +183,8 @@
 .st2-details {
   #panel;
 
+  padding: 0;
+
   position: absolute;
   top: 0;
   right: 0;
@@ -193,4 +195,100 @@
 
   background-color: #F7F3DD;
   color: #737373;
+
+  .form-group {
+    position: relative;
+  }
+
+  .form-control {
+    width: 300px;
+    padding: 0 0 0 10px;
+  }
+
+  textarea {
+    width: 100% !important;
+    background: #eee;
+  }
+
+  .help-block {
+    position: absolute;
+    top: 30px;
+    left: 320px;
+    font-size: 12px;
+  }
+
+  .panel {
+    background-color: transparent;
+  }
+
+  .panel-body {
+    padding: 20px;
+  }
+
+  .panel-heading {
+    background: rgba(166, 161, 136, 0.39);
+    border-top: 1px solid rgba(166, 161, 136, 0.64);
+    border-bottom: 1px solid rgba(166, 161, 136, 0.64);
+    margin: 0;
+    padding: 0 15px;
+  }
+
+  .panel-heading h2 {
+    color: rgba(120, 116, 94, 1);
+    font-weight: 100;
+    font-family: Oswald;
+    text-transform: uppercase;
+    font-size: 15px;
+    padding: 0;
+  }
+
+  .panel-body table {
+    margin: 0;
+  }
+
+  .panel-body table thead > tr > th {
+    padding: 0 8px;
+    font-weight: 300;
+  }
+
+  &__table
+  :extend(table all)
+  :extend(.table all)
+  :extend(.table-hover all) {
+    th:extend(th all) {}
+    > thead > tr > th {
+      border-bottom: none;
+    }
+    > tbody > tr:hover {
+      > td,
+      > th {
+        background-color: #428bca;
+        color: white;
+      }
+    }
+  }
+
+  &__table-row {
+    cursor: pointer;
+    user-select: none;
+
+    &--odd {
+      background-color: #E9E9EC;
+    }
+    &--even {
+      background-color: transparent;
+    }
+  }
+
+  &__button
+  :extend(.btn)
+  :extend(.btn-primary) {
+    font-weight: 200;
+    opacity: 1;
+    font-family: Oswald;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    &--right:extend(.pull-right) {}
+  }
 }
