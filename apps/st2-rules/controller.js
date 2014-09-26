@@ -15,10 +15,10 @@ angular.module('main')
         url: ''
       })
       .state('rules.summary', {
-        url: '/:id'
+        url: '/{id:\\w+}'
       })
       .state('rules.details', {
-        url: '/:id/details'
+        url: '/{id:\\w+}/details'
       })
 
       ;
@@ -31,8 +31,19 @@ angular.module('main')
   .controller('st2RulesCtrl', function ($scope, st2Api) {
     $scope.rules = st2Api.rules.list();
 
+    function fetchOne(id) {
+      $scope.current = st2Api.rules.get({ id: id });
+    }
+
     $scope.$watch('state.params.id', function (id) {
-      $scope.current = id ? st2Api.rules.get({ id: id }) : null;
+      if (id) {
+        fetchOne(id);
+      } else {
+        $scope.rules.$promise.then(function (rules) {
+          var id = rules && rules[0] && rules[0].id;
+          fetchOne(id);
+        });
+      }
     });
   })
 

@@ -14,10 +14,10 @@ angular.module('main')
         url: ''
       })
       .state('history.summary', {
-        url: '/:id'
+        url: '/{id:\\w+}'
       })
       .state('history.details', {
-        url: '/:id/details'
+        url: '/{id:\\w+}/details'
       })
 
       ;
@@ -30,8 +30,19 @@ angular.module('main')
   .controller('st2HistoryCtrl', function ($scope, st2Api) {
     $scope.history = st2Api.history.list();
 
+    function fetchOne(id) {
+      $scope.current = st2Api.history.get({ id: id });
+    }
+
     $scope.$watch('state.params.id', function (id) {
-      $scope.current = id ? st2Api.history.get({ id: id }) : null;
+      if (id) {
+        fetchOne(id);
+      } else {
+        $scope.history.$promise.then(function (history) {
+          var id = history && history[0] && history[0].id;
+          fetchOne(id);
+        });
+      }
     });
   })
 
