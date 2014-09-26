@@ -1,0 +1,16 @@
+@import (reference) '/components/bootstrap/less/variables.less';
+@import (reference) '/components/bootstrap/less/mixins.less';
+
+@import (reference) '/components/bootstrap/less/labels.less';
+
+.st2-label
+:extend(.label)
+:extend(.label-default) {
+  font-size: 85%;
+
+  &--primary:extend(.label-primary) {}
+  &--success:extend(.label-success) {}
+  &--info:extend(.label-info) {}
+  &--warning:extend(.label-warning) {}
+  &--danger:extend(.label-danger) {}
+}

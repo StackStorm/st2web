@@ -1,82 +1,16 @@
+@import "layout";
+
 @import (reference) '/components/bootstrap/less/variables.less';
 @import (reference) '/components/bootstrap/less/mixins.less';
 @import (reference) '/components/bootstrap/less/utilities.less';
 
-@import (reference) '/components/bootstrap/less/labels.less';
-@import (reference) '/components/bootstrap/less/buttons.less';
 @import (reference) '/components/bootstrap/less/panels.less';
 @import (reference) '/components/bootstrap/less/tables.less';
-@import (reference) '/components/bootstrap/less/type.less';
+@import (reference) '/components/bootstrap/less/buttons.less';
 
-#panel {
-  height: 100%;
-
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  box-sizing: border-box;
-
-  padding: 10px;
-}
-
-.st2-label
-:extend(.label)
-:extend(.label-default) {
-  font-size: 85%;
-
-  &--primary:extend(.label-primary) {}
-  &--success:extend(.label-success) {}
-  &--info:extend(.label-info) {}
-  &--warning:extend(.label-warning) {}
-  &--danger:extend(.label-danger) {}
-}
-
-.st2-panel {
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  z-index: 2;
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-
-  background-color: #eee;
-
-  transition: transform 2s;
-
-  transform: translate3d(0,0,0);
-
-  &--slide {
-    transform: translate3d(-640px,0,0);
-  }
-
-  &__back-button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    // activated only when the panel is slided
-    display: none;
-
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.3);
-    }
-  }
-
-  &--slide &__back-button {
-    display: block;
-  }
-}
 
 .st2-actions {
-  #panel;
+  #st2-layout > #panel;
 
   // for .st2-panel__back-button to fill the right block
   position: relative;
@@ -129,59 +63,8 @@
 
 }
 
-.st2-summary {
-  #panel;
-
-  width: 320px;
-
-  background: #666;
-  padding: 0;
-  color: #ccc;
-
-  &__button
-  :extend(.btn)
-  :extend(.btn-primary) {
-    font-weight: 200;
-    opacity: 1;
-    font-family: Oswald;
-    text-transform: uppercase;
-
-    &--right:extend(.pull-right) {}
-  }
-
-  &__heading
-  :extend(.panel-heading)
-  :extend(.clearfix all) {
-    border-bottom: 1px solid #999;
-
-    &-title
-    :extend(.pull-left) {
-      padding: 0;
-      margin: 6px 0 0 0;
-      color: white;
-      font-size: 15px;
-      text-transform: uppercase;
-      font-weight: 200;
-      font-family: Oswald;
-    }
-  }
-
-  &__body {
-    padding: 20px;
-
-    dt
-    :extend(dt) {
-      color: white;
-    }
-    dd
-    :extend(dd) {
-      margin-bottom: 20px;
-    }
-  }
-}
-
 .st2-details {
-  #panel;
+  #st2-layout > #panel;
 
   padding: 0;
 
