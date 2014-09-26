@@ -31,7 +31,11 @@ angular.module('main')
 
     $scope.$watch('state.params.id', function (id) {
       $scope.current = id ? st2Api.actions.get({ id: id }) : null;
+      $scope.actionexecutions = st2Api.actionExecutions.list({
+        'action_id': id
+      });
     });
+
   })
 
   ;

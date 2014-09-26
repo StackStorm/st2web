@@ -335,6 +335,22 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         .respond(actionExecution);
     });
 
+    var possibleActionIds = _.reduce(actions, function (res, action) {
+      res[action.id] = [];
+      return res;
+    }, {});
+
+    var executionsByActionId = _.reduce(actionExecutions, function (res, execution) {
+      res[execution.action.id] = (res[execution.action.id] || []).concat([execution]);
+      return res;
+    }, possibleActionIds);
+
+    _.each(executionsByActionId, function (executions, id) {
+      $httpBackend
+        .whenGET('//172.168.50.50:9101/actionexecutions?action_id=' + id)
+        .respond(executions);
+    });
+
 
     var history = [
       {
