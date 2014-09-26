@@ -1,11 +1,11 @@
 <div class="st2-panel" ng-class="{'st2-panel--slide': state.includes('*.details')}">
 
   <div class="st2-actions">
-    <div class="st2-actions__heading">
-      <h2 class="st2-actions__heading-title">Category One</h2>
+    <div class="st2-panel__heading">
+      <h2 class="st2-panel__heading-title">Category One</h2>
     </div>
 
-    <table class="st2-actions__table">
+    <table class="st2-panel__table">
       <thead>
         <tr>
           <th>Machine Name</th>
@@ -16,9 +16,9 @@
       </thead>
 
       <tbody>
-        <tr ng-class-odd="'st2-actions__table-row--odd'" ng-class-even="'st2-actions__table-row--even'"
+        <tr ng-class-odd="'st2-panel__table-row--odd'" ng-class-even="'st2-panel__table-row--even'"
             ng-repeat="action in actions" ng-click="state.go('^.summary', {id: action.id})"
-            class="st2-actions__table-row">
+            class="st2-panel__table-row">
           <td>{{ action.name }}</td>
           <td>{{ action.runner_type }}</td>
           <td>{{ action.description }}</td>
