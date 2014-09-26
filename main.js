@@ -1,6 +1,22 @@
 'use strict';
 
-angular.module('main', ['ui.router', 'ngResource', 'angularMoment']);
+angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
+  .config(function ($urlRouterProvider) {
+
+    $urlRouterProvider.rule(function ($injector, $location) {
+      var path = $location.url();
+
+      // check to see if the path already has a slash where it should be
+      if (path[path.length - 1] === '/') {
+        return path.substr(0, path.length - 1);
+      }
+
+      if (path.indexOf('/?') > -1) {
+        return path.replace('/?', '?');
+      }
+    });
+
+  });
 
 angular.module('main')
   .controller('MainCtrl', function ($scope, $state) {

@@ -14,10 +14,10 @@ angular.module('main')
         url: ''
       })
       .state('actions.summary', {
-        url: '/:id'
+        url: '/{id:\\w+}'
       })
       .state('actions.details', {
-        url: '/:id/details'
+        url: '/{id:\\w+}/details'
       })
 
       ;
@@ -29,11 +29,22 @@ angular.module('main')
   .controller('st2ActionsCtrl', function ($scope, st2Api) {
     $scope.actions = st2Api.actions.list();
 
-    $scope.$watch('state.params.id', function (id) {
-      $scope.current = id ? st2Api.actions.get({ id: id }) : null;
+    function fetchOne(id) {
+      $scope.current = st2Api.actions.get({ id: id });
       $scope.actionexecutions = st2Api.actionExecutions.list({
         'action_id': id
       });
+    }
+
+    $scope.$watch('state.params.id', function (id) {
+      if (id) {
+        fetchOne(id);
+      } else {
+        $scope.actions.$promise.then(function (actions) {
+          var id = actions && actions[0] && actions[0].id;
+          fetchOne(id);
+        });
+      }
     });
 
   })
