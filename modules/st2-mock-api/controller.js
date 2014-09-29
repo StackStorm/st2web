@@ -10,18 +10,26 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'type': 'string'
         },
         'auth': {
-          'type': 'string'
+          'type': 'string',
+          'description': 'Authorization string. Whatever that means.'
         },
         'params': {
-          'type': 'string'
+          'type': 'string',
+          'description': 'I\'m really interested to see what would happens when our description gets longer than one line. What about two or even three lines? At what point this box would became so large it would start interfering with the next one?'
         },
         'method': {
           'default': 'GET',
-          'enum': ['GET', 'POST', 'PUT', 'DELETE']
+          'enum': ['GET', 'POST', 'PUT', 'DELETE'],
+          'description': 'It\'s kind of clean what should we do with enums (except the fact you need to style them a little)...'
+        },
+        'ok': {
+          'type': 'boolean',
+          'description': 'On the other hand, booleans make me think quite hard.'
         },
         'timeout': {
           'default': 60,
-          'type': 'integer'
+          'type': 'integer',
+          'description': '^^ somewhere about there, I guess.'
         }
       },
       'required_parameters': [],
