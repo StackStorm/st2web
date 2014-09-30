@@ -615,4 +615,10 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
 
     $httpBackend.whenGET(/\.html$/).passThrough();
 
+    // Pass through real API
+    var storedHost = localStorage.getItem('st2Host');
+    if (storedHost) {
+      $httpBackend.whenGET(new RegExp('^' + storedHost)).passThrough();
+    }
+
   });
