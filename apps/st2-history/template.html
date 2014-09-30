@@ -7,11 +7,33 @@
 
           <div class="st2-details__form-group">
             <ui-select ng-model="filter.selected">
-              <ui-select-match placeholder="Select a number">
-                {{$select.selected}}
+              <ui-select-match placeholder="Action">
+                <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
               </ui-select-match>
-              <ui-select-choices repeat="item in [1,2,3]">
-                {{ item }}
+              <ui-select-choices repeat="action in actions">
+                {{ action.name }}
+              </ui-select-choices>
+            </ui-select>
+          </div>
+
+          <div class="st2-details__form-group">
+            <ui-select ng-model="filter.selected">
+              <ui-select-match placeholder="Trigger">
+                <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
+              </ui-select-match>
+              <ui-select-choices repeat="trigger in triggers">
+                {{ trigger.name }}
+              </ui-select-choices>
+            </ui-select>
+          </div>
+
+          <div class="st2-details__form-group">
+            <ui-select ng-model="filter.selected">
+              <ui-select-match placeholder="Rule">
+                <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
+              </ui-select-match>
+              <ui-select-choices repeat="rule in rules">
+                {{ rule.name }}
               </ui-select-choices>
             </ui-select>
           </div>

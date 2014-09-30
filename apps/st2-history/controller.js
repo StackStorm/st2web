@@ -30,6 +30,10 @@ angular.module('main')
   .controller('st2HistoryCtrl', function ($scope, st2Api) {
     $scope.history = st2Api.history.list();
 
+    $scope.actions = st2Api.actions.list();
+    $scope.rules = st2Api.rules.list();
+    $scope.triggers = st2Api.triggers.list();
+
     function fetchOne(id) {
       $scope.current = st2Api.history.get({ id: id });
     }
