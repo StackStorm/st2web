@@ -1,0 +1,40 @@
+@import (inline) 'components/angular-ui-select/dist/select.css';
+
+@import (reference) '/components/bootstrap/less/variables.less';
+@import (reference) '/components/bootstrap/less/mixins.less';
+
+// TODO: refactor
+@import '/components/bootstrap/less/forms.less';
+@import '/components/bootstrap/less/dropdowns.less';
+
+.ui-select-bootstrap {
+  width: 100px;
+  float: left;
+  margin-right: 10px;
+
+  .ui-select-match {
+    padding: 0;
+  }
+
+  > .ui-select-choices {
+    width: auto;
+  }
+
+  .ui-select-choices-row > a {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .form-control {
+    padding: 0 0 0 10px;
+    box-sizing: border-box;
+  }
+}
+
+.st2-forms {
+  &__matcher {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 20px 0 10px;
+  }
+}
