@@ -113,6 +113,151 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       $httpBackend.whenGET('//172.168.50.50:9101/rules/' + rule.id).respond(rule);
     });
 
+    var runnertypes = [
+      {
+        'description': 'A runner for launching linear action chains.',
+        'enabled': true,
+        'id': '542505940640fd0d79b70391',
+        'name': 'action-chain',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.actionchainrunner',
+        'runner_parameters': {}
+      },
+      {
+        'description': 'A HTTP client for running HTTP actions.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038f',
+        'name': 'http-runner',
+        'required_parameters': [
+          'url'
+        ],
+        'runner_module': 'st2actions.runners.httprunner',
+        'runner_parameters': {
+          'cookies': {
+            'description': 'TODO: Description for cookies.',
+            'type': 'string'
+          },
+          'headers': {
+            'description': 'HTTP headers for the request.',
+            'type': 'object'
+          },
+          'proxy': {
+            'description': 'TODO: Description for proxy.',
+            'type': 'string'
+          },
+          'redirects': {
+            'description': 'TODO: Description for redirects.',
+            'type': 'string'
+          },
+          'url': {
+            'description': 'URL to the HTTP endpoint.',
+            'type': 'string'
+          }
+        }
+      },
+      {
+        'description': 'A runner to execute local actions as a fixed user.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038d',
+        'name': 'run-local',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.fabricrunner',
+        'runner_parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        }
+      },
+      {
+        'description': 'A remote execution runner that executes actions as a fixed system user.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038e',
+        'name': 'run-remote',
+        'required_parameters': [
+          'hosts'
+        ],
+        'runner_module': 'st2actions.runners.fabricrunner',
+        'runner_parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'description': 'The remote command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        }
+      },
+      {
+        'description': 'A runner for launching workflow actions.',
+        'enabled': true,
+        'id': '542505930640fd0d79b70390',
+        'name': 'workflow',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.mistral',
+        'runner_parameters': {
+          'context': {
+            'default': {},
+            'description': 'Context for the startup task.',
+            'type': 'object'
+          },
+          'task': {
+            'description': 'The startup task in the workbook to execute.',
+            'type': 'string'
+          },
+          'workbook': {
+            'description': 'The name of the workbook.',
+            'type': 'string'
+          }
+        }
+      }
+    ];
+
+    _.each(runnertypes, function (runnertype) {
+      $httpBackend
+        .whenGET('//172.168.50.50:9101/runnertypes?name=' + runnertype.name)
+        .respond(runnertype);
+    });
 
     var triggers = [{
       'type': 'st2.webhook',

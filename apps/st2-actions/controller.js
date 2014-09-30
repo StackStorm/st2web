@@ -34,6 +34,14 @@ angular.module('main')
       $scope.actionexecutions = st2Api.actionExecutions.list({
         'action_id': id
       });
+
+      $scope.current.$promise.then(function (action) {
+        st2Api.runnertypes
+          .get({ name: action['runner_type'] })
+          .$promise.then(function (runnerType) {
+            _.extend($scope.current.parameters, runnerType['runner_parameters']);
+          });
+      });
     }
 
     $scope.$watch('state.params.id', function (id) {
