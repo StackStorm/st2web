@@ -38,6 +38,17 @@ While `gulp` runs the longest chain of tasks including style compiling, spining 
 
 You can see the whole list of tasks in `gulpfile.js`.
 
+Using real data
+---------------
+
+To make development go faster, our UI uses mock data out the box. To make it work with a real API, open your browser console and execute the line:
+
+    localStorage.setItem('st2Host', '//st2stage001.stackstorm.net:9101')
+
+It would make `//st2stage001.stackstorm.net:9101` an st2 host (as internal persistent variable) for this particular browser. To get back to mock data, just remove the persistent record by issuing the command:
+
+    localStorage.removeItem('st2Host')
+
 Testing
 -------
 
