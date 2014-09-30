@@ -6,3 +6,17 @@
 // TODO: refactor
 @import '/components/bootstrap/less/forms.less';
 @import '/components/bootstrap/less/dropdowns.less';
+
+.ui-select-bootstrap {
+  width: 250px;
+  float: left;
+  .ui-select-match {
+    padding: 0;
+  }
+  .form-control {
+    padding: 0 0 0 10px;
+    &:focus {
+      width: 240px;
+    }
+  }
+}
