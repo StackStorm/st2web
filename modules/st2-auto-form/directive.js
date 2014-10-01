@@ -33,4 +33,18 @@ angular.module('main')
       }
     };
 
+  })
+
+  .filter('filterMutable', function () {
+    return function (spec) {
+      var obj = _.clone(spec);
+
+      _.each(obj, function (field, key) {
+        if (field.immutable) {
+          delete obj[key];
+        }
+      });
+
+      return obj;
+    };
   });
