@@ -71,7 +71,7 @@
           <td>{{ record.action.name }}</td>
           <td>{{ record.action_execution.start_timestamp }}</td>
           <td>
-            <span class="st2-label st2-label--success">{{ record.action_execution.status }}</span>
+            <span class="st2-label" status="record.action_execution.status"></span>
           </td>
         </tr>
       </tbody>
@@ -100,7 +100,7 @@
 
           <dt>Execution Status</dt>
           <dd>
-            <span class="st2-label st2-label--warning">{{ current.action_execution.status }}</span>
+            <span class="st2-label" status="current.action_execution.status"></span>
           </dd>
         </dl>
       </div>

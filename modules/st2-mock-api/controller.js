@@ -65,10 +65,21 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       'id': '540ebdfa0640fd7065e903d2',
       'description': 'This sends an email'
     }, {
-      'runner_type': 'run-local',
+      'runner_type': 'stormbot-runner',
       'name': 'stormbot_say',
-      'parameters': {},
-      'required_parameters': [],
+      'parameters': {
+        'channel': {
+          'type': 'string',
+          'description': 'Channel to say stuff on.',
+          'position': 0
+        },
+        'message': {
+          'type': 'string',
+          'description': 'Message to say.',
+          'position': 1
+        }
+      },
+      'required_parameters': ['channel', 'message'],
       'enabled': true,
       'entry_point': 'stormbot_say/stormbot_say',
       'id': '540ebdfa0640fd7065e903d0',
@@ -113,6 +124,194 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       $httpBackend.whenGET('//172.168.50.50:9101/rules/' + rule.id).respond(rule);
     });
 
+    var runnertypes = [
+      {
+        'description': 'A runner for launching linear action chains.',
+        'enabled': true,
+        'id': '542505940640fd0d79b70391',
+        'name': 'action-chain',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.actionchainrunner',
+        'runner_parameters': {}
+      },
+      {
+        'description': 'A HTTP client for running HTTP actions.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038f',
+        'name': 'http-runner',
+        'required_parameters': [
+          'url'
+        ],
+        'runner_module': 'st2actions.runners.httprunner',
+        'runner_parameters': {
+          'cookies': {
+            'description': 'TODO: Description for cookies.',
+            'type': 'string'
+          },
+          'headers': {
+            'description': 'HTTP headers for the request.',
+            'type': 'object'
+          },
+          'proxy': {
+            'description': 'TODO: Description for proxy.',
+            'type': 'string'
+          },
+          'redirects': {
+            'description': 'TODO: Description for redirects.',
+            'type': 'string'
+          },
+          'url': {
+            'description': 'URL to the HTTP endpoint.',
+            'type': 'string'
+          }
+        }
+      },
+      {
+        'description': 'A runner to execute local actions as a fixed user.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038d',
+        'name': 'run-local',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.fabricrunner',
+        'runner_parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        }
+      },
+      {
+        'description': 'A runner to execute local actions as a fixed user.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038d',
+        'name': 'stormbot-runner',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.fabricrunner',
+        'runner_parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string',
+            'immutable': true
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string',
+            'immutable': true
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string',
+            'immutable': true
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean',
+            'immutable': true
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean',
+            'immutable': true
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string',
+            'immutable': true
+          }
+        }
+      },
+      {
+        'description': 'A remote execution runner that executes actions as a fixed system user.',
+        'enabled': true,
+        'id': '542505930640fd0d79b7038e',
+        'name': 'run-remote',
+        'required_parameters': [
+          'hosts'
+        ],
+        'runner_module': 'st2actions.runners.fabricrunner',
+        'runner_parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'description': 'The remote command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        }
+      },
+      {
+        'description': 'A runner for launching workflow actions.',
+        'enabled': true,
+        'id': '542505930640fd0d79b70390',
+        'name': 'workflow',
+        'required_parameters': [],
+        'runner_module': 'st2actions.runners.mistral',
+        'runner_parameters': {
+          'context': {
+            'default': {},
+            'description': 'Context for the startup task.',
+            'type': 'object'
+          },
+          'task': {
+            'description': 'The startup task in the workbook to execute.',
+            'type': 'string'
+          },
+          'workbook': {
+            'description': 'The name of the workbook.',
+            'type': 'string'
+          }
+        }
+      }
+    ];
+
+    _.each(runnertypes, function (runnertype) {
+      $httpBackend
+        .whenGET('//172.168.50.50:9101/runnertypes?name=' + runnertype.name)
+        .respond(runnertype);
+    });
 
     var triggers = [{
       'type': 'st2.webhook',
@@ -133,7 +332,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
     var triggerInstances = [
       {
         'id': '541008ae0640fd68d6da360e',
-        'occurrence_time': '2014-09-10T08:15:42.724000',
+        'occurrence_time': '2014-09-10T08:15:42.724Z',
         'payload': {
           'name': 'Joe'
         },
@@ -141,7 +340,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       },
       {
         'id': '541009710640fd69ab95fce2',
-        'occurrence_time': '2014-09-10T08:18:57.564000',
+        'occurrence_time': '2014-09-10T08:18:57.564Z',
         'payload': {
           'name': 'Joe'
         },
@@ -149,7 +348,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       },
       {
         'id': '541009a90640fd6a30ddc97f',
-        'occurrence_time': '2014-09-10T08:19:53.227000',
+        'occurrence_time': '2014-09-10T08:19:53.227Z',
         'payload': {
           'name': 'Joe'
         },
@@ -157,7 +356,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       },
       {
         'id': '54100a170640fd6a84f837ec',
-        'occurrence_time': '2014-09-10T08:21:43.995000',
+        'occurrence_time': '2014-09-10T08:21:43.995Z',
         'payload': {
           'name': 'Joe'
         },
@@ -190,7 +389,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'sudo': false
         },
         'result': {},
-        'start_timestamp': '2014-09-09 08:47:29.516000',
+        'start_timestamp': '2014-09-09T08:47:29.516Z',
         'status': 'error'
       },
       {
@@ -208,7 +407,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'sudo': false
         },
         'result': {},
-        'start_timestamp': '2014-09-09 08:51:46.178000',
+        'start_timestamp': '2014-09-09T08:51:46.178Z',
         'status': 'error'
       },
       {
@@ -226,7 +425,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'sudo': false
         },
         'result': {},
-        'start_timestamp': '2014-09-09 08:57:00.160000',
+        'start_timestamp': '2014-09-09T08:57:00.160Z',
         'status': 'error'
       },
       {
@@ -252,7 +451,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'succeeded': true
           }
         },
-        'start_timestamp': '2014-09-09 08:58:05.341000',
+        'start_timestamp': '2014-09-09T08:58:05.341Z',
         'status': 'complete'
       },
       {
@@ -278,7 +477,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'succeeded': true
           }
         },
-        'start_timestamp': '2014-09-10 08:15:42.823000',
+        'start_timestamp': '2014-09-10T08:15:42.823Z',
         'status': 'complete'
       },
       {
@@ -304,7 +503,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'succeeded': true
           }
         },
-        'start_timestamp': '2014-09-10 08:18:57.652000',
+        'start_timestamp': '2014-09-10T08:18:57.652Z',
         'status': 'complete'
       },
       {
@@ -330,7 +529,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'succeeded': true
           }
         },
-        'start_timestamp': '2014-09-10 08:21:44.076000',
+        'start_timestamp': '2014-09-10T08:21:44.076Z',
         'status': 'complete'
       }
     ];
@@ -343,21 +542,59 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         .respond(actionExecution);
     });
 
-    var possibleActionIds = _.reduce(actions, function (res, action) {
-      res[action.id] = [];
-      return res;
-    }, {});
+    $httpBackend
+      .whenPOST('//172.168.50.50:9101/actionexecutions')
+      .respond(function(method, url, data) {
+        var execution = angular.fromJson(data);
 
-    var executionsByActionId = _.reduce(actionExecutions, function (res, execution) {
-      res[execution.action.id] = (res[execution.action.id] || []).concat([execution]);
-      return res;
-    }, possibleActionIds);
+        var response = {
+          id: 'DEADBEEFDEADBEEFDEADBEEF',
+          action: {
+            name: execution.action.name,
+            id: _.find(actions, function (action) {
+              return action.name === execution.action.name;
+            }).id
+          },
+          callback: {},
+          context: {
+            'user': null
+          },
+          parameters: execution.parameters,
+          result: {},
+          'start_timestamp': new Date().toISOString(),
+          status: 'scheduled'
+        };
 
-    _.each(executionsByActionId, function (executions, id) {
-      $httpBackend
-        .whenGET('//172.168.50.50:9101/actionexecutions?action_id=' + id)
-        .respond(executions);
-    });
+        actionExecutions.push(response);
+
+        return [200, response, {}];
+      });
+
+    // var possibleActionIds = _.reduce(actions, function (res, action) {
+    //   res[action.id] = [];
+    //   return res;
+    // }, {});
+    //
+    // var executionsByActionId = _.reduce(actionExecutions, function (res, execution) {
+    //   res[execution.action.id] = (res[execution.action.id] || []).concat([execution]);
+    //   return res;
+    // }, possibleActionIds);
+    //
+    // _.each(executionsByActionId, function (executions, id) {
+    //   $httpBackend
+    //     .whenGET('//172.168.50.50:9101/actionexecutions?action_id=' + id)
+    //     .respond(executions);
+    // });
+
+    $httpBackend
+      .whenGET(/^\/\/172\.168\.50\.50:9101\/actionexecutions\?action_id=/)
+      .respond(function (method, url) {
+        var id = url.match(/action_id=(\w+)/)[1];
+
+        return [200, _.filter(actionExecutions, function (execution) {
+          return execution.action.id === id;
+        }), {}];
+      });
 
 
     var history = [
@@ -395,7 +632,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
               'succeeded': true
             }
           },
-          'start_timestamp': '2014-09-10 08:15:42.823000',
+          'start_timestamp': '2014-09-10T08:15:42.823Z',
           'status': 'complete'
         },
         'id': '541008ae0640fd68d6da360f',
@@ -433,7 +670,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         },
         'trigger_instance': {
           'id': '541008ae0640fd68d6da360e',
-          'occurrence_time': '2014-09-10T08:15:42.724000',
+          'occurrence_time': '2014-09-10T08:15:42.724Z',
           'payload': {
             'name': 'Joe'
           },
@@ -473,7 +710,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
               'succeeded': true
             }
           },
-          'start_timestamp': '2014-09-10 08:18:57.652000',
+          'start_timestamp': '2014-09-10T08:18:57.652Z',
           'status': 'complete'
         },
         'id': '541009710640fd69ab95fce3',
@@ -511,7 +748,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         },
         'trigger_instance': {
           'id': '541009710640fd69ab95fce2',
-          'occurrence_time': '2014-09-10T08:18:57.564000',
+          'occurrence_time': '2014-09-10T08:18:57.564Z',
           'payload': {
             'name': 'Joe'
           },
@@ -551,7 +788,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
               'succeeded': true
             }
           },
-          'start_timestamp': '2014-09-10 08:21:44.076000',
+          'start_timestamp': '2014-09-10T08:21:44.076Z',
           'status': 'complete'
         },
         'id': '54100a180640fd6a84f837ed',
@@ -589,7 +826,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         },
         'trigger_instance': {
           'id': '54100a170640fd6a84f837ec',
-          'occurrence_time': '2014-09-10T08:21:43.995000',
+          'occurrence_time': '2014-09-10T08:21:43.995Z',
           'payload': {
             'name': 'Joe'
           },
@@ -606,12 +843,6 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         .respond(record);
     });
 
-    // adds a new phone to the phones array
-    // $httpBackend.whenPOST('/phones').respond(function(method, url, data) {
-    //   var phone = angular.fromJson(data);
-    //   phones.push(phone);
-    //   return [200, phone, {}];
-    // });
 
     $httpBackend.whenGET(/\.html$/).passThrough();
 

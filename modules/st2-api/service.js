@@ -31,6 +31,7 @@ angular.module('main')
 
     scope.rules = buildResource({ resource: 'rules' });
     scope.actions = buildResource({ resource: 'actions' });
+    scope.runnertypes = buildResource({ resource: 'runnertypes' });
     scope.triggers = buildResource({ resource: 'triggers' });
     scope.triggerInstances = buildResource({ resource: 'triggerinstances' });
     scope.actionExecutions = buildResource({ resource: 'actionexecutions' });

@@ -36,7 +36,9 @@
       </tbody>
     </table>
 
-    <div class="st2-panel__back-button" ng-click="state.go('^.summary', {id: current.id})"></div>
+    <div class="st2-panel__back-button"
+      ng-click="state.go('^.summary', {id: current.action.id})">
+    </div>
   </div>
 
   <div class="st2-summary">
@@ -44,7 +46,7 @@
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
         <button class="st2-summary__button st2-summary__button--right"
-            ng-click="state.go('^.details', {id: current.id})" title="Details">
+            ng-click="state.go('^.details', {id: current.action.id})" title="Details">
           Details
         </button>
       </div>
@@ -52,13 +54,20 @@
       <div class="st2-summary__body">
         <dl>
           <dt>Name</dt>
-          <dd>{{ current.name }}</dd>
+          <dd>{{ current.action.name }}</dd>
 
           <dt>Description</dt>
-          <dd>{{ current.description }}</dd>
+          <dd>{{ current.action.description }}</dd>
 
           <dt>Latest Execution Status</dt>
-          <dd><span class="st2-label st2-label--warning">In Progress</span></dd>
+          <dd>
+            <span class="st2-label" status="current.lastStatus"
+              ng-if="current.actionexecutions.length">
+            </span>
+            <span ng-if="!current.actionexecutions.length">
+              This action was never executed before
+            </span>
+          </dd>
         </dl>
       </div>
     </div>
@@ -72,11 +81,16 @@
       <h2 class="st2-details__panel-title">Parameters</h2>
     </div>
     <div class="st2-details__panel-body">
-      <form role="form" class="st2-details__form" ng-switch="_.isEmpty(current.parameters)">
+      <form role="form" class="st2-details__form" ng-switch="_.isEmpty(current.action.parameters)"
+        ng-submit="runAction(current.action.name, current.payload)">
         <div class="st2-details__panel-message" ng-switch-when="true">
           Action has no parameters
         </div>
-        <div class="st2-auto-form" spec="current.parameters" ng-switch-default></div>
+        <div class="st2-auto-form"
+          spec="current.action.parameters"
+          result="current.payload"
+          ng-switch-default>
+        </div>
         <button type="submit" class="st2-details__button">Run</button>
       </form>
     </div>
@@ -96,9 +110,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="execution in actionexecutions" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
-            <td>{{ execution.start_timestamp }}</td>
-            <td>{{ execution.status }}</td>
+          <tr ng-repeat="execution in current.actionexecutions | orderBy:'start_timestamp':true" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
+            <td>{{ execution.start_timestamp | date:'medium' }}</td>
+            <td><div class="st2-label" status="execution.status"></div></td>
             <td>
               <a href="#" class="st2-details__button">Re-run</a>
             </td>

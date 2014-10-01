@@ -27,12 +27,34 @@ angular.module('main')
 angular.module('main')
 
   .controller('st2ActionsCtrl', function ($scope, st2Api) {
+
+    // Fetching the data
     $scope.actions = st2Api.actions.list();
 
+    function fetchExecutions(actionId) {
+      var executions = st2Api.actionExecutions.list({
+        'action_id': actionId
+      });
+
+      executions.$promise.then(function (executions) {
+        $scope.current.lastStatus = executions.length && _.last(executions).status;
+      });
+
+      return executions;
+    }
+
     function fetchOne(id) {
-      $scope.current = st2Api.actions.get({ id: id });
-      $scope.actionexecutions = st2Api.actionExecutions.list({
-        'action_id': id
+
+      $scope.current = {};
+      $scope.current.payload = {};
+
+      $scope.current.action = st2Api.actions.get({ id: id });
+      $scope.current.actionexecutions = fetchExecutions(id);
+
+      $scope.current.action.$promise.then(function (action) {
+        return st2Api.runnertypes.get({ name: action['runner_type'] }).$promise;
+      }).then(function (runnerType) {
+        _.extend($scope.current.action.parameters, runnerType['runner_parameters']);
       });
     }
 
@@ -46,6 +68,18 @@ angular.module('main')
         });
       }
     });
+
+    // Running an action
+    $scope.runAction = function (actionName, payload) {
+      st2Api.actionExecutions.create({
+        action: {
+          name: actionName
+        },
+        parameters: payload
+      }).$promise.then(function (execution) {
+        $scope.current.actionexecutions = fetchExecutions(execution.action.id);
+      });
+    };
 
   })
 
