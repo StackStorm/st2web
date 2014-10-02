@@ -45,9 +45,15 @@
     <div>
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
-        <button class="st2-summary__button st2-summary__button--right"
-            ng-click="state.go('^.details', {id: current.action.id})" title="Details">
+        <button class="st2-summary__button st2-summary__button--right" title="Details"
+            ng-click="state.go('^.details', {id: current.action.id})"
+            ng-if="!state.includes('*.details')">
           Details
+        </button>
+        <button class="st2-summary__button st2-summary__button--right" title="Details"
+            ng-click="state.go('^.summary', {id: current.action.id})"
+            ng-if="state.includes('*.details')">
+          &lt;- Back
         </button>
       </div>
 

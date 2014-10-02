@@ -28,7 +28,16 @@ angular.module('main')
 
   // List history records
   .controller('st2HistoryCtrl', function ($scope, st2Api) {
-    $scope.history = st2Api.history.list();
+    var historyList = st2Api.history.list();
+
+    $scope.history = historyList.$promise.then(function (records) {
+      // Group all the records by periods of 24 hour
+      var period = 24 * 60 * 60 * 1000;
+      return _.groupBy(records, function (record) {
+        var time = record.action_execution.start_timestamp;
+        return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
+      });
+    });
 
     $scope.actions = st2Api.actions.list();
     $scope.rules = st2Api.rules.list();
@@ -42,7 +51,7 @@ angular.module('main')
       if (id) {
         fetchOne(id);
       } else {
-        $scope.history.$promise.then(function (history) {
+        historyList.$promise.then(function (history) {
           var id = history && history[0] && history[0].id;
           fetchOne(id);
         });
