@@ -51,6 +51,7 @@
       <table class="st2-panel__table">
         <thead>
           <tr>
+            <th></th>
             <th>Started At</th>
             <th>Action Name</th>
             <th>Rule Name</th>
@@ -62,8 +63,13 @@
         <tbody>
           <tr ng-class-odd="'st2-panel__table-row--odd'"
               ng-class-even="'st2-panel__table-row--even'"
-              ng-repeat="record in records" ng-click="state.go('^.summary', {id: record.id})"
-              class="st2-panel__table-row">
+              ng-repeat-start="record in records"
+              ng-click="state.go('^.summary', {id: record.id})"
+              class="st2-panel__table-row"
+              tabindex="-1">
+            <td>
+              <span ng-if="isExpandable(record)">&gt;</span>
+            </td>
             <td>{{ record.action_execution.start_timestamp | date:'mediumTime' }}</td>
             <td>{{ record.action.name }}</td>
             <td>{{ record.rule.name }}</td>
@@ -72,11 +78,46 @@
               <span class="st2-label" status="record.action_execution.status"></span>
             </td>
           </tr>
+          <tr>
+            <td colspan="100%, sort off" ng-if="isExpandable(record) && isCurrent(record)">
+              <table class="st2-panel__table">
+                <thead>
+                  <tr>
+                    <th>Started At</th>
+                    <th>Action Name</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tr ng-class-odd="'st2-panel__table-row--odd'"
+                    ng-class-even="'st2-panel__table-row--even'"
+                    ng-repeat="record in current.children | unwrap"
+                    ng-click="state.go('^.summary', {id: record.id})"
+                    class="st2-panel__table-row"
+                    tabindex="-1">
+                  <td>{{ record.action_execution.start_timestamp | date:'mediumTime' }}</td>
+                  <td>{{ record.action.name }}</td>
+                  <td>
+                    <span class="st2-label" status="record.action_execution.status"></span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr ng-repeat-end ng-if="isExpandable(record) && isCurrent(record) && !$last">
+            <th></th>
+            <th>Started At</th>
+            <th>Action Name</th>
+            <th>Rule Name</th>
+            <th>Trigger Type</th>
+            <th>Status</th>
+          </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="st2-panel__back-button" ng-click="state.go('^.summary', {id: current.id})"></div>
+    <div class="st2-panel__back-button"
+      ng-click="state.go('^.summary', {id: current.record.id})"></div>
   </div>
 
   <div class="st2-summary">
@@ -84,12 +125,12 @@
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="state.go('^.details', {id: current.id})"
+            ng-click="state.go('^.details', {id: current.record.id})"
             ng-if="!state.includes('*.details')">
           Details
         </button>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="state.go('^.summary', {id: current.id})"
+            ng-click="state.go('^.summary', {id: current.record.id})"
             ng-if="state.includes('*.details')">
           &lt;- Back
         </button>
@@ -98,15 +139,18 @@
       <div class="st2-summary__body">
         <dl>
           <dt>Rule Name</dt>
-          <dd>{{ current.rule.name }}</dd>
+          <dd>{{ current.record.rule.name }}</dd>
 
           <dt>Rule Description</dt>
-          <dd>{{ current.rule.description }}</dd>
+          <dd>{{ current.record.rule.description }}</dd>
 
           <dt>Execution Status</dt>
           <dd>
-            <span class="st2-label" status="current.action_execution.status"></span>
+            <span class="st2-label" status="current.record.action_execution.status"></span>
           </dd>
+
+          <dt>Runner</dt>
+          <dd>{{ current.record.action.runner_type }}</dd>
         </dl>
       </div>
     </div>

@@ -71,18 +71,20 @@
     > thead > tr > th {
       border-bottom: none;
     }
-    > tbody > tr:hover {
-      > td,
-      > th {
+  }
+
+  &__table-row {
+    user-select: none;
+
+    &[tabindex] {
+      cursor: pointer;
+
+      // should not be `> td`, but once again, we need it to replace bootstrap default
+      &:hover > td {
         background-color: #428bca;
         color: white;
       }
     }
-  }
-
-  &__table-row {
-    cursor: pointer;
-    user-select: none;
 
     &--odd {
       background-color: #E9E9EC;
