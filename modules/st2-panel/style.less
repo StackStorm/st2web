@@ -62,35 +62,4 @@
       font-family: Oswald;
     }
   }
-
-  &__table
-  :extend(table all)
-  :extend(.table all)
-  :extend(.table-hover all) {
-    th:extend(th all) {}
-    > thead > tr > th {
-      border-bottom: none;
-    }
-  }
-
-  &__table-row {
-    user-select: none;
-
-    &[tabindex] {
-      cursor: pointer;
-
-      // should not be `> td`, but once again, we need it to replace bootstrap default
-      &:hover > td {
-        background-color: #428bca;
-        color: white;
-      }
-    }
-
-    &--odd {
-      background-color: #E9E9EC;
-    }
-    &--even {
-      background-color: transparent;
-    }
-  }
 }

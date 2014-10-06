@@ -1,4 +1,4 @@
-<div class="st2-panel" ng-class="{'st2-panel--slide': state.includes('*.details')}">
+<div class="st2-panel" ng-class="{'st2-panel--slide': $root.state.includes('*.details')}">
 
   <div class="st2-history">
     <nav class="navbar navbar-default" role="navigation">
@@ -48,57 +48,59 @@
         <h2 class="st2-panel__heading-title">{{ period | date:'fullDate'}}</h2>
       </div>
 
-      <table class="st2-panel__table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Started At</th>
-            <th>Action Name</th>
-            <th>Rule Name</th>
-            <th>Trigger Type</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      <div class="st2-flex-table">
+        <div class="st2-flex-table__header">
+          <div class="st2-flex-table__column st2-history__column-utility"></div>
+          <div class="st2-flex-table__column st2-history__column-time">Started At</div>
+          <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
+          <div class="st2-flex-table__column st2-history__column-rule">Rule Name</div>
+          <div class="st2-flex-table__column st2-history__column-trigger">Trigger Type</div>
+          <div class="st2-flex-table__column st2-history__column-status">Status</div>
+        </div>
 
-        <tbody>
-          <tr ng-class-odd="'st2-panel__table-row--odd'"
-              ng-class-even="'st2-panel__table-row--even'"
-              ng-repeat-start="record in records"
-              ng-click="state.go('^.summary', {id: record.id})"
-              class="st2-panel__table-row"
-              tabindex="-1">
-            <td>
-              <span ng-if="isExpandable(record)">&gt;</span>
-            </td>
-            <td>{{ record.action_execution.start_timestamp | date:'mediumTime' }}</td>
-            <td>{{ record.action.name }}</td>
-            <td>{{ record.rule.name }}</td>
-            <td>{{ record.trigger.type }}</td>
-            <td>
-              <span class="st2-label" status="record.action_execution.status"></span>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="100%, sort off"
-                class="st2-table-child"
-                ng-if="isExpandable(record) && isCurrent(record)"
-                children="current.children | unwrap">
-            </td>
-          </tr>
-          <tr ng-repeat-end ng-if="isExpandable(record) && isCurrent(record) && !$last">
-            <th></th>
-            <th>Started At</th>
-            <th>Action Name</th>
-            <th>Rule Name</th>
-            <th>Trigger Type</th>
-            <th>Status</th>
-          </tr>
-        </tbody>
-      </table>
+        <div class="st2-flex-table__row"
+            ng-class-odd="'st2-flex-table__row--odd'"
+            ng-class-even="'st2-flex-table__row--even'"
+            ng-repeat-start="record in records"
+            ng-click="$root.state.go('^.summary', {id: record.id})"
+            tabindex="-1">
+          <div class="st2-flex-table__column st2-history__column-utility"></div>
+          <div class="st2-flex-table__column st2-history__column-time">
+            {{ record.action_execution.start_timestamp | date:'mediumTime' }}
+          </div>
+          <div class="st2-flex-table__column st2-history__column-action">
+            {{ record.action.name }}
+          </div>
+          <div class="st2-flex-table__column st2-history__column-rule">
+            {{ record.rule.name }}
+          </div>
+          <div class="st2-flex-table__column st2-history__column-trigger">
+            {{ record.trigger.type }}
+          </div>
+          <div class="st2-flex-table__column st2-history__column-status">
+            <span class="st2-label" status="record.action_execution.status"></span>
+          </div>
+        </div>
+        <div class="st2-history-child"
+            children="current.children | unwrap"
+            ng-if="isExpandable(record) && isCurrent(record)">
+        </div>
+        <div ng-repeat-end
+            class="st2-flex-table__header"
+            ng-if="isExpandable(record) && isCurrent(record) && !$last">
+          <div class="st2-flex-table__column st2-history__column-utility"></div>
+          <div class="st2-flex-table__column st2-history__column-time">Started At</div>
+          <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
+          <div class="st2-flex-table__column st2-history__column-rule">Rule Name</div>
+          <div class="st2-flex-table__column st2-history__column-trigger">Trigger Type</div>
+          <div class="st2-flex-table__column st2-history__column-status">Status</div>
+        </div>
+
+      </div>
     </div>
 
     <div class="st2-panel__back-button"
-      ng-click="state.go('^.summary', {id: current.record.id})"></div>
+      ng-click="$root.state.go('^.summary', {id: current.record.id})"></div>
   </div>
 
   <div class="st2-summary">
@@ -106,13 +108,13 @@
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="state.go('^.details', {id: current.record.id})"
-            ng-if="!state.includes('*.details')">
+            ng-click="$root.state.go('^.details', {id: current.record.id})"
+            ng-if="!$root.state.includes('*.details')">
           Details
         </button>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="state.go('^.summary', {id: current.record.id})"
-            ng-if="state.includes('*.details')">
+            ng-click="$root.state.go('^.summary', {id: current.record.id})"
+            ng-if="$root.state.includes('*.details')">
           &lt;- Back
         </button>
       </div>
