@@ -80,11 +80,10 @@ angular.module('main')
     };
 
     $scope.isCurrent = function (record) {
-      if (record.parent) {
-        return true;
+      if (record) {
+        var current = $scope.current.record;
+        return record.id === current.id || record.id === current.parent;
       }
-
-      return record && record.id === $scope.current.record.id;
     };
   })
 

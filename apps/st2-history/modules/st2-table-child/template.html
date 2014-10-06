@@ -1,0 +1,22 @@
+<table class="st2-panel__table">
+  <thead>
+    <tr>
+      <th>Started At</th>
+      <th>Action Name</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tr ng-class-odd="'st2-panel__table-row--odd'"
+      ng-class-even="'st2-panel__table-row--even'"
+      ng-repeat="record in children"
+      ng-click="$root.state.go('^.summary', {id: record.id})"
+      class="st2-panel__table-row"
+      tabindex="-1">
+    <td>{{ record.action_execution.start_timestamp | date:'mediumTime' }}</td>
+    <td>{{ record.action.name }}</td>
+    <td>
+      <span class="st2-label" status="record.action_execution.status"></span>
+    </td>
+  </tr>
+</table>
