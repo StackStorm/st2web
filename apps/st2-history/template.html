@@ -64,7 +64,11 @@
             ng-repeat-start="record in records"
             ng-click="$root.state.go('^.summary', {id: record.id})"
             tabindex="-1">
-          <div class="st2-flex-table__column st2-history__column-utility"></div>
+          <div class="st2-flex-table__column st2-history__column-utility">
+            <i ng-class="isCurrent(record) && 'st2-icon__expanded' || 'st2-icon__contracted'"
+                ng-if="isExpandable(record)">
+            </i>
+          </div>
           <div class="st2-flex-table__column st2-history__column-time">
             {{ record.action_execution.start_timestamp | date:'mediumTime' }}
           </div>
