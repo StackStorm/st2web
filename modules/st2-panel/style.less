@@ -62,33 +62,4 @@
       font-family: Oswald;
     }
   }
-
-  &__table
-  :extend(table all)
-  :extend(.table all)
-  :extend(.table-hover all) {
-    th:extend(th all) {}
-    > thead > tr > th {
-      border-bottom: none;
-    }
-    > tbody > tr:hover {
-      > td,
-      > th {
-        background-color: #428bca;
-        color: white;
-      }
-    }
-  }
-
-  &__table-row {
-    cursor: pointer;
-    user-select: none;
-
-    &--odd {
-      background-color: #E9E9EC;
-    }
-    &--even {
-      background-color: transparent;
-    }
-  }
 }

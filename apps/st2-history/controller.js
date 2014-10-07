@@ -43,8 +43,18 @@ angular.module('main')
     $scope.rules = st2Api.rules.list();
     $scope.triggers = st2Api.triggers.list();
 
+    $scope.current = {};
+
     function fetchOne(id) {
-      $scope.current = st2Api.history.get({ id: id });
+      $scope.current.record = st2Api.history.get({ id: id });
+
+      $scope.current.record
+        .$promise.then(function (record) {
+          if ($scope.isExpandable && !record.parent) {
+            $scope.current.children = st2Api.history.list({ parent: record.id });
+          }
+        });
+
     }
 
     $scope.$watch('state.params.id', function (id) {
@@ -57,6 +67,24 @@ angular.module('main')
         });
       }
     });
+
+
+    // helpers
+    $scope.isExpandable = function (record) {
+      if (record.parent) {
+        return true;
+      }
+
+      var runnerWithChilds = ['workflow', 'action-chain'];
+      return runnerWithChilds.indexOf(record.action.runner_type) !== -1;
+    };
+
+    $scope.isCurrent = function (record) {
+      if (record) {
+        var current = $scope.current.record;
+        return record.id === current.id || record.id === current.parent;
+      }
+    };
   })
 
   ;

@@ -20,9 +20,9 @@ angular.module('main', ['ui.router', 'ngResource', 'angularMoment', 'ui.select']
   });
 
 angular.module('main')
-  .controller('MainCtrl', function ($scope, $state) {
-    $scope.state = $state;
-    $scope._ = _;
+  .controller('MainCtrl', function ($rootScope, $state) {
+    $rootScope.state = $state;
+    $rootScope._ = _;
 
     // Don't forget to add a target for every href in menu
     // $scope.$on('$stateChangeStart', function (event, toState) {
