@@ -50,7 +50,7 @@ angular.module('main')
 
       $scope.current.record
         .$promise.then(function (record) {
-          if ($scope.isExpandable && !record.parent) {
+          if ($scope.isExpandable(record) && !record.parent) {
             $scope.current.children = st2Api.history.list({ parent: record.id });
           }
         });
@@ -71,10 +71,6 @@ angular.module('main')
 
     // helpers
     $scope.isExpandable = function (record) {
-      if (record.parent) {
-        return true;
-      }
-
       var runnerWithChilds = ['workflow', 'action-chain'];
       return runnerWithChilds.indexOf(record.action.runner_type) !== -1;
     };

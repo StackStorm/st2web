@@ -24,6 +24,17 @@ angular.module('main')
     $rootScope.state = $state;
     $rootScope._ = _;
 
+    // Pagination
+    $rootScope.$watch('state.params.page', function (page) {
+      $rootScope.page = page && parseInt(page);
+    });
+    $rootScope.prevPage = function () {
+      $rootScope.state.go('.', { page: $rootScope.page - 1 });
+    };
+    $rootScope.nextPage = function () {
+      $rootScope.state.go('.', { page: ($rootScope.page || 1) + 1 });
+    };
+
     // Don't forget to add a target for every href in menu
     // $scope.$on('$stateChangeStart', function (event, toState) {
     //   window.name = toState.name;

@@ -11,13 +11,13 @@ angular.module('main')
         title: 'Actions'
       })
       .state('actions.list', {
-        url: ''
+        url: '?page'
       })
       .state('actions.summary', {
-        url: '/{id:\\w+}'
+        url: '/{id:\\w+}?page'
       })
       .state('actions.details', {
-        url: '/{id:\\w+}/details'
+        url: '/{id:\\w+}/details?page'
       })
 
       ;
@@ -26,58 +26,42 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2Api) {
+  .controller('st2ActionsCtrl', function ($scope, st2Api, $rootScope) {
 
-    // Fetching the data
-    $scope.actions = st2Api.actions.list();
+    st2Api.actions.$watch('list() | unwrap', function (list) {
+      $scope.groups = list && _.groupBy(list, 'content_pack');
+    });
 
-    function fetchExecutions(actionId) {
-      var executions = st2Api.actionExecutions.list({
-        'action_id': actionId
-      });
+    $rootScope.$watch('state.params.page', function (page) {
+      st2Api.actions.fetch(page);
+    });
 
-      executions.$promise.then(function (executions) {
-        $scope.current.lastStatus = executions.length && _.last(executions).status;
-      });
+    $rootScope.$watch('state.params.id', function (id) {
+      // TODO: figure out why you can't use $filter('unwrap')(...) here
+      st2Api.actions.get(id).then(function (action) {
+        $scope.action = action;
 
-      return executions;
-    }
-
-    function fetchOne(id) {
-
-      $scope.current = {};
-      $scope.current.payload = {};
-
-      $scope.current.action = st2Api.actions.get({ id: id });
-      $scope.current.actionexecutions = fetchExecutions(id);
-
-      $scope.current.action.$promise.then(function (action) {
-        return st2Api.runnertypes.get({ name: action['runner_type'] }).$promise;
-      }).then(function (runnerType) {
-        _.extend($scope.current.action.parameters, runnerType['runner_parameters']);
-      });
-    }
-
-    $scope.$watch('state.params.id', function (id) {
-      if (id) {
-        fetchOne(id);
-      } else {
-        $scope.actions.$promise.then(function (actions) {
-          var id = actions && actions[0] && actions[0].id;
-          fetchOne(id);
+        st2Api.executions.find({
+          'action_id': action.id
+        }).then(function (executions) {
+          $scope.executions = executions;
         });
-      }
+      });
     });
 
     // Running an action
     $scope.runAction = function (actionName, payload) {
-      st2Api.actionExecutions.create({
+      st2Api.executions.create({
         action: {
           name: actionName
         },
         parameters: payload
-      }).$promise.then(function (execution) {
-        $scope.current.actionexecutions = fetchExecutions(execution.action.id);
+      }).then(function (execution) {
+        st2Api.executions.find({
+          'action_id': execution.action.id
+        }).then(function (executions) {
+          $scope.executions = executions;
+        });
       });
     };
 

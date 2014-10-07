@@ -12,11 +12,12 @@
       </div>
     </nav>
 
-    <div class="st2-panel__heading">
-      <h2 class="st2-panel__heading-title">Category One</h2>
+    <div class="st2-panel__heading" ng-repeat-start="(name, list) in groups">
+      <h2 class="st2-panel__heading-title">{{ name }}</h2>
     </div>
 
-    <div class="st2-flex-table">
+
+    <div class="st2-flex-table" ng-repeat-end>
       <div class="st2-flex-table__header">
         <div class="st2-flex-table__column st2-actions__column-name">Machine Name</div>
         <div class="st2-flex-table__column st2-actions__column-type">Human-friendly Name</div>
@@ -26,16 +27,19 @@
       <div class="st2-flex-table__row"
           ng-class-odd="'st2-flex-table__row--odd'"
           ng-class-even="'st2-flex-table__row--even'"
-          ng-repeat="action in actions"
-          ng-click="$root.state.go('^.summary', {id: action.id})">
+          ng-repeat="action in list"
+          ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})">
         <div class="st2-flex-table__column st2-actions__column-name">{{ action.name }}</div>
         <div class="st2-flex-table__column st2-actions__column-type">{{ action.runner_type }}</div>
         <div class="st2-flex-table__column st2-actions__column-desc">{{ action.description }}</div>
       </div>
     </div>
 
+    <button ng-click="prevPage()">Previous page</button>
+    <button ng-click="nextPage()">Next page</button>
+
     <div class="st2-panel__back-button"
-      ng-click="$root.state.go('^.summary', {id: current.action.id})">
+      ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})">
     </div>
   </div>
 
@@ -44,12 +48,12 @@
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.details', {id: current.action.id})"
+            ng-click="$root.state.go('^.details', {id: action.id, page: $root.page})"
             ng-if="!$root.state.includes('*.details')">
           Details
         </button>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.summary', {id: current.action.id})"
+            ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})"
             ng-if="$root.state.includes('*.details')">
           &lt;- Back
         </button>
@@ -58,17 +62,18 @@
       <div class="st2-summary__body">
         <dl>
           <dt>Name</dt>
-          <dd>{{ current.action.name }}</dd>
+          <dd>{{ action.name }}</dd>
 
           <dt>Description</dt>
-          <dd>{{ current.action.description }}</dd>
+          <dd>{{ action.description }}</dd>
 
           <dt>Latest Execution Status</dt>
           <dd>
-            <span class="st2-label" status="current.lastStatus"
-              ng-if="current.actionexecutions.length">
+            <span class="st2-label"
+              status="_.last(executions).status"
+              ng-if="executions.length">
             </span>
-            <span ng-if="!current.actionexecutions.length">
+            <span ng-if="!executions.length">
               This action was never executed before
             </span>
           </dd>
@@ -85,15 +90,20 @@
       <h2 class="st2-details__panel-title">Parameters</h2>
     </div>
     <div class="st2-details__panel-body">
-      <form role="form" class="st2-details__form" ng-switch="_.isEmpty(current.action.parameters)"
-        ng-submit="runAction(current.action.name, current.payload)">
-        <div class="st2-details__panel-message" ng-switch-when="true">
+      <form role="form" class="st2-details__form"
+          ng-submit="runAction(action.name, payload)">
+        <div class="st2-details__panel-message"
+          ng-if="_.isEmpty(action.parameters.required) &&
+          _.isEmpty(action.parameters.optional)">
           Action has no parameters
         </div>
         <div class="st2-auto-form"
-          spec="current.action.parameters"
-          result="current.payload"
-          ng-switch-default>
+          spec="action.parameters.required"
+          result="payload">
+        </div>
+        <div class="st2-auto-form"
+          spec="action.parameters.optional"
+          result="payload">
         </div>
         <button type="submit" class="st2-details__button">Run</button>
       </form>
@@ -114,7 +124,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="execution in current.actionexecutions | orderBy:'start_timestamp':true" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
+          <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
             <td>{{ execution.start_timestamp | date:'medium' }}</td>
             <td><div class="st2-label" status="execution.status"></div></td>
             <td>
