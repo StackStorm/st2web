@@ -2,6 +2,10 @@
 angular.module('mockMain', ['main', 'ngMockE2E'])
   .run(function($httpBackend) {
 
+    var escRegexp = function(s) {
+      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    };
+
     var actions = [{
       'content_pack': 'aws',
       'description': 'Delete an AWS Images. USAGE: ami.deregister [field] [pattern]',
@@ -1291,20 +1295,22 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       'runner_type': 'run-remote'
     }];
 
-    $httpBackend.whenGET('//172.168.50.50:9101/actions/views/overview').respond(actions);
+    var actionUrl = '//172.168.50.50:9101/actions/views/overview';
+
+    $httpBackend.whenGET(actionUrl).respond(actions);
 
     $httpBackend
-      .whenGET(/^\/\/172\.168\.50\.50:9101\/actions\/views\/overview\?(.*)limit=/)
+      .whenGET(new RegExp('^' + escRegexp(actionUrl) + '?(.*)limit='))
       .respond(function (method, url) {
         var limit = url.match(/limit=(\w+)/)[1]
           , offset = url.match(/offset=(\w+)/)[1];
 
-        return [200, actions.slice(offset, offset + limit), {}];
+        return [200, actions.slice((+offset), (+offset) + (+limit)), {}];
       });
 
     _.each(actions, function (action) {
       $httpBackend
-        .whenGET('//172.168.50.50:9101/actions/views/overview/' + action.id)
+        .whenGET(actionUrl + '/' + action.id)
         .respond(action);
     });
 
@@ -2392,16 +2398,18 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       }
     ];
 
-    $httpBackend.whenGET('//172.168.50.50:9101/actionexecutions').respond(actionExecutions);
+    var executionsUrl = '//172.168.50.50:9101/actionexecutions';
+
+    $httpBackend.whenGET(executionsUrl).respond(actionExecutions);
 
     _.each(actionExecutions, function (actionExecution) {
       $httpBackend
-        .whenGET('//172.168.50.50:9101/actionexecutions/' + actionExecution.id)
+        .whenGET(executionsUrl + '/' + actionExecution.id)
         .respond(actionExecution);
     });
 
     $httpBackend
-      .whenPOST('//172.168.50.50:9101/actionexecutions')
+      .whenPOST(executionsUrl)
       .respond(function(method, url, data) {
         var execution = angular.fromJson(data);
 
@@ -2428,24 +2436,8 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         return [200, response, {}];
       });
 
-    // var possibleActionIds = _.reduce(actions, function (res, action) {
-    //   res[action.id] = [];
-    //   return res;
-    // }, {});
-    //
-    // var executionsByActionId = _.reduce(actionExecutions, function (res, execution) {
-    //   res[execution.action.id] = (res[execution.action.id] || []).concat([execution]);
-    //   return res;
-    // }, possibleActionIds);
-    //
-    // _.each(executionsByActionId, function (executions, id) {
-    //   $httpBackend
-    //     .whenGET('//172.168.50.50:9101/actionexecutions?action_id=' + id)
-    //     .respond(executions);
-    // });
-
     $httpBackend
-      .whenGET(/^\/\/172\.168\.50\.50:9101\/actionexecutions\?action_id=/)
+      .whenGET(new RegExp('^' + escRegexp(executionsUrl) + '?(.*)action_id='))
       .respond(function (method, url) {
         var id = url.match(/action_id=(\w+)/)[1];
 
@@ -2811,26 +2803,26 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       }
     ];
 
-    var mainHistory = _.filter(history, function (record) {
-      return !record.parent;
-    });
-
-    $httpBackend.whenGET('//172.168.50.50:9101/history').respond(mainHistory);
+    var historyUrl = '//172.168.50.50:9101/history/executions';
 
     _.each(history, function (record) {
       $httpBackend
-        .whenGET('//172.168.50.50:9101/history/' + record.id)
+        .whenGET(historyUrl + '/' + record.id)
         .respond(record);
     });
 
     $httpBackend
-      .whenGET(/^\/\/172\.168\.50\.50:9101\/history\?(.*)parent=/)
+      .whenGET(new RegExp('^' + escRegexp(historyUrl) + '?(.*)parent='))
       .respond(function (method, url) {
-        var id = url.match(/parent=(\w+)/)[1];
+        var id = url.match(/parent=(\w+)/)[1]
+          , limit = (url.match(/limit=(\w+)/) || [])[1]
+          , offset = (url.match(/offset=(\w+)/) || [])[1];
+
+        id = id === 'null' ? undefined : id;
 
         return [200, _.filter(history, function (record) {
           return record.parent === id;
-        }), {}];
+        }).slice((+offset), limit && (+offset) + (+limit)), {}];
       });
 
 

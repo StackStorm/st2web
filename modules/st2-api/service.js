@@ -35,23 +35,23 @@ angular.module('main')
     scope.triggers = buildResource({ resource: 'triggers' });
     scope.triggerInstances = buildResource({ resource: 'triggerinstances' });
     // scope.actionExecutions = buildResource({ resource: 'actionexecutions' });
-    scope.history = buildResource({ resource: 'history' });
+    // scope.history = buildResource({ resource: 'history' });
 
     var Client = function (url) {
       var promise
         , list
         , scope = $rootScope.$new(true);
 
-      scope.fetch = function (page) {
+      scope.fetch = function (page, params) {
         var limit = 20;
 
         page = page > 1 ? parseInt(page) : 1;
 
         promise = $http.get(HOST + url, {
-          params: {
+          params: _.defaults({
             limit: limit,
             offset: (page - 1) * limit
-          }
+          }, params)
         });
 
         promise.then(function () {
@@ -120,6 +120,8 @@ angular.module('main')
 
     scope.actions = new Client('/actions/views/overview');
     scope.executions = new Client('/actionexecutions');
+
+    scope.history = new Client('/history/executions');
 
     return scope;
 
