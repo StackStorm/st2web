@@ -1,4 +1,4 @@
 <div class="st2-details__form-group"
-  ng-repeat="(name, field) in spec | filterMutable"
-  ng-include="getFieldTemplate(field)">
+  ng-repeat="item in spec | filter:MUTABLE | orderBy:POSITION"
+  ng-include="getFieldTemplate(item.field)">
 </div>

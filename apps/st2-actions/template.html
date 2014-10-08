@@ -93,16 +93,11 @@
       <form role="form" class="st2-details__form"
           ng-submit="runAction(action.name, payload)">
         <div class="st2-details__panel-message"
-          ng-if="_.isEmpty(action.parameters.required) &&
-          _.isEmpty(action.parameters.optional)">
+            ng-if="_.isEmpty(action.parameters)">
           Action has no parameters
         </div>
         <div class="st2-auto-form"
-          spec="action.parameters.required"
-          result="payload">
-        </div>
-        <div class="st2-auto-form"
-          spec="action.parameters.optional"
+          spec="action.parameters"
           result="payload">
         </div>
         <button type="submit" class="st2-details__button">Run</button>

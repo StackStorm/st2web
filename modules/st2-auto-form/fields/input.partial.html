@@ -1,9 +1,12 @@
-<label for="{{name}}">{{ (field.name || name) | capitalize }}</label>
+<label class="st2-details__label"
+  ng-class="{'st2-details__label--required': item.field.required}"
+  for="{{item.name}}">{{ (item.field.name || item.name) | capitalize }}</label>
 
 <input type="input"
   class="st2-details__form-control"
-  id="{{name}}"
-  placeholder="{{field.default}}"
-  ng-model="result[name]"/>
+  id="{{item.name}}"
+  placeholder="{{item.field.default}}"
+  ng-required="{{item.field.required}}"
+  ng-model="result[item.name]"/>
 
-<p class="st2-details__help-block">{{ field.description }}</p>
+<p class="st2-details__help-block">{{ item.field.description }}</p>

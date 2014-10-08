@@ -49,6 +49,12 @@
     }
   }
 
+  &__label {
+    &--required:after {
+      content: ' *';
+    }
+  }
+
   &__help-block
   :extend(.help-block) {
     position: absolute;

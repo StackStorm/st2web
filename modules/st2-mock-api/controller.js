@@ -6,411 +6,15 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     };
 
-    var actions = [{
-      'content_pack': 'aws',
-      'description': 'Delete an AWS Images. USAGE: ami.deregister [field] [pattern]',
-      'enabled': true,
-      'entry_point': 'actions/amideregister.py',
-      'id': '541906006a763e7fbd28c3f0',
-      'name': 'ami.deregister',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Details of AWS Images. USAGE: ami.details [ami_id]',
-      'enabled': true,
-      'entry_point': 'actions/amidetails.py',
-      'id': '541906006a763e7fbd28c3f4',
-      'name': 'ami.details',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Create a new AWS instance. USAGE: vm.create [ami] [instance_type]',
-      'enabled': true,
-      'entry_point': 'actions/vmcreate.py',
-      'id': '541906006a763e7fbd28c3f3',
-      'name': 'vm.create',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Destroy an AWS instance. USAGE: vm.destroy [instance_id]',
-      'enabled': true,
-      'entry_point': 'actions/vmchangestate.py terminate ',
-      'id': '541906006a763e7fbd28c3f1',
-      'name': 'vm.destroy',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Details of AWS Instance. USAGE: vm.details [instance_id]',
-      'enabled': true,
-      'entry_point': 'actions/vmdetails.py',
-      'id': '541906006a763e7fbd28c3f8',
-      'name': 'vm.details',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Start an AWS instance. USAGE: vm.start [instance_id]',
-      'enabled': true,
-      'entry_point': 'actions/vmchangestate.py start ',
-      'id': '541906006a763e7fbd28c3f6',
-      'name': 'vm.start',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Stop an AWS instance. USAGE: vm.stop [instance_id]',
-      'enabled': true,
-      'entry_point': 'actions/vmchangestate.py stop ',
-      'id': '541906006a763e7fbd28c3f5',
-      'name': 'vm.stop',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Details of AWS Volumes. USAGE: vol.details [volume_id]',
-      'enabled': true,
-      'entry_point': 'actions/voldetails.py',
-      'id': '541906006a763e7fbd28c3f7',
-      'name': 'vol.details',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'aws',
-      'description': 'Find orphaned volumes. USAGE: vol.orphans [volume_id]',
-      'enabled': true,
-      'entry_point': 'actions/volorphans.py',
-      'id': '541906006a763e7fbd28c3f2',
-      'name': 'vol.orphans',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'core',
-      'description': '',
-      'enabled': true,
-      'entry_point': 'dumbchain',
-      'id': '541cfacb6a763e31b2100a7d',
-      'name': 'dumbchain',
-      'parameters': {
-        'immutable': {},
-        'optional': {},
-        'required': {}
-      },
-      'runner_type': 'action-chain'
-    }, {
-      'content_pack': 'core',
-      'description': '',
-      'enabled': true,
-      'entry_point': 'echochain_param',
-      'id': '5423923c6a763e1e98c804d4',
-      'name': 'echochain-param',
-      'parameters': {
-        'immutable': {},
-        'optional': {},
-        'required': {}
-      },
-      'runner_type': 'action-chain'
-    }, {
-      'content_pack': 'core',
-      'description': 'Action that performs an http request.',
-      'enabled': true,
-      'entry_point': '',
-      'id': '54176bb66a763e79ade52e03',
-      'name': 'http',
-      'parameters': {
-        'immutable': {},
-        'optional': {
+    var actions = [
+      {
+        'content_pack': 'core',
+        'description': 'Action that performs an http request.',
+        'enabled': true,
+        'entry_point': '',
+        'id': '54176bb66a763e79ade52e03',
+        'name': 'http',
+        'parameters': {
           'auth': {
             'type': 'string'
           },
@@ -424,7 +28,12 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           },
           'method': {
             'default': 'GET',
-            'enum': ['GET', 'POST', 'PUT', 'DELETE']
+            'enum': [
+              'GET',
+              'POST',
+              'PUT',
+              'DELETE'
+            ]
           },
           'params': {
             'type': 'string'
@@ -440,69 +49,24 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'timeout': {
             'default': 60,
             'type': 'integer'
-          }
-        },
-        'required': {
+          },
           'url': {
             'description': 'URL to the HTTP endpoint.',
-            'type': 'string'
-          }
-        }
-      },
-      'runner_type': 'http-runner'
-    }, {
-      'content_pack': 'core',
-      'description': 'Action that executes an arbitrary Linux command on the localhost.',
-      'enabled': true,
-      'entry_point': '',
-      'id': '54176bb66a763e79ade52e02',
-      'name': 'local',
-      'parameters': {
-        'immutable': {
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'immutable': true,
-            'type': 'boolean'
+            'required': true,
+            'type': 'string',
+            'position': 0
           }
         },
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
+        'runner_type': 'http-runner'
       },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'core',
-      'description': 'Action that executes an arbitrary Linux command on the localhost.',
-      'enabled': true,
-      'entry_point': '',
-      'id': '542cccb56a763e37e4f91508',
-      'name': 'local-sudo',
-      'parameters': {
-        'immutable': {},
-        'optional': {
+      {
+        'content_pack': 'core',
+        'description': 'This sends an email',
+        'enabled': true,
+        'entry_point': 'send_mail/send_mail',
+        'id': '54176bb66a763e79ade52e05',
+        'name': 'send_mail',
+        'parameters': {
           'cmd': {
             'description': 'Arbitrary Linux command to be executed on the host.',
             'type': 'string'
@@ -531,25 +95,16 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'type': 'string'
           }
         },
-        'required': {}
+        'runner_type': 'run-local'
       },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'core',
-      'description': 'Action to execute arbitrary linux command remotely.',
-      'enabled': true,
-      'entry_point': '',
-      'id': '54176bb66a763e79ade52e06',
-      'name': 'remote',
-      'parameters': {
-        'immutable': {
-          'sudo': {
-            'description': 'The remote command will be executed with sudo.',
-            'immutable': true,
-            'type': 'boolean'
-          }
-        },
-        'optional': {
+      {
+        'content_pack': 'core',
+        'description': 'Action to execute arbitrary linux command remotely.',
+        'enabled': true,
+        'entry_point': '',
+        'id': '54176bb66a763e79ade52e06',
+        'name': 'remote',
+        'parameters': {
           'cmd': {
             'description': 'Arbitrary Linux command to be executed on the remote host(s).',
             'type': 'string'
@@ -558,8 +113,18 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'description': 'The working directory where the command will be executed on the remote host.',
             'type': 'string'
           },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'required': true,
+            'type': 'string'
+          },
           'parallel': {
             'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'description': 'The remote command will be executed with sudo.',
+            'immutable': true,
             'type': 'boolean'
           },
           'user': {
@@ -567,30 +132,69 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'type': 'string'
           }
         },
-        'required': {
+        'runner_type': 'run-remote'
+      },
+      {
+        'content_pack': 'st2generic',
+        'description': 'Touches a file',
+        'enabled': true,
+        'entry_point': 'file_touch',
+        'id': '54176cc06a763e7a9d920f7b',
+        'name': 'file_touch',
+        'parameters': {
+          'cmd': {
+            'immutable': true,
+            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
+            'type': 'string'
+          },
+          'dir': {
+            'immutable': true,
+            'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
           'hosts': {
+            'immutable': true,
             'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'required': true,
+            'type': 'string'
+          },
+          'parallel': {
+            'immutable': true,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'immutable': true,
+            'description': 'The remote command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'immutable': true,
+            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
             'type': 'string'
           }
-        }
+        },
+        'runner_type': 'run-remote'
       },
-      'runner_type': 'run-remote'
-    }, {
-      'content_pack': 'core',
-      'description': 'Action to execute arbitrary linux command remotely.',
-      'enabled': true,
-      'entry_point': '',
-      'id': '542cccb46a763e37e4f91507',
-      'name': 'remote-sudo',
-      'parameters': {
-        'immutable': {},
-        'optional': {
+      {
+        'content_pack': 'st2generic',
+        'description': 'Prunes files in /var/log. USAGE: log_prune [relative file path]',
+        'enabled': true,
+        'entry_point': 'log_prune.py',
+        'id': '54176cc06a763e7a9d920f7c',
+        'name': 'log_prune',
+        'parameters': {
           'cmd': {
             'description': 'Arbitrary Linux command to be executed on the remote host(s).',
             'type': 'string'
           },
           'dir': {
             'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'required': true,
             'type': 'string'
           },
           'parallel': {
@@ -606,24 +210,16 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'type': 'string'
           }
         },
-        'required': {
-          'hosts': {
-            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
-            'type': 'string'
-          }
-        }
+        'runner_type': 'run-remote'
       },
-      'runner_type': 'run-remote'
-    }, {
-      'content_pack': 'core',
-      'description': 'This sends an email',
-      'enabled': true,
-      'entry_point': 'send_mail/send_mail',
-      'id': '54176bb66a763e79ade52e05',
-      'name': 'send_mail',
-      'parameters': {
-        'immutable': {},
-        'optional': {
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Create a new AWS instance. USAGE: createvm [ami] [instance_type]',
+        'enabled': true,
+        'entry_point': 'createvm.py',
+        'id': '54176cc06a763e7a9d920f7d',
+        'name': 'aws.createvm',
+        'parameters': {
           'cmd': {
             'description': 'Arbitrary Linux command to be executed on the host.',
             'type': 'string'
@@ -652,18 +248,873 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'type': 'string'
           }
         },
-        'required': {}
+        'runner_type': 'run-local'
       },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'core',
-      'description': 'This sends an email',
-      'enabled': true,
-      'entry_point': 'send_mail/send_mail',
-      'id': '542b7b376a763e3f4bc0fabd',
-      'name': 'send_mail_script',
-      'parameters': {
-        'immutable': {
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Start an AWS instance. USAGE: startvm [instance_id]',
+        'enabled': true,
+        'entry_point': 'changevmstate.py start ',
+        'id': '54176cc06a763e7a9d920f7e',
+        'name': 'aws.startvm',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Destroy an AWS instance. USAGE: destroyvm [instance_id]',
+        'enabled': true,
+        'entry_point': 'changevmstate.py terminate ',
+        'id': '54176cc06a763e7a9d920f7f',
+        'name': 'aws.destroyvm',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Find orphaned volumes. USAGE: orphanvols [volume_id]',
+        'enabled': true,
+        'entry_point': 'orphan_vols.py',
+        'id': '54176cc06a763e7a9d920f81',
+        'name': 'aws.orphanvols',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Stop an AWS instance. USAGE: stopvm [instance_id]',
+        'enabled': true,
+        'entry_point': 'ec2_actions/changevmstate.py stop ',
+        'id': '54176cc06a763e7a9d920f82',
+        'name': 'aws.stopvm',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Details of AWS Volumes. USAGE: voldetails [volume_id]',
+        'enabled': true,
+        'entry_point': 'voldetails.py',
+        'id': '54176cc06a763e7a9d920f83',
+        'name': 'aws.voldetails',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Delete an AWS Images. USAGE: deleteami [field] [pattern]',
+        'enabled': true,
+        'entry_point': 'removeami.py',
+        'id': '54176cc06a763e7a9d920f84',
+        'name': 'aws.deregisterami',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Details of AWS Instance. USAGE: vmdetails [instance_id]',
+        'enabled': true,
+        'entry_point': 'vmdetails.py',
+        'id': '54176cc06a763e7a9d920f85',
+        'name': 'aws.vmdetails',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'ec2_actions',
+        'description': 'Details of AWS Images. USAGE: amidetails [ami_id]',
+        'enabled': true,
+        'entry_point': 'actions/amidetails.py',
+        'id': '541778a16a763e0a71aac63d',
+        'name': 'aws.amidetails',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'st2generic',
+        'description': 'Touches a file',
+        'enabled': true,
+        'entry_point': 'actions/file_touch',
+        'id': '541906006a763e7fbd28c3ee',
+        'name': 'file.touch',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'required': true,
+            'type': 'string'
+          },
+          'parallel': {
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'description': 'The remote command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-remote'
+      },
+      {
+        'content_pack': 'st2generic',
+        'description': 'Prunes files in /var/log. USAGE: log_prune [relative file path]',
+        'enabled': true,
+        'entry_point': 'actions/log_prune.py',
+        'id': '541906006a763e7fbd28c3ef',
+        'name': 'log.prune',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'required': true,
+            'type': 'string'
+          },
+          'parallel': {
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'description': 'The remote command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-remote'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Delete an AWS Images. USAGE: ami.deregister [field] [pattern]',
+        'enabled': true,
+        'entry_point': 'actions/amideregister.py',
+        'id': '541906006a763e7fbd28c3f0',
+        'name': 'ami.deregister',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Destroy an AWS instance. USAGE: vm.destroy [instance_id]',
+        'enabled': true,
+        'entry_point': 'actions/vmchangestate.py terminate ',
+        'id': '541906006a763e7fbd28c3f1',
+        'name': 'vm.destroy',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Find orphaned volumes. USAGE: vol.orphans [volume_id]',
+        'enabled': true,
+        'entry_point': 'actions/volorphans.py',
+        'id': '541906006a763e7fbd28c3f2',
+        'name': 'vol.orphans',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Create a new AWS instance. USAGE: vm.create [ami] [instance_type]',
+        'enabled': true,
+        'entry_point': 'actions/vmcreate.py',
+        'id': '541906006a763e7fbd28c3f3',
+        'name': 'vm.create',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Details of AWS Images. USAGE: ami.details [ami_id]',
+        'enabled': true,
+        'entry_point': 'actions/amidetails.py',
+        'id': '541906006a763e7fbd28c3f4',
+        'name': 'ami.details',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Stop an AWS instance. USAGE: vm.stop [instance_id]',
+        'enabled': true,
+        'entry_point': 'actions/vmchangestate.py stop ',
+        'id': '541906006a763e7fbd28c3f5',
+        'name': 'vm.stop',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Start an AWS instance. USAGE: vm.start [instance_id]',
+        'enabled': true,
+        'entry_point': 'actions/vmchangestate.py start ',
+        'id': '541906006a763e7fbd28c3f6',
+        'name': 'vm.start',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'core',
+        'description': '',
+        'enabled': true,
+        'entry_point': 'dumbchain',
+        'id': '541cfacb6a763e31b2100a7d',
+        'name': 'dumbchain',
+        'parameters': {},
+        'runner_type': 'action-chain'
+      },
+      {
+        'content_pack': 'core',
+        'description': 'Action that executes an arbitrary Linux command on the localhost.',
+        'enabled': true,
+        'entry_point': '',
+        'id': '542cccb56a763e37e4f91508',
+        'name': 'local-sudo',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Details of AWS Volumes. USAGE: vol.details [volume_id]',
+        'enabled': true,
+        'entry_point': 'actions/voldetails.py',
+        'id': '541906006a763e7fbd28c3f7',
+        'name': 'vol.details',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'aws',
+        'description': 'Details of AWS Instance. USAGE: vm.details [instance_id]',
+        'enabled': true,
+        'entry_point': 'actions/vmdetails.py',
+        'id': '541906006a763e7fbd28c3f8',
+        'name': 'vm.details',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'core',
+        'description': '',
+        'enabled': true,
+        'entry_point': 'echochain_param',
+        'id': '5423923c6a763e1e98c804d4',
+        'name': 'echochain-param',
+        'parameters': {},
+        'runner_type': 'action-chain'
+      },
+      {
+        'content_pack': 'core',
+        'description': 'Action to execute arbitrary linux command remotely.',
+        'enabled': true,
+        'entry_point': '',
+        'id': '542cccb46a763e37e4f91507',
+        'name': 'remote-sudo',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the remote host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
+            'required': true,
+            'type': 'string'
+          },
+          'parallel': {
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'description': 'The remote command will be executed with sudo.',
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-remote'
+      },
+      {
+        'content_pack': 'core',
+        'description': 'Action that executes an arbitrary Linux command on the localhost.',
+        'enabled': true,
+        'entry_point': '',
+        'id': '54176bb66a763e79ade52e02',
+        'name': 'local',
+        'parameters': {
+          'cmd': {
+            'description': 'Arbitrary Linux command to be executed on the host.',
+            'type': 'string'
+          },
+          'dir': {
+            'description': 'The working directory where the command will be executed on the host.',
+            'type': 'string'
+          },
+          'hosts': {
+            'default': 'localhost',
+            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+            'type': 'string'
+          },
+          'parallel': {
+            'default': false,
+            'description': 'If true, the command will be executed on all the hosts in parallel.',
+            'type': 'boolean'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'immutable': true,
+            'type': 'boolean'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'type': 'string'
+          }
+        },
+        'runner_type': 'run-local'
+      },
+      {
+        'content_pack': 'core',
+        'description': 'This sends an email',
+        'enabled': true,
+        'entry_point': 'send_mail/send_mail',
+        'id': '542b7b376a763e3f4bc0fabd',
+        'name': 'send_mail_script',
+        'parameters': {
+          'body': {
+            'description': 'Body of the email.',
+            'position': 2,
+            'required': true,
+            'type': 'string'
+          },
           'dir': {
             'description': 'The working directory where the command will be executed on the host.',
             'immutable': true,
@@ -680,48 +1131,41 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'description': 'Parallel execution is unsupported.',
             'immutable': true,
             'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'immutable': true,
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'immutable': true,
-            'type': 'string'
-          }
-        },
-        'optional': {},
-        'required': {
-          'body': {
-            'description': 'Body of the email.',
-            'position': 2,
-            'type': 'string'
           },
           'subject': {
             'description': 'Subject of the email.',
             'position': 1,
+            'required': true,
             'type': 'string'
+          },
+          'sudo': {
+            'default': false,
+            'description': 'The command will be executed with sudo.',
+            'immutable': true,
+            'type': 'boolean'
           },
           'to': {
             'description': 'Recipient email address.',
             'position': 0,
+            'required': true,
+            'type': 'string'
+          },
+          'user': {
+            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'immutable': true,
             'type': 'string'
           }
-        }
+        },
+        'runner_type': 'run-local-script'
       },
-      'runner_type': 'run-local-script'
-    }, {
-      'content_pack': 'core',
-      'description': 'This posts a message to StormBot',
-      'enabled': true,
-      'entry_point': 'stormbot_say/stormbot_say',
-      'id': '54176bb66a763e79ade52e04',
-      'name': 'stormbot_say',
-      'parameters': {
-        'immutable': {
+      {
+        'content_pack': 'core',
+        'description': 'This posts a message to StormBot',
+        'enabled': true,
+        'entry_point': 'stormbot_say/stormbot_say',
+        'id': '54176bb66a763e79ade52e04',
+        'name': 'stormbot_say',
+        'parameters': {
           'dir': {
             'description': 'The working directory where the command will be executed on the host.',
             'immutable': true,
@@ -733,25 +1177,6 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'immutable': true,
             'type': 'string'
           },
-          'parallel': {
-            'default': false,
-            'description': 'Parallel execution is unsupported.',
-            'immutable': true,
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'immutable': true,
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'immutable': true,
-            'type': 'string'
-          }
-        },
-        'optional': {
           'msg': {
             'position': 2,
             'type': 'string'
@@ -760,540 +1185,31 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
             'position': 1,
             'type': 'string'
           },
+          'parallel': {
+            'default': false,
+            'description': 'Parallel execution is unsupported.',
+            'immutable': true,
+            'type': 'boolean'
+          },
           'source': {
             'position': 0,
             'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local-script'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Details of AWS Images. USAGE: amidetails [ami_id]',
-      'enabled': true,
-      'entry_point': 'actions/amidetails.py',
-      'id': '541778a16a763e0a71aac63d',
-      'name': 'aws.amidetails',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
           },
           'sudo': {
             'default': false,
             'description': 'The command will be executed with sudo.',
+            'immutable': true,
             'type': 'boolean'
           },
           'user': {
             'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+            'immutable': true,
             'type': 'string'
           }
         },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Create a new AWS instance. USAGE: createvm [ami] [instance_type]',
-      'enabled': true,
-      'entry_point': 'createvm.py',
-      'id': '54176cc06a763e7a9d920f7d',
-      'name': 'aws.createvm',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Delete an AWS Images. USAGE: deleteami [field] [pattern]',
-      'enabled': true,
-      'entry_point': 'removeami.py',
-      'id': '54176cc06a763e7a9d920f84',
-      'name': 'aws.deregisterami',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Destroy an AWS instance. USAGE: destroyvm [instance_id]',
-      'enabled': true,
-      'entry_point': 'changevmstate.py terminate ',
-      'id': '54176cc06a763e7a9d920f7f',
-      'name': 'aws.destroyvm',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Find orphaned volumes. USAGE: orphanvols [volume_id]',
-      'enabled': true,
-      'entry_point': 'orphan_vols.py',
-      'id': '54176cc06a763e7a9d920f81',
-      'name': 'aws.orphanvols',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Start an AWS instance. USAGE: startvm [instance_id]',
-      'enabled': true,
-      'entry_point': 'changevmstate.py start ',
-      'id': '54176cc06a763e7a9d920f7e',
-      'name': 'aws.startvm',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Stop an AWS instance. USAGE: stopvm [instance_id]',
-      'enabled': true,
-      'entry_point': 'ec2_actions/changevmstate.py stop ',
-      'id': '54176cc06a763e7a9d920f82',
-      'name': 'aws.stopvm',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Details of AWS Instance. USAGE: vmdetails [instance_id]',
-      'enabled': true,
-      'entry_point': 'vmdetails.py',
-      'id': '54176cc06a763e7a9d920f85',
-      'name': 'aws.vmdetails',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'ec2_actions',
-      'description': 'Details of AWS Volumes. USAGE: voldetails [volume_id]',
-      'enabled': true,
-      'entry_point': 'voldetails.py',
-      'id': '54176cc06a763e7a9d920f83',
-      'name': 'aws.voldetails',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the host.',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the host.',
-            'type': 'string'
-          },
-          'hosts': {
-            'default': 'localhost',
-            'description': 'A comma delimited string of a list of hosts where the command will be executed.',
-            'type': 'string'
-          },
-          'parallel': {
-            'default': false,
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'default': false,
-            'description': 'The command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {}
-      },
-      'runner_type': 'run-local'
-    }, {
-      'content_pack': 'st2generic',
-      'description': 'Touches a file',
-      'enabled': true,
-      'entry_point': 'actions/file_touch',
-      'id': '541906006a763e7fbd28c3ee',
-      'name': 'file.touch',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the remote host.',
-            'type': 'string'
-          },
-          'parallel': {
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'description': 'The remote command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {
-          'hosts': {
-            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
-            'type': 'string'
-          }
-        }
-      },
-      'runner_type': 'run-remote'
-    }, {
-      'content_pack': 'st2generic',
-      'description': 'Touches a file',
-      'enabled': true,
-      'entry_point': 'file_touch',
-      'id': '54176cc06a763e7a9d920f7b',
-      'name': 'file_touch',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the remote host.',
-            'type': 'string'
-          },
-          'parallel': {
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'description': 'The remote command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {
-          'hosts': {
-            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
-            'type': 'string'
-          }
-        }
-      },
-      'runner_type': 'run-remote'
-    }, {
-      'content_pack': 'st2generic',
-      'description': 'Prunes files in /var/log. USAGE: log_prune [relative file path]',
-      'enabled': true,
-      'entry_point': 'actions/log_prune.py',
-      'id': '541906006a763e7fbd28c3ef',
-      'name': 'log.prune',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the remote host.',
-            'type': 'string'
-          },
-          'parallel': {
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'description': 'The remote command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {
-          'hosts': {
-            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
-            'type': 'string'
-          }
-        }
-      },
-      'runner_type': 'run-remote'
-    }, {
-      'content_pack': 'st2generic',
-      'description': 'Prunes files in /var/log. USAGE: log_prune [relative file path]',
-      'enabled': true,
-      'entry_point': 'log_prune.py',
-      'id': '54176cc06a763e7a9d920f7c',
-      'name': 'log_prune',
-      'parameters': {
-        'immutable': {},
-        'optional': {
-          'cmd': {
-            'description': 'Arbitrary Linux command to be executed on the remote host(s).',
-            'type': 'string'
-          },
-          'dir': {
-            'description': 'The working directory where the command will be executed on the remote host.',
-            'type': 'string'
-          },
-          'parallel': {
-            'description': 'If true, the command will be executed on all the hosts in parallel.',
-            'type': 'boolean'
-          },
-          'sudo': {
-            'description': 'The remote command will be executed with sudo.',
-            'type': 'boolean'
-          },
-          'user': {
-            'description': 'The user who is executing this remote command. This is for audit purposes only. The remote command will always execute as the user stanley.',
-            'type': 'string'
-          }
-        },
-        'required': {
-          'hosts': {
-            'description': 'A comma delimited string of a list of hosts where the remote command will be executed.',
-            'type': 'string'
-          }
-        }
-      },
-      'runner_type': 'run-remote'
-    }];
+        'runner_type': 'run-local-script'
+      }
+    ];
 
     var actionUrl = '//172.168.50.50:9101/actions/views/overview';
 

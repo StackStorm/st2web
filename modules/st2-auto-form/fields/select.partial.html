@@ -1,8 +1,11 @@
-<label for="{{name}}">{{ (field.name || name) | capitalize }}</label>
+<label class="st2-details__label"
+  ng-class="{'st2-details__label--required': item.field.required}"
+  for="{{item.name}}">{{ (item.field.name || item.name) | capitalize }}</label>
 
 <select class="st2-details__form-control"
-  id="{{name}}"
-  ng-model="result[name]"
-  ng-options="v for v in field.enum"></select>
+  id="{{item.name}}"
+  ng-model="result[item.name]"
+  ng-required="{{item.field.required}}"
+  ng-options="v for v in item.field.enum"></select>
 
-<p class="st2-details__help-block">{{ field.description }}</p>
+<p class="st2-details__help-block">{{ item.field.description }}</p>
