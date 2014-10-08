@@ -43,7 +43,7 @@ angular.module('main')
         , scope = $rootScope.$new(true);
 
       scope.fetch = function (page, params) {
-        var limit = 20;
+        var limit = $rootScope.limit || 20;
 
         page = page > 1 ? parseInt(page) : 1;
 
@@ -57,6 +57,23 @@ angular.module('main')
         promise.then(function () {
           list = promise.then(function (response) {
             return response.data;
+          });
+        });
+
+        scope.$emit('$fetchStart', {
+          url: url,
+          page: page,
+          limit: limit,
+          params: params
+        });
+
+        promise.then(function (response) {
+          scope.$emit('$fetchFinish', {
+            url: url,
+            page: page,
+            limit: limit,
+            params: params,
+            response: response
           });
         });
 
