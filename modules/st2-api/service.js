@@ -4,7 +4,7 @@ angular.module('main')
   .service('st2Api', function($resource, $rootScope, $http) {
     var storedHost = localStorage.getItem('st2Host');
 
-    var HOST = storedHost || '//172.168.50.50:9101';
+    var HOST = storedHost || 'localhost';
 
     var scope = $rootScope.$new();
 

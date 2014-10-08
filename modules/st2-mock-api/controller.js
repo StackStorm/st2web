@@ -1211,7 +1211,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       }
     ];
 
-    var actionUrl = '//172.168.50.50:9101/actions/views/overview';
+    var actionUrl = '//localhost/actions/views/overview';
 
     $httpBackend.whenGET(actionUrl).respond(actions);
 
@@ -1256,10 +1256,10 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       'name': 'st2.person.joe'
     }];
 
-    $httpBackend.whenGET('//172.168.50.50:9101/rules').respond(rules);
+    $httpBackend.whenGET('//localhost/rules').respond(rules);
 
     _.each(rules, function (rule) {
-      $httpBackend.whenGET('//172.168.50.50:9101/rules/' + rule.id).respond(rule);
+      $httpBackend.whenGET('//localhost/rules/' + rule.id).respond(rule);
     });
 
     var runnertypes = [
@@ -1447,7 +1447,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
 
     _.each(runnertypes, function (runnertype) {
       $httpBackend
-        .whenGET('//172.168.50.50:9101/runnertypes?name=' + runnertype.name)
+        .whenGET('//localhost/runnertypes?name=' + runnertype.name)
         .respond(runnertype);
     });
 
@@ -1460,10 +1460,10 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       'name': '265a30b3-5990-4313-9a14-2ef0199f7f47'
     }];
 
-    $httpBackend.whenGET('//172.168.50.50:9101/triggers').respond(triggers);
+    $httpBackend.whenGET('//localhost/triggers').respond(triggers);
 
     _.each(triggers, function (trigger) {
-      $httpBackend.whenGET('//172.168.50.50:9101/triggers/' + trigger.id).respond(trigger);
+      $httpBackend.whenGET('//localhost/triggers/' + trigger.id).respond(trigger);
     });
 
 
@@ -1502,11 +1502,11 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       }
     ];
 
-    $httpBackend.whenGET('//172.168.50.50:9101/triggerinstances').respond(triggerInstances);
+    $httpBackend.whenGET('//localhost/triggerinstances').respond(triggerInstances);
 
     _.each(triggerInstances, function (triggerInstance) {
       $httpBackend
-        .whenGET('//172.168.50.50:9101/triggerinstances/' + triggerInstance.id)
+        .whenGET('//localhost/triggerinstances/' + triggerInstance.id)
         .respond(triggerInstance);
     });
 
@@ -2314,7 +2314,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       }
     ];
 
-    var executionsUrl = '//172.168.50.50:9101/actionexecutions';
+    var executionsUrl = '//localhost/actionexecutions';
 
     $httpBackend.whenGET(executionsUrl).respond(actionExecutions);
 
@@ -2719,7 +2719,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       }
     ];
 
-    var historyUrl = '//172.168.50.50:9101/history/executions';
+    var historyUrl = '//localhost/history/executions';
 
     _.each(history, function (record) {
       $httpBackend
@@ -2747,7 +2747,8 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
     // Pass through real API
     var storedHost = localStorage.getItem('st2Host');
     if (storedHost) {
-      $httpBackend.whenGET(new RegExp('^' + storedHost)).passThrough();
+      $httpBackend.whenGET(new RegExp('^' + escRegexp(storedHost))).passThrough();
+      $httpBackend.whenPOST(new RegExp('^' + escRegexp(storedHost))).passThrough();
     }
 
   });
