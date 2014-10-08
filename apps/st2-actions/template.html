@@ -35,8 +35,15 @@
       </div>
     </div>
 
-    <button ng-click="prevPage()">Previous page</button>
-    <button ng-click="nextPage()">Next page</button>
+    <button class="st2-panel__prev-button"
+        ng-click="prevPage()"
+        ng-if="$root.page > 1">
+      Previous page
+    </button>
+    <button class="st2-panel__next-button"
+        ng-click="nextPage()">
+      Next page
+    </button>
 
     <div class="st2-panel__back-button"
       ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})">

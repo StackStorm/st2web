@@ -17,6 +17,9 @@ angular.module('main')
       'disabled': {
         class: 'st2-label--danger'
       },
+      'succeeded': {
+        class: 'st2-label--success'
+      },
       'failed': {
         class: 'st2-label--danger'
       }
