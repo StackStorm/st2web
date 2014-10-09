@@ -41,6 +41,8 @@ angular.module('main')
       st2Api.actions.get(id).then(function (action) {
         $scope.action = action;
 
+        $scope.payload = {};
+
         st2Api.executions.find({
           'action_id': action.id
         }).then(function (executions) {

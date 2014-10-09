@@ -32,10 +32,17 @@ angular.module('main')
     st2Api.history.$watch('list() | unwrap', function (list) {
       // Group all the records by periods of 24 hour
       var period = 24 * 60 * 60 * 1000;
-      $scope.history = _.groupBy(list, function (record) {
-        var time = record.action_execution.start_timestamp;
+
+      $scope.history = _(list).groupBy(function (record) {
+        // ISO, please!
+        var time = record.execution.start_timestamp.split(' ').join('T');
         return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
-      });
+      }).map(function (records, period) {
+        return {
+          period: period,
+          records: records
+        };
+      }).value();
     });
 
     $rootScope.$watch('state.params.page', function (page) {
