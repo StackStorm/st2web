@@ -12,13 +12,13 @@ angular.module('main')
         title: 'Rules'
       })
       .state('rules.list', {
-        url: ''
+        url: '?page'
       })
       .state('rules.summary', {
-        url: '/{id:\\w+}'
+        url: '/{id:\\w+}?page'
       })
       .state('rules.details', {
-        url: '/{id:\\w+}/details'
+        url: '/{id:\\w+}/details?page'
       })
 
       ;
@@ -28,22 +28,20 @@ angular.module('main')
 angular.module('main')
 
   // List rules
-  .controller('st2RulesCtrl', function ($scope, st2Api) {
-    $scope.rules = st2Api.rules.list();
+  .controller('st2RulesCtrl', function ($scope, st2Api, $rootScope) {
+    st2Api.rules.$watch('list() | unwrap', function (list) {
+      $scope.rules = list;
+    });
 
-    function fetchOne(id) {
-      $scope.current = st2Api.rules.get({ id: id });
-    }
+    $rootScope.$watch('state.params.page', function (page) {
+      st2Api.rules.fetch(page);
+    });
 
-    $scope.$watch('state.params.id', function (id) {
-      if (id) {
-        fetchOne(id);
-      } else {
-        $scope.rules.$promise.then(function (rules) {
-          var id = rules && rules[0] && rules[0].id;
-          fetchOne(id);
-        });
-      }
+    $rootScope.$watch('state.params.id', function (id) {
+      // TODO: figure out why you can't use $filter('unwrap')(...) here
+      st2Api.rules.get(id).then(function (rule) {
+        $scope.rule = rule;
+      });
     });
   })
 

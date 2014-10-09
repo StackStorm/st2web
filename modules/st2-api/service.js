@@ -8,35 +8,6 @@ angular.module('main')
 
     var scope = $rootScope.$new();
 
-    function buildResource (params, actions) {
-      return $resource(HOST + '/:resource/:id', params, _.defaults({}, {
-        list: {
-          method: 'GET',
-          isArray: true
-        },
-        create: {
-          method: 'POST'
-        },
-        get: {
-          method: 'GET'
-        },
-        update: {
-          method: 'PUT'
-        },
-        remove: {
-          method: 'DELETE'
-        }
-      }, actions));
-    }
-
-    scope.rules = buildResource({ resource: 'rules' });
-    // scope.actions = buildResource({ resource: 'actions' });
-    // scope.runnertypes = buildResource({ resource: 'runnertypes' });
-    scope.triggers = buildResource({ resource: 'triggers' });
-    scope.triggerInstances = buildResource({ resource: 'triggerinstances' });
-    // scope.actionExecutions = buildResource({ resource: 'actionexecutions' });
-    // scope.history = buildResource({ resource: 'history' });
-
     var Client = function (url) {
       var promise
         , list
@@ -139,6 +110,8 @@ angular.module('main')
     scope.executions = new Client('/actionexecutions');
 
     scope.history = new Client('/history/executions');
+
+    scope.rules = new Client('/rules');
 
     return scope;
 
