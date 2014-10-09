@@ -43,7 +43,33 @@
     }
   }
 
-  &__user {
+  &__server {
+    &-current {
+      padding: 10px;
+      cursor: pointer;
+    }
 
+    &-list {
+      position: absolute;
+      right: 0;
+      z-index: 10;
+      margin: 5px;
+      padding: 5px;
+      background-color: #222;
+      display: none;
+    }
+
+    &:hover &-list {
+      display: block;
+    }
+
+    &-item {
+      padding: 5px 10px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
