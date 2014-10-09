@@ -3,6 +3,7 @@
 
 @import (reference) '/components/bootstrap/less/tables.less';
 @import (reference) '/components/bootstrap/less/panels.less';
+@import (reference) '/components/bootstrap/less/buttons.less';
 
 .st2-panel {
   position: absolute;
@@ -45,6 +46,17 @@
 
   &--slide &__back-button {
     display: block;
+  }
+
+  &__prev-button
+  :extend(.btn)
+  :extend(.btn-primary) {}
+
+  &__next-button
+  :extend(.btn)
+  :extend(.btn-primary) {
+    // Lazy me. Careful with that.
+    float: right;
   }
 
   &__heading

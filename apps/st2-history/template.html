@@ -86,7 +86,7 @@
           </div>
         </div>
         <div class="st2-history-child"
-            children="current.children | unwrap"
+            children="children | unwrap"
             ng-if="isExpandable(record) && isCurrent(record)">
         </div>
         <div ng-repeat-end
@@ -103,8 +103,11 @@
       </div>
     </div>
 
+    <button ng-click="prevPage()">Previous page</button>
+    <button ng-click="nextPage()">Next page</button>
+
     <div class="st2-panel__back-button"
-      ng-click="$root.state.go('^.summary', {id: current.record.id})"></div>
+      ng-click="$root.state.go('^.summary', {id: record.id})"></div>
   </div>
 
   <div class="st2-summary">
@@ -112,12 +115,12 @@
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.details', {id: current.record.id})"
+            ng-click="$root.state.go('^.details', {id: record.id})"
             ng-if="!$root.state.includes('*.details')">
           Details
         </button>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.summary', {id: current.record.id})"
+            ng-click="$root.state.go('^.summary', {id: record.id})"
             ng-if="$root.state.includes('*.details')">
           &lt;- Back
         </button>
@@ -125,19 +128,22 @@
 
       <div class="st2-summary__body">
         <dl>
-          <dt>Rule Name</dt>
-          <dd>{{ current.record.rule.name }}</dd>
+          <dt ng-if="record.rule.name">Rule Name</dt>
+          <dd ng-if="record.rule.name">{{ record.rule.name }}</dd>
 
-          <dt>Rule Description</dt>
-          <dd>{{ current.record.rule.description }}</dd>
+          <dt ng-if="record.rule.description">Rule Description</dt>
+          <dd ng-if="record.rule.description">{{ record.rule.description }}</dd>
+
+          <dt>Action</dt>
+          <dd>{{ record.action.name }}</dd>
+
+          <dt>Runner</dt>
+          <dd>{{ record.action.runner_type }}</dd>
 
           <dt>Execution Status</dt>
           <dd>
-            <span class="st2-label" status="current.record.action_execution.status"></span>
+            <span class="st2-label" status="record.action_execution.status"></span>
           </dd>
-
-          <dt>Runner</dt>
-          <dd>{{ current.record.action.runner_type }}</dd>
         </dl>
       </div>
     </div>

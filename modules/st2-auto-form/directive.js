@@ -14,11 +14,32 @@ angular.module('main')
     return {
       restrict: 'C',
       scope: {
-        'spec': '=',
+        'rawSpec': '=spec',
         'result': '='
       },
       templateUrl: 'modules/st2-auto-form/template.html',
       link: function postLink(scope) {
+
+        // Making input spec an array of key-value to be able to use angular filters
+        scope.$watch('rawSpec', function () {
+          scope.spec = _.map(scope.rawSpec, function (v, k) {
+            return {
+              name: k,
+              field: v
+            };
+          });
+        });
+
+        // Predefined filters
+        scope.MUTABLE = function (item) {
+          return !item.field.immutable;
+        };
+
+        scope.POSITION = function (item) {
+          return item.field.position;
+        };
+
+        // Partial router
         scope.getFieldTemplate = function (field) {
           var type;
 
@@ -47,4 +68,6 @@ angular.module('main')
 
       return obj;
     };
-  });
+  })
+
+  ;
