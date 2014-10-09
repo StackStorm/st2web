@@ -1221,7 +1221,14 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
         var limit = url.match(/limit=(\w+)/)[1]
           , offset = url.match(/offset=(\w+)/)[1];
 
-        return [200, actions.slice((+offset), (+offset) + (+limit)), {}];
+        if (limit && limit > 100) {
+          limit = 100;
+        }
+
+        return [200, actions.slice((+offset), (+offset) + (+limit)), {
+          'X-Total-Count': actions.length,
+          'X-Limit': limit
+        }];
       });
 
     _.each(actions, function (action) {
@@ -2735,10 +2742,16 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           , offset = (url.match(/offset=(\w+)/) || [])[1];
 
         id = id === 'null' ? undefined : id;
+        if (limit && limit > 100) {
+          limit = 100;
+        }
 
         return [200, _.filter(history, function (record) {
           return record.parent === id;
-        }).slice((+offset), limit && (+offset) + (+limit)), {}];
+        }).slice((+offset), offset && limit && (+offset) + (+limit)), {
+          'X-Total-Count': history.length,
+          'X-Limit': limit
+        }];
       });
 
 
