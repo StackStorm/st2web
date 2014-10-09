@@ -1263,7 +1263,21 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
       'name': 'st2.person.joe'
     }];
 
-    $httpBackend.whenGET('//localhost/rules').respond(rules);
+    $httpBackend
+      .whenGET(new RegExp('^' + escRegexp('//localhost/rules') + '?(.*)limit='))
+      .respond(function (method, url) {
+        var limit = url.match(/limit=(\w+)/)[1]
+          , offset = url.match(/offset=(\w+)/)[1];
+
+        if (limit && limit > 100) {
+          limit = 100;
+        }
+
+        return [200, rules.slice((+offset), (+offset) + (+limit)), {
+          'X-Total-Count': rules.length,
+          'X-Limit': limit
+        }];
+      });
 
     _.each(rules, function (rule) {
       $httpBackend.whenGET('//localhost/rules/' + rule.id).respond(rule);

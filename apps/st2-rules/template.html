@@ -48,7 +48,18 @@
       </div>
     </div>
 
-    <div class="st2-panel__back-button" ng-click="$root.state.go('^.summary', {id: current.id})"></div>
+    <button class="st2-panel__prev-button"
+        ng-click="prevPage()"
+        ng-if="$root.page > 1">
+      Previous page
+    </button>
+    <button class="st2-panel__next-button"
+        ng-click="nextPage()"
+        ng-if="($root.page || 1) < $root.maxPage">
+      Next page
+    </button>
+
+    <div class="st2-panel__back-button" ng-click="$root.state.go('^.summary', {id: rule.id})"></div>
   </div>
 
   <div class="st2-summary">
@@ -56,12 +67,12 @@
       <div class="st2-summary__heading">
         <h2 class="st2-summary__heading-title">Summary</h2>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.details', {id: current.action.id})"
+            ng-click="$root.state.go('^.details', {id: rule.id})"
             ng-if="!$root.state.includes('*.details')">
           Details
         </button>
         <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.summary', {id: current.action.id})"
+            ng-click="$root.state.go('^.summary', {id: rule.id})"
             ng-if="$root.state.includes('*.details')">
           &lt;- Back
         </button>
@@ -70,13 +81,10 @@
       <div class="st2-summary__body">
         <dl>
           <dt>Name</dt>
-          <dd>{{ current.name }}</dd>
+          <dd>{{ rule.name }}</dd>
 
           <dt>Description</dt>
-          <dd>{{ current.description }}</dd>
-
-          <dt>Lastest Execution</dt>
-          <dd><span class="st2-label" status="'unknown'"></span></dd>
+          <dd>{{ rule.description }}</dd>
         </dl>
       </div>
     </div>
