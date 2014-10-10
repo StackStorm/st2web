@@ -48,6 +48,13 @@ angular.module('main')
         }).then(function (executions) {
           $scope.executions = executions;
         });
+
+        if ($scope.actionHasFile(action)) {
+          st2Api.actionEntryPoints.get(id).then(function (file) {
+            $scope.file = file;
+          });
+        }
+
       });
     });
 
@@ -65,6 +72,13 @@ angular.module('main')
           $scope.executions = executions;
         });
       });
+    };
+
+    //helpers
+    $scope.actionHasFile = function (action) {
+      var runnersWithFiles = ['workflow', 'run-local-script', 'action-chain'];
+
+      return _.contains(runnersWithFiles, action.runner_type);
     };
 
   })
