@@ -1,0 +1,37 @@
+<dl>
+  <dt ng-repeat-start="(task, result) in execution.result">{{ task }}</dt>
+  <dd class="st2-flex-table"
+      ng-repeat-end>
+    <div class="st2-flex-table__header">
+      <div class="st2-flex-table__column st2-action-reporter__column-host">Host</div>
+      <div class="st2-flex-table__column st2-action-reporter__column-status">Status</div>
+      <div class="st2-flex-table__column st2-action-reporter__column-code">Return code</div>
+    </div>
+
+    <div class="st2-flex-table__row"
+        ng-class-odd="'st2-flex-table__row--odd'"
+        ng-class-even="'st2-flex-table__row--even'"
+        ng-repeat-start="(host, res) in result">
+      <div class="st2-flex-table__column st2-action-reporter__column-host">{{ host }}</div>
+      <div class="st2-flex-table__column st2-action-reporter__column-status">
+        <span class="st2-label"
+          status="(res.succeeded && 'succeeded') || (res.failed && 'failed') || 'indeterminate'">
+        </span>
+      </div>
+      <div class="st2-flex-table__column st2-action-reporter__column-code">{{ res.return_code }}</div>
+    </div>
+    <dl class="st2-flex-table__insert"
+        ng-if="res.stdout || res.stderr"
+        ng-repeat-end>
+      <dt ng-if="res.stdout">Output</dt>
+      <dd ng-if="res.stdout">
+        <pre>{{ res.stdout | json }}</pre>
+      </dd>
+
+      <dt ng-if="res.stderr">Error</dt>
+      <dd ng-if="res.stderr">
+        <pre>{{ res.stderr | json }}</pre>
+      </dd>
+    </dl>
+  </dd>
+</dl>

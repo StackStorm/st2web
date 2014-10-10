@@ -201,13 +201,9 @@
         <h2 class="st2-details__panel-title">Action Output</h2>
       </div>
       <div class="st2-details__panel-body">
-        <dt ng-repeat-start="(host, value) in record.execution.result">{{ host }}</dt>
-        <dd>
-          Output: {{ value.stdout | json }}
-        </dd>
-        <dd ng-repeat-end>
-          Error: {{ value.stderr | json }}
-        </dd>
+        <div class="st2-action-reporter"
+          runner="record.runner.name"
+          execution="record.execution"></div>
       </div>
     </div>
   </form>
