@@ -20,12 +20,12 @@
   <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
   </div>
   <div class="st2-flex-table__column st2-history__column-time st2-history-child__column-time">
-    {{ record.action_execution.start_timestamp | date:'mediumTime' }}
+    {{ record.execution.start_timestamp.split(' ').join('T') | date:'mediumTime' }}
   </div>
   <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action">
     {{ record.action.name }}
   </div>
   <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status">
-    <span class="st2-label" status="record.action_execution.status"></span>
+    <span class="st2-label" status="record.execution.status"></span>
   </div>
 </div>

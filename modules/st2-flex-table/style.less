@@ -1,6 +1,6 @@
 .st2-flex-table {
   margin-bottom: 10px;
-  
+
   &__row, &__header {
     display: flex;
     border-bottom: 1px solid #ccc;
@@ -26,14 +26,24 @@
   }
 
   &__row {
-    &:hover {
-      cursor: pointer;
-      background-color: #428bca;
-      color: white;
-    }
+    background-color: #EEE;
 
     &--odd {
       background-color: #E9E9EC;
     }
+  }
+
+  &__row:hover &__column {
+    cursor: pointer;
+    background-color: #428bca;
+    color: white;
+  }
+
+  &__insert {
+    background-color: #EEE;
+
+    padding: 10px;
+
+    flex: 1;
   }
 }

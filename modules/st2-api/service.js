@@ -72,6 +72,10 @@ angular.module('main')
               return _.first(promise.data);
             }
           });
+        } else {
+          action = scope.fetchOne(id).then(function (response) {
+            return response.data;
+          });
         }
 
         return action;
@@ -107,6 +111,7 @@ angular.module('main')
     };
 
     scope.actions = new Client('/actions/views/overview');
+    scope.actionEntryPoints = new Client('/actions/views/entry_point');
     scope.executions = new Client('/actionexecutions');
 
     scope.history = new Client('/history/executions');

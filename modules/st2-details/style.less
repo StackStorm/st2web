@@ -7,6 +7,7 @@
 @import (reference) '/components/bootstrap/less/tables.less';
 @import (reference) '/components/bootstrap/less/buttons.less';
 @import (reference) '/components/bootstrap/less/utilities.less';
+@import (reference) '/components/bootstrap/less/wells.less';
 
 .st2-details {
   #st2-layout > #panel;
@@ -23,6 +24,8 @@
 
   background-color: #F7F3DD;
   color: #737373;
+
+  &__well:extend(.well) {}
 
   &__form-group
   :extend(.form-group) {
@@ -86,6 +89,10 @@
     &-body {
       padding: 20px;
 
+      dl
+      :extend(dl) {
+        margin: 0;
+      }
       dt
       :extend(dt) {
         color: #737373;

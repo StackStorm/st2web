@@ -123,20 +123,26 @@
           <tr>
             <th>Time</th>
             <th>Status</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
             <td>{{ execution.start_timestamp | date:'medium' }}</td>
             <td><div class="st2-label" status="execution.status"></div></td>
-            <td>
-              <a href="#" class="st2-details__button">Re-run</a>
-            </td>
           </tr>
         </tbody>
       </table>
       <a href="#" class="st2-details__button">See all executions</a>
+    </div>
+  </div>
+
+  <div class="st2-details__panel"
+      ng-if="actionHasFile(action)">
+    <div class="st2-details__panel-heading">
+      <h2 class="st2-details__panel-title">File</h2>
+    </div>
+    <div class="st2-details__panel-body">
+      <pre class="st2-details__well">{{ file }}</pre>
     </div>
   </div>
 

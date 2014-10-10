@@ -3,10 +3,11 @@
   for="{{item.name}}">{{ (item.field.name || item.name) | capitalize }}</label>
 
 <input type="input"
-  class="st2-details__form-control"
+  class="st2-details__form-control st2-auto-form__field"
   id="{{item.name}}"
   placeholder="{{item.field.default}}"
-  ng-required="{{item.field.required}}"
-  ng-model="result[item.name]"/>
+  ng-required="item.field.required"
+  ng-model="result[item.name]"
+  ng-disabled="item.field.disabled"/>
 
 <p class="st2-details__help-block">{{ item.field.description }}</p>

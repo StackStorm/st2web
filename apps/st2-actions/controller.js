@@ -41,11 +41,20 @@ angular.module('main')
       st2Api.actions.get(id).then(function (action) {
         $scope.action = action;
 
+        $scope.payload = {};
+
         st2Api.executions.find({
           'action_id': action.id
         }).then(function (executions) {
           $scope.executions = executions;
         });
+
+        if ($scope.actionHasFile(action)) {
+          st2Api.actionEntryPoints.get(id).then(function (file) {
+            $scope.file = file;
+          });
+        }
+
       });
     });
 
@@ -63,6 +72,13 @@ angular.module('main')
           $scope.executions = executions;
         });
       });
+    };
+
+    //helpers
+    $scope.actionHasFile = function (action) {
+      var runnersWithFiles = ['workflow', 'run-local-script', 'action-chain'];
+
+      return _.contains(runnersWithFiles, action.runner_type);
     };
 
   })

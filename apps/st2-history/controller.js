@@ -32,10 +32,17 @@ angular.module('main')
     st2Api.history.$watch('list() | unwrap', function (list) {
       // Group all the records by periods of 24 hour
       var period = 24 * 60 * 60 * 1000;
-      $scope.history = _.groupBy(list, function (record) {
-        var time = record.action_execution.start_timestamp;
+
+      $scope.history = _(list).groupBy(function (record) {
+        // ISO, please!
+        var time = record.execution.start_timestamp.split(' ').join('T');
         return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
-      });
+      }).map(function (records, period) {
+        return {
+          period: period,
+          records: records
+        };
+      }).value();
     });
 
     $rootScope.$watch('state.params.page', function (page) {
@@ -48,6 +55,16 @@ angular.module('main')
       // TODO: figure out why you can't use $filter('unwrap')(...) here
       st2Api.history.get(id).then(function (record) {
         $scope.record = record;
+
+        // Spec and payload to bould a form for the action input. Strict resemblence to form from
+        // Action tab is not guaranteed.
+        $scope.spec = _({}).defaults(record.action.parameters, record.runner.runner_parameters)
+          .mapValues(function (e) {
+            e.disabled = true;
+            return e;
+          }).value();
+
+        $scope.payload = _.clone(record.execution.parameters);
 
         st2Api.history.find({
           'parent': record.parent || record.id

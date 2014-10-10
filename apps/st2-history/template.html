@@ -43,9 +43,9 @@
       </div>
     </nav>
 
-    <div class="st2-panel__panel" ng-repeat="(period, records) in history | unwrap">
+    <div class="st2-panel__panel" ng-repeat="group in history | orderBy:'period':true">
       <div class="st2-panel__heading">
-        <h2 class="st2-panel__heading-title">{{ period | date:'fullDate'}}</h2>
+        <h2 class="st2-panel__heading-title">{{ group.period | date:'fullDate'}}</h2>
       </div>
 
       <div class="st2-flex-table">
@@ -53,15 +53,14 @@
           <div class="st2-flex-table__column st2-history__column-utility"></div>
           <div class="st2-flex-table__column st2-history__column-time">Started At</div>
           <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
-          <div class="st2-flex-table__column st2-history__column-rule">Rule Name</div>
-          <div class="st2-flex-table__column st2-history__column-trigger">Trigger Type</div>
+          <div class="st2-flex-table__column st2-history__column-triggered">Triggered By</div>
           <div class="st2-flex-table__column st2-history__column-status">Status</div>
         </div>
 
         <div class="st2-flex-table__row"
             ng-class-odd="'st2-flex-table__row--odd'"
             ng-class-even="'st2-flex-table__row--even'"
-            ng-repeat-start="record in records"
+            ng-repeat-start="record in group.records"
             ng-click="$root.state.go('^.summary', {id: record.id})"
             tabindex="-1">
           <div class="st2-flex-table__column st2-history__column-utility">
@@ -70,19 +69,18 @@
             </i>
           </div>
           <div class="st2-flex-table__column st2-history__column-time">
-            {{ record.action_execution.start_timestamp | date:'mediumTime' }}
+            {{ record.execution.start_timestamp.split(' ').join('T') | date:'mediumTime' }}
           </div>
           <div class="st2-flex-table__column st2-history__column-action">
             {{ record.action.name }}
           </div>
-          <div class="st2-flex-table__column st2-history__column-rule">
-            {{ record.rule.name }}
-          </div>
-          <div class="st2-flex-table__column st2-history__column-trigger">
-            {{ record.trigger.type }}
+          <div class="st2-flex-table__column st2-history__column-triggered"
+              ng-switch="record.rule && record.trigger && true">
+            <span ng-switch-when="true">{{ record.rule.name }} ({{ record.trigger.type }})</span>
+            <span ng-switch-default>Manual</span>
           </div>
           <div class="st2-flex-table__column st2-history__column-status">
-            <span class="st2-label" status="record.action_execution.status"></span>
+            <span class="st2-label" status="record.execution.status"></span>
           </div>
         </div>
         <div class="st2-history-child"
@@ -95,8 +93,7 @@
           <div class="st2-flex-table__column st2-history__column-utility"></div>
           <div class="st2-flex-table__column st2-history__column-time">Started At</div>
           <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
-          <div class="st2-flex-table__column st2-history__column-rule">Rule Name</div>
-          <div class="st2-flex-table__column st2-history__column-trigger">Trigger Type</div>
+          <div class="st2-flex-table__column st2-history__column-triggered">Triggered By</div>
           <div class="st2-flex-table__column st2-history__column-status">Status</div>
         </div>
 
@@ -150,7 +147,7 @@
 
           <dt>Execution Status</dt>
           <dd>
-            <span class="st2-label" status="record.action_execution.status"></span>
+            <span class="st2-label" status="record.execution.status"></span>
           </dd>
         </dl>
       </div>
@@ -166,95 +163,43 @@
         <h2 class="st2-details__panel-title">Action Input</h2>
       </div>
       <div class="st2-details__panel-body">
-        <div class="st2-details__form-group">
-          <label for="parameter1">Parameter 1</label>
-          <input type="input" class="st2-details__form-control" id="parameter1" value="Parameter value 1">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
+        <div class="st2-auto-form"
+          spec="spec"
+          result="payload">
         </div>
-        <div class="st2-details__form-group">
-          <label for="parameter2">Parameter 2</label>
-          <input type="input" class="st2-details__form-control" id="parameter2" value="Parameter value 2">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter3">Parameter 3</label>
-          <input type="input" class="st2-details__form-control" id="parameter3" value="Parameter value 3">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter4">Parameter 4</label>
-          <input type="input" class="st2-details__form-control" id="parameter4" value="Parameter value 4">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter5">Parameter 5</label>
-          <input type="input" class="st2-details__form-control" id="parameter5" value="Parameter value 5">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter6">Parameter 6</label>
-          <input type="input" class="st2-details__form-control" id="parameter6" value="Parameter value 6">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter7">Parameter 7</label>
-          <input type="input" class="st2-details__form-control" id="parameter7" value="Parameter value 7">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter8">Parameter 8</label>
-          <input type="input" class="st2-details__form-control" id="parameter8" value="Parameter value 8">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter9">Parameter 9</label>
-          <input type="input" class="st2-details__form-control" id="parameter9" value="Parameter value 9">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter10">Parameter 10</label>
-          <input type="input" class="st2-details__form-control" id="parameter10" value="Parameter value 10">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter11">Parameter 11</label>
-          <input type="input" class="st2-details__form-control" id="parameter11" value="Parameter value 11">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter12">Parameter 12</label>
-          <input type="input" class="st2-details__form-control" id="parameter12" value="Parameter value 12">
-          <p class="st2-details__help-block">Description or help text goes here.</p>
-        </div>
-
-        <button type="submit" class="st2-details__button">Re-run</button>
       </div>
     </div>
 
     <div class="st2-details__panel">
       <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">Trigger Details</h2>
+        <h2 class="st2-details__panel-title">History Record Details</h2>
       </div>
       <div class="st2-details__panel-body">
         <dl>
-          <dt>Rule Name</dt>
-          <dd>Name goes here</dd>
+          <dt ng-if="record.rule.name">Rule Name</dt>
+          <dd ng-if="record.rule.name">{{ record.rule.name }}</dd>
 
-          <dt>Rule Description</dt>
-          <dd>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</dd>
+          <dt ng-if="record.rule.description">Rule Description</dt>
+          <dd ng-if="record.rule.description">{{ record.rule.description }}</dd>
 
-          <dt>Trigger Name</dt>
-          <dd>Name goes here</dd>
+          <dt ng-if="record.trigger.name">Trigger Name</dt>
+          <dd ng-if="record.trigger.name">{{ record.trigger.name }}</dd>
 
-          <dt>Trigger Instance Details</dt>
-          <dd>
-            <label for="parameter12">Time</label>
-            <input type="input" class="st2-details__form-control" id="parameter12" readonly value="12:33 PST 10/12/2014">
-
-            <label for="parameter12">Result</label>
-            <textarea class="st2-details__form-control" readonly rows="6" cols="50">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </textarea>
+          <dt ng-if="record.trigger_instance.occurrence_time">Occurrence time</dt>
+          <dd ng-if="record.trigger_instance.occurrence_time">
+            {{ record.trigger_instance.occurrence_time | date:'medium' }}
           </dd>
+
+          <dt ng-if="record.trigger_instance.payload">Trigger payload</dt>
+          <dd ng-if="record.trigger_instance.payload">
+            {{ record.trigger_instance.payload | json }}
+          </dd>
+
+          <dt>Action</dt>
+          <dd>{{ record.action.name }}</dd>
+
+          <dt>Runner</dt>
+          <dd>{{ record.action.runner_type }}</dd>
         </dl>
       </div>
     </div>
@@ -264,54 +209,9 @@
         <h2 class="st2-details__panel-title">Action Output</h2>
       </div>
       <div class="st2-details__panel-body">
-        <div class="st2-details__form-group">
-          <label for="parameter1">Parameter 1</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter1" readonly value="Parameter value 1">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter2">Parameter 2</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter2" readonly value="Parameter value 2">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter3">Parameter 3</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter3" readonly value="Parameter value 3">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter4">Parameter 4</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter4" readonly value="Parameter value 4">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter5">Parameter 5</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter5" readonly value="Parameter value 5">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter6">Parameter 6</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter6" readonly value="Parameter value 6">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter7">Parameter 7</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter7" readonly value="Parameter value 7">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter8">Parameter 8</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter8" readonly value="Parameter value 8">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter9">Parameter 9</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter9" readonly value="Parameter value 9">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter10">Parameter 10</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter10" readonly value="Parameter value 10">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter11">Parameter 11</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter11" readonly value="Parameter value 11">
-        </div>
-        <div class="st2-details__form-group">
-          <label for="parameter12">Parameter 12</label>
-          <input type="input" class="st2-details__form-control st2-details__form-control--non-editable" id="parameter12" readonly value="Parameter value 12">
-        </div>
+        <div class="st2-action-reporter"
+          runner="record.runner.name"
+          execution="record.execution"></div>
       </div>
     </div>
   </form>
