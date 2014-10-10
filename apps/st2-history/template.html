@@ -163,14 +163,16 @@
         <h2 class="st2-details__panel-title">Action Input</h2>
       </div>
       <div class="st2-details__panel-body">
-        <dt ng-repeat-start="(name, value) in record.execution.parameters">{{ name }}</dt>
-        <dd ng-repeat-end>{{ value }}</dd>
+        <div class="st2-auto-form"
+          spec="spec"
+          result="payload">
+        </div>
       </div>
     </div>
 
     <div class="st2-details__panel">
       <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">Trigger Details</h2>
+        <h2 class="st2-details__panel-title">History Record Details</h2>
       </div>
       <div class="st2-details__panel-body">
         <dl>
@@ -192,6 +194,12 @@
           <dd ng-if="record.trigger_instance.payload">
             {{ record.trigger_instance.payload | json }}
           </dd>
+
+          <dt>Action</dt>
+          <dd>{{ record.action.name }}</dd>
+
+          <dt>Runner</dt>
+          <dd>{{ record.action.runner_type }}</dd>
         </dl>
       </div>
     </div>
