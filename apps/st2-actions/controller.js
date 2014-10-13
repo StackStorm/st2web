@@ -26,7 +26,7 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2Api) {
+  .controller('st2ActionsCtrl', function ($scope, st2Api, $q) {
 
     $scope._api = st2Api;
 
@@ -46,7 +46,8 @@ angular.module('main')
         $scope.payload = {};
 
         st2Api.executions.find({
-          'action_id': action.id
+          'action_id': action.id,
+          'limit': 5
         }).then(function (executions) {
           $scope.executions = executions;
         });
@@ -62,16 +63,46 @@ angular.module('main')
 
     // Running an action
     $scope.runAction = function (actionName, payload) {
+      var retry = function (fn, condition) {
+        var defer = $q.defer()
+          , TIMEOUT = 1000;
+
+        _.delay(function () {
+          fn()
+            .catch(defer.reject)
+            .then(function (result) {
+              if (condition(result)) {
+                defer.resolve(result);
+              } else {
+                retry(fn, condition);
+              }
+            });
+        }, TIMEOUT);
+
+        return defer.promise;
+      };
+
       st2Api.executions.create({
         action: {
           name: actionName
         },
         parameters: payload
       }).then(function (execution) {
-        st2Api.executions.find({
-          'action_id': execution.action.id
-        }).then(function (executions) {
-          $scope.executions = executions;
+        var index = $scope.executions.length;
+
+        $scope.executions[index] = execution;
+
+        var updateExecution = function () {
+          return st2Api.executions.get(execution.id)
+            .then(function (result) {
+              $scope.executions[index] = result;
+              return result;
+            });
+        };
+
+        retry(updateExecution, function (execution) {
+          var finalStates = ['succeeded', 'failed'];
+          return _.contains(finalStates, execution.status);
         });
       });
     };
