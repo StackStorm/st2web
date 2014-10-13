@@ -32,7 +32,7 @@ angular.module('main')
 
     $scope._api = st2Api;
 
-    $scope.$watch('_.api.rules.list() | unwrap', function (list) {
+    $scope.$watch('_api.rules.list() | unwrap', function (list) {
       $scope.rules = list;
     });
 

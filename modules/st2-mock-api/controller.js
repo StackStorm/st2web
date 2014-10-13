@@ -1238,6 +1238,14 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
     });
 
 
+    var entryPointUrl = '//localhost/actions/views/entry_point';
+
+    $httpBackend
+      .whenGET(new RegExp('^' + escRegexp(entryPointUrl)))
+      .respond(function () {
+        return [200, '-- some long text --', {}];
+      });
+
     var rules = [{
       'description': 'Sample rule dumping webhook payload to a file.',
       'enabled': true,
@@ -2396,7 +2404,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'id': '540ebdfa0640fd7065e903d3',
           'description': 'Action that executes an arbitrary Linux command on the localhost.'
         },
-        'action_execution': {
+        'execution': {
           'action': {
             'id': '540ebdfa0640fd7065e903d3',
             'name': 'local'
@@ -2421,6 +2429,43 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           },
           'start_timestamp': '2014-09-10T08:15:42.823Z',
           'status': 'complete'
+        },
+        'runner': {
+          'description': 'A runner to execute local actions as a fixed user.',
+          'enabled': true,
+          'id': '542505930640fd0d79b7038d',
+          'name': 'run-local',
+          'required_parameters': [],
+          'runner_module': 'st2actions.runners.fabricrunner',
+          'runner_parameters': {
+            'cmd': {
+              'description': 'Arbitrary Linux command to be executed on the host.',
+              'type': 'string'
+            },
+            'dir': {
+              'description': 'The working directory where the command will be executed on the host.',
+              'type': 'string'
+            },
+            'hosts': {
+              'default': 'localhost',
+              'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+              'type': 'string'
+            },
+            'parallel': {
+              'default': false,
+              'description': 'If true, the command will be executed on all the hosts in parallel.',
+              'type': 'boolean'
+            },
+            'sudo': {
+              'default': false,
+              'description': 'The command will be executed with sudo.',
+              'type': 'boolean'
+            },
+            'user': {
+              'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+              'type': 'string'
+            }
+          }
         },
         'id': '541008ae0640fd68d6da360f',
         'rule': {
@@ -2474,7 +2519,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'id': '540ebdfa0640fd7065e903d3',
           'description': 'Action that executes an arbitrary Linux command on the localhost.'
         },
-        'action_execution': {
+        'execution': {
           'action': {
             'id': '540ebdfa0640fd7065e903d3',
             'name': 'local'
@@ -2499,6 +2544,43 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           },
           'start_timestamp': '2014-09-10T08:18:57.652Z',
           'status': 'complete'
+        },
+        'runner': {
+          'description': 'A runner to execute local actions as a fixed user.',
+          'enabled': true,
+          'id': '542505930640fd0d79b7038d',
+          'name': 'run-local',
+          'required_parameters': [],
+          'runner_module': 'st2actions.runners.fabricrunner',
+          'runner_parameters': {
+            'cmd': {
+              'description': 'Arbitrary Linux command to be executed on the host.',
+              'type': 'string'
+            },
+            'dir': {
+              'description': 'The working directory where the command will be executed on the host.',
+              'type': 'string'
+            },
+            'hosts': {
+              'default': 'localhost',
+              'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+              'type': 'string'
+            },
+            'parallel': {
+              'default': false,
+              'description': 'If true, the command will be executed on all the hosts in parallel.',
+              'type': 'boolean'
+            },
+            'sudo': {
+              'default': false,
+              'description': 'The command will be executed with sudo.',
+              'type': 'boolean'
+            },
+            'user': {
+              'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+              'type': 'string'
+            }
+          }
         },
         'id': '541009710640fd69ab95fce3',
         'rule': {
@@ -2552,7 +2634,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'id': '540ebdfa0640fd7065e903d3',
           'description': 'Action that executes an arbitrary Linux command on the localhost.'
         },
-        'action_execution': {
+        'execution': {
           'action': {
             'id': '540ebdfa0640fd7065e903d3',
             'name': 'local'
@@ -2577,6 +2659,43 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           },
           'start_timestamp': '2014-09-10T08:21:44.076Z',
           'status': 'complete'
+        },
+        'runner': {
+          'description': 'A runner to execute local actions as a fixed user.',
+          'enabled': true,
+          'id': '542505930640fd0d79b7038d',
+          'name': 'run-local',
+          'required_parameters': [],
+          'runner_module': 'st2actions.runners.fabricrunner',
+          'runner_parameters': {
+            'cmd': {
+              'description': 'Arbitrary Linux command to be executed on the host.',
+              'type': 'string'
+            },
+            'dir': {
+              'description': 'The working directory where the command will be executed on the host.',
+              'type': 'string'
+            },
+            'hosts': {
+              'default': 'localhost',
+              'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+              'type': 'string'
+            },
+            'parallel': {
+              'default': false,
+              'description': 'If true, the command will be executed on all the hosts in parallel.',
+              'type': 'boolean'
+            },
+            'sudo': {
+              'default': false,
+              'description': 'The command will be executed with sudo.',
+              'type': 'boolean'
+            },
+            'user': {
+              'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+              'type': 'string'
+            }
+          }
         },
         'id': '54100a180640fd6a84f837ed',
         'rule': {
@@ -2631,7 +2750,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'id': '540ebdfa0640fd7065e903d3',
           'description': 'Action that executes an arbitrary Linux command on the localhost.'
         },
-        'action_execution': {
+        'execution': {
           'action': {
             'id': '540ebdfa0640fd7065e903d3',
             'name': 'local'
@@ -2657,6 +2776,43 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'start_timestamp': '2014-09-10T08:15:42.823Z',
           'status': 'complete'
         },
+        'runner': {
+          'description': 'A runner to execute local actions as a fixed user.',
+          'enabled': true,
+          'id': '542505930640fd0d79b7038d',
+          'name': 'run-local',
+          'required_parameters': [],
+          'runner_module': 'st2actions.runners.fabricrunner',
+          'runner_parameters': {
+            'cmd': {
+              'description': 'Arbitrary Linux command to be executed on the host.',
+              'type': 'string'
+            },
+            'dir': {
+              'description': 'The working directory where the command will be executed on the host.',
+              'type': 'string'
+            },
+            'hosts': {
+              'default': 'localhost',
+              'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+              'type': 'string'
+            },
+            'parallel': {
+              'default': false,
+              'description': 'If true, the command will be executed on all the hosts in parallel.',
+              'type': 'boolean'
+            },
+            'sudo': {
+              'default': false,
+              'description': 'The command will be executed with sudo.',
+              'type': 'boolean'
+            },
+            'user': {
+              'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+              'type': 'string'
+            }
+          }
+        },
         'id': '541008ae0640fd68d6da360a',
         'parent': '541008ae0640fd68d6da360f'
       }, {
@@ -2670,7 +2826,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'id': '540ebdfa0640fd7065e903d3',
           'description': 'Action that executes an arbitrary Linux command on the localhost.'
         },
-        'action_execution': {
+        'execution': {
           'action': {
             'id': '540ebdfa0640fd7065e903d3',
             'name': 'local'
@@ -2696,6 +2852,43 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'start_timestamp': '2014-09-10T08:18:57.652Z',
           'status': 'complete'
         },
+        'runner': {
+          'description': 'A runner to execute local actions as a fixed user.',
+          'enabled': true,
+          'id': '542505930640fd0d79b7038d',
+          'name': 'run-local',
+          'required_parameters': [],
+          'runner_module': 'st2actions.runners.fabricrunner',
+          'runner_parameters': {
+            'cmd': {
+              'description': 'Arbitrary Linux command to be executed on the host.',
+              'type': 'string'
+            },
+            'dir': {
+              'description': 'The working directory where the command will be executed on the host.',
+              'type': 'string'
+            },
+            'hosts': {
+              'default': 'localhost',
+              'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+              'type': 'string'
+            },
+            'parallel': {
+              'default': false,
+              'description': 'If true, the command will be executed on all the hosts in parallel.',
+              'type': 'boolean'
+            },
+            'sudo': {
+              'default': false,
+              'description': 'The command will be executed with sudo.',
+              'type': 'boolean'
+            },
+            'user': {
+              'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+              'type': 'string'
+            }
+          }
+        },
         'id': '541009710640fd69ab95fceb',
         'parent': '541008ae0640fd68d6da360f',
       }, {
@@ -2709,7 +2902,7 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           'id': '540ebdfa0640fd7065e903d3',
           'description': 'Action that executes an arbitrary Linux command on the localhost.'
         },
-        'action_execution': {
+        'execution': {
           'action': {
             'id': '540ebdfa0640fd7065e903d3',
             'name': 'local'
@@ -2734,6 +2927,43 @@ angular.module('mockMain', ['main', 'ngMockE2E'])
           },
           'start_timestamp': '2014-09-10T08:21:44.076Z',
           'status': 'complete'
+        },
+        'runner': {
+          'description': 'A runner to execute local actions as a fixed user.',
+          'enabled': true,
+          'id': '542505930640fd0d79b7038d',
+          'name': 'run-local',
+          'required_parameters': [],
+          'runner_module': 'st2actions.runners.fabricrunner',
+          'runner_parameters': {
+            'cmd': {
+              'description': 'Arbitrary Linux command to be executed on the host.',
+              'type': 'string'
+            },
+            'dir': {
+              'description': 'The working directory where the command will be executed on the host.',
+              'type': 'string'
+            },
+            'hosts': {
+              'default': 'localhost',
+              'description': 'A comma delimited string of a list of hosts where the command will be executed.',
+              'type': 'string'
+            },
+            'parallel': {
+              'default': false,
+              'description': 'If true, the command will be executed on all the hosts in parallel.',
+              'type': 'boolean'
+            },
+            'sudo': {
+              'default': false,
+              'description': 'The command will be executed with sudo.',
+              'type': 'boolean'
+            },
+            'user': {
+              'description': 'The user who is executing this command. This is for audit purposes only. The command will always execute as the user stanley.',
+              'type': 'string'
+            }
+          }
         },
         'id': '54100a180640fd6a84f837ec',
         'parent': '541008ae0640fd68d6da360f',
