@@ -126,7 +126,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
+          <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true | limitTo:5" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
             <td>{{ execution.start_timestamp | date:'medium' }}</td>
             <td><div class="st2-label" status="execution.status"></div></td>
           </tr>
