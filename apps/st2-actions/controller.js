@@ -26,17 +26,19 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2Api, $rootScope) {
+  .controller('st2ActionsCtrl', function ($scope, st2Api) {
 
-    st2Api.actions.$watch('list() | unwrap', function (list) {
+    $scope._api = st2Api;
+
+    $scope.$watch('_api.actions.list() | unwrap', function (list) {
       $scope.groups = list && _.groupBy(list, 'content_pack');
     });
 
-    $rootScope.$watch('state.params.page', function (page) {
+    $scope.$watch('$root.state.params.page', function (page) {
       st2Api.actions.fetch(page);
     });
 
-    $rootScope.$watch('state.params.id', function (id) {
+    $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
       st2Api.actions.get(id).then(function (action) {
         $scope.action = action;
@@ -78,7 +80,7 @@ angular.module('main')
     $scope.actionHasFile = function (action) {
       var runnersWithFiles = ['workflow', 'run-local-script', 'action-chain'];
 
-      return _.contains(runnersWithFiles, action.runner_type);
+      return action && _.contains(runnersWithFiles, action.runner_type);
     };
 
   })

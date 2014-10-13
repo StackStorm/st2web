@@ -28,16 +28,19 @@ angular.module('main')
 angular.module('main')
 
   // List rules
-  .controller('st2RulesCtrl', function ($scope, st2Api, $rootScope) {
-    st2Api.rules.$watch('list() | unwrap', function (list) {
+  .controller('st2RulesCtrl', function ($scope, st2Api) {
+
+    $scope._api = st2Api;
+
+    $scope.$watch('_.api.rules.list() | unwrap', function (list) {
       $scope.rules = list;
     });
 
-    $rootScope.$watch('state.params.page', function (page) {
+    $scope.$watch('$root.state.params.page', function (page) {
       st2Api.rules.fetch(page);
     });
 
-    $rootScope.$watch('state.params.id', function (id) {
+    $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
       st2Api.rules.get(id).then(function (rule) {
         $scope.rule = rule;
