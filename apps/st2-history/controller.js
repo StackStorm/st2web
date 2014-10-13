@@ -27,9 +27,11 @@ angular.module('main')
 angular.module('main')
 
   // List history records
-  .controller('st2HistoryCtrl', function ($scope, st2Api, $rootScope) {
+  .controller('st2HistoryCtrl', function ($scope, st2Api) {
 
-    st2Api.history.$watch('list() | unwrap', function (list) {
+    $scope._api = st2Api;
+
+    $scope.$watch('_api.history.list() | unwrap', function (list) {
       // Group all the records by periods of 24 hour
       var period = 24 * 60 * 60 * 1000;
 
@@ -45,18 +47,18 @@ angular.module('main')
       }).value();
     });
 
-    $rootScope.$watch('state.params.page', function (page) {
+    $scope.$watch('$root.state.params.page', function (page) {
       st2Api.history.fetch(page, {
         parent: 'null'
       });
     });
 
-    $rootScope.$watch('state.params.id', function (id) {
+    $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
       st2Api.history.get(id).then(function (record) {
         $scope.record = record;
 
-        // Spec and payload to bould a form for the action input. Strict resemblence to form from
+        // Spec and payload to build a form for the action input. Strict resemblence to form from
         // Action tab is not guaranteed.
         $scope.spec = _({}).defaults(record.action.parameters, record.runner.runner_parameters)
           .mapValues(function (e) {
