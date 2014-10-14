@@ -11,13 +11,13 @@ angular.module('main')
         title: 'History'
       })
       .state('history.list', {
-        url: '?page'
+        url: '?page&action_id'
       })
       .state('history.summary', {
-        url: '/{id:\\w+}?page'
+        url: '/{id:\\w+}?page&action_id'
       })
       .state('history.details', {
-        url: '/{id:\\w+}/details?page'
+        url: '/{id:\\w+}/details?page&action_id'
       })
 
       ;
@@ -49,7 +49,8 @@ angular.module('main')
 
     $scope.$watch('$root.state.params.page', function (page) {
       st2Api.history.fetch(page, {
-        parent: 'null'
+        parent: 'null',
+        action_id: $scope.$root.state.params.action_id
       });
     });
 
