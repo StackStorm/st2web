@@ -104,7 +104,15 @@
 
   <div class="st2-details__panel">
     <div class="st2-details__panel-heading">
-      <h2 class="st2-details__panel-title">Executions</h2>
+      <h2 class="st2-details__panel-title">
+        Executions
+        <i class="st2-details__reload-button st2-icon__reload"
+          ng-class="{
+            'animate-spin': inProgress,
+            'st2-details__reload-button--in-progress': inProgress
+          }"
+          ng-click="inProgress || reloadExecutions(action.id)"></i>
+      </h2>
     </div>
     <div class="st2-details__panel-body">
       <table class="st2-details__table">

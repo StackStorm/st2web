@@ -7,6 +7,12 @@
 	"ascent": 850,
 	"glyphs": [
 		{
+			"uid": "2a6740fc2f9d0edea54205963f662594",
+			"css": "reload",
+			"code": 59399,
+			"src": "fontelico"
+		},
+		{
 			"uid": "499b745a2e2485bdd059c3a53d048e5f",
 			"css": "cancel",
 			"code": 59394,
@@ -37,5 +43,5 @@
 			"src": "elusive"
 		}
 	],
-	"session": "eff524e2e453a88deb9329222544e349"
+	"session": "d57680f8c6450831f9195a9a8861e384"
 }

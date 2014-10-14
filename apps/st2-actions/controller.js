@@ -43,12 +43,7 @@ angular.module('main')
 
         $scope.payload = {};
 
-        st2Api.executions.find({
-          'action_id': action.id,
-          'limit': 5
-        }).then(function (executions) {
-          $scope.executions = executions;
-        });
+        $scope.reloadExecutions(action.id);
 
         if ($scope.actionHasFile(action)) {
           st2Api.actionEntryPoints.get(id).then(function (file) {
@@ -58,6 +53,18 @@ angular.module('main')
 
       });
     });
+
+    $scope.reloadExecutions = function (action_id) {
+      $scope.inProgress = true;
+
+      st2Api.executions.find({
+        'action_id': action_id,
+        'limit': 5
+      }).then(function (executions) {
+        $scope.inProgress = false;
+        $scope.executions = executions;
+      });
+    };
 
     // Running an action
     $scope.runAction = function (actionName, payload) {
@@ -72,7 +79,11 @@ angular.module('main')
               if (condition(result)) {
                 defer.resolve(result);
               } else {
-                retry(fn, condition);
+                retry(fn, condition).then(function (result) {
+                  // this function would be launched once for every retry which may be an
+                  // unpleasant overhead on some long running tasks. TODO: refactor eventually.
+                  defer.resolve(result);
+                });
               }
             });
         }, TIMEOUT);
@@ -98,9 +109,13 @@ angular.module('main')
             });
         };
 
+        $scope.inProgress = true;
+
         retry(updateExecution, function (execution) {
           var finalStates = ['succeeded', 'failed'];
           return _.contains(finalStates, execution.status);
+        }).finally(function () {
+          $scope.inProgress = false;
         });
       });
     };
