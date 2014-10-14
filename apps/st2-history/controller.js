@@ -68,26 +68,28 @@ angular.module('main')
           }).value();
 
         $scope.payload = _.clone(record.execution.parameters);
-
-        st2Api.history.find({
-          'parent': record.parent || record.id
-        }).then(function (records) {
-          $scope.children = records;
-        });
       });
     });
+
+    $scope.expand = function (record) {
+      record._expanded = true;
+
+      return st2Api.history.find({
+        'parent': record.id
+      }).then(function (records) {
+        record._children = records;
+      });
+    };
+
+    $scope.contract = function (record) {
+      record._expanded = false;
+      return true;
+    };
 
     // helpers
     $scope.isExpandable = function (record) {
       var runnerWithChilds = ['workflow', 'action-chain'];
       return runnerWithChilds.indexOf(record.action.runner_type) !== -1;
-    };
-
-    $scope.isCurrent = function (record) {
-      if (record) {
-        var current = $scope.record;
-        return current && (record.id === current.id || record.id === current.parent);
-      }
     };
   })
 

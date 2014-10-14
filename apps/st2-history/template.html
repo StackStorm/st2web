@@ -61,10 +61,11 @@
             ng-class-odd="'st2-flex-table__row--odd'"
             ng-class-even="'st2-flex-table__row--even'"
             ng-repeat-start="record in group.records"
-            ng-click="$root.state.go('^.summary', {id: record.id})"
-            tabindex="-1">
-          <div class="st2-flex-table__column st2-history__column-utility">
-            <i ng-class="isCurrent(record) && 'st2-icon__expanded' || 'st2-icon__contracted'"
+            ng-click="$root.state.go('^.summary', {id: record.id})">
+          <div class="st2-flex-table__column st2-history__column-utility"
+              ng-click="isExpandable(record) &&
+                (record._expanded && contract(record) || expand(record))">
+            <i ng-class="record._expanded && 'st2-icon__expanded' || 'st2-icon__contracted'"
                 ng-if="isExpandable(record)">
             </i>
           </div>
@@ -84,12 +85,12 @@
           </div>
         </div>
         <div class="st2-history-child"
-            children="children | unwrap"
-            ng-if="isExpandable(record) && isCurrent(record)">
+            children="record._children"
+            ng-if="isExpandable(record) && record._expanded">
         </div>
         <div ng-repeat-end
             class="st2-flex-table__header"
-            ng-if="isExpandable(record) && isCurrent(record) && !$last">
+            ng-if="isExpandable(record) && record._expanded && !$last">
           <div class="st2-flex-table__column st2-history__column-utility"></div>
           <div class="st2-flex-table__column st2-history__column-time">Started At</div>
           <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
