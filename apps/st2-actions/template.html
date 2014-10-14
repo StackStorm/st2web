@@ -35,17 +35,6 @@
       </div>
     </div>
 
-    <button class="st2-panel__prev-button"
-        ng-click="prevPage()"
-        ng-if="$root.page > 1">
-      Previous page
-    </button>
-    <button class="st2-panel__next-button"
-        ng-click="nextPage()"
-        ng-if="($root.page || 1) < $root.maxPage">
-      Next page
-    </button>
-
     <div class="st2-panel__back-button"
       ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})">
     </div>
@@ -115,7 +104,15 @@
 
   <div class="st2-details__panel">
     <div class="st2-details__panel-heading">
-      <h2 class="st2-details__panel-title">Executions</h2>
+      <h2 class="st2-details__panel-title">
+        Executions
+        <i class="st2-details__reload-button st2-icon__reload"
+          ng-class="{
+            'animate-spin': inProgress,
+            'st2-details__reload-button--in-progress': inProgress
+          }"
+          ng-click="inProgress || reloadExecutions(action.id)"></i>
+      </h2>
     </div>
     <div class="st2-details__panel-body">
       <table class="st2-details__table">
@@ -132,7 +129,10 @@
           </tr>
         </tbody>
       </table>
-      <a href="#" class="st2-details__button">See all executions</a>
+      <a class="st2-details__button"
+          ui-sref="history.list({action_id: action.id})">
+        See all executions
+      </a>
     </div>
   </div>
 

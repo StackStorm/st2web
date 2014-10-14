@@ -8,6 +8,7 @@
 @import (reference) '/components/bootstrap/less/buttons.less';
 @import (reference) '/components/bootstrap/less/utilities.less';
 @import (reference) '/components/bootstrap/less/wells.less';
+@import (reference) '/font/ststanley.css';
 
 .st2-details {
   #st2-layout > #panel;
@@ -156,5 +157,13 @@
 
     &--right:extend(.pull-right) {}
     &--left:extend(.pull-left) {}
+  }
+
+  &__reload-button {
+    cursor: pointer;
+
+    &--in-progress {
+      cursor: default;
+    }
   }
 }

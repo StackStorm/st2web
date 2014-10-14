@@ -7,6 +7,36 @@
 	"ascent": 850,
 	"glyphs": [
 		{
+			"uid": "2a6740fc2f9d0edea54205963f662594",
+			"css": "reload",
+			"code": 59398,
+			"src": "fontelico"
+		},
+		{
+			"uid": "d4816c0845aa43767213d45574b3b145",
+			"css": "history",
+			"code": 59401,
+			"src": "fontawesome"
+		},
+		{
+			"uid": "9755f76110ae4d12ac5f9466c9152031",
+			"css": "rules",
+			"code": 59400,
+			"src": "fontawesome"
+		},
+		{
+			"uid": "8aa99bc60f3553bb3e31b73dd6e744c8",
+			"css": "actions",
+			"code": 59397,
+			"src": "fontawesome"
+		},
+		{
+			"uid": "898ddc67cb7d9ae53dbd4cce78043e9e",
+			"css": "flow-cascade",
+			"code": 59399,
+			"src": "entypo"
+		},
+		{
 			"uid": "499b745a2e2485bdd059c3a53d048e5f",
 			"css": "cancel",
 			"code": 59394,
@@ -37,5 +67,5 @@
 			"src": "elusive"
 		}
 	],
-	"session": "eff524e2e453a88deb9329222544e349"
+	"session": "9ea686d9c5a3391ae73c8f29950711c5"
 }

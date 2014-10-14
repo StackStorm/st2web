@@ -6,18 +6,19 @@ angular.module('main')
       .state('history', {
         abstract: true,
         url: '/history',
+        icon: 'st2-icon__history',
         controller: 'st2HistoryCtrl',
         templateUrl: 'apps/st2-history/template.html',
         title: 'History'
       })
       .state('history.list', {
-        url: '?page'
+        url: '?page&action_id'
       })
       .state('history.summary', {
-        url: '/{id:\\w+}?page'
+        url: '/{id:\\w+}?page&action_id'
       })
       .state('history.details', {
-        url: '/{id:\\w+}/details?page'
+        url: '/{id:\\w+}/details?page&action_id'
       })
 
       ;
@@ -49,7 +50,8 @@ angular.module('main')
 
     $scope.$watch('$root.state.params.page', function (page) {
       st2Api.history.fetch(page, {
-        parent: 'null'
+        parent: 'null',
+        action_id: $scope.$root.state.params.action_id
       });
     });
 
@@ -67,26 +69,28 @@ angular.module('main')
           }).value();
 
         $scope.payload = _.clone(record.execution.parameters);
-
-        st2Api.history.find({
-          'parent': record.parent || record.id
-        }).then(function (records) {
-          $scope.children = records;
-        });
       });
     });
+
+    $scope.expand = function (record) {
+      record._expanded = true;
+
+      return st2Api.history.find({
+        'parent': record.id
+      }).then(function (records) {
+        record._children = records;
+      });
+    };
+
+    $scope.contract = function (record) {
+      record._expanded = false;
+      return true;
+    };
 
     // helpers
     $scope.isExpandable = function (record) {
       var runnerWithChilds = ['workflow', 'action-chain'];
       return runnerWithChilds.indexOf(record.action.runner_type) !== -1;
-    };
-
-    $scope.isCurrent = function (record) {
-      if (record) {
-        var current = $scope.record;
-        return current && (record.id === current.id || record.id === current.parent);
-      }
     };
   })
 

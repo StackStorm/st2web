@@ -6,18 +6,19 @@ angular.module('main')
       .state('actions', {
         abstract: true,
         url: '/actions',
+        icon: 'st2-icon__actions',
         controller: 'st2ActionsCtrl',
         templateUrl: 'apps/st2-actions/template.html',
         title: 'Actions'
       })
       .state('actions.list', {
-        url: '?page'
+        url: ''
       })
       .state('actions.summary', {
-        url: '/{id:\\w+}?page'
+        url: '/{id:\\w+}'
       })
       .state('actions.details', {
-        url: '/{id:\\w+}/details?page'
+        url: '/{id:\\w+}/details'
       })
 
       ;
@@ -34,9 +35,7 @@ angular.module('main')
       $scope.groups = list && _.groupBy(list, 'content_pack');
     });
 
-    $scope.$watch('$root.state.params.page', function (page) {
-      st2Api.actions.fetch(page);
-    });
+    st2Api.actions.fetchAll();
 
     $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
@@ -45,12 +44,7 @@ angular.module('main')
 
         $scope.payload = {};
 
-        st2Api.executions.find({
-          'action_id': action.id,
-          'limit': 5
-        }).then(function (executions) {
-          $scope.executions = executions;
-        });
+        $scope.reloadExecutions(action.id);
 
         if ($scope.actionHasFile(action)) {
           st2Api.actionEntryPoints.get(id).then(function (file) {
@@ -60,6 +54,18 @@ angular.module('main')
 
       });
     });
+
+    $scope.reloadExecutions = function (action_id) {
+      $scope.inProgress = true;
+
+      st2Api.executions.find({
+        'action_id': action_id,
+        'limit': 5
+      }).then(function (executions) {
+        $scope.inProgress = false;
+        $scope.executions = executions;
+      });
+    };
 
     // Running an action
     $scope.runAction = function (actionName, payload) {
@@ -74,7 +80,11 @@ angular.module('main')
               if (condition(result)) {
                 defer.resolve(result);
               } else {
-                retry(fn, condition);
+                retry(fn, condition).then(function (result) {
+                  // this function would be launched once for every retry which may be an
+                  // unpleasant overhead on some long running tasks. TODO: refactor eventually.
+                  defer.resolve(result);
+                });
               }
             });
         }, TIMEOUT);
@@ -100,9 +110,13 @@ angular.module('main')
             });
         };
 
+        $scope.inProgress = true;
+
         retry(updateExecution, function (execution) {
           var finalStates = ['succeeded', 'failed'];
           return _.contains(finalStates, execution.status);
+        }).finally(function () {
+          $scope.inProgress = false;
         });
       });
     };
