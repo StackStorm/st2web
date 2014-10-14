@@ -51,6 +51,18 @@ angular.module('main')
         return promise;
       };
 
+      scope.fetchAll = function (params) {
+        promise = $http.get(HOST + url, {
+          params: params
+        });
+
+        promise.then(function () {
+          list = promise.then(function (response) {
+            return response.data;
+          });
+        });
+      };
+
       scope.fetchOne = function (id) {
         return $http.get(HOST + url + '/' + id);
       };

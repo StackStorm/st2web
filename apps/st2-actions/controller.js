@@ -11,13 +11,13 @@ angular.module('main')
         title: 'Actions'
       })
       .state('actions.list', {
-        url: '?page'
+        url: ''
       })
       .state('actions.summary', {
-        url: '/{id:\\w+}?page'
+        url: '/{id:\\w+}'
       })
       .state('actions.details', {
-        url: '/{id:\\w+}/details?page'
+        url: '/{id:\\w+}/details'
       })
 
       ;
@@ -34,9 +34,7 @@ angular.module('main')
       $scope.groups = list && _.groupBy(list, 'content_pack');
     });
 
-    $scope.$watch('$root.state.params.page', function (page) {
-      st2Api.actions.fetch(page);
-    });
+    st2Api.actions.fetchAll();
 
     $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
