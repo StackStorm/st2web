@@ -7,6 +7,7 @@ angular.module('main')
       .state('rules', {
         abstract: true,
         url: '/rules',
+        icon: 'st2-icon__rules',
         controller: 'st2RulesCtrl',
         templateUrl: 'apps/st2-rules/template.html',
         title: 'Rules'

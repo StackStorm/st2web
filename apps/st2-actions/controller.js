@@ -6,6 +6,7 @@ angular.module('main')
       .state('actions', {
         abstract: true,
         url: '/actions',
+        icon: 'st2-icon__actions',
         controller: 'st2ActionsCtrl',
         templateUrl: 'apps/st2-actions/template.html',
         title: 'Actions'

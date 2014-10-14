@@ -6,6 +6,7 @@ angular.module('main')
       .state('history', {
         abstract: true,
         url: '/history',
+        icon: 'st2-icon__history',
         controller: 'st2HistoryCtrl',
         templateUrl: 'apps/st2-history/template.html',
         title: 'History'
