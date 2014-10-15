@@ -1,13 +1,36 @@
 .st2-flex-table {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+
+  box-shadow: 0 0 5px rgba(0,0,0,0.7);
+
+  &__caption {
+    background: #4d585a;
+    padding: 10px 15px;
+    clear: both;
+
+    &-title {
+      color: white;
+
+      font-size: 15px;
+      font-weight: 200;
+      font-family: Oswald;
+
+      text-transform: uppercase;
+
+      margin: 0;
+    }
+  }
 
   &__row, &__header {
     display: flex;
-    border-bottom: 1px solid #ccc;
   }
 
   &__header {
-    font-weight: bold;
+    color: #3b3b3b;
+    background-color: #B3BDBF;
+    font-weight: 400;
+    font-family: Oswald;
+    letter-spacing: 0.01em;
   }
 
   &__column {
@@ -26,16 +49,16 @@
   }
 
   &__row {
-    background-color: #EEE;
+    background-color: #EBF5F7;
 
     &--odd {
-      background-color: #E9E9EC;
+      background-color: #E2ECEE;
     }
   }
 
   &__row:hover &__column {
     cursor: pointer;
-    background-color: #428bca;
+    background-color: #01C5FF;
     color: white;
   }
 

@@ -23,72 +23,39 @@
 
   width: 640px;
 
-  background-color: #F7F3DD;
-  color: #737373;
+  background-color: #d9d9d9;
+  color: #4E595B;
+
+  box-shadow: inset 3px 2px 3px rgba(0,0,0,0.3);
 
   &__well:extend(.well) {}
 
+  // refactor freely
   &__form-group
   :extend(.form-group) {
     position: relative;
     &--right:extend(.pull-right) {}
   }
 
-  &__form-control
-  :extend(.form-control) {
-    width: 300px;
-    padding: 0 0 0 10px;
-    margin-right: 10px;
-    &--left:extend(.pull-left) {}
-    &--non-editable {
-      background-color: transparent !important;
-      border: none !important;
-      padding: 0 !important;
-      box-shadow: none !important;
-      font-family: Oswald;
-      font-weight: bolder;
-      font-size: 18px;
-      color: #666;
-      margin-top: -8px;
-    }
-  }
-
-  &__label {
-    &--required:after {
-      content: ' *';
-    }
-  }
-
-  &__help-block
-  :extend(.help-block) {
-    position: absolute;
-    top: 30px;
-    left: 320px;
-    font-size: 12px;
-  }
-
   &__panel {
-    background-color: transparent;
+    margin: 6px 0 40px;
 
     &-heading {
-      background: rgba(166, 161, 136, 0.39);
-      border-top: 1px solid rgba(166, 161, 136, 0.64);
-      border-bottom: 1px solid rgba(166, 161, 136, 0.64);
-      margin: 0;
-      padding: 0 15px;
+      margin-bottom: 10px;
     }
 
     &-title {
-      color: rgba(120, 116, 94, 1);
-      font-weight: 100;
+      font-weight: 400;
       font-family: Oswald;
       text-transform: uppercase;
+
       font-size: 15px;
+
       padding: 0;
+      margin: 0;
     }
 
     &-body {
-      padding: 20px;
 
       dl
       :extend(dl) {

@@ -1,13 +1,19 @@
-<label class="st2-details__label"
-  ng-class="{'st2-details__label--required': item.field.required}"
-  for="{{item.name}}">{{ (item.field.name || item.name) | capitalize }}</label>
+<label class="st2-auto-form__label"
+  ng-class="{'st2-auto-form--required': item.field.required}">
 
-<input type="input"
-  class="st2-details__form-control st2-auto-form__field"
-  id="{{item.name}}"
-  placeholder="{{item.field.default}}"
-  ng-required="item.field.required"
-  ng-model="result[item.name]"
-  ng-disabled="item.field.disabled"/>
+  <div class="st2-auto-form__title">
+    {{ item.field.name || item.name }}
+  </div>
 
-<p class="st2-details__help-block">{{ item.field.description }}</p>
+  <input type="input"
+    class="st2-auto-form__field"
+    placeholder="{{item.field.default}}"
+    ng-required="item.field.required"
+    ng-model="result[item.name]"
+    ng-disabled="item.field.disabled" />
+
+</label>
+
+<p class="st2-auto-form__description">
+  {{ item.field.description }}
+</p>
