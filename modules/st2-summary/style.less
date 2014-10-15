@@ -14,46 +14,51 @@
 
   width: 320px;
 
-  background: #666;
+  background-color: #1E1E1E;
   padding: 0;
-  color: #ccc;
+  color: #fff;
 
-  &__button
-  :extend(.btn)
-  :extend(.btn-primary) {
-    font-weight: 200;
-    opacity: 1;
-    font-family: Oswald;
-    text-transform: uppercase;
+  box-shadow: -1px 0 0 #303030,
+              -2px 0 0 #000;
 
-    &--right:extend(.pull-right) {}
-  }
+  &__heading {
+    border-bottom: 1px solid #2f2f2f;
+    padding: 10px 20px;
 
-  &__heading
-  :extend(.panel-heading)
-  :extend(.clearfix all) {
-    border-bottom: 1px solid #999;
+    display: flex;
+    align-items: baseline;
 
-    &-title
-    :extend(.pull-left) {
+    &-title {
+      flex: 1;
+
       padding: 0;
-      margin: 6px 0 0 0;
-      color: white;
+      margin-right: 10px;
+
+      color: #757575;
+
       font-size: 15px;
       text-transform: uppercase;
-      font-weight: 200;
+      font-weight: 400;
       font-family: Oswald;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
   &__body {
     padding: 20px;
+    margin: 0;
 
-    dt
+    &-label
     :extend(dt) {
-      color: white;
+      color: #757575;
+      text-transform: uppercase;
+      font-weight: 400;
+      font-family: Oswald;
     }
-    dd
+
+    &-value
     :extend(dd) {
       margin-bottom: 20px;
     }
