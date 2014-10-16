@@ -1,113 +1,125 @@
 <div class="st2-panel" ng-class="{'st2-panel--slide': $root.state.includes('*.details')}">
 
-  <div class="st2-rules">
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <form>
-          <div class="st2-details__form-group st2-details__form-group--right">
-            <input type="text" class="st2-details__form-control st2-details__form-control--left" placeholder="Search">
-            <button type="submit" class="st2-details__button">Submit</button>
+  <div class="st2-panel__view st2-rules">
+    <div class="st2-panel__scroller">
+
+      <div class="st2-panel__toolbar">
+        <div class="st2-panel__toolbar-title">
+          Rules
+        </div>
+
+        <div class="st2-panel__toolbar-search">
+          <form>
+            <input type="search"
+              class="st2-panel__search-bar"
+              placeholder="Search">
+          </form>
+        </div>
+      </div>
+
+      <div class="st2-flex-table">
+        <div class="st2-flex-table__caption">
+          <h2 class="st2-flex-table__caption-title">Category One</h2>
+        </div>
+
+        <div class="st2-flex-table__header">
+          <div class="st2-flex-table__column st2-rules__column-name">Name</div>
+          <div class="st2-flex-table__column st2-rules__column-desc">Description</div>
+          <div class="st2-flex-table__column st2-rules__column-trigger">Trigger</div>
+          <div class="st2-flex-table__column st2-rules__column-action">Action Name</div>
+          <div class="st2-flex-table__column st2-rules__column-enabled">Enabled</div>
+        </div>
+
+        <div class="st2-flex-table__row"
+            ng-class-odd="'st2-flex-table__row--odd'"
+            ng-class-even="'st2-flex-table__row--even'"
+            ng-repeat="rule in rules"
+            ng-click="$root.state.go('^.summary', {id: rule.id})">
+          <div class="st2-flex-table__column st2-rules__column-name">
+            {{ rule.name }}
           </div>
-        </form>
+          <div class="st2-flex-table__column st2-rules__column-desc">
+            {{ rule.description }}
+          </div>
+          <div class="st2-flex-table__column st2-rules__column-trigger">
+            {{ rule.trigger.type }}
+          </div>
+          <div class="st2-flex-table__column st2-rules__column-action">
+            {{ rule.action.name }}
+          </div>
+          <div class="st2-flex-table__column st2-rules__column-enabled">
+            <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+          </div>
+        </div>
       </div>
-    </nav>
 
-    <div class="st2-panel__heading">
-      <h2 class="st2-panel__heading-title">Category One</h2>
+      <button class="st2-panel__prev-button"
+          ng-click="prevPage()"
+          ng-if="$root.page > 1">
+        Previous page
+      </button>
+      <button class="st2-panel__next-button"
+          ng-click="nextPage()"
+          ng-if="($root.page || 1) < $root.maxPage">
+        Next page
+      </button>
+
     </div>
 
-    <div class="st2-flex-table">
-      <div class="st2-flex-table__header">
-        <div class="st2-flex-table__column st2-rules__column-name">Name</div>
-        <div class="st2-flex-table__column st2-rules__column-desc">Description</div>
-        <div class="st2-flex-table__column st2-rules__column-trigger">Trigger</div>
-        <div class="st2-flex-table__column st2-rules__column-action">Action Name</div>
-        <div class="st2-flex-table__column st2-rules__column-enabled">Enabled</div>
-      </div>
-
-      <div class="st2-flex-table__row"
-          ng-class-odd="'st2-flex-table__row--odd'"
-          ng-class-even="'st2-flex-table__row--even'"
-          ng-repeat="rule in rules"
-          ng-click="$root.state.go('^.summary', {id: rule.id})">
-        <div class="st2-flex-table__column st2-rules__column-name">
-          {{ rule.name }}
-        </div>
-        <div class="st2-flex-table__column st2-rules__column-desc">
-          {{ rule.description }}
-        </div>
-        <div class="st2-flex-table__column st2-rules__column-trigger">
-          {{ rule.trigger.type }}
-        </div>
-        <div class="st2-flex-table__column st2-rules__column-action">
-          {{ rule.action.name }}
-        </div>
-        <div class="st2-flex-table__column st2-rules__column-enabled">
-          <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
-        </div>
-      </div>
+    <div class="st2-panel__back-button"
+        ng-click="$root.state.go('^.summary', {id: rule.id})">
     </div>
 
-    <button class="st2-panel__prev-button"
-        ng-click="prevPage()"
-        ng-if="$root.page > 1">
-      Previous page
-    </button>
-    <button class="st2-panel__next-button"
-        ng-click="nextPage()"
-        ng-if="($root.page || 1) < $root.maxPage">
-      Next page
-    </button>
-
-    <div class="st2-panel__back-button" ng-click="$root.state.go('^.summary', {id: rule.id})"></div>
   </div>
 
   <div class="st2-summary">
-    <div>
-      <div class="st2-summary__heading">
-        <h2 class="st2-summary__heading-title">Summary</h2>
-        <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.details', {id: rule.id})"
-            ng-if="!$root.state.includes('*.details')">
-          Details
-        </button>
-        <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.summary', {id: rule.id})"
-            ng-if="$root.state.includes('*.details')">
-          &lt;- Back
-        </button>
-      </div>
 
-      <div class="st2-summary__body">
-        <dl>
-          <dt>Name</dt>
-          <dd>{{ rule.name }}</dd>
-
-          <dt>Description</dt>
-          <dd>{{ rule.description }}</dd>
-        </dl>
-      </div>
+    <div class="st2-summary__heading">
+      <h2 class="st2-summary__heading-title">Summary</h2>
+      <button class="st2-forms__button-right" title="Details"
+          ng-click="$root.state.go('^.details', {id: rule.id})"
+          ng-if="!$root.state.includes('*.details')">
+        Details
+      </button>
+      <button class="st2-forms__button-left" title="Details"
+          ng-click="$root.state.go('^.summary', {id: rule.id})"
+          ng-if="$root.state.includes('*.details')">
+        Back
+      </button>
     </div>
+
+    <dl class="st2-summary__body">
+      <dt class="st2-summary__body-label">Name</dt>
+      <dd class="st2-summary__body-value">{{ rule.name }}</dd>
+
+      <dt class="st2-summary__body-label">Description</dt>
+      <dd class="st2-summary__body-value">{{ rule.description }}</dd>
+    </dl>
+
   </div>
 
 </div>
 
 <div class="st2-details">
-  <div class="st2-details__panel">
-    <div class="st2-details__panel-heading">
-      <h2 class="st2-details__panel-title">Parameters</h2>
-    </div>
-    <div class="st2-details__panel-body">
+  <div class="st2-panel__scroller">
 
-    </div>
-  </div>
+    <div class="st2-details__panel">
+      <div class="st2-details__panel-heading">
+        <h2 class="st2-details__panel-title">Parameters</h2>
+      </div>
+      <div class="st2-details__panel-body">
 
-  <div class="st2-details__panel">
-    <div class="st2-details__panel-heading">
-      <h2 class="st2-details__panel-title">Executions</h2>
+      </div>
     </div>
-    <div class="st2-details__panel-body">
 
+    <div class="st2-details__panel">
+      <div class="st2-details__panel-heading">
+        <h2 class="st2-details__panel-title">Executions</h2>
+      </div>
+      <div class="st2-details__panel-body">
+
+      </div>
     </div>
+
   </div>
 </div>

@@ -3,35 +3,6 @@
 @import (reference) '/components/bootstrap/less/variables.less';
 @import (reference) '/components/bootstrap/less/mixins.less';
 
-// TODO: refactor
-@import '/components/bootstrap/less/forms.less';
-@import '/components/bootstrap/less/dropdowns.less';
-
-.ui-select-bootstrap {
-  width: 100px;
-  display: inline-block;
-  margin-right: 10px;
-  margin-bottom: -3px;
-
-  .ui-select-match {
-    padding: 0;
-  }
-
-  > .ui-select-choices {
-    width: auto;
-  }
-
-  .ui-select-choices-row > a {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .form-control {
-    padding: 0 0 0 10px;
-    box-sizing: border-box;
-  }
-}
-
 .st2-forms {
   &__matcher {
     overflow: hidden;
@@ -40,7 +11,7 @@
     white-space: nowrap;
   }
 
-  &__button {
+  &__button, &__button-left, &__button-right {
     display: inline-block;
 
     text-align: center;
@@ -55,6 +26,7 @@
 
     border: 1px solid transparent;
     box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
+    outline: 0;
 
     background-color: #ff8300;
     color: #fff;
@@ -68,5 +40,47 @@
     text-transform: uppercase;
     text-decoration: none;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+
+    position: relative;
+
+    &:before, &:after {
+      // One that looks nice for FF. Blame different AA.
+      // content: "";
+      // width: 0px;
+      // height: 0px;
+      // border-style: solid;
+      // border-width: 16px;
+      // border-color: transparent transparent transparent #FF8300;
+      // position: absolute;
+      // top: 1px;
+      // right: -32px;
+      content: '';
+      width: 0;
+      height: 1px;
+      border: solid;
+      border-width: 16px 10px;
+      border-color: transparent;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  &__button-left {
+    margin-left: 10px;
+
+    &:before {
+      border-right-color: #ff8300;
+      right: 100%;
+    }
+  }
+
+  &__button-right {
+    margin-right: 10px;
+
+    &:after {
+      border-left-color: #ff8300;
+      left: 100%;
+    }
   }
 }

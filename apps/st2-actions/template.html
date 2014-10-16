@@ -31,11 +31,18 @@
         <div class="st2-flex-table__row"
             ng-class-odd="'st2-flex-table__row--odd'"
             ng-class-even="'st2-flex-table__row--even'"
+            ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
             ng-repeat="action in list"
             ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})">
-          <div class="st2-flex-table__column st2-actions__column-name">{{ action.name }}</div>
-          <div class="st2-flex-table__column st2-actions__column-type">{{ action.runner_type }}</div>
-          <div class="st2-flex-table__column st2-actions__column-desc">{{ action.description }}</div>
+          <div class="st2-flex-table__column st2-actions__column-name">
+            {{ action.name }}
+          </div>
+          <div class="st2-flex-table__column st2-actions__column-type">
+            {{ action.runner_type }}
+          </div>
+          <div class="st2-flex-table__column st2-actions__column-desc">
+            {{ action.description }}
+          </div>
         </div>
       </div>
 
@@ -51,15 +58,15 @@
 
     <div class="st2-summary__heading">
       <h2 class="st2-summary__heading-title">Summary</h2>
-      <button class="st2-forms__button" title="Details"
+      <button class="st2-forms__button-right" title="Details"
           ng-click="$root.state.go('^.details', {id: action.id, page: $root.page})"
           ng-if="!$root.state.includes('*.details')">
         Details
       </button>
-      <button class="st2-forms__button" title="Details"
+      <button class="st2-forms__button-left" title="Details"
           ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})"
           ng-if="$root.state.includes('*.details')">
-        &lt;- Back
+        Back
       </button>
     </div>
 
@@ -130,7 +137,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true | limitTo:5" ng-class-odd="'st2-details__table-row--odd'" ng-class-even="'st2-details__table-row--even'" class="st2-details__table-row">
+            <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true | limitTo:5"
+                ng-class-odd="'st2-details__table-row--odd'"
+                ng-class-even="'st2-details__table-row--even'"
+                class="st2-details__table-row">
               <td>{{ execution.start_timestamp | date:'medium' }}</td>
               <td><div class="st2-label" status="execution.status"></div></td>
             </tr>

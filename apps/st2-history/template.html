@@ -1,54 +1,112 @@
 <div class="st2-panel" ng-class="{'st2-panel--slide': $root.state.includes('*.details')}">
 
-  <div class="st2-history">
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <form>
+  <div class="st2-panel__view st2-history">
 
-          <div class="st2-details__form-group st2-details__form-group--right">
-            <input type="text" class="st2-details__form-control st2-details__form-control--left" placeholder="Search">
-            <button type="submit" class="st2-details__button">Submit</button>
+    <div class="st2-panel__scroller">
+
+      <div class="st2-panel__toolbar">
+        <div class="st2-panel__toolbar-title">
+          History
+        </div>
+
+        <div class="st2-panel__toolbar-filters">
+          <div class="st2-filter">
+            <div class="st2-filter__label">Action</div>
+            <div class="st2-filter__variants">
+              <div class="st2-filter__list">
+                <div class="st2-filter__item">st2-flex-table__column</div>
+                <div class="st2-filter__item">2</div>
+                <div class="st2-filter__item">3</div>
+                <div class="st2-filter__item">4</div>
+                <div class="st2-filter__item">5</div>
+              </div>
+            </div>
           </div>
 
-          <div class="st2-details__form-group">
-            <ui-select ng-model="filter.selected">
-              <ui-select-match placeholder="Action">
-                <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
-              </ui-select-match>
-              <ui-select-choices repeat="action in actions">
-                {{ action.name }}
-              </ui-select-choices>
-            </ui-select>
-
-            <ui-select ng-model="filter.selected">
-              <ui-select-match placeholder="Trigger">
-                <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
-              </ui-select-match>
-              <ui-select-choices repeat="trigger in triggers">
-                {{ trigger.name }}
-              </ui-select-choices>
-            </ui-select>
-
-            <ui-select ng-model="filter.selected">
-              <ui-select-match placeholder="Rule">
-                <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
-              </ui-select-match>
-              <ui-select-choices repeat="rule in rules">
-                {{ rule.name }}
-              </ui-select-choices>
-            </ui-select>
+          <div class="st2-filter">
+            <div class="st2-filter__label">Trigger</div>
+            <div class="st2-filter__variants">
+              <div class="st2-filter__list">
+                <div class="st2-filter__item">1</div>
+                <div class="st2-filter__item">2</div>
+                <div class="st2-filter__item">3</div>
+                <div class="st2-filter__item">4</div>
+                <div class="st2-filter__item">5</div>
+              </div>
+            </div>
           </div>
 
-        </form>
-      </div>
-    </nav>
+          <div class="st2-filter">
+            <div class="st2-filter__label">Rule</div>
+            <div class="st2-filter__variants">
+              <div class="st2-filter__list">
+                <div class="st2-filter__item">1</div>
+                <div class="st2-filter__item">2</div>
+                <div class="st2-filter__item">3</div>
+                <div class="st2-filter__item">4</div>
+                <div class="st2-filter__item">5</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <div class="st2-panel__panel" ng-repeat="group in history | orderBy:'period':true">
-      <div class="st2-panel__heading">
-        <h2 class="st2-panel__heading-title">{{ group.period | date:'fullDate'}}</h2>
+        <div class="st2-panel__toolbar-search">
+          <form>
+            <input type="search"
+              class="st2-panel__search-bar"
+              placeholder="Search">
+          </form>
+        </div>
       </div>
 
-      <div class="st2-flex-table">
+      <!-- <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <form>
+
+            <div class="st2-details__form-group st2-details__form-group--right">
+              <input type="text" class="st2-details__form-control st2-details__form-control--left" placeholder="Search">
+              <button type="submit" class="st2-details__button">Submit</button>
+            </div>
+
+            <div class="st2-details__form-group">
+              <ui-select ng-model="filter.selected">
+                <ui-select-match placeholder="Action">
+                  <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
+                </ui-select-match>
+                <ui-select-choices repeat="action in actions">
+                  {{ action.name }}
+                </ui-select-choices>
+              </ui-select>
+
+              <ui-select ng-model="filter.selected">
+                <ui-select-match placeholder="Trigger">
+                  <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
+                </ui-select-match>
+                <ui-select-choices repeat="trigger in triggers">
+                  {{ trigger.name }}
+                </ui-select-choices>
+              </ui-select>
+
+              <ui-select ng-model="filter.selected">
+                <ui-select-match placeholder="Rule">
+                  <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
+                </ui-select-match>
+                <ui-select-choices repeat="rule in rules">
+                  {{ rule.name }}
+                </ui-select-choices>
+              </ui-select>
+            </div>
+
+          </form>
+        </div>
+      </nav> -->
+
+      <div class="st2-flex-table" ng-repeat="group in history | orderBy:'period':true">
+
+        <div class="st2-flex-table__caption">
+          <h2 class="st2-flex-table__caption-title">{{ group.period | date:'fullDate'}}</h2>
+        </div>
+
         <div class="st2-flex-table__header">
           <div class="st2-flex-table__column st2-history__column-utility"></div>
           <div class="st2-flex-table__column st2-history__column-time">Started At</div>
@@ -99,75 +157,89 @@
         </div>
 
       </div>
+
+      <button class="st2-panel__prev-button st2-forms__button-left"
+          ng-click="prevPage()"
+          ng-if="$root.page > 1">
+        Previous page
+      </button>
+      <button class="st2-panel__next-button st2-forms__button-right"
+          ng-click="nextPage()"
+          ng-if="($root.page || 1) < $root.maxPage">
+        Next page
+      </button>
+
     </div>
 
-    <button class="st2-panel__prev-button"
-        ng-click="prevPage()"
-        ng-if="$root.page > 1">
-      Previous page
-    </button>
-    <button class="st2-panel__next-button"
-        ng-click="nextPage()"
-        ng-if="($root.page || 1) < $root.maxPage">
-      Next page
-    </button>
-
     <div class="st2-panel__back-button"
-      ng-click="$root.state.go('^.summary', {id: record.id})"></div>
+        ng-click="$root.state.go('^.summary', {id: record.id})">
+    </div>
   </div>
 
   <div class="st2-summary">
-    <div>
-      <div class="st2-summary__heading">
-        <h2 class="st2-summary__heading-title">Summary</h2>
-        <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.details', {id: record.id})"
-            ng-if="!$root.state.includes('*.details')">
-          Details
-        </button>
-        <button class="st2-summary__button st2-summary__button--right" title="Details"
-            ng-click="$root.state.go('^.summary', {id: record.id})"
-            ng-if="$root.state.includes('*.details')">
-          &lt;- Back
-        </button>
-      </div>
-
-      <div class="st2-summary__body">
-        <dl>
-          <dt ng-if="record.rule.name">Rule Name</dt>
-          <dd ng-if="record.rule.name">{{ record.rule.name }}</dd>
-
-          <dt ng-if="record.rule.description">Rule Description</dt>
-          <dd ng-if="record.rule.description">{{ record.rule.description }}</dd>
-
-          <dt>Action</dt>
-          <dd>{{ record.action.name }}</dd>
-
-          <dt>Runner</dt>
-          <dd>{{ record.action.runner_type }}</dd>
-
-          <dt>Execution Status</dt>
-          <dd>
-            <span class="st2-label" status="record.execution.status"></span>
-          </dd>
-        </dl>
-      </div>
+    <div class="st2-summary__heading">
+      <h2 class="st2-summary__heading-title">Summary</h2>
+      <button class="st2-forms__button-right" title="Details"
+          ng-click="$root.state.go('^.details', {id: record.id})"
+          ng-if="!$root.state.includes('*.details')">
+        Details
+      </button>
+      <button class="st2-forms__button-left" title="Details"
+          ng-click="$root.state.go('^.summary', {id: record.id})"
+          ng-if="$root.state.includes('*.details')">
+        Back
+      </button>
     </div>
+
+    <dl class="st2-summary__body">
+      <dt class="st2-summary__body-label"
+          ng-if="record.rule.name">
+        Rule Name
+      </dt>
+      <dd class="st2-summary__body-value"
+          ng-if="record.rule.name">
+        {{ record.rule.name }}
+      </dd>
+
+      <dt class="st2-summary__body-label"
+          ng-if="record.rule.description">
+        Rule Description
+      </dt>
+      <dd class="st2-summary__body-value"
+          ng-if="record.rule.description">
+        {{ record.rule.description }}
+      </dd>
+
+      <dt class="st2-summary__body-label">Action</dt>
+      <dd class="st2-summary__body-value">{{ record.action.name }}</dd>
+
+      <dt class="st2-summary__body-label">Runner</dt>
+      <dd class="st2-summary__body-value">{{ record.action.runner_type }}</dd>
+
+      <dt class="st2-summary__body-label">Execution Status</dt>
+      <dd class="st2-summary__body-value">
+        <span class="st2-label" status="record.execution.status"></span>
+      </dd>
+    </dl>
+
   </div>
 
 </div>
 
 <div class="st2-details">
-  <form role="form" class="st2-details__form">
+  <div class="st2-panel__scroller">
+
     <div class="st2-details__panel">
       <div class="st2-details__panel-heading">
         <h2 class="st2-details__panel-title">Action Input</h2>
       </div>
       <div class="st2-details__panel-body">
-        <div class="st2-auto-form"
-          spec="spec"
-          result="payload">
-        </div>
+        <form role="form" class="st2-details__form">
+          <div class="st2-auto-form"
+            spec="spec"
+            result="payload">
+          </div>
+        </form>
       </div>
     </div>
 
@@ -175,34 +247,58 @@
       <div class="st2-details__panel-heading">
         <h2 class="st2-details__panel-title">History Record Details</h2>
       </div>
-      <div class="st2-details__panel-body">
-        <dl>
-          <dt ng-if="record.rule.name">Rule Name</dt>
-          <dd ng-if="record.rule.name">{{ record.rule.name }}</dd>
+      <dl class="st2-details__panel-body">
+        <dt class="st2-details__panel-body-label"
+            ng-if="record.rule.name">
+          Rule Name
+        </dt>
+        <dd class="st2-details__panel-body-value"
+            ng-if="record.rule.name">
+          {{ record.rule.name }}
+        </dd>
 
-          <dt ng-if="record.rule.description">Rule Description</dt>
-          <dd ng-if="record.rule.description">{{ record.rule.description }}</dd>
+        <dt class="st2-details__panel-body-label"
+            ng-if="record.rule.description">
+          Rule Description
+        </dt>
+        <dd class="st2-details__panel-body-value"
+            ng-if="record.rule.description">
+          {{ record.rule.description }}
+        </dd>
 
-          <dt ng-if="record.trigger.name">Trigger Name</dt>
-          <dd ng-if="record.trigger.name">{{ record.trigger.name }}</dd>
+        <dt class="st2-details__panel-body-label"
+            ng-if="record.trigger.name">
+          Trigger Name
+        </dt>
+        <dd class="st2-details__panel-body-value"
+            ng-if="record.trigger.name">
+          {{ record.trigger.name }}
+        </dd>
 
-          <dt ng-if="record.trigger_instance.occurrence_time">Occurrence time</dt>
-          <dd ng-if="record.trigger_instance.occurrence_time">
-            {{ record.trigger_instance.occurrence_time | date:'medium' }}
-          </dd>
+        <dt class="st2-details__panel-body-label"
+            ng-if="record.trigger_instance.occurrence_time">
+          Occurrence time
+        </dt>
+        <dd class="st2-details__panel-body-value"
+            ng-if="record.trigger_instance.occurrence_time">
+          {{ record.trigger_instance.occurrence_time | date:'medium' }}
+        </dd>
 
-          <dt ng-if="record.trigger_instance.payload">Trigger payload</dt>
-          <dd ng-if="record.trigger_instance.payload">
-            {{ record.trigger_instance.payload | json }}
-          </dd>
+        <dt class="st2-details__panel-body-label"
+            ng-if="record.trigger_instance.payload">
+          Trigger payload
+        </dt>
+        <dd class="st2-details__panel-body-value"
+            ng-if="record.trigger_instance.payload">
+          {{ record.trigger_instance.payload | json }}
+        </dd>
 
-          <dt>Action</dt>
-          <dd>{{ record.action.name }}</dd>
+        <dt class="st2-details__panel-body-label">Action</dt>
+        <dd class="st2-details__panel-body-value">{{ record.action.name }}</dd>
 
-          <dt>Runner</dt>
-          <dd>{{ record.action.runner_type }}</dd>
-        </dl>
-      </div>
+        <dt class="st2-details__panel-body-label">Runner</dt>
+        <dd class="st2-details__panel-body-value">{{ record.action.runner_type }}</dd>
+      </dl>
     </div>
 
     <div class="st2-details__panel">
@@ -215,5 +311,6 @@
           execution="record.execution"></div>
       </div>
     </div>
-  </form>
+
+  </div>
 </div>
