@@ -38,7 +38,9 @@
   }
 
   &__panel {
-    margin: 6px 0 40px;
+    margin: 6px 0 30px;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 20px;
 
     &-heading {
       margin-bottom: 10px;
@@ -56,26 +58,24 @@
     }
 
     &-body {
+      margin: 0;
 
-      dl
-      :extend(dl) {
-        margin: 0;
-      }
-      dt
+      &-label
       :extend(dt) {
-        color: #737373;
-        font-weight: bolder;
-      }
-      dd
-      :extend(dd) {
-        margin-bottom: 20px;
-        margin-left: 0;
+        text-transform: uppercase;
+        font-weight: 400;
+        font-family: Oswald;
       }
 
-      textarea {
-        width: 98%;
-        height: 80px;
+      &-value
+      :extend(dd) {
+        margin: 0 0 20px;
       }
+
+    }
+
+    &:last-of-type {
+      border-bottom-color: transparent;
     }
   }
 
@@ -111,19 +111,6 @@
     &--even {
       background-color: transparent;
     }
-  }
-
-  &__button
-  :extend(.btn)
-  :extend(.btn-primary) {
-    font-weight: 200;
-    opacity: 1;
-    font-family: Oswald;
-    text-transform: uppercase;
-    text-decoration: none;
-
-    &--right:extend(.pull-right) {}
-    &--left:extend(.pull-left) {}
   }
 
   &__reload-button {

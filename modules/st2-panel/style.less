@@ -48,13 +48,11 @@
     display: block;
   }
 
-  &__prev-button
-  :extend(.btn)
-  :extend(.btn-primary) {}
+  &__prev-button {
+    float: left;
+  }
 
-  &__next-button
-  :extend(.btn)
-  :extend(.btn-primary) {
+  &__next-button {
     // Lazy me. Careful with that.
     float: right;
   }
@@ -75,7 +73,7 @@
     // scroll appears
     position: absolute;
     top: 4px;
-    right: 5px;
+    right: 4px;
     bottom: 4px;
     left: 10px;
 
@@ -102,9 +100,9 @@
   &__toolbar {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
 
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 
     color: #757575;
 
@@ -114,6 +112,12 @@
 
     &-title {
       flex: 1 0 auto;
+      line-height: 37px;
+    }
+
+    &-filters {
+      flex: 1;
+      display: flex;
     }
 
     &-search {
@@ -125,7 +129,7 @@
     }
   }
 
-  &__search-bar {
+  &__search-bar[type="search"] {
     width: 100%;
     line-height: 20px;
     padding: 5px 10px;
@@ -133,6 +137,8 @@
     border: 0;
     box-shadow: inset 0 1px 2px #000;
     border-radius: 5px;
+
+    box-sizing: border-box;
 
     &::placeholder {
       color: #757575;

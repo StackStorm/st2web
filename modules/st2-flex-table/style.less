@@ -35,17 +35,11 @@
 
   &__column {
     flex: 1;
-    // doesn't work the way you expect it to work breaking the grid depending on a number of
-    // elements with padding. Lets hack it for now with &:before.
-    // padding: 10px;
-    // box-sizing: border-box;
-    padding: 10px 0;
+    padding: 10px;
 
-    &:before {
-      content: '\0000a0';
-      width: 10px;
-      float: left;
-    }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__row {
@@ -54,12 +48,16 @@
     &--odd {
       background-color: #E2ECEE;
     }
+
+    &--active {
+      background-color: #01C5FF;
+      color: white;
+    }
   }
 
-  &__row:hover &__column {
+  &__row:hover {
     cursor: pointer;
-    background-color: #01C5FF;
-    color: white;
+    background-color: #C0E4F0;
   }
 
   &__insert {
