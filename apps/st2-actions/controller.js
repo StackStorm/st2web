@@ -20,6 +20,9 @@ angular.module('main')
       .state('actions.details', {
         url: '/{id:\\w+}/details'
       })
+      .state('actions.code', {
+        url: '/{id:\\w+}/code'
+      })
 
       ;
 

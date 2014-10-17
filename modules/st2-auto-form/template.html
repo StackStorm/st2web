@@ -1,4 +1,23 @@
-<div class="st2-auto-form__line"
-  ng-repeat="item in spec | filter:MUTABLE | orderBy:POSITION"
-  ng-include="getFieldTemplate(item.field)">
+<div ng-repeat="item in spec | filter:MUTABLE | orderBy:POSITION"
+    ng-switch="getFieldTemplate(item.field)">
+  <div ng-switch-when="st2-form-input"
+    class="st2-form-input st2-auto-form__line"
+    name="item.name"
+    spec="item.field"
+    result="result[item.name]"></div>
+  <div ng-switch-when="st2-form-checkbox"
+    class="st2-form-checkbox st2-auto-form__line"
+    name="item.name"
+    spec="item.field"
+    result="result[item.name]"></div>
+  <div ng-switch-when="st2-form-select"
+    class="st2-form-select st2-auto-form__line"
+    name="item.name"
+    spec="item.field"
+    result="result[item.name]"></div>
+  <div ng-switch-when="st2-form-array"
+    class="st2-form-array st2-auto-form__line"
+    name="item.name"
+    spec="item.field"
+    result="result[item.name]"></div>
 </div>

@@ -1,0 +1,20 @@
+<label class="st2-auto-form__label"
+  ng-class="{'st2-auto-form--required': spec.required}">
+
+  <div class="st2-auto-form__title">
+
+    <input type="checkbox"
+      class="st2-auto-form__checkbox"
+      placeholder="{{spec.default}}"
+      ng-model="result"
+      ng-disabled="spec.disabled">
+
+    <span class="st2-auto-form__checkbox-label">{{ spec.name || name }}</div>
+
+  </div>
+
+</label>
+
+<p class="st2-auto-form__description">
+  {{ spec.description }}
+</p>

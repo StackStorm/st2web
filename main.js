@@ -40,6 +40,10 @@ angular.module('main')
       $rootScope.state.go('.', { page: ($rootScope.page || 1) + 1 });
     };
 
+    $rootScope.isDetails = function () {
+      return !$state.includes('^.list') && !$state.includes('^.summary');
+    };
+
     // Don't forget to add a target for every href in menu
     // $scope.$on('$stateChangeStart', function (event, toState) {
     //   window.name = toState.name;

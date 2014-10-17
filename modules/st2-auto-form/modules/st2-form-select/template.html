@@ -1,0 +1,18 @@
+<label class="st2-auto-form__label"
+  ng-class="{'st2-auto-form--required': spec.required}">
+
+  <div class="st2-auto-form__title">
+    {{ spec.name || name }}
+  </div>
+
+  <select class="st2-auto-form__field"
+    ng-model="result"
+    ng-required="{{spec.required}}"
+    ng-options="v for v in spec.enum"
+    ng-disabled="spec.disabled"></select>
+
+</label>
+
+<p class="st2-auto-form__description">
+  {{ spec.description }}
+</p>

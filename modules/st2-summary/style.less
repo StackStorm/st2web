@@ -1,14 +1,5 @@
 @import "layout";
 
-@import (reference) '/components/bootstrap/less/variables.less';
-@import (reference) '/components/bootstrap/less/mixins.less';
-@import (reference) '/components/bootstrap/less/utilities.less';
-
-@import (reference) '/components/bootstrap/less/type.less';
-@import (reference) '/components/bootstrap/less/buttons.less';
-@import (reference) '/components/bootstrap/less/panels.less';
-
-
 .st2-summary {
   #st2-layout > #panel;
 
@@ -20,6 +11,8 @@
 
   box-shadow: -1px 0 0 #303030,
               -2px 0 0 #000;
+
+  overflow: hidden;
 
   &__heading {
     border-bottom: 1px solid #2f2f2f;
@@ -50,17 +43,15 @@
     padding: 20px;
     margin: 0;
 
-    &-label
-    :extend(dt) {
+    &-label {
       color: #757575;
       text-transform: uppercase;
       font-weight: 400;
       font-family: Oswald;
     }
 
-    &-value
-    :extend(dd) {
-      margin-bottom: 20px;
+    &-value {
+      margin: 3px 0 20px;
     }
   }
 }

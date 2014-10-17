@@ -17,17 +17,17 @@
     </div>
     <div class="st2-flex-table__column st2-action-reporter__column-code">{{ res.return_code }}</div>
   </div>
-  <dl class="st2-flex-table__insert"
+  <div class="st2-flex-table__insert"
       ng-if="res.stdout || res.stderr"
       ng-repeat-end>
-    <dt ng-if="res.stdout">Output</dt>
-    <dd ng-if="res.stdout">
+    <div ng-if="res.stdout">Output</div>
+    <div ng-if="res.stdout">
       <pre>{{ res.stdout | json }}</pre>
-    </dd>
+    </div>
 
-    <dt ng-if="res.stderr">Error</dt>
-    <dd ng-if="res.stderr">
+    <div ng-if="res.stderr">Error</div>
+    <div ng-if="res.stderr">
       <pre>{{ res.stderr | json }}</pre>
-    </dd>
-  </dl>
+    </div>
+  </div>
 </div>
