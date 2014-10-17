@@ -4,11 +4,12 @@
   <div class="st2-auto-form__title">
 
     <input type="checkbox"
+      class="st2-auto-form__checkbox"
       placeholder="{{item.field.default}}"
       ng-model="result[item.name]"
       ng-disabled="item.field.disabled">
 
-    {{ item.field.name || item.name }}
+    <span class="st2-auto-form__checkbox-label">{{ item.field.name || item.name }}</div>
 
   </div>
 

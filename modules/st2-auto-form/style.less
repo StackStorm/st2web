@@ -1,10 +1,5 @@
 @import "colors";
 
-@import (reference) '/components/bootstrap/less/variables.less';
-@import (reference) '/components/bootstrap/less/mixins.less';
-
-@import (reference) '/components/bootstrap/less/forms.less';
-
 .st2-auto-form {
   position: relative;
 
@@ -23,27 +18,78 @@
   &__title {
     font-size: 16px;
     line-height: 18px;
+    padding-bottom: 4px;
   }
 
   &--required &__title:after {
     content: ' *';
   }
 
-  &__field
-  :extend(.form-control all) {
+  &__field {
     width: 100%;
     padding: 0 0 0 10px;
     box-sizing: border-box;
 
     font-weight: normal;
 
-    [disabled] {
-      background-color: #ccc;
+    background-color: #1A1A1A;
+    color: #fff;
+
+    border: 1px solid;
+    border-color: #000 #333 #555;
+    border-radius: 4px;
+
+    height: 30px;
+
+    outline: 0;
+
+    &[readonly],
+    &[disabled] {
+      border-color: transparent;
+      cursor: not-allowed;
     }
   }
 
-  input[type="checkbox"] {
-    margin: 18px 4px 0 0;
+  &__checkbox {
+    display: none;
+    margin: 0;
+    padding: 0;
+
+    &-label {
+      user-select: none;
+      cursor: pointer;
+
+      vertical-align: top;
+    }
+
+    & + &-label:before {
+      content: '\00a0';
+      font-family: "ststanley";
+      font-style: normal;
+      font-weight: normal;
+
+      display: inline-block;
+      text-decoration: inherit;
+      margin-right: .3em;
+
+      border: 1px solid;
+      border-color: #000 #333 #555;
+      border-radius: 4px;
+
+      width: 14px;
+      height: 14px;
+      line-height: 12px;
+
+      background-color: #1A1A1A;
+      color: #01C8FF;
+    }
+
+    &:checked + &-label:before {
+      content: '\e80a';
+
+      text-shadow: 1px -1px 0 #2e2e2e,
+                   1px  1px 0 #2e2e2e;
+    }
   }
 
   &__description {
