@@ -1,4 +1,5 @@
-<div class="st2-panel" ng-class="{'st2-panel--slide': $root.state.includes('*.details')}">
+<div class="st2-panel"
+    ng-class="{'st2-panel--slide': $root.isDetails()}">
 
   <div class="st2-panel__view st2-actions">
     <div class="st2-panel__scroller">
@@ -60,12 +61,12 @@
       <h2 class="st2-summary__heading-title">Summary</h2>
       <button class="st2-forms__button-right" title="Details"
           ng-click="$root.state.go('^.details', {id: action.id, page: $root.page})"
-          ng-if="!$root.state.includes('*.details')">
+          ng-if="!$root.isDetails()">
         Details
       </button>
       <button class="st2-forms__button-left" title="Details"
           ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})"
-          ng-if="$root.state.includes('*.details')">
+          ng-if="$root.isDetails()">
         Back
       </button>
     </div>
@@ -94,74 +95,103 @@
 </div>
 
 <div class="st2-details">
-  <div class="st2-panel__scroller">
-
-    <div class="st2-details__panel">
-      <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">Parameters</h2>
-      </div>
-      <div class="st2-details__panel-body">
-        <form role="form" class="st2-details__form"
-            ng-submit="runAction(action.name, payload)">
-          <div class="st2-details__panel-message"
-              ng-if="_.isEmpty(action.parameters)">
-            Action has no parameters
-          </div>
-          <div class="st2-auto-form"
-            spec="action.parameters"
-            result="payload">
-          </div>
-          <button type="submit" class="st2-forms__button">Run</button>
-        </form>
-      </div>
+  <div class="st2-details__tabs">
+    <div class="st2-details__tab-label"
+        ng-class="{'st2-details__tab-label--active': $root.state.includes('^.details')}"
+        ng-click="$root.state.go('^.details', {id: action.id, page: $root.page})">
+      General
     </div>
 
-    <div class="st2-details__panel">
-      <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">
-          Executions
-          <i class="st2-details__reload-button st2-icon__reload"
-            ng-class="{
-              'animate-spin': inProgress,
-              'st2-details__reload-button--in-progress': inProgress
-            }"
-            ng-click="inProgress || reloadExecutions(action.id)"></i>
-        </h2>
+    <div class="st2-details__tab-body"
+        ng-class="{'st2-details__tab-body--active': $root.state.includes('^.details')}">
+      <div class="st2-panel__scroller">
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">Parameters</h2>
+          </div>
+          <div class="st2-details__panel-body">
+            <form role="form" class="st2-details__form"
+                ng-submit="runAction(action.name, payload)">
+              <div class="st2-details__panel-message"
+                  ng-if="_.isEmpty(action.parameters)">
+                Action has no parameters
+              </div>
+              <div class="st2-auto-form"
+                spec="action.parameters"
+                result="payload">
+              </div>
+              <button type="submit" class="st2-forms__button">Run</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">
+              Executions
+              <i class="st2-details__reload-button st2-icon__reload"
+                ng-class="{
+                  'animate-spin': inProgress,
+                  'st2-details__reload-button--in-progress': inProgress
+                }"
+                ng-click="inProgress || reloadExecutions(action.id)"></i>
+            </h2>
+          </div>
+          <div class="st2-details__panel-body">
+
+            <div class="st2-flex-table">
+              <div class="st2-flex-table__header">
+                <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
+                <div class="st2-flex-table__column st2-actions__details-column-status">Status</div>
+              </div>
+
+              <div class="st2-flex-table__row"
+                  ng-class-odd="'st2-flex-table__row--odd'"
+                  ng-class-even="'st2-flex-table__row--even'"
+                  ng-repeat="execution in executions | orderBy:'start_timestamp':true | limitTo:5">
+                <div class="st2-flex-table__column st2-actions__details-column-time">
+                  {{ execution.start_timestamp | date:'medium' }}
+                </div>
+                <div class="st2-flex-table__column st2-actions__details-column-status">
+                  <div class="st2-label" status="execution.status"></div>
+                </div>
+              </div>
+            </div>
+
+            <a class="st2-forms__button"
+                ui-sref="history.list({action_id: action.id})">
+              See all executions
+            </a>
+          </div>
+        </div>
+
       </div>
-      <div class="st2-details__panel-body">
-        <table class="st2-details__table">
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="execution in executions | orderBy:'start_timestamp':true | limitTo:5"
-                ng-class-odd="'st2-details__table-row--odd'"
-                ng-class-even="'st2-details__table-row--even'"
-                class="st2-details__table-row">
-              <td>{{ execution.start_timestamp | date:'medium' }}</td>
-              <td><div class="st2-label" status="execution.status"></div></td>
-            </tr>
-          </tbody>
-        </table>
-        <a class="st2-forms__button"
-            ui-sref="history.list({action_id: action.id})">
-          See all executions
-        </a>
-      </div>
+
     </div>
 
-    <div class="st2-details__panel"
+    <div class="st2-details__tab-label"
+        ng-class="{'st2-details__tab-label--active': $root.state.includes('^.code')}"
+        ng-click="$root.state.go('^.code', {id: action.id, page: $root.page})"
         ng-if="actionHasFile(action)">
-      <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">File</h2>
-      </div>
-      <div class="st2-details__panel-body">
-        <pre class="st2-details__well">{{ file }}</pre>
-      </div>
+      Code
     </div>
 
+    <div class="st2-details__tab-body"
+        ng-class="{'st2-details__tab-body--active': $root.state.includes('^.code')}"
+        ng-if="actionHasFile(action)">
+      <div class="st2-panel__scroller">
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">File</h2>
+          </div>
+          <div class="st2-details__panel-body">
+            <pre class="st2-details__well">{{ file }}</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>

@@ -13,7 +13,7 @@
   "dependencies": {
     "angular": "~1.2.16",
     "lodash": "~2.4.1",
-    "angular-ui-router": "~0.2.10",
+    "angular-ui-router": "0.2.12-pre1",
     "normalize-css": "~3.0.1",
     "angular-resource": "~1.2.16",
     "moment": "~2.6.0",

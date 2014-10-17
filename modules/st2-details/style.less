@@ -3,12 +3,7 @@
 @import (reference) '/components/bootstrap/less/variables.less';
 @import (reference) '/components/bootstrap/less/mixins.less';
 
-@import (reference) '/components/bootstrap/less/forms.less';
-@import (reference) '/components/bootstrap/less/tables.less';
-@import (reference) '/components/bootstrap/less/buttons.less';
-@import (reference) '/components/bootstrap/less/utilities.less';
 @import (reference) '/components/bootstrap/less/wells.less';
-@import (reference) '/font/ststanley.css';
 
 .st2-details {
   #st2-layout > #panel;
@@ -23,23 +18,67 @@
 
   width: 640px;
 
-  background-color: #d9d9d9;
-  color: #4E595B;
-
-  box-shadow: inset 3px 2px 3px rgba(0,0,0,0.3);
+  background-color: #222;
+  color: #757575;
 
   &__well:extend(.well) {}
 
-  // refactor freely
-  &__form-group
-  :extend(.form-group) {
-    position: relative;
-    &--right:extend(.pull-right) {}
+  &__tab {
+    &s {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &-label {
+      flex: 1 0 10%;
+      height: 44px;
+      border-top: 2px solid transparent;
+      box-sizing: border-box;
+      padding: 10px;
+
+      text-align: center;
+
+      text-transform: uppercase;
+      font-weight: 200;
+      font-family: Oswald;
+      font-size: 15px;
+
+      cursor: pointer;
+
+      &--active {
+        border-color: #01C8FF;
+        background-color: #2e2e2e;
+        color: #fff;
+      }
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    &-body {
+      flex: 0 0 100%;
+      order: 99;
+
+      position: absolute;
+      top: 44px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      background-color: #2e2e2e;
+
+      display: none;
+
+      &--active {
+        display: block;
+      }
+    }
   }
 
   &__panel {
     margin: 6px 0 30px;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #757575;
     padding-bottom: 20px;
 
     &-heading {
@@ -76,40 +115,6 @@
 
     &:last-of-type {
       border-bottom-color: transparent;
-    }
-  }
-
-  &__table
-  :extend(table all)
-  :extend(.table all)
-  :extend(.table-hover all) {
-    margin: 0;
-    margin-bottom: 10px;
-
-    th:extend(th all) {}
-    > thead > tr > th {
-      padding: 0 8px;
-      font-weight: 300;
-      border-bottom: none;
-    }
-    > tbody > tr:hover {
-      > td,
-      > th {
-        background-color: #428bca;
-        color: white;
-      }
-    }
-  }
-
-  &__table-row {
-    cursor: pointer;
-    user-select: none;
-
-    &--odd {
-      background-color: #E9E9EC;
-    }
-    &--even {
-      background-color: transparent;
     }
   }
 
