@@ -4,11 +4,12 @@ angular.module('main')
     // TODO: figure out what other fields do we need.
     // TODO: create an interface to extend the list of fields.
     var fieldTypes = {
-      'string': 'modules/st2-auto-form/fields/input.partial.html',
-      'integer': 'modules/st2-auto-form/fields/input.partial.html',
-      'number': 'modules/st2-auto-form/fields/input.partial.html',
-      'boolean': 'modules/st2-auto-form/fields/checkbox.partial.html',
-      'select': 'modules/st2-auto-form/fields/select.partial.html'
+      'string': 'st2-form-input',
+      'integer': 'st2-form-input',
+      'number': 'st2-form-input',
+      'boolean': 'st2-form-checkbox',
+      'select': 'st2-form-select',
+      'array': 'st2-form-array'
     };
 
     return {
