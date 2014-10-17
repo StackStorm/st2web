@@ -78,14 +78,14 @@
       <dt class="st2-summary__body-label">Description</dt>
       <dd class="st2-summary__body-value">{{ action.description }}</dd>
 
-      <dt class="st2-summary__body-label">Latest Execution Status</dt>
-      <dd class="st2-summary__body-value">
+      <dt class="st2-summary__body-label"
+          ng-if="!_.isEmpty(executions)">
+        Latest Execution Status
+      </dt>
+      <dd class="st2-summary__body-value"
+          ng-if="!_.isEmpty(executions)">
         <span class="st2-label"
-          status="_.last(executions).status"
-          ng-if="executions.length">
-        </span>
-        <span ng-if="!executions.length">
-          This action was never executed before
+          status="_.last(executions).status">
         </span>
       </dd>
     </dl>
@@ -113,9 +113,9 @@
           <div class="st2-details__panel-body">
             <form role="form" class="st2-details__form"
                 ng-submit="runAction(action.name, payload)">
-              <div class="st2-details__panel-message"
-                  ng-if="_.isEmpty(action.parameters)">
-                Action has no parameters
+              <div class="st2-details__panel-empty"
+                  ng-if="_.isEmpty(action.parameters) || _.every(action.parameters, 'immutable')">
+                Action has no mutable parameters
               </div>
               <div class="st2-auto-form"
                 spec="action.parameters"
@@ -140,7 +140,7 @@
           </div>
           <div class="st2-details__panel-body">
 
-            <div class="st2-flex-table">
+            <div class="st2-flex-table" ng-if="!_.isEmpty(executions)">
               <div class="st2-flex-table__header">
                 <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
                 <div class="st2-flex-table__column st2-actions__details-column-status">Status</div>
@@ -159,9 +159,13 @@
               </div>
             </div>
 
+            <div class="st2-details__panel-empty" ng-if="_.isEmpty(executions)">
+              No action executions
+            </div>
+
             <a class="st2-forms__button"
                 ui-sref="history.list({action_id: action.id})">
-              See all executions
+              See full action history
             </a>
           </div>
         </div>

@@ -123,18 +123,28 @@
     &-body {
       margin: 0;
 
-      &-label
-      :extend(dt) {
+      &-label {
         text-transform: uppercase;
         font-weight: 400;
         font-family: Oswald;
       }
 
-      &-value
-      :extend(dd) {
-        margin: 0 0 20px;
+      &-value {
+        margin: 3px 0 20px;
+        color: #fff;
       }
 
+    }
+
+    &-empty {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 200;
+      font-family: Oswald;
+
+      color: #555;
+
+      padding: 20px 0 40px;
     }
 
     &:last-of-type {
