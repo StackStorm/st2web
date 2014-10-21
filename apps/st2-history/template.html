@@ -10,44 +10,9 @@
         </div>
 
         <div class="st2-panel__toolbar-filters">
-          <div class="st2-filter">
-            <div class="st2-filter__label">Action</div>
-            <div class="st2-filter__variants">
-              <div class="st2-filter__list">
-                <div class="st2-filter__item">st2-flex-table__column</div>
-                <div class="st2-filter__item">2</div>
-                <div class="st2-filter__item">3</div>
-                <div class="st2-filter__item">4</div>
-                <div class="st2-filter__item">5</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="st2-filter">
-            <div class="st2-filter__label">Trigger</div>
-            <div class="st2-filter__variants">
-              <div class="st2-filter__list">
-                <div class="st2-filter__item">1</div>
-                <div class="st2-filter__item">2</div>
-                <div class="st2-filter__item">3</div>
-                <div class="st2-filter__item">4</div>
-                <div class="st2-filter__item">5</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="st2-filter">
-            <div class="st2-filter__label">Rule</div>
-            <div class="st2-filter__variants">
-              <div class="st2-filter__list">
-                <div class="st2-filter__item">1</div>
-                <div class="st2-filter__item">2</div>
-                <div class="st2-filter__item">3</div>
-                <div class="st2-filter__item">4</div>
-                <div class="st2-filter__item">5</div>
-              </div>
-            </div>
-          </div>
+          <div class="st2-filter" type="action"></div>
+          <div class="st2-filter" type="trigger_type" label="Trigger Type"></div>
+          <div class="st2-filter" type="rule"></div>
         </div>
 
         <div class="st2-panel__toolbar-search">
@@ -58,48 +23,6 @@
           </form>
         </div>
       </div>
-
-      <!-- <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <form>
-
-            <div class="st2-details__form-group st2-details__form-group--right">
-              <input type="text" class="st2-details__form-control st2-details__form-control--left" placeholder="Search">
-              <button type="submit" class="st2-details__button">Submit</button>
-            </div>
-
-            <div class="st2-details__form-group">
-              <ui-select ng-model="filter.selected">
-                <ui-select-match placeholder="Action">
-                  <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
-                </ui-select-match>
-                <ui-select-choices repeat="action in actions">
-                  {{ action.name }}
-                </ui-select-choices>
-              </ui-select>
-
-              <ui-select ng-model="filter.selected">
-                <ui-select-match placeholder="Trigger">
-                  <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
-                </ui-select-match>
-                <ui-select-choices repeat="trigger in triggers">
-                  {{ trigger.name }}
-                </ui-select-choices>
-              </ui-select>
-
-              <ui-select ng-model="filter.selected">
-                <ui-select-match placeholder="Rule">
-                  <div class="st2-forms__matcher">{{ $select.selected.name }}</div>
-                </ui-select-match>
-                <ui-select-choices repeat="rule in rules">
-                  {{ rule.name }}
-                </ui-select-choices>
-              </ui-select>
-            </div>
-
-          </form>
-        </div>
-      </nav> -->
 
       <div class="st2-flex-table" ng-repeat="group in history | orderBy:'period':true">
 
@@ -118,11 +41,11 @@
         <div class="st2-flex-table__row"
             ng-class-odd="'st2-flex-table__row--odd'"
             ng-class-even="'st2-flex-table__row--even'"
+            ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
             ng-repeat-start="record in group.records"
-            ng-click="$root.state.go('^.summary', {id: record.id})">
+            ng-click="$root.state.go('^.summary', _.defaults({id: record.id}, $root.state.params))">
           <div class="st2-flex-table__column st2-history__column-utility"
-              ng-click="isExpandable(record) &&
-                (record._expanded && contract(record) || expand(record))">
+              ng-click="isExpandable(record) && toggle(record, $event)">
             <i ng-class="record._expanded && 'st2-icon__expanded' || 'st2-icon__contracted'"
                 ng-if="isExpandable(record)">
             </i>
@@ -172,7 +95,7 @@
     </div>
 
     <div class="st2-panel__back-button"
-        ng-click="$root.state.go('^.summary', {id: record.id})">
+        ng-click="$root.state.go('^.summary', _.defaults({id: record.id}, $root.state.params))">
     </div>
   </div>
 
@@ -180,12 +103,12 @@
     <div class="st2-summary__heading">
       <h2 class="st2-summary__heading-title">Summary</h2>
       <button class="st2-forms__button-right" title="Details"
-          ng-click="$root.state.go('^.details', {id: record.id})"
+          ng-click="$root.state.go('^.details', _.defaults({id: record.id}, $root.state.params))"
           ng-if="!$root.state.includes('*.details')">
         Details
       </button>
       <button class="st2-forms__button-left" title="Details"
-          ng-click="$root.state.go('^.summary', {id: record.id})"
+          ng-click="$root.state.go('^.summary', _.defaults({id: record.id}, $root.state.params))"
           ng-if="$root.state.includes('*.details')">
         Back
       </button>

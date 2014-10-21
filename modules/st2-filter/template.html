@@ -1,0 +1,11 @@
+<div class="st2-filter__label">{{ (label || type) | capitalize }}</div>
+<div class="st2-filter__variants">
+  <div class="st2-filter__list">
+    <div class="st2-filter__item"
+        ng-class="{'st2-filter__item--active': name == $root.filters[type]}"
+        ng-repeat="name in filters[type]"
+        ng-click="toggle(name)">
+      {{ name }}
+    </div>
+  </div>
+</div>

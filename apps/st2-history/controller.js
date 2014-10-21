@@ -12,13 +12,13 @@ angular.module('main')
         title: 'History'
       })
       .state('history.list', {
-        url: '?page&action_id'
+        url: '?page&action&rule&trigger&trigger_type'
       })
       .state('history.summary', {
-        url: '/{id:\\w+}?page&action_id'
+        url: '/{id:\\w+}?page&action&rule&trigger&trigger_type'
       })
       .state('history.details', {
-        url: '/{id:\\w+}/details?page&action_id'
+        url: '/{id:\\w+}/details?page&action&rule&trigger&trigger_type'
       })
 
       ;
@@ -31,6 +31,8 @@ angular.module('main')
   .controller('st2HistoryCtrl', function ($scope, st2Api) {
 
     $scope._api = st2Api;
+
+    st2Api.historyFilters.fetchAll();
 
     $scope.$watch('_api.history.list() | unwrap', function (list) {
       // Group all the records by periods of 24 hour
@@ -48,11 +50,16 @@ angular.module('main')
       }).value();
     });
 
-    $scope.$watch('$root.state.params.page', function (page) {
-      st2Api.history.fetch(page, {
-        parent: 'null',
-        action_id: $scope.$root.state.params.action_id
-      });
+    $scope.$watchCollection('$root.filters', function () {
+      st2Api.history.fetch($scope.$root.page, _.defaults({
+        parent: 'null'
+      }, $scope.$root.filters));
+    });
+
+    $scope.$watchCollection('$root.page', function () {
+      st2Api.history.fetch($scope.$root.page, _.defaults({
+        parent: 'null'
+      }, $scope.$root.filters));
     });
 
     $scope.$watch('$root.state.params.id', function (id) {
@@ -72,25 +79,24 @@ angular.module('main')
       });
     });
 
-    $scope.expand = function (record) {
-      record._expanded = true;
+    $scope.toggle = function (record, $event) {
+      $event.stopPropagation();
 
-      return st2Api.history.find({
-        'parent': record.id
-      }).then(function (records) {
-        record._children = records;
-      });
-    };
+      record._expanded = !record._expanded;
 
-    $scope.contract = function (record) {
-      record._expanded = false;
-      return true;
+      if (record._expanded) {
+        st2Api.history.find({
+          'parent': record.id
+        }).then(function (records) {
+          record._children = records;
+        });
+      }
     };
 
     // helpers
     $scope.isExpandable = function (record) {
-      var runnerWithChilds = ['workflow', 'action-chain'];
-      return runnerWithChilds.indexOf(record.action.runner_type) !== -1;
+      var runnerWithChilds = ['workflow', 'action-chain', 'mistral-v1', 'mistral-v2'];
+      return _.contains(runnerWithChilds, record.action.runner_type);
     };
   })
 

@@ -44,6 +44,13 @@ angular.module('main')
       return !$state.includes('^.list') && !$state.includes('^.summary');
     };
 
+    // Filtering
+    var filters = ['action', 'trigger_type', 'rule'];
+
+    $rootScope.$watchCollection('state.params', function (params) {
+      $rootScope.filters = _.pick(params, filters);
+    });
+
     // Don't forget to add a target for every href in menu
     // $scope.$on('$stateChangeStart', function (event, toState) {
     //   window.name = toState.name;
