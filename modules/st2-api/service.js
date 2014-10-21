@@ -127,6 +127,7 @@ angular.module('main')
     scope.executions = new Client('/actionexecutions');
 
     scope.history = new Client('/history/executions');
+    scope.historyFilters = new Client('/history/executions/views/filters');
 
     scope.rules = new Client('/rules');
 

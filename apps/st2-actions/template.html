@@ -24,8 +24,7 @@
         </div>
 
         <div class="st2-flex-table__header">
-          <div class="st2-flex-table__column st2-actions__column-name">Machine Name</div>
-          <div class="st2-flex-table__column st2-actions__column-type">Human-friendly Name</div>
+          <div class="st2-flex-table__column st2-actions__column-name">Name</div>
           <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
         </div>
 
@@ -37,9 +36,6 @@
             ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})">
           <div class="st2-flex-table__column st2-actions__column-name">
             {{ action.name }}
-          </div>
-          <div class="st2-flex-table__column st2-actions__column-type">
-            {{ action.runner_type }}
           </div>
           <div class="st2-flex-table__column st2-actions__column-desc">
             {{ action.description }}
@@ -164,7 +160,7 @@
             </div>
 
             <a class="st2-forms__button"
-                ui-sref="history.list({action_id: action.id})">
+                ui-sref="history.list({action: action.name})">
               See full action history
             </a>
           </div>

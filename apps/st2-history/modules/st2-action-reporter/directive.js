@@ -6,6 +6,8 @@ angular.module('main')
       'run-remote': '/apps/st2-history/modules/st2-action-reporter/reporters/run-local.html',
       'action-chain': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
       'workflow': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
+      'mistral-v1': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
+      'mistral-v2': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
       'run-local-script': '/apps/st2-history/modules/st2-action-reporter/reporters/run-local.html',
       'http-runner': '/apps/st2-history/modules/st2-action-reporter/reporters/http.html'
     };
