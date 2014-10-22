@@ -4,7 +4,7 @@
 
 <ul class="st2-menu__nav">
   <li ng-repeat="route in state.get() | filter:isMain" class="st2-menu__nav-item"
-  ng-class="isActive(route) && 'st2-menu__nav-item--active'">
+      ng-class="isActive(route) && 'st2-menu__nav-item--active'">
     <a href="#{{ route.url }}">
       <i class="st2-menu__icon"
           ng-class="route.icon"></i>
@@ -20,9 +20,9 @@
       {{ getServer() }}
     </div>
     <div class="st2-menu__server-item"
-        ng-repeat="server in _.keys(serverList) | filter:'!'+getServer()"
+        ng-repeat="server in serverList | filter:{name: '!' + getServer()}"
         ng-click="setServer(server)">
-      {{ server }}
+      {{ server.name }}
     </div>
   </div>
 </div>

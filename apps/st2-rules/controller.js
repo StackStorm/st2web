@@ -32,10 +32,21 @@ angular.module('main')
   .controller('st2RulesCtrl', function ($scope, st2Api) {
 
     $scope._api = st2Api;
+    $scope.filter = '';
 
-    $scope.$watch('_api.rules.list() | unwrap', function (list) {
-      $scope.rules = list;
-    });
+    var listUpdate = function () {
+      var promise = st2Api.rules.list();
+      promise && promise.then(function (list) {
+        $scope.rules = list && _(list)
+          .filter(function (e) {
+            return e.name.indexOf($scope.filter) > -1;
+          })
+          .value();
+      });
+    };
+
+    $scope.$watch('_api.rules.list()', listUpdate);
+    $scope.$watch('filter', listUpdate);
 
     $scope.$watch('$root.state.params.page', function (page) {
       st2Api.rules.fetch(page);

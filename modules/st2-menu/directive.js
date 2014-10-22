@@ -18,15 +18,14 @@ angular.module('main')
 
         scope.getServer = function () {
           var url = localStorage.getItem('st2Host');
-          return url ? _.findKey(scope.serverList, function (e) {
-            return e === url;
-          }) : 'Mock API';
+          return url ? _.find(scope.serverList, function (e) {
+            return e.url === url;
+          }).name : 'Mock API';
         };
 
         scope.setServer = function (server) {
-          var url = scope.serverList[server];
-          if (url) {
-            localStorage.setItem('st2Host', url);
+          if (server.url) {
+            localStorage.setItem('st2Host', server.url);
           } else {
             localStorage.removeItem('st2Host');
           }
@@ -34,14 +33,24 @@ angular.module('main')
           $window.location.reload();
         };
 
-        scope.serverList = {
-          'Stage 1': '//st2stage001.stackstorm.net:9101',
-          'Stage 2': '//st2stage002.stackstorm.net:9101',
-          'Stage 3': '//st2stage003.stackstorm.net:9101',
-          'Stage 4': '//st2stage004.stackstorm.net:9101',
-          'Dev Env': '//172.168.50.50:9101',
-          'Mock API': null
-        };
+        scope.serverList = [{
+          name: 'Stage 1',
+          url: '//st2stage001.stackstorm.net:9101'
+        }, {
+          name: 'Stage 2',
+          url: '//st2stage002.stackstorm.net:9101'
+        }, {
+          name: 'Stage 3',
+          url: '//st2stage003.stackstorm.net:9101'
+        }, {
+          name: 'Stage 4',
+          url: '//st2stage004.stackstorm.net:9101'
+        }, {
+          name: 'Dev Env',
+          url: '//172.168.50.50:9101'
+        }, {
+          name: 'Mock API'
+        }];
       }
     };
 
