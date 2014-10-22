@@ -33,10 +33,24 @@ angular.module('main')
   .controller('st2ActionsCtrl', function ($scope, st2Api, $q) {
 
     $scope._api = st2Api;
+    $scope.filter = '';
 
-    $scope.$watch('_api.actions.list() | unwrap', function (list) {
-      $scope.groups = list && _.groupBy(list, 'content_pack');
-    });
+    var listUpdate = function () {
+      var promise = st2Api.actions.list();
+      promise && promise.then(function (list) {
+        $scope.groups = list && _(list)
+          .filter(function (e) {
+            return e.name.indexOf($scope.filter) > -1;
+          })
+          .groupBy('content_pack')
+          .value();
+      });
+    };
+
+    // Due to filterFilter creating a new array, you can't use in $watch statements since it would
+    // create an infinite $digest loop. That's a shame.
+    $scope.$watch('_api.actions.list()', listUpdate);
+    $scope.$watch('filter', listUpdate);
 
     st2Api.actions.fetchAll();
 
