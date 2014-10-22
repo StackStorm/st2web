@@ -2,20 +2,22 @@
 angular.module('main')
   .directive('st2ActionReporter', function () {
     var reporters = {
-      'run-local': '/apps/st2-history/modules/st2-action-reporter/reporters/run-local.html',
-      'run-remote': '/apps/st2-history/modules/st2-action-reporter/reporters/run-local.html',
-      'action-chain': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
-      'workflow': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
-      'mistral-v1': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
-      'mistral-v2': '/apps/st2-history/modules/st2-action-reporter/reporters/action-chain.html',
-      'run-local-script': '/apps/st2-history/modules/st2-action-reporter/reporters/run-local.html',
-      'http-runner': '/apps/st2-history/modules/st2-action-reporter/reporters/http.html'
+      // 'run-local': 'run-local',
+      // 'run-remote': 'run-local',
+      // 'action-chain': 'action-chain',
+      // 'workflow': 'action-chain',
+      // 'mistral-v1': 'action-chain',
+      // 'mistral-v2': 'action-chain',
+      // 'run-local-script': 'run-local',
+      // 'http-runner': 'http'
     };
 
     var linker = function (scope) {
       // Partial router
       scope.getReporter = function (runner) {
-        return reporters[runner];
+        var template = '/apps/st2-history/modules/st2-action-reporter/reporters/{{ name }}.html';
+
+        return template.split('{{ name }}').join(reporters[runner] || 'debug');
       };
     };
 
