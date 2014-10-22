@@ -56,8 +56,30 @@ angular.module('main')
       // TODO: figure out why you can't use $filter('unwrap')(...) here
       st2Api.rules.get(id).then(function (rule) {
         $scope.rule = rule;
+
+        st2Api.triggerTypes.find({name: rule.trigger.type}).then(function (triggerTypes) {
+          if (!_.isEmpty(triggerTypes)) {
+            var schema = triggerTypes[0].parameters_schema.properties;
+            $scope.triggerSchema = disable(schema);
+          }
+        });
+
+        st2Api.actions.find({name: rule.action.name}).then(function (actions) {
+          if (!_.isEmpty(actions)) {
+            var schema = actions[0].parameters;
+            $scope.actionSchema = disable(schema);
+          }
+        });
       });
     });
+
+    // Helpers
+    var disable = function (parameters) {
+      return _.mapValues(parameters, function (e) {
+        e.disabled = true;
+        return e;
+      });
+    };
   })
 
   ;

@@ -107,6 +107,7 @@
 
     &-heading {
       margin-bottom: 10px;
+      display: flex;
     }
 
     &-title {
@@ -118,6 +119,15 @@
 
       padding: 0;
       margin: 0;
+
+      flex: 1;
+    }
+
+    &-type {
+      color: #fff;
+      text-align: right;
+
+      flex: 1;
     }
 
     &-body {
@@ -159,6 +169,18 @@
 
     &--in-progress {
       cursor: default;
+    }
+  }
+
+  &__criteria {
+    &-entity,
+    &-value {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: #1A1A1A;
+      color: #EEE;
+      margin-bottom: 2px;
     }
   }
 }
