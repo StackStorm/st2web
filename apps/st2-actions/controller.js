@@ -126,7 +126,7 @@ angular.module('main')
 
     //helpers
     $scope.actionHasFile = function (action) {
-      var runnersWithFiles = ['workflow', 'run-local-script', 'action-chain'];
+      var runnersWithFiles = ['mistral-v1', 'mistral-v2', 'workflow', 'run-local-script', 'action-chain'];
 
       return action && _.contains(runnersWithFiles, action.runner_type);
     };
