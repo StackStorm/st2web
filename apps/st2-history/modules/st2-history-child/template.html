@@ -7,6 +7,8 @@
   <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action">
     Action Name
   </div>
+  <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty">
+  </div>
   <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status">
     Status
   </div>
@@ -17,7 +19,7 @@
     ng-class-even="'st2-flex-table__row--even'"
     ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
     ng-repeat="record in children"
-    ng-click="$root.state.go('^.summary', {id: record.id})">
+    ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
   <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
   </div>
   <div class="st2-flex-table__column st2-history__column-time st2-history-child__column-time">
@@ -25,6 +27,8 @@
   </div>
   <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action">
     {{ record.action.name }}
+  </div>
+  <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty">
   </div>
   <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status">
     <span class="st2-label" status="record.execution.status"></span>

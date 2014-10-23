@@ -4,8 +4,17 @@
 
   // Table columns
   .st2-flex-table__column&__column {
+    &-name {
+      flex: 1 150px;
+    }
+    &-type {
+      flex: 1 150px;
+    }
     &-desc {
       flex: 3;
+      flex: 3 0 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

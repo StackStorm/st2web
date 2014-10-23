@@ -24,6 +24,11 @@ angular.module('main')
     $rootScope.state = $state;
     $rootScope._ = _;
 
+    $rootScope.go = function (params) {
+      var isList = $rootScope.state.includes('^.list');
+      return $rootScope.state.go(isList ? '^.summary' : '.', params);
+    };
+
     // Pagination
     $rootScope.$watch('state.params.page', function (page) {
       $rootScope.page = page && parseInt(page);
