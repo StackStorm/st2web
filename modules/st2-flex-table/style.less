@@ -25,6 +25,10 @@
 
   &__row, &__header {
     display: flex;
+    flex-wrap: wrap;
+
+    overflow: hidden;
+    height: 40px;
   }
 
   &__header {
@@ -37,7 +41,8 @@
 
   &__column {
     flex: 1;
-    padding: 10px;
+    padding: 0 10px;
+    line-height: 40px;
 
     overflow: hidden;
     text-overflow: ellipsis;

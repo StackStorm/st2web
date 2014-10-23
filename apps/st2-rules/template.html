@@ -36,7 +36,7 @@
             ng-class-even="'st2-flex-table__row--even'"
             ng-class="{'st2-flex-table__row--active': rule.id == $parent.rule.id}"
             ng-repeat="rule in rules"
-            ng-click="$root.state.go('^.summary', {id: rule.id})">
+            ng-click="$root.go({id: rule.id})">
           <div class="st2-flex-table__column st2-rules__column-name">
             {{ rule.name }}
           </div>
@@ -55,23 +55,9 @@
         </div>
       </div>
 
-      <button class="st2-panel__prev-button"
-          ng-click="prevPage()"
-          ng-if="$root.page > 1">
-        Previous page
-      </button>
-      <button class="st2-panel__next-button"
-          ng-click="nextPage()"
-          ng-if="($root.page || 1) < $root.maxPage">
-        Next page
-      </button>
-
     </div>
 
-    <div class="st2-panel__back-button"
-        ng-click="$root.state.go('^.summary', {id: rule.id})">
-    </div>
-
+    <div class="st2-loader"></div>
   </div>
 
   <div class="st2-summary">
@@ -100,28 +86,51 @@
 
   </div>
 
-</div>
+  <div class="st2-panel__details st2-details">
+    <div class="st2-panel__scroller">
 
-<div class="st2-details">
-  <div class="st2-panel__scroller">
-
-    <div class="st2-details__panel">
-      <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">Parameters</h2>
+      <div class="st2-details__panel">
+        <div class="st2-details__panel-heading">
+          <h2 class="st2-details__panel-title">Trigger</h2>
+          <span class="st2-details__panel-type">{{ rule.trigger.type }}</span>
+        </div>
+        <div class="st2-details__panel-body">
+          <div class="st2-auto-form"
+            spec="triggerSchema"
+            result="rule.trigger.parameters">
+          </div>
+        </div>
       </div>
-      <div class="st2-details__panel-body">
 
+      <div class="st2-details__panel">
+        <div class="st2-details__panel-heading">
+          <h2 class="st2-details__panel-title">Criteria</h2>
+        </div>
+        <div class="st2-details__panel-body">
+          <div class="st2-details__criteria"
+              ng-repeat="(key, criteria) in rule.criteria">
+            <span class="st2-details__criteria-entity">{{ key }}</span>
+            <span class="st2-details__criteria-attribute">{{ criteria.type }}</span>
+            <span class="st2-details__criteria-value">{{ criteria.pattern }}</span>
+          </div>
+        </div>
       </div>
+
+      <div class="st2-details__panel">
+        <div class="st2-details__panel-heading">
+          <h2 class="st2-details__panel-title">Action</h2>
+          <span class="st2-details__panel-type">{{ rule.action.name }}</span>
+        </div>
+        <div class="st2-details__panel-body">
+          <div class="st2-auto-form"
+            spec="actionSchema"
+            result="rule.action.parameters">
+          </div>
+        </div>
+      </div>
+
     </div>
-
-    <div class="st2-details__panel">
-      <div class="st2-details__panel-heading">
-        <h2 class="st2-details__panel-title">Executions</h2>
-      </div>
-      <div class="st2-details__panel-body">
-
-      </div>
-    </div>
-
   </div>
+
 </div>
+

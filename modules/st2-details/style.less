@@ -5,13 +5,7 @@
 
   padding: 0;
 
-  position: absolute;
-  top: 0;
-  right: 0;
-
   z-index: 1;
-
-  width: 640px;
 
   background-color: #2e2e2e;
   color: #757575;
@@ -105,8 +99,11 @@
     border-bottom: 1px solid #757575;
     padding-bottom: 20px;
 
+    width: 606px;
+
     &-heading {
       margin-bottom: 10px;
+      display: flex;
     }
 
     &-title {
@@ -118,6 +115,15 @@
 
       padding: 0;
       margin: 0;
+
+      flex: 1;
+    }
+
+    &-type {
+      color: #fff;
+      text-align: right;
+
+      flex: 1;
     }
 
     &-body {
@@ -159,6 +165,18 @@
 
     &--in-progress {
       cursor: default;
+    }
+  }
+
+  &__criteria {
+    &-entity,
+    &-value {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: #1A1A1A;
+      color: #EEE;
+      margin-bottom: 2px;
     }
   }
 }

@@ -129,6 +129,8 @@ angular.module('main')
     scope.history = new Client('/history/executions');
     scope.historyFilters = new Client('/history/executions/views/filters');
 
+    scope.triggerTypes = new Client('/triggertypes');
+
     scope.rules = new Client('/rules');
 
     return scope;
