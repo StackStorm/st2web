@@ -13,13 +13,13 @@ angular.module('main')
         title: 'Rules'
       })
       .state('rules.list', {
-        url: '?page'
+        url: ''
       })
       .state('rules.summary', {
-        url: '/{id:\\w+}?page'
+        url: '/{id:\\w+}'
       })
       .state('rules.details', {
-        url: '/{id:\\w+}/details?page'
+        url: '/{id:\\w+}/details'
       })
 
       ;
@@ -48,28 +48,28 @@ angular.module('main')
     $scope.$watch('_api.rules.list()', listUpdate);
     $scope.$watch('filter', listUpdate);
 
-    $scope.$watch('$root.state.params.page', function (page) {
-      st2Api.rules.fetch(page);
-    });
+    st2Api.rules.fetchAll();
 
     $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
       st2Api.rules.get(id).then(function (rule) {
-        $scope.rule = rule;
+        if (rule) {
+          $scope.rule = rule;
 
-        st2Api.triggerTypes.find({name: rule.trigger.type}).then(function (triggerTypes) {
-          if (!_.isEmpty(triggerTypes)) {
-            var schema = triggerTypes[0].parameters_schema.properties;
-            $scope.triggerSchema = disable(schema);
-          }
-        });
+          st2Api.triggerTypes.find({name: rule.trigger.type}).then(function (triggerTypes) {
+            if (!_.isEmpty(triggerTypes)) {
+              var schema = triggerTypes[0].parameters_schema.properties;
+              $scope.triggerSchema = disable(schema);
+            }
+          });
 
-        st2Api.actions.find({name: rule.action.name}).then(function (actions) {
-          if (!_.isEmpty(actions)) {
-            var schema = actions[0].parameters;
-            $scope.actionSchema = disable(schema);
-          }
-        });
+          st2Api.actions.find({name: rule.action.name}).then(function (actions) {
+            if (!_.isEmpty(actions)) {
+              var schema = actions[0].parameters;
+              $scope.actionSchema = disable(schema);
+            }
+          });
+        }
       });
     });
 
