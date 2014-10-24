@@ -56,6 +56,11 @@ angular.module('main')
       $rootScope.filters = _.pick(params, filters);
     });
 
+    // References
+    $rootScope.getRef = function (entity) {
+      return [entity.pack, entity.name].join('.');
+    };
+
     // Don't forget to add a target for every href in menu
     // $scope.$on('$stateChangeStart', function (event, toState) {
     //   window.name = toState.name;

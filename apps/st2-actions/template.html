@@ -39,7 +39,7 @@
               ng-repeat="action in list"
               ng-click="$root.go({id: action.id, page: $root.page})">
             <div class="st2-flex-table__column st2-actions__column-name">
-              {{ action.name }}
+              {{ $root.getRef(action) }}
             </div>
             <div class="st2-flex-table__column st2-actions__column-type">
               {{ action.runner_type }}
@@ -74,7 +74,7 @@
 
     <dl class="st2-summary__body">
       <dt class="st2-summary__body-label">Name</dt>
-      <dd class="st2-summary__body-value">{{ action.name }}</dd>
+      <dd class="st2-summary__body-value">{{ $root.getRef(action) }}</dd>
 
       <dt class="st2-summary__body-label">Description</dt>
       <dd class="st2-summary__body-value">{{ action.description }}</dd>
@@ -111,7 +111,7 @@
             </div>
             <div class="st2-details__panel-body">
               <form role="form" class="st2-details__form"
-                  ng-submit="runAction(action.name, payload)">
+                  ng-submit="runAction(action, payload)">
                 <div class="st2-details__panel-empty"
                     ng-if="_.isEmpty(action.parameters) || _.every(action.parameters, 'immutable')">
                   Action has no mutable parameters

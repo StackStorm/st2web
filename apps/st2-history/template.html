@@ -52,10 +52,10 @@
               </i>
             </div>
             <div class="st2-flex-table__column st2-history__column-time">
-              {{ record.execution.start_timestamp.split(' ').join('T') | date:'mediumTime' }}
+              {{ record.execution.start_timestamp | date:'mediumTime' }}
             </div>
             <div class="st2-flex-table__column st2-history__column-action">
-              {{ record.action.name }}
+              {{ $root.getRef(record.action) }}
             </div>
             <div class="st2-flex-table__column st2-history__column-triggered"
                 ng-switch="record.rule && record.trigger && true">
@@ -134,7 +134,7 @@
       </dd>
 
       <dt class="st2-summary__body-label">Action</dt>
-      <dd class="st2-summary__body-value">{{ record.action.name }}</dd>
+      <dd class="st2-summary__body-value">{{ $root.getRef(record.action) }}</dd>
 
       <dt class="st2-summary__body-label">Runner</dt>
       <dd class="st2-summary__body-value">{{ record.action.runner_type }}</dd>
@@ -215,7 +215,7 @@
           </dd>
 
           <dt class="st2-details__panel-body-label">Action</dt>
-          <dd class="st2-details__panel-body-value">{{ record.action.name }}</dd>
+          <dd class="st2-details__panel-body-value">{{ $root.getRef(record.action) }}</dd>
 
           <dt class="st2-details__panel-body-label">Runner</dt>
           <dd class="st2-details__panel-body-value">{{ record.action.runner_type }}</dd>

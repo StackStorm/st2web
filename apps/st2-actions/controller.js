@@ -39,10 +39,10 @@ angular.module('main')
       var promise = st2Api.actions.list();
       promise && promise.then(function (list) {
         $scope.groups = list && _(list)
-          .filter(function (e) {
-            return e.name.indexOf($scope.filter) > -1;
+          .filter(function (action) {
+            return $scope.$root.getRef(action).indexOf($scope.filter) > -1;
           })
-          .groupBy('content_pack')
+          .groupBy('pack')
           .value();
       });
     };
@@ -61,7 +61,7 @@ angular.module('main')
 
         $scope.payload = {};
 
-        $scope.reloadExecutions(action.id);
+        $scope.reloadExecutions(action);
 
         if ($scope.actionHasFile(action)) {
           st2Api.actionEntryPoints.get(id).then(function (file) {
@@ -72,11 +72,11 @@ angular.module('main')
       });
     });
 
-    $scope.reloadExecutions = function (action_id) {
+    $scope.reloadExecutions = function (action) {
       $scope.inProgress = true;
 
       st2Api.executions.find({
-        'action_id': action_id,
+        'action': $scope.$root.getRef(action),
         'limit': 5
       }).then(function (executions) {
         $scope.inProgress = false;
@@ -85,7 +85,7 @@ angular.module('main')
     };
 
     // Running an action
-    $scope.runAction = function (actionName, payload) {
+    $scope.runAction = function (action, payload) {
       var retry = function (fn, condition) {
         var defer = $q.defer()
           , TIMEOUT = 1000;
@@ -110,9 +110,7 @@ angular.module('main')
       };
 
       st2Api.executions.create({
-        action: {
-          name: actionName
-        },
+        action: $scope.$root.getRef(action),
         parameters: payload
       }).then(function (execution) {
         var index = $scope.executions.length;
@@ -140,7 +138,13 @@ angular.module('main')
 
     //helpers
     $scope.actionHasFile = function (action) {
-      var runnersWithFiles = ['mistral-v1', 'mistral-v2', 'workflow', 'run-local-script', 'action-chain'];
+      var runnersWithFiles = [
+        'mistral-v1',
+        'mistral-v2',
+        'workflow',
+        'run-local-script',
+        'action-chain'
+      ];
 
       return action && _.contains(runnersWithFiles, action.runner_type);
     };
