@@ -40,7 +40,7 @@ angular.module('main')
 
       $scope.history = _(list).groupBy(function (record) {
         // ISO, please!
-        var time = record.execution.start_timestamp.split(' ').join('T');
+        var time = record.execution.start_timestamp;
         return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
       }).map(function (records, period) {
         return {

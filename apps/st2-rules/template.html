@@ -18,43 +18,46 @@
         </div>
       </div>
 
-      <div class="st2-flex-table">
-        <div class="st2-flex-table__caption">
-          <h2 class="st2-flex-table__caption-title">Category One</h2>
+      <div class="st2-panel__content">
+
+        <div class="st2-flex-table">
+          <div class="st2-flex-table__caption">
+            <h2 class="st2-flex-table__caption-title">Category One</h2>
+          </div>
+
+          <div class="st2-flex-table__header">
+            <div class="st2-flex-table__column st2-rules__column-name">Name</div>
+            <div class="st2-flex-table__column st2-rules__column-desc">Description</div>
+            <div class="st2-flex-table__column st2-rules__column-trigger">Trigger</div>
+            <div class="st2-flex-table__column st2-rules__column-action">Action Name</div>
+            <div class="st2-flex-table__column st2-rules__column-enabled">Enabled</div>
+          </div>
+
+          <div class="st2-flex-table__row"
+              ng-class-odd="'st2-flex-table__row--odd'"
+              ng-class-even="'st2-flex-table__row--even'"
+              ng-class="{'st2-flex-table__row--active': rule.id == $parent.rule.id}"
+              ng-repeat="rule in rules"
+              ng-click="$root.go({id: rule.id})">
+            <div class="st2-flex-table__column st2-rules__column-name">
+              {{ rule.name }}
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-desc">
+              {{ rule.description }}
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-trigger">
+              {{ rule.trigger.type }}
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-action">
+              {{ rule.action.name }}
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-enabled">
+              <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+            </div>
+          </div>
         </div>
 
-        <div class="st2-flex-table__header">
-          <div class="st2-flex-table__column st2-rules__column-name">Name</div>
-          <div class="st2-flex-table__column st2-rules__column-desc">Description</div>
-          <div class="st2-flex-table__column st2-rules__column-trigger">Trigger</div>
-          <div class="st2-flex-table__column st2-rules__column-action">Action Name</div>
-          <div class="st2-flex-table__column st2-rules__column-enabled">Enabled</div>
-        </div>
-
-        <div class="st2-flex-table__row"
-            ng-class-odd="'st2-flex-table__row--odd'"
-            ng-class-even="'st2-flex-table__row--even'"
-            ng-class="{'st2-flex-table__row--active': rule.id == $parent.rule.id}"
-            ng-repeat="rule in rules"
-            ng-click="$root.go({id: rule.id})">
-          <div class="st2-flex-table__column st2-rules__column-name">
-            {{ rule.name }}
-          </div>
-          <div class="st2-flex-table__column st2-rules__column-desc">
-            {{ rule.description }}
-          </div>
-          <div class="st2-flex-table__column st2-rules__column-trigger">
-            {{ rule.trigger.type }}
-          </div>
-          <div class="st2-flex-table__column st2-rules__column-action">
-            {{ rule.action.name }}
-          </div>
-          <div class="st2-flex-table__column st2-rules__column-enabled">
-            <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
-          </div>
-        </div>
       </div>
-
     </div>
 
     <div class="st2-loader"></div>

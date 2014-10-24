@@ -19,35 +19,38 @@
         </div>
       </div>
 
-      <div class="st2-flex-table" ng-repeat="(name, list) in groups">
-        <div class="st2-flex-table__caption">
-          <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
+      <div class="st2-panel__content">
+
+        <div class="st2-flex-table" ng-repeat="(name, list) in groups">
+          <div class="st2-flex-table__caption">
+            <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
+          </div>
+
+          <div class="st2-flex-table__header">
+            <div class="st2-flex-table__column st2-actions__column-name">Name</div>
+            <div class="st2-flex-table__column st2-actions__column-name">Runner</div>
+            <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
+          </div>
+
+          <div class="st2-flex-table__row"
+              ng-class-odd="'st2-flex-table__row--odd'"
+              ng-class-even="'st2-flex-table__row--even'"
+              ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
+              ng-repeat="action in list"
+              ng-click="$root.go({id: action.id, page: $root.page})">
+            <div class="st2-flex-table__column st2-actions__column-name">
+              {{ $root.getRef(action) }}
+            </div>
+            <div class="st2-flex-table__column st2-actions__column-type">
+              {{ action.runner_type }}
+            </div>
+            <div class="st2-flex-table__column st2-actions__column-desc">
+              {{ action.description }}
+            </div>
+          </div>
         </div>
 
-        <div class="st2-flex-table__header">
-          <div class="st2-flex-table__column st2-actions__column-name">Name</div>
-          <div class="st2-flex-table__column st2-actions__column-name">Runner</div>
-          <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
-        </div>
-
-        <div class="st2-flex-table__row"
-            ng-class-odd="'st2-flex-table__row--odd'"
-            ng-class-even="'st2-flex-table__row--even'"
-            ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
-            ng-repeat="action in list"
-            ng-click="$root.go({id: action.id, page: $root.page})">
-          <div class="st2-flex-table__column st2-actions__column-name">
-            {{ action.name }}
-          </div>
-          <div class="st2-flex-table__column st2-actions__column-type">
-            {{ action.runner_type }}
-          </div>
-          <div class="st2-flex-table__column st2-actions__column-desc">
-            {{ action.description }}
-          </div>
-        </div>
       </div>
-
     </div>
 
     <div class="st2-loader"></div>
@@ -71,7 +74,7 @@
 
     <dl class="st2-summary__body">
       <dt class="st2-summary__body-label">Name</dt>
-      <dd class="st2-summary__body-value">{{ action.name }}</dd>
+      <dd class="st2-summary__body-value">{{ $root.getRef(action) }}</dd>
 
       <dt class="st2-summary__body-label">Description</dt>
       <dd class="st2-summary__body-value">{{ action.description }}</dd>
@@ -108,7 +111,7 @@
             </div>
             <div class="st2-details__panel-body">
               <form role="form" class="st2-details__form"
-                  ng-submit="runAction(action.name, payload)">
+                  ng-submit="runAction(action, payload)">
                 <div class="st2-details__panel-empty"
                     ng-if="_.isEmpty(action.parameters) || _.every(action.parameters, 'immutable')">
                   Action has no mutable parameters
@@ -136,7 +139,7 @@
             </div>
             <div class="st2-details__panel-body">
 
-              <div class="st2-flex-table" ng-if="!_.isEmpty(executions)">
+              <div class="st2-flex-table st2-flex-table--passive" ng-if="!_.isEmpty(executions)">
                 <div class="st2-flex-table__header">
                   <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
                   <div class="st2-flex-table__column st2-actions__details-column-status">Status</div>
