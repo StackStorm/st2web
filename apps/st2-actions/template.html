@@ -19,35 +19,38 @@
         </div>
       </div>
 
-      <div class="st2-flex-table" ng-repeat="(name, list) in groups">
-        <div class="st2-flex-table__caption">
-          <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
+      <div class="st2-panel__content">
+
+        <div class="st2-flex-table" ng-repeat="(name, list) in groups">
+          <div class="st2-flex-table__caption">
+            <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
+          </div>
+
+          <div class="st2-flex-table__header">
+            <div class="st2-flex-table__column st2-actions__column-name">Name</div>
+            <div class="st2-flex-table__column st2-actions__column-name">Runner</div>
+            <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
+          </div>
+
+          <div class="st2-flex-table__row"
+              ng-class-odd="'st2-flex-table__row--odd'"
+              ng-class-even="'st2-flex-table__row--even'"
+              ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
+              ng-repeat="action in list"
+              ng-click="$root.go({id: action.id, page: $root.page})">
+            <div class="st2-flex-table__column st2-actions__column-name">
+              {{ action.name }}
+            </div>
+            <div class="st2-flex-table__column st2-actions__column-type">
+              {{ action.runner_type }}
+            </div>
+            <div class="st2-flex-table__column st2-actions__column-desc">
+              {{ action.description }}
+            </div>
+          </div>
         </div>
 
-        <div class="st2-flex-table__header">
-          <div class="st2-flex-table__column st2-actions__column-name">Name</div>
-          <div class="st2-flex-table__column st2-actions__column-name">Runner</div>
-          <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
-        </div>
-
-        <div class="st2-flex-table__row"
-            ng-class-odd="'st2-flex-table__row--odd'"
-            ng-class-even="'st2-flex-table__row--even'"
-            ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
-            ng-repeat="action in list"
-            ng-click="$root.go({id: action.id, page: $root.page})">
-          <div class="st2-flex-table__column st2-actions__column-name">
-            {{ action.name }}
-          </div>
-          <div class="st2-flex-table__column st2-actions__column-type">
-            {{ action.runner_type }}
-          </div>
-          <div class="st2-flex-table__column st2-actions__column-desc">
-            {{ action.description }}
-          </div>
-        </div>
       </div>
-
     </div>
 
     <div class="st2-loader"></div>
