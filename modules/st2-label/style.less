@@ -1,16 +1,29 @@
-@import (reference) '/components/bootstrap/less/variables.less';
-@import (reference) '/components/bootstrap/less/mixins.less';
-
-@import (reference) '/components/bootstrap/less/labels.less';
-
-.st2-label
-:extend(.label)
-:extend(.label-default) {
+.st2-label {
+  display: inline;
+  padding: .2em .6em .3em;
   font-size: 85%;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+  background-color: #777777;
 
-  &--primary:extend(.label-primary) {}
-  &--success:extend(.label-success) {}
-  &--info:extend(.label-info) {}
-  &--warning:extend(.label-warning) {}
-  &--danger:extend(.label-danger) {}
+  &--primary {
+    background-color: #428BCA;
+  }
+  &--success {
+    background-color: #5CB85C;
+  }
+  &--info {
+    background-color: #5BC0DE;
+  }
+  &--warning {
+    background-color: #F0AD4E;
+  }
+  &--danger {
+    background-color: #D9534F;
+  }
 }

@@ -1,8 +1,6 @@
 'use strict';
 angular.module('main')
-  .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/rules');
-
+  .config(function ($stateProvider) {
     $stateProvider
       .state('rules', {
         abstract: true,
@@ -20,6 +18,9 @@ angular.module('main')
       })
       .state('rules.details', {
         url: '/{id:\\w+}/details'
+      })
+      .state('rules.code', {
+        url: '/{id:\\w+}/code'
       })
 
       ;
@@ -63,7 +64,7 @@ angular.module('main')
             }
           });
 
-          st2Api.actions.find({ref: rule.action.action}).then(function (actions) {
+          st2Api.actions.find({ref: rule.action.ref}).then(function (actions) {
             if (!_.isEmpty(actions)) {
               var schema = actions[0].parameters;
               $scope.actionSchema = disable(schema);

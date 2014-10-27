@@ -25,9 +25,12 @@
       </div>
 
       <div class="st2-panel__content">
-        <div class="st2-flex-table" ng-repeat="group in history | orderBy:'period':true">
+        <div class="st2-flex-table"
+            ng-repeat="group in groups = (history | orderBy:'period':true)"
+            ng-if="history && !_.isEmpty(groups)">
 
-          <div class="st2-flex-table__caption">
+          <div class="st2-flex-table__caption"
+              ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">{{ group.period | date:'fullDate'}}</h2>
           </div>
 
@@ -80,6 +83,11 @@
             <div class="st2-flex-table__column st2-history__column-status">Status</div>
           </div>
 
+        </div>
+
+        <div class="st2-panel__content-empty"
+            ng-if="history && _.isEmpty(groups)">
+          No results were found for your current filter
         </div>
       </div>
 

@@ -43,6 +43,7 @@
     &s {
       display: flex;
       flex-wrap: wrap;
+      width: 640px;
     }
 
     &-label {
@@ -161,10 +162,27 @@
   }
 
   &__reload-button {
+    display: inline-block;
     cursor: pointer;
+
+    width: 1em;
+    height: 1em;
+    line-height: 0.9em;
+
+    margin-left: 5px;
+
+    &:before {
+      content: '\e806';
+
+      font-family: "ststanley";
+      font-style: normal;
+      font-weight: normal;
+    }
 
     &--in-progress {
       cursor: default;
+
+      animation: spin 2s infinite linear;
     }
   }
 
@@ -177,6 +195,16 @@
       background-color: #1A1A1A;
       color: #EEE;
       margin-bottom: 2px;
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(359deg);
     }
   }
 }

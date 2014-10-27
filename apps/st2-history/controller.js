@@ -38,8 +38,7 @@ angular.module('main')
       // Group all the records by periods of 24 hour
       var period = 24 * 60 * 60 * 1000;
 
-      $scope.history = _(list).groupBy(function (record) {
-        // ISO, please!
+      $scope.history = list && _(list).groupBy(function (record) {
         var time = record.execution.start_timestamp;
         return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
       }).map(function (records, period) {

@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
-  .config(function ($stateProvider) {
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/actions');
 
     $stateProvider
       .state('actions', {
@@ -19,6 +20,9 @@ angular.module('main')
       })
       .state('actions.details', {
         url: '/{id:\\w+}/details'
+      })
+      .state('actions.executions', {
+        url: '/{id:\\w+}/executions'
       })
       .state('actions.code', {
         url: '/{id:\\w+}/code'
@@ -143,6 +147,8 @@ angular.module('main')
         'mistral-v2',
         'workflow',
         'run-local-script',
+        'run-remote-script',
+        'run-python',
         'action-chain'
       ];
 

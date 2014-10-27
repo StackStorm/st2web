@@ -43,14 +43,22 @@
 
     outline: 0;
 
-    &[readonly],
-    &[disabled] {
+    &[readonly] {
       border-color: transparent;
       cursor: not-allowed;
     }
 
+    &[disabled] {
+      border-color: transparent;
+      cursor: default;
+    }
+
     &::placeholder {
       color: #757575;
+    }
+
+    &:invalid {
+      box-shadow: none;
     }
   }
 
