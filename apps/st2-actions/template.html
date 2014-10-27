@@ -21,7 +21,9 @@
 
       <div class="st2-panel__content">
 
-        <div class="st2-flex-table" ng-repeat="(name, list) in groups">
+        <div class="st2-flex-table"
+            ng-repeat="(name, list) in groups"
+            ng-if="groups && !_.isEmpty(groups)">
           <div class="st2-flex-table__caption">
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
@@ -48,6 +50,11 @@
               {{ action.description }}
             </div>
           </div>
+        </div>
+
+        <div class="st2-panel__content-empty"
+            ng-if="groups && _.isEmpty(groups)">
+          No results were found for your current filter
         </div>
 
       </div>

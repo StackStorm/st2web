@@ -20,7 +20,8 @@
 
       <div class="st2-panel__content">
 
-        <div class="st2-flex-table">
+        <div class="st2-flex-table"
+            ng-if="rules && !_.isEmpty(rules)">
           <div class="st2-flex-table__caption">
             <h2 class="st2-flex-table__caption-title">Category One</h2>
           </div>
@@ -55,6 +56,11 @@
               <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
             </div>
           </div>
+        </div>
+
+        <div class="st2-panel__content-empty"
+            ng-if="rules && _.isEmpty(rules)">
+          No results were found for your current filter
         </div>
 
       </div>
