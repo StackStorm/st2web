@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2FlexTable', function ($rootScope) {
+  .directive('st2FlexTable', function () {
 
     return {
       restrict: 'C',
@@ -10,7 +10,7 @@ angular.module('main')
       link: function postLink(scope, element) {
         scope.toggle = function () {
           element.toggleClass('st2-flex-table--contracted');
-        }
+        };
       }
     };
 
