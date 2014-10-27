@@ -54,13 +54,14 @@
       background-color: rgba(255,255,255,0.5);
     }
 
-    &--active {
+    &--active,
+    &&--active:hover { // Specificity of 0030
       background-color: #01C5FF;
       color: white;
     }
   }
 
-  &__row:hover {
+  &__row:hover { // Specificity of 0020
     cursor: pointer;
     background-color: #D2E6ED;
   }
