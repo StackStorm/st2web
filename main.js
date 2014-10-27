@@ -58,7 +58,7 @@ angular.module('main')
 
     // References
     $rootScope.getRef = function (entity) {
-      return [entity.pack, entity.name].join('.');
+      return entity && [entity.pack, entity.name].join('.');
     };
 
     // Don't forget to add a target for every href in menu

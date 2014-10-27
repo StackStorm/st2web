@@ -63,7 +63,7 @@ angular.module('main')
             }
           });
 
-          st2Api.actions.find({ref: rule.action.action}).then(function (actions) {
+          st2Api.actions.find({ref: rule.action.ref}).then(function (actions) {
             if (!_.isEmpty(actions)) {
               var schema = actions[0].parameters;
               $scope.actionSchema = disable(schema);
