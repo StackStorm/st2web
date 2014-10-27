@@ -29,7 +29,8 @@
             ng-repeat="group in groups = (history | orderBy:'period':true)"
             ng-if="history && !_.isEmpty(groups)">
 
-          <div class="st2-flex-table__caption">
+          <div class="st2-flex-table__caption"
+              ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">{{ group.period | date:'fullDate'}}</h2>
           </div>
 

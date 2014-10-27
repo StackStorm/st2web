@@ -24,7 +24,8 @@
         <div class="st2-flex-table"
             ng-repeat="(name, list) in groups"
             ng-if="groups && !_.isEmpty(groups)">
-          <div class="st2-flex-table__caption">
+          <div class="st2-flex-table__caption"
+              ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 

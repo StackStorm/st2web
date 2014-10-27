@@ -5,6 +5,8 @@
 
   background-color: #EAEAEA;
 
+  position: relative;
+
   &__caption {
     background: #434343;
     padding: 10px 15px;
@@ -21,6 +23,33 @@
 
       margin: 0;
     }
+
+    &[ng-click] {
+      cursor: pointer;
+
+      &:after {
+        content: '\e804';
+
+        font-family: "ststanley";
+        font-style: normal;
+        font-weight: normal;
+
+        display: block;
+
+        position: absolute;
+        top: 14px;
+        right: 14px;
+      }
+    }
+  }
+
+  &--contracted &__caption[ng-click]:after {
+    content: '\e803';
+  }
+
+  &--contracted &__row,
+  &--contracted &__header {
+    display: none;
   }
 
   &__row, &__header {
