@@ -144,6 +144,8 @@ angular.module('main')
         'mistral-v2',
         'workflow',
         'run-local-script',
+        'run-remote-script',
+        'run-python',
         'action-chain'
       ];
 
