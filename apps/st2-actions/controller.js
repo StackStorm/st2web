@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
-  .config(function ($stateProvider) {
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/actions');
 
     $stateProvider
       .state('actions', {

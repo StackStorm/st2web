@@ -1,8 +1,6 @@
 'use strict';
 angular.module('main')
-  .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/rules');
-
+  .config(function ($stateProvider) {
     $stateProvider
       .state('rules', {
         abstract: true,
