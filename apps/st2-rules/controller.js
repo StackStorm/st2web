@@ -19,6 +19,9 @@ angular.module('main')
       .state('rules.details', {
         url: '/{id:\\w+}/details'
       })
+      .state('rules.code', {
+        url: '/{id:\\w+}/code'
+      })
 
       ;
 
