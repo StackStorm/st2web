@@ -18,7 +18,7 @@
     ng-class-odd="'st2-flex-table__row--odd'"
     ng-class-even="'st2-flex-table__row--even'"
     ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
-    ng-repeat="record in children"
+    ng-repeat="record in children | orderBy:'execution.start_timestamp'"
     ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
   <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
   </div>
@@ -26,7 +26,7 @@
     {{ record.execution.start_timestamp | date:'mediumTime' }}
   </div>
   <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action">
-    {{ $root.getRef(record.action.name) }}
+    {{ $root.getRef(record.action) }}
   </div>
   <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty">
   </div>
