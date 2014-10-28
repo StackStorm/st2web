@@ -49,16 +49,13 @@ angular.module('main')
       }).value();
     });
 
-    $scope.$watchCollection('$root.filters', function () {
+    $scope.$watchCollection('[$root.filters, $root.page]', function () {
       st2Api.history.fetch($scope.$root.page, _.defaults({
         parent: 'null'
-      }, $scope.$root.filters));
-    });
-
-    $scope.$watchCollection('$root.page', function () {
-      st2Api.history.fetch($scope.$root.page, _.defaults({
-        parent: 'null'
-      }, $scope.$root.filters));
+      }, $scope.$root.filters)).catch(function (response) {
+        $scope.history = [];
+        console.error('Failed to fetch the data: ', response);
+      });
     });
 
     $scope.$watch('$root.state.params.id', function (id) {

@@ -176,58 +176,66 @@
         <div class="st2-details__panel-heading">
           <h2 class="st2-details__panel-title">History Record Details</h2>
         </div>
-        <dl class="st2-details__panel-body">
-          <dt class="st2-details__panel-body-label"
-              ng-if="record.rule.name">
-            Rule Name
-          </dt>
-          <dd class="st2-details__panel-body-value"
-              ng-if="record.rule.name">
-            {{ record.rule.name }}
-          </dd>
-
-          <dt class="st2-details__panel-body-label"
-              ng-if="record.rule.description">
-            Rule Description
-          </dt>
-          <dd class="st2-details__panel-body-value"
-              ng-if="record.rule.description">
-            {{ record.rule.description }}
-          </dd>
-
-          <dt class="st2-details__panel-body-label"
-              ng-if="record.trigger.name">
-            Trigger Name
-          </dt>
-          <dd class="st2-details__panel-body-value"
-              ng-if="record.trigger.name">
-            {{ record.trigger.name }}
-          </dd>
-
-          <dt class="st2-details__panel-body-label"
-              ng-if="record.trigger_instance.occurrence_time">
-            Occurrence time
-          </dt>
-          <dd class="st2-details__panel-body-value"
-              ng-if="record.trigger_instance.occurrence_time">
-            {{ record.trigger_instance.occurrence_time | date:'medium' }}
-          </dd>
-
-          <dt class="st2-details__panel-body-label"
-              ng-if="record.trigger_instance.payload">
-            Trigger payload
-          </dt>
-          <dd class="st2-details__panel-body-value"
-              ng-if="record.trigger_instance.payload">
-            {{ record.trigger_instance.payload | json }}
-          </dd>
-
-          <dt class="st2-details__panel-body-label">Action</dt>
-          <dd class="st2-details__panel-body-value">{{ $root.getRef(record.action) }}</dd>
-
-          <dt class="st2-details__panel-body-label">Runner</dt>
-          <dd class="st2-details__panel-body-value">{{ record.action.runner_type }}</dd>
-        </dl>
+        <div class="st2-details__panel-body">
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label"
+                ng-if="record.rule.name">
+              Rule Name
+            </dt>
+            <dd class="st2-details__panel-body-value"
+                ng-if="record.rule.name">
+              {{ record.rule.name }}
+            </dd>
+          </dl>
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label"
+                ng-if="record.rule.description">
+              Rule Description
+            </dt>
+            <dd class="st2-details__panel-body-value"
+                ng-if="record.rule.description">
+              {{ record.rule.description }}
+            </dd>
+          </dl>
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label"
+                ng-if="record.trigger.name">
+              Trigger Name
+            </dt>
+            <dd class="st2-details__panel-body-value"
+                ng-if="record.trigger.name">
+              {{ record.trigger.name }}
+            </dd>
+          </dl>
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label"
+                ng-if="record.trigger_instance.occurrence_time">
+              Occurrence time
+            </dt>
+            <dd class="st2-details__panel-body-value"
+                ng-if="record.trigger_instance.occurrence_time">
+              {{ record.trigger_instance.occurrence_time | date:'medium' }}
+            </dd>
+          </dl>
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label"
+                ng-if="record.trigger_instance.payload">
+              Trigger payload
+            </dt>
+            <dd class="st2-details__panel-body-value"
+                ng-if="record.trigger_instance.payload">
+              <pre>{{ record.trigger_instance.payload | json }}</pre>
+            </dd>
+          </dl>
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label">Action</dt>
+            <dd class="st2-details__panel-body-value">{{ $root.getRef(record.action) }}</dd>
+          </dl>
+          <dl class="st2-details__panel-body-line">
+            <dt class="st2-details__panel-body-label">Runner</dt>
+            <dd class="st2-details__panel-body-value">{{ record.action.runner_type }}</dd>
+          </dl>
+        </div>
       </div>
 
       <div class="st2-details__panel">

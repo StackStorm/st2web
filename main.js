@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('main', ['ui.router', 'ngResource', 'angularMoment', 'ui.select'])
+angular.module('main', ['ui.router', 'ngResource', 'angularMoment'])
   .config(function ($urlRouterProvider) {
 
     // Remove tailing slash from url before looking for state
@@ -34,9 +34,11 @@ angular.module('main')
       $rootScope.page = page && parseInt(page);
     });
     $rootScope.$on('$fetchFinish', function (event, fetch) {
-      $rootScope.total_count = parseInt(fetch.response.headers()['x-total-count']);
-      $rootScope.limit = parseInt(fetch.response.headers()['x-limit']);
-      $rootScope.maxPage = Math.ceil($rootScope.total_count / $rootScope.limit);
+      if (!fetch.error) {
+        $rootScope.total_count = parseInt(fetch.response.headers()['x-total-count']);
+        $rootScope.limit = parseInt(fetch.response.headers()['x-limit']);
+        $rootScope.maxPage = Math.ceil($rootScope.total_count / $rootScope.limit);
+      }
     });
     $rootScope.prevPage = function () {
       $rootScope.state.go('.', { page: $rootScope.page - 1 });
