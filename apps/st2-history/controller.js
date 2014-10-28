@@ -49,13 +49,7 @@ angular.module('main')
       }).value();
     });
 
-    $scope.$watchCollection('$root.filters', function () {
-      st2Api.history.fetch($scope.$root.page, _.defaults({
-        parent: 'null'
-      }, $scope.$root.filters));
-    });
-
-    $scope.$watchCollection('$root.page', function () {
+    $scope.$watchCollection('[$root.filters, $root.page]', function () {
       st2Api.history.fetch($scope.$root.page, _.defaults({
         parent: 'null'
       }, $scope.$root.filters));
