@@ -48,6 +48,17 @@ angular.module('main')
           });
         });
 
+        promise.catch(function (response) {
+          scope.$emit('$fetchFinish', {
+            url: url,
+            page: page,
+            limit: limit,
+            params: params,
+            response: response,
+            error: true
+          });
+        });
+
         return promise;
       };
 
@@ -61,6 +72,8 @@ angular.module('main')
             return response.data;
           });
         });
+
+        return promise;
       };
 
       scope.fetchOne = function (id) {

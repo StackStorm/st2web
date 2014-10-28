@@ -56,7 +56,10 @@ angular.module('main')
     $scope.$watch('_api.actions.list()', listUpdate);
     $scope.$watch('filter', listUpdate);
 
-    st2Api.actions.fetchAll();
+    st2Api.actions.fetchAll().catch(function (response) {
+      $scope.groups = [];
+      console.error('Failed to fetch the data: ', response);
+    });
 
     $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
