@@ -1,4 +1,5 @@
 <div class="st2-filter__label"
+  ng-class="{'st2-filter__label--active': $root.filters[type]}"
   ng-click="toggle()">
   {{ (label || type) | capitalize }}
 </div>
