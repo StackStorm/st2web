@@ -76,11 +76,11 @@ angular.module('main')
         return promise;
       };
 
-      scope.fetchOne = function (id) {
-        return $http.get(HOST + url + '/' + id);
+      scope.fetchOne = function (id, params) {
+        return $http.get(HOST + url + '/' + id, params);
       };
 
-      scope.get = function (id) {
+      scope.get = function (id, params) {
         var action;
 
         if (promise) {
@@ -90,7 +90,7 @@ angular.module('main')
                 return action.id === id;
               });
 
-              return cached || scope.fetchOne(id).then(function (response) {
+              return cached || scope.fetchOne(id, params).then(function (response) {
                 return response.data;
               });
             } else {
@@ -98,7 +98,7 @@ angular.module('main')
             }
           });
         } else {
-          action = scope.fetchOne(id).then(function (response) {
+          action = scope.fetchOne(id, params).then(function (response) {
             return response.data;
           });
         }

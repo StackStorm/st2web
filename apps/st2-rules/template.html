@@ -165,9 +165,8 @@
           ng-class="{'st2-details__tab-body--active': $root.state.includes('^.code')}">
         <div class="st2-panel__scroller">
 
-          <div class="st2-details__well">
-            <pre>{{ rule | json }}</pre>
-          </div>
+          <div class="st2-details__well"
+            hljs source="rule | json"></div>
 
         </div>
       </div>
