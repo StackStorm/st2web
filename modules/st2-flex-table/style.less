@@ -5,6 +5,9 @@
 @gray-lightest: #eaeaeb;
 @gray-white: #f4f4f4;
 
+@blue-dark: #01C5FF;
+@blue-light: #C0E5F1;
+
 .st2-flex-table {
   margin-bottom: 20px;
 
@@ -92,14 +95,14 @@
 
     &--active,
     &&--active:hover { // Specificity of 0030
-      background-color: #01C5FF;
+      background-color: @blue-dark;
       color: white;
     }
   }
 
   &__row:hover { // Specificity of 0020
     cursor: pointer;
-    background-color: #D2E6ED;
+    background-color: @blue-light;
   }
 
   &--passive &__row:hover {
