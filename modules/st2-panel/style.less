@@ -1,3 +1,7 @@
+@gray-dark: #2e2e2e;
+@gray-darker: #1e1e1e;
+@gray: #6c6c6c;
+
 .st2-panel {
   position: absolute;
   top: 0;
@@ -10,7 +14,7 @@
 
   display: flex;
 
-  background-color: #2e2e2e;
+  background-color: @gray-dark;
 
   &__details {
     transform: translate3d(0,0,0);
@@ -139,7 +143,7 @@
     width: 100%;
     line-height: 20px;
     padding: 5px 10px;
-    background-color: #1a1a1a;
+    background-color: @gray-darker;
 
     border: 0;
     box-shadow: inset 0 1px 2px #000;
@@ -155,9 +159,9 @@
   }
 
   &__content {
-    background-color: #2e2e2e;
+    background-color: @gray-dark;
 
-    // hiding displaced toolbar items 
+    // hiding displaced toolbar items
     padding: 10px;
     margin: 0 -10px;
 
