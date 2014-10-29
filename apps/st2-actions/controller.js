@@ -82,12 +82,13 @@ angular.module('main')
     $scope.reloadExecutions = function (action) {
       $scope.inProgress = true;
 
-      st2Api.executions.find({
+      return st2Api.history.find({
         'action': $scope.$root.getRef(action),
-        'limit': 5
-      }).then(function (executions) {
+        'limit': 5,
+        'parent': 'null'
+      }).then(function (history) {
         $scope.inProgress = false;
-        $scope.executions = executions;
+        return $scope.history = history;
       });
     };
 
@@ -120,23 +121,22 @@ angular.module('main')
         action: $scope.$root.getRef(action),
         parameters: payload
       }).then(function (execution) {
-        var index = $scope.executions.length;
-
-        $scope.executions[index] = execution;
+        var index = $scope.history.length;
 
         var updateExecution = function () {
-          return st2Api.executions.get(execution.id)
-            .then(function (result) {
-              $scope.executions[index] = result;
-              return result;
-            });
+          return st2Api.history.find({
+            execution: execution.id
+          }).then(function (result) {
+            $scope.history[index] = result[0];
+            return result[0];
+          });
         };
 
         $scope.inProgress = true;
 
-        retry(updateExecution, function (execution) {
+        retry(updateExecution, function (history) {
           var finalStates = ['succeeded', 'failed'];
-          return _.contains(finalStates, execution.status);
+          return _.contains(finalStates, history.execution.status);
         }).finally(function () {
           $scope.inProgress = false;
         });
