@@ -2,13 +2,15 @@
 @gray-darker: #1e1e1e;
 @gray: #6c6c6c;
 @gray-light: #a4a4a4;
+@gray-lightest: #eaeaeb;
+@gray-white: #f4f4f4;
 
 .st2-flex-table {
   margin-bottom: 20px;
 
   box-shadow: 0 0 5px rgba(0,0,0,0.7);
 
-  background-color: #EAEAEA;
+  background-color: @gray-lightest;
 
   position: relative;
 
@@ -85,7 +87,7 @@
 
   &__row {
     &--even {
-      background-color: rgba(255,255,255,0.5);
+      background-color: @gray-white;
     }
 
     &--active,
@@ -110,7 +112,7 @@
   }
 
   &__insert {
-    background-color: #F4F4F4;
+    background-color: @gray-white;
 
     margin: 0;
     padding: 10px;
