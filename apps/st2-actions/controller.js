@@ -71,7 +71,10 @@ angular.module('main')
         $scope.reloadExecutions(action);
 
         if ($scope.actionHasFile(action)) {
-          st2Api.actionEntryPoints.get(action.id).then(function (file) {
+          st2Api.actionEntryPoints.get(action.id, {
+            // Do not parse JSON by default, it would mess with code highlighting
+            transformResponse: [function (d) { return d; }]
+          }).then(function (file) {
             $scope.file = file;
           });
         }
