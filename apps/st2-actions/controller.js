@@ -88,7 +88,8 @@ angular.module('main')
         'parent': 'null'
       }).then(function (history) {
         $scope.inProgress = false;
-        return $scope.history = history;
+        $scope.history = history;
+        return history;
       });
     };
 
