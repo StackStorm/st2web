@@ -224,7 +224,8 @@
             </dt>
             <dd class="st2-details__panel-body-value"
                 ng-if="record.trigger_instance.payload">
-              <pre>{{ record.trigger_instance.payload | json }}</pre>
+              <div class="st2-details__well"
+                hljs source="record.trigger_instance.payload | json"></div>
             </dd>
           </dl>
           <dl class="st2-details__panel-body-line">
