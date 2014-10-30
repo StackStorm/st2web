@@ -1,11 +1,12 @@
 @import "layout";
+@import "colors";
 
 .st2-summary {
   #st2-layout > #panel;
 
   width: 320px;
 
-  background-color: #1E1E1E;
+  background-color: @gray-darker;
   padding: 0;
   color: #fff;
 
@@ -15,7 +16,7 @@
   overflow: hidden;
 
   &__heading {
-    border-bottom: 1px solid #2f2f2f;
+    border-bottom: 1px solid @gray-dark;
     padding: 10px 20px;
 
     display: flex;

@@ -1,14 +1,16 @@
+@import "colors";
+
 .st2-flex-table {
   margin-bottom: 20px;
 
   box-shadow: 0 0 5px rgba(0,0,0,0.7);
 
-  background-color: #EAEAEA;
+  background-color: @gray-lightest;
 
   position: relative;
 
   &__caption {
-    background: #434343;
+    background: @gray;
     padding: 10px 15px;
     clear: both;
 
@@ -62,7 +64,7 @@
 
   &__header {
     color: #fff;
-    background-color: #979C9F;
+    background-color: @gray-light;
     font-weight: 200;
     font-family: Oswald;
     letter-spacing: 0.01em;
@@ -80,19 +82,19 @@
 
   &__row {
     &--even {
-      background-color: rgba(255,255,255,0.5);
+      background-color: @gray-white;
     }
 
     &--active,
     &&--active:hover { // Specificity of 0030
-      background-color: #01C5FF;
+      background-color: @blue-dark;
       color: white;
     }
   }
 
   &__row:hover { // Specificity of 0020
     cursor: pointer;
-    background-color: #D2E6ED;
+    background-color: @blue-light;
   }
 
   &--passive &__row:hover {
@@ -105,7 +107,7 @@
   }
 
   &__insert {
-    background-color: #F4F4F4;
+    background-color: @gray-white;
 
     margin: 0;
     padding: 10px;
