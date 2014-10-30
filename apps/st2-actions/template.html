@@ -24,14 +24,17 @@
         <div class="st2-flex-table"
             ng-repeat="(name, list) in groups"
             ng-if="groups && !_.isEmpty(groups)">
-          <div class="st2-flex-table__caption"
+          <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
           <div class="st2-flex-table__header">
+            <div class="st2-flex-table__column st2-actions__column-utility">
+              <i class="st2-icon__flow-cascade"></i>
+            </div>
             <div class="st2-flex-table__column st2-actions__column-name">Name</div>
-            <div class="st2-flex-table__column st2-actions__column-name">Runner</div>
+            <div class="st2-flex-table__column st2-actions__column-type">Runner</div>
             <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
           </div>
 
@@ -41,6 +44,10 @@
               ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
               ng-repeat="action in list"
               ng-click="$root.go({id: action.id, page: $root.page})">
+            <div class="st2-flex-table__column st2-actions__column-utility">
+              <i class="st2-icon__flow-cascade"
+                ng-if="isWorkflow(action)"></i>
+            </div>
             <div class="st2-flex-table__column st2-actions__column-name">
               {{ $root.getRef(action) }}
             </div>
@@ -106,6 +113,7 @@
       <div class="st2-details__tab-label"
           ng-class="{'st2-details__tab-label--active': $root.state.includes('^.details')}"
           ng-click="$root.state.go('^.details', {id: action.id})">
+        <i class="st2-icon__cogs"></i>
         General
       </div>
 
@@ -170,6 +178,7 @@
 
               <a class="st2-forms__button"
                   ui-sref="history.list({action: $root.getRef(action)})">
+                <i class="st2-icon__eye"></i>
                 See full action history
               </a>
             </div>
@@ -183,6 +192,7 @@
           ng-class="{'st2-details__tab-label--active': $root.state.includes('^.code')}"
           ng-click="$root.state.go('^.code', {id: action.id})"
           ng-if="actionHasFile(action)">
+        <i class="st2-icon__code"></i>
         Code
       </div>
 

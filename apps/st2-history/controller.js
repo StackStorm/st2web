@@ -49,14 +49,14 @@ angular.module('main')
       }).value();
     });
 
-    $scope.$watchCollection('[$root.filters, $root.page]', function () {
+    $scope.$watch('[$root.filters, $root.page]', function () {
       st2Api.history.fetch($scope.$root.page, _.defaults({
         parent: 'null'
       }, $scope.$root.filters)).catch(function (response) {
         $scope.history = [];
         console.error('Failed to fetch the data: ', response);
       });
-    });
+    }, true);
 
     $scope.$watch('$root.state.params.id', function (id) {
       // TODO: figure out why you can't use $filter('unwrap')(...) here
@@ -75,7 +75,7 @@ angular.module('main')
       });
     });
 
-    $scope.toggle = function (record, $event) {
+    $scope.expand = function (record, $event) {
       $event.stopPropagation();
 
       record._expanded = !record._expanded;

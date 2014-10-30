@@ -60,11 +60,9 @@ angular.module('main')
         if (rule) {
           $scope.rule = rule;
 
-          st2Api.triggerTypes.find({ref: rule.trigger.type}).then(function (triggerTypes) {
-            if (!_.isEmpty(triggerTypes)) {
-              var schema = triggerTypes[0].parameters_schema.properties;
-              $scope.triggerSchema = disable(schema);
-            }
+          st2Api.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
+            var schema = triggerTypes.parameters_schema.properties;
+            $scope.triggerSchema = disable(schema);
           });
 
           st2Api.actions.find({ref: rule.action.ref}).then(function (actions) {
