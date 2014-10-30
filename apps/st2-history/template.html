@@ -49,8 +49,8 @@
               ng-repeat-start="record in group.records"
               ng-click="$root.go(_.defaults({id: record.id}, $root.state.params))">
             <div class="st2-flex-table__column st2-history__column-utility"
-                ng-click="isExpandable(record) && toggle(record, $event)">
               <i ng-class="record._expanded && 'st2-icon__expanded' || 'st2-icon__contracted'"
+                ng-click="isExpandable(record) && expand(record, $event)">
                   ng-if="isExpandable(record)">
               </i>
             </div>
