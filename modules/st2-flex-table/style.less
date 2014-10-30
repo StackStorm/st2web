@@ -11,7 +11,6 @@
 
   &__caption {
     background: @gray;
-    padding: 10px 15px;
     clear: both;
 
     &-title {
@@ -21,9 +20,12 @@
       font-weight: 200;
       font-family: Oswald;
 
+      display: inline-block;
+
       text-transform: uppercase;
 
       margin: 0;
+      padding: 10px 15px;
     }
 
     &[ng-click] {
@@ -42,6 +44,29 @@
         top: 14px;
         right: 14px;
       }
+    }
+
+    &:before {
+      font-family: "ststanley";
+      font-style: normal;
+      font-weight: normal;
+
+      color: #fff;
+
+      display: inline-block;
+
+      padding: 14px;
+      vertical-align: top;
+
+      box-shadow: 1px 0 0 #3b3b3b, 2px 0 0 #919191;
+    }
+
+    &--pack:before {
+      content: '\e80b';
+    }
+
+    &--date:before {
+      content: '\e815';
     }
   }
 

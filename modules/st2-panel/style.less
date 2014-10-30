@@ -134,13 +134,30 @@
       padding: 4px 0;
 
       order: -3;
+
+      position: relative;
+
+      &:after {
+        content: '\e80f';
+
+        font-family: "ststanley";
+        font-style: normal;
+        font-weight: normal;
+
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        padding: 10px;
+        font-size: 120%;
+      }
     }
   }
 
   &__search-bar[type="search"] {
     width: 100%;
     line-height: 20px;
-    padding: 5px 10px;
+    padding: 5px 30px 5px 10px;
     background-color: @gray-darker;
 
     border: 0;
@@ -171,6 +188,19 @@
     &-empty {
       text-align: center;
       padding: 5em;
+
+      &:before {
+        content: '\e810';
+
+        font-family: "ststanley";
+        font-style: normal;
+        font-weight: normal;
+
+        font-size: 32px;
+        padding-bottom: 10px;
+
+        display: block;
+      }
     }
   }
 

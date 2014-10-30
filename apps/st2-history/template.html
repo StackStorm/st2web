@@ -29,7 +29,7 @@
             ng-repeat="group in groups = (history | orderBy:'period':true)"
             ng-if="history && !_.isEmpty(groups)">
 
-          <div class="st2-flex-table__caption"
+          <div class="st2-flex-table__caption st2-flex-table__caption--date"
               ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">{{ group.period | date:'fullDate'}}</h2>
           </div>
@@ -49,8 +49,8 @@
               ng-repeat-start="record in group.records"
               ng-click="$root.go(_.defaults({id: record.id}, $root.state.params))">
             <div class="st2-flex-table__column st2-history__column-utility"
-              <i ng-class="record._expanded && 'st2-icon__expanded' || 'st2-icon__contracted'"
                 ng-click="isExpandable(record) && expand(record, $event)">
+              <i ng-class="record._expanded && 'st2-icon__down-open' || 'st2-icon__right-open'"
                   ng-if="isExpandable(record)">
               </i>
             </div>
