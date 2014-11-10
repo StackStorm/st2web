@@ -12,6 +12,9 @@ var gulp = require('gulp')
   , fontelloUpdate = require('fontello-update')
   , protractor = require('gulp-protractor').protractor
   , plumber = require('gulp-plumber')
+  , htmlreplace = require('gulp-html-replace')
+  , bowerFiles = require('main-bower-files')
+  , glob = require('glob')
   ;
 
 var express = require('express')
@@ -23,14 +26,13 @@ app.use(express.static(__dirname));
 var settings = {
   port: 3000,
   dev: '.',
-  js: ['apps/**/*.js', 'modules/**/*.js', 'main.js'],
+  js: ['main.js', 'modules/**/*.js', 'apps/**/*.js'],
   styles: {
     src: ['less/style.less', 'apps/**/*.less', 'modules/**/*.less'],
     includes: 'less/',
     dest: 'css'
   },
-  html: 'index.html',
-  apiBlueprint: '../apiary.apib'
+  html: 'index.html'
 };
 
 
@@ -51,6 +53,7 @@ debug();
 
 gulp.task('gulphint', function () {
   return gulp.src('gulpfile.js')
+    .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     ;
@@ -58,6 +61,7 @@ gulp.task('gulphint', function () {
 
 gulp.task('scripts', function () {
   return gulp.src(settings.js, { cwd: settings.dev })
+    .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     ;
@@ -80,6 +84,38 @@ gulp.task('styles', ['font'], function () {
     .pipe(gulp.dest(path.join(settings.dev, settings.styles.dest)))
     ;
 });
+
+gulp.task('html', ['scripts'], function () {
+  // Gather a list of all bower components installed.
+  // We are only interested in JS files since we intend to import all the css files manually through
+  // less import.
+  var components = bowerFiles({
+    filter: /\.js/
+  }).map(function (file) {
+    return path.relative('.', file);
+  });
+
+  // Gathering a list of all the modules we have.
+  var modules = settings.js.map(function (pattern) {
+    return glob.sync(pattern);
+  }).reduce(function(a, b) {
+    return a.concat(b);
+  });
+
+  return gulp.src('index.html')
+    .pipe(plumber())
+    .pipe(htmlreplace({
+      components: components,
+      modules: modules
+    }, {
+      // Keep blocks in place to be able to reuse the same filename over and over.
+      keepUnassigned: true,
+      keepBlockTags: true
+    }))
+    .pipe(gulp.dest('.'))
+    ;
+});
+
 
 gulp.task('serve', ['build'], function (cb) {
   http
@@ -117,9 +153,9 @@ gulp.task('test', ['build', 'serve'], function (cb) {
 
 
 gulp.task('watch', function () {
-  gulp.watch(settings.js, ['scripts']);
+  gulp.watch(settings.js, ['scripts', 'html']);
   gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
-gulp.task('build', ['gulphint', 'scripts', 'font', 'styles']);
+gulp.task('build', ['gulphint', 'scripts', 'font', 'styles', 'html']);
 gulp.task('default', ['build', 'watch', 'serve']);
