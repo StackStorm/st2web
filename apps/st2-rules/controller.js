@@ -1,6 +1,8 @@
 'use strict';
 angular.module('main')
   .config(function ($stateProvider) {
+
+    // TODO: Fix order. Rules should go second in main menu.
     $stateProvider
       .state('rules', {
         abstract: true,
@@ -30,47 +32,65 @@ angular.module('main')
 angular.module('main')
 
   // List rules
-  .controller('st2RulesCtrl', function ($scope, st2Api) {
+  .controller('st2RulesCtrl', function ($scope, st2api) {
 
-    $scope._api = st2Api;
     $scope.filter = '';
 
+    var pRulesList = st2api.rules.list().catch(function (response) {
+      $scope.rules = [];
+      console.error('Failed to fetch the data: ', response);
+      $scope.$apply();
+    });
+
     var listUpdate = function () {
-      var promise = st2Api.rules.list();
-      promise && promise.then(function (list) {
+      pRulesList && pRulesList.then(function (list) {
         $scope.rules = list && _(list)
           .filter(function (e) {
             return e.name.indexOf($scope.filter) > -1;
           })
           .value();
+
+        $scope.$apply();
       });
     };
 
-    $scope.$watch('_api.rules.list()', listUpdate);
     $scope.$watch('filter', listUpdate);
 
-    st2Api.rules.fetchAll().catch(function (response) {
-      $scope.rules = [];
-      console.error('Failed to fetch the data: ', response);
-    });
-
     $scope.$watch('$root.state.params.id', function (id) {
-      // TODO: figure out why you can't use $filter('unwrap')(...) here
-      st2Api.rules.get(id).then(function (rule) {
+      var promise = id ? st2api.rules.get(id) : pRulesList.then(function (actions) {
+        return _.first(actions);
+      });
+
+      promise.then(function (rule) {
         if (rule) {
           $scope.rule = rule;
 
-          st2Api.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
+          st2api.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
             var schema = triggerTypes.parameters_schema.properties;
             $scope.triggerSchema = disable(schema);
+            $scope.$apply();
           });
 
-          st2Api.actions.find({ref: rule.action.ref}).then(function (actions) {
-            if (!_.isEmpty(actions)) {
-              var schema = actions[0].parameters;
+          // TODO: Fix after STORM-810 gets resolved
+          st2api.actionOverview.list()
+            .then(function (actions) {
+              var action = _.find(actions, function (action) {
+                return [action.pack, action.name].join('.') === rule.action.ref;
+              });
+
+              if (!action) {
+                throw new Error('Action not found: ' + rule.action.ref);
+              }
+
+              return action;
+            })
+            .then(function (actions) {
+              var schema = actions.parameters;
               $scope.actionSchema = disable(schema);
-            }
-          });
+              $scope.$apply();
+            });
+
+          $scope.$apply();
         }
       });
     });

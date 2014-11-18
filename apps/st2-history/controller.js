@@ -28,39 +28,63 @@ angular.module('main')
 angular.module('main')
 
   // List history records
-  .controller('st2HistoryCtrl', function ($scope, st2Api) {
+  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope) {
 
-    $scope._api = st2Api;
+    var pHistoryList;
 
-    st2Api.historyFilters.fetchAll();
-
-    $scope.$watch('_api.history.list() | unwrap', function (list) {
-      // Group all the records by periods of 24 hour
-      var period = 24 * 60 * 60 * 1000;
-
-      $scope.history = list && _(list).groupBy(function (record) {
-        var time = record.execution.start_timestamp;
-        return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
-      }).map(function (records, period) {
-        return {
-          period: period,
-          records: records
-        };
-      }).value();
+    st2api.historyFilters.list().then(function (filters) {
+      // TODO: when the field is not required, an abscense of a value should also be a value
+      $scope.filters = filters;
+      $scope.$apply();
     });
 
-    $scope.$watch('[$root.filters, $root.page]', function () {
-      st2Api.history.fetch($scope.$root.page, _.defaults({
-        parent: 'null'
-      }, $scope.$root.filters)).catch(function (response) {
-        $scope.history = [];
-        console.error('Failed to fetch the data: ', response);
+    var listUpdate = function () {
+      pHistoryList = st2api.history.list(_.assign({
+        parent: 'null',
+        page: $rootScope.page
+      }, $scope.$root.filters));
+
+      pHistoryList.then(function (list) {
+        // Group all the records by periods of 24 hour
+        var period = 24 * 60 * 60 * 1000;
+
+        $scope.history = list && _(list)
+          .groupBy(function (record) {
+            var time = record.execution.start_timestamp;
+            return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
+          })
+          .map(function (records, period) {
+            return {
+              period: period,
+              records: records
+            };
+          })
+          .value();
+
+        $rootScope.$emit('$fetchFinish', st2api.history);
+
+        $scope.$apply();
+      }).catch(function (err) {
+        $scope.groups = [];
+        console.error('Failed to fetch the data: ', err);
       });
-    }, true);
+    };
+
+    $scope.$watch('[$root.filters, $root.page]', listUpdate, true);
 
     $scope.$watch('$root.state.params.id', function (id) {
-      // TODO: figure out why you can't use $filter('unwrap')(...) here
-      st2Api.history.get(id).then(function (record) {
+      if (!pHistoryList) {
+        throw {
+          name: 'RaceCondition',
+          message: 'Possible race condition. History promise does not exist yet.'
+        };
+      }
+
+      var promise = id ? st2api.history.get(id) : pHistoryList.then(function (actions) {
+        return _.first(actions);
+      });
+
+      promise.then(function (record) {
         $scope.record = record;
 
         // Spec and payload to build a form for the action input. Strict resemblence to form from
@@ -72,6 +96,8 @@ angular.module('main')
           }).value();
 
         $scope.payload = _.clone(record.execution.parameters);
+
+        $scope.$apply();
       });
     });
 
@@ -81,11 +107,12 @@ angular.module('main')
       record._expanded = !record._expanded;
 
       if (record._expanded) {
-        st2Api.history.find({
+        st2api.history.list({
           'parent': record.id
         }).then(function (records) {
           record._children = records;
-        });
+          this.$apply();
+        }.bind(this));
       }
     };
 
