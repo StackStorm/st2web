@@ -12,6 +12,7 @@
   color: @gray-white;
 
   border-left: 1px solid @gray-darkest;
+  box-shadow: inset 1px 0 0 @gray-dull;
 
   position: relative;
 
@@ -87,8 +88,11 @@
       color: #ccc;
 
       border-top: 4px solid transparent;
+      box-shadow: inset 0 -1px 0 @gray-dull;
 
       z-index: 1;
+
+      user-select: none;
 
       &--active {
         background-color: @gray-darker;
@@ -107,14 +111,11 @@
       order: 99;
 
       position: absolute;
-      top: 43px;
+      top: 44px;
       left: 0;
       bottom: 0;
 
       width: 640px;
-
-      border-top: 1px solid @gray-dull;
-      border-left: 1px solid @gray-dull;
 
       display: none;
 
