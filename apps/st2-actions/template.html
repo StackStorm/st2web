@@ -1,5 +1,4 @@
-<div class="st2-panel"
-    ng-class="{'st2-panel--slide': $root.isDetails()}">
+<div class="st2-panel">
 
   <div class="st2-panel__view st2-actions">
     <div class="st2-panel__scroller">
@@ -71,55 +70,47 @@
     <div class="st2-loader"></div>
   </div>
 
-  <div class="st2-summary">
-
-    <div class="st2-summary__heading">
-      <h2 class="st2-summary__heading-title">Summary</h2>
-      <button class="st2-forms__button-right" title="Details"
-          ng-click="$root.state.go('^.details', {id: action.id, page: $root.page})"
-          ng-if="!$root.isDetails()">
-        Details
-      </button>
-      <button class="st2-forms__button-left" title="Details"
-          ng-click="$root.state.go('^.summary', {id: action.id, page: $root.page})"
-          ng-if="$root.isDetails()">
-        Back
-      </button>
-    </div>
-
-    <dl class="st2-summary__body">
-      <dt class="st2-summary__body-label">Name</dt>
-      <dd class="st2-summary__body-value">{{ $root.getRef(action) }}</dd>
-
-      <dt class="st2-summary__body-label">Description</dt>
-      <dd class="st2-summary__body-value">{{ action.description }}</dd>
-
-      <dt class="st2-summary__body-label"
-          ng-if="!_.isEmpty(executions)">
-        Latest Execution Status
-      </dt>
-      <dd class="st2-summary__body-value"
-          ng-if="!_.isEmpty(executions)">
-        <span class="st2-label"
-          status="_.last(executions).status">
-        </span>
-      </dd>
-    </dl>
-
-  </div>
-
   <div class="st2-panel__details st2-details">
     <div class="st2-details__tabs">
       <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.state.includes('^.details')}"
-          ng-click="$root.state.go('^.details', {id: action.id})">
+          ng-class="{'st2-details__tab-label--active': $root.isState(['^.general', '^.list'])}"
+          ng-click="$root.state.go('^.general', {id: action.id})">
         <i class="st2-icon__cogs"></i>
         General
       </div>
 
       <div class="st2-details__tab-body"
-          ng-class="{'st2-details__tab-body--active': $root.state.includes('^.details')}">
+          ng-class="{'st2-details__tab-body--active': $root.isState(['^.general', '^.list'])}">
         <div class="st2-panel__scroller">
+
+          <div class="st2-details__panel">
+
+            <div class="st2-details__panel-body">
+              <div class="st2-details__panel-body-line">
+                <div class="st2-details__panel-body-label">Name</div>
+                <div class="st2-details__panel-body-value">{{ $root.getRef(action) }}</div>
+              </div>
+
+              <div class="st2-details__panel-body-line">
+                <div class="st2-details__panel-body-label">Description</div>
+                <div class="st2-details__panel-body-value">{{ action.description }}</div>
+              </div>
+
+              <div class="st2-details__panel-body-line">
+                <div class="st2-details__panel-body-label"
+                    ng-if="!_.isEmpty(executions)">
+                  Latest Execution Status
+                </div>
+                <div class="st2-details__panel-body-value"
+                    ng-if="!_.isEmpty(executions)">
+                  <span class="st2-label"
+                    status="_.last(executions).status">
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
 
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
@@ -162,7 +153,7 @@
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
                     ng-repeat="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
-                    ui-sref="history.details({action: $root.getRef(action), id: record.id})">
+                    ui-sref="history.general({action: $root.getRef(action), id: record.id})">
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
@@ -189,7 +180,7 @@
       </div>
 
       <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.state.includes('^.code')}"
+          ng-class="{'st2-details__tab-label--active': $root.isState('^.code')}"
           ng-click="$root.state.go('^.code', {id: action.id})"
           ng-if="actionHasFile(action)">
         <i class="st2-icon__code"></i>
@@ -197,7 +188,7 @@
       </div>
 
       <div class="st2-details__tab-body"
-          ng-class="{'st2-details__tab-body--active': $root.state.includes('^.code')}"
+          ng-class="{'st2-details__tab-body--active': $root.isState('^.code')}"
           ng-if="actionHasFile(action)">
         <div class="st2-panel__scroller">
 

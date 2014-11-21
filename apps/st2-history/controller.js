@@ -14,11 +14,8 @@ angular.module('main')
       .state('history.list', {
         url: '?page&action&rule&trigger&trigger_type'
       })
-      .state('history.summary', {
-        url: '/{id:\\w+}?page&action&rule&trigger&trigger_type'
-      })
-      .state('history.details', {
-        url: '/{id:\\w+}/details?page&action&rule&trigger&trigger_type'
+      .state('history.general', {
+        url: '/{id:\\w+}/general?page&action&rule&trigger&trigger_type'
       })
 
       ;

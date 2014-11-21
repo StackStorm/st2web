@@ -26,7 +26,13 @@ angular.module('main')
 
     $rootScope.go = function (params) {
       var isList = $rootScope.state.includes('^.list');
-      return $rootScope.state.go(isList ? '^.summary' : '.', params);
+      return $rootScope.state.go(isList ? '^.general' : '.', params);
+    };
+
+    $rootScope.isState = function (states) {
+      return _.some([].concat(states), function (state) {
+        return $rootScope.state.includes(state);
+      });
     };
 
     // Pagination
@@ -43,10 +49,6 @@ angular.module('main')
     };
     $rootScope.nextPage = function () {
       $rootScope.state.go('.', { page: ($rootScope.page || 1) + 1 });
-    };
-
-    $rootScope.isDetails = function () {
-      return !$state.includes('^.list') && !$state.includes('^.summary');
     };
 
     // Filtering

@@ -1,5 +1,4 @@
-<div class="st2-panel"
-    ng-class="{'st2-panel--slide': $root.isDetails()}">
+<div class="st2-panel">
 
   <div class="st2-panel__view st2-rules">
     <div class="st2-panel__scroller">
@@ -71,47 +70,35 @@
     <div class="st2-loader"></div>
   </div>
 
-  <div class="st2-summary">
-
-    <div class="st2-summary__heading">
-      <h2 class="st2-summary__heading-title">Summary</h2>
-      <button class="st2-forms__button-right" title="Details"
-          ng-click="$root.state.go('^.details', {id: rule.id})"
-          ng-if="!$root.state.includes('*.details')">
-        Details
-      </button>
-      <button class="st2-forms__button-left" title="Details"
-          ng-click="$root.state.go('^.summary', {id: rule.id})"
-          ng-if="$root.state.includes('*.details')">
-        Back
-      </button>
-    </div>
-
-    <dl class="st2-summary__body">
-      <dt class="st2-summary__body-label">Name</dt>
-      <dd class="st2-summary__body-value">{{ rule.name }}</dd>
-
-      <dt class="st2-summary__body-label">Description</dt>
-      <dd class="st2-summary__body-value">{{ rule.description }}</dd>
-    </dl>
-
-  </div>
-
   <div class="st2-panel__details st2-details">
-
-
 
     <div class="st2-details__tabs">
       <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.state.includes('^.details')}"
-          ng-click="$root.state.go('^.details', {id: rule.id })">
+          ng-class="{'st2-details__tab-label--active': $root.isState(['^.general', '^.list'])}"
+          ng-click="$root.state.go('^.general', {id: rule.id})">
         <i class="st2-icon__cogs"></i>
         General
       </div>
 
       <div class="st2-details__tab-body"
-          ng-class="{'st2-details__tab-body--active': $root.state.includes('^.details')}">
+          ng-class="{'st2-details__tab-body--active': $root.isState(['^.general', '^.list'])}">
         <div class="st2-panel__scroller">
+
+          <div class="st2-details__panel">
+
+            <div class="st2-details__panel-body">
+              <div class="st2-details__panel-body-line">
+                <div class="st2-details__panel-body-label">Name</div>
+                <div class="st2-details__panel-body-value">{{ rule.name }}</div>
+              </div>
+
+              <div class="st2-details__panel-body-line">
+                <div class="st2-details__panel-body-label">Description</div>
+                <div class="st2-details__panel-body-value">{{ rule.description }}</div>
+              </div>
+            </div>
+
+          </div>
 
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
@@ -157,14 +144,14 @@
       </div>
 
       <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.state.includes('^.code')}"
+          ng-class="{'st2-details__tab-label--active': $root.isState('^.code')}"
           ng-click="$root.state.go('^.code', {id: rule.id })">
         <i class="st2-icon__code"></i>
         Code
       </div>
 
       <div class="st2-details__tab-body"
-          ng-class="{'st2-details__tab-body--active': $root.state.includes('^.code')}">
+          ng-class="{'st2-details__tab-body--active': $root.isState('^.code')}">
         <div class="st2-panel__scroller">
 
           <div class="st2-details__well"
@@ -177,4 +164,3 @@
   </div>
 
 </div>
-

@@ -15,11 +15,8 @@ angular.module('main')
       .state('actions.list', {
         url: ''
       })
-      .state('actions.summary', {
-        url: '/{id:\\w+}'
-      })
-      .state('actions.details', {
-        url: '/{id:\\w+}/details'
+      .state('actions.general', {
+        url: '/{id:\\w+}/general'
       })
       .state('actions.code', {
         url: '/{id:\\w+}/code'
