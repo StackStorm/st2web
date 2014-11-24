@@ -4,5 +4,12 @@
 
 angular.module('main')
   .service('st2api', function () {
-    return st2client();
+    var parser = document.createElement('a');
+    parser.href = localStorage.getItem('st2Host');
+
+    return st2client({
+      protocol: parser.protocol.split(':')[0],
+      host: parser.hostname,
+      port: parser.port
+    });
   });
