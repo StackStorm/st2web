@@ -15,11 +15,8 @@ angular.module('main')
       .state('rules.list', {
         url: ''
       })
-      .state('rules.summary', {
-        url: '/{id:\\w+}'
-      })
-      .state('rules.details', {
-        url: '/{id:\\w+}/details'
+      .state('rules.general', {
+        url: '/{id:\\w+}/general'
       })
       .state('rules.code', {
         url: '/{id:\\w+}/code'

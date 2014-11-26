@@ -15,11 +15,8 @@ angular.module('main')
       .state('actions.list', {
         url: ''
       })
-      .state('actions.summary', {
-        url: '/{id:\\w+}'
-      })
-      .state('actions.details', {
-        url: '/{id:\\w+}/details'
+      .state('actions.general', {
+        url: '/{id:\\w+}/general'
       })
       .state('actions.code', {
         url: '/{id:\\w+}/code'
@@ -103,32 +100,19 @@ angular.module('main')
         action: $scope.$root.getRef(action),
         parameters: payload
       }).then(function (execution) {
-        // Get a history record for an execution. Another request we could avoid if we design api
-        // thoughtfully.
-        return st2api.history.list({
-          execution: execution.id
-        }).then(function (records) {
-          // This approach is prone to race condition due to the gap between the time
-          // ActionExecution and History gets created (see STORM-840)
-          if (!records.length) {
-            throw {
-              name: 'UnknownError',
-              message: 'There is no history records associated with the particular execution: ' +
-                execution.id
-            };
-          }
-          return records[0];
-        });
-
-      }).then(function (record) {
-        // Put it in the list
-        var index = $scope.history.push(record) - 1;
+        var index = $scope.history.push({
+          execution: execution
+        }) - 1;
 
         $scope.inProgress = true;
         $scope.$apply();
 
-        // Then update it until it dets resolved
-        st2api.history.watch(record.id, function (record) {
+        // Update it until it gets resolved
+        st2api.history.watchCollection({
+          execution: execution.id
+        }, function (records) {
+          var record = records[0];
+
           $scope.history[index] = record;
           $scope.$apply();
 
