@@ -34,11 +34,9 @@ angular.module('main')
       $rootScope.page = page && parseInt(page);
     });
     $rootScope.$on('$fetchFinish', function (event, fetch) {
-      if (!fetch.error) {
-        $rootScope.total_count = parseInt(fetch.response.headers()['x-total-count']);
-        $rootScope.limit = parseInt(fetch.response.headers()['x-limit']);
-        $rootScope.maxPage = Math.ceil($rootScope.total_count / $rootScope.limit);
-      }
+      $rootScope.total_count = fetch.total;
+      $rootScope.limit = fetch.limit;
+      $rootScope.maxPage = Math.ceil($rootScope.total_count / $rootScope.limit);
     });
     $rootScope.prevPage = function () {
       $rootScope.state.go('.', { page: $rootScope.page - 1 });
