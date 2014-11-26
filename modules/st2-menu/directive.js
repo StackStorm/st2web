@@ -35,19 +35,19 @@ angular.module('main')
 
         scope.serverList = [{
           name: 'Stage 1',
-          url: '//st2stage001.stackstorm.net:9101'
+          url: '//st2stage001.stackstorm.net:9101/v1'
         }, {
           name: 'Stage 2',
-          url: '//st2stage002.stackstorm.net:9101'
+          url: '//st2stage002.stackstorm.net:9101/v1'
         }, {
           name: 'Stage 3',
-          url: '//st2stage003.stackstorm.net:9101'
+          url: '//st2stage003.stackstorm.net:9101/v1'
         }, {
           name: 'Stage 4',
-          url: '//st2stage004.stackstorm.net:9101'
+          url: '//st2stage004.stackstorm.net:9101/v1'
         }, {
           name: 'Dev Env',
-          url: '//172.168.50.50:9101'
+          url: '//172.168.50.50:9101/v1'
         }, {
           name: 'Mock API'
         }];
