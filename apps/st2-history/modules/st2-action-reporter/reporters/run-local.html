@@ -1,33 +1,19 @@
-<div class="st2-flex-table">
-  <div class="st2-flex-table__header">
-    <div class="st2-flex-table__column st2-action-reporter__column-host">Host</div>
-    <div class="st2-flex-table__column st2-action-reporter__column-status">Status</div>
-    <div class="st2-flex-table__column st2-action-reporter__column-code">Return code</div>
-  </div>
-
-  <div class="st2-flex-table__row"
-      ng-class-odd="'st2-flex-table__row--odd'"
-      ng-class-even="'st2-flex-table__row--even'"
-      ng-repeat-start="(host, res) in execution.result">
-    <div class="st2-flex-table__column st2-action-reporter__column-host">{{ host }}</div>
-    <div class="st2-flex-table__column st2-action-reporter__column-status">
-      <span class="st2-label"
-        status="(res.succeeded && 'succeeded') || (res.failed && 'failed') || 'indeterminate'">
-      </span>
-    </div>
-    <div class="st2-flex-table__column st2-action-reporter__column-code">{{ res.return_code }}</div>
-  </div>
-  <div class="st2-flex-table__insert"
-      ng-if="res.stdout || res.stderr"
-      ng-repeat-end>
-    <div ng-if="res.stdout">Output</div>
-    <div ng-if="res.stdout">
-      <pre>{{ res.stdout | json }}</pre>
-    </div>
-
-    <div ng-if="res.stderr">Error</div>
-    <div ng-if="res.stderr">
-      <pre>{{ res.stderr | json }}</pre>
-    </div>
-  </div>
+<div class="st2-action-reporter__header">
+  <span class="st2-label" status="execution.status"></span>
+  <time class="st2-action-reporter__time"
+    datetime="{{execution.start_timestamp}}">
+    {{ execution.start_timestamp | date:'medium' }}
+  </date>
 </div>
+
+<div class="st2-reporter__source"
+    ng-if="execution.result['localhost'].stdout">
+  Output:
+</div>
+<div class="st2-highlight" code="execution.result['localhost'].stdout"></div>
+
+<div class="st2-reporter__source"
+    ng-if="execution.result['localhost'].stderr">
+  Error:
+</div>
+<div class="st2-highlight" code="execution.result['localhost'].stderr"></div>

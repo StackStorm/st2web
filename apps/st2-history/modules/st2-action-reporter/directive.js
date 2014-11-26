@@ -2,8 +2,8 @@
 angular.module('main')
   .directive('st2ActionReporter', function () {
     var reporters = {
-      // 'run-local': 'run-local',
-      // 'run-remote': 'run-local',
+      'run-local': 'run-local',
+      'run-remote': 'run-remote',
       // 'action-chain': 'action-chain',
       // 'workflow': 'action-chain',
       // 'mistral-v1': 'action-chain',
@@ -19,6 +19,7 @@ angular.module('main')
 
         return template.split('{{ name }}').join(reporters[runner] || 'debug');
       };
+
     };
 
     return {
