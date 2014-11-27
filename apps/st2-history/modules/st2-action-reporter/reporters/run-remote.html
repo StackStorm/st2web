@@ -1,0 +1,22 @@
+<div class="st2-action-reporter__header">
+  <span class="st2-label" status="execution.status"></span>
+  <time class="st2-action-reporter__time"
+    datetime="{{execution.start_timestamp}}">
+    {{ execution.start_timestamp | date:'medium' }}
+  </date>
+</div>
+
+<div ng-repeat="(host, result) in execution.result">
+  <div class="st2-reporter__hostname">{{ host }}</div>
+  <div class="st2-reporter__source"
+      ng-if="result.stdout">
+    Output:
+  </div>
+  <div class="st2-highlight" code="result.stdout"></div>
+
+  <div class="st2-reporter__source"
+      ng-if="result.stderr">
+    Error:
+  </div>
+  <div class="st2-highlight" code="result.stderr"></div>
+</div>

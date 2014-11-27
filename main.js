@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('main', ['ui.router', 'angularMoment', 'hljs'])
+angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize'])
   .config(function ($urlRouterProvider) {
 
     // Remove tailing slash from url before looking for state

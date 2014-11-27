@@ -1,0 +1,15 @@
+<div class="st2-details__well"
+    ng-show="string"
+    ng-click="expand = !expand">
+  <pre><code ng-bind-html="shortString"></code></pre>
+</div>
+<div ng-class="{ 'st2-highlight__fullscreen': expand }"
+    ng-show="string && expand"
+    ng-click="expand = !expand">
+  <div class="st2-panel__scroller">
+    <div class="st2-details__well st2-highlight__well"
+        ng-click="$event.stopPropagation()">
+      <pre><code ng-bind-html="string"></code></pre>
+    </div>
+  </div>
+</div>
