@@ -38,16 +38,19 @@ While `gulp` runs the longest chain of tasks including style compiling, spining 
 
 You can see the whole list of tasks in `gulpfile.js`.
 
-Using real data
----------------
+Connecting to st2 server
+-------------------------
 
-To make development go faster, our UI uses mock data out the box. To make it work with a real API, open your browser console and execute the line:
+By default, UI tries to get its data from the [devenv](https://www.github.com/StackStorm/devenv) vagrant box on 172.168.50.50.
 
-    localStorage.setItem('st2Host', '//st2stage001.stackstorm.net:9101')
+To make it work with your st2 API, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name** and **url** (including scheme, domain and port). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
 
-It would make `//st2stage001.stackstorm.net:9101` an st2 host (as internal persistent variable) for this particular browser. To get back to mock data, just remove the persistent record by issuing the command:
+    hosts: [{
+      name: 'Express Deployment'
+      url: 'http://172.168.90.50:9101'
+    }]
 
-    localStorage.removeItem('st2Host')
+Then you may have to pick an appropriate server from the drop down at the top right corner of the UI.
 
 Testing
 -------
@@ -74,4 +77,4 @@ Or if you want, you can setup Selenium to [start as a launchd service][selguide]
 You should also make sure, Stanley is running and in the stock state. For that, follow
 [devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/Stanley) README files.
 
-After that, `gulp test` should finish successfully. Woila.
+After that, `gulp test` should finish successfully.

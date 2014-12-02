@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2Menu', function ($window) {
+  .directive('st2Menu', function ($window, st2Config) {
 
     return {
       restrict: 'C',
@@ -18,9 +18,9 @@ angular.module('main')
 
         scope.getServer = function () {
           var url = localStorage.getItem('st2Host');
-          return url ? _.find(scope.serverList, function (e) {
-            return e.url === url;
-          }).name : 'Mock API';
+          var host = _.find(scope.serverList, {url: url}) || _.first(scope.serverList);
+
+          return host.name;
         };
 
         scope.setServer = function (server) {
@@ -33,24 +33,7 @@ angular.module('main')
           $window.location.reload();
         };
 
-        scope.serverList = [{
-          name: 'Stage 1',
-          url: '//st2stage001.stackstorm.net:9101'
-        }, {
-          name: 'Stage 2',
-          url: '//st2stage002.stackstorm.net:9101'
-        }, {
-          name: 'Stage 3',
-          url: '//st2stage003.stackstorm.net:9101'
-        }, {
-          name: 'Stage 4',
-          url: '//st2stage004.stackstorm.net:9101'
-        }, {
-          name: 'Dev Env',
-          url: '//172.168.50.50:9101'
-        }, {
-          name: 'Mock API'
-        }];
+        scope.serverList = st2Config.hosts;
       }
     };
 
