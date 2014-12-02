@@ -30,18 +30,25 @@ angular.module('main')
         if (scope.type === 'json') {
           scope.string = hljs.highlight('json', $filter('json')(JSON.parse(code))).value;
         } else {
-          scope.string = code;
+          scope.string = code && code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+            return '&#'+i.charCodeAt(0)+';';
+          });
         }
 
-        if (scope.string) {
-          var lines = scope.string.split('\n');
+        if (scope.full) {
+          scope.shortString = scope.string;
+        } else {
+          if (scope.string) {
+            var lines = scope.string.split('\n');
 
-          if (lines.length > 5) {
-            lines = lines.slice(0,5).concat(['...']);
+            if (lines.length > 5) {
+              lines = lines.slice(0,5).concat(['...']);
+            }
+
+            scope.shortString = lines.join('\n');
           }
-
-          scope.shortString = lines.join('\n');
         }
+
 
       });
     }
@@ -49,7 +56,8 @@ angular.module('main')
     return {
       restrict: 'C',
       scope: {
-        code: '='
+        code: '=',
+        full: '@'
       },
       templateUrl: 'modules/st2-highlight/template.html',
       link: postLink
