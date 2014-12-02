@@ -1,0 +1,25 @@
+<div class="st2-action-reporter__header">
+  <span class="st2-label" status="execution.status"></span>
+  <time class="st2-action-reporter__time"
+    datetime="{{execution.start_timestamp}}">
+    {{ execution.start_timestamp | date:'medium' }}
+  </date>
+</div>
+
+<div class="st2-reporter__source"
+    ng-if="execution.result.result">
+  Result:
+</div>
+<div class="st2-highlight" code="execution.result.result"></div>
+
+<div class="st2-reporter__source"
+    ng-if="execution.result.stdout">
+  Output:
+</div>
+<div class="st2-highlight" code="execution.result.stdout"></div>
+
+<div class="st2-reporter__source"
+    ng-if="execution.result.stderr">
+  Error:
+</div>
+<div class="st2-highlight" code="execution.result.stderr"></div>

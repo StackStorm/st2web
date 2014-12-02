@@ -8,7 +8,9 @@ angular.module('main')
       // 'workflow': 'action-chain',
       // 'mistral-v1': 'action-chain',
       // 'mistral-v2': 'action-chain',
-      // 'run-local-script': 'run-local',
+      'run-local-script': 'run-local',
+      'run-remote-script': 'run-remote',
+      'run-python': 'run-python'
       // 'http-runner': 'http'
     };
 
