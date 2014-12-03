@@ -9,10 +9,14 @@
           History
         </div>
 
-        <div class="st2-panel__toolbar-filters">
-          <div class="st2-filter" filters="filters" type="action"></div>
-          <div class="st2-filter" filters="filters" type="trigger_type" label="Trigger Type"></div>
-          <div class="st2-filter" filters="filters" type="rule"></div>
+        <div class="st2-panel__toolbar-filters"
+            ng-show="filters">
+          <div class="st2-filter" filters="filters" type="action"
+            ng-hide="_.isEmpty(filters['action'])"></div>
+          <div class="st2-filter" filters="filters" type="trigger_type" label="Trigger Type"
+            ng-hide="_.isEmpty(filters['trigger_type'])"></div>
+          <div class="st2-filter" filters="filters" type="rule"
+            ng-hide="_.isEmpty(filters['rule'])"></div>
         </div>
       </div>
 
@@ -99,7 +103,8 @@
     <div class="st2-loader"></div>
   </div>
 
-  <div class="st2-panel__details st2-details">
+  <div class="st2-panel__details st2-details"
+      ng-show="record">
     <div class="st2-panel__scroller">
 
       <div class="st2-details__panel">

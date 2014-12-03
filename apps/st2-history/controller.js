@@ -44,7 +44,7 @@ angular.module('main')
       pHistoryList = st2api.history.list(_.assign({
         parent: 'null',
         page: $rootScope.page
-      }, $scope.$root.filters));
+      }, $scope.$root.active_filters));
 
       pHistoryList.then(function (list) {
         // Group all the records by periods of 24 hour
@@ -73,7 +73,7 @@ angular.module('main')
       });
     };
 
-    $scope.$watch('[$root.filters, $root.page]', listUpdate, true);
+    $scope.$watch('[$root.active_filters, $root.page]', listUpdate, true);
 
     $scope.$watch('$root.state.params.id', function (id) {
       if (!pHistoryList) {
