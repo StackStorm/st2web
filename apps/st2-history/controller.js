@@ -9,7 +9,8 @@ angular.module('main')
         icon: 'st2-icon__history',
         controller: 'st2HistoryCtrl',
         templateUrl: 'apps/st2-history/template.html',
-        title: 'History'
+        title: 'History',
+        position: 3
       })
       .state('history.list', {
         url: '?page&action&rule&trigger&trigger_type'

@@ -10,7 +10,8 @@ angular.module('main')
         icon: 'st2-icon__rules',
         controller: 'st2RulesCtrl',
         templateUrl: 'apps/st2-rules/template.html',
-        title: 'Rules'
+        title: 'Rules',
+        position: 2
       })
       .state('rules.list', {
         url: ''
