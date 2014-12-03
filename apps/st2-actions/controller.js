@@ -28,11 +28,17 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2api) {
+  .controller('st2ActionsCtrl', function ($scope, st2api, st2LoaderService) {
 
     $scope.filter = '';
 
-    var pActionList = st2api.actionOverview.list().catch(function (response) {
+    st2LoaderService.reset();
+    st2LoaderService.start();
+
+    var pActionList = st2api.actionOverview.list().then(function (result) {
+      st2LoaderService.stop();
+      return result;
+    }).catch(function (response) {
       $scope.groups = [];
       console.error('Failed to fetch the data: ', response);
     });
