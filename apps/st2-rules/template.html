@@ -8,7 +8,8 @@
           Rules
         </div>
 
-        <div class="st2-panel__toolbar-search">
+        <div class="st2-panel__toolbar-search"
+            ng-show="rules">
           <form>
             <input type="search"
               class="st2-panel__search-bar"
@@ -70,7 +71,8 @@
     <div class="st2-loader"></div>
   </div>
 
-  <div class="st2-panel__details st2-details">
+  <div class="st2-panel__details st2-details"
+      ng-show="rule">
 
     <div class="st2-details__tabs">
       <div class="st2-details__tab-label"
