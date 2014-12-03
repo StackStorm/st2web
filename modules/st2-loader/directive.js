@@ -1,24 +1,42 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2Loader', function ($rootScope) {
+  .service('st2LoaderService', function ($rootScope) {
+    var scope = $rootScope.$new(true);
+
+    scope.counter = 0;
+
+    scope.start = function () {
+      scope.counter++;
+      scope.$$phase && scope.$apply();
+    };
+
+    scope.stop = function () {
+      scope.counter--;
+      if (scope.counter < 0) {
+        scope.counter = 0;
+      }
+      scope.$$phase && scope.$apply();
+    };
+
+    scope.reset = function () {
+      scope.counter = 0;
+      scope.$$phase && scope.$apply();
+    };
+
+    return scope;
+  })
+  .directive('st2Loader', function (st2LoaderService) {
 
     return {
       restrict: 'C',
       scope: true,
       link: function postLink(scope, element) {
-        var counter = 0;
 
-        $rootScope.$on('$fetchStart', function () {
-          counter += 1;
-          element.toggleClass('st2-loader--active', true);
+        st2LoaderService.$watch('counter', function (counter) {
+          element.toggleClass('st2-loader--active', !!counter);
         });
-        $rootScope.$on('$fetchFinish', function () {
-          counter -= 1;
-          if (!counter) {
-            element.toggleClass('st2-loader--active', false);
-          }
-        });
+
       }
     };
 

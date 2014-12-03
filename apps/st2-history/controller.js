@@ -25,9 +25,11 @@ angular.module('main')
 angular.module('main')
 
   // List history records
-  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope) {
+  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope, st2LoaderService) {
 
     var pHistoryList;
+
+    st2LoaderService.reset();
 
     st2api.historyFilters.list().then(function (filters) {
       // TODO: when the field is not required, an abscense of a value should also be a value
@@ -36,6 +38,8 @@ angular.module('main')
     });
 
     var listUpdate = function () {
+      st2LoaderService.start();
+
       pHistoryList = st2api.history.list(_.assign({
         parent: 'null',
         page: $rootScope.page
@@ -58,7 +62,8 @@ angular.module('main')
           })
           .value();
 
-        $rootScope.$emit('$fetchFinish', st2api.history);
+        $scope.$emit('$fetchFinish', st2api.history);
+        st2LoaderService.stop();
 
         $scope.$apply();
       }).catch(function (err) {

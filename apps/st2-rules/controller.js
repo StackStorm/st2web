@@ -29,11 +29,17 @@ angular.module('main')
 angular.module('main')
 
   // List rules
-  .controller('st2RulesCtrl', function ($scope, st2api) {
+  .controller('st2RulesCtrl', function ($scope, st2api, st2LoaderService) {
 
     $scope.filter = '';
 
-    var pRulesList = st2api.rules.list().catch(function (response) {
+    st2LoaderService.reset();
+    st2LoaderService.start();
+
+    var pRulesList = st2api.rules.list().then(function (result) {
+      st2LoaderService.stop();
+      return result;
+    }).catch(function (response) {
       $scope.rules = [];
       console.error('Failed to fetch the data: ', response);
       $scope.$apply();
