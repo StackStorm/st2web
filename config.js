@@ -8,6 +8,9 @@ angular.module('main')
     }, {
       name: 'Express',
       url: '//172.168.90.50:9101'
+    }, {
+      name: 'CI/CD Pipeline Dev',
+      url: '//api.st2.service.consul:9101'
     }]
 
   });
