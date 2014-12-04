@@ -17,10 +17,10 @@ angular.module('main')
         url: ''
       })
       .state('actions.general', {
-        url: '/{id:\\w+}/general'
+        url: '/{ref:\\w+}/general'
       })
       .state('actions.code', {
-        url: '/{id:\\w+}/code'
+        url: '/{ref:\\w+}/code'
       })
 
       ;
@@ -59,8 +59,8 @@ angular.module('main')
 
     $scope.$watch('filter', listUpdate);
 
-    $scope.$watch('$root.state.params.id', function (id) {
-      var promise = id ? st2api.actionOverview.get(id) : pActionList.then(function (actions) {
+    $scope.$watch('$root.state.params.ref', function (ref) {
+      var promise = ref ? st2api.actionOverview.get(ref) : pActionList.then(function (actions) {
         return _.first(actions);
       });
 
@@ -72,7 +72,7 @@ angular.module('main')
         $scope.reloadExecutions(action);
 
         if ($scope.actionHasFile(action)) {
-          st2api.actionEntryPoint.get(action.id).then(function (file) {
+          st2api.actionEntryPoint.get(action.ref).then(function (file) {
             $scope.file = file;
             $scope.$apply();
           }).catch(function (err) {

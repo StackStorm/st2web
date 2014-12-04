@@ -41,9 +41,9 @@
           <div class="st2-flex-table__row"
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
-              ng-class="{'st2-flex-table__row--active': action.id == $parent.action.id}"
+              ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
               ng-repeat="action in list"
-              ng-click="$root.go({id: action.id, page: $root.page})">
+              ng-click="$root.go({ref: action.ref, page: $root.page})">
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"
                 ng-if="isWorkflow(action)"></i>
@@ -76,7 +76,7 @@
     <div class="st2-details__tabs">
       <div class="st2-details__tab-label"
           ng-class="{'st2-details__tab-label--active': $root.isState(['^.general', '^.list'])}"
-          ng-click="$root.state.go('^.general', {id: action.id})">
+          ng-click="$root.state.go('^.general', {ref: action.ref})">
         <i class="st2-icon__cogs"></i>
         General
       </div>
@@ -155,7 +155,7 @@
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
                     ng-repeat="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
-                    ui-sref="history.general({action: $root.getRef(action), id: record.id})">
+                    ui-sref="history.general({action: $root.getRef(action), ref: record.ref})">
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
@@ -183,7 +183,7 @@
 
       <div class="st2-details__tab-label"
           ng-class="{'st2-details__tab-label--active': $root.isState('^.code')}"
-          ng-click="$root.state.go('^.code', {id: action.id})"
+          ng-click="$root.state.go('^.code', {ref: action.ref})"
           ng-if="actionHasFile(action)">
         <i class="st2-icon__code"></i>
         Code
