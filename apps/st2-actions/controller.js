@@ -84,6 +84,36 @@ angular.module('main')
       });
     });
 
+    st2api.stream.listen().then(function (source) {
+
+      // TODO: We rather want to receive history records and not action
+      // executions here, but it would require us to create another queue on
+      // backend.
+      source.addEventListener('st2.actionexecution__create', function (e) {
+        var execution = JSON.parse(e.data);
+
+        if (execution.action === $scope.action.ref) {
+          $scope.history.push({
+            execution: execution
+          });
+          $scope.$apply();
+        }
+      });
+
+      source.addEventListener('st2.actionexecution__update', function (e) {
+        var execution = JSON.parse(e.data);
+        if (execution.action === $scope.action.ref) {
+          var record = _.find($scope.history, {
+            'execution': { 'id': execution.id }
+          });
+          record.execution = execution;
+          $scope.$apply();
+        }
+      });
+
+    });
+
+    // TODO: Remove manual reloading since the list now updates live
     $scope.reloadExecutions = function (action) {
       $scope.inProgress = true;
 
@@ -106,28 +136,6 @@ angular.module('main')
       st2api.actionExecutions.create({
         action: $scope.$root.getRef(action),
         parameters: payload
-      }).then(function (execution) {
-        var index = $scope.history.push({
-          execution: execution
-        }) - 1;
-
-        $scope.inProgress = true;
-        $scope.$apply();
-
-        // Update it until it gets resolved
-        st2api.history.watchCollection({
-          execution: execution.id
-        }, function (records) {
-          var record = records[0];
-
-          $scope.history[index] = record;
-          $scope.$apply();
-
-          return record.execution.status === 'failed' || record.execution.status === 'succeeded';
-        }).then(function () {
-          $scope.inProgress = false;
-          $scope.$apply();
-        });
       }).catch(function (err) {
         console.error(err);
       });
