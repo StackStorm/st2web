@@ -1,5 +1,5 @@
-Stanley UI
-==========
+StackStorm Web UI
+=================
 
 Quick start
 -----------
@@ -40,8 +40,18 @@ You can see the whole list of tasks in `gulpfile.js`.
 
 Connecting to st2 server
 -------------------------
+Configure the CORS on StackStorm server: on your st2 installation, edit the following lines to [[api] section](https://github.com/StackStorm/st2/blob/master/conf/st2.conf#L3-L9) in `/etc/st2/st2.conf`:
 
-By default, UI tries to get its data from the [devenv](https://www.github.com/StackStorm/devenv) vagrant box on 172.168.50.50.
+    [api]
+    # Host and port to bind the API server.
+    host = 0.0.0.0
+    port = 9101
+    logging = st2api/conf/logging.conf
+    # List of allowed origins for CORS, use when deploying st2web client
+    # The URL must match the one the browser uses to access the st2web
+    allow_origin = http://st2web.example.com:3000
+    
+Configure st2web to point to the right server(s). By default, UI tries to get its data from the [devenv](https://www.github.com/StackStorm/devenv) vagrant box on 172.168.50.50.
 
 To make it work with your st2 API, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name** and **url** (including scheme, domain and port). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
 
@@ -50,12 +60,13 @@ To make it work with your st2 API, edit [`config.js`](./config.js) at the root o
       url: 'http://172.168.90.50:9101'
     }]
 
-Then you may have to pick an appropriate server from the drop down at the top right corner of the UI.
+Multiple servers can be configured. Pick an desired server from the drop down at the top right corner of the UI.
+
 
 Testing
 -------
 
-For now, we don't have the UI to test, so we are using st2-docs application to make sure we are aware of any changes happening in Stanley API. Take it as some sort of a live guide.
+For now, we don't have the UI to test, so we are using st2-docs application to make sure we are aware of any changes happening in StackStorm API. Take it as some sort of a live guide.
 
 First of all, you need to make sure you have [Java Development Kit (JDK)][JDK] installed
 
@@ -74,7 +85,7 @@ Then, you would need to update and start a webdriver for Selenium tests to run o
 Or if you want, you can setup Selenium to [start as a launchd service][selguide].
 [selguide]: http://blog.richardknop.com/2013/06/installing-selenium-2-on-mac-os-as-service/
 
-You should also make sure, Stanley is running and in the stock state. For that, follow
-[devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/Stanley) README files.
+You should also make sure, StackStorm is running and in the stock state. For that, follow
+[devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/st2) README files.
 
 After that, `gulp test` should finish successfully.
