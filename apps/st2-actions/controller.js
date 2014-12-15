@@ -32,6 +32,7 @@ angular.module('main')
   .controller('st2ActionsCtrl', function ($scope, st2api, st2LoaderService) {
 
     $scope.filter = '';
+    $scope.error = null;
 
     st2LoaderService.reset();
     st2LoaderService.start();
@@ -39,9 +40,14 @@ angular.module('main')
     var pActionList = st2api.actionOverview.list().then(function (result) {
       st2LoaderService.stop();
       return result;
-    }).catch(function (response) {
+    }).catch(function (err) {
       $scope.groups = [];
-      console.error('Failed to fetch the data: ', response);
+      $scope.error = err.message;
+
+      console.error('Failed to fetch the data: ', err);
+      st2LoaderService.stop();
+
+      $scope.$apply();
     });
 
     var listUpdate = function () {
