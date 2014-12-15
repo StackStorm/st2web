@@ -40,9 +40,13 @@ angular.module('main')
     var pRulesList = st2api.rules.list().then(function (result) {
       st2LoaderService.stop();
       return result;
-    }).catch(function (response) {
+    }).catch(function (err) {
       $scope.rules = [];
-      console.error('Failed to fetch the data: ', response);
+      $scope.error = err.message;
+
+      console.error('Failed to fetch the data: ', err);
+      st2LoaderService.stop();
+
       $scope.$apply();
     });
 

@@ -65,6 +65,10 @@
           No results were found for your current filter
         </div>
 
+        <div class="st2-panel__content-error"
+            ng-if="error && _.isEmpty(groups)">
+          Request failed: {{ error }}
+        </div>
       </div>
     </div>
 

@@ -30,6 +30,8 @@ angular.module('main')
 
     var pHistoryList;
 
+    $scope.error = null;
+
     st2LoaderService.reset();
 
     st2api.historyFilters.list().then(function (filters) {
@@ -69,7 +71,12 @@ angular.module('main')
         $scope.$apply();
       }).catch(function (err) {
         $scope.groups = [];
+        $scope.error = err.message;
+
         console.error('Failed to fetch the data: ', err);
+        st2LoaderService.stop();
+
+        $scope.$apply();
       });
     };
 
