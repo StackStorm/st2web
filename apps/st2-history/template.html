@@ -53,12 +53,16 @@
             <div class="st2-flex-table__column st2-history__column-time">
               {{ record.execution.start_timestamp | date:'mediumTime' }}
             </div>
-            <div class="st2-flex-table__column st2-history__column-action">
+            <div class="st2-flex-table__column st2-history__column-action"
+                title="{{ $root.getRef(record.action) }}">
               {{ $root.getRef(record.action) }}
             </div>
             <div class="st2-flex-table__column st2-history__column-triggered"
                 ng-switch="record.rule && record.trigger && true">
-              <span ng-switch-when="true">{{ record.rule.name }} ({{ record.trigger.type }})</span>
+              <span ng-switch-when="true"
+                  title="{{ record.rule.name }} ({{ record.trigger.type }})">
+                {{ record.rule.name }} ({{ record.trigger.type }})
+              </span>
               <span ng-switch-default>Manual</span>
             </div>
             <div class="st2-flex-table__column st2-history__column-status">

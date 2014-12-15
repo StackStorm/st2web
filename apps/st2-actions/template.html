@@ -48,10 +48,12 @@
               <i class="st2-icon__flow-cascade"
                 ng-if="isWorkflow(action)"></i>
             </div>
-            <div class="st2-flex-table__column st2-actions__column-name">
-              {{ $root.getRef(action) }}
+            <div class="st2-flex-table__column st2-actions__column-name"
+                title="{{ $root.getRef(action) }}">
+              {{ action.name }}
             </div>
-            <div class="st2-flex-table__column st2-actions__column-type">
+            <div class="st2-flex-table__column st2-actions__column-type"
+                title="{{ action.runner_type }}">
               {{ action.runner_type }}
             </div>
             <div class="st2-flex-table__column st2-actions__column-desc">
