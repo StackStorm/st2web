@@ -7,13 +7,13 @@
 </div>
 
 <div class="st2-reporter__source"
-    ng-if="execution.result['localhost'].stdout">
+    ng-if="execution.result.stdout">
   Output:
 </div>
-<div class="st2-highlight" code="execution.result['localhost'].stdout"></div>
+<div class="st2-highlight" code="execution.result.stdout"></div>
 
 <div class="st2-reporter__source"
-    ng-if="execution.result['localhost'].stderr">
+    ng-if="execution.result.stderr">
   Error:
 </div>
-<div class="st2-highlight" code="execution.result['localhost'].stderr"></div>
+<div class="st2-highlight" code="execution.result.stderr"></div>
