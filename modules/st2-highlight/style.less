@@ -11,10 +11,32 @@
     background-color: rgba(0,0,0,0.8);
 
     cursor: pointer;
+
+    &:after {
+      content: '\e812';
+
+      font-family: "ststanley";
+      font-style: normal;
+      font-weight: normal;
+
+      font-size: 18px;
+
+      display: block;
+
+      position: absolute;
+      top: 25px;
+      right: 25px;
+
+      padding: 5px;
+    }
+  }
+
+  &__fullscreen &__well {
+    cursor: text;
   }
 
   &__well {
-    cursor: default;
+    cursor: zoom-in;
   }
 
   & .st2-panel__scroller {
