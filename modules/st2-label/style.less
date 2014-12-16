@@ -7,7 +7,7 @@
   color: #ffffff;
   text-align: center;
   white-space: nowrap;
-  vertical-align: baseline;
+  vertical-align: middle;
   border-radius: .25em;
   background-color: #777777;
 
@@ -25,5 +25,44 @@
   }
   &--danger {
     background-color: #D9534F;
+  }
+
+  &:before {
+    // may always broke if we won't pay enough attention to keeping the same codes
+    content: '';
+
+    font-family: "ststanley";
+    font-style: normal;
+    font-weight: normal;
+
+    font-size: 9px;
+    margin-right: 3px;
+
+    vertical-align: baseline;
+
+    display: inline-block;
+  }
+
+  &--failed {
+    &:before {
+      content: '\e802';
+    }
+
+    background-color: #D9534F;
+  }
+
+  &--succeeded {
+    &:before {
+      content: '\e80a';
+    }
+
+    background-color: #5CB85C;
+  }
+
+  &--progress {
+    &:before {
+      content: '\e806';
+      animation: spin 2s infinite linear;
+    }
   }
 }

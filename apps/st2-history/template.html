@@ -53,12 +53,16 @@
             <div class="st2-flex-table__column st2-history__column-time">
               {{ record.execution.start_timestamp | date:'mediumTime' }}
             </div>
-            <div class="st2-flex-table__column st2-history__column-action">
+            <div class="st2-flex-table__column st2-history__column-action"
+                title="{{ $root.getRef(record.action) }}">
               {{ $root.getRef(record.action) }}
             </div>
             <div class="st2-flex-table__column st2-history__column-triggered"
                 ng-switch="record.rule && record.trigger && true">
-              <span ng-switch-when="true">{{ record.rule.name }} ({{ record.trigger.type }})</span>
+              <span ng-switch-when="true"
+                  title="{{ record.rule.name }} ({{ record.trigger.type }})">
+                {{ record.rule.name }} ({{ record.trigger.type }})
+              </span>
               <span ng-switch-default>Manual</span>
             </div>
             <div class="st2-flex-table__column st2-history__column-status">
@@ -111,6 +115,17 @@
   <div class="st2-panel__details st2-details"
       ng-show="record">
     <div class="st2-panel__scroller">
+
+      <div class="st2-details__panel">
+        <div class="st2-details__panel-heading">
+          <h2 class="st2-details__panel-title">Action Output</h2>
+        </div>
+        <div class="st2-details__panel-body">
+          <div class="st2-action-reporter"
+          runner="record.runner.name"
+          execution="record.execution"></div>
+        </div>
+      </div>
 
       <div class="st2-details__panel">
         <div class="st2-details__panel-heading">
@@ -189,17 +204,6 @@
               result="payload">
             </div>
           </form>
-        </div>
-      </div>
-
-      <div class="st2-details__panel">
-        <div class="st2-details__panel-heading">
-          <h2 class="st2-details__panel-title">Action Output</h2>
-        </div>
-        <div class="st2-details__panel-body">
-          <div class="st2-action-reporter"
-            runner="record.runner.name"
-            execution="record.execution"></div>
         </div>
       </div>
 

@@ -17,10 +17,10 @@ angular.module('main')
         url: ''
       })
       .state('actions.general', {
-        url: '/{ref:\\w+}/general'
+        url: '/{ref:[\\w.]+}/general'
       })
       .state('actions.code', {
-        url: '/{ref:\\w+}/code'
+        url: '/{ref:[\\w.]+}/code'
       })
 
       ;
@@ -74,8 +74,19 @@ angular.module('main')
         $scope.action = action;
 
         $scope.payload = {};
+        $scope.inProgress = true;
 
-        $scope.reloadExecutions(action);
+        st2api.history.list({
+          'action': $scope.$root.getRef(action),
+          'limit': 5,
+          'parent': 'null'
+        }).then(function (history) {
+          $scope.inProgress = false;
+
+          $scope.history = history;
+
+          $scope.$apply();
+        });
 
         if ($scope.actionHasFile(action)) {
           st2api.actionEntryPoint.get(action.ref).then(function (file) {
@@ -118,24 +129,6 @@ angular.module('main')
       });
 
     });
-
-    // TODO: Remove manual reloading since the list now updates live
-    $scope.reloadExecutions = function (action) {
-      $scope.inProgress = true;
-
-      return st2api.history.list({
-        'action': $scope.$root.getRef(action),
-        'limit': 5,
-        'parent': 'null'
-      }).then(function (history) {
-        $scope.inProgress = false;
-
-        $scope.history = history;
-
-        $scope.$apply();
-      });
-
-    };
 
     // Running an action
     $scope.runAction = function (action, payload) {

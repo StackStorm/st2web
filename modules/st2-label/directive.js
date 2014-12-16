@@ -4,7 +4,6 @@ angular.module('main')
   .directive('st2Label', function () {
 
     var states = {
-      'scheduled': {},
       'complete': {
         class: 'st2-label--success'
       },
@@ -18,10 +17,16 @@ angular.module('main')
         class: 'st2-label--danger'
       },
       'succeeded': {
-        class: 'st2-label--success'
+        class: 'st2-label--succeeded'
       },
       'failed': {
-        class: 'st2-label--danger'
+        class: 'st2-label--failed'
+      },
+      'running': {
+        class: 'st2-label--progress'
+      },
+      'scheduled': {
+        class: 'st2-label--progress'
       }
     };
 

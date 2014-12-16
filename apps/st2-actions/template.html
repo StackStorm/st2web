@@ -43,15 +43,17 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
               ng-repeat="action in list"
-              ng-click="$root.go({ref: action.ref, page: $root.page})">
+              ng-click="$root.go({ref: action.ref})">
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"
                 ng-if="isWorkflow(action)"></i>
             </div>
-            <div class="st2-flex-table__column st2-actions__column-name">
-              {{ $root.getRef(action) }}
+            <div class="st2-flex-table__column st2-actions__column-name"
+                title="{{ $root.getRef(action) }}">
+              {{ action.name }}
             </div>
-            <div class="st2-flex-table__column st2-actions__column-type">
+            <div class="st2-flex-table__column st2-actions__column-type"
+                title="{{ action.runner_type }}">
               {{ action.runner_type }}
             </div>
             <div class="st2-flex-table__column st2-actions__column-desc">
@@ -142,9 +144,6 @@
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">
                 Executions
-                <i class="st2-details__reload-button"
-                  ng-class="{'st2-details__reload-button--in-progress': inProgress}"
-                  ng-click="inProgress || reloadExecutions(action)"></i>
               </h2>
             </div>
             <div class="st2-details__panel-body">
@@ -159,7 +158,7 @@
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
                     ng-repeat="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
-                    ui-sref="history.general({action: $root.getRef(action), ref: record.ref})">
+                    ui-sref="history.general({action: $root.getRef(action), id: record.id})">
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
