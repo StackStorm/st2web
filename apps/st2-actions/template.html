@@ -43,7 +43,7 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
               ng-repeat="action in list"
-              ng-click="$root.go({ref: action.ref, page: $root.page})">
+              ng-click="$root.go({ref: action.ref})">
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"
                 ng-if="isWorkflow(action)"></i>
@@ -158,7 +158,7 @@
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
                     ng-repeat="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
-                    ui-sref="history.general({action: $root.getRef(action), ref: record.ref})">
+                    ui-sref="history.general({action: $root.getRef(action), id: record.id})">
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
