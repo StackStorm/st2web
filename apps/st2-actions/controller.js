@@ -1,8 +1,6 @@
 'use strict';
 angular.module('main')
-  .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/actions');
-
+  .config(function ($stateProvider) {
     $stateProvider
       .state('actions', {
         abstract: true,
@@ -11,7 +9,7 @@ angular.module('main')
         controller: 'st2ActionsCtrl',
         templateUrl: 'apps/st2-actions/template.html',
         title: 'Actions',
-        position: 1
+        position: 2
       })
       .state('actions.list', {
         url: ''

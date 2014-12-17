@@ -11,7 +11,7 @@ angular.module('main')
         controller: 'st2RulesCtrl',
         templateUrl: 'apps/st2-rules/template.html',
         title: 'Rules',
-        position: 2
+        position: 3
       })
       .state('rules.list', {
         url: ''
