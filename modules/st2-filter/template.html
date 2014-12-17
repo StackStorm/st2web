@@ -7,7 +7,7 @@
   <div class="st2-filter__list">
     <div class="st2-filter__item"
         ng-class="{'st2-filter__item--active': name == $root.active_filters[type]}"
-        ng-repeat="name in filters[type] track by $index"
+        ng-repeat="name in filters[type] | orderBy:'toString()' track by $index"
         ng-click="pick(name)">
       {{ name }}
     </div>
