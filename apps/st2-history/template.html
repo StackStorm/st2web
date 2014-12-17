@@ -98,13 +98,13 @@
 
       <button class="st2-panel__prev-button st2-forms__button-left"
           ng-click="prevPage()"
-          ng-if="$root.page > 1">
-        Previous page
+          ng-class="{'st2-forms__button-left--disabled': $root.page < 2}">
+        Previous
       </button>
       <button class="st2-panel__next-button st2-forms__button-right"
           ng-click="nextPage()"
-          ng-if="($root.page || 1) < $root.maxPage">
-        Next page
+          ng-class="{'st2-forms__button-right--disabled': ($root.page || 1) >= $root.maxPage}">
+        Next
       </button>
 
     </div>
