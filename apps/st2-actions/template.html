@@ -152,18 +152,33 @@
                 <div class="st2-flex-table__header">
                   <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
                   <div class="st2-flex-table__column st2-actions__details-column-status">Status</div>
+                  <div class="st2-flex-table__column st2-actions__details-column-utility"></div>
                 </div>
 
                 <div class="st2-flex-table__row"
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
-                    ng-repeat="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
-                    ui-sref="history.general({action: $root.getRef(action), id: record.id})">
+                    ng-repeat-start="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
+                    ng-click="expand = !expand">
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
                   <div class="st2-flex-table__column st2-actions__details-column-status">
                     <div class="st2-label" status="record.execution.status"></div>
+                  </div>
+                  <div class="st2-flex-table__column st2-actions__details-column-utility"
+                      ng-click="$root.state.go('history.general', {action: $root.getRef(action), id: record.id}); $event.stopPropagation()">
+                    <i class="st2-icon__right-open"></i>
+                  </div>
+                </div>
+                <div class="st2-flex-table__insert"
+                    ng-show="expand"
+                    ng-repeat-end>
+
+                  <div class="st2-details__panel-body">
+                    <div class="st2-action-reporter"
+                      runner="record.runner.name"
+                      execution="record.execution"></div>
                   </div>
                 </div>
               </div>
