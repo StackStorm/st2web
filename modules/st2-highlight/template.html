@@ -1,15 +1,21 @@
 <div class="st2-details__well st2-highlight__well"
-    ng-show="string"
-    ng-click="expand = !expand">
-  <pre><code ng-bind-html="shortString"></code></pre>
+    ng-show="string">
+  <pre><!--
+ --><code><!--
+   --><div ng-bind-html="shortString"></div><!--
+   --><div class="st2-highlight__more"
+          ng-show="lines_more > 0"
+          ng-click="expand = !expand"><!--
+     -->+ {{ lines_more }} more lines<!--
+   --></div><!--
+ --></code><!--
+--></pre>
 </div>
 <div ng-class="{ 'st2-highlight__fullscreen': expand }"
     ng-show="string && expand"
     ng-click="expand = !expand">
-  <div class="st2-panel__scroller">
-    <div class="st2-details__well st2-highlight__well"
-        ng-click="$event.stopPropagation()">
-      <pre><code ng-bind-html="string"></code></pre>
-    </div>
+  <div class="st2-details__well st2-highlight__well"
+      ng-click="$event.stopPropagation()">
+    <pre><code ng-bind-html="string"></code></pre>
   </div>
 </div>

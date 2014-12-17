@@ -59,6 +59,12 @@
       top: 0;
       right: 0;
     }
+
+    &--disabled {
+      background-color: #888888;
+      cursor: default;
+      pointer-events: none;
+    }
   }
 
   &__button-left {
@@ -68,6 +74,11 @@
       border-right-color: #ff8300;
       right: 100%;
     }
+
+    &--disabled:before {
+      border-right-color: #888888;
+      right: 100%;
+    }
   }
 
   &__button-right {
@@ -75,6 +86,11 @@
 
     &:after {
       border-left-color: #ff8300;
+      left: 100%;
+    }
+
+    &--disabled:after {
+      border-left-color: #888888;
       left: 100%;
     }
   }

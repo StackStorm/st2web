@@ -24,19 +24,43 @@
       display: block;
 
       position: absolute;
-      top: 25px;
-      right: 25px;
+      top: 20px;
+      right: 20px;
 
       padding: 5px;
     }
   }
 
   &__fullscreen &__well {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    bottom: 30px;
+    right: 30px;
+
+    box-sizing: border-box;
+    margin: 0;
+
     cursor: text;
+
+    pre, code {
+      height: 100%;
+      box-sizing: border-box;
+    }
   }
 
-  &__well {
-    cursor: zoom-in;
+  &__fullscreen &__well code {
+    overflow: auto;
+  }
+
+  &__more {
+    color: #888;
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: inherit;
+    }
   }
 
   & .st2-panel__scroller {

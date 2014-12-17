@@ -1,6 +1,7 @@
 'use strict';
 angular.module('main')
-  .config(function ($stateProvider) {
+  .config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/history');
 
     $stateProvider
       .state('history', {
@@ -10,7 +11,7 @@ angular.module('main')
         controller: 'st2HistoryCtrl',
         templateUrl: 'apps/st2-history/template.html',
         title: 'History',
-        position: 3
+        position: 1
       })
       .state('history.list', {
         url: '?page&action&rule&trigger&trigger_type'
