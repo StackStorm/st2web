@@ -9,6 +9,8 @@ angular.module('main')
   })
   .directive('st2Highlight', function ($filter) {
 
+    var LINES_TO_SHOW = 5;
+
     function getType(string) {
       try {
         var o = JSON.parse(string);
@@ -41,8 +43,14 @@ angular.module('main')
           if (scope.string) {
             var lines = scope.string.split('\n');
 
-            if (lines.length > 5) {
-              lines = lines.slice(0,5).concat(['...']);
+            if (lines[lines.length - 1] === '') {
+              lines.pop();
+            }
+
+            scope.lines_more = lines.length - LINES_TO_SHOW;
+
+            if (scope.lines_more > 0) {
+              lines = lines.slice(0,LINES_TO_SHOW);
             }
 
             scope.shortString = lines.join('\n');
