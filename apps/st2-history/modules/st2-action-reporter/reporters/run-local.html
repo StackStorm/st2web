@@ -1,11 +1,16 @@
-<div class="st2-reporter__source"
+<div class="st2-action-reporter__source"
     ng-if="execution.result.stdout">
-  Output:
+  Output
 </div>
 <div class="st2-highlight" code="execution.result.stdout"></div>
 
-<div class="st2-reporter__source"
+<div class="st2-action-reporter__source"
     ng-if="execution.result.stderr">
-  Error:
+  Error
 </div>
 <div class="st2-highlight" code="execution.result.stderr"></div>
+
+<div class="st2-action-reporter__message"
+    ng-if="!execution.result.stderr && !execution.result.stdout">
+  Action produced no data
+</div>
