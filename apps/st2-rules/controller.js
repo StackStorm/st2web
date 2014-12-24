@@ -79,21 +79,9 @@ angular.module('main')
             $scope.$apply();
           });
 
-          // TODO: Fix after STORM-810 gets resolved
-          st2api.actionOverview.list()
-            .then(function (actions) {
-              var action = _.find(actions, function (action) {
-                return [action.pack, action.name].join('.') === rule.action.ref;
-              });
-
-              if (!action) {
-                throw new Error('Action not found: ' + rule.action.ref);
-              }
-
-              return action;
-            })
-            .then(function (actions) {
-              var schema = actions.parameters;
+          st2api.actionOverview.get(rule.action.ref)
+            .then(function (action) {
+              var schema = action.parameters;
               $scope.actionSchema = disable(schema);
               $scope.$apply();
             });
