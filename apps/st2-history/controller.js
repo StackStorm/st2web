@@ -114,18 +114,17 @@ angular.module('main')
 
     st2api.stream.listen().then(function (source) {
 
-      source.addEventListener('st2.actionexecution__update', function (e) {
-        var execution = JSON.parse(e.data);
-        var record = _($scope.history)
-          .map('records')
-          .flatten()
-          .find({
-            'execution': { 'id': execution.id }
-          });
-        if (record) {
-          record.execution = execution;
-          $scope.$apply();
-        }
+      source.addEventListener('st2.history__update', function (e) {
+        var record = JSON.parse(e.data);
+        _.first($scope.history, function (period) {
+          var index = _.findIndex(period.records, { 'id': record.id });
+          if (index !== -1) {
+            period.records[index] = record;
+            $scope.$apply();
+            return true;
+          }
+          return false;
+        });
       });
 
     });

@@ -101,27 +101,20 @@ angular.module('main')
 
     st2api.stream.listen().then(function (source) {
 
-      // TODO: We rather want to receive history records and not action
-      // executions here, but it would require us to create another queue on
-      // backend.
-      source.addEventListener('st2.actionexecution__create', function (e) {
-        var execution = JSON.parse(e.data);
+      source.addEventListener('st2.history__create', function (e) {
+        var record = JSON.parse(e.data);
 
-        if (execution.action === $scope.action.ref) {
-          $scope.history.push({
-            execution: execution
-          });
+        if (record.action.id === $scope.action.id) {
+          $scope.history.push(record);
           $scope.$apply();
         }
       });
 
-      source.addEventListener('st2.actionexecution__update', function (e) {
-        var execution = JSON.parse(e.data);
-        if (execution.action === $scope.action.ref) {
-          var record = _.find($scope.history, {
-            'execution': { 'id': execution.id }
-          });
-          record.execution = execution;
+      source.addEventListener('st2.history__update', function (e) {
+        var record = JSON.parse(e.data);
+        if (record.action.id === $scope.action.id) {
+          var index = _.findIndex($scope.history, { 'id': record.id });
+          $scope.history[index] = record;
           $scope.$apply();
         }
       });
