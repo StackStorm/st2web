@@ -2,31 +2,35 @@
 @import (inline) '../components/highlightjs-v8.1/styles/monokai.css';
 
 @import 'fonts';
-@import 'layout';
 @import 'colors';
 
-html, body {
-  height: 100%;
+html,
+body {
+  font-size: 13px;
+
   display: flex;
   flex-direction: column;
 
+  height: 100%;
+
   background-color: @body-bg-color;
-  font-size: 13px;
 }
 
 main {
-  #st2-fonts > #body;
-
   position: relative;
 
   flex: 1;
+
+  #st2-fonts > #body;
 }
 
 .hljs {
   background-color: transparent;
 }
 
-[class^="st2-icon__"]:before, [class*=" st2-icon__"]:before {
+[class^='st2-icon__']:before,
+[class*=' st2-icon__']:before {
   font-size: 120%;
+
   margin: 0;
 }

@@ -1,88 +1,86 @@
 .st2-filter {
-  position: relative;
   font-size: 18px;
-
   line-height: 35px;
+
+  position: relative;
 
   flex: 0 0 auto;
 
   &--active &__label:before {
-    content: '';
-
     position: fixed;
+    z-index: 3;
     top: 0;
     left: 0;
+
     width: 100%;
     height: 100%;
 
-    z-index: 3;
+    content: '';
   }
 
   &:last-of-type&--active &__variants {
     right: 0;
+
     border-radius: 5px 0 5px 5px;
   }
 
   &__label {
+    position: relative;
+
     padding: 0 10px;
 
     cursor: pointer;
-
-    position: relative;
-
     white-space: nowrap;
 
     &:after {
-      // may always broke if we won't pay enough attention to keeping the same codes
-      content: '\e804';
-
-      font-family: "ststanley";
-      font-style: normal;
-      font-weight: normal;
-
+      font-family: 'ststanley';
       font-size: 14px;
-
-      padding-left: 5px;
-
-      vertical-align: middle;
+      font-weight: normal;
+      font-style: normal;
 
       display: inline-block;
+
+      padding-left: 5px;
+      // may always broke if we won't pay enough attention to keeping the same codes
+
+      content: '\e804';
+      vertical-align: middle;
     }
 
     &--active {
-      color: #01C8FF;
+      color: #01c8ff;
     }
   }
 
   &__variants {
     position: absolute;
-
-    padding: 4px 5px 4px 0;
-    border-radius: 0 5px 5px 5px;
-
-    background-color: #222;
-
-    display: none;
     z-index: 3;
 
+    display: none;
+
     min-width: 100%;
+    padding: 4px 5px 4px 0;
+
+    border-radius: 0 5px 5px 5px;
+    background-color: #222;
   }
 
   &__list {
-    max-height: 150px;
-
     overflow-x: hidden;
     overflow-y: auto;
 
+    max-height: 150px;
+
     &::-webkit-scrollbar {
-      background-color: transparent;
       width: 5px;
       height: 5px;
+
+      background-color: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(117, 117, 117, .3); // #757575
       border-radius: 3px;
+      background-color: rgba(117, 117, 117, .3); // #757575
 
       &:hover {
         background-color: rgba(117, 117, 117, .7); // #757575
@@ -91,19 +89,21 @@
   }
 
   &__item {
-    padding: 0 10px;
     line-height: 2em;
+
+    padding: 0 10px;
+
     white-space: nowrap;
 
     &:hover {
-      color: #ff8300;
       cursor: pointer;
+
+      color: #ff8300;
     }
 
     &--active {
-      color: #01C8FF;
+      color: #01c8ff;
     }
-
   }
 
   &--active &__variants {
@@ -111,7 +111,7 @@
   }
 
   &--active &__label {
-    background-color: #222;
     border-radius: 5px 5px 0 0;
+    background-color: #222;
   }
 }

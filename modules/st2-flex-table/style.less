@@ -1,64 +1,64 @@
-@import "colors";
+@import 'colors';
 
 .st2-flex-table {
-  margin-bottom: 20px;
-
-  box-shadow: 0 0 5px rgba(0,0,0,0.7);
-
-  background-color: @gray-lightest;
-  color: @text;
-
   position: relative;
 
+  margin-bottom: 20px;
+
+  color: @text;
+  background-color: @gray-lightest;
+  box-shadow: 0 0 5px rgba(0,0,0,.7);
+
   &__caption {
-    background: @gray;
     clear: both;
 
-    &-title {
-      color: #fff;
+    background: @gray;
 
+    &-title {
+      font-family: Oswald;
       font-size: 15px;
       font-weight: 200;
-      font-family: Oswald;
 
       display: inline-block;
 
-      text-transform: uppercase;
-
       margin: 0;
       padding: 10px 15px;
+
+      text-transform: uppercase;
+
+      color: #fff;
     }
 
     &[ng-click] {
       cursor: pointer;
 
       &:after {
-        content: '\e804';
-
-        font-family: "ststanley";
-        font-style: normal;
+        font-family: 'ststanley';
         font-weight: normal;
-
-        display: block;
+        font-style: normal;
 
         position: absolute;
         top: 14px;
         right: 14px;
+
+        display: block;
+
+        content: '\e804';
       }
     }
 
     &:before {
-      font-family: "ststanley";
-      font-style: normal;
+      font-family: 'ststanley';
       font-weight: normal;
-
-      color: #fff;
+      font-style: normal;
 
       display: inline-block;
 
       padding: 14px;
+
       vertical-align: top;
 
+      color: #fff;
       box-shadow: 1px 0 0 #3b3b3b, 2px 0 0 #919191;
     }
 
@@ -80,30 +80,36 @@
     display: none;
   }
 
-  &__row, &__header {
+  &__row,
+  &__header {
     display: flex;
-    flex-wrap: wrap;
-
     overflow: hidden;
+
     height: 40px;
+
+    flex-wrap: wrap;
   }
 
   &__header {
+    font-family: Oswald;
+    font-weight: 200;
+
+    letter-spacing: .01em;
+
     color: #fff;
     background-color: @gray-light;
-    font-weight: 200;
-    font-family: Oswald;
-    letter-spacing: 0.01em;
   }
 
   &__column {
-    flex: 1;
-    padding: 0 10px;
     line-height: 40px;
 
     overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 1;
+
+    padding: 0 10px;
+
     white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__row {
@@ -112,34 +118,38 @@
     }
 
     &&--active,
-    &&--active:hover { // Specificity of 0030
-      background-color: @blue-dark;
-      color: white;
-
+    &&--active:hover {
       font-weight: 600;
+
+      color: white;
+      // Specificity of 0030
+      background-color: @blue-dark;
     }
   }
 
-  &__row:hover { // Specificity of 0020
+  &__row:hover {
+    // Specificity of 0020
     cursor: pointer;
+
     background-color: @blue-light;
   }
 
   &--passive &__row:hover {
     cursor: default;
+
     background-color: initial;
   }
 
   &--passive &__row--even:hover {
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255,255,255,.5);
   }
 
   &__insert {
-    background-color: @gray-white;
+    flex: 1;
 
     margin: 0;
     padding: 10px;
 
-    flex: 1;
+    background-color: @gray-white;
   }
 }

@@ -1,52 +1,51 @@
 .st2-highlight {
   &__fullscreen {
     position: fixed;
+    z-index: 2;
     top: 0;
+    right: 0;
     bottom: 0;
     left: 0;
-    right: 0;
-
-    z-index: 2;
-
-    color: #f4f4f4;
-    background-color: rgba(0,0,0,0.8);
 
     cursor: pointer;
 
+    color: #f4f4f4;
+    background-color: rgba(0,0,0,.8);
+
     &:after {
-      content: '\e812';
-
-      font-family: "ststanley";
-      font-style: normal;
-      font-weight: normal;
-
+      font-family: 'ststanley';
       font-size: 18px;
-
-      display: block;
+      font-weight: normal;
+      font-style: normal;
 
       position: absolute;
       top: 20px;
       right: 20px;
 
+      display: block;
+
       padding: 5px;
+
+      content: '\e812';
     }
   }
 
   &__fullscreen &__well {
     position: absolute;
     top: 30px;
-    left: 30px;
-    bottom: 30px;
     right: 30px;
+    bottom: 30px;
+    left: 30px;
 
     box-sizing: border-box;
     margin: 0;
 
     cursor: text;
 
-    pre, code {
-      height: 100%;
+    pre,
+    code {
       box-sizing: border-box;
+      height: 100%;
     }
   }
 
@@ -55,9 +54,10 @@
   }
 
   &__more {
-    color: #888;
-    text-decoration: underline;
     cursor: pointer;
+    text-decoration: underline;
+
+    color: #888;
 
     &:hover {
       color: inherit;

@@ -5,44 +5,51 @@
 .st2-forms {
   &__matcher {
     overflow: hidden;
-    text-overflow: ellipsis;
+
     margin: 0 20px 0 10px;
+
     white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  &__button, &__button-left, &__button-right {
-    display: inline-block;
-
-    text-align: center;
-    vertical-align: middle;
-
-    padding: 6px 12px;
-
-    border-radius: 4px;
-
-    user-select: none;
-    cursor: pointer;
-
-    border: 1px solid transparent;
-    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
-    outline: 0;
-
-    background-color: @button;
-    color: #fff;
-
-    font-size: 14px;
-    white-space: nowrap;
-
-    font-weight: 200;
-    opacity: 1;
+  &__button,
+  &__button-left,
+  &__button-right {
     font-family: Oswald;
-    text-transform: uppercase;
-    text-decoration: none;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: 200;
 
     position: relative;
 
-    &:before, &:after {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    opacity: 1;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    outline: 0;
+    background-color: @button;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, .3);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+    &:before,
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      width: 0;
+      height: 1px;
       // One that looks nice for FF. Blame different AA.
       // content: "";
       // width: 0px;
@@ -53,21 +60,19 @@
       // position: absolute;
       // top: 1px;
       // right: -32px;
+
       content: '';
-      width: 0;
-      height: 1px;
+
       border: solid;
       border-width: 16px 10px;
       border-color: transparent;
-      position: absolute;
-      top: 0;
-      right: 0;
     }
 
     &--disabled {
-      background-color: @button-disabled;
       cursor: default;
       pointer-events: none;
+
+      background-color: @button-disabled;
     }
 
     &:active {
@@ -79,8 +84,9 @@
     margin-left: 10px;
 
     &:before {
-      border-right-color: @button;
       right: 100%;
+
+      border-right-color: @button;
     }
 
     &--disabled:before {
@@ -96,8 +102,9 @@
     margin-right: 10px;
 
     &:after {
-      border-left-color: @button;
       left: 100%;
+
+      border-left-color: @button;
     }
 
     &--disabled:after {

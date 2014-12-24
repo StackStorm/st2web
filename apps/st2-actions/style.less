@@ -1,11 +1,9 @@
-@import "layout";
-
 .st2-actions {
-
   // Table columns
   .st2-flex-table__column&__column {
     &-utility {
       flex: none;
+
       width: 20px;
     }
     &-name {
@@ -15,8 +13,9 @@
       flex: 1 50px;
     }
     &-desc {
-      flex: 3 0 100px;
       overflow: hidden;
+      flex: 3 0 100px;
+
       text-overflow: ellipsis;
     }
   }
@@ -30,17 +29,17 @@
     }
     &-utility {
       flex: none;
-      width: 20px;
-      cursor: pointer;
 
+      width: 20px;
+
+      cursor: pointer;
       &:hover {
         color: #f4f4f4;
         text-shadow: 1px 0 0 #000,
-                     0 1px 0 #000,
-                     -1px 0 0 #000,
-                     0 -1px 0 #000;
+        0 1px 0 #000,
+        -1px 0 0 #000,
+        0 -1px 0 #000;
       }
     }
   }
-
 }

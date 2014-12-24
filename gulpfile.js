@@ -15,6 +15,7 @@ var gulp = require('gulp')
   , htmlreplace = require('gulp-html-replace')
   , bowerFiles = require('main-bower-files')
   , glob = require('glob')
+  , csscomb = require('gulp-csscomb')
   ;
 
 var express = require('express')
@@ -28,7 +29,7 @@ var settings = {
   dev: '.',
   js: ['main.js', 'modules/**/*.js', 'apps/**/*.js'],
   styles: {
-    src: ['less/style.less', 'apps/**/*.less', 'modules/**/*.less'],
+    src: ['./less/style.less', './apps/**/*.less', './modules/**/*.less'],
     includes: 'less/',
     dest: 'css'
   },
@@ -38,12 +39,12 @@ var settings = {
 
 var debug = function () {
   return es.through(function write(data) {
-    console.log('WRITE:', data ? data.path : '');
-    console.log(data ? data.contents.toString() : '');
+    console.log('WRITE:', data);
+    //console.log(data ? data.contents.toString() : '');
     this.emit('data', data);
   }, function end(data) {
-    console.log('END:', data ? data.path : '');
-    console.log(data ? data.contents.toString() : '');
+    console.log('END:', data);
+    //console.log(data ? data.contents.toString() : '');
     this.emit('end', data);
   });
 };
@@ -73,6 +74,13 @@ gulp.task('font', function () {
     fonts: 'font',
     css: 'font'
   });
+});
+
+gulp.task('comb', function() {
+  return gulp.src(settings.styles.src, { base: settings.dev })
+    .pipe(plumber())
+    .pipe(csscomb())
+    .pipe(gulp.dest(settings.dev));
 });
 
 gulp.task('styles', ['font'], function () {
@@ -154,7 +162,7 @@ gulp.task('test', ['build', 'serve'], function (cb) {
 
 gulp.task('watch', function () {
   gulp.watch(settings.js, ['scripts', 'html']);
-  gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
+  gulp.watch(settings.styles.src.concat(settings.styles.includes), ['comb', 'styles']);
 });
 
 gulp.task('build', ['gulphint', 'scripts', 'font', 'styles', 'html']);
