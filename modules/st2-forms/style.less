@@ -1,3 +1,7 @@
+@button: #ff8300;
+@button-active: spin(@button, 8);
+@button-disabled: #888;
+
 .st2-forms {
   &__matcher {
     overflow: hidden;
@@ -23,7 +27,7 @@
     box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
     outline: 0;
 
-    background-color: #ff8300;
+    background-color: @button;
     color: #fff;
 
     font-size: 14px;
@@ -61,9 +65,13 @@
     }
 
     &--disabled {
-      background-color: #888888;
+      background-color: @button-disabled;
       cursor: default;
       pointer-events: none;
+    }
+
+    &:active {
+      background-color: @button-active;
     }
   }
 
@@ -71,13 +79,16 @@
     margin-left: 10px;
 
     &:before {
-      border-right-color: #ff8300;
+      border-right-color: @button;
       right: 100%;
     }
 
     &--disabled:before {
-      border-right-color: #888888;
-      right: 100%;
+      border-right-color: @button-disabled;
+    }
+
+    &:active:before {
+      border-right-color: @button-active;
     }
   }
 
@@ -85,13 +96,16 @@
     margin-right: 10px;
 
     &:after {
-      border-left-color: #ff8300;
+      border-left-color: @button;
       left: 100%;
     }
 
     &--disabled:after {
-      border-left-color: #888888;
-      left: 100%;
+      border-left-color: @button-disabled;
+    }
+
+    &:active:after {
+      border-left-color: @button-active;
     }
   }
 }
