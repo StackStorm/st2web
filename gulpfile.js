@@ -76,16 +76,11 @@ gulp.task('font', function () {
   });
 });
 
-gulp.task('comb', function() {
+gulp.task('styles', ['font'], function () {
   return gulp.src(settings.styles.src, { base: settings.dev })
     .pipe(plumber())
     .pipe(csscomb())
-    .pipe(gulp.dest(settings.dev));
-});
-
-gulp.task('styles', ['font'], function () {
-  return gulp.src(settings.styles.src, { cwd: settings.dev })
-    .pipe(plumber())
+    .pipe(gulp.dest(settings.dev))
     .pipe(less({ paths: [path.join(settings.dev, settings.styles.includes)] }))
     .pipe(concat('style.css'))
     .pipe(prefix())
@@ -162,7 +157,7 @@ gulp.task('test', ['build', 'serve'], function (cb) {
 
 gulp.task('watch', function () {
   gulp.watch(settings.js, ['scripts', 'html']);
-  gulp.watch(settings.styles.src.concat(settings.styles.includes), ['comb', 'styles']);
+  gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
 gulp.task('build', ['gulphint', 'scripts', 'font', 'styles', 'html']);
