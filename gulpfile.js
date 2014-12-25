@@ -76,7 +76,7 @@ gulp.task('font', function () {
   });
 });
 
-gulp.task('styles', ['font'], function () {
+gulp.task('styles', function () {
   return gulp.src(settings.styles.src, { base: settings.dev })
     .pipe(plumber())
     .pipe(csscomb())
@@ -160,5 +160,5 @@ gulp.task('watch', function () {
   gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
-gulp.task('build', ['gulphint', 'scripts', 'font', 'styles', 'html']);
+gulp.task('build', ['gulphint', 'scripts', 'styles', 'html']);
 gulp.task('default', ['build', 'watch', 'serve']);
