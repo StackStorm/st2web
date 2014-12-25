@@ -1,0 +1,74 @@
+@font-face {
+  font-family: 'ststanley';
+  src: url('../font/ststanley.eot?57846070');
+  src: url('../font/ststanley.eot?57846070#iefix') format('embedded-opentype'),
+       url('../font/ststanley.woff?57846070') format('woff'),
+       url('../font/ststanley.ttf?57846070') format('truetype'),
+       url('../font/ststanley.svg?57846070#ststanley') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'ststanley';
+    src: url('../font/ststanley.svg?57846070#ststanley') format('svg');
+  }
+}
+*/
+ 
+ [class^="st2-icon__"]:before, [class*=" st2-icon__"]:before {
+  font-family: "ststanley";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.st2-icon__off:before { content: '\e800'; } /* '' */
+.st2-icon__edit:before { content: '\e801'; } /* '' */
+.st2-icon__cancel:before { content: '\e802'; } /* '' */
+.st2-icon__right-open:before { content: '\e803'; } /* '' */
+.st2-icon__down-open:before { content: '\e804'; } /* '' */
+.st2-icon__actions:before { content: '\e805'; } /* '' */
+.st2-icon__reload:before { content: '\e806'; } /* '' */
+.st2-icon__flow-cascade:before { content: '\e807'; } /* '' */
+.st2-icon__rules:before { content: '\e808'; } /* '' */
+.st2-icon__history:before { content: '\e809'; } /* '' */
+.st2-icon__tick:before { content: '\e80a'; } /* '' */
+.st2-icon__cube:before { content: '\e80b'; } /* '' */
+.st2-icon__left-open:before { content: '\e80c'; } /* '' */
+.st2-icon__up-open:before { content: '\e80d'; } /* '' */
+.st2-icon__eye:before { content: '\e80e'; } /* '' */
+.st2-icon__search:before { content: '\e80f'; } /* '' */
+.st2-icon__info-circled:before { content: '\e810'; } /* '' */
+.st2-icon__attention:before { content: '\e811'; } /* '' */
+.st2-icon__cancel-circled:before { content: '\e812'; } /* '' */
+.st2-icon__cogs:before { content: '\e813'; } /* '' */
+.st2-icon__code:before { content: '\e814'; } /* '' */
+.st2-icon__calendar:before { content: '\e815'; } /* '' */
