@@ -1,54 +1,58 @@
-@import "layout";
-@import "colors";
+@import 'colors';
 
 .st2-summary {
-  #st2-layout > #panel;
-
-  width: 320px;
-
-  background-color: @gray-darker;
-  padding: 0;
-  color: #fff;
-
-  box-shadow: -1px 0 0 #303030,
-              -2px 0 0 #000;
-
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  box-sizing: border-box;
+  width: 320px;
+  height: 100%;
+  padding: 0;
+
+  color: #fff;
+  background-color: @gray-darker;
+  box-shadow: -1px 0 0 #303030,
+  -2px 0 0 #000;
 
   &__heading {
-    border-bottom: 1px solid @gray-dark;
+    display: flex;
+
     padding: 10px 20px;
 
-    display: flex;
+    border-bottom: 1px solid @gray-dark;
+
     align-items: baseline;
 
     &-title {
-      flex: 1;
-
-      padding: 0;
-      margin-right: 10px;
-
-      color: #757575;
-
-      font-size: 15px;
-      text-transform: uppercase;
-      font-weight: 400;
       font-family: Oswald;
+      font-size: 15px;
+      font-weight: 400;
 
       overflow: hidden;
+      flex: 1;
+
+      margin-right: 10px;
+      padding: 0;
+
+      text-transform: uppercase;
       text-overflow: ellipsis;
+
+      color: #757575;
     }
   }
 
   &__body {
-    padding: 20px;
     margin: 0;
+    padding: 20px;
 
     &-label {
-      color: #757575;
-      text-transform: uppercase;
-      font-weight: 400;
       font-family: Oswald;
+      font-weight: 400;
+
+      text-transform: uppercase;
+
+      color: #757575;
     }
 
     &-value {

@@ -1,32 +1,27 @@
 .st2-loader {
   &--active:before {
-    content: '\e806';
-
-    font-family: "ststanley";
-    font-style: normal;
-    font-weight: normal;
-
+    font-family: 'ststanley';
     font-size: 92px;
+    font-weight: normal;
+    font-style: normal;
 
     position: absolute;
+    z-index: 5;
     top: 50%;
     left: 50%;
+
     width: 100px;
     height: 100px;
+    margin: -50px 0 0 -50px;
 
-    z-index: 5;
-
+    content: '\e806';
+    animation: spin 2s infinite linear,
+    show 2s linear 2s 1 forwards;
+    text-align: center;
+    vertical-align: middle;
     pointer-events: none;
 
-    margin: -50px 0px 0px -50px;
-
-    vertical-align: middle;
-    text-align: center;
-
     color: fade(#515151, 0%);
-
-    animation: spin 2s infinite linear,
-               show 2s linear 2s 1 forwards;
   }
 
   @keyframes spin {

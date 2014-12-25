@@ -1,16 +1,15 @@
-@import "colors";
+@import 'colors';
 
 .st2-panel {
   position: absolute;
+  z-index: 2;
   top: 0;
   left: 0;
 
-  z-index: 2;
+  display: flex;
 
   width: 100%;
   height: 100%;
-
-  display: flex;
 
   background-color: @gray-dark;
 
@@ -28,14 +27,13 @@
   }
 
   &__view {
-    height: 100%;
-
-    box-sizing: border-box;
-
     // for .st2-panel__back-button to fill the right block
     position: relative;
 
     flex: 1;
+
+    box-sizing: border-box;
+    height: 100%;
   }
 
   &__scroller {
@@ -47,20 +45,21 @@
     bottom: 4px;
     left: 10px;
 
-    padding: 10px;
-
     overflow-x: hidden;
     overflow-y: auto;
 
+    padding: 10px;
+
     &::-webkit-scrollbar {
-      background-color: transparent;
       width: 5px;
       height: 5px;
+
+      background-color: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(117, 117, 117, .3); // #757575
       border-radius: 3px;
+      background-color: rgba(117, 117, 117, .3); // #757575
 
       &:hover {
         background-color: rgba(117, 117, 117, .7); // #757575
@@ -69,76 +68,78 @@
   }
 
   &__toolbar {
+    font-family: Oswald;
+    font-size: 24px;
+    font-weight: 200;
+
     display: flex;
-    justify-content: space-between;
+
+    height: 38px;
 
     color: #757575;
 
-    font-size: 24px;
-    font-weight: 200;
-    font-family: Oswald;
-
-    height: 38px;
+    justify-content: space-between;
     flex-flow: row-reverse wrap;
 
     &-title {
-      flex: 1 0 auto;
       line-height: 37px;
+
       overflow: hidden;
+      flex: 1 0 auto;
+
       order: -1;
     }
 
     &-filters {
-      flex: 0 0 auto;
       display: flex;
-      justify-content: flex-end;
+      flex: 0 0 auto;
 
+      justify-content: flex-end;
       order: -2;
     }
 
     &-search {
-      flex: 0 0 200px;
-
+      font-family: 'Open Sans';
       font-size: 14px;
       font-weight: 400;
-      font-family: 'Open Sans';
+
+      position: relative;
+
+      flex: 0 0 200px;
 
       padding: 4px 0;
 
       order: -3;
 
-      position: relative;
-
       &:after {
-        content: '\e80f';
-
-        font-family: "ststanley";
-        font-style: normal;
+        font-family: 'ststanley';
+        font-size: 120%;
         font-weight: normal;
+        font-style: normal;
 
         position: absolute;
         top: 0;
         right: 0;
 
         padding: 10px;
-        font-size: 120%;
+
+        content: '\e80f';
       }
     }
   }
 
-  &__search-bar[type="search"] {
-    width: 100%;
+  &__search-bar[type='search'] {
     line-height: 20px;
-    padding: 5px 30px 5px 10px;
-    background-color: @gray-darker;
-
-    border: 0;
-    box-shadow: inset 0 1px 2px #000;
-    border-radius: 5px;
-
-    outline: none;
 
     box-sizing: border-box;
+    width: 100%;
+    padding: 5px 30px 5px 10px;
+
+    border: 0;
+    border-radius: 5px;
+    outline: none;
+    background-color: @gray-darker;
+    box-shadow: inset 0 1px 2px #000;
 
     &::placeholder {
       color: #757575;
@@ -146,51 +147,51 @@
   }
 
   &__content {
-    background-color: @gray-dark;
-
-    // hiding displaced toolbar items
-    padding: 10px;
-    margin: 0 -10px;
-
     position: relative;
 
     min-height: 100px;
+    margin: 0 -10px;
+    // hiding displaced toolbar items
+    padding: 10px;
+
+    background-color: @gray-dark;
 
     &-empty {
-      text-align: center;
       padding: 5em;
 
+      text-align: center;
+
       &:before {
-        content: '\e810';
-
-        font-family: "ststanley";
-        font-style: normal;
-        font-weight: normal;
-
+        font-family: 'ststanley';
         font-size: 32px;
-        padding-bottom: 10px;
+        font-weight: normal;
+        font-style: normal;
 
         display: block;
+
+        padding-bottom: 10px;
+
+        content: '\e810';
       }
     }
 
     &-error {
-      text-align: center;
       padding: 5em;
 
+      text-align: center;
+
       &:before {
-        content: '\e811';
-
-        font-family: "ststanley";
-        font-style: normal;
-        font-weight: normal;
-
+        font-family: 'ststanley';
         font-size: 32px;
-        padding-bottom: 10px;
+        font-weight: normal;
+        font-style: normal;
 
         display: block;
+
+        padding-bottom: 10px;
+
+        content: '\e811';
       }
     }
   }
-
 }
