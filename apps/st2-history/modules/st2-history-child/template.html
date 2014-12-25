@@ -1,15 +1,19 @@
 <div class="st2-flex-table__header">
   <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
   </div>
-  <div class="st2-flex-table__column st2-history__column-time st2-history-child__column-time">
-    Started At
+  <div class="st2-flex-table__column st2-history__column-time st2-history-child__column-time"
+      ng-if="$parent.$parent.view.time.value">
+    Time
   </div>
-  <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action">
+  <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action"
+      ng-if="$parent.$parent.view.action.value">
     Action Name
   </div>
-  <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty">
+  <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty"
+      ng-if="$parent.$parent.view.trigger.value">
   </div>
-  <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status">
+  <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status"
+      ng-if="$parent.$parent.view.status.value">
     Status
   </div>
 </div>
@@ -22,15 +26,19 @@
     ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
   <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
   </div>
-  <div class="st2-flex-table__column st2-history__column-time st2-history-child__column-time">
+  <div class="st2-flex-table__column st2-history__column-time st2-history-child__column-time"
+      ng-if="$parent.$parent.view.time.value">
     {{ record.execution.start_timestamp | date:'mediumTime' }}
   </div>
-  <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action">
+  <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action"
+      ng-if="$parent.$parent.view.action.value">
     {{ $root.getRef(record.action) }}
   </div>
-  <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty">
+  <div class="st2-flex-table__column st2-history__column-empty st2-history-child__column-empty"
+      ng-if="$parent.$parent.view.trigger.value">
   </div>
-  <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status">
+  <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status"
+      ng-if="$parent.$parent.view.status.value">
     <span class="st2-label" status="record.execution.status"></span>
   </div>
 </div>

@@ -18,6 +18,10 @@
           <div class="st2-filter" filters="filters" type="rule"
             ng-hide="_.isEmpty(filters['rule'])"></div>
         </div>
+
+        <div class="st2-panel__toolbar-view">
+          <div class="st2-view" view-settings="view"></div>
+        </div>
       </div>
 
       <div class="st2-panel__content">
@@ -32,10 +36,22 @@
 
           <div class="st2-flex-table__header">
             <div class="st2-flex-table__column st2-history__column-utility"></div>
-            <div class="st2-flex-table__column st2-history__column-time">Started At</div>
-            <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
-            <div class="st2-flex-table__column st2-history__column-triggered">Triggered By</div>
-            <div class="st2-flex-table__column st2-history__column-status">Status</div>
+            <div class="st2-flex-table__column st2-history__column-time"
+                ng-if="view.time.value">
+              Time
+            </div>
+            <div class="st2-flex-table__column st2-history__column-action"
+                ng-if="view.action.value">
+              Action Name
+            </div>
+            <div class="st2-flex-table__column st2-history__column-triggered"
+                ng-if="view.trigger.value">
+              Triggered By
+            </div>
+            <div class="st2-flex-table__column st2-history__column-status"
+                ng-if="view.status.value">
+              Status
+            </div>
           </div>
 
           <div class="st2-flex-table__row"
@@ -50,22 +66,40 @@
                   ng-if="isExpandable(record)">
               </i>
             </div>
-            <div class="st2-flex-table__column st2-history__column-time">
+            <div class="st2-flex-table__column st2-history__column-time"
+                ng-if="view.time.value">
               {{ record.execution.start_timestamp | date:'mediumTime' }}
+              <span ng-if="view.time.subview.end.value">
+                - {{ record.execution.end_timestamp | date:'mediumTime' }}
+              </span>
             </div>
             <div class="st2-flex-table__column st2-history__column-action"
-                title="{{ $root.getRef(record.action) }}">
+                title="{{ $root.getRef(record.action) }}"
+                ng-if="view.action.value">
               {{ $root.getRef(record.action) }}
+              <span class="st2-history__column-action-params"
+                  ng-repeat="(name, value) in record.execution.parameters"
+                  ng-if="view.action.subview.params.value"><!--
+            !--><span class="st2-history__column-action-param-name"><!--
+              !-->{{ name }}=<!--
+            !--></span><!--
+            !--><span class="st2-history__column-action-param-value"><!--
+              !-->{{ fmtParam(value) }}<!--
+            !--></span><!--
+            !--><span ng-if="!$last">, </span><!--
+          !--></span>
             </div>
             <div class="st2-flex-table__column st2-history__column-triggered"
-                ng-switch="record.rule && record.trigger && true">
+                ng-switch="record.rule && record.trigger && true"
+                ng-if="view.trigger.value">
               <span ng-switch-when="true"
                   title="{{ record.rule.name }} ({{ record.trigger.type }})">
                 {{ record.rule.name }} ({{ record.trigger.type }})
               </span>
               <span ng-switch-default>Manual</span>
             </div>
-            <div class="st2-flex-table__column st2-history__column-status">
+            <div class="st2-flex-table__column st2-history__column-status"
+                ng-if="view.status.value">
               <span class="st2-label" status="record.execution.status"></span>
             </div>
           </div>
@@ -77,10 +111,22 @@
               class="st2-flex-table__header"
               ng-if="isExpandable(record) && record._expanded && !$last">
             <div class="st2-flex-table__column st2-history__column-utility"></div>
-            <div class="st2-flex-table__column st2-history__column-time">Started At</div>
-            <div class="st2-flex-table__column st2-history__column-action">Action Name</div>
-            <div class="st2-flex-table__column st2-history__column-triggered">Triggered By</div>
-            <div class="st2-flex-table__column st2-history__column-status">Status</div>
+            <div class="st2-flex-table__column st2-history__column-time"
+                ng-if="view.time.value">
+              Time
+            </div>
+            <div class="st2-flex-table__column st2-history__column-action"
+                ng-if="view.action.value">
+              Action Name
+            </div>
+            <div class="st2-flex-table__column st2-history__column-triggered"
+                ng-if="view.trigger.value">
+              Triggered By
+            </div>
+            <div class="st2-flex-table__column st2-history__column-status"
+                ng-if="view.status.value">
+              Status
+            </div>
           </div>
 
         </div>
