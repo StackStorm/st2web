@@ -33,6 +33,43 @@ angular.module('main')
 
     $scope.error = null;
 
+    var savedView = JSON.parse(sessionStorage.getItem('st2HistoryView'));
+
+    $scope.view = savedView || {
+      'time': {
+        title: 'Time',
+        value: true,
+        subview: {
+          'end': {
+            title: 'End time',
+            value: false
+          }
+        }
+      },
+      'action': {
+        title: 'Action name',
+        value: true,
+        subview: {
+          'params': {
+            title: 'Parameters',
+            value: false
+          }
+        }
+      },
+      'trigger': {
+        title: 'Triggered by',
+        value: true
+      },
+      'status': {
+        title: 'Status',
+        value: true
+      }
+    };
+
+    $scope.$watch('view', function (view) {
+      sessionStorage.setItem('st2HistoryView', JSON.stringify(view));
+    }, true);
+
     st2LoaderService.reset();
 
     st2api.historyFilters.list().then(function (filters) {
@@ -128,6 +165,21 @@ angular.module('main')
       });
 
     });
+
+    $scope.fmtParam = function (value) {
+      if (_.isString(value)) {
+        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
+      }
+
+      if (_.isArray(value)) {
+        return '[' +
+        _(value).first(3).map($scope.fmtParam).join(', ') +
+        (value.length > 3 ? ',..' : '') +
+        ']';
+      }
+
+      return value;
+    };
 
     $scope.expand = function (record, $event) {
       $event.stopPropagation();

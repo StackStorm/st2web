@@ -1,0 +1,14 @@
+<div class="st2-view__label" ng-click="toggle()"></div>
+<div class="st2-view__variants">
+  <div class="st2-view__list">
+    <div class="st2-view__item"
+        ng-class="{
+          'st2-view__item--active': setting.value,
+          'st2-view__item--secondary': setting.sub
+        }"
+        ng-repeat="setting in viewList track by setting.title"
+        ng-click="pick(setting)">
+      {{ setting.title }}
+    </div>
+  </div>
+</div>
