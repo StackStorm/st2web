@@ -1,6 +1,21 @@
 StackStorm Web UI
 =================
 
+Early Access Users
+------------------
+Thank you for trying out our software! Be ye warned, this project is under
+active and rapid development. As such, there may be times where things may
+quite work as expected. Be sure to let us know by submitting bugs to:
+https://github.com/StackStorm/st2web/issues. We'd also love to know what you
+enjoy using, so don't be shy!
+
+The current 'stable' version is `v0.6.0`. This is a `git` branch you can
+checkout with the following command: `git checkout v0.6.0`.
+
+During the early access period, we will keep the most 'stable' version updated
+in the master branch of this project.
+
+
 Quick start
 -----------
 
