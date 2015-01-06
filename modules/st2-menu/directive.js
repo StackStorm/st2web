@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2Menu', function ($window, st2Config) {
+  .directive('st2Menu', function ($window, st2api) {
 
     return {
       restrict: 'C',
@@ -16,24 +16,12 @@ angular.module('main')
           return scope.state.includes(e);
         };
 
-        scope.getServer = function () {
-          var url = localStorage.getItem('st2Host');
-          var host = _.find(scope.serverList, {url: url}) || _.first(scope.serverList);
+        scope.user = st2api.actions.token.user;
 
-          return host.name;
-        };
-
-        scope.setServer = function (server) {
-          if (server.url) {
-            localStorage.setItem('st2Host', server.url);
-          } else {
-            localStorage.removeItem('st2Host');
-          }
-
+        scope.logout = function () {
+          localStorage.removeItem('st2Token');
           $window.location.reload();
         };
-
-        scope.serverList = st2Config.hosts;
       }
     };
 
