@@ -1,0 +1,63 @@
+@import 'colors';
+
+.st2-login {
+  position: absolute;
+  // Guess there should not be anything on top of it if we aren't logged in
+  z-index: 999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+
+  color: @gray-white;
+  background-color: @gray-darker;
+
+  align-items: center;
+  justify-content: center;
+
+  &__logo {
+    display: block;
+
+    width: 50px;
+    margin: 20px auto;
+
+    img {
+      width: 50px;
+    }
+  }
+
+  &__form {
+    display: block;
+
+    width: 240px;
+  }
+
+  &__row {
+    display: flex;
+
+    margin: 10px;
+
+    align-items: center;
+  }
+
+  & &__button {
+    padding: 3px 12px;
+  }
+
+  & &__checkbox-wrapper {
+    flex: 1;
+
+    text-align: right;
+  }
+
+  &__error {
+    margin: 10px;
+    padding: 10px;
+
+    border: 1px solid orangered;
+    border-radius: 4px;
+    background-color: lightcoral;
+  }
+}

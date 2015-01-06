@@ -1,3 +1,5 @@
+@import 'colors';
+
 @button: #ff8300;
 @button-active: spin(@button, 8);
 @button-disabled: #888;
@@ -113,6 +115,86 @@
 
     &:active:after {
       border-left-color: @button-active;
+    }
+  }
+
+
+  &__field {
+    font-weight: normal;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
+    padding: 0 0 0 10px;
+
+    color: #fff;
+    border: 1px solid;
+    border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
+    border-radius: 4px;
+    outline: 0;
+    background-color: @gray-dark;
+
+    &[readonly] {
+      cursor: not-allowed;
+
+      border-color: transparent;
+    }
+
+    &[disabled] {
+      cursor: default;
+
+      border-color: transparent;
+    }
+
+    &::placeholder {
+      color: #aaa;
+    }
+
+    &:invalid {
+      // TODO: not sure whether this is intentional or a bug, but shadow doesn't match
+      box-shadow: none;
+    }
+  }
+
+  &__checkbox {
+    display: none;
+
+    margin: 0;
+    padding: 0;
+
+    &-label {
+      cursor: pointer;
+      user-select: none;
+      vertical-align: top;
+    }
+
+    & + &-label:before {
+      font-family: 'ststanley';
+      font-weight: normal;
+      font-style: normal;
+      line-height: 12px;
+
+      display: inline-block;
+
+      width: 14px;
+      height: 14px;
+      margin-right: .3em;
+
+      content: '\00a0';
+      text-decoration: inherit;
+
+      color: #01c8ff;
+      border: 1px solid;
+      border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
+      border-radius: 4px;
+      background-color: @gray-dark;
+    }
+
+    &:checked + &-label:before {
+      content: '\e80a';
+
+      text-shadow: 1px 0 1px #000,
+      1px 1px 1px #000;
     }
   }
 }

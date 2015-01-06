@@ -9,9 +9,17 @@ angular.module('main')
     var parser = document.createElement('a');
     parser.href = _.find(st2Config.hosts, {url: url}) && url || _.first(st2Config.hosts).url;
 
+    // Restore previously saved token
+    var token = {};
+
+    try {
+      token = JSON.parse(localStorage.getItem('st2Token')) || {};
+    } catch (e) {}
+
     return st2client({
       protocol: parser.protocol.split(':')[0],
       host: parser.hostname,
-      port: parser.port
+      port: parser.port,
+      token: token
     });
   });
