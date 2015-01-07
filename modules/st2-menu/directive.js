@@ -18,7 +18,7 @@ angular.module('main')
 
         scope.user = st2api.token.user;
 
-        scope.logout = function () {
+        scope.disconnect = function () {
           st2api.disconnect();
           $window.location.reload();
         };

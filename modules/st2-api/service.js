@@ -18,26 +18,31 @@ angular.module('main')
       });
     };
 
-    this.connect = function (url, user, password, remember) {
+    this.connect = function (server, user, password, remember) {
 
-      this.client = initClient(url, this.token);
+      this.client = initClient(server.url, this.token);
+      this.server = server;
 
-      if (user && password) {
-        return this.client.authenticate(user, password).then(function (token) {
+      var promise;
+
+      if (server.auth && user && password) {
+        promise = this.client.authenticate(user, password).then(function (token) {
           this.token = token;
-
-          if (remember) {
-            localStorage.setItem('st2Session', JSON.stringify({
-              url: url,
-              token: token
-            }));
-          }
+        }.bind(this));
+      } else {
+        promise = $q(function (resolve) {
+          resolve(this.client);
         }.bind(this));
       }
 
-      return $q(function (resolve) {
-        resolve(this.client);
-      });
+      return promise.then(function () {
+        if (remember) {
+          localStorage.setItem('st2Session', JSON.stringify({
+            server: server,
+            token: this.token
+          }));
+        }
+      }.bind(this));
     };
 
     this.disconnect = function () {
@@ -47,14 +52,26 @@ angular.module('main')
       return this;
     };
 
+    this.isConnected = function () {
+      if (this.server && this.server.auth) {
+        var expiry = this.token.expiry && new Date(this.token.expiry)
+        , now = new Date()
+        ;
+
+        return now < expiry;
+      } else {
+        return !!this.client;
+      }
+    };
+
     try {
       var session = JSON.parse(localStorage.getItem('st2Session'));
       this.token = session.token || {};
-      this.url = session.url;
+      this.server = session.server;
     } catch (e) {}
 
-    if (this.url && this.token) {
-      this.client = initClient(this.url, this.token);
+    if (this.server && this.token) {
+      this.client = initClient(this.server, this.token);
     }
 
     return this;

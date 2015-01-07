@@ -14,13 +14,13 @@
 </ul>
 
 <div class="st2-menu__server">
-  <span class="st2-menu__server-current">{{ user }}</span>
+  <span class="st2-menu__server-current">{{ user || 'Anonymous' }}</span>
   <div class="st2-menu__server-list">
     <div class="st2-menu__server-current">
-      {{ user }}
+      {{ user || 'Anonymous' }}
     </div>
-    <div class="st2-menu__server-item" ng-click="logout()">
-      Log out
+    <div class="st2-menu__server-item" ng-click="disconnect()">
+      Disconnect
     </div>
   </div>
 </div>
