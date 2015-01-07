@@ -16,10 +16,10 @@ angular.module('main')
           return scope.state.includes(e);
         };
 
-        scope.user = st2api.actions.token.user;
+        scope.user = st2api.token.user;
 
         scope.logout = function () {
-          localStorage.removeItem('st2Token');
+          st2api.disconnect();
           $window.location.reload();
         };
       }

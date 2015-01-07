@@ -15,7 +15,7 @@ angular.module('main')
   .run(function ($rootScope, $urlRouter, st2api, $state) {
 
     $rootScope.$on('$locationChangeSuccess', function(e) {
-      var expiry = st2api.actions.token.expiry && new Date(st2api.actions.token.expiry)
+      var expiry = st2api.token.expiry && new Date(st2api.token.expiry)
         , now = new Date()
         ;
 
@@ -34,23 +34,22 @@ angular.module('main')
 
 
 angular.module('main')
-  .controller('st2LoginCtrl', function ($scope, st2api, $rootScope) {
+  .controller('st2LoginCtrl', function ($scope, st2api, st2Config, $rootScope) {
 
     $scope.submit = function (url, user, password, remember) {
-      st2api.authenticate(user, password).then(function (token) {
-        if (remember) {
-          localStorage.setItem('st2Token', JSON.stringify(token));
-        }
-
+      st2api.connect(url, user, password, remember).then(function () {
         $rootScope.$broadcast('$locationChangeSuccess');
       }).catch(function (err) {
         if (err.status === 0) {
           $scope.error = 'Unknown error. Possible SSL voliation.';
         } else {
-          $scope.error = err.message;
+          $scope.error = err.message.faultstring || err.message;
         }
         $scope.$apply();
       });
     };
+
+    $scope.servers = st2Config.hosts;
+    $scope.server = $scope.servers[0];
 
   });
