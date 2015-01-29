@@ -78,6 +78,25 @@ angular.module('main')
       $scope.$apply();
     });
 
+    var listFormat = function () {
+      // Group all the records by periods of 24 hour
+      var period = 24 * 60 * 60 * 1000;
+
+      $scope.history = $scope.historyList && _($scope.historyList)
+        .take(10)
+        .groupBy(function (record) {
+          var time = record.execution.start_timestamp;
+          return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
+        })
+        .map(function (records, period) {
+          return {
+            period: period,
+            records: records
+          };
+        })
+        .value();
+    };
+
     var listUpdate = function () {
       st2LoaderService.start();
 
@@ -87,21 +106,9 @@ angular.module('main')
       }, $scope.$root.active_filters));
 
       pHistoryList.then(function (list) {
-        // Group all the records by periods of 24 hour
-        var period = 24 * 60 * 60 * 1000;
+        $scope.historyList = list;
 
-        $scope.history = list && _(list)
-          .groupBy(function (record) {
-            var time = record.execution.start_timestamp;
-            return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
-          })
-          .map(function (records, period) {
-            return {
-              period: period,
-              records: records
-            };
-          })
-          .value();
+        listFormat();
 
         $scope.$emit('$fetchFinish', st2api.history);
         st2LoaderService.stop();
@@ -150,36 +157,53 @@ angular.module('main')
     });
 
     st2api.stream.listen().then(function (source) {
+      source.addEventListener('st2.history__create', function (e) {
+        // New records should only appear if we are not on the specific page.
+        if ($rootScope.page && $rootScope.page !== 1) {
+          return;
+        }
+
+        var record = JSON.parse(e.data);
+
+        if (record.parent) {
+          var parentNode = _.find($scope.historyList, { id: record.parent });
+
+          if (parentNode && parentNode._children) {
+            parentNode._children.push(record);
+          }
+        } else {
+          $scope.historyList.unshift(record);
+          listFormat();
+        }
+
+        $scope.$apply();
+      });
 
       source.addEventListener('st2.history__update', function (e) {
         var record = JSON.parse(e.data);
-        _.first($scope.history, function (period) {
-          var index = _.findIndex(period.records, { 'id': record.id });
-          if (index !== -1) {
-            period.records[index] = record;
-            $scope.$apply();
-            return true;
+
+        var list = (function () {
+          if (!record.parent) {
+            return $scope.historyList;
           }
-          return false;
-        });
+
+          var parentNode = _.find($scope.historyList, { id: record.parent });
+
+          if (!parentNode || !parentNode._children) {
+            return;
+          }
+
+          return parentNode._children;
+        })();
+
+        var node = _.find(list, { id: record.id });
+
+        _.assign(node, record);
+
+        $scope.$apply();
       });
 
     });
-
-    $scope.fmtParam = function (value) {
-      if (_.isString(value)) {
-        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
-      }
-
-      if (_.isArray(value)) {
-        return '[' +
-        _(value).first(3).map($scope.fmtParam).join(', ') +
-        (value.length > 3 ? ',..' : '') +
-        ']';
-      }
-
-      return value;
-    };
 
     $scope.expand = function (record, $event) {
       $event.stopPropagation();
@@ -196,8 +220,29 @@ angular.module('main')
       }
     };
 
-    // helpers
-    $scope.isExpandable = function (record) {
+  })
+
+  .filter('fmtParam', function () {
+    var fmtParam = function (value) {
+      if (_.isString(value)) {
+        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
+      }
+
+      if (_.isArray(value)) {
+        return '[' +
+        _(value).first(3).map(fmtParam).join(', ') +
+        (value.length > 3 ? ',..' : '') +
+        ']';
+      }
+
+      return value;
+    };
+
+    return fmtParam;
+  })
+
+  .filter('isExpandable', function () {
+    return function (record) {
       var runnerWithChilds = ['workflow', 'action-chain', 'mistral-v1', 'mistral-v2'];
       return _.contains(runnerWithChilds, record.action.runner_type);
     };
