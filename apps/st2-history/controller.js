@@ -157,7 +157,7 @@ angular.module('main')
     });
 
     st2api.stream.listen().then(function (source) {
-      source.addEventListener('st2.history__create', function (e) {
+      var createListener = function (e) {
         // New records should only appear if we are not on the specific page.
         if ($rootScope.page && $rootScope.page !== 1) {
           return;
@@ -177,9 +177,11 @@ angular.module('main')
         }
 
         $scope.$apply();
-      });
+      };
 
-      source.addEventListener('st2.history__update', function (e) {
+      source.addEventListener('st2.history__create', createListener);
+
+      var updateListener = function (e) {
         var record = JSON.parse(e.data);
 
         var list = (function () {
@@ -201,6 +203,13 @@ angular.module('main')
         _.assign(node, record);
 
         $scope.$apply();
+      };
+
+      source.addEventListener('st2.history__update', updateListener);
+
+      $scope.$on('$destroy', function () {
+        source.removeEventListener('st2.history__create', createListener);
+        source.removeEventListener('st2.history__update', updateListener);
       });
 
     });
