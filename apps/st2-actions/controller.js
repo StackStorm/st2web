@@ -27,7 +27,7 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2api, st2LoaderService) {
+  .controller('st2ActionsCtrl', function ($scope, st2api, st2LoaderService, $filter) {
 
     $scope.filter = '';
     $scope.error = null;
@@ -101,22 +101,57 @@ angular.module('main')
 
     st2api.stream.listen().then(function (source) {
 
-      source.addEventListener('st2.history__create', function (e) {
+      var createListener = function (e) {
         var record = JSON.parse(e.data);
 
-        if (record.action.id === $scope.action.id) {
+        if (record.parent) {
+          var parentNode = _.find($scope.history, { id: record.parent });
+
+          if (parentNode && parentNode._children) {
+            parentNode._children.push(record);
+          }
+        } else {
+          if (record.action.id !== $scope.action.id) {
+            return;
+          }
+
           $scope.history.push(record);
-          $scope.$apply();
         }
-      });
 
-      source.addEventListener('st2.history__update', function (e) {
+        $scope.$apply();
+      };
+
+      source.addEventListener('st2.history__create', createListener);
+
+      var updateListener = function (e) {
         var record = JSON.parse(e.data);
-        if (record.action.id === $scope.action.id) {
-          var index = _.findIndex($scope.history, { 'id': record.id });
-          $scope.history[index] = record;
-          $scope.$apply();
-        }
+
+        var list = (function () {
+          if (!record.parent) {
+            return $scope.history;
+          }
+
+          var parentNode = _.find($scope.history, { id: record.parent });
+
+          if (!parentNode || !parentNode._children) {
+            return;
+          }
+
+          return parentNode._children;
+        })();
+
+        var node = _.find(list, { id: record.id });
+
+        _.assign(node, record);
+
+        $scope.$apply();
+      };
+
+      source.addEventListener('st2.history__update', updateListener);
+
+      $scope.$on('$destroy', function () {
+        source.removeEventListener('st2.history__create', createListener);
+        source.removeEventListener('st2.history__update', updateListener);
       });
 
     });
@@ -149,6 +184,32 @@ angular.module('main')
     $scope.isWorkflow = function (action) {
       var workflow = ['workflow', 'action-chain', 'mistral-v1', 'mistral-v2'];
       return _.contains(workflow, action.runner_type);
+    };
+
+    $scope.expand = function (record, $event) {
+      $event.stopPropagation();
+
+      record._expanded = !record._expanded;
+
+      if ($filter('isExpandable')(record) && record._expanded) {
+        st2api.history.list({
+          'parent': record.id
+        }).then(function (records) {
+          record._children = records;
+          this.$apply();
+        }.bind(this));
+      }
+    };
+
+    $scope.workflowView = {
+      'time': {
+        title: 'Time',
+        value: true
+      },
+      'status': {
+        title: 'Status',
+        value: true
+      }
     };
 
   })

@@ -1,3 +1,5 @@
+@import 'colors';
+
 .st2-actions {
   // Table columns
   .st2-flex-table__column&__column {
@@ -21,6 +23,9 @@
   }
 
   .st2-flex-table__column&__details-column {
+    &-meta {
+      flex: 0 50px;
+    }
     &-status {
       flex: 0 100px;
     }
@@ -30,16 +35,9 @@
     &-utility {
       flex: none;
 
-      width: 20px;
+      width: 30px;
 
       cursor: pointer;
-      &:hover {
-        color: #f4f4f4;
-        text-shadow: 1px 0 0 #000,
-        0 1px 0 #000,
-        -1px 0 0 #000,
-        0 -1px 0 #000;
-      }
     }
   }
 }

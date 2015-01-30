@@ -6,12 +6,11 @@ angular.module('main')
     return {
       restrict: 'C',
       scope: {
-        'children': '='
+        'children': '=',
+        'view': '='
       },
-      templateUrl: 'apps/st2-history/modules/st2-history-child/template.html',
-      link: function postLink(scope) {
-        scope.view = scope.$parent.view;
-
+      templateUrl: 'modules/st2-history-child/template.html',
+      link: function postLink() {
         // scope.expand = function (record, $event) {
         //   $event.stopPropagation();
         //
