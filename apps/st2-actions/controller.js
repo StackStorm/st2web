@@ -15,10 +15,10 @@ angular.module('main')
         url: ''
       })
       .state('actions.general', {
-        url: '/{ref:[\\w.]+}/general'
+        url: '/{ref:[\\w.-]+}/general'
       })
       .state('actions.code', {
-        url: '/{ref:[\\w.]+}/code'
+        url: '/{ref:[\\w.-]+}/code'
       })
 
       ;
