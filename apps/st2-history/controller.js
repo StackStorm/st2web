@@ -36,32 +36,40 @@ angular.module('main')
     var savedView = JSON.parse(sessionStorage.getItem('st2HistoryView'));
 
     $scope.view = savedView || {
-      'time': {
-        title: 'Time',
+      'meta': {
+        title: 'Meta',
         value: true,
         subview: {
-          'end': {
-            title: 'End time',
-            value: false
+          'status': {
+            title: 'Status',
+            value: true
+          },
+          'type': {
+            title: 'Type',
+            value: true
+          },
+          'time': {
+            title: 'Time',
+            value: true
           }
         }
       },
+      'task': {
+        title: 'Task',
+        value: true
+      },
       'action': {
-        title: 'Action name',
+        title: 'Action',
         value: true,
         subview: {
           'params': {
             title: 'Parameters',
-            value: false
+            value: true
           }
         }
       },
       'trigger': {
         title: 'Triggered by',
-        value: true
-      },
-      'status': {
-        title: 'Status',
         value: true
       }
     };
@@ -78,6 +86,25 @@ angular.module('main')
       $scope.$apply();
     });
 
+    var listFormat = function () {
+      // Group all the records by periods of 24 hour
+      var period = 24 * 60 * 60 * 1000;
+
+      $scope.history = $scope.historyList && _($scope.historyList)
+        .take(10)
+        .groupBy(function (record) {
+          var time = record.execution.start_timestamp;
+          return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
+        })
+        .map(function (records, period) {
+          return {
+            period: period,
+            records: records
+          };
+        })
+        .value();
+    };
+
     var listUpdate = function () {
       st2LoaderService.start();
 
@@ -87,21 +114,9 @@ angular.module('main')
       }, $scope.$root.active_filters));
 
       pHistoryList.then(function (list) {
-        // Group all the records by periods of 24 hour
-        var period = 24 * 60 * 60 * 1000;
+        $scope.historyList = list;
 
-        $scope.history = list && _(list)
-          .groupBy(function (record) {
-            var time = record.execution.start_timestamp;
-            return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
-          })
-          .map(function (records, period) {
-            return {
-              period: period,
-              records: records
-            };
-          })
-          .value();
+        listFormat();
 
         $scope.$emit('$fetchFinish', st2api.history);
         st2LoaderService.stop();
@@ -145,46 +160,81 @@ angular.module('main')
 
         $scope.payload = _.clone(record.execution.parameters);
 
+        if (record.parent) {
+          pHistoryList.then(function (records) {
+            var parent = _.find(records, function (item) {
+              return item.id === record.parent;
+            });
+            $scope.expand(parent, null, true);
+          });
+        }
+
         $scope.$apply();
       });
     });
 
     st2api.stream.listen().then(function (source) {
+      var createListener = function (e) {
+        // New records should only appear if we are not on the specific page.
+        if ($rootScope.page && $rootScope.page !== 1) {
+          return;
+        }
 
-      source.addEventListener('st2.history__update', function (e) {
         var record = JSON.parse(e.data);
-        _.first($scope.history, function (period) {
-          var index = _.findIndex(period.records, { 'id': record.id });
-          if (index !== -1) {
-            period.records[index] = record;
-            $scope.$apply();
-            return true;
+
+        if (record.parent) {
+          var parentNode = _.find($scope.historyList, { id: record.parent });
+
+          if (parentNode && parentNode._children) {
+            parentNode._children.push(record);
           }
-          return false;
-        });
+        } else {
+          $scope.historyList.unshift(record);
+          listFormat();
+        }
+
+        $scope.$apply();
+      };
+
+      source.addEventListener('st2.history__create', createListener);
+
+      var updateListener = function (e) {
+        var record = JSON.parse(e.data);
+
+        var list = (function () {
+          if (!record.parent) {
+            return $scope.historyList;
+          }
+
+          var parentNode = _.find($scope.historyList, { id: record.parent });
+
+          if (!parentNode || !parentNode._children) {
+            return;
+          }
+
+          return parentNode._children;
+        })();
+
+        var node = _.find(list, { id: record.id });
+
+        _.assign(node, record);
+
+        $scope.$apply();
+      };
+
+      source.addEventListener('st2.history__update', updateListener);
+
+      $scope.$on('$destroy', function () {
+        source.removeEventListener('st2.history__create', createListener);
+        source.removeEventListener('st2.history__update', updateListener);
       });
 
     });
 
-    $scope.fmtParam = function (value) {
-      if (_.isString(value)) {
-        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
-      }
+    $scope.expand = function (record, $event, value) {
+      $event && $event.stopPropagation();
 
-      if (_.isArray(value)) {
-        return '[' +
-        _(value).first(3).map($scope.fmtParam).join(', ') +
-        (value.length > 3 ? ',..' : '') +
-        ']';
-      }
-
-      return value;
-    };
-
-    $scope.expand = function (record, $event) {
-      $event.stopPropagation();
-
-      record._expanded = !record._expanded;
+      record._expanded = _.isUndefined(value) ? !record._expanded : value;
 
       if (record._expanded) {
         st2api.history.list({
@@ -196,8 +246,29 @@ angular.module('main')
       }
     };
 
-    // helpers
-    $scope.isExpandable = function (record) {
+  })
+
+  .filter('fmtParam', function () {
+    var fmtParam = function (value) {
+      if (_.isString(value)) {
+        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
+      }
+
+      if (_.isArray(value)) {
+        return '[' +
+        _(value).first(3).map(fmtParam).join(', ') +
+        (value.length > 3 ? ',..' : '') +
+        ']';
+      }
+
+      return value;
+    };
+
+    return fmtParam;
+  })
+
+  .filter('isExpandable', function () {
+    return function (record) {
       var runnerWithChilds = ['workflow', 'action-chain', 'mistral-v1', 'mistral-v2'];
       return _.contains(runnerWithChilds, record.action.runner_type);
     };

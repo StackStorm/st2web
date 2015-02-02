@@ -3,7 +3,7 @@
   font-weight: bold;
   line-height: 1;
 
-  display: inline;
+  display: inline-block;
 
   padding: .2em .6em .3em;
 
@@ -64,6 +64,21 @@
     &:before {
       content: '\e806';
       animation: spin 2s infinite linear;
+    }
+  }
+
+  &--short {
+    overflow: hidden;
+
+    box-sizing: border-box;
+    width: 13px;
+    height: 13px;
+
+    color: transparent;
+    border-radius: 50%;
+
+    &:before {
+      display: none;
     }
   }
 }

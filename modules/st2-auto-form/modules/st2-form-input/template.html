@@ -5,11 +5,11 @@
     {{ spec.name || name }}
   </div>
 
-  <input type="input"
+  <input type="text"
     class="st2-auto-form__field"
     placeholder="{{spec.default}}"
     ng-required="spec.required"
-    ng-model="result"
+    ng-model="rawResult"
     ng-disabled="spec.disabled" />
 
 </label>

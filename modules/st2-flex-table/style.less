@@ -6,8 +6,8 @@
   margin-bottom: 20px;
 
   color: @text;
-  background-color: @gray-lightest;
-  box-shadow: 0 0 5px rgba(0,0,0,.7);
+  background-color: transparent;
+  // box-shadow: 0 0 5px rgba(0,0,0,.7);
 
   &__caption {
     clear: both;
@@ -85,7 +85,7 @@
     display: flex;
     overflow: hidden;
 
-    height: 40px;
+    padding: 11px 0;
 
     flex-wrap: wrap;
   }
@@ -101,8 +101,6 @@
   }
 
   &__column {
-    line-height: 40px;
-
     overflow: hidden;
     flex: 1;
 
@@ -115,6 +113,9 @@
   &__row {
     &--even {
       background-color: @gray-white;
+    }
+    &--odd {
+      background-color: @gray-lightest;
     }
 
     &&--active,

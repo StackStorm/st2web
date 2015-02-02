@@ -46,7 +46,7 @@
               ng-click="$root.go({ref: action.ref})">
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"
-                ng-if="isWorkflow(action)"></i>
+                ng-if="{'action': action} | isExpandable"></i>
             </div>
             <div class="st2-flex-table__column st2-actions__column-name"
                 title="{{ $root.getRef(action) }}">
@@ -150,36 +150,61 @@
 
               <div class="st2-flex-table" ng-if="!_.isEmpty(history)">
                 <div class="st2-flex-table__header">
-                  <div class="st2-flex-table__column st2-actions__details-column-status">Status</div>
-                  <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
                   <div class="st2-flex-table__column st2-actions__details-column-utility"></div>
+                  <div class="st2-flex-table__column st2-actions__details-column-meta"></div>
+                  <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
                 </div>
 
                 <div class="st2-flex-table__row"
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
                     ng-repeat-start="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
-                    ng-click="expand = !expand">
-                  <div class="st2-flex-table__column st2-actions__details-column-status">
-                    <div class="st2-label" status="record.execution.status"></div>
+                    ng-click="expand(record, $event)">
+
+                  <div class="st2-flex-table__column st2-actions__details-column-utility">
+                    <i ng-class="'st2-icon__' + (record._expanded && 'down-open' || 'right-open')">
+                    </i>
                   </div>
+
+                  <div class="st2-flex-table__column st2-actions__details-column-meta">
+                    <div class="st2-actions__details-column-meta-status">
+                      <span class="st2-label st2-label--short"
+                        status="record.execution.status"></span>
+                      <i class="st2-icon__flow-cascade"
+                        ng-if="(record | isExpandable)"></i>
+                    </div>
+                    <!-- <div class="st2-actions__details-column-meta-time">
+                      {{ record.execution.start_timestamp | date:'mediumTime' }}
+                    </div> -->
+                  </div>
+
+                  <!-- <div class="st2-flex-table__column st2-actions__details-column-status">
+                    <div class="st2-label" status="record.execution.status"></div>
+                  </div> -->
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
-                  <div class="st2-flex-table__column st2-actions__details-column-utility"
+
+                  <div class="st2-flex-table__column st2-actions__details-column-history"
                       ng-click="$root.state.go('history.general', {action: $root.getRef(action), id: record.id}); $event.stopPropagation()">
-                    <i class="st2-icon__right-open"></i>
-                  </div>
+                    <i class="st2-icon__history"></i>
+                </div>
+
                 </div>
                 <div class="st2-flex-table__insert"
-                    ng-show="expand"
-                    ng-repeat-end>
+                    ng-show="!(record | isExpandable) && record._expanded">
 
                   <div class="st2-details__panel-body">
                     <div class="st2-action-reporter"
                       runner="record.runner.name"
                       execution="record.execution"></div>
                   </div>
+                </div>
+                <div class="st2-history-child"
+                  workflow="record"
+                  view="workflowView"
+                  ng-if="(record | isExpandable) && record._expanded"
+                  ng-repeat-end>
                 </div>
               </div>
 
