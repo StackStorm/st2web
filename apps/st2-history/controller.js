@@ -36,32 +36,40 @@ angular.module('main')
     var savedView = JSON.parse(sessionStorage.getItem('st2HistoryView'));
 
     $scope.view = savedView || {
-      'time': {
-        title: 'Time',
+      'meta': {
+        title: 'Meta',
         value: true,
         subview: {
-          'end': {
-            title: 'End time',
-            value: false
+          'status': {
+            title: 'Status',
+            value: true
+          },
+          'type': {
+            title: 'Type',
+            value: true
+          },
+          'time': {
+            title: 'Time',
+            value: true
           }
         }
       },
+      'task': {
+        title: 'Task',
+        value: true
+      },
       'action': {
-        title: 'Action name',
+        title: 'Action',
         value: true,
         subview: {
           'params': {
             title: 'Parameters',
-            value: false
+            value: true
           }
         }
       },
       'trigger': {
         title: 'Triggered by',
-        value: true
-      },
-      'status': {
-        title: 'Status',
         value: true
       }
     };

@@ -197,12 +197,18 @@ angular.module('main')
     };
 
     $scope.workflowView = {
-      'time': {
-        title: 'Time',
-        value: true
+      'meta': {
+        value: true,
+        subview: {
+          'status': {
+            value: true
+          },
+          'type': {
+            value: true
+          }
+        }
       },
-      'status': {
-        title: 'Status',
+      'task': {
         value: true
       },
       'history': {

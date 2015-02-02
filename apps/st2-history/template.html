@@ -37,7 +37,7 @@
           <div class="st2-flex-table__header">
             <div class="st2-flex-table__column st2-history__column-utility"></div>
             <div class="st2-flex-table__column st2-history__column-meta"
-                ng-if="view.time.value">
+                ng-if="view.meta.value">
             </div>
             <div class="st2-flex-table__column st2-history__column-action"
                 ng-if="view.action.value">
@@ -64,18 +64,16 @@
             </div>
 
             <div class="st2-flex-table__column st2-history__column-meta"
-                ng-if="view.time.value">
+                ng-if="view.meta.value">
               <div class="st2-history__column-meta-status">
                 <span class="st2-label st2-label--short" status="record.execution.status"
-                  ng-if="$parent.view.status.value"></span>
+                  ng-if="view.meta.subview.status.value"></span>
                 <i class="st2-icon__flow-cascade"
-                  ng-if="(record | isExpandable)"></i>
+                  ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
               </div>
-              <div class="st2-history__column-meta-time">
+              <div class="st2-history__column-meta-time"
+                  ng-if="view.meta.subview.time.value">
                 {{ record.execution.start_timestamp | date:'mediumTime' }}
-                <span ng-if="view.time.subview.end.value">
-                  - {{ record.execution.end_timestamp | date:'mediumTime' }}
-                </span>
               </div>
             </div>
 
