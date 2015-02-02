@@ -6,7 +6,7 @@ angular.module('main')
     return {
       restrict: 'C',
       scope: {
-        'children': '=',
+        'workflow': '=',
         'view': '='
       },
       templateUrl: 'modules/st2-history-child/template.html',

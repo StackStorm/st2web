@@ -152,6 +152,15 @@ angular.module('main')
 
         $scope.payload = _.clone(record.execution.parameters);
 
+        if (record.parent) {
+          pHistoryList.then(function (records) {
+            var parent = _.find(records, function (item) {
+              return item.id === record.parent;
+            });
+            $scope.expand(parent, null, true);
+          });
+        }
+
         $scope.$apply();
       });
     });
@@ -214,10 +223,10 @@ angular.module('main')
 
     });
 
-    $scope.expand = function (record, $event) {
-      $event.stopPropagation();
+    $scope.expand = function (record, $event, value) {
+      $event && $event.stopPropagation();
 
-      record._expanded = !record._expanded;
+      record._expanded = _.isUndefined(value) ? !record._expanded : value;
 
       if (record._expanded) {
         st2api.history.list({

@@ -22,7 +22,7 @@
       ng-class-odd="'st2-flex-table__row--odd'"
       ng-class-even="'st2-flex-table__row--even'"
       ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
-      ng-repeat="record in children | orderBy:'execution.start_timestamp'"
+      ng-repeat="record in workflow._children | orderBy:'execution.start_timestamp'"
       ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
 
 
@@ -67,7 +67,7 @@
     </div>
     <div class="st2-flex-table__column st2-history-child__column-history"
         ng-if="view.history.value"
-        ng-click="$root.state.go('history.general', {id: record.id}); $event.stopPropagation()">
+        ng-click="$root.state.go('history.general', {action: $root.getRef(workflow.action), id: record.id}); $event.stopPropagation()">
       <i class="st2-icon__history"></i>
     </div>
 
