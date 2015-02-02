@@ -22,20 +22,30 @@ angular.module('main')
         return 'json';
       } catch (e) {}
 
-      return 'std';
+      if (_.isString(string)) {
+        return 'string';
+      }
+
+      return 'object';
     }
 
     function postLink(scope) {
       scope.$watch('code', function (code) {
         scope.type = getType(code);
 
-        if (scope.type === 'json') {
-          scope.string = hljs.highlight('json', $filter('json')(JSON.parse(code))).value;
-        } else {
-          scope.string = code && code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-            return '&#'+i.charCodeAt(0)+';';
-          });
-        }
+        scope.string = {
+          json: function () {
+            return hljs.highlight('json', $filter('json')(JSON.parse(code))).value;
+          },
+          string: function () {
+            return code && code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+              return '&#'+i.charCodeAt(0)+';';
+            });
+          },
+          object: function () {
+            return code && hljs.highlight('json', $filter('json')(code)).value;
+          }
+        }[scope.type](code);
 
         if (scope.full) {
           scope.shortString = scope.string;
