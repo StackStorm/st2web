@@ -181,11 +181,6 @@ angular.module('main')
       return action && _.contains(runnersWithFiles, action.runner_type);
     };
 
-    $scope.isWorkflow = function (action) {
-      var workflow = ['workflow', 'action-chain', 'mistral-v1', 'mistral-v2'];
-      return _.contains(workflow, action.runner_type);
-    };
-
     $scope.expand = function (record, $event) {
       $event.stopPropagation();
 
@@ -208,6 +203,9 @@ angular.module('main')
       },
       'status': {
         title: 'Status',
+        value: true
+      },
+      'history': {
         value: true
       }
     };

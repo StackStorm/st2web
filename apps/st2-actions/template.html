@@ -46,7 +46,7 @@
               ng-click="$root.go({ref: action.ref})">
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"
-                ng-if="isWorkflow(action)"></i>
+                ng-if="{'action': action} | isExpandable"></i>
             </div>
             <div class="st2-flex-table__column st2-actions__column-name"
                 title="{{ $root.getRef(action) }}">
@@ -167,13 +167,13 @@
                   </div>
 
                   <div class="st2-flex-table__column st2-actions__details-column-meta">
-                    <div class="st2-history__column-meta-status">
+                    <div class="st2-actions__details-column-meta-status">
                       <span class="st2-label st2-label--short"
                         status="record.execution.status"></span>
                       <i class="st2-icon__flow-cascade"
                         ng-if="(record | isExpandable)"></i>
                     </div>
-                    <!-- <div class="st2-history__column-meta-time">
+                    <!-- <div class="st2-actions__details-column-meta-time">
                       {{ record.execution.start_timestamp | date:'mediumTime' }}
                     </div> -->
                   </div>
@@ -184,6 +184,11 @@
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
+
+                  <div class="st2-flex-table__column st2-actions__details-column-history"
+                      ng-click="$root.state.go('history.general', {action: $root.getRef(action), id: record.id}); $event.stopPropagation()">
+                    <i class="st2-icon__history"></i>
+                </div>
 
                 </div>
                 <div class="st2-flex-table__insert"

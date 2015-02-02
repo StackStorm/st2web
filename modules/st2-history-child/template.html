@@ -13,6 +13,9 @@
         ng-if="view.action.value">
       Action
     </div>
+    <div class="st2-flex-table__column st2-history-child__column-history"
+      ng-if="view.history.value">
+    </div>
   </div>
 
   <div class="st2-flex-table__row"
@@ -61,6 +64,11 @@
     !--></span><!--
     !--><span ng-if="!$last">, </span><!--
   !--></span>
+    </div>
+    <div class="st2-flex-table__column st2-history-child__column-history"
+        ng-if="view.history.value"
+        ng-click="$root.state.go('history.general', {id: record.id}); $event.stopPropagation()">
+      <i class="st2-icon__history"></i>
     </div>
 
   </div>
