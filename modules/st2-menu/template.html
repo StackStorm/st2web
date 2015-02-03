@@ -14,9 +14,13 @@
 </ul>
 
 <div class="st2-menu__server">
-  <span class="st2-menu__server-current">{{ user || 'Anonymous' }}</span>
+  <span class="st2-menu__server-current">
+    <i class="st2-icon__user"></i>
+    {{ user || 'Anonymous' }}
+  </span>
   <div class="st2-menu__server-list">
     <div class="st2-menu__server-current">
+      <i class="st2-icon__user"></i>
       {{ user || 'Anonymous' }}
     </div>
     <div class="st2-menu__server-item" ng-click="disconnect()">

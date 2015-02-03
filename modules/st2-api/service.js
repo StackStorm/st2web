@@ -6,9 +6,9 @@ angular.module('main')
   .service('st2api', function (st2Config, $q) {
     this.token = {};
 
-    var initClient = function (url, token) {
+    var initClient = function (server, token) {
       var parser = document.createElement('a');
-      parser.href = _.find(st2Config.hosts, {url: url}) && url || _.first(st2Config.hosts).url;
+      parser.href = _.find(st2Config.hosts, {url: server.url}) && server.url || _.first(st2Config.hosts).url;
 
       return st2client({
         protocol: parser.protocol.split(':')[0],
@@ -20,7 +20,7 @@ angular.module('main')
 
     this.connect = function (server, user, password, remember) {
 
-      this.client = initClient(server.url, this.token);
+      this.client = initClient(server, this.token);
       this.server = server;
 
       var promise;
