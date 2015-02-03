@@ -20,14 +20,16 @@
       <input class="st2-forms__field st2-login__field"
         type="text"
         ng-model="username"
-        placeholder="Username" />
+        placeholder="Username"
+        ng-required="server.auth"/>
     </label>
     <label class="st2-login__row"
         ng-show="server.auth">
       <input class="st2-forms__field st2-login__field"
         type="password"
         ng-model="password"
-        placeholder="Password" />
+        placeholder="Password"
+        ng-required="server.auth"/>
     </label>
     <div class="st2-login__row">
       <input class="st2-forms__button st2-login__button"
