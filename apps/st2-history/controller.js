@@ -237,7 +237,7 @@ angular.module('main')
       record._expanded = _.isUndefined(value) ? !record._expanded : value;
 
       if (record._expanded) {
-        st2api.history.list({
+        st2api.client.history.list({
           'parent': record.id
         }).then(function (records) {
           record._children = records;

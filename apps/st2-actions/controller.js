@@ -187,7 +187,7 @@ angular.module('main')
       record._expanded = !record._expanded;
 
       if ($filter('isExpandable')(record) && record._expanded) {
-        st2api.history.list({
+        st2api.client.history.list({
           'parent': record.id
         }).then(function (records) {
           record._children = records;

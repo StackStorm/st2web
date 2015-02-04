@@ -17,7 +17,7 @@ angular.module('main')
         //   record._expanded = !record._expanded;
         //
         //   if (record._expanded) {
-        //     st2api.history.list({
+        //     st2api.client.history.list({
         //       'parent': record.id
         //     }).then(function (records) {
         //       record._children = records;
