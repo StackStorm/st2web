@@ -49,7 +49,7 @@
 
     <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status"
         ng-if="view.task.value">
-      add_packages
+      {{ getTaskName(record) }}
     </div>
     <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action"
         ng-if="view.action.value">

@@ -10,7 +10,20 @@ angular.module('main')
         'view': '='
       },
       templateUrl: 'modules/st2-history-child/template.html',
-      link: function postLink() {
+      link: function postLink(scope) {
+        scope.getTaskName = function (record) {
+          return {
+            'action-chain': function () {
+              var context = record.execution.context.chain;
+              return context && context.name;
+            },
+            'mistral-v2': function () {
+              var context = record.execution.context.mistral;
+              return context && context.task_name;
+            }
+          }[scope.workflow.action.runner_type]();
+        };
+
         // scope.expand = function (record, $event) {
         //   $event.stopPropagation();
         //
