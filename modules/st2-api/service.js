@@ -14,7 +14,7 @@ angular.module('main')
         protocol: parser.protocol.split(':')[0],
         host: parser.hostname,
         port: parser.port,
-        token: token
+        token: !_.isEmpty(token) ? token : undefined
       });
     };
 
