@@ -176,12 +176,12 @@
                         ng-if="(record | isExpandable)"></i>
                     </div>
                     <!-- <div class="st2-actions__details-column-meta-time">
-                      {{ record.execution.start_timestamp | date:'mediumTime' }}
+                      {{ record.liveaction.start_timestamp | date:'mediumTime' }}
                     </div> -->
                   </div>
 
                   <!-- <div class="st2-flex-table__column st2-actions__details-column-status">
-                    <div class="st2-label" status="record.execution.status"></div>
+                    <div class="st2-label" status="record.liveaction.status"></div>
                   </div> -->
                   <div class="st2-flex-table__column st2-actions__details-column-time">
                     {{ record.liveaction.start_timestamp | date:'medium' }}
