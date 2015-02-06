@@ -49,7 +49,7 @@
 
     <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status"
         ng-if="view.task.value">
-      add_packages
+      {{ getTaskName(record) }}
     </div>
     <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action"
         ng-if="view.action.value">
@@ -57,15 +57,17 @@
         {{ $root.getRef(record.action) }}
       </span>
       <span class="st2-history__column-action-params"
-          ng-repeat="(name, value) in record.execution.parameters"
           ng-if="view.action.subview.params.value"><!--
-    !--><span class="st2-history__column-action-param-name"><!--
+    !--><span class="st2-history__column-action-param-name"
+            ng-repeat-start="(name, value) in record.execution.parameters"
+            ng-show><!--
       !-->{{ name }}=<!--
     !--></span><!--
     !--><span class="st2-history__column-action-param-value"><!--
       !-->{{ value | fmtParam }}<!--
     !--></span><!--
-    !--><span ng-if="!$last">, </span><!--
+    !--><span ng-if="!$last"
+          ng-repeat-end>, </span><!--
   !--></span>
     </div>
     <div class="st2-flex-table__column st2-history-child__column-history"
