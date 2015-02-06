@@ -57,7 +57,8 @@ To make it work with your st2 API, edit [`config.js`](./config.js) at the root o
 
     hosts: [{
       name: 'Express Deployment',
-      url: 'http://172.168.90.50:9101'
+      url: 'http://172.168.90.50:9101',
+      auth: true
     }]
 
 Multiple servers can be configured. Pick an desired server from the login screen and change the server by first disconnecting from the current one by picking 'Disconnect' from the drop down at the top right corner of the UI.
