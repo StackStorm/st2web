@@ -37,7 +37,7 @@ angular.module('main')
         $rootScope.$broadcast('$locationChangeSuccess');
       }).catch(function (err) {
         if (err.status === 0) {
-          $scope.error = 'Unknown error. Possible SSL voliation.';
+          $scope.error = 'Unable to reach st2 service at url: ' + server.url;
         } else {
           $scope.error = err.message.faultstring || err.message;
         }
