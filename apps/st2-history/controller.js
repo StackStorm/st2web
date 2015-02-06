@@ -93,7 +93,7 @@ angular.module('main')
       $scope.history = $scope.historyList && _($scope.historyList)
         .take(10)
         .groupBy(function (record) {
-          var time = record.execution.start_timestamp;
+          var time = record.liveaction.start_timestamp;
           return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
         })
         .map(function (records, period) {
@@ -158,7 +158,7 @@ angular.module('main')
             return e;
           }).value();
 
-        $scope.payload = _.clone(record.execution.parameters);
+        $scope.payload = _.clone(record.liveaction.parameters);
 
         if (record.parent) {
           pHistoryList.then(function (records) {
