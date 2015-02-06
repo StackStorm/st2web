@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'ststanley';
-  src: url('../font/ststanley.eot?57846070');
-  src: url('../font/ststanley.eot?57846070#iefix') format('embedded-opentype'),
-       url('../font/ststanley.woff?57846070') format('woff'),
-       url('../font/ststanley.ttf?57846070') format('truetype'),
-       url('../font/ststanley.svg?57846070#ststanley') format('svg');
+  src: url('../font/ststanley.eot?54765252');
+  src: url('../font/ststanley.eot?54765252#iefix') format('embedded-opentype'),
+       url('../font/ststanley.woff?54765252') format('woff'),
+       url('../font/ststanley.ttf?54765252') format('truetype'),
+       url('../font/ststanley.svg?54765252#ststanley') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'ststanley';
-    src: url('../font/ststanley.svg?57846070#ststanley') format('svg');
+    src: url('../font/ststanley.svg?54765252#ststanley') format('svg');
   }
 }
 */
@@ -72,3 +72,4 @@
 .st2-icon__cogs:before { content: '\e813'; } /* '' */
 .st2-icon__code:before { content: '\e814'; } /* '' */
 .st2-icon__calendar:before { content: '\e815'; } /* '' */
+.st2-icon__user:before { content: '\e816'; } /* '' */

@@ -52,17 +52,18 @@ Configure the CORS on StackStorm server: on your st2 installation, edit the foll
     # List of allowed origins for CORS, use when deploying st2web client
     # The URL must match the one the browser uses to access the st2web
     allow_origin = http://st2web.example.com:3000
-    
+
 Configure st2web to point to the right server(s). By default, UI tries to get its data from the [devenv](https://www.github.com/StackStorm/devenv) vagrant box on 172.168.50.50.
 
-To make it work with your st2 API, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name** and **url** (including scheme, domain and port). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
+To make it work with your st2 API, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name**, **url** (including scheme, domain and port) and **auth** (in case your server requires authentication, it should be equal to `true`). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
 
     hosts: [{
-      name: 'Express Deployment'
-      url: 'http://172.168.90.50:9101'
+      name: 'Express Deployment',
+      url: 'http://172.168.90.50:9101',
+      auth: true
     }]
 
-Multiple servers can be configured. Pick an desired server from the drop down at the top right corner of the UI.
+Multiple servers can be configured. Pick an desired server from the login screen and change the server by first disconnecting from the current one by picking 'Disconnect' from the drop down at the top right corner of the UI.
 
 
 Testing

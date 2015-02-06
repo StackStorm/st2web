@@ -80,7 +80,7 @@ angular.module('main')
 
     st2LoaderService.reset();
 
-    st2api.historyFilters.list().then(function (filters) {
+    st2api.client.historyFilters.list().then(function (filters) {
       // TODO: when the field is not required, an abscense of a value should also be a value
       $scope.filters = filters;
       $scope.$apply();
@@ -108,7 +108,7 @@ angular.module('main')
     var listUpdate = function () {
       st2LoaderService.start();
 
-      pHistoryList = st2api.history.list(_.assign({
+      pHistoryList = st2api.client.history.list(_.assign({
         parent: 'null',
         page: $rootScope.page
       }, $scope.$root.active_filters));
@@ -118,7 +118,7 @@ angular.module('main')
 
         listFormat();
 
-        $scope.$emit('$fetchFinish', st2api.history);
+        $scope.$emit('$fetchFinish', st2api.client.history);
         st2LoaderService.stop();
 
         $scope.$apply();
@@ -143,7 +143,7 @@ angular.module('main')
         };
       }
 
-      var promise = id ? st2api.history.get(id) : pHistoryList.then(function (actions) {
+      var promise = id ? st2api.client.history.get(id) : pHistoryList.then(function (actions) {
         return _.first(actions);
       });
 
@@ -173,7 +173,7 @@ angular.module('main')
       });
     });
 
-    st2api.stream.listen().then(function (source) {
+    st2api.client.stream.listen().then(function (source) {
       var createListener = function (e) {
         // New records should only appear if we are not on the specific page.
         if ($rootScope.page && $rootScope.page !== 1) {
@@ -237,7 +237,7 @@ angular.module('main')
       record._expanded = _.isUndefined(value) ? !record._expanded : value;
 
       if (record._expanded) {
-        st2api.history.list({
+        st2api.client.history.list({
           'parent': record.id
         }).then(function (records) {
           record._children = records;

@@ -37,7 +37,7 @@ angular.module('main')
     st2LoaderService.reset();
     st2LoaderService.start();
 
-    var pRulesList = st2api.rules.list().then(function (result) {
+    var pRulesList = st2api.client.rules.list().then(function (result) {
       st2LoaderService.stop();
       return result;
     }).catch(function (err) {
@@ -65,7 +65,7 @@ angular.module('main')
     $scope.$watch('filter', listUpdate);
 
     $scope.$watch('$root.state.params.id', function (id) {
-      var promise = id ? st2api.rules.get(id) : pRulesList.then(function (actions) {
+      var promise = id ? st2api.client.rules.get(id) : pRulesList.then(function (actions) {
         return _.first(actions);
       });
 
@@ -73,13 +73,13 @@ angular.module('main')
         if (rule) {
           $scope.rule = rule;
 
-          st2api.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
+          st2api.client.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
             var schema = triggerTypes.parameters_schema.properties;
             $scope.triggerSchema = disable(schema);
             $scope.$apply();
           });
 
-          st2api.actionOverview.get(rule.action.ref)
+          st2api.client.actionOverview.get(rule.action.ref)
             .then(function (action) {
               var schema = action.parameters;
               $scope.actionSchema = disable(schema);

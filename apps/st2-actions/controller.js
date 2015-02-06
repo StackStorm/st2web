@@ -35,7 +35,7 @@ angular.module('main')
     st2LoaderService.reset();
     st2LoaderService.start();
 
-    var pActionList = st2api.actionOverview.list().then(function (result) {
+    var pActionList = st2api.client.actionOverview.list().then(function (result) {
       st2LoaderService.stop();
       return result;
     }).catch(function (err) {
@@ -64,7 +64,7 @@ angular.module('main')
     $scope.$watch('filter', listUpdate);
 
     $scope.$watch('$root.state.params.ref', function (ref) {
-      var promise = ref ? st2api.actionOverview.get(ref) : pActionList.then(function (actions) {
+      var promise = ref ? st2api.client.actionOverview.get(ref) : pActionList.then(function (actions) {
         return _.first(actions);
       });
 
@@ -74,7 +74,7 @@ angular.module('main')
         $scope.payload = {};
         $scope.inProgress = true;
 
-        st2api.history.list({
+        st2api.client.history.list({
           'action': $scope.$root.getRef(action),
           'limit': 5,
           'parent': 'null'
@@ -87,7 +87,7 @@ angular.module('main')
         });
 
         if ($scope.actionHasFile(action)) {
-          st2api.actionEntryPoint.get(action.ref).then(function (file) {
+          st2api.client.actionEntryPoint.get(action.ref).then(function (file) {
             $scope.file = file;
             $scope.$apply();
           }).catch(function (err) {
@@ -99,7 +99,7 @@ angular.module('main')
       });
     });
 
-    st2api.stream.listen().then(function (source) {
+    st2api.client.stream.listen().then(function (source) {
 
       var createListener = function (e) {
         var record = JSON.parse(e.data);
@@ -158,7 +158,7 @@ angular.module('main')
 
     // Running an action
     $scope.runAction = function (action, payload) {
-      st2api.actionExecutions.create({
+      st2api.client.actionExecutions.create({
         action: $scope.$root.getRef(action),
         parameters: payload
       }).catch(function (err) {
@@ -187,7 +187,7 @@ angular.module('main')
       record._expanded = !record._expanded;
 
       if ($filter('isExpandable')(record) && record._expanded) {
-        st2api.history.list({
+        st2api.client.history.list({
           'parent': record.id
         }).then(function (records) {
           record._children = records;

@@ -1,0 +1,49 @@
+<div class="st2-login">
+  <form class="st2-login__form"
+      ng-submit="connect(server, username, password, remember)">
+    <a href="#" class="st2-login__logo">
+      <img src="img/logo.svg" alt="StackStorm Stanley">
+    </a>
+    <div class="st2-login__error" ng-show="error">
+      {{ error }}
+    </div>
+    <label class="st2-login__row">
+
+      <select class="st2-forms__field st2-login__field"
+          ng-model="server"
+          ng-options="v as displayAuth(v) for v in servers"
+          ng-disabled="spec.disabled"></select>
+
+    </label>
+    <label class="st2-login__row"
+        ng-show="server.auth">
+      <input class="st2-forms__field st2-login__field"
+        type="text"
+        ng-model="username"
+        placeholder="Username"
+        ng-required="server.auth"/>
+    </label>
+    <label class="st2-login__row"
+        ng-show="server.auth">
+      <input class="st2-forms__field st2-login__field"
+        type="password"
+        ng-model="password"
+        placeholder="Password"
+        ng-required="server.auth"/>
+    </label>
+    <div class="st2-login__row">
+      <input class="st2-forms__button st2-login__button"
+        type="submit"
+        value="Connect" />
+
+      <label class="st2-login__checkbox-wrapper">
+        <input class="st2-forms__checkbox"
+          type="checkbox"
+          ng-model="remember" />
+        <span class="st2-forms__checkbox-label">
+          remember
+        </span>
+      </label>
+    </div>
+  </form>
+</div>
