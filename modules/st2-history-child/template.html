@@ -22,15 +22,15 @@
       ng-class-odd="'st2-flex-table__row--odd'"
       ng-class-even="'st2-flex-table__row--even'"
       ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
-      ng-repeat="record in workflow._children | orderBy:'liveaction.start_timestamp'"
+      ng-repeat-start="record in workflow._children | orderBy:'liveaction.start_timestamp'"
       ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
 
 
-    <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
-        <!-- ng-click="(record | isExpandable) && expand(record, $event)">
+    <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility"
+        ng-click="(record | isExpandable) && expand(record, $event)">
       <i ng-class="record._expanded && 'st2-icon__down-open' || 'st2-icon__right-open'"
         ng-if="(record | isExpandable)">
-      </i> -->
+      </i>
     </div>
 
     <div class="st2-flex-table__column st2-history__column-meta st2-history-child__column-time"
@@ -77,4 +77,13 @@
     </div>
 
   </div>
+
+  <div class="st2-history-child"
+      workflow="record"
+      view="view"
+      ng-if="(record | isExpandable) && record._expanded">
+  </div>
+
+  <div ng-repeat-end></div>
+
 </div>
