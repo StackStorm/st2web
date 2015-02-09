@@ -63,6 +63,13 @@ angular.module('main')
 
     $scope.$watch('filter', listUpdate);
 
+    var listFormat = function () {
+
+      $scope.history = $scope.historyList && _($scope.historyList)
+        .filter({parent: undefined})
+        .value();
+    };
+
     $scope.$watch('$root.state.params.ref', function (ref) {
       var promise = ref ? st2api.client.actionOverview.get(ref) : pActionList.then(function (actions) {
         return _.first(actions);
@@ -81,7 +88,8 @@ angular.module('main')
         }).then(function (history) {
           $scope.inProgress = false;
 
-          $scope.history = history;
+          $scope.historyList = history;
+          listFormat();
 
           $scope.$apply();
         });
@@ -100,22 +108,24 @@ angular.module('main')
     });
 
     st2api.client.stream.listen().then(function (source) {
-
       var createListener = function (e) {
+
         var record = JSON.parse(e.data);
 
         if (record.parent) {
-          var parentNode = _.find($scope.history, { id: record.parent });
+          var parentNode = _.find($scope.historyList, { id: record.parent });
 
           if (parentNode && parentNode._children) {
             parentNode._children.push(record);
+            $scope.historyList.push(record);
+            listFormat();
           }
         } else {
-          if (record.action.id !== $scope.action.id) {
-            return;
+          // New records should only appear if we are not on the specific page.
+          if (record.action.id === $scope.action.id) {
+            $scope.historyList.push(record);
+            listFormat();
           }
-
-          $scope.history.push(record);
         }
 
         $scope.$apply();
@@ -126,21 +136,7 @@ angular.module('main')
       var updateListener = function (e) {
         var record = JSON.parse(e.data);
 
-        var list = (function () {
-          if (!record.parent) {
-            return $scope.history;
-          }
-
-          var parentNode = _.find($scope.history, { id: record.parent });
-
-          if (!parentNode || !parentNode._children) {
-            return;
-          }
-
-          return parentNode._children;
-        })();
-
-        var node = _.find(list, { id: record.id });
+        var node = _.find($scope.historyList, {id: record.id});
 
         _.assign(node, record);
 
@@ -190,9 +186,13 @@ angular.module('main')
         st2api.client.history.list({
           'parent': record.id
         }).then(function (records) {
-          record._children = records;
-          this.$apply();
-        }.bind(this));
+          if (!record._children) {
+            record._children = records;
+            $scope.historyList = $scope.historyList.concat(records);
+
+            $scope.$apply();
+          }
+        });
       }
     };
 

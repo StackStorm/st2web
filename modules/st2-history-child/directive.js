@@ -24,20 +24,8 @@ angular.module('main')
           }[scope.workflow.action.runner_type]();
         };
 
-        scope.expand = function (record, $event) {
-          $event.stopPropagation();
+        scope.expand = scope.$parent.expand;
 
-          record._expanded = !record._expanded;
-
-          if (record._expanded) {
-            st2api.client.history.list({
-              'parent': record.id
-            }).then(function (records) {
-              record._children = records;
-              this.$apply();
-            }.bind(this));
-          }
-        };
       }
     };
 
