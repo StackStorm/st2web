@@ -187,7 +187,7 @@ angular.module('main')
         } else {
           // New records should only appear if we are not on the specific page.
           if (!$rootScope.page || $rootScope.page === 1) {
-            $scope.historyList.unshift(record);
+            $scope.historyList && $scope.historyList.unshift(record);
             listFormat();
           }
         }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2HistoryChild', function (st2api) {
+  .directive('st2HistoryChild', function () {
 
     return {
       restrict: 'C',
