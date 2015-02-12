@@ -14,11 +14,11 @@ angular.module('main')
         scope.getTaskName = function (record) {
           return {
             'action-chain': function () {
-              var context = record.liveaction.context.chain;
+              var context = record.execution.context.chain;
               return context && context.name;
             },
             'mistral-v2': function () {
-              var context = record.liveaction.context.mistral;
+              var context = record.execution.context.mistral;
               return context && context.task_name;
             }
           }[scope.workflow.action.runner_type]();

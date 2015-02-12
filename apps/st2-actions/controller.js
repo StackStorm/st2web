@@ -121,7 +121,7 @@ angular.module('main')
         $scope.$apply();
       };
 
-      source.addEventListener('st2.execution__create', createListener);
+      source.addEventListener('st2.history__create', createListener);
 
       var updateListener = function (e) {
         var record = JSON.parse(e.data);
@@ -147,11 +147,11 @@ angular.module('main')
         $scope.$apply();
       };
 
-      source.addEventListener('st2.execution__update', updateListener);
+      source.addEventListener('st2.history__update', updateListener);
 
       $scope.$on('$destroy', function () {
-        source.removeEventListener('st2.execution__create', createListener);
-        source.removeEventListener('st2.execution__update', updateListener);
+        source.removeEventListener('st2.history__create', createListener);
+        source.removeEventListener('st2.history__update', updateListener);
       });
 
     });
