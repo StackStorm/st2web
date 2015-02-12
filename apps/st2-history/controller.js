@@ -93,7 +93,7 @@ angular.module('main')
       $scope.history = $scope.historyList && _($scope.historyList)
         .take(10)
         .groupBy(function (record) {
-          var time = record.liveaction.start_timestamp;
+          var time = record.execution.start_timestamp;
           return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
         })
         .map(function (records, period) {
@@ -158,7 +158,7 @@ angular.module('main')
             return e;
           }).value();
 
-        $scope.payload = _.clone(record.liveaction.parameters);
+        $scope.payload = _.clone(record.execution.parameters);
 
         if (record.parent) {
           pHistoryList.then(function (records) {
@@ -196,7 +196,7 @@ angular.module('main')
         $scope.$apply();
       };
 
-      source.addEventListener('st2.execution__create', createListener);
+      source.addEventListener('st2.history__create', createListener);
 
       var updateListener = function (e) {
         var record = JSON.parse(e.data);
@@ -222,11 +222,11 @@ angular.module('main')
         $scope.$apply();
       };
 
-      source.addEventListener('st2.execution__update', updateListener);
+      source.addEventListener('st2.history__update', updateListener);
 
       $scope.$on('$destroy', function () {
-        source.removeEventListener('st2.execution__create', createListener);
-        source.removeEventListener('st2.execution__update', updateListener);
+        source.removeEventListener('st2.history__create', createListener);
+        source.removeEventListener('st2.history__update', updateListener);
       });
 
     });

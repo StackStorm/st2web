@@ -22,7 +22,7 @@
       ng-class-odd="'st2-flex-table__row--odd'"
       ng-class-even="'st2-flex-table__row--even'"
       ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
-      ng-repeat="record in workflow._children | orderBy:'liveaction.start_timestamp'"
+      ng-repeat="record in workflow._children | orderBy:'execution.start_timestamp'"
       ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
 
 
@@ -36,14 +36,14 @@
     <div class="st2-flex-table__column st2-history__column-meta st2-history-child__column-time"
         ng-if="view.meta.value">
       <div class="st2-history__column-meta-status">
-        <span class="st2-label st2-label--short" status="record.liveaction.status"
+        <span class="st2-label st2-label--short" status="record.execution.status"
           ng-if="view.meta.subview.status.value"></span>
         <i class="st2-icon__flow-cascade"
           ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
       </div>
       <div class="st2-history__column-meta-time"
           ng-if="view.meta.subview.time.value">
-        {{ record.liveaction.start_timestamp | date:'mediumTime' }}
+        {{ record.execution.start_timestamp | date:'mediumTime' }}
       </div>
     </div>
 
@@ -59,7 +59,7 @@
       <span class="st2-history__column-action-params"
           ng-if="view.action.subview.params.value"><!--
     !--><span class="st2-history__column-action-param-name"
-            ng-repeat-start="(name, value) in record.liveaction.parameters"
+            ng-repeat-start="(name, value) in record.execution.parameters"
             ng-show><!--
       !-->{{ name }}=<!--
     !--></span><!--

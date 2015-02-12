@@ -55,7 +55,7 @@
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
-              ng-repeat-start="record in group.records | orderBy:'liveaction.start_timestamp':true"
+              ng-repeat-start="record in group.records | orderBy:'execution.start_timestamp':true"
               ng-click="$root.go(_.defaults({id: record.id}, $root.state.params))">
 
             <div class="st2-flex-table__column st2-history__column-utility"
@@ -68,14 +68,14 @@
             <div class="st2-flex-table__column st2-history__column-meta"
                 ng-if="view.meta.value">
               <div class="st2-history__column-meta-status">
-                <span class="st2-label st2-label--short" status="record.liveaction.status"
+                <span class="st2-label st2-label--short" status="record.execution.status"
                   ng-if="view.meta.subview.status.value"></span>
                 <i class="st2-icon__flow-cascade"
                   ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
               </div>
               <div class="st2-history__column-meta-time"
                   ng-if="view.meta.subview.time.value">
-                {{ record.liveaction.start_timestamp | date:'mediumTime' }}
+                {{ record.execution.start_timestamp | date:'mediumTime' }}
               </div>
             </div>
 
@@ -88,7 +88,7 @@
               <span class="st2-history__column-action-params"
                   ng-if="view.action.subview.params.value"><!--
             !--><span class="st2-history__column-action-param-name"
-                    ng-repeat-start="(name, value) in record.liveaction.parameters"><!--
+                    ng-repeat-start="(name, value) in record.execution.parameters"><!--
               !-->{{ name }}=<!--
             !--></span><!--
             !--><span class="st2-history__column-action-param-value"><!--
@@ -172,17 +172,17 @@
         </div>
 
         <div class="st2-action-reporter__header">
-          <span class="st2-label" status="record.liveaction.status"></span>
+          <span class="st2-label" status="record.execution.status"></span>
           <time class="st2-action-reporter__time"
-              datetime="{{record.liveaction.start_timestamp}}">
-            {{ record.liveaction.start_timestamp | date:'medium' }}
+              datetime="{{record.execution.start_timestamp}}">
+            {{ record.execution.start_timestamp | date:'medium' }}
           </time>
         </div>
 
         <div class="st2-details__panel-body">
           <div class="st2-action-reporter"
           runner="record.runner.name"
-          execution="record.liveaction"></div>
+          execution="record.execution"></div>
         </div>
       </div>
 

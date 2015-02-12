@@ -160,7 +160,7 @@
                 <div class="st2-flex-table__row"
                     ng-class-odd="'st2-flex-table__row--odd'"
                     ng-class-even="'st2-flex-table__row--even'"
-                    ng-repeat-start="record in history | orderBy:'liveaction.start_timestamp':true | limitTo:5"
+                    ng-repeat-start="record in history | orderBy:'execution.start_timestamp':true | limitTo:5"
                     ng-click="expand(record, $event)">
 
                   <div class="st2-flex-table__column st2-actions__details-column-utility">
@@ -171,20 +171,20 @@
                   <div class="st2-flex-table__column st2-actions__details-column-meta">
                     <div class="st2-actions__details-column-meta-status">
                       <span class="st2-label st2-label--short"
-                        status="record.liveaction.status"></span>
+                        status="record.execution.status"></span>
                       <i class="st2-icon__flow-cascade"
                         ng-if="(record | isExpandable)"></i>
                     </div>
                     <!-- <div class="st2-actions__details-column-meta-time">
-                      {{ record.liveaction.start_timestamp | date:'mediumTime' }}
+                      {{ record.execution.start_timestamp | date:'mediumTime' }}
                     </div> -->
                   </div>
 
                   <!-- <div class="st2-flex-table__column st2-actions__details-column-status">
-                    <div class="st2-label" status="record.liveaction.status"></div>
+                    <div class="st2-label" status="record.execution.status"></div>
                   </div> -->
                   <div class="st2-flex-table__column st2-actions__details-column-time">
-                    {{ record.liveaction.start_timestamp | date:'medium' }}
+                    {{ record.execution.start_timestamp | date:'medium' }}
                   </div>
 
                   <div class="st2-flex-table__column st2-actions__details-column-history"
@@ -199,7 +199,7 @@
                   <div class="st2-details__panel-body">
                     <div class="st2-action-reporter"
                       runner="record.runner.name"
-                      execution="record.liveaction"></div>
+                      execution="record.execution"></div>
                   </div>
                 </div>
                 <div class="st2-history-child"
