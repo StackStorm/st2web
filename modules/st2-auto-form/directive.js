@@ -9,7 +9,8 @@ angular.module('main')
       'number': 'st2-form-input',
       'boolean': 'st2-form-checkbox',
       'select': 'st2-form-select',
-      'array': 'st2-form-array'
+      'array': 'st2-form-array',
+      'object': null
     };
 
     return {
