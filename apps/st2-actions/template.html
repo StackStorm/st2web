@@ -82,35 +82,6 @@
   <div class="st2-panel__details st2-details"
       ng-show="action">
 
-<!--          <div class="st2-details__panel">
-
-          <div class="st2-details__panel-body">
-            <div class="st2-details__panel-body-line">
-              <div class="st2-details__panel-body-label">Name</div>
-              <div class="st2-details__panel-body-value">{{ $root.getRef(action) }}</div>
-            </div>
-
-            <div class="st2-details__panel-body-line">
-              <div class="st2-details__panel-body-label">Description</div>
-              <div class="st2-details__panel-body-value">{{ action.description }}</div>
-            </div>
-
-            <div class="st2-details__panel-body-line">
-              <div class="st2-details__panel-body-label"
-                  ng-if="!_.isEmpty(executions)">
-                Latest Execution Status
-              </div>
-              <div class="st2-details__panel-body-value"
-                  ng-if="!_.isEmpty(executions)">
-                <span class="st2-label"
-                  status="_.last(executions).status">
-                </span>
-              </div>
-            </div>
-          </div>
-
-        </div> -->
-
     <div class="st2-details__header">
       <div class="st2-details__header-name">{{ $root.getRef(action) }}</div>
       <div class="st2-details__header-description">{{ action.description }}</div>
@@ -245,14 +216,6 @@
       </div>
 
     </div>
-
-      <!-- <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.isState('^.code')}"
-          ng-click="$root.state.go('^.code', {ref: action.ref})"
-          ng-if="actionHasFile(action)">
-        <i class="st2-icon__code"></i>
-        Code
-      </div> -->
 
     <div class="st2-details__body"
         ng-class="{'st2-details__body--active': $root.isState('^.code')}"
