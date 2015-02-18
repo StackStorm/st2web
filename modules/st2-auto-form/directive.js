@@ -17,7 +17,8 @@ angular.module('main')
       restrict: 'C',
       scope: {
         'rawSpec': '=spec',
-        'result': '='
+        'result': '=',
+        'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/template.html',
       link: function postLink(scope) {

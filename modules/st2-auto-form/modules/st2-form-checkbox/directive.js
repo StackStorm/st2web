@@ -6,7 +6,8 @@ angular.module('main')
       scope: {
         'name': '=',
         'spec': '=',
-        'result': '='
+        'result': '=',
+        'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/modules/st2-form-checkbox/template.html'
     };
