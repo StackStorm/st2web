@@ -80,7 +80,7 @@ angular.module('main')
 
     st2LoaderService.reset();
 
-    st2api.client.historyFilters.list().then(function (filters) {
+    st2api.client.executionsFilters.list().then(function (filters) {
       // TODO: when the field is not required, an abscense of a value should also be a value
       $scope.filters = filters;
       $scope.$apply();
@@ -94,7 +94,7 @@ angular.module('main')
         .filter({parent: undefined})
         .take(10)
         .groupBy(function (record) {
-          var time = record.liveaction.start_timestamp;
+          var time = record.start_timestamp;
           return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
         })
         .map(function (records, period) {
@@ -109,7 +109,7 @@ angular.module('main')
     var listUpdate = function () {
       st2LoaderService.start();
 
-      pHistoryList = st2api.client.history.list(_.assign({
+      pHistoryList = st2api.client.executions.list(_.assign({
         parent: 'null',
         page: $rootScope.page
       }, $scope.$root.active_filters));
@@ -119,7 +119,7 @@ angular.module('main')
 
         listFormat();
 
-        $scope.$emit('$fetchFinish', st2api.client.history);
+        $scope.$emit('$fetchFinish', st2api.client.executions);
         st2LoaderService.stop();
 
         $scope.$apply();
@@ -144,7 +144,7 @@ angular.module('main')
         };
       }
 
-      var promise = id ? st2api.client.history.get(id) : pHistoryList.then(function (records) {
+      var promise = id ? st2api.client.executions.get(id) : pHistoryList.then(function (records) {
         return _.first(records);
       });
 
@@ -219,7 +219,7 @@ angular.module('main')
       record._expanded = _.isUndefined(value) ? !record._expanded : value;
 
       if (record._expanded) {
-        st2api.client.history.list({
+        st2api.client.executions.list({
           'parent': record.id
         }).then(function (records) {
           if (!record._children) {
