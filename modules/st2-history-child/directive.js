@@ -14,11 +14,11 @@ angular.module('main')
         scope.getTaskName = function (record) {
           return {
             'action-chain': function () {
-              var context = record.liveaction.context.chain;
+              var context = record.context.chain;
               return context && context.name;
             },
             'mistral-v2': function () {
-              var context = record.liveaction.context.mistral;
+              var context = record.context.mistral;
               return context && context.task_name;
             }
           }[scope.workflow.action.runner_type]();
@@ -30,7 +30,7 @@ angular.module('main')
           record._expanded = !record._expanded;
 
           if (record._expanded) {
-            st2api.client.history.list({
+            st2api.client.executions.list({
               'parent': record.id
             }).then(function (records) {
               record._children = records;

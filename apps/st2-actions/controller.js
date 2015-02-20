@@ -81,7 +81,7 @@ angular.module('main')
         $scope.payload = {};
         $scope.inProgress = true;
 
-        st2api.client.history.list({
+        st2api.client.executions.list({
           'action': $scope.$root.getRef(action),
           'limit': 5,
           'parent': 'null'
@@ -92,6 +92,8 @@ angular.module('main')
           listFormat();
 
           $scope.$apply();
+        }).catch(function (err) {
+          console.error(err);
         });
 
         if ($scope.actionHasFile(action)) {
@@ -154,7 +156,7 @@ angular.module('main')
 
     // Running an action
     $scope.runAction = function (action, payload) {
-      st2api.client.actionExecutions.create({
+      st2api.client.executions.create({
         action: $scope.$root.getRef(action),
         parameters: payload
       }).catch(function (err) {
@@ -183,7 +185,7 @@ angular.module('main')
       record._expanded = !record._expanded;
 
       if ($filter('isExpandable')(record) && record._expanded) {
-        st2api.client.history.list({
+        st2api.client.executions.list({
           'parent': record.id
         }).then(function (records) {
           if (!record._children) {
