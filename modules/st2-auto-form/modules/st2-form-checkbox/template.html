@@ -7,14 +7,16 @@
       class="st2-auto-form__checkbox"
       placeholder="{{spec.default}}"
       ng-model="result"
+      ng-model-options="options || {}"
       ng-disabled="disabled" />
-      
+
     <span class="st2-auto-form__checkbox-label">{{ spec.name || name }}</div>
 
   </div>
 
 </label>
 
-<p class="st2-auto-form__description">
+<p class="st2-auto-form__description"
+    ng-if="spec.description">
   {{ spec.description }}
 </p>

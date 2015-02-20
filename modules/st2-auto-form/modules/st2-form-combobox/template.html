@@ -1,7 +1,8 @@
 <label class="st2-auto-form__label"
   ng-class="{'st2-auto-form--required': spec.required}">
 
-  <div class="st2-auto-form__title">
+  <div class="st2-auto-form__title"
+      ng-if="spec.name || name">
     {{ spec.name || name }}
   </div>
 
@@ -10,10 +11,11 @@
     placeholder="{{spec.default}}"
     ng-required="spec.required"
     ng-model="result"
+    ng-model-options="options || {}"
     ng-focus="toggleSuggestions(true)"
     ng-blur="toggleSuggestions(false)"
     ng-disabled="disabled" />
-    
+
   <div class="st2-auto-form__suggestions"
       ng-show="showSuggestions">
     <div class="st2-auto-form__suggestion"
@@ -27,6 +29,7 @@
 
 </label>
 
-<p class="st2-auto-form__description">
+<p class="st2-auto-form__description"
+    ng-if="spec.description">
   {{ spec.description }}
 </p>

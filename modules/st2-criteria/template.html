@@ -1,0 +1,52 @@
+<div class="st2-criteria__line"
+    ng-repeat="(key, item) in model"
+    ng-controller="st2CriterionCtrl">
+  <div class="st2-manual-form st2-form-input st2-criteria__entity"
+      disabled="disabled"
+      options="{updateOn: 'blur'}"
+      result="key">
+  </div>
+  <div class="st2-manual-form st2-form-select st2-criteria__entity"
+      spec="{
+        enum: [
+        'matchregex',
+        'eq',
+        'equals',
+        'nequals',
+        'neq',
+        'ieq',
+        'iequals',
+        'contains',
+        'icontains',
+        'ncontains',
+        'incontains',
+        'startswith',
+        'istartswith',
+        'endswith',
+        'iendswith',
+        'lt',
+        'lessthan',
+        'gt',
+        'greaterthan',
+        'td_lt',
+        'timediff_lt',
+        'td_gt',
+        'timediff_gt'
+        ]
+      }"
+      disabled="disabled"
+      result="item.type">
+  </div>
+  <div class="st2-manual-form st2-form-input st2-criteria__entity"
+      disabled="disabled"
+      result="item.pattern">
+  </div>
+  <i class="st2-icon__cancel st2-criteria__remove"
+      ng-if="!disabled"
+      ng-click="remove(key)"></i>
+</div>
+<button class="st2-forms__button st2-forms__button--small"
+    ng-if="!disabled"
+    ng-click="add()">
+  Add criteria
+</button>

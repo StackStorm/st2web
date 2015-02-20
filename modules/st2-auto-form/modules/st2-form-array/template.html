@@ -1,7 +1,8 @@
 <label class="st2-auto-form__label"
   ng-class="{'st2-auto-form--required': spec.required}">
 
-  <div class="st2-auto-form__title">
+  <div class="st2-auto-form__title"
+      ng-if="spec.name || name">
     {{ spec.name || name }}
   </div>
 
@@ -10,10 +11,12 @@
     placeholder="{{spec.default.join(', ')}}"
     ng-required="spec.required"
     ng-model="_value"
+    ng-model-options="options || {}"
     ng-disabled="disabled" />
 
 </label>
 
-<p class="st2-auto-form__description">
+<p class="st2-auto-form__description"
+    ng-if="spec.description">
   {{ spec.description }}
 </p>

@@ -91,12 +91,14 @@
     </div>
 
     <div class="st2-details__toolbar">
-      <button type="submit"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
+      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="edit = true">
+        Edit
+      </button>
+      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
         Duplicate
       </button>
-      <button type="submit"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
+      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
         Delete
       </button>
 
@@ -140,13 +142,13 @@
                 }],
                 name: 'name'
               }"
-              disabled="true"
+              disabled="!edit"
               result="rule.trigger.type">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="triggerSchema"
-                disabled="true"
+                disabled="!edit"
                 result="rule.trigger.parameters">
               </div>
             </div>
@@ -157,12 +159,12 @@
               <h2 class="st2-details__panel-title">Criteria</h2>
             </div>
             <div class="st2-details__panel-body">
-              <div class="st2-details__criteria"
-                  ng-repeat="(key, criteria) in rule.criteria">
-                <span class="st2-details__criteria-entity">{{ key }}</span>
-                <span class="st2-details__criteria-attribute">{{ criteria.type }}</span>
-                <span class="st2-details__criteria-value">{{ criteria.pattern }}</span>
+
+              <div class="st2-criteria"
+                model="rule.criteria"
+                disabled="!edit">
               </div>
+
             </div>
           </div>
 
@@ -181,13 +183,13 @@
                 }],
                 name: 'name'
               }"
-              disabled="true"
+              disabled="!edit"
               result="rule.action.ref">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="actionSchema"
-                disabled="true"
+                disabled="!edit"
                 result="rule.action.parameters">
               </div>
             </div>

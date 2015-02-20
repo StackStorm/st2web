@@ -6,6 +6,7 @@ angular.module('main')
       scope: {
         'name': '=',
         'spec': '=',
+        'options': '=',
         'result': '=',
         'disabled': '='
       },

@@ -6,6 +6,7 @@ angular.module('main')
       scope: {
         'name': '=',
         'spec': '=',
+        'options': '=',
         'result': '=',
         'disabled': '='
       },
@@ -28,7 +29,7 @@ angular.module('main')
             string: function () {
               return rawResult;
             }
-          }[scope.spec.type]();
+          }[scope.spec && scope.spec.type || 'string']();
         });
       }
     };
