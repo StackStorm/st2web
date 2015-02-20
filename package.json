@@ -7,7 +7,7 @@
     "postinstall" : "bower install"
   },
   "dependencies": {
-    "st2client": "^0.1.4"
+    "st2client": "^0.2.0"
   },
   "devDependencies": {
     "chai": "^1.9.1",
