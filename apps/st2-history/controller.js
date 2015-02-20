@@ -156,7 +156,7 @@ angular.module('main')
         $scope.spec = _({}).defaults(record.action.parameters, record.runner.runner_parameters)
           .value();
 
-        $scope.payload = _.clone(record.liveaction.parameters);
+        $scope.payload = _.clone(record.parameters);
 
         if (record.parent) {
           pHistoryList.then(function () {
