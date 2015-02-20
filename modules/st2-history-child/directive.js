@@ -9,7 +9,7 @@ angular.module('main')
         'workflow': '=',
         'view': '='
       },
-      templateUrl: 'modules/st2-history-child/template.html',
+      template: '<div ng-include="\'modules/st2-history-child/template.html\'"></div>',
       link: function postLink(scope) {
         scope.getTaskName = function (record) {
           return {
@@ -24,21 +24,8 @@ angular.module('main')
           }[scope.workflow.action.runner_type]();
         };
 
-        // scope.expand = function (record, $event) {
-        //   $event.stopPropagation();
-        //
-        //   record._expanded = !record._expanded;
-        //
-        //   if (record._expanded) {
-        //     st2api.client.history.list({
-        //       'parent': record.id
-        //     }).then(function (records) {
-        //       record._children = records;
-        //       console.log(records);
-        //       this.$apply();
-        //     }.bind(this));
-        //   }
-        // };
+        scope.expand = scope.$parent.expand;
+
       }
     };
 

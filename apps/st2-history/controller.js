@@ -91,6 +91,7 @@ angular.module('main')
       var period = 24 * 60 * 60 * 1000;
 
       $scope.history = $scope.historyList && _($scope.historyList)
+        .filter({parent: undefined})
         .take(10)
         .groupBy(function (record) {
           var time = record.liveaction.start_timestamp;
@@ -143,8 +144,8 @@ angular.module('main')
         };
       }
 
-      var promise = id ? st2api.client.history.get(id) : pHistoryList.then(function (actions) {
-        return _.first(actions);
+      var promise = id ? st2api.client.history.get(id) : pHistoryList.then(function (records) {
+        return _.first(records);
       });
 
       promise.then(function (record) {
@@ -161,10 +162,8 @@ angular.module('main')
         $scope.payload = _.clone(record.liveaction.parameters);
 
         if (record.parent) {
-          pHistoryList.then(function (records) {
-            var parent = _.find(records, function (item) {
-              return item.id === record.parent;
-            });
+          pHistoryList.then(function () {
+            var parent = _.find($scope.historyList, {id: record.parent});
             $scope.expand(parent, null, true);
           });
         }
@@ -175,10 +174,6 @@ angular.module('main')
 
     st2api.client.stream.listen().then(function (source) {
       var createListener = function (e) {
-        // New records should only appear if we are not on the specific page.
-        if ($rootScope.page && $rootScope.page !== 1) {
-          return;
-        }
 
         var record = JSON.parse(e.data);
 
@@ -187,10 +182,14 @@ angular.module('main')
 
           if (parentNode && parentNode._children) {
             parentNode._children.push(record);
+            $scope.historyList.unshift(record);
           }
         } else {
-          $scope.historyList.unshift(record);
-          listFormat();
+          // New records should only appear if we are not on the specific page.
+          if (!$rootScope.page || $rootScope.page === 1) {
+            $scope.historyList && $scope.historyList.unshift(record);
+            listFormat();
+          }
         }
 
         $scope.$apply();
@@ -201,21 +200,7 @@ angular.module('main')
       var updateListener = function (e) {
         var record = JSON.parse(e.data);
 
-        var list = (function () {
-          if (!record.parent) {
-            return $scope.historyList;
-          }
-
-          var parentNode = _.find($scope.historyList, { id: record.parent });
-
-          if (!parentNode || !parentNode._children) {
-            return;
-          }
-
-          return parentNode._children;
-        })();
-
-        var node = _.find(list, { id: record.id });
+        var node = _.find($scope.historyList, {id: record.id});
 
         _.assign(node, record);
 
@@ -240,9 +225,13 @@ angular.module('main')
         st2api.client.history.list({
           'parent': record.id
         }).then(function (records) {
-          record._children = records;
-          this.$apply();
-        }.bind(this));
+          if (!record._children) {
+            record._children = records;
+            $scope.historyList = $scope.historyList.concat(records);
+
+            $scope.$apply();
+          }
+        });
       }
     };
 
