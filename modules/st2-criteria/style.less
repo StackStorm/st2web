@@ -1,0 +1,40 @@
+.st2-criteria {
+  &__line {
+    display: flex;
+
+    word-spacing: 3px;
+
+    flex-wrap: wrap;
+
+    &:after {
+      display: block;
+
+      width: 100%;
+
+      content: 'and';
+      text-align: center;
+    }
+
+    &:last-of-type:after {
+      content: '\00a0';
+    }
+  }
+
+  &__entity {
+    display: block;
+    flex: 1;
+
+    margin-right: 4px;
+    margin-bottom: 2px;
+
+    vertical-align: top;
+  }
+
+  &__remove {
+    margin-bottom: 2px;
+
+    cursor: pointer;
+
+    align-self: center;
+  }
+}

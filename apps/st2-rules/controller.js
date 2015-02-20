@@ -74,15 +74,13 @@ angular.module('main')
           $scope.rule = rule;
 
           st2api.client.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
-            var schema = triggerTypes.parameters_schema.properties;
-            $scope.triggerSchema = disable(schema);
+            $scope.triggerSchema = triggerTypes.parameters_schema.properties;
             $scope.$apply();
           });
 
           st2api.client.actionOverview.get(rule.action.ref)
             .then(function (action) {
-              var schema = action.parameters;
-              $scope.actionSchema = disable(schema);
+              $scope.actionSchema = action.parameters;
               $scope.$apply();
             });
 
@@ -91,13 +89,6 @@ angular.module('main')
       });
     });
 
-    // Helpers
-    var disable = function (parameters) {
-      return _.mapValues(parameters, function (e) {
-        e.disabled = true;
-        return e;
-      });
-    };
   })
 
   ;

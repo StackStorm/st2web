@@ -85,42 +85,72 @@
   <div class="st2-panel__details st2-details"
       ng-show="rule">
 
-    <div class="st2-details__tabs">
-      <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.isState(['^.general', '^.list'])}"
-          ng-click="$root.state.go('^.general', {id: rule.id})">
-        <i class="st2-icon__cogs"></i>
-        General
+    <div class="st2-details__header">
+      <div class="st2-details__header-name">{{ rule.name }}</div>
+      <div class="st2-details__header-description">{{ rule.description }}</div>
+    </div>
+
+    <div class="st2-details__toolbar">
+      <!--
+      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="edit = true">
+        Edit
+      </button>
+      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
+        Duplicate
+      </button>
+      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
+        Delete
+      </button>
+      -->
+
+      <div class="st2-details__toolbar-separator"></div>
+
+      <div class="st2-details__switch st2-details__switch--of-two"
+          ng-class="{
+            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+            'st2-details__switch--second': $root.isState('^.code')
+          }">
+        <div class="st2-details__switch-item"
+            ng-click="$root.state.go('^.general', {id: rule.id})">
+          <i class="st2-icon__cogs"></i>
+        </div>
+        <div class="st2-details__switch-item"
+            ng-click="$root.state.go('^.code', {id: rule.id})">
+          <i class="st2-icon__code"></i>
+        </div>
       </div>
 
-      <div class="st2-details__tab-body"
-          ng-class="{'st2-details__tab-body--active': $root.isState(['^.general', '^.list'])}">
-        <div class="st2-panel__scroller">
+    </div>
 
-          <div class="st2-details__panel">
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
+      <div class="st2-panel__scroller">
 
-            <div class="st2-details__panel-body">
-              <div class="st2-details__panel-body-line">
-                <div class="st2-details__panel-body-label">Name</div>
-                <div class="st2-details__panel-body-value">{{ rule.name }}</div>
-              </div>
-
-              <div class="st2-details__panel-body-line">
-                <div class="st2-details__panel-body-label">Description</div>
-                <div class="st2-details__panel-body-value">{{ rule.description }}</div>
-              </div>
-            </div>
-
-          </div>
+        <form>
 
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Trigger</h2>
-              <span class="st2-details__panel-type">{{ rule.trigger.type }}</span>
+            </div>
+            <div class="st2-manual-form st2-form-combobox"
+              spec="{
+                enum:[{
+                  name: 'a',
+                  description: 'b'
+                }, {
+                  name: 'b',
+                  description: 'c'
+                }],
+                name: 'name'
+              }"
+              disabled="!edit"
+              result="rule.trigger.type">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="triggerSchema"
+                disabled="!edit"
                 result="rule.trigger.parameters">
               </div>
             </div>
@@ -131,45 +161,53 @@
               <h2 class="st2-details__panel-title">Criteria</h2>
             </div>
             <div class="st2-details__panel-body">
-              <div class="st2-details__criteria"
-                  ng-repeat="(key, criteria) in rule.criteria">
-                <span class="st2-details__criteria-entity">{{ key }}</span>
-                <span class="st2-details__criteria-attribute">{{ criteria.type }}</span>
-                <span class="st2-details__criteria-value">{{ criteria.pattern }}</span>
+
+              <div class="st2-criteria"
+                model="rule.criteria"
+                disabled="!edit">
               </div>
+
             </div>
           </div>
 
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Action</h2>
-              <span class="st2-details__panel-type">{{ rule.action.name }}</span>
+            </div>
+            <div class="st2-manual-form st2-form-combobox"
+              spec="{
+                enum:[{
+                  name: 'a',
+                  description: 'b'
+                }, {
+                  name: 'b',
+                  description: 'c'
+                }],
+                name: 'name'
+              }"
+              disabled="!edit"
+              result="rule.action.ref">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="actionSchema"
+                disabled="!edit"
                 result="rule.action.parameters">
               </div>
             </div>
           </div>
 
-        </div>
+        </form>
+
       </div>
+    </div>
 
-      <div class="st2-details__tab-label"
-          ng-class="{'st2-details__tab-label--active': $root.isState('^.code')}"
-          ng-click="$root.state.go('^.code', {id: rule.id })">
-        <i class="st2-icon__code"></i>
-        Code
-      </div>
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': $root.isState('^.code')}">
+      <div class="st2-panel__scroller">
 
-      <div class="st2-details__tab-body"
-          ng-class="{'st2-details__tab-body--active': $root.isState('^.code')}">
-        <div class="st2-panel__scroller">
+        <div class="st2-highlight" code="rule | json" full="true"></div>
 
-          <div class="st2-highlight" code="rule | json" full="true"></div>
-
-        </div>
       </div>
     </div>
 

@@ -9,14 +9,16 @@ angular.module('main')
       'number': 'st2-form-input',
       'boolean': 'st2-form-checkbox',
       'select': 'st2-form-select',
-      'array': 'st2-form-array'
+      'array': 'st2-form-array',
+      'object': null
     };
 
     return {
       restrict: 'C',
       scope: {
         'rawSpec': '=spec',
-        'result': '='
+        'result': '=',
+        'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/template.html',
       link: function postLink(scope) {

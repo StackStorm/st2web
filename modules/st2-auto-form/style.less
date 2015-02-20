@@ -12,17 +12,13 @@
   position: relative;
 
   &__line {
-    display: flex;
+    margin: 12px 0;
 
-    align-items: center;
-  }
+    border-bottom: 1px solid #343434;
 
-  &__label {
-    flex: 1;
-
-    margin: 0 10px 18px 0;
-
-    align-self: flex-start;
+    &:last-of-type {
+      border-bottom: 0;
+    }
   }
 
   &__title {
@@ -117,9 +113,38 @@
 
   &__description {
     font-size: 12px;
-
-    flex: 1;
-
-    margin-left: 10px;
   }
+
+  &__suggestions {
+    position: absolute;
+    z-index: 1;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: -6px;
+    padding: 3px;
+
+    user-select: none;
+
+    border: 1px solid;
+    border-color: rgba(0, 0, 0, 0) rgba(64, 64, 64, .3) rgba(108, 108, 108, .5);
+    border-radius: 0 0 4px 4px;
+    background-color: @gray-dark;
+  }
+
+  &__suggestion {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 7px;
+
+    border-radius: 4px;
+
+    &--active {
+      background-color: @gray-dull;
+    }
+  }
+}
+
+.st2-manual-form {
+  position: relative;
 }

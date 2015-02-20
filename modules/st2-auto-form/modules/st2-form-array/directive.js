@@ -6,7 +6,9 @@ angular.module('main')
       scope: {
         'name': '=',
         'spec': '=',
-        'result': '='
+        'options': '=',
+        'result': '=',
+        'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/modules/st2-form-array/template.html',
       link: function postLink(scope) {

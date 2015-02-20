@@ -1,23 +1,29 @@
 <div ng-repeat="item in spec | filter:MUTABLE | orderBy:POSITION"
-    ng-switch="getFieldTemplate(item.field)">
+    ng-if="_fieldTemplate = getFieldTemplate(item.field)"
+    ng-switch="_fieldTemplate"
+    class="st2-auto-form__line">
   <div ng-switch-when="st2-form-input"
-    class="st2-form-input st2-auto-form__line"
+    class="st2-form-input"
     name="item.name"
     spec="item.field"
+    disabled="disabled"
     result="result[item.name]"></div>
   <div ng-switch-when="st2-form-checkbox"
-    class="st2-form-checkbox st2-auto-form__line"
+    class="st2-form-checkbox"
     name="item.name"
     spec="item.field"
+    disabled="disabled"
     result="result[item.name]"></div>
   <div ng-switch-when="st2-form-select"
-    class="st2-form-select st2-auto-form__line"
+    class="st2-form-select"
     name="item.name"
     spec="item.field"
+    disabled="disabled"
     result="result[item.name]"></div>
   <div ng-switch-when="st2-form-array"
-    class="st2-form-array st2-auto-form__line"
+    class="st2-form-array"
     name="item.name"
     spec="item.field"
+    disabled="disabled"
     result="result[item.name]"></div>
 </div>

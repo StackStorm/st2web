@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2HistoryChild', function () {
+  .directive('st2HistoryChild', function (st2api) {
 
     return {
       restrict: 'C',
@@ -24,8 +24,20 @@ angular.module('main')
           }[scope.workflow.action.runner_type]();
         };
 
-        scope.expand = scope.$parent.expand;
+        scope.expand = function (record, $event) {
+          $event.stopPropagation();
 
+          record._expanded = !record._expanded;
+
+          if (record._expanded) {
+            st2api.client.history.list({
+              'parent': record.id
+            }).then(function (records) {
+              record._children = records;
+              this.$apply();
+            }.bind(this));
+          }
+        };
       }
     };
 

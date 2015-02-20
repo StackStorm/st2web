@@ -6,7 +6,9 @@ angular.module('main')
       scope: {
         'name': '=',
         'spec': '=',
-        'result': '='
+        'options': '=',
+        'result': '=',
+        'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/modules/st2-form-input/template.html',
       link: function (scope) {
@@ -27,7 +29,7 @@ angular.module('main')
             string: function () {
               return rawResult;
             }
-          }[scope.spec.type]();
+          }[scope.spec && scope.spec.type || 'string']();
         });
       }
     };

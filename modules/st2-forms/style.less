@@ -1,9 +1,5 @@
 @import 'colors';
 
-@button: #ff8300;
-@button-active: spin(@button, 8);
-@button-disabled: #888;
-
 .st2-forms {
   &__matcher {
     overflow: hidden;
@@ -33,6 +29,7 @@
     vertical-align: middle;
     white-space: nowrap;
     text-decoration: none;
+    word-spacing: normal;
     text-transform: uppercase;
 
     opacity: 1;
@@ -52,16 +49,6 @@
 
       width: 0;
       height: 1px;
-      // One that looks nice for FF. Blame different AA.
-      // content: "";
-      // width: 0px;
-      // height: 0px;
-      // border-style: solid;
-      // border-width: 16px;
-      // border-color: transparent transparent transparent #FF8300;
-      // position: absolute;
-      // top: 1px;
-      // right: -32px;
 
       content: '';
 
@@ -79,6 +66,12 @@
 
     &:active {
       background-color: @button-active;
+    }
+
+    &--small {
+      font-size: 12px;
+
+      padding: 3px 6px;
     }
   }
 
