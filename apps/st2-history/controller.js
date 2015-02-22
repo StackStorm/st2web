@@ -14,10 +14,10 @@ angular.module('main')
         position: 1
       })
       .state('history.list', {
-        url: '?page&action&rule&trigger&trigger_type'
+        url: '?page&status&action&rule&trigger&trigger_type'
       })
       .state('history.general', {
-        url: '/{id:\\w+}/general?page&action&rule&trigger&trigger_type'
+        url: '/{id:\\w+}/general?page&status&action&rule&trigger&trigger_type'
       })
 
       ;
@@ -182,11 +182,17 @@ angular.module('main')
             $scope.historyList.unshift(record);
           }
         } else {
-          // New records should only appear if we are not on the specific page.
-          if (!$rootScope.page || $rootScope.page === 1) {
-            $scope.historyList && $scope.historyList.unshift(record);
-            listFormat();
+          // TODO: Implement client-side filtering.
+          if (_($scope.$root.active_filters).values().some()) {
+            return;
           }
+          // New records should not only appear if we are on the specific page.
+          if ($rootScope.page && $rootScope.page !== 1) {
+            return;
+          }
+
+          $scope.historyList && $scope.historyList.unshift(record);
+          listFormat();
         }
 
         $scope.$apply();
