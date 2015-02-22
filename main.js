@@ -52,7 +52,7 @@ angular.module('main')
     };
 
     // Filtering
-    var filters = ['action', 'trigger_type', 'rule'];
+    var filters = ['status', 'action', 'trigger_type', 'rule'];
 
     $rootScope.$watchCollection('state.params', function (params) {
       $rootScope.active_filters = _.pick(params, filters);

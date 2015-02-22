@@ -14,10 +14,10 @@ angular.module('main')
         position: 1
       })
       .state('history.list', {
-        url: '?page&action&rule&trigger&trigger_type'
+        url: '?page&status&action&rule&trigger&trigger_type'
       })
       .state('history.general', {
-        url: '/{id:\\w+}/general?page&action&rule&trigger&trigger_type'
+        url: '/{id:\\w+}/general?page&status&action&rule&trigger&trigger_type'
       })
 
       ;

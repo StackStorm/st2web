@@ -13,6 +13,8 @@
 
         <div class="st2-panel__toolbar-filters"
             ng-show="filters">
+          <div class="st2-filter" filters="filters" type="status"
+            ng-hide="_.isEmpty(filters['status'])"></div>
           <div class="st2-filter" filters="filters" type="action"
             ng-hide="_.isEmpty(filters['action'])"></div>
           <div class="st2-filter" filters="filters" type="trigger_type" label="Trigger Type"
