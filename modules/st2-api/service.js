@@ -3,19 +3,23 @@
 'use strict';
 
 angular.module('main')
-  .service('st2api', function (st2Config, $q) {
+  .service('st2api', function (st2Config, $q, $rootScope) {
     this.token = {};
 
     var initClient = function (server, token) {
       var parser = document.createElement('a');
       parser.href = _.find(st2Config.hosts, {url: server.url}) && server.url || _.first(st2Config.hosts).url;
 
-      return st2client({
+      var client = st2client({
         protocol: parser.protocol.split(':')[0],
         host: parser.hostname,
         port: parser.port,
         token: !_.isEmpty(token) ? token : undefined
       });
+
+      client.executions.limit = $rootScope.limit = 50;
+
+      return client;
     };
 
     this.connect = function (server, user, password, remember) {

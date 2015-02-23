@@ -92,7 +92,7 @@ angular.module('main')
 
       $scope.history = $scope.historyList && _($scope.historyList)
         .filter({parent: undefined})
-        .take(10)
+        .take($rootScope.limit)
         .groupBy(function (record) {
           var time = record.start_timestamp;
           return new Date(Math.floor(+new Date(time) / period) * period).toISOString();

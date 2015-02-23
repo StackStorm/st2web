@@ -21,6 +21,8 @@ angular.module('main')
 
           o[scope.type] = o[scope.type] === name ? void 0 : name;
 
+          o.page = void 0;
+
           scope.$root.state.go('.', o);
           scope.toggle();
         };

@@ -12,8 +12,17 @@
   </div>
   <div class="st2-highlight" code="result.stderr"></div>
 
+  <div class="st2-action-reporter__source"
+      ng-if="result.traceback">
+    Traceback
+  </div>
+  <div class="st2-highlight"
+    code="getTraceback(result)"
+    ng-if="result.traceback">
+  </div>
+
   <div class="st2-action-reporter__message"
-      ng-if="!result.stderr && !result.stdout">
+      ng-if="!result.stderr && !result.stdout && !result.traceback">
     Action produced no data on the host
   </div>
 </div>
