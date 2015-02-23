@@ -22,6 +22,10 @@ angular.module('main')
         return template.split('{{ name }}').join(reporters[runner] || 'debug');
       };
 
+      scope.getTraceback = function (result) {
+        return [result.error, result.traceback].join('\n');
+      };
+
     };
 
     return {
