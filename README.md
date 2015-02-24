@@ -37,6 +37,7 @@ While `gulp` runs the longest chain of tasks including style compiling, spining 
  - `gulp build` - just lint and compile all the stuff
  - `gulp test` - build the project and then run e2e tests
  - `gulp serve` - build the project and start serving it at 3000 port
+ - `gulp production` - build production version of the project
 
 You can see the whole list of tasks in `gulpfile.js`.
 
@@ -64,6 +65,17 @@ To make it work with your st2 API, edit [`config.js`](./config.js) at the root o
     }]
 
 Multiple servers can be configured. Pick an desired server from the login screen and change the server by first disconnecting from the current one by picking 'Disconnect' from the drop down at the top right corner of the UI.
+
+
+Production
+----------
+While `gulp serve` is ideal for development purposes and quick preview, it requires browser to make lots and lots of requests downloading every single project file separately thus wasting a lot of time on making a request and waiting for response. Production version minimizes the number of files by concatenating them together and minifies some of the most heavy files reducing their size up to 5 times. It also makes compiled version completely independent of the rest of code allowing you to deploy it everywhere: static apache\nginx server, AWS, Heroku, Github Pages.
+
+To build production version, run
+
+    $ gulp production
+
+Then, you can find compiled version of the project in `build/` folder. You can just copy it to the public folder your webserver, create symlink or push it to another repository as a deployment strategy.
 
 
 Testing

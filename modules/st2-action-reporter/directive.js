@@ -17,7 +17,7 @@ angular.module('main')
     var linker = function (scope) {
       // Partial router
       scope.getReporter = function (runner) {
-        var template = '/modules/st2-action-reporter/reporters/{{ name }}.html';
+        var template = 'modules/st2-action-reporter/reporters/{{ name }}.html';
 
         return template.split('{{ name }}').join(reporters[runner] || 'debug');
       };
