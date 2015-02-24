@@ -86,7 +86,11 @@
       ng-show="rule">
 
     <div class="st2-details__header">
-      <div class="st2-details__header-name">{{ rule.name }}</div>
+      <div class="st2-details__header-name">
+        <a ui-sref="rules.general({id: rule.id})">
+          {{ rule.name }}
+        </a>
+      </div>
       <div class="st2-details__header-description">{{ rule.description }}</div>
     </div>
 

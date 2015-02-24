@@ -168,7 +168,11 @@
       ng-show="record">
 
     <div class="st2-details__header">
-      <div class="st2-details__header-name">{{ $root.getRef(record.action) }}</div>
+      <div class="st2-details__header-name">
+        <a ui-sref="actions.general({ref:$root.getRef(record.action)})">
+          {{ $root.getRef(record.action) }}
+        </a>
+      </div>
       <div class="st2-details__header-description">{{ record.action.description }}</div>
     </div>
 

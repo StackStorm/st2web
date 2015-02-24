@@ -83,7 +83,11 @@
       ng-show="action">
 
     <div class="st2-details__header">
-      <div class="st2-details__header-name">{{ $root.getRef(action) }}</div>
+      <div class="st2-details__header-name">
+        <a ui-sref="actions.general({ref:$root.getRef(action)})">
+          {{ $root.getRef(action) }}
+        </a>
+      </div>
       <div class="st2-details__header-description">{{ action.description }}</div>
     </div>
 
