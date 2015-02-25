@@ -16,6 +16,9 @@ var gulp = require('gulp')
   , bowerFiles = require('main-bower-files')
   , glob = require('glob')
   , csscomb = require('gulp-csscomb')
+  , templateCache = require('gulp-angular-templatecache')
+  , ngAnnotate = require('gulp-ng-annotate')
+  , uglify = require('gulp-uglify')
   ;
 
 var express = require('express')
@@ -50,6 +53,25 @@ var debug = function () {
 };
 
 debug();
+
+
+// Gather a list of all bower components installed.
+// We are only interested in JS files since we intend to import all the css files manually through
+// less import.
+var components = bowerFiles({
+  filter: /\.js/
+}).map(function (file) {
+  return path.relative('.', file);
+});
+
+// Gathering a list of all the modules we have.
+var modules = settings.js.map(function (pattern) {
+  return glob.sync(pattern);
+}).reduce(function(a, b) {
+  return a.concat(b);
+});
+
+modules.push('node_modules/st2client/dist/st2client.js');
 
 
 gulp.task('gulphint', function () {
@@ -89,22 +111,6 @@ gulp.task('styles', function () {
 });
 
 gulp.task('html', ['scripts'], function () {
-  // Gather a list of all bower components installed.
-  // We are only interested in JS files since we intend to import all the css files manually through
-  // less import.
-  var components = bowerFiles({
-    filter: /\.js/
-  }).map(function (file) {
-    return path.relative('.', file);
-  });
-
-  // Gathering a list of all the modules we have.
-  var modules = settings.js.map(function (pattern) {
-    return glob.sync(pattern);
-  }).reduce(function(a, b) {
-    return a.concat(b);
-  });
-
   return gulp.src('index.html')
     .pipe(plumber())
     .pipe(htmlreplace({
@@ -153,6 +159,60 @@ gulp.task('test', ['build', 'serve'], function (cb) {
       cb();
     });
 });
+
+
+gulp.task('production-template', function () {
+  return gulp.src(['./apps/**/*.html', './modules/**/*.html'], { base: __dirname + '/'})
+    .pipe(templateCache({
+      module: 'main'
+    }))
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('production-styles', ['styles'], function () {
+  return gulp.src('./css/*.css')
+    .pipe(gulp.dest('build/css/'));
+});
+
+gulp.task('production-components', function () {
+  return gulp.src(components)
+    .pipe(concat('components.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('production-modules', function () {
+  return gulp.src(modules)
+    .pipe(ngAnnotate())
+    .pipe(concat('modules.js'))
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('production-html', function () {
+  return gulp.src('index.html')
+    .pipe(htmlreplace({
+      components: 'js/components.js',
+      modules: 'js/modules.js',
+      templates: 'js/templates.js'
+    }))
+    .pipe(gulp.dest('build/'))
+    ;
+});
+
+gulp.task('production-static', function () {
+  return gulp.src(['img/*', 'font/*', 'config.js'], { base: __dirname + '/'})
+    .pipe(gulp.dest('build/'))
+    ;
+});
+
+gulp.task('production', [
+  'production-template',
+  'production-styles',
+  'production-components',
+  'production-modules',
+  'production-html',
+  'production-static'
+]);
 
 
 gulp.task('watch', function () {
