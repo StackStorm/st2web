@@ -17,10 +17,10 @@ angular.module('main')
         url: ''
       })
       .state('rules.general', {
-        url: '/{id:\\w+}/general'
+        url: '/{id:\\w+}/general?edit'
       })
       .state('rules.code', {
-        url: '/{id:\\w+}/code'
+        url: '/{id:\\w+}/code?edit'
       })
 
       ;
@@ -135,26 +135,23 @@ angular.module('main')
     $scope.$watch('rule.action.ref', $scope.loadAction);
 
     $scope.edit = function () {
-      $scope._edit = true;
       $scope.loadTriggerSuggestions();
       $scope.loadActionSuggestions();
+      $scope.$root.go({id: $scope.rule.id, edit: true});
     };
 
     $scope.submit = function () {
-      $scope._edit = false;
-      console.log('Result:', $scope.rule);
-      st2api.client.rules.edit($scope.rule).then(function (result) {
-        console.log(result);
+      st2api.client.rules.edit($scope.rule).then(function (rule) {
+        $scope.rule = rule;
+        $scope.$root.go({id: rule.id, edit: undefined});
       }).catch(function (error) {
         console.error(error);
       });
     };
 
     $scope.cancel = function () {
-      $scope._edit = false;
       $scope.loadRule($scope.rule.id);
-
-      return false;
+      $scope.$root.go({id: $scope.rule.id, edit: undefined});
     };
 
   })

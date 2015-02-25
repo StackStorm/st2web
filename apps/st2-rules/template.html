@@ -43,7 +43,7 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': rule.id == $parent.rule.id}"
               ng-repeat="rule in rules"
-              ng-click="$root.go({id: rule.id})">
+              ng-click="$root.go({id: rule.id, edit: undefined})">
             <div class="st2-flex-table__column st2-rules__column-enabled">
               <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
             </div>
@@ -120,11 +120,11 @@
               'st2-details__switch--second': $root.isState('^.code')
             }">
           <div class="st2-details__switch-item"
-              ng-click="$root.state.go('^.general', {id: rule.id})">
+              ng-click="$root.state.go('^.general', $root.state.params)">
             <i class="st2-icon__cogs"></i>
           </div>
           <div class="st2-details__switch-item"
-              ng-click="$root.state.go('^.code', {id: rule.id})">
+              ng-click="$root.state.go('^.code', $root.state.params)">
             <i class="st2-icon__code"></i>
           </div>
         </div>
@@ -141,13 +141,13 @@
             </div>
             <div class="st2-manual-form st2-form-combobox"
               spec="triggerSuggestionSpec"
-              disabled="!_edit"
+              disabled="!$root.state.params.edit"
               result="rule.trigger.type">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="triggerSchema"
-                disabled="!_edit"
+                disabled="!$root.state.params.edit"
                 result="rule.trigger.parameters">
               </div>
             </div>
@@ -161,7 +161,7 @@
 
               <div class="st2-criteria"
                 model="rule.criteria"
-                disabled="!_edit">
+                disabled="!$root.state.params.edit">
               </div>
 
             </div>
@@ -173,13 +173,13 @@
             </div>
             <div class="st2-manual-form st2-form-combobox"
               spec="actionSuggestionSpec"
-              disabled="!_edit"
+              disabled="!$root.state.params.edit"
               result="rule.action.ref">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="actionSchema"
-                disabled="!_edit"
+                disabled="!$root.state.params.edit"
                 result="rule.action.parameters">
               </div>
             </div>
@@ -189,19 +189,19 @@
             spec="{
               name: 'Enabled'
             }"
-            disabled="!_edit"
+            disabled="!$root.state.params.edit"
             result="rule.enabled">
           </div>
 
           <input type="submit"
               class="st2-forms__button"
-              ng-show="_edit"
+              ng-show="$root.state.params.edit"
               value="Save"/>
 
           <input type="button"
               class="st2-forms__button"
               ng-click="cancel()"
-              ng-show="_edit"
+              ng-show="$root.state.params.edit"
               value="Cancel"/>
 
         </div>
