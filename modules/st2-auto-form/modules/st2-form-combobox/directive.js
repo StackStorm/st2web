@@ -20,8 +20,12 @@ angular.module('main')
           },
           set: function (index) {
             selected = index;
-            scope.result = scope.sample[index].name;
+            scope.rawResult = scope.sample[index].name;
           }
+        });
+
+        scope.$watch('result', function (result) {
+          scope.rawResult = result;
         });
 
         var timerPromise
@@ -31,6 +35,17 @@ angular.module('main')
           timerPromise = $timeout(function () {
             scope.showSuggestions = to;
           }, timeout);
+          return timerPromise;
+        };
+
+        scope.focus = function () {
+          return scope.toggleSuggestions(true);
+        };
+
+        scope.blur = function () {
+          return scope.toggleSuggestions(false).then(function () {
+            scope.result = scope.rawResult;
+          });
         };
 
       }

@@ -64,30 +64,98 @@ angular.module('main')
 
     $scope.$watch('filter', listUpdate);
 
-    $scope.$watch('$root.state.params.id', function (id) {
+    $scope.loadTriggerSuggestions = function () {
+      return st2api.client.triggerTypes.list().then(function (triggerTypes) {
+        $scope.triggerSuggestionSpec = {
+          enum:_.map(triggerTypes, function (trigger) {
+            return {
+              name: trigger.ref,
+              description: trigger.description
+            };
+          }),
+          name: 'name'
+        };
+        $scope.$apply();
+      });
+    };
+
+    $scope.loadActionSuggestions = function () {
+      return st2api.client.actionOverview.list().then(function (actions) {
+        $scope.actionSuggestionSpec = {
+          enum:_.map(actions, function (action) {
+            return {
+              name: action.ref,
+              description: action.description
+            };
+          }),
+          name: 'name'
+        };
+        $scope.$apply();
+      });
+    };
+
+    $scope.loadTrigger = function (ref) {
+      if (!ref) {
+        return;
+      }
+
+      return st2api.client.triggerTypes.get(ref).then(function (triggerTypes) {
+        $scope.triggerSchema = triggerTypes.parameters_schema.properties;
+        $scope.$apply();
+      });
+    };
+
+    $scope.loadAction = function (ref) {
+      if (!ref) {
+        return;
+      }
+
+      return st2api.client.actionOverview.get(ref).then(function (action) {
+        $scope.actionSchema = action.parameters;
+        $scope.$apply();
+      });
+    };
+
+    $scope.loadRule = function (id) {
       var promise = id ? st2api.client.rules.get(id) : pRulesList.then(function (actions) {
         return _.first(actions);
       });
 
-      promise.then(function (rule) {
+      return promise.then(function (rule) {
         if (rule) {
           $scope.rule = rule;
-
-          st2api.client.triggerTypes.get(rule.trigger.type).then(function (triggerTypes) {
-            $scope.triggerSchema = triggerTypes.parameters_schema.properties;
-            $scope.$apply();
-          });
-
-          st2api.client.actionOverview.get(rule.action.ref)
-            .then(function (action) {
-              $scope.actionSchema = action.parameters;
-              $scope.$apply();
-            });
-
           $scope.$apply();
         }
       });
-    });
+    };
+
+    $scope.$watch('$root.state.params.id', $scope.loadRule);
+
+    $scope.$watch('rule.trigger.type', $scope.loadTrigger);
+    $scope.$watch('rule.action.ref', $scope.loadAction);
+
+    $scope.edit = function () {
+      $scope._edit = true;
+      $scope.loadTriggerSuggestions();
+      $scope.loadActionSuggestions();
+    };
+
+    $scope.submit = function () {
+      $scope._edit = false;
+      console.log('Result:', $scope.rule);
+      st2api.client.rules.edit($scope.rule).then(function (result) {
+        console.log(result);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    };
+
+    $scope.cancel = function () {
+      $scope._edit = false;
+      $scope.loadRule($scope.rule.id);
+
+      return false;
+    };
 
   })
 

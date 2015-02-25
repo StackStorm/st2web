@@ -84,77 +84,70 @@
   <div class="st2-panel__details st2-details"
       ng-show="rule">
 
-    <div class="st2-details__header">
-      <div class="st2-details__header-name">
-        <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
-        <a ui-sref="rules.general({id: rule.id})">
-          {{ rule.name }}
-        </a>
-      </div>
-      <div class="st2-details__header-description">{{ rule.description }}</div>
-    </div>
+    <form class="st2-details__form"
+        ng-submit="submit()">
 
-    <div class="st2-details__toolbar">
-      <!--
-      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          ng-click="edit = true">
-        Edit
-      </button>
-      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
-        Duplicate
-      </button>
-      <button class="st2-forms__button st2-forms__button--small st2-details__toolbar-button">
-        Delete
-      </button>
-      -->
-
-      <div class="st2-details__toolbar-separator"></div>
-
-      <div class="st2-details__switch st2-details__switch--of-two"
-          ng-class="{
-            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
-            'st2-details__switch--second': $root.isState('^.code')
-          }">
-        <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.general', {id: rule.id})">
-          <i class="st2-icon__cogs"></i>
+      <div class="st2-details__header">
+        <div class="st2-details__header-name">
+          <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+          <a ui-sref="rules.general({id: rule.id})">
+            {{ rule.name }}
+          </a>
         </div>
-        <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.code', {id: rule.id})">
-          <i class="st2-icon__code"></i>
-        </div>
+        <div class="st2-details__header-description">{{ rule.description }}</div>
       </div>
 
-    </div>
+      <div class="st2-details__toolbar">
+        <input type="button"
+            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+            ng-click="edit()"
+            value="Edit">
+        </input>
+        <input type="button"
+            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+            value="Duplicate">
+        </input>
+        <input type="button"
+            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+            value="Delete">
+        </input>
 
-    <div class="st2-details__body"
-        ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
-      <div class="st2-panel__scroller">
+        <div class="st2-details__toolbar-separator"></div>
 
-        <form>
+        <div class="st2-details__switch st2-details__switch--of-two"
+            ng-class="{
+              'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+              'st2-details__switch--second': $root.isState('^.code')
+            }">
+          <div class="st2-details__switch-item"
+              ng-click="$root.state.go('^.general', {id: rule.id})">
+            <i class="st2-icon__cogs"></i>
+          </div>
+          <div class="st2-details__switch-item"
+              ng-click="$root.state.go('^.code', {id: rule.id})">
+            <i class="st2-icon__code"></i>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="st2-details__body"
+          ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
+        <div class="st2-panel__scroller">
 
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Trigger</h2>
             </div>
             <div class="st2-manual-form st2-form-combobox"
-              spec="{
-                enum:[{
-                  name: 'a',
-                  description: 'b'
-                }, {
-                  name: 'b',
-                  description: 'c'
-                }],
-                name: 'name'
-              }"
-              disabled="!edit"
+              spec="triggerSuggestionSpec"
+              disabled="!_edit"
               result="rule.trigger.type">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="triggerSchema"
-                disabled="!edit"
+                disabled="!_edit"
                 result="rule.trigger.parameters">
               </div>
             </div>
@@ -168,7 +161,7 @@
 
               <div class="st2-criteria"
                 model="rule.criteria"
-                disabled="!edit">
+                disabled="!_edit">
               </div>
 
             </div>
@@ -179,41 +172,51 @@
               <h2 class="st2-details__panel-title">Action</h2>
             </div>
             <div class="st2-manual-form st2-form-combobox"
-              spec="{
-                enum:[{
-                  name: 'a',
-                  description: 'b'
-                }, {
-                  name: 'b',
-                  description: 'c'
-                }],
-                name: 'name'
-              }"
-              disabled="!edit"
+              spec="actionSuggestionSpec"
+              disabled="!_edit"
               result="rule.action.ref">
             </div>
             <div class="st2-details__panel-body">
               <div class="st2-auto-form"
                 spec="actionSchema"
-                disabled="!edit"
+                disabled="!_edit"
                 result="rule.action.parameters">
               </div>
             </div>
           </div>
 
-        </form>
+          <div class="st2-manual-form st2-form-checkbox"
+            spec="{
+              name: 'Enabled'
+            }"
+            disabled="!_edit"
+            result="rule.enabled">
+          </div>
 
+          <input type="submit"
+              class="st2-forms__button"
+              ng-show="_edit"
+              value="Save"/>
+
+          <input type="button"
+              class="st2-forms__button"
+              ng-click="cancel()"
+              ng-show="_edit"
+              value="Cancel"/>
+
+        </div>
       </div>
-    </div>
 
-    <div class="st2-details__body"
-        ng-class="{'st2-details__body--active': $root.isState('^.code')}">
-      <div class="st2-panel__scroller">
+      <div class="st2-details__body"
+          ng-class="{'st2-details__body--active': $root.isState('^.code')}">
+        <div class="st2-panel__scroller">
 
         <div class="st2-highlight" code="rule | json" lines="20"></div>
 
+        </div>
       </div>
-    </div>
+
+    </form>
 
   </div>
 

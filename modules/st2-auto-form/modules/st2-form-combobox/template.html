@@ -10,24 +10,24 @@
     class="st2-auto-form__field st2-auto-form__field--combo"
     placeholder="{{spec.default}}"
     ng-required="spec.required"
-    ng-model="result"
+    ng-model="rawResult"
     ng-model-options="options || {}"
-    ng-focus="toggleSuggestions(true)"
-    ng-blur="toggleSuggestions(false)"
+    ng-focus="focus()"
+    ng-blur="blur()"
     ng-disabled="disabled" />
 
-  <div class="st2-auto-form__suggestions"
-      ng-show="showSuggestions">
-    <div class="st2-auto-form__suggestion"
-        ng-repeat="suggestion in sample = (spec.enum | filter:{name:rawResult})"
-        ng-class="{'st2-auto-form__suggestion--active': $parent.selected == $index}"
-        ng-click="$parent.selected = $index">
-      <div class="st2-details__header-name">{{ suggestion.name }}</div>
-      <div class="st2-details__header-description">{{ suggestion.description }}</div>
-    </div>
-  </div>
-
 </label>
+
+<div class="st2-auto-form__suggestions"
+    ng-show="showSuggestions">
+  <div class="st2-auto-form__suggestion"
+      ng-repeat="suggestion in sample = (spec.enum | filter:{name:rawResult})"
+      ng-class="{'st2-auto-form__suggestion--active': $parent.selected == $index}"
+      ng-click="$parent.selected = $index">
+    <div class="st2-details__header-name">{{ suggestion.name }}</div>
+    <div class="st2-details__header-description">{{ suggestion.description }}</div>
+  </div>
+</div>
 
 <p class="st2-auto-form__description"
     ng-if="spec.description">
