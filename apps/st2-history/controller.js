@@ -207,6 +207,10 @@ angular.module('main')
 
         _.assign(node, record);
 
+        if ($scope.record.id === record.id) {
+          _.assign($scope.record, record);
+        }
+
         $scope.$apply();
       };
 
