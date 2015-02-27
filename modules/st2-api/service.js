@@ -13,7 +13,7 @@ angular.module('main')
       var client = st2client({
         protocol: parser.protocol.split(':')[0],
         host: parser.hostname,
-        port: parser.port,
+        port: parser.port || 80,
         token: !_.isEmpty(token) ? token : undefined
       });
 
