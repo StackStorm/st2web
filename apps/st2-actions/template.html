@@ -35,7 +35,7 @@
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"></i>
             </div>
-            <div class="st2-flex-table__column st2-actions__column-name">Name</div>
+            <div class="st2-flex-table__column st2-actions__column-name">Action</div>
             <div class="st2-flex-table__column st2-actions__column-type">Runner</div>
             <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
           </div>
@@ -51,8 +51,8 @@
                 ng-if="{'action': action} | isExpandable"></i>
             </div>
             <div class="st2-flex-table__column st2-actions__column-name"
-                title="{{ $root.getRef(action) }}">
-              {{ action.name }}
+                title="{{ action.ref }}">
+              {{ action.ref }}
             </div>
             <div class="st2-flex-table__column st2-actions__column-type"
                 title="{{ action.runner_type }}">
@@ -84,8 +84,8 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
-        <a ui-sref="actions.general({ref:$root.getRef(action)})">
-          {{ $root.getRef(action) }}
+        <a ui-sref="actions.general({ref:action.ref})">
+          {{ action.ref }}
         </a>
       </div>
       <div class="st2-details__header-description">{{ action.description }}</div>
@@ -178,7 +178,7 @@
 
                 <div class="st2-flex-table__column st2-actions__details-column-history"
                     title="Jump to History"
-                    ng-click="$root.state.go('history.general', {action: $root.getRef(action), id: record.id}); $event.stopPropagation()">
+                    ng-click="$root.state.go('history.general', {action: action.ref, id: record.id}); $event.stopPropagation()">
                   <i class="st2-icon__history"></i>
               </div>
 
@@ -205,7 +205,7 @@
             </div>
 
             <a class="st2-forms__button"
-                ui-sref="history.list({action: $root.getRef(action)})">
+                ui-sref="history.list({action: action.ref})">
               <i class="st2-icon__history"></i>
               See full action history
             </a>
