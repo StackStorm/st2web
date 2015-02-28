@@ -81,4 +81,17 @@
       display: none;
     }
   }
+
+  &--progress&--short {
+    animation: breathe 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes breathe {
+    0% {
+      background-color: #777;
+    }
+    100% {
+      background-color: #bbb;
+    }
+  }
 }
