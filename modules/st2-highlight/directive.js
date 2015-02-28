@@ -9,8 +9,6 @@ angular.module('main')
   })
   .directive('st2Highlight', function ($filter) {
 
-    var LINES_TO_SHOW = 5;
-
     function getType(string) {
       try {
         var o = JSON.parse(string);
@@ -30,6 +28,8 @@ angular.module('main')
     }
 
     function postLink(scope) {
+      var LINES_TO_SHOW = scope.lines ? parseInt(scope.lines) : 5;
+
       scope.$watch('code', function (code) {
         scope.type = getType(code);
 
@@ -75,7 +75,8 @@ angular.module('main')
       restrict: 'C',
       scope: {
         code: '=',
-        full: '@'
+        full: '@',
+        lines: '@'
       },
       templateUrl: 'modules/st2-highlight/template.html',
       link: postLink
