@@ -106,7 +106,12 @@
                 ng-if="view.trigger.value">
               <span ng-switch-when="true"
                   title="{{ record.rule.name }} ({{ record.trigger.type }})">
-                {{ record.rule.name }} ({{ record.trigger.type }})
+                <span class="st2-history__column-rule-name">
+                  {{ record.rule.name }}
+                </span>
+                <span class="st2-history__column-trigger-type">
+                  {{ record.trigger.type }}
+                </span>
               </span>
               <span ng-switch-default>Manual</span>
             </div>

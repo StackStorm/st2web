@@ -24,14 +24,16 @@
       flex: 0 90px;
     }
     &-action {
-      flex: 2 90px;
+      flex: 3 90px;
     }
     &-triggered {
-      flex: 3 90px;
+      flex: 2 90px;
     }
   }
 
-  &__column-action-name {
+  &__column-action-name,
+  &__column-rule-name,
+  &__column-trigger-type {
     font-weight: bold;
     line-height: normal;
 
@@ -39,6 +41,10 @@
     overflow: hidden;
 
     text-overflow: ellipsis;
+  }
+
+  &__column-trigger-type {
+    font-weight: normal;
   }
 
   &__column-action-params {
