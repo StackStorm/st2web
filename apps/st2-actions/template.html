@@ -35,7 +35,7 @@
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"></i>
             </div>
-            <div class="st2-flex-table__column st2-actions__column-name">Name</div>
+            <div class="st2-flex-table__column st2-actions__column-name">Action</div>
             <div class="st2-flex-table__column st2-actions__column-type">Runner</div>
             <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
           </div>
@@ -51,8 +51,8 @@
                 ng-if="{'action': action} | isExpandable"></i>
             </div>
             <div class="st2-flex-table__column st2-actions__column-name"
-                title="{{ $root.getRef(action) }}">
-              {{ action.name }}
+                title="{{ action.ref }}">
+              {{ action.ref }}
             </div>
             <div class="st2-flex-table__column st2-actions__column-type"
                 title="{{ action.runner_type }}">
@@ -84,8 +84,8 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
-        <a ui-sref="actions.general({ref:$root.getRef(action)})">
-          {{ $root.getRef(action) }}
+        <a ui-sref="actions.general({ref:action.ref})">
+          {{ action.ref }}
         </a>
       </div>
       <div class="st2-details__header-description">{{ action.description }}</div>
@@ -146,12 +146,6 @@
           <div class="st2-details__panel-body">
 
             <div class="st2-flex-table" ng-if="!_.isEmpty(history)">
-              <div class="st2-flex-table__header">
-                <div class="st2-flex-table__column st2-actions__details-column-utility"></div>
-                <div class="st2-flex-table__column st2-actions__details-column-meta"></div>
-                <div class="st2-flex-table__column st2-actions__details-column-time">Time</div>
-              </div>
-
               <div class="st2-flex-table__row"
                   ng-class-odd="'st2-flex-table__row--odd'"
                   ng-class-even="'st2-flex-table__row--even'"
@@ -171,7 +165,7 @@
                       ng-if="(record | isExpandable)"></i>
                   </div>
                   <!-- <div class="st2-actions__details-column-meta-time">
-                    {{ record.start_timestamp | date:'mediumTime' }}
+                    {{ record.start_timestamp | date:'mediumTime':'UTC' }}
                   </div> -->
                 </div>
 
@@ -179,11 +173,12 @@
                   <div class="st2-label" status="record.status"></div>
                 </div> -->
                 <div class="st2-flex-table__column st2-actions__details-column-time">
-                  {{ record.start_timestamp | date:'medium' }}
+                  {{ record.start_timestamp | date:'medium':'UTC' }}
                 </div>
 
                 <div class="st2-flex-table__column st2-actions__details-column-history"
-                    ng-click="$root.state.go('history.general', {action: $root.getRef(action), id: record.id}); $event.stopPropagation()">
+                    title="Jump to History"
+                    ng-click="$root.state.go('history.general', {action: action.ref, id: record.id}); $event.stopPropagation()">
                   <i class="st2-icon__history"></i>
               </div>
 
@@ -210,8 +205,8 @@
             </div>
 
             <a class="st2-forms__button"
-                ui-sref="history.list({action: $root.getRef(action)})">
-              <i class="st2-icon__eye"></i>
+                ui-sref="history.list({action: action.ref})">
+              <i class="st2-icon__history"></i>
               See full action history
             </a>
           </div>
@@ -231,7 +226,7 @@
             <h2 class="st2-details__panel-title">File</h2>
           </div>
           <div class="st2-details__panel-body">
-            <div class="st2-highlight" code="file" full="true"></div>
+            <div class="st2-highlight" code="file" lines="20"></div>
           </div>
         </div>
 
