@@ -165,7 +165,7 @@
                       ng-if="(record | isExpandable)"></i>
                   </div>
                   <!-- <div class="st2-actions__details-column-meta-time">
-                    {{ record.start_timestamp | date:'mediumTime' }}
+                    {{ record.start_timestamp | date:'mediumTime':'UTC' }}
                   </div> -->
                 </div>
 
@@ -173,7 +173,7 @@
                   <div class="st2-label" status="record.status"></div>
                 </div> -->
                 <div class="st2-flex-table__column st2-actions__details-column-time">
-                  {{ record.start_timestamp | date:'medium' }}
+                  {{ record.start_timestamp | date:'medium':'UTC' }}
                 </div>
 
                 <div class="st2-flex-table__column st2-actions__details-column-history"
