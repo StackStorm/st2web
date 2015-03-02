@@ -19,6 +19,9 @@ angular.module('main')
       .state('history.general', {
         url: '/{id:\\w+}/general?page&status&action&rule&trigger&trigger_type'
       })
+      .state('history.code', {
+        url: '/{id:\\w+}/code?page&status&action&rule&trigger&trigger_type'
+      })
 
       ;
 

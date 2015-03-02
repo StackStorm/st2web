@@ -181,7 +181,29 @@
       <div class="st2-details__header-description">{{ record.action.description }}</div>
     </div>
 
-    <div class="st2-details__body st2-details__body--active">
+    <div class="st2-details__toolbar">
+
+      <div class="st2-details__toolbar-separator"></div>
+
+      <div class="st2-details__switch st2-details__switch--of-two"
+          ng-class="{
+            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+            'st2-details__switch--second': $root.isState('^.code')
+          }">
+        <div class="st2-details__switch-item"
+            ng-click="$root.state.go('^.general', {id: record.id})">
+          <i class="st2-icon__cogs"></i>
+        </div>
+        <div class="st2-details__switch-item"
+            ng-click="$root.state.go('^.code', {id: record.id})">
+          <i class="st2-icon__code"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
 
       <div class="st2-panel__scroller">
 
@@ -290,6 +312,20 @@
 
       </div>
     </div>
+
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': $root.isState('^.code')}">
+      <div class="st2-panel__scroller">
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-body">
+            <div class="st2-highlight" code="record | json" lines="20"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
 </main>
