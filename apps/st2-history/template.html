@@ -113,7 +113,14 @@
                   {{ record.trigger.type }}
                 </span>
               </span>
-              <span ng-switch-default>Manual</span>
+              <span ng-switch-default>
+                <span class="st2-history__column-app-name">
+                  Manual
+                </span>
+                <span class="st2-history__column-user-name">
+                  by {{ record.context.user }}
+                </span>
+              </span>
             </div>
 
           </div>
