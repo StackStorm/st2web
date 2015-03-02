@@ -14,13 +14,13 @@
         <div class="st2-panel__toolbar-filters"
             ng-show="filters">
           <div class="st2-filter" filters="filters" type="status"
-            ng-hide="_.isEmpty(filters['status'])"></div>
+            ng-if="!_.isEmpty(filters['status'])"></div>
           <div class="st2-filter" filters="filters" type="action"
-            ng-hide="_.isEmpty(filters['action'])"></div>
+            ng-if="!_.isEmpty(filters['action'])"></div>
           <div class="st2-filter" filters="filters" type="trigger_type" label="Trigger Type"
-            ng-hide="_.isEmpty(filters['trigger_type'])"></div>
+            ng-if="!_.isEmpty(filters['trigger_type'])"></div>
           <div class="st2-filter" filters="filters" type="rule"
-            ng-hide="_.isEmpty(filters['rule'])"></div>
+            ng-if="!_.isEmpty(filters['rule'])"></div>
         </div>
 
         <div class="st2-panel__toolbar-view">
