@@ -17,6 +17,7 @@ angular.module('main')
         };
 
         scope.user = st2api.token.user;
+        scope.server = st2api.server;
 
         scope.disconnect = function () {
           st2api.disconnect();
