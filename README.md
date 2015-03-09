@@ -1,7 +1,7 @@
 StackStorm Web UI
 =================
 
-![web ui](https://cloud.githubusercontent.com/assets/125088/5877908/3d5aa02a-a323-11e4-9c7b-1a14a3eb0f60.png)
+![web ui](https://cloud.githubusercontent.com/assets/1357357/6550802/b527c566-c64f-11e4-91e7-d2454404a3e4.png)
 
 Quick start
 -----------
