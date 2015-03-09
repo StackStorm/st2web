@@ -1,7 +1,7 @@
 StackStorm Web UI
 =================
 
-![web ui](https://cloud.githubusercontent.com/assets/125088/5877908/3d5aa02a-a323-11e4-9c7b-1a14a3eb0f60.png)
+![web ui](https://cloud.githubusercontent.com/assets/1357357/6550802/b527c566-c64f-11e4-91e7-d2454404a3e4.png)
 
 Quick start
 -----------
@@ -104,3 +104,15 @@ You should also make sure, StackStorm is running and in the stock state. For tha
 [devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/st2) README files.
 
 After that, `gulp test` should finish successfully.
+
+Copyright, License, and Contributors Agreement
+----------------------------------------------
+
+Copyright 2015 StackStorm, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+By contributing you agree that these contributions are your own (or approved by your employer) and you grant a full, complete, irrevocable copyright license to all users and developers of the project, present and future, pursuant to the license of the project.
+
