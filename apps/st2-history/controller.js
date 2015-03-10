@@ -114,6 +114,7 @@ angular.module('main')
 
       pHistoryList = st2api.client.executions.list(_.assign({
         parent: 'null',
+        exclude_attributes: 'result,trigger_instance',
         page: $rootScope.page
       }, $scope.$root.active_filters));
 
@@ -148,7 +149,7 @@ angular.module('main')
       }
 
       var promise = id ? st2api.client.executions.get(id) : pHistoryList.then(function (records) {
-        return _.first(records);
+        return st2api.client.executions.get(_.first(records).id);
       });
 
       promise.then(function (record) {
