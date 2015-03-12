@@ -35,7 +35,7 @@ angular.module('main')
     st2LoaderService.reset();
     st2LoaderService.start();
 
-    var pActionList = st2api.client.actionOverview.list().then(function (result) {
+    var pActionList = st2api.client.actions.list().then(function (result) {
       st2LoaderService.stop();
       return result;
     }).catch(function (err) {
@@ -72,7 +72,7 @@ angular.module('main')
 
     $scope.$watch('$root.state.params.ref', function (ref) {
       var promise = ref ? st2api.client.actionOverview.get(ref) : pActionList.then(function (actions) {
-        return _.first(actions);
+        return st2api.client.actionOverview.get(_.first(actions).ref);
       });
 
       promise.then(function (action) {
