@@ -7,15 +7,34 @@ angular.module('main')
     this.token = {};
 
     var initClient = function (server, token) {
-      var parser = document.createElement('a');
-      parser.href = _.find(st2Config.hosts, {url: server.url}) && server.url || _.first(st2Config.hosts).url;
+      var url = (function () {
+        if (_.find(st2Config.hosts, {url: server.url})) {
+          return server.url;
+        } else {
+          return _.first(st2Config.hosts).url;
+        }
+      })();
 
-      var client = st2client({
-        protocol: parser.protocol.split(':')[0],
-        host: parser.hostname,
-        port: parser.port || 80,
+      var api = new URI.parse(url);
+
+      var opts = {
+        protocol: api.protocol,
+        host: api.hostname,
+        port: api.port,
         token: !_.isEmpty(token) ? token : undefined
-      });
+      };
+
+      if (server.auth && _.isString(server.auth)) {
+        var auth = URI.parse(server.auth);
+
+        opts['auth'] = {
+          protocol: auth.protocol,
+          host: auth.hostname,
+          port: auth.port
+        };
+      }
+
+      var client = st2client(opts);
 
       client.executions.limit = $rootScope.limit = 50;
 
@@ -30,7 +49,14 @@ angular.module('main')
       var promise;
 
       if (server.auth && user && password) {
-        promise = this.client.authenticate(user, password).then(function (token) {
+        promise = this.client.authenticate(user, password).catch(function (err) {
+          if (err.status === 0) {
+            throw {
+              name: 'RequestError',
+              message: 'Unable to reach auth service. [auth:' + server.auth + ']'
+            };
+          }
+        }).then(function (token) {
           this.token = token;
         }.bind(this));
       } else {
