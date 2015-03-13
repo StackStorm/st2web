@@ -1,11 +1,11 @@
 .st2-label {
   font-size: 12px;
   font-weight: bold;
-  line-height: 12px;
+  line-height: 11px;
 
   display: inline-block;
 
-  padding: 3px 6px;
+  padding: 8px 10px;
 
   text-align: center;
   vertical-align: middle;
@@ -56,6 +56,8 @@
   &--succeeded {
     background-color: #5cb85c;
     &:before {
+      display: none;
+
       content: '\e80a';
     }
   }
@@ -73,6 +75,7 @@
     box-sizing: border-box;
     width: 13px;
     height: 13px;
+    padding: 0;
 
     color: transparent;
     border-radius: 50%;
