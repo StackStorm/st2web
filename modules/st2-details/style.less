@@ -39,6 +39,8 @@
       margin: 0;
       padding: 15px;
 
+      color: rgb(216, 216, 216);
+
       &::-webkit-scrollbar {
         width: 5px;
         height: 5px;
@@ -236,7 +238,7 @@
     }
 
     &-description {
-      font-size: 15px;
+      font-size: 14px;
 
       opacity: .5;
     }
@@ -299,6 +301,7 @@
 
     display: flex;
 
+    color: #848484;
     border: 1px solid;
     border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
     border-radius: 4px;
@@ -315,6 +318,10 @@
 
       cursor: pointer;
       text-align: center;
+    }
+
+    &:hover {
+      color: white;
     }
 
     &:before {
