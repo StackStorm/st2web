@@ -42,7 +42,7 @@ angular.module('main')
       return result;
     }).catch(function (err) {
       $scope.rules = [];
-      $scope.error = err.message;
+      $scope.error = true;
 
       console.error('Failed to fetch the data: ', err);
       st2LoaderService.stop();

@@ -156,18 +156,21 @@
 
         <div class="st2-panel__content-error"
             ng-if="error && _.isEmpty(groups)">
-          Request failed: {{ error }}
+          <p class="st2-panel__content-error-title">Unable to reach API server</p>
+          <p>Check developer console of your browser for more info.</p>
         </div>
       </div>
 
       <button class="st2-panel__prev-button st2-forms__button-left"
           ng-click="prevPage()"
-          ng-class="{'st2-forms__button-left--disabled': ($root.page || 1) < 2}">
+          ng-class="{'st2-forms__button-left--disabled': ($root.page || 1) < 2}"
+          ng-if="!error && !_.isEmpty(groups)">
         Previous
       </button>
       <button class="st2-panel__next-button st2-forms__button-right"
           ng-click="nextPage()"
-          ng-class="{'st2-forms__button-right--disabled': ($root.page || 1) >= $root.maxPage}">
+          ng-class="{'st2-forms__button-right--disabled': ($root.page || 1) >= $root.maxPage}"
+          ng-if="!error && !_.isEmpty(groups)">
         Next
       </button>
 
