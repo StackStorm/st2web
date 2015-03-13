@@ -36,11 +36,8 @@ angular.module('main')
       st2api.connect(server, user, password, remember).then(function () {
         $rootScope.$broadcast('$locationChangeSuccess');
       }).catch(function (err) {
-        if (err.status === 0) {
-          $scope.error = 'Unable to reach st2 service at url: ' + server.url;
-        } else {
-          $scope.error = err.message.faultstring || err.message;
-        }
+        $scope.error = err.message.faultstring || err.message;
+
         $scope.$apply();
       });
     };

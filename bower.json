@@ -19,6 +19,15 @@
     "angular-moment": "~0.8.0",
     "angular-mocks": "~1.3.4",
     "angular-sanitize": "~1.3.4",
-    "highlightjs-v8.1": "~8.2.0"
+    "highlightjs-v8.1": "~8.2.0",
+    "uri.js": "~1.14.2"
+  },
+  "overrides": {
+    "uri.js": {
+      "main": "src/URI.js"
+    },
+    "jquery": {
+      "main": []
+    }
   }
 }
