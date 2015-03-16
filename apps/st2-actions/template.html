@@ -71,7 +71,8 @@
 
         <div class="st2-panel__content-error"
             ng-if="error && _.isEmpty(groups)">
-          Request failed: {{ error }}
+          <p class="st2-panel__content-error-title">Unable to reach API server</p>
+          <p>Check developer console of your browser for more info.</p>
         </div>
       </div>
     </div>
