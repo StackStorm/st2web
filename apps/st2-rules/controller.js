@@ -135,6 +135,7 @@ angular.module('main')
     $scope.$watch('rule.action.ref', $scope.loadAction);
 
     $scope.edit = function () {
+      $scope.rule = angular.copy($scope.rule);
       $scope.loadTriggerSuggestions();
       $scope.loadActionSuggestions();
       $scope.$root.go({id: $scope.rule.id, edit: true});
@@ -150,7 +151,9 @@ angular.module('main')
     };
 
     $scope.cancel = function () {
-      $scope.loadRule($scope.rule.id);
+      $scope.loadRule($scope.rule.id).then(function () {
+        $scope.form.$setPristine();
+      });
       $scope.$root.go({id: $scope.rule.id, edit: undefined});
     };
 

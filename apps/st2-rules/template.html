@@ -85,7 +85,8 @@
       ng-show="rule">
 
     <form class="st2-details__form"
-        ng-submit="submit()">
+        ng-submit="submit()"
+        name="form">
 
       <div class="st2-details__header">
         <div class="st2-details__header-name">
@@ -101,16 +102,27 @@
         <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
             ng-click="edit()"
-            value="Edit">
-        </input>
+            ng-hide="$root.state.params.edit"
+            value="Edit"/>
         <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            value="Duplicate">
-        </input>
+            ng-hide="$root.state.params.edit"
+            value="Duplicate"/>
         <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            value="Delete">
-        </input>
+            ng-hide="$root.state.params.edit"
+            value="Delete"/>
+
+        <input type="submit"
+            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+            ng-show="$root.state.params.edit"
+            ng-disabled="form.$pristine || form.$invalid"
+            value="Save"/>
+        <input type="button"
+            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+            ng-click="cancel()"
+            ng-show="$root.state.params.edit"
+            value="Cancel"/>
 
         <div class="st2-details__toolbar-separator"></div>
 
@@ -134,6 +146,23 @@
       <div class="st2-details__body"
           ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
         <div class="st2-panel__scroller">
+
+          <div class="st2-details__panel">
+            <div class="st2-details__panel-heading">
+              <h2 class="st2-details__panel-title">Rule</h2>
+            </div>
+            <div class="st2-manual-form st2-form-input"
+              spec="{
+                name: 'Name'
+              }"
+              result="rule.name">
+            </div>
+            <div class="st2-manual-form st2-form-input"
+              spec="{name: 'Description'}"
+              ng-show="$root.state.params.edit"
+              result="rule.description">
+            </div>
+          </div>
 
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
@@ -192,17 +221,6 @@
             disabled="!$root.state.params.edit"
             result="rule.enabled">
           </div>
-
-          <input type="submit"
-              class="st2-forms__button"
-              ng-show="$root.state.params.edit"
-              value="Save"/>
-
-          <input type="button"
-              class="st2-forms__button"
-              ng-click="cancel()"
-              ng-show="$root.state.params.edit"
-              value="Cancel"/>
 
         </div>
       </div>
