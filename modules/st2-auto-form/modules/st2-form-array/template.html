@@ -10,8 +10,9 @@
     class="st2-auto-form__field"
     placeholder="{{spec.default.join(', ')}}"
     ng-required="spec.required"
-    ng-model="_value"
+    ng-model="ngModel"
     ng-model-options="options || {}"
+    ng-list
     ng-disabled="disabled" />
 
 </label>

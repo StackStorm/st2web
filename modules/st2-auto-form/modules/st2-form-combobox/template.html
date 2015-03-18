@@ -11,7 +11,9 @@
     placeholder="{{spec.default}}"
     ng-required="spec.required"
     ng-model="rawResult"
-    ng-model-options="options || {}"
+    ng-model-options="options || {
+      allowInvalid: true
+    }"
     ng-focus="focus()"
     ng-blur="blur()"
     ng-enums="spec.enum"

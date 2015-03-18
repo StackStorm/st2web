@@ -4,7 +4,7 @@
   <div class="st2-manual-form st2-form-input st2-criteria__entity"
       disabled="disabled"
       options="{updateOn: 'blur'}"
-      result="key">
+      ng-model="key">
   </div>
   <div class="st2-manual-form st2-form-select st2-criteria__entity"
       spec="{
@@ -35,11 +35,11 @@
         ]
       }"
       disabled="disabled"
-      result="item.type">
+      ng-model="item.type">
   </div>
   <div class="st2-manual-form st2-form-input st2-criteria__entity"
       disabled="disabled"
-      result="item.pattern">
+      ng-model="item.pattern">
   </div>
   <i class="st2-icon__cancel st2-criteria__remove"
       ng-if="!disabled"

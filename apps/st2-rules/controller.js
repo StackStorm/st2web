@@ -98,6 +98,7 @@ angular.module('main')
 
     $scope.loadTrigger = function (ref) {
       if (!ref) {
+        $scope.triggerSchema = null;
         return;
       }
 
@@ -109,6 +110,7 @@ angular.module('main')
 
     $scope.loadAction = function (ref) {
       if (!ref) {
+        $scope.actionSchema = null;
         return;
       }
 
