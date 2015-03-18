@@ -147,19 +147,20 @@
           ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
         <div class="st2-panel__scroller">
 
-          <div class="st2-details__panel">
+          <div class="st2-details__panel"
+              ng-show="$root.state.params.edit">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Rule</h2>
             </div>
             <div class="st2-manual-form st2-form-input"
               spec="{
-                name: 'Name'
+                name: 'Name',
+                pattern: '^[\\w.-]+$'
               }"
               result="rule.name">
             </div>
             <div class="st2-manual-form st2-form-input"
               spec="{name: 'Description'}"
-              ng-show="$root.state.params.edit"
               result="rule.description">
             </div>
           </div>

@@ -53,4 +53,28 @@ angular.module('main')
 
   })
 
+  .directive('ngEnums', function enumDirective() {
+    return {
+      require: '?ngModel',
+      restrict: 'A',
+      scope: {
+        ngEnums: '='
+      },
+      link: function(scope, elm, attrs, ctrl) {
+        if (!ctrl) {
+          return;
+        }
+
+        scope.$watch('ngEnums', function () {
+          ctrl.$validate();
+        });
+
+        ctrl.$validators.enums = function (value) {
+          var enums = scope['ngEnums'];
+          return _.isEmpty(value) || _.isUndefined(enums) || _.some(enums, {name: value});
+        };
+      }
+    };
+  })
+
   ;

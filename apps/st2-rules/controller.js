@@ -73,7 +73,8 @@ angular.module('main')
               description: trigger.description
             };
           }),
-          name: 'name'
+          name: 'name',
+          required: true
         };
         $scope.$apply();
       });
@@ -88,7 +89,8 @@ angular.module('main')
               description: action.description
             };
           }),
-          name: 'name'
+          name: 'name',
+          required: true
         };
         $scope.$apply();
       });
@@ -131,13 +133,18 @@ angular.module('main')
 
     $scope.$watch('$root.state.params.id', $scope.loadRule);
 
+    $scope.$watch('$root.state.params.edit', function (edit) {
+      if (edit) {
+        $scope.loadTriggerSuggestions();
+        $scope.loadActionSuggestions();
+      }
+    });
+
     $scope.$watch('rule.trigger.type', $scope.loadTrigger);
     $scope.$watch('rule.action.ref', $scope.loadAction);
 
     $scope.edit = function () {
       $scope.rule = angular.copy($scope.rule);
-      $scope.loadTriggerSuggestions();
-      $scope.loadActionSuggestions();
       $scope.$root.go({id: $scope.rule.id, edit: true});
     };
 
