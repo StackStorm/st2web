@@ -56,6 +56,8 @@ angular.module('main')
               message: 'Unable to reach auth service. [auth:' + server.auth + ']'
             };
           }
+
+          throw err;
         }).then(function (token) {
           this.token = token;
         }.bind(this));
