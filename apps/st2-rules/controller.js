@@ -147,14 +147,21 @@ angular.module('main')
 
     $scope.edit = function () {
       $scope.rule = angular.copy($scope.rule);
+      $scope.form.saved = false;
+      $scope.form.err = false;
       $scope.$root.go({id: $scope.rule.id, edit: true});
     };
 
     $scope.submit = function () {
       st2api.client.rules.edit($scope.rule).then(function (rule) {
-        $scope.rule = rule;
+        $scope.form.$setPristine();
+        $scope.form.saved = true;
+        $scope.$apply();
         $scope.$root.go({id: rule.id, edit: undefined});
       }).catch(function (error) {
+        $scope.form.err = true;
+        $scope.$apply();
+        $scope.form.err = false; // that a hack and there should be another way to rerun animation
         console.error(error);
       });
     };

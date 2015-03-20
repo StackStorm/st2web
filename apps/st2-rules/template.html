@@ -104,14 +104,14 @@
             ng-click="edit()"
             ng-hide="$root.state.params.edit"
             value="Edit"/>
-        <input type="button"
+        <!-- <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
             ng-hide="$root.state.params.edit"
             value="Duplicate"/>
         <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
             ng-hide="$root.state.params.edit"
-            value="Delete"/>
+            value="Delete"/> -->
 
         <input type="submit"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
@@ -124,7 +124,17 @@
             ng-show="$root.state.params.edit"
             value="Cancel"/>
 
-        <div class="st2-details__toolbar-separator"></div>
+        <div class="st2-details__toolbar-separator">
+          <span class="st2-details__toolbar-message st2-details__toolbar-message-saved"
+              ng-show="form.saved">
+            Saved!
+          </span>
+
+          <span class="st2-details__toolbar-message st2-details__toolbar-message-error"
+              ng-show="form.err">
+            Error! Check console.
+          </span>
+        </div>
 
         <div class="st2-details__switch st2-details__switch--of-two"
             ng-class="{
