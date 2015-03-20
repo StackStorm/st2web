@@ -33,6 +33,7 @@ angular.module('main')
   .controller('st2RulesCtrl', function ($scope, st2api, st2LoaderService) {
 
     $scope.filter = '';
+    $scope.error = null;
 
     st2LoaderService.reset();
     st2LoaderService.start();
@@ -42,7 +43,7 @@ angular.module('main')
       return result;
     }).catch(function (err) {
       $scope.rules = [];
-      $scope.error = true;
+      $scope.error = err;
 
       console.error('Failed to fetch the data: ', err);
       st2LoaderService.stop();

@@ -71,9 +71,22 @@
         </div>
 
         <div class="st2-panel__content-error"
-            ng-if="error && _.isEmpty(groups)">
-          <p class="st2-panel__content-error-title">Unable to reach API server</p>
-          <p>Check developer console of your browser for more info.</p>
+            ng-if="error && _.isEmpty(groups)"
+            ng-switch="error.status">
+          <div ng-switch-when="401">
+            <p class="st2-panel__content-error-title">
+              This server requires authentication
+            </p>
+            <p>
+              For information on how to set up authentication, please refer to
+              <a href="http://docs.stackstorm.com/webui.html#authentication">this section</a>
+              of StackStorm WebUI docs.
+            </p>
+          </div>
+          <div ng-switch-default>
+            <p class="st2-panel__content-error-title">Unable to reach API server</p>
+            <p>Check developer console of your browser for more info.</p>
+          </div>
         </div>
       </div>
     </div>

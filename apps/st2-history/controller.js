@@ -129,7 +129,7 @@ angular.module('main')
         $scope.$apply();
       }).catch(function (err) {
         $scope.groups = [];
-        $scope.error = err.message;
+        $scope.error = err;
 
         console.error('Failed to fetch the data: ', err);
         st2LoaderService.stop();
