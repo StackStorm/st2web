@@ -107,11 +107,12 @@
         <!-- <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
             ng-hide="$root.state.params.edit"
-            value="Duplicate"/>
+            value="Duplicate"/> -->
         <input type="button"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
             ng-hide="$root.state.params.edit"
-            value="Delete"/> -->
+            ng-click="delete()"
+            value="Delete"/>
 
         <input type="submit"
             class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"

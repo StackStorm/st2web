@@ -173,6 +173,22 @@ angular.module('main')
       $scope.$root.go({id: $scope.rule.id, edit: undefined});
     };
 
+    $scope.delete = function () {
+      var result = window.confirm('Do you really want to delete rule "' + $scope.rule.name + '"?');
+      if (!result) {
+        return;
+      }
+
+      st2api.client.rules.delete($scope.rule.id).then(function () {
+        $scope.$root.state.go('^.list', {}, {reload: true});
+      }).catch(function (error) {
+        $scope.form.err = true;
+        $scope.$apply();
+        $scope.form.err = false; // that a hack and there should be another way to rerun animation
+        console.error(error);
+      });
+    };
+
   })
 
   ;
