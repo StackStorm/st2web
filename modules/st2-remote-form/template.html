@@ -1,0 +1,18 @@
+<div class="st2-manual-form st2-form-combobox"
+  name="{{name}}"
+  spec="suggestionSpec"
+  ng-enums="suggestionSpec.enum"
+  disabled="disabled"
+  ng-model="ngModel[IDENT]">
+</div>
+<div ng-switch="form[name].$valid">
+  <div class="st2-auto-form__description"
+      ng-switch-when="false">
+    Pick valid {{name}} from the list to see its parameters.
+  </div>
+  <div class="st2-auto-form"
+    spec="formSpec"
+    disabled="disabled"
+    result="ngModel.parameters">
+  </div>
+</div>

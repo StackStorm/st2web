@@ -34,6 +34,17 @@ angular.module('main')
 
     $scope.filter = '';
 
+    $scope.metaSpec = {
+      name: {
+        type: 'string',
+        required: true,
+        pattern: '^[\\w.-]+$'
+      },
+      description: {
+        type: 'string'
+      }
+    };
+
     st2LoaderService.reset();
     st2LoaderService.start();
 
@@ -64,60 +75,51 @@ angular.module('main')
 
     $scope.$watch('filter', listUpdate);
 
-    $scope.loadTriggerSuggestions = function () {
-      return st2api.client.triggerTypes.list().then(function (triggerTypes) {
-        $scope.triggerSuggestionSpec = {
-          enum:_.map(triggerTypes, function (trigger) {
-            return {
-              name: trigger.ref,
-              description: trigger.description
-            };
-          }),
-          name: 'name',
-          required: true
-        };
-        $scope.$apply();
-      });
+    $scope.triggerSuggester = function () {
+      return st2api.client.triggerTypes.list()
+        .then(function (triggerTypes) {
+          return {
+            enum:_.map(triggerTypes, function (trigger) {
+              return {
+                name: trigger.ref,
+                description: trigger.description
+              };
+            }),
+            name: 'name',
+            required: true
+          };
+        });
     };
 
-    $scope.loadActionSuggestions = function () {
-      return st2api.client.actionOverview.list().then(function (actions) {
-        $scope.actionSuggestionSpec = {
-          enum:_.map(actions, function (action) {
-            return {
-              name: action.ref,
-              description: action.description
-            };
-          }),
-          name: 'name',
-          required: true
-        };
-        $scope.$apply();
-      });
+    $scope.actionSuggester = function () {
+      return st2api.client.actionOverview.list()
+        .then(function (actions) {
+          return {
+            enum:_.map(actions, function (action) {
+              return {
+                name: action.ref,
+                description: action.description
+              };
+            }),
+            name: 'name',
+            required: true
+          };
+        });
     };
 
-    $scope.loadTrigger = function (ref) {
-      if (!ref) {
-        $scope.triggerSchema = null;
-        return;
-      }
-
-      return st2api.client.triggerTypes.get(ref).then(function (triggerTypes) {
-        $scope.triggerSchema = triggerTypes.parameters_schema.properties;
-        $scope.$apply();
-      });
+    $scope.triggerLoader = function (ref) {
+      return st2api.client.triggerTypes.get(ref)
+        .then(function (triggerTypes) {
+          return triggerTypes.parameters_schema.properties;
+        });
     };
 
-    $scope.loadAction = function (ref) {
-      if (!ref) {
-        $scope.actionSchema = null;
-        return;
-      }
 
-      return st2api.client.actionOverview.get(ref).then(function (action) {
-        $scope.actionSchema = action.parameters;
-        $scope.$apply();
-      });
+    $scope.actionLoader = function (ref) {
+      return st2api.client.actionOverview.get(ref)
+        .then(function (action) {
+          return action.parameters;
+        });
     };
 
     $scope.loadRule = function (id) {
@@ -134,16 +136,6 @@ angular.module('main')
     };
 
     $scope.$watch('$root.state.params.id', $scope.loadRule);
-
-    $scope.$watch('$root.state.params.edit', function (edit) {
-      if (edit) {
-        $scope.loadTriggerSuggestions();
-        $scope.loadActionSuggestions();
-      }
-    });
-
-    $scope.$watch('rule.trigger.type', $scope.loadTrigger);
-    $scope.$watch('rule.action.ref', $scope.loadAction);
 
     $scope.edit = function () {
       $scope.rule = angular.copy($scope.rule);

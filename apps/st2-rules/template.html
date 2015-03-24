@@ -170,17 +170,13 @@
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Rule</h2>
             </div>
-            <div class="st2-manual-form st2-form-input"
-              name="name"
-              spec="{
-                pattern: '^[\\w.-]+$',
-                required: true
-              }"
-              ng-model="rule.name">
-            </div>
-            <div class="st2-manual-form st2-form-input"
-              name="description"
-              ng-model="rule.description">
+            <div class="st2-details__panel-body">
+
+              <div class="st2-auto-form"
+                spec="metaSpec"
+                result="rule">
+              </div>
+
             </div>
           </div>
 
@@ -188,25 +184,16 @@
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Trigger</h2>
             </div>
-            <div class="st2-manual-form st2-form-combobox"
-              name="trigger"
-              spec="triggerSuggestionSpec"
-              ng-enums="triggerSuggestionSpec.enum"
-              disabled="!$root.state.params.edit"
-              ng-model="rule.trigger.type">
-            </div>
-            <div class="st2-details__panel-body"
-                ng-switch="form.trigger.$valid">
-              <div class="st2-auto-form__description"
-                  ng-switch-when="false">
-                Pick valid trigger from the list to see its parameters.
+            <div class="st2-details__panel-body">
+
+              <div class="st2-remote-form"
+                  name="trigger"
+                  disabled="!$root.state.params.edit"
+                  suggester="triggerSuggester"
+                  loader="triggerLoader"
+                  ng-model="rule.trigger">
               </div>
-              <div class="st2-auto-form"
-                ng-switch-default
-                spec="triggerSchema"
-                disabled="!$root.state.params.edit"
-                result="rule.trigger.parameters">
-              </div>
+
             </div>
           </div>
 
@@ -228,24 +215,16 @@
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Action</h2>
             </div>
-            <div class="st2-manual-form st2-form-combobox"
-              name="action"
-              spec="actionSuggestionSpec"
-              ng-enums="actionSuggestionSpec.enum"
-              disabled="!$root.state.params.edit"
-              ng-model="rule.action.ref">
-            </div>
-            <div class="st2-details__panel-body"
-                ng-switch="form.action.$valid">
-              <div class="st2-auto-form__description"
-                  ng-switch-when="false">
-                Pick valid action from the list to see its parameters.
+            <div class="st2-details__panel-body">
+
+              <div class="st2-remote-form"
+                  name="action"
+                  disabled="!$root.state.params.edit"
+                  suggester="actionSuggester"
+                  loader="actionLoader"
+                  ng-model="rule.action">
               </div>
-              <div class="st2-auto-form"
-                spec="actionSchema"
-                disabled="!$root.state.params.edit"
-                result="rule.action.parameters">
-              </div>
+
             </div>
           </div>
 
