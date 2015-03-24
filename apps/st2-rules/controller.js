@@ -189,6 +189,10 @@ angular.module('main')
       });
     };
 
+    $scope.create = function () {
+      console.log('CREATE!');
+    };
+
   })
 
   ;
