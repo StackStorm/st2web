@@ -253,6 +253,30 @@
 
     &-separator {
       flex: 1;
+
+      align-self: center;
+    }
+
+    &-message {
+      display: block;
+      overflow: hidden;
+
+      width: 100%;
+
+      animation-name: show-then-hide;
+      animation-duration: 5s;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      opacity: 0;
+
+      &-saved {
+        color: #5cb85c;
+      }
+
+      &-error {
+        color: #d9534f;
+      }
     }
   }
 
@@ -319,6 +343,24 @@
 
     100% {
       transform: rotate(359deg);
+    }
+  }
+
+  @keyframes show-then-hide {
+    0% {
+      opacity: 0;
+    }
+
+    10% {
+      opacity: 1;
+    }
+
+    90% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
     }
   }
 

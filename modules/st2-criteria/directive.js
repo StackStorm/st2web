@@ -5,18 +5,21 @@ angular.module('main')
 
     return {
       restrict: 'C',
+      require: 'ngModel',
       scope: {
-        model: '=',
+        ngModel: '=',
         disabled: '='
       },
       templateUrl: 'modules/st2-criteria/template.html',
       link: function postLink(scope) {
+        scope.ngModel = scope.ngModel || {};
+
         scope.remove = function (key) {
-          delete scope.model[key];
+          delete scope.ngModel[key];
         };
 
         scope.add = function () {
-          scope.model[''] = {};
+          scope.ngModel[''] = {};
         };
       }
     };
@@ -26,8 +29,8 @@ angular.module('main')
 
     $scope.$watch('key', function (key, oldKey) {
       if (key !== oldKey) {
-        $scope.$parent.model[key] = $scope.$parent.model[oldKey];
-        delete $scope.$parent.model[oldKey];
+        $scope.$parent.ngModel[key] = $scope.$parent.ngModel[oldKey];
+        delete $scope.$parent.ngModel[oldKey];
       }
     });
 

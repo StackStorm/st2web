@@ -22,3 +22,7 @@
 .st2-icon__code:before { content: '\e814'; } /* '' */
 .st2-icon__calendar:before { content: '\e815'; } /* '' */
 .st2-icon__user:before { content: '\e816'; } /* '' */
+.st2-icon__bug:before { content: '\e818'; } /* '' */
+.st2-icon__trash-empty:before { content: '\e819'; } /* '' */
+.st2-icon__wrench:before { content: '\e81a'; } /* '' */
+.st2-icon__plus:before { content: '\e81b'; } /* '' */

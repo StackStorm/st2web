@@ -79,14 +79,34 @@
       line-height: 37px;
 
       overflow: hidden;
-      flex: 1 0 auto;
+      flex: 0 0 auto;
+
+      margin-right: 10px;
 
       order: -1;
     }
 
+    &-actions {
+      display: flex;
+      flex: 1 0 auto;
+
+      align-self: center;
+      justify-content: flex-start;
+      order: -2;
+    }
+
+    &-button {
+      width: 28px;
+      height: 28px;
+      margin: 0 5px;
+      padding: 0;
+
+      border-radius: 50%;
+    }
+
     &-filters {
       display: flex;
-      flex: 0 0 auto;
+      flex: 1 0 auto;
 
       justify-content: flex-end;
       order: -2;

@@ -21,6 +21,12 @@
     }
   }
 
+  &__label {
+    display: block;
+
+    margin-bottom: 12px;
+  }
+
   &__title {
     font-size: 16px;
     line-height: 18px;
@@ -66,6 +72,10 @@
     &:invalid {
       // TODO: not sure whether this is intentional or a bug, but shadow doesn't match
       box-shadow: none;
+    }
+
+    &.ng-touched.ng-invalid {
+      box-shadow: 0 0 0 1px red;
     }
   }
 
@@ -121,7 +131,7 @@
 
     box-sizing: border-box;
     width: 100%;
-    margin-top: -6px;
+    margin-top: -16px;
     padding: 3px;
 
     user-select: none;
@@ -136,6 +146,8 @@
     box-sizing: border-box;
     width: 100%;
     padding: 7px;
+
+    cursor: pointer;
 
     border-radius: 4px;
 
