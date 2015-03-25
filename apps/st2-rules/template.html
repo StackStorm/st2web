@@ -12,7 +12,7 @@
 
         <div class="st2-panel__toolbar-actions">
           <button class="st2-forms__button st2-panel__toolbar-button"
-              ng-click="create()">
+              ng-click="popup.open()">
             <i class="st2-icon__plus"></i>
           </button>
         </div>
@@ -91,79 +91,78 @@
   <div class="st2-panel__details st2-details"
       ng-show="rule">
 
-    <form class="st2-details__form"
-        ng-submit="submit()"
-        name="form">
+    <div class="st2-details__header">
+      <div class="st2-details__header-name">
+        <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+        <a ui-sref="rules.general({id: rule.id})">
+          {{ rule.name }}
+        </a>
+      </div>
+      <div class="st2-details__header-description">{{ rule.description }}</div>
+    </div>
 
-      <div class="st2-details__header">
-        <div class="st2-details__header-name">
-          <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
-          <a ui-sref="rules.general({id: rule.id})">
-            {{ rule.name }}
-          </a>
-        </div>
-        <div class="st2-details__header-description">{{ rule.description }}</div>
+    <div class="st2-details__toolbar">
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="edit()"
+          ng-hide="$root.state.params.edit"
+          value="Edit"/>
+      <!-- <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-hide="$root.state.params.edit"
+          value="Duplicate"/> -->
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-hide="$root.state.params.edit"
+          ng-click="delete()"
+          value="Delete"/>
+
+      <input type="submit"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-show="$root.state.params.edit"
+          ng-disabled="form.$pristine || form.$invalid"
+          ng-click="submit()"
+          value="Save"/>
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="cancel()"
+          ng-show="$root.state.params.edit"
+          value="Cancel"/>
+
+      <div class="st2-details__toolbar-separator">
+        <span class="st2-details__toolbar-message st2-details__toolbar-message-saved"
+            ng-show="form.saved">
+          Saved!
+        </span>
+
+        <span class="st2-details__toolbar-message st2-details__toolbar-message-error"
+            ng-show="form.err">
+          Error! Check console.
+        </span>
       </div>
 
-      <div class="st2-details__toolbar">
-        <input type="button"
-            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            ng-click="edit()"
-            ng-hide="$root.state.params.edit"
-            value="Edit"/>
-        <!-- <input type="button"
-            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            ng-hide="$root.state.params.edit"
-            value="Duplicate"/> -->
-        <input type="button"
-            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            ng-hide="$root.state.params.edit"
-            ng-click="delete()"
-            value="Delete"/>
-
-        <input type="submit"
-            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            ng-show="$root.state.params.edit"
-            ng-disabled="form.$pristine || form.$invalid"
-            value="Save"/>
-        <input type="button"
-            class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            ng-click="cancel()"
-            ng-show="$root.state.params.edit"
-            value="Cancel"/>
-
-        <div class="st2-details__toolbar-separator">
-          <span class="st2-details__toolbar-message st2-details__toolbar-message-saved"
-              ng-show="form.saved">
-            Saved!
-          </span>
-
-          <span class="st2-details__toolbar-message st2-details__toolbar-message-error"
-              ng-show="form.err">
-            Error! Check console.
-          </span>
+      <div class="st2-details__switch st2-details__switch--of-two"
+          ng-class="{
+            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+            'st2-details__switch--second': $root.isState('^.code')
+          }">
+        <div class="st2-details__switch-item"
+            ng-click="$root.state.go('^.general', $root.state.params)">
+          <i class="st2-icon__cogs"></i>
         </div>
-
-        <div class="st2-details__switch st2-details__switch--of-two"
-            ng-class="{
-              'st2-details__switch--first': $root.isState(['^.general', '^.list']),
-              'st2-details__switch--second': $root.isState('^.code')
-            }">
-          <div class="st2-details__switch-item"
-              ng-click="$root.state.go('^.general', $root.state.params)">
-            <i class="st2-icon__cogs"></i>
-          </div>
-          <div class="st2-details__switch-item"
-              ng-click="$root.state.go('^.code', $root.state.params)">
-            <i class="st2-icon__code"></i>
-          </div>
+        <div class="st2-details__switch-item"
+            ng-click="$root.state.go('^.code', $root.state.params)">
+          <i class="st2-icon__code"></i>
         </div>
-
       </div>
 
-      <div class="st2-details__body"
-          ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
-        <div class="st2-panel__scroller">
+    </div>
+
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': !$root.isState('^.code')}">
+      <div class="st2-panel__scroller">
+
+        <form name="form">
 
           <div class="st2-details__panel"
               ng-show="$root.state.params.edit">
@@ -204,7 +203,7 @@
             <div class="st2-details__panel-body">
 
               <div class="st2-criteria"
-                model="rule.criteria"
+                ng-model="rule.criteria"
                 disabled="!$root.state.params.edit">
               </div>
 
@@ -234,22 +233,117 @@
             ng-model="rule.enabled">
           </div>
 
-        </div>
-      </div>
+        </form>
 
-      <div class="st2-details__body"
-          ng-class="{'st2-details__body--active': $root.isState('^.code')}">
-        <div class="st2-panel__scroller">
+      </div>
+    </div>
+
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': $root.isState('^.code')}">
+      <div class="st2-panel__scroller">
 
         <div class="st2-highlight" code="rule | json" lines="20"></div>
 
-        </div>
       </div>
-
-    </form>
+    </div>
 
   </div>
 
 </main>
+
+<div class="st2-popup"
+    ng-show="$root.isState('^.new')"
+    ng-click="popup.cancel()">
+  <div class="st2-panel__details st2-details st2-popup__details"
+      ng-click="$event.stopPropagation()">
+    <div class="st2-panel__scroller">
+
+      <form name="newform">
+
+        <div class="st2-popup__title">
+          Create a rule
+        </div>
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-body">
+
+            <div class="st2-auto-form"
+              spec="metaSpec"
+              result="newRule">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">Trigger</h2>
+          </div>
+          <div class="st2-details__panel-body">
+
+            <div class="st2-remote-form"
+                name="trigger"
+                suggester="triggerSuggester"
+                loader="triggerLoader"
+                ng-model="newRule.trigger">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">Criteria</h2>
+          </div>
+          <div class="st2-details__panel-body">
+
+            <div class="st2-criteria"
+              ng-model="newRule.criteria">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="st2-details__panel">
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">Action</h2>
+          </div>
+          <div class="st2-details__panel-body">
+
+            <div class="st2-remote-form"
+                name="action"
+                suggester="actionSuggester"
+                loader="actionLoader"
+                ng-model="newRule.action">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="st2-manual-form st2-form-checkbox"
+          name="enabled"
+          ng-model="newRule.enabled">
+        </div>
+
+        <input type="submit"
+            class="st2-forms__button st2-details__toolbar-button"
+            ng-disabled="newform.$pristine || newform.$invalid"
+            ng-click="popup.submit()"
+            value="Save"/>
+        <input type="button"
+            class="st2-forms__button st2-details__toolbar-button"
+            ng-click="popup.cancel()"
+            value="Cancel"/>
+
+        <span class="st2-details__toolbar-message st2-details__toolbar-message-error"
+            ng-show="newform.err">
+          Error! Check console.
+        </span>
+
+      </form>
+
+    </div>
+  </div>
+</div>
 
 <div class="st2-report"></div>

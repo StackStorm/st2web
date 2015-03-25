@@ -1,5 +1,5 @@
 <div class="st2-criteria__line"
-    ng-repeat="(key, item) in model"
+    ng-repeat="(key, item) in ngModel"
     ng-controller="st2CriterionCtrl">
   <div class="st2-manual-form st2-form-input st2-criteria__entity"
       disabled="disabled"
@@ -45,8 +45,8 @@
       ng-if="!disabled"
       ng-click="remove(key)"></i>
 </div>
-<button class="st2-forms__button st2-forms__button--small"
+<input type="button"
+    class="st2-forms__button st2-forms__button--small"
     ng-if="!disabled"
-    ng-click="add()">
-  Add criteria
-</button>
+    ng-click="add()"
+    value="Add criteria">

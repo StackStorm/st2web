@@ -16,6 +16,9 @@ angular.module('main')
       .state('rules.list', {
         url: ''
       })
+      .state('rules.new', {
+        url: '/new'
+      })
       .state('rules.general', {
         url: '/{id:\\w+}/general?edit'
       })
@@ -43,6 +46,10 @@ angular.module('main')
       description: {
         type: 'string'
       }
+    };
+
+    $scope.newRule = {
+      enabled: true
     };
 
     st2LoaderService.reset();
@@ -145,7 +152,7 @@ angular.module('main')
     };
 
     $scope.submit = function () {
-      st2api.client.rules.edit($scope.rule).then(function (rule) {
+      st2api.client.rules.edit(angular.copy($scope.rule)).then(function (rule) {
         $scope.form.$setPristine();
         $scope.form.saved = true;
         $scope.$apply();
@@ -181,8 +188,26 @@ angular.module('main')
       });
     };
 
-    $scope.create = function () {
-      console.log('CREATE!');
+    $scope.popup = {
+      open: function () {
+        $scope.$root.state.go('^.new');
+      },
+      submit: function () {
+        st2api.client.rules.create(angular.copy($scope.newRule)).then(function (rule) {
+          $scope.newform.$setPristine();
+          $scope.newform.saved = true;
+          $scope.$apply();
+          $scope.$root.state.go('^.general', {id: rule.id}, {reload: true});
+        }).catch(function (error) {
+          $scope.newform.err = true;
+          $scope.$apply();
+          $scope.newform.err = false;
+          console.error(error);
+        });
+      },
+      cancel: function () {
+        $scope.$root.state.go('^.list');
+      }
     };
 
   })

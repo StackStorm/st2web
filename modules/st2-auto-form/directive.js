@@ -22,6 +22,7 @@ angular.module('main')
       },
       templateUrl: 'modules/st2-auto-form/template.html',
       link: function postLink(scope) {
+        scope.result = scope.result || {};
 
         // Making input spec an array of key-value to be able to use angular filters
         scope.$watch('rawSpec', function () {
