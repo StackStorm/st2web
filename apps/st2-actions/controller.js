@@ -40,7 +40,7 @@ angular.module('main')
       return result;
     }).catch(function (err) {
       $scope.groups = [];
-      $scope.error = true;
+      $scope.error = err;
 
       console.error('Failed to fetch the data: ', err);
       st2LoaderService.stop();
