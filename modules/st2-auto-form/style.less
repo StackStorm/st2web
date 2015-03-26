@@ -15,7 +15,7 @@
     margin-top: 17px;
     padding-bottom: 10px;
 
-    border-bottom: 1px solid #343434;
+    border-bottom: 1px solid #323d44;
 
     &:last-of-type {
       border-bottom: 0;
@@ -29,10 +29,10 @@
   }
 
   &__title {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 18px;
 
-    padding-bottom: 4px;
+    padding-bottom: 8px;
   }
 
   &--required &__title:after {
@@ -42,22 +42,23 @@
   &__field {
     font-weight: normal;
 
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     width: 100%;
     height: 30px;
-    padding: 0 0 0 10px;
+    padding: 18px 12px;
 
-    color: #d8d8d8;
-    border: 1px solid;
-    border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
-    border-radius: 4px;
+    color: white;
+    border: none;
     outline: 0;
-    background-color: @gray-dark;
+    background-color: @blue-dark;
 
     &[readonly] {
       cursor: not-allowed;
 
-      border-color: transparent;
+      color: rgba(255, 255, 255, .36);
+      background-color: red;
     }
 
     &[disabled] {
@@ -65,10 +66,11 @@
 
       color: #a9a9a9;
       border-color: transparent;
+      background-color: rgba(54, 64, 73, .65);
     }
 
     &::placeholder {
-      color: #aaa;
+      color: @blue-light;
     }
 
     &:invalid {
@@ -103,16 +105,14 @@
 
       width: 14px;
       height: 14px;
-      margin-right: .3em;
+      margin-right: .5em;
 
       content: '\00a0';
       text-decoration: inherit;
 
       color: #01c8ff;
       border: 0;
-      border-radius: 4px;
-      background-color: @gray;
-      box-shadow: inset 0 2px 3px rgba(0, 0, 0, 1);
+      background-color: @blue-dark;
     }
 
     &:checked + &-label:before {
@@ -126,7 +126,8 @@
   &__description {
     font-size: 11px;
 
-    opacity: .6;
+    opacity: .7;
+    color: #d1eeff;
   }
 
   &__suggestions {
