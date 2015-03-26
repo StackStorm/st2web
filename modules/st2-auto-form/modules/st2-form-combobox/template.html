@@ -17,6 +17,7 @@
     ng-focus="focus()"
     ng-blur="blur()"
     ng-enums="spec.enum"
+    ng-keydown="keydown($event)"
     ng-disabled="disabled" />
 
 </label>
@@ -26,7 +27,7 @@
   <div class="st2-auto-form__suggestion"
       ng-repeat="suggestion in sample = (spec.enum | filter:{name:rawResult})"
       ng-class="{'st2-auto-form__suggestion--active': $parent.selected == $index}"
-      ng-click="$parent.selected = $index">
+      ng-click="choose($index)">
     <div class="st2-details__header-name">{{ suggestion.name }}</div>
     <div class="st2-details__header-description">{{ suggestion.description }}</div>
   </div>
