@@ -1,6 +1,6 @@
 'use strict';
 angular.module('main')
-  .directive('st2AutoForm', function () {
+  .directive('st2AutoForm', function ($templateRequest, $compile) {
     // TODO: figure out what other fields do we need.
     // TODO: create an interface to extend the list of fields.
     var fieldTypes = {
@@ -21,33 +21,53 @@ angular.module('main')
         'ngModel': '=',
         'disabled': '='
       },
-      templateUrl: 'modules/st2-auto-form/template.html',
       link: function postLink(scope, element, attrs, ngModel) {
         ngModel.$render = function () {
           scope.result = ngModel.$viewValue;
         };
 
-        // Making input spec an array of key-value to be able to use angular filters
+        var scopes = [];
+
         scope.$watch('rawSpec', function () {
-          scope.spec = _.map(scope.rawSpec, function (v, k) {
-            return {
-              name: k,
-              field: v
-            };
+          element.empty();
+
+          _.remove(scopes, function (scope) {
+            scope.$destroy();
+            return true;
+          });
+
+          $templateRequest('modules/st2-auto-form/template.html').then(function (template) {
+            var tmplElement = angular.element(template);
+
+            _(scope.rawSpec)
+              .map(function (value, key) {
+                value._name = key;
+                return value;
+              })
+              .reject('immutable')
+              .sortBy('position')
+              .each(function (field) {
+                var cls = getFieldClass(field);
+
+                if (!cls) {
+                  return;
+                }
+
+                var fieldElement = tmplElement.clone();
+                fieldElement.addClass(cls);
+
+                var innerScope = scope.$new();
+                innerScope.name = field._name;
+                innerScope.field = field;
+                scopes.push(innerScope);
+
+                element.append($compile(fieldElement)(innerScope));
+              });
           });
         });
 
-        // Predefined filters
-        scope.MUTABLE = function (item) {
-          return !item.field.immutable;
-        };
-
-        scope.POSITION = function (item) {
-          return item.field.position;
-        };
-
         // Partial router
-        scope.getFieldTemplate = function (field) {
+        var getFieldClass = function (field) {
           var type;
 
           if (field.enum) {
@@ -61,20 +81,6 @@ angular.module('main')
       }
     };
 
-  })
-
-  .filter('filterMutable', function () {
-    return function (spec) {
-      var obj = _.clone(spec);
-
-      _.each(obj, function (field, key) {
-        if (field.immutable) {
-          delete obj[key];
-        }
-      });
-
-      return obj;
-    };
   })
 
   ;
