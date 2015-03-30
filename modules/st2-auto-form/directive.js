@@ -15,14 +15,17 @@ angular.module('main')
 
     return {
       restrict: 'C',
+      require: 'ngModel',
       scope: {
         'rawSpec': '=spec',
-        'result': '=',
+        'ngModel': '=',
         'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/template.html',
-      link: function postLink(scope) {
-        scope.result = scope.result || {};
+      link: function postLink(scope, element, attrs, ngModel) {
+        ngModel.$render = function () {
+          scope.result = ngModel.$viewValue;
+        };
 
         // Making input spec an array of key-value to be able to use angular filters
         scope.$watch('rawSpec', function () {

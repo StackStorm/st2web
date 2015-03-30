@@ -40,6 +40,11 @@ angular.module('main')
               scope.formSpec = spec;
               scope.$apply();
             });
+
+          // In case ref was changed manually, clear the parameters
+          if (!scope.form[scope.name].$pristine) {
+            scope.ngModel.parameters = {};
+          }
         });
 
       }
