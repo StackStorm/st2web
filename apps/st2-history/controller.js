@@ -157,8 +157,12 @@ angular.module('main')
 
         // Spec and payload to build a form for the action input. Strict resemblence to form from
         // Action tab is not guaranteed.
-        $scope.spec = _({}).defaults(record.action.parameters, record.runner.runner_parameters)
-          .value();
+        $scope.actionSpec = {
+          type: 'object',
+          properties: _({})
+            .defaults(record.action.parameters, record.runner.runner_parameters)
+            .value()
+        };
 
         $scope.payload = _.clone(record.parameters);
 

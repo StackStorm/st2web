@@ -77,6 +77,10 @@ angular.module('main')
 
       promise.then(function (action) {
         $scope.action = action;
+        $scope.actionSpec = {
+          type: 'object',
+          properties: action.parameters
+        };
 
         $scope.payload = {};
         $scope.inProgress = true;

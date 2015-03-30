@@ -3,21 +3,31 @@ angular.module('main')
   .directive('st2AutoForm', function ($templateRequest, $compile) {
     // TODO: figure out what other fields do we need.
     // TODO: create an interface to extend the list of fields.
-    var fieldTypes = {
-      'string': 'st2-form-input',
-      'integer': 'st2-form-input',
-      'number': 'st2-form-input',
-      'boolean': 'st2-form-checkbox',
-      'select': 'st2-form-select',
-      'array': 'st2-form-array',
-      'object': null
+    var getFieldClass = function (field) {
+      var type = field.type;
+
+      if (field.enum) {
+        type = 'select';
+      }
+
+      return {
+        'string': 'st2-form-input',
+        'integer': 'st2-form-input',
+        'number': 'st2-form-input',
+        'boolean': 'st2-form-checkbox',
+        'select': 'st2-form-select',
+        'array': 'st2-form-array',
+        'object': null
+      }[type];
     };
+
+    var pTemplate = $templateRequest('modules/st2-auto-form/template.html');
 
     return {
       restrict: 'C',
       require: 'ngModel',
       scope: {
-        'rawSpec': '=spec',
+        'spec': '=',
         'ngModel': '=',
         'disabled': '='
       },
@@ -28,7 +38,7 @@ angular.module('main')
 
         var scopes = [];
 
-        scope.$watch('rawSpec', function () {
+        scope.$watch('spec', function (spec) {
           element.empty();
 
           _.remove(scopes, function (scope) {
@@ -36,10 +46,10 @@ angular.module('main')
             return true;
           });
 
-          $templateRequest('modules/st2-auto-form/template.html').then(function (template) {
+          spec && pTemplate.then(function (template) {
             var tmplElement = angular.element(template);
 
-            _(scope.rawSpec)
+            _(spec.properties)
               .map(function (value, key) {
                 value._name = key;
                 return value;
@@ -65,19 +75,6 @@ angular.module('main')
               });
           });
         });
-
-        // Partial router
-        var getFieldClass = function (field) {
-          var type;
-
-          if (field.enum) {
-            type = 'select';
-          } else {
-            type = field.type;
-          }
-
-          return fieldTypes[type];
-        };
       }
     };
 
