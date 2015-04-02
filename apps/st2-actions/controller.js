@@ -186,7 +186,8 @@ angular.module('main')
 
       if ($filter('isExpandable')(record) && record._expanded) {
         st2api.client.executions.list({
-          'parent': record.id
+          parent: record.id,
+          exclude_attributes: 'result,trigger_instance'
         }).then(function (records) {
           if (!record._children) {
             record._children = records;

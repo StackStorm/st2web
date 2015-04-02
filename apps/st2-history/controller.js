@@ -234,7 +234,8 @@ angular.module('main')
 
       if (record._expanded) {
         st2api.client.executions.list({
-          'parent': record.id
+          parent: record.id,
+          exclude_attributes: 'result,trigger_instance'
         }).then(function (records) {
           if (!record._children) {
             record._children = records;
