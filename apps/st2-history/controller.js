@@ -95,7 +95,6 @@ angular.module('main')
 
       $scope.history = $scope.historyList && _($scope.historyList)
         .filter({parent: undefined})
-        .take($rootScope.limit)
         .groupBy(function (record) {
           var time = record.start_timestamp;
           return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
@@ -115,7 +114,8 @@ angular.module('main')
       pHistoryList = st2api.client.executions.list(_.assign({
         parent: 'null',
         exclude_attributes: 'result,trigger_instance',
-        page: $rootScope.page
+        page: $rootScope.page,
+        limit: 50
       }, $scope.$root.active_filters));
 
       pHistoryList.then(function (list) {

@@ -36,8 +36,6 @@ angular.module('main')
 
       var client = st2client(opts);
 
-      client.executions.limit = $rootScope.limit = 50;
-
       return client;
     };
 
