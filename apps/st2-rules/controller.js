@@ -39,13 +39,16 @@ angular.module('main')
     $scope.error = null;
 
     $scope.metaSpec = {
-      name: {
-        type: 'string',
-        required: true,
-        pattern: '^[\\w.-]+$'
-      },
-      description: {
-        type: 'string'
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string',
+          required: true,
+          pattern: '^[\\w.-]+$'
+        },
+        description: {
+          type: 'string'
+        }
       }
     };
 
@@ -120,7 +123,7 @@ angular.module('main')
     $scope.triggerLoader = function (ref) {
       return st2api.client.triggerTypes.get(ref)
         .then(function (triggerTypes) {
-          return triggerTypes.parameters_schema.properties;
+          return triggerTypes.parameters_schema;
         });
     };
 
@@ -128,7 +131,10 @@ angular.module('main')
     $scope.actionLoader = function (ref) {
       return st2api.client.actionOverview.get(ref)
         .then(function (action) {
-          return action.parameters;
+          return {
+            type: 'object',
+            properties: action.parameters
+          };
         });
     };
 
