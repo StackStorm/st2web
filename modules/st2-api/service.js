@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('main')
-  .service('st2api', function (st2Config, $q, $rootScope) {
+  .service('st2api', function (st2Config, $q) {
     this.token = {};
 
     var initClient = function (server, token) {

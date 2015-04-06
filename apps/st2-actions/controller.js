@@ -27,26 +27,28 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2api, st2LoaderService, $filter) {
+  .controller('st2ActionsCtrl', function ($scope, st2api, $filter) {
 
     $scope.filter = '';
     $scope.error = null;
 
-    st2LoaderService.reset();
-    st2LoaderService.start();
-
     var pActionList = st2api.client.actions.list().then(function (result) {
-      st2LoaderService.stop();
+      // Hacking around angular-busy bug preventing $digest
+      pActionList.then(function () {
+        $scope.$apply();
+      });
+
       return result;
     }).catch(function (err) {
       $scope.groups = [];
       $scope.error = err;
 
       console.error('Failed to fetch the data: ', err);
-      st2LoaderService.stop();
 
       $scope.$apply();
     });
+
+    $scope.busy = pActionList;
 
     var listUpdate = function () {
       pActionList && pActionList.then(function (list) {

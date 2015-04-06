@@ -227,4 +227,38 @@
       }
     }
   }
+
+  &__loader:before {
+    font-family: 'ststanley';
+    font-size: 92px;
+    font-weight: normal;
+    font-style: normal;
+
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+
+    width: 100px;
+    height: 100px;
+    margin: -50px 0 0 -50px;
+
+    content: '\e806';
+    animation: spin 2s infinite linear;
+    text-align: center;
+    vertical-align: middle;
+    pointer-events: none;
+
+    color: #515151;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(359deg);
+    }
+  }
 }
