@@ -33,7 +33,7 @@ angular.module('main')
 angular.module('main')
 
   // List rules
-  .controller('st2RulesCtrl', function ($scope, st2api, st2LoaderService) {
+  .controller('st2RulesCtrl', function ($scope, st2api) {
 
     $scope.filter = '';
     $scope.error = null;
@@ -53,18 +53,13 @@ angular.module('main')
       enabled: true
     };
 
-    st2LoaderService.reset();
-    st2LoaderService.start();
-
     var pRulesList = st2api.client.rules.list().then(function (result) {
-      st2LoaderService.stop();
       return result;
     }).catch(function (err) {
       $scope.rules = [];
       $scope.error = err;
 
       console.error('Failed to fetch the data: ', err);
-      st2LoaderService.stop();
 
       $scope.$apply();
     });

@@ -30,7 +30,7 @@ angular.module('main')
 angular.module('main')
 
   // List history records
-  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope, st2LoaderService) {
+  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope) {
 
     var pHistoryList;
 
@@ -81,7 +81,6 @@ angular.module('main')
       sessionStorage.setItem('st2HistoryView', JSON.stringify(view));
     }, true);
 
-    st2LoaderService.reset();
 
     st2api.client.executionsFilters.list().then(function (filters) {
       // TODO: when the field is not required, an abscense of a value should also be a value
@@ -109,8 +108,6 @@ angular.module('main')
     };
 
     var listUpdate = function () {
-      st2LoaderService.start();
-
       pHistoryList = st2api.client.executions.list(_.assign({
         parent: 'null',
         exclude_attributes: 'result,trigger_instance',
@@ -124,7 +121,6 @@ angular.module('main')
         listFormat();
 
         $scope.$emit('$fetchFinish', st2api.client.executions);
-        st2LoaderService.stop();
 
         $scope.$apply();
       }).catch(function (err) {
@@ -132,7 +128,6 @@ angular.module('main')
         $scope.error = err;
 
         console.error('Failed to fetch the data: ', err);
-        st2LoaderService.stop();
 
         $scope.$apply();
       });
