@@ -54,6 +54,11 @@ angular.module('main')
     };
 
     var pRulesList = st2api.client.rules.list().then(function (result) {
+      // Hacking around angular-busy bug preventing $digest
+      pRulesList.then(function () {
+        $scope.$apply();
+      });
+
       return result;
     }).catch(function (err) {
       $scope.rules = [];
@@ -63,6 +68,8 @@ angular.module('main')
 
       $scope.$apply();
     });
+
+    $scope.busy = pRulesList;
 
     var listUpdate = function () {
       pRulesList && pRulesList.then(function (list) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize'])
+angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize', 'cgBusy'])
   .config(function ($urlRouterProvider) {
 
     // Remove tailing slash from url before looking for state
@@ -17,6 +17,13 @@ angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize'])
       }
     });
 
+  });
+
+angular.module('main')
+  .value('cgBusyDefaults',{
+    backdrop: false,
+    delay: 1000,
+    templateUrl: 'modules/st2-panel/loader.html'
   });
 
 angular.module('main')

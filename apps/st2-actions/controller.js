@@ -33,6 +33,11 @@ angular.module('main')
     $scope.error = null;
 
     var pActionList = st2api.client.actions.list().then(function (result) {
+      // Hacking around angular-busy bug preventing $digest
+      pActionList.then(function () {
+        $scope.$apply();
+      });
+
       return result;
     }).catch(function (err) {
       $scope.groups = [];
@@ -42,6 +47,8 @@ angular.module('main')
 
       $scope.$apply();
     });
+
+    $scope.busy = pActionList;
 
     var listUpdate = function () {
       pActionList && pActionList.then(function (list) {

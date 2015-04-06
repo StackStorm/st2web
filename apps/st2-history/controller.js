@@ -115,7 +115,14 @@ angular.module('main')
         limit: 50
       }, $scope.$root.active_filters));
 
+      $scope.busy = pHistoryList;
+
       pHistoryList.then(function (list) {
+        // Hacking around angular-busy bug preventing $digest
+        pHistoryList.then(function () {
+          $scope.$apply();
+        });
+
         $scope.historyList = list;
 
         listFormat();
