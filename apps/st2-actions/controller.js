@@ -102,9 +102,18 @@ angular.module('main')
           console.error(err);
         });
 
-        if ($scope.actionHasFile(action)) {
+        var fileLang = $scope.actionFile(action);
+
+        if (fileLang) {
           st2api.client.actionEntryPoint.get(action.ref).then(function (file) {
             $scope.file = file;
+
+            if (!_.isString(fileLang)) {
+              fileLang = parseHashBang(file, fileLang);
+            }
+
+            $scope.fileLang = fileLang;
+
             $scope.$apply();
           }).catch(function (err) {
             console.error(err);
@@ -171,18 +180,31 @@ angular.module('main')
     };
 
     //helpers
-    $scope.actionHasFile = function (action) {
-      var runnersWithFiles = [
-        'mistral-v1',
-        'mistral-v2',
-        'workflow',
-        'run-local-script',
-        'run-remote-script',
-        'run-python',
-        'action-chain'
-      ];
+    $scope.actionFile = function (action) {
+      var runnersWithFiles = {
+        'mistral-v1': 'yaml',
+        'mistral-v2': 'yaml',
+        'run-local-script': ['python', 'bash'],
+        'run-remote-script': ['python', 'bash'],
+        'run-python': 'python',
+        'action-chain': 'yaml'
+      };
 
-      return action && _.contains(runnersWithFiles, action.runner_type);
+      return action && runnersWithFiles[action.runner_type];
+    };
+
+    var parseHashBang = function (file, values) {
+      if (file[0] !== '#') {
+        return 'string';
+      }
+
+      var firstLine = file.split('\n')[0];
+
+      var suggestions = _.filter(values, function (value) {
+        return firstLine.indexOf(value) !== -1;
+      });
+
+      return _.first(suggestions);
     };
 
     $scope.expand = function (record, $event) {
