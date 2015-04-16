@@ -8,31 +8,31 @@
   </div>
   <div class="st2-manual-form st2-form-select st2-criteria__entity"
       spec="{
-        enum: [
-        'matchregex',
-        'eq',
-        'equals',
-        'nequals',
-        'neq',
-        'ieq',
-        'iequals',
-        'contains',
-        'icontains',
-        'ncontains',
-        'incontains',
-        'startswith',
-        'istartswith',
-        'endswith',
-        'iendswith',
-        'lt',
-        'lessthan',
-        'gt',
-        'greaterthan',
-        'td_lt',
-        'timediff_lt',
-        'td_gt',
-        'timediff_gt'
-        ]
+        enum: {
+          'matchregex': 'Matches Regex',
+          'eq': 'Equals',
+          'equals': 'Equals',
+          'nequals': 'Not Equals',
+          'neq': 'Not Equals',
+          'ieq': 'Equals Case Insensitive',
+          'iequals': 'Equals Case Insensitive',
+          'contains': 'Contains',
+          'icontains': 'Contains Case Insensitive',
+          'ncontains': 'Not Contains',
+          'incontains': 'Not Contains Case Insensitive',
+          'startswith': 'Starts With',
+          'istartswith': 'Starts With Case Insensitive',
+          'endswith': 'Ends With',
+          'iendswith': 'Ends With Case Insensitive',
+          'lt': 'Less Than',
+          'lessthan': 'Less Than',
+          'gt': 'Greater Than',
+          'greaterthan': 'Greater Than',
+          'td_lt': 'Earlier Than',
+          'timediff_lt': 'Earlier Than',
+          'td_gt': 'Later Than',
+          'timediff_gt': 'Later Than'
+        }
       }"
       disabled="disabled"
       ng-model="item.type">

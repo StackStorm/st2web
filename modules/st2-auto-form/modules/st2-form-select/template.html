@@ -1,4 +1,4 @@
-<label class="st2-auto-form__label"
+<label class="st2-auto-form__label st2-auto-form__select"
   ng-class="{'st2-auto-form--required': spec.required}">
 
   <div class="st2-auto-form__title"
@@ -10,7 +10,7 @@
     ng-model="ngModel"
     ng-model-options="options || {}"
     ng-required="{{spec.required}}"
-    ng-options="v for v in spec.enum"
+    ng-options="k as format(k, v) for (k, v) in enum"
     ng-disabled="disabled"></select>
 
 </label>

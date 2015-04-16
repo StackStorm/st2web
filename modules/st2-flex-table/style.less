@@ -7,23 +7,24 @@
 
   color: @text;
   background-color: transparent;
-  // box-shadow: 0 0 5px rgba(0,0,0,.7);
+  box-shadow: 0 0 5px rgba(0,0,0,.7);
 
   &__caption {
     clear: both;
 
-    background: @gray;
+    background: @blue;
 
     &-title {
       font-family: Oswald;
       font-size: 15px;
-      font-weight: 200;
+      font-weight: 400;
 
       display: inline-block;
 
       margin: 0;
       padding: 10px 15px;
 
+      letter-spacing: .6px;
       text-transform: uppercase;
 
       color: #fff;
@@ -44,6 +45,8 @@
         display: block;
 
         content: '\e804';
+
+        color: rgba(255, 255, 255, .6);
       }
     }
 
@@ -59,7 +62,7 @@
       vertical-align: top;
 
       color: #fff;
-      box-shadow: 1px 0 0 #3b3b3b, 2px 0 0 #919191;
+      border-right: 1px solid rgba(255, 255, 255, .18);
     }
 
     &--pack:before {
@@ -92,12 +95,14 @@
 
   &__header {
     font-family: Oswald;
-    font-weight: 200;
+    font-size: 11px;
+    font-weight: 400;
 
-    letter-spacing: .01em;
+    letter-spacing: .06px;
+    text-transform: uppercase;
 
     color: #fff;
-    background-color: @gray-light;
+    background-color: @blue-dull;
   }
 
   &__column {
@@ -115,7 +120,7 @@
       background-color: @gray-white;
     }
     &--odd {
-      background-color: @gray-lightest;
+      background-color: @blue-pale;
     }
 
     &&--active,
@@ -124,7 +129,7 @@
 
       color: white;
       // Specificity of 0030
-      background-color: @blue-dark;
+      background-color: @orange-bright;
     }
   }
 
@@ -132,7 +137,7 @@
     // Specificity of 0020
     cursor: pointer;
 
-    background-color: @blue-light;
+    background-color: @orange-pale;
   }
 
   &--passive &__row:hover {
