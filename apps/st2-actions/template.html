@@ -232,17 +232,17 @@
       <div class="st2-panel__scroller">
 
         <div class="st2-details__panel"
-            ng-if="actionHasFile(action)">
+            ng-if="!!actionFile(action)">
           <div class="st2-details__panel-heading">
             <h2 class="st2-details__panel-title">File</h2>
           </div>
           <div class="st2-details__panel-body">
-            <div class="st2-highlight" code="file" lines="20"></div>
+            <div class="st2-highlight" code="file" lines="20" language="{{ fileLang }}"></div>
           </div>
         </div>
 
         <div class="st2-details__panel"
-            ng-if="!actionHasFile(action)">
+            ng-if="!actionFile(action)">
           <div class="st2-details__panel-empty">
             This action has no code associated
           </div>
