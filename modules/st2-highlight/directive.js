@@ -1,13 +1,8 @@
-/*global hljs:true*/
+/*global Prism:true*/
 'use strict';
 
 angular.module('main')
-  .config(function () {
-    hljs.configure({
-      languages: ['json']
-    });
-  })
-  .directive('st2Highlight', function ($filter) {
+  .directive('st2Highlight', function () {
 
     function getType(string) {
       try {
@@ -35,7 +30,7 @@ angular.module('main')
 
         scope.string = {
           json: function () {
-            return hljs.highlight('json', $filter('json')(JSON.parse(code))).value;
+            return Prism.highlight(code, Prism.languages['javascript']);
           },
           string: function () {
             return code && code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
@@ -43,7 +38,7 @@ angular.module('main')
             });
           },
           object: function () {
-            return code && hljs.highlight('json', $filter('json')(code)).value;
+            return code && Prism.highlight(code, Prism.languages['javascript']);
           }
         }[scope.type](code);
 

@@ -19,6 +19,7 @@ var gulp = require('gulp')
   , templateCache = require('gulp-angular-templatecache')
   , ngAnnotate = require('gulp-ng-annotate')
   , uglify = require('gulp-uglify')
+  , size = require('gulp-size')
   ;
 
 var express = require('express')
@@ -166,26 +167,54 @@ gulp.task('production-template', function () {
     .pipe(templateCache({
       module: 'main'
     }))
-    .pipe(gulp.dest('build/js'));
+    .pipe(gulp.dest('build/js'))
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
 });
 
 gulp.task('production-styles', ['styles'], function () {
   return gulp.src('./css/*.css')
-    .pipe(gulp.dest('build/css/'));
+    .pipe(gulp.dest('build/css/'))
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
 });
 
 gulp.task('production-components', function () {
   return gulp.src(components)
     .pipe(concat('components.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('build/js'));
+    .pipe(gulp.dest('build/js'))
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
 });
 
 gulp.task('production-modules', function () {
   return gulp.src(modules)
     .pipe(ngAnnotate())
     .pipe(concat('modules.js'))
-    .pipe(gulp.dest('build/js'));
+    .pipe(gulp.dest('build/js'))
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
 });
 
 gulp.task('production-html', function () {
