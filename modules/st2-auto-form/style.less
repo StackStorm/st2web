@@ -81,6 +81,20 @@
     &.ng-touched.ng-invalid {
       box-shadow: 0 0 0 1px red;
     }
+
+    &:focus {
+      // TODO @gmedrano: apparently, we need another color in between of darker and darkest.
+      background-color: fade(@blue-darkest, 60%);
+    }
+
+    &:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000;
+    }
+
+    option {
+      color: white;
+    }
   }
 
   &__select {
