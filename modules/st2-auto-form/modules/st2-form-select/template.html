@@ -10,7 +10,7 @@
     ng-model="ngModel"
     ng-model-options="options || {}"
     ng-required="{{spec.required}}"
-    ng-options="v for v in spec.enum"
+    ng-options="k as format(k, v) for (k, v) in enum"
     ng-disabled="disabled"></select>
 
 </label>
