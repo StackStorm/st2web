@@ -46,8 +46,8 @@
        -moz-box-sizing: border-box;
             box-sizing: border-box;
     width: 100%;
-    height: 30px;
-    padding: 18px 12px;
+    height: 36px;
+    padding: 0 12px;
 
     color: white;
     border: none;
@@ -81,6 +81,37 @@
     &.ng-touched.ng-invalid {
       box-shadow: 0 0 0 1px red;
     }
+  }
+
+  &__select {
+    position: relative;
+
+    &:after {
+      font-family: 'ststanley';
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 36px;
+
+      position: absolute;
+      right: 0;
+      bottom: 0;
+
+      display: block;
+
+      padding: 0 10px 0 0;
+
+      content: '\e804';
+      vertical-align: middle;
+      pointer-events: none;
+    }
+  }
+
+  &__select &__field {
+    border-radius: 0;
+
+    -webkit-appearance: none;
+       -moz-appearance: none;
   }
 
   &__checkbox {
