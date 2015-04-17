@@ -106,12 +106,16 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
-        <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+        <span class="st2-label"
+            status="iRule.enabled && 'enabled' || 'disabled'">
+        </span>
         <a ui-sref="rules.general({id: rule.id})">
-          {{ rule.name }}
+          {{ iRule.name }}
         </a>
       </div>
-      <div class="st2-details__header-description">{{ rule.description }}</div>
+      <div class="st2-details__header-description">
+        {{ iRule.description }}
+      </div>
     </div>
 
     <div class="st2-details__toolbar">

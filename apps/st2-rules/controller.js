@@ -145,6 +145,7 @@ angular.module('main')
 
       return promise.then(function (rule) {
         if (rule) {
+          $scope.iRule = _.clone(rule);
           $scope.rule = rule;
           $scope.$apply();
         }
