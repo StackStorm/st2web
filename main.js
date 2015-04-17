@@ -31,9 +31,9 @@ angular.module('main')
     $rootScope.state = $state;
     $rootScope._ = _;
 
-    $rootScope.go = function (params) {
+    $rootScope.go = function (params, opts) {
       var isList = $rootScope.state.includes('^.list');
-      return $rootScope.state.go(isList ? '^.general' : '.', params);
+      return $rootScope.state.go(isList ? '^.general' : '.', params, opts);
     };
 
     $rootScope.isState = function (states) {

@@ -28,6 +28,22 @@ angular.module('main')
 
       ;
 
+  })
+  .run(function ($rootScope, $urlRouter) {
+
+    $rootScope.$on('$stateChangeStart',
+      function(event, toState, toParams, fromState, fromParams) {
+        if (fromParams.edit && fromParams.edit !== toParams.edit) {
+          var answer = window.confirm('Are you sure you want to cancel editing the rule? All changes would be lost.');
+
+          if (!answer) {
+            event.preventDefault();
+          }
+        }
+      });
+
+    $urlRouter.listen();
+
   });
 
 angular.module('main')
@@ -149,7 +165,6 @@ angular.module('main')
 
       return promise.then(function (rule) {
         if (rule) {
-          $scope.iRule = _.clone(rule);
           $scope.rule = rule;
           $scope.$apply();
         }
@@ -169,8 +184,12 @@ angular.module('main')
       st2api.client.rules.edit(angular.copy($scope.rule)).then(function (rule) {
         $scope.form.$setPristine();
         $scope.form.saved = true;
+
+        var index = _.findIndex($scope.rules, {'id': rule.id});
+        $scope.rules[index] = rule;
+
         $scope.$apply();
-        $scope.$root.go({id: rule.id, edit: undefined});
+        $scope.$root.go({id: rule.id, edit: undefined}, {notify: false});
       }).catch(function (error) {
         $scope.form.err = true;
         $scope.$apply();
@@ -183,7 +202,9 @@ angular.module('main')
       $scope.loadRule($scope.rule.id).then(function () {
         $scope.form.$setPristine();
       });
-      $scope.$root.go({id: $scope.rule.id, edit: undefined});
+      $scope.$root.go({id: $scope.rule.id, edit: undefined}, {
+        notify: $scope.form.$dirty
+      });
     };
 
     $scope.delete = function () {
