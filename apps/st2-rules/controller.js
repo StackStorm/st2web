@@ -48,6 +48,10 @@ angular.module('main')
         },
         description: {
           type: 'string'
+        },
+        enabled: {
+          type: 'boolean',
+          default: true
         }
       }
     };
