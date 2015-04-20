@@ -142,8 +142,9 @@ angular.module('main')
 
     $scope.triggerLoader = function (ref) {
       return st2api.client.triggerTypes.get(ref)
-        .then(function (triggerTypes) {
-          return triggerTypes.parameters_schema;
+        .then(function (triggerType) {
+          $scope.trigger = triggerType;
+          return triggerType.parameters_schema;
         });
     };
 

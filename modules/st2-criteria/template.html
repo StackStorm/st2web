@@ -1,7 +1,8 @@
 <div class="st2-criteria__line"
     ng-repeat="(key, item) in ngModel"
     ng-controller="st2CriterionCtrl">
-  <div class="st2-manual-form st2-form-input st2-criteria__entity"
+  <div class="st2-form-combobox st2-criteria__entity"
+      spec="autocompleteSpec"
       disabled="disabled"
       options="{updateOn: 'blur'}"
       ng-model="key">

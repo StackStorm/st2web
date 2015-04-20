@@ -8,11 +8,27 @@ angular.module('main')
       require: 'ngModel',
       scope: {
         ngModel: '=',
-        disabled: '='
+        disabled: '=',
+        trigger: '='
       },
       templateUrl: 'modules/st2-criteria/template.html',
       link: function postLink(scope) {
         scope.ngModel = scope.ngModel || {};
+
+        scope.$watch('trigger', function (trigger) {
+          if (trigger && trigger.payload_schema && trigger.payload_schema.properties) {
+            scope.autocompleteSpec = {
+              enum: _.map(trigger.payload_schema.properties, function (spec, name) {
+                return {
+                  name: 'trigger.' + name,
+                  description: spec.description
+                };
+              })
+            };
+          } else {
+            scope.autocompleteSpec = {};
+          }
+        });
 
         scope.remove = function (key) {
           delete scope.ngModel[key];
