@@ -89,7 +89,9 @@
 
     &:-moz-focusring {
       color: transparent;
-      text-shadow: 0 0 0 #000;
+      // an actual text color for firefox
+      // see https://stackoverflow.com/a/11603104
+      text-shadow: 0 0 0 white;
     }
 
     option {
