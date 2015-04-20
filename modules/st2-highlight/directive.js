@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('st2Highlight', function () {
+  .directive('st2Highlight', function ($filter) {
 
     function getType(string) {
       try {
@@ -42,7 +42,7 @@ angular.module('main')
               });
             },
             object: function () {
-              return code && Prism.highlight(code, Prism.languages['javascript']);
+              return code && Prism.highlight($filter('json')(code, 2), Prism.languages['javascript']);
             }
           }[type](code);
         }
