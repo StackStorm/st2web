@@ -106,12 +106,16 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
-        <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+        <span class="st2-label"
+            status="_.find(rules, {id: rule.id}).enabled && 'enabled' || 'disabled'">
+        </span>
         <a ui-sref="rules.general({id: rule.id})">
-          {{ rule.name }}
+          {{ _.find(rules, {id: rule.id}).name }}
         </a>
       </div>
-      <div class="st2-details__header-description">{{ rule.description }}</div>
+      <div class="st2-details__header-description">
+        {{ _.find(rules, {id: rule.id}).description }}
+      </div>
     </div>
 
     <div class="st2-details__toolbar">
@@ -240,12 +244,6 @@
             </div>
           </div>
 
-          <div class="st2-manual-form st2-form-checkbox"
-            name="enabled"
-            disabled="!$root.state.params.edit"
-            ng-model="rule.enabled">
-          </div>
-
         </form>
 
       </div>
@@ -331,11 +329,6 @@
             </div>
 
           </div>
-        </div>
-
-        <div class="st2-manual-form st2-form-checkbox"
-          name="enabled"
-          ng-model="newRule.enabled">
         </div>
 
         <input type="submit"
