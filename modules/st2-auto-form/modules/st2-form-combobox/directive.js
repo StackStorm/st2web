@@ -17,7 +17,11 @@ angular.module('main')
         var selected = 0;
         Object.defineProperty(scope, 'selected', {
           get: function () {
-            return selected < scope.sample.length ? selected : scope.sample.length - 1;
+            if (!scope.sample) {
+              return 0;
+            } else {
+              return selected < scope.sample.length ? selected : scope.sample.length - 1;
+            }
           },
           set: function (index) {
             selected = index;

@@ -1,50 +1,23 @@
 <div class="st2-criteria__line"
-    ng-repeat="(key, item) in ngModel"
-    ng-controller="st2CriterionCtrl">
+    ng-repeat="item in result">
   <div class="st2-form-combobox st2-criteria__entity"
       spec="autocompleteSpec"
       disabled="disabled"
-      options="{updateOn: 'blur'}"
-      ng-model="key">
+      ng-model="item.key">
   </div>
   <div class="st2-manual-form st2-form-select st2-criteria__entity"
-      spec="{
-        enum: {
-          'matchregex': 'Matches Regex',
-          'eq': 'Equals',
-          'equals': 'Equals',
-          'nequals': 'Not Equals',
-          'neq': 'Not Equals',
-          'ieq': 'Equals Case Insensitive',
-          'iequals': 'Equals Case Insensitive',
-          'contains': 'Contains',
-          'icontains': 'Contains Case Insensitive',
-          'ncontains': 'Not Contains',
-          'incontains': 'Not Contains Case Insensitive',
-          'startswith': 'Starts With',
-          'istartswith': 'Starts With Case Insensitive',
-          'endswith': 'Ends With',
-          'iendswith': 'Ends With Case Insensitive',
-          'lt': 'Less Than',
-          'lessthan': 'Less Than',
-          'gt': 'Greater Than',
-          'greaterthan': 'Greater Than',
-          'td_lt': 'Earlier Than',
-          'timediff_lt': 'Earlier Than',
-          'td_gt': 'Later Than',
-          'timediff_gt': 'Later Than'
-        }
-      }"
+      spec="typeSpec"
       disabled="disabled"
-      ng-model="item.type">
+      ng-model="item.value.type">
   </div>
   <div class="st2-manual-form st2-form-input st2-criteria__entity"
+      spec="patternSpec"
       disabled="disabled"
-      ng-model="item.pattern">
+      ng-model="item.value.pattern">
   </div>
   <i class="st2-icon__cancel st2-criteria__remove"
       ng-if="!disabled"
-      ng-click="remove(key)"></i>
+      ng-click="remove(item)"></i>
 </div>
 <input type="button"
     class="st2-forms__button st2-forms__button--small"
