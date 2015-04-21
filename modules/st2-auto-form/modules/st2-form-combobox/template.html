@@ -11,7 +11,7 @@
     placeholder="{{spec.default}}"
     ng-required="spec.required"
     ng-model="rawResult"
-    ng-model-options="options || {
+    ng-model-options="{
       allowInvalid: true
     }"
     ng-focus="focus()"
@@ -23,7 +23,7 @@
 </label>
 
 <div class="st2-auto-form__suggestions"
-    ng-show="showSuggestions">
+    ng-show="showSuggestions && sample.length">
   <div class="st2-auto-form__suggestion"
       ng-repeat="suggestion in sample = (spec.enum | filter:{name:rawResult})"
       ng-class="{'st2-auto-form__suggestion--active': $parent.selected == $index}"
