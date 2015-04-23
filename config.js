@@ -7,7 +7,8 @@ angular.module('main')
       url: '//172.168.50.50:9101'
     }, {
       name: 'Express',
-      url: '//172.168.90.50:9101'
+      url: '//172.168.90.50:9101',
+      auth: true
     }]
 
   });
