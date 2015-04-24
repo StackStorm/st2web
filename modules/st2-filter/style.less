@@ -1,3 +1,5 @@
+@import 'colors';
+
 .st2-filter {
   font-size: 18px;
   line-height: 35px;
@@ -52,6 +54,11 @@
     }
   }
 
+  &--active &__label {
+    border-radius: 5px 5px 0 0;
+    background-color: @blue-darkest;
+  }
+
   &__variants {
     position: absolute;
     z-index: 3;
@@ -62,7 +69,11 @@
     padding: 4px 5px 4px 0;
 
     border-radius: 0 5px 5px 5px;
-    background-color: #222;
+    background-color: @blue-darkest;
+  }
+
+  &--active &__variants {
+    display: block;
   }
 
   &__list {
@@ -104,14 +115,5 @@
     &--active {
       color: #01c8ff;
     }
-  }
-
-  &--active &__variants {
-    display: block;
-  }
-
-  &--active &__label {
-    border-radius: 5px 5px 0 0;
-    background-color: #222;
   }
 }

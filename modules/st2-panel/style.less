@@ -53,10 +53,10 @@
 
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
-      background-color: rgba(117, 117, 117, .3); // #757575
+      background-color: fade(@blue, 30%);
 
       &:hover {
-        background-color: rgba(117, 117, 117, .7); // #757575
+        background-color: fade(@blue, 70%);
       }
     }
   }
@@ -256,7 +256,7 @@
     vertical-align: middle;
     pointer-events: none;
 
-    color: #515151;
+    color: @blue-darker;
   }
 
   @keyframes spin {
