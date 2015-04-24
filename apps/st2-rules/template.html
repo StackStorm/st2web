@@ -181,21 +181,6 @@
 
         <form name="form">
 
-          <div class="st2-details__panel"
-              ng-show="$root.state.params.edit">
-            <div class="st2-details__panel-heading">
-              <h2 class="st2-details__panel-title">Rule</h2>
-            </div>
-            <div class="st2-details__panel-body">
-
-              <div class="st2-auto-form"
-                spec="metaSpec"
-                ng-model="rule">
-              </div>
-
-            </div>
-          </div>
-
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Trigger</h2>
@@ -240,6 +225,21 @@
                   suggester="actionSuggester"
                   loader="actionLoader"
                   ng-model="rule.action">
+              </div>
+
+            </div>
+          </div>
+
+          <div class="st2-details__panel"
+              ng-show="$root.state.params.edit">
+            <div class="st2-details__panel-heading">
+              <h2 class="st2-details__panel-title">Rule</h2>
+            </div>
+            <div class="st2-details__panel-body">
+
+              <div class="st2-auto-form"
+                spec="metaSpec"
+                ng-model="rule">
               </div>
 
             </div>
