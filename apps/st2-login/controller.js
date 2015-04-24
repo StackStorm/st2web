@@ -30,11 +30,12 @@ angular.module('main')
 
 
 angular.module('main')
-  .controller('st2LoginCtrl', function ($scope, st2api, st2Config, $rootScope) {
+  .controller('st2LoginCtrl', function ($scope, st2api, st2Config, $rootScope, $urlRouter) {
 
     $scope.connect = function (server, user, password, remember) {
       st2api.connect(server, user, password, remember).then(function () {
-        $rootScope.$broadcast('$locationChangeSuccess');
+        $urlRouter.sync();
+        $scope.$$phase || $scope.$apply();
       }).catch(function (err) {
         $scope.error = err.message.faultstring || err.message;
 

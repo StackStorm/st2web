@@ -53,10 +53,10 @@
 
     &::-webkit-scrollbar-thumb {
       border-radius: 3px;
-      background-color: rgba(117, 117, 117, .3); // #757575
+      background-color: fade(@blue, 30%);
 
       &:hover {
-        background-color: rgba(117, 117, 117, .7); // #757575
+        background-color: fade(@blue, 70%);
       }
     }
   }
@@ -94,15 +94,15 @@
       display: flex;
       flex: 1 0 auto;
 
-      align-self: center;
+      align-self: flex-end;
       justify-content: flex-start;
       order: -2;
     }
 
     &-button {
-      width: 28px;
-      height: 28px;
-      margin: 0 5px;
+      width: 25px;
+      height: 25px;
+      margin: 0 0 2px;
       padding: 0;
 
       border-radius: 50%;
@@ -181,6 +181,7 @@
     // hiding displaced toolbar items
     padding: 10px;
 
+    color: @blue-light;
     background-color: @blue-dark;
 
     &-empty {
@@ -221,7 +222,7 @@
       }
 
       &-title {
-        color: @gray-bright;
+        color: @blue-dull;
       }
 
       a,
@@ -229,7 +230,7 @@
       a:active,
       a:visited,
       a:hover {
-        color: @gray-bright;
+        color: @blue-dull;
       }
     }
   }
@@ -255,7 +256,7 @@
     vertical-align: middle;
     pointer-events: none;
 
-    color: #515151;
+    color: @blue-darker;
   }
 
   @keyframes spin {

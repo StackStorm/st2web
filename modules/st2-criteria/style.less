@@ -1,3 +1,5 @@
+@import 'colors';
+
 .st2-criteria {
   &__line {
     // Combobox suggestion box takes all the space of the next prlatively positioned element.
@@ -40,6 +42,16 @@
 
     cursor: pointer;
 
+    color: @blue-dark;
+
     align-self: center;
+  }
+
+  &__line:hover &__remove {
+    color: @blue;
+  }
+
+  &__buttons {
+    height: 0;
   }
 }

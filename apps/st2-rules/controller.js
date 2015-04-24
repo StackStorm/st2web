@@ -166,6 +166,7 @@ angular.module('main')
 
       return promise.then(function (rule) {
         if (rule) {
+          $scope.ruleMeta = _.clone(rule);
           $scope.rule = rule;
           $scope.$apply();
         }
@@ -188,6 +189,7 @@ angular.module('main')
 
         var index = _.findIndex($scope.rules, {'id': rule.id});
         $scope.rules[index] = rule;
+        $scope.ruleMeta = _.clone(rule);
 
         $scope.$apply();
         $scope.$root.go({id: rule.id, edit: undefined}, {notify: false});

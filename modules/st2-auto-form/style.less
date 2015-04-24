@@ -1,21 +1,10 @@
 @import 'colors';
 
-@gray-dark: #2e2e2e;
-@gray-darker: #1e1e1e;
-@gray: #6c6c6c;
-@gray-light: #a4a4a4;
-@gray-lighter: #d9d9d9;
-@gray-lightest: #eaeaeb;
-@gray-white: #f4f4f4;
-
 .st2-auto-form {
   position: relative;
 
   &__line {
     margin-top: 17px;
-    padding-bottom: 20px;
-
-    border-bottom: 1px solid #323d44;
 
     &:last-of-type {
       border-bottom: 0;
@@ -175,8 +164,6 @@
   &__description {
     font-size: 11px;
 
-    margin: 8px 0 0 0;
-
     opacity: .7;
     color: #d1eeff;
   }
@@ -192,10 +179,8 @@
 
     user-select: none;
 
-    border: 1px solid;
-    border-color: rgba(0, 0, 0, 0) rgba(64, 64, 64, .3) rgba(108, 108, 108, .5);
     border-radius: 0 0 4px 4px;
-    background-color: @gray-dark;
+    background-color: mix(@blue-darkest, @blue-darker, 60%);
   }
 
   &__suggestion {
@@ -208,7 +193,7 @@
     border-radius: 4px;
 
     &--active {
-      background-color: @gray-dull;
+      background-color: @blue-dark;
     }
   }
 }

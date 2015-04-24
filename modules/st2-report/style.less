@@ -5,12 +5,30 @@
   right: 20px;
   bottom: 0;
 
-  padding: 5px 10px;
+  user-select: none;
 
-  color: @gray-white;
   border-radius: 5px 5px 0 0;
-  background-color: @gray-dark;
-  box-shadow: 0 0 3px fade(@gray-darkest, 50%);
+  background-color: @blue-dark;
+  box-shadow: 0 0 3px fade(@blue-darkest, 50%);
+
+  &__link {
+    display: block;
+
+    padding: 7px 10px 5px 8px;
+
+    &:before {
+      font-family: 'ststanley';
+      font-size: 14px;
+      font-weight: normal;
+      font-style: normal;
+
+      padding-right: 2px;
+
+      content: '\e818';
+
+      color: @blue-light;
+    }
+  }
 
   a,
   a:link,
@@ -19,6 +37,6 @@
   a:hover {
     text-decoration: none;
 
-    color: @gray-white;
+    color: @blue-pale;
   }
 }
