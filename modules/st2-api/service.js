@@ -17,6 +17,10 @@ angular.module('main')
 
       var api = new URI.parse(url);
 
+      if (api.port && !api.hostname) {
+        api.hostname = window.location.hostname;
+      }
+
       var opts = {
         protocol: api.protocol,
         host: api.hostname,
@@ -26,6 +30,10 @@ angular.module('main')
 
       if (server.auth && _.isString(server.auth)) {
         var auth = URI.parse(server.auth);
+
+        if (auth.port && !auth.hostname) {
+          auth.hostname = window.location.hostname;
+        }
 
         opts['auth'] = {
           protocol: auth.protocol,
