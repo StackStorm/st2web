@@ -1,4 +1,5 @@
-<div class="st2-highlight__well">
+<div class="st2-highlight__well"
+    ng-show="!hidden">
   <pre><!--
  --><code><!--
  --></code><!--
@@ -10,7 +11,7 @@
 --></pre>
 </div>
 <div class="st2-highlight__fullscreen"
-    ng-show="expand"
+    ng-show="!hidden && expand"
     ng-click="expand = !expand">
   <div class="st2-highlight__well"
       ng-click="$event.stopPropagation()">

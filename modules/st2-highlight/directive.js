@@ -30,9 +30,13 @@ angular.module('main')
 
       scope.$watch('code', function (code) {
 
+        scope.hidden = true;
+
         if (!code) {
           return;
         }
+
+        scope.hidden = false;
 
         var string = (function () {
           if (scope.language && Prism.languages[scope.language]) {
