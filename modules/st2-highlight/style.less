@@ -1,4 +1,53 @@
+@import 'colors';
+
 .st2-highlight {
+  &__well {
+    min-height: 20px;
+    padding: 4px;
+
+    color: #fff;
+    border-radius: 4px;
+    background-color: @blue-darkest;
+
+    pre {
+      font-family: Inconsolata;
+      font-size: 14px;
+
+      display: block;
+      overflow: scroll;
+
+      margin: 0;
+      padding: 15px;
+
+      color: rgb(216, 216, 216);
+
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background-color: rgba(200, 200, 200, .3);
+
+        &:hover {
+          background-color: rgba(200, 200, 200, .7);
+        }
+      }
+
+      &::-webkit-scrollbar-corner {
+        background-color: transparent;
+      }
+    }
+
+    code {
+      font-family: inherit;
+      font-size: inherit;
+    }
+  }
+
   &__fullscreen {
     position: fixed;
     z-index: 2;

@@ -22,51 +22,65 @@ angular.module('main')
       return 'object';
     }
 
-    function postLink(scope) {
+    function postLink(scope, element) {
+      var shortElement = element[0].querySelector('.st2-highlight__well code')
+        , fullElement = element[0].querySelector('.st2-highlight__fullscreen code');
+
       var LINES_TO_SHOW = scope.lines ? parseInt(scope.lines) : 5;
 
       scope.$watch('code', function (code) {
 
-        if (scope.language && Prism.languages[scope.language]) {
-          scope.string = code && Prism.highlight(code, Prism.languages[scope.language]);
-        } else {
-          var type = getType(code);
+        if (!code) {
+          return;
+        }
 
-          scope.string = {
-            json: function () {
-              return code && Prism.highlight(code, Prism.languages['javascript']);
-            },
-            string: function () {
-              return code && code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
+        var string = (function () {
+          if (scope.language && Prism.languages[scope.language]) {
+            return Prism.highlight(code, Prism.languages[scope.language]);
+          } else {
+            var type = getType(code);
+
+            if (type === 'json') {
+              return Prism.highlight(code, Prism.languages['javascript']);
+            }
+
+            if (type === 'string') {
+              return code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
                 return '&#'+i.charCodeAt(0)+';';
               });
-            },
-            object: function () {
-              return code && Prism.highlight($filter('json')(code, 2), Prism.languages['javascript']);
-            }
-          }[type](code);
-        }
-
-        if (scope.full) {
-          scope.shortString = scope.string;
-        } else {
-          if (scope.string) {
-            var lines = scope.string.split('\n');
-
-            if (lines[lines.length - 1] === '') {
-              lines.pop();
             }
 
-            scope.lines_more = lines.length - LINES_TO_SHOW;
-
-            if (scope.lines_more > 0) {
-              lines = lines.slice(0,LINES_TO_SHOW);
+            if (type === 'object') {
+              return Prism.highlight($filter('json')(code, 2), Prism.languages['javascript']);
             }
-
-            scope.shortString = lines.join('\n');
           }
+
+        })();
+
+        var shortString;
+
+        if (!scope.full) {
+          var lines = string.split('\n');
+
+          if (lines[lines.length - 1] === '') {
+            lines.pop();
+          }
+
+          scope.lines_more = lines.length - LINES_TO_SHOW;
+
+          if (scope.lines_more > 0) {
+            lines = lines.slice(0,LINES_TO_SHOW);
+          }
+
+          shortString = lines.join('\n');
         }
 
+        if (shortString) {
+          shortElement.innerHTML = shortString;
+          fullElement.innerHTML = string;
+        } else {
+          shortElement.innerHTML = string;
+        }
 
       });
     }

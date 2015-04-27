@@ -16,49 +16,6 @@
   background-color: @blue-darker;
   box-shadow: inset 1px 0 0 @gray-dull;
 
-  &__well {
-    min-height: 20px;
-    padding: 4px;
-
-    color: #fff;
-    border-radius: 4px;
-    background-color: @blue-darkest;
-
-    pre {
-      margin: 0;
-    }
-
-    code {
-      font-family: Inconsolata;
-      font-size: 14px;
-
-      display: block;
-      overflow-x: scroll;
-      overflow-y: hidden;
-
-      margin: 0;
-      padding: 15px;
-
-      color: rgb(216, 216, 216);
-
-      &::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-
-        background-color: transparent;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        border-radius: 3px;
-        background-color: rgba(200, 200, 200, .3);
-
-        &:hover {
-          background-color: rgba(200, 200, 200, .7);
-        }
-      }
-    }
-  }
-
   &__tab {
     &s {
       display: flex;
