@@ -81,6 +81,91 @@
     }
   }
 
+  &__text-field &__field {
+    font: 13px / 18px 'Open Sans', sans-serif;
+
+    display: block;
+    overflow: hidden;
+
+    height: 28px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    resize: none;
+    cursor: inherit;
+    word-wrap: break-word;
+
+    background: transparent;
+
+    &.ng-invalid {
+      box-shadow: none;
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: rgba(117, 117, 117, .3);
+
+      &:hover {
+        background-color: rgba(117, 117, 117, .7);
+      }
+    }
+  }
+
+  &__text-field &__field-container {
+    display: block;
+
+    padding: 4px 4px 4px 0;
+
+    cursor: text;
+
+    background: @blue-darkest;
+
+    &--focused {
+      background-color: fade(@blue-darkest, 60%);
+    }
+
+    &--disabled {
+      cursor: default;
+
+      color: @blue-light;
+      border-color: transparent;
+      background-color: rgba(54, 64, 73, .65);
+    }
+
+    &--readonly {
+      cursor: not-allowed;
+
+      color: rgba(255, 255, 255, .36);
+      background-color: red;
+    }
+
+    &--invalid.st2-auto-form__field-container--touched {
+      box-shadow: 0 0 0 1px red;
+    }
+  }
+
+  &__field-clone {
+    position: absolute;
+    z-index: -1;
+
+    visibility: hidden;
+    overflow: hidden;
+
+    height: 0 !important;
+    min-height: 0 !important;
+
+    word-wrap: break-word;
+
+    border: 0;
+  }
+
   &__select {
     position: relative;
 

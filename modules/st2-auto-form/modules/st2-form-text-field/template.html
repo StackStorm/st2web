@@ -1,0 +1,31 @@
+<label class="st2-auto-form__label st2-auto-form__text-field"
+  ng-class="{'st2-auto-form--required': spec.required}">
+
+  <div class="st2-auto-form__title"
+      ng-if="spec.name || name">
+    {{ spec.name || name }}
+  </div>
+
+  <span
+    class="st2-auto-form__field-container"
+    ng-class="{'st2-auto-form__field-container--disabled': disabled}">
+    <textarea
+      class="st2-auto-form__field"
+      placeholder="{{spec.default}}"
+      ng-required="spec.required"
+      ng-model="ngModel"
+      ng-model-options="options || {}"
+      ng-pattern="spec.pattern"
+      ng-disabled="disabled"
+      minlength="{{spec.minLength}}"
+      maxlength="{{spec.maxLength}}"
+      st2-value-format="{{spec.format}}">
+    </textarea>
+  </span>
+
+</label>
+
+<p class="st2-auto-form__description"
+    ng-if="spec.description">
+  {{ spec.description }}
+</p>
