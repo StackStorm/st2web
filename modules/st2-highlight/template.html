@@ -1,21 +1,20 @@
-<div class="st2-details__well st2-highlight__well"
-    ng-show="string">
+<div class="st2-highlight__well"
+    ng-show="!hidden">
   <pre><!--
  --><code><!--
-   --><div ng-bind-html="shortString"></div><!--
-   --><div class="st2-highlight__more"
-          ng-show="lines_more > 0"
-          ng-click="expand = !expand"><!--
-     -->+ {{ lines_more }} more lines<!--
-   --></div><!--
  --></code><!--
+ --><div class="st2-highlight__more"
+        ng-show="lines_more > 0"
+        ng-click="expand = !expand"><!--
+   -->+ {{ lines_more }} more lines<!--
+ --></div><!--
 --></pre>
 </div>
-<div ng-class="{ 'st2-highlight__fullscreen': expand }"
-    ng-show="string && expand"
+<div class="st2-highlight__fullscreen"
+    ng-show="!hidden && expand"
     ng-click="expand = !expand">
-  <div class="st2-details__well st2-highlight__well"
+  <div class="st2-highlight__well"
       ng-click="$event.stopPropagation()">
-    <pre><code ng-bind-html="string"></code></pre>
+    <pre><code></code></pre>
   </div>
 </div>

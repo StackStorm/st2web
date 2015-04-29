@@ -184,9 +184,9 @@ angular.module('main')
       var runnersWithFiles = {
         'mistral-v1': 'yaml',
         'mistral-v2': 'yaml',
-        'run-local-script': ['python', 'bash'],
-        'run-remote-script': ['python', 'bash'],
-        'run-python': 'python',
+        'local-shell-script': ['python', 'bash'],
+        'remote-shell-script': ['python', 'bash'],
+        'python-script': 'python',
         'action-chain': 'yaml'
       };
 
