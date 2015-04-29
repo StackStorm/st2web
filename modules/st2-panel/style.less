@@ -143,7 +143,7 @@
 
         content: '\e80f';
 
-        color: @blue-light;
+        color: fade(@blue-light, 40%);
       }
     }
 
@@ -169,7 +169,7 @@
     box-shadow: inset 0 1px 2px #000;
 
     &::placeholder {
-      color: @blue-light;
+      color: fade(@blue-light, 40%);
     }
   }
 
@@ -181,7 +181,7 @@
     // hiding displaced toolbar items
     padding: 10px;
 
-    color: @blue-light;
+    color: fade(@blue-light, 40%);
     background-color: @blue-dark;
 
     &-empty {

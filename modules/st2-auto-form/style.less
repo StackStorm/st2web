@@ -53,13 +53,13 @@
     &[disabled] {
       cursor: default;
 
-      color: #a9a9a9;
+      color: @blue-light;
       border-color: transparent;
       background-color: rgba(54, 64, 73, .65);
     }
 
     &::placeholder {
-      color: @blue-light;
+      color: fade(@blue-light, 40%);
     }
 
     &:invalid {
