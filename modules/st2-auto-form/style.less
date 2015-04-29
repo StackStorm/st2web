@@ -53,13 +53,13 @@
     &[disabled] {
       cursor: default;
 
-      color: #a9a9a9;
+      color: @blue-light;
       border-color: transparent;
       background-color: rgba(54, 64, 73, .65);
     }
 
     &::placeholder {
-      color: @blue-light;
+      color: fade(@blue-light, 40%);
     }
 
     &:invalid {
@@ -74,13 +74,6 @@
     &:focus {
       // TODO @gmedrano: apparently, we need another color in between of darker and darkest.
       background-color: fade(@blue-darkest, 60%);
-    }
-
-    &:-moz-focusring {
-      color: transparent;
-      // an actual text color for firefox
-      // see https://stackoverflow.com/a/11603104
-      text-shadow: 0 0 0 white;
     }
 
     option {
@@ -119,6 +112,13 @@
 
     -webkit-appearance: none;
        -moz-appearance: none;
+
+    &:-moz-focusring {
+      color: transparent;
+      // an actual text color for firefox
+      // see https://stackoverflow.com/a/11603104
+      text-shadow: 0 0 0 white;
+    }
   }
 
   &__checkbox {
@@ -128,6 +128,8 @@
     padding: 0;
 
     &-label {
+      font-weight: 100;
+
       cursor: pointer;
       user-select: none;
       vertical-align: top;
@@ -135,15 +137,16 @@
 
     & + &-label:before {
       font-family: 'ststanley';
+      font-size: 12px;
       font-weight: normal;
       font-style: normal;
-      line-height: 12px;
+      line-height: 16px;
 
       display: inline-block;
 
       width: 14px;
       height: 14px;
-      margin-right: .5em;
+      margin-right: .3em;
 
       content: '\00a0';
       text-decoration: inherit;

@@ -37,6 +37,7 @@
         "prism.js",
         "components/prism-bash.js",
         "components/prism-yaml.js",
+        "components/prism-powershell.js",
         "components/prism-python.js"
       ]
     }

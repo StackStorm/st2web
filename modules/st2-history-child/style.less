@@ -12,8 +12,7 @@
     }
   }
 
-  &:before,
-  &:after {
+  &:before {
     position: absolute;
     z-index: 1;
     top: 0;
@@ -27,13 +26,6 @@
     content: '';
 
     background-image: linear-gradient(to bottom, rgba(0,0,0,.5) 0%, transparent 100%);
-  }
-
-  &:after {
-    top: auto;
-    bottom: 0;
-
-    background-image: linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 100%);
   }
 
   .st2-flex-table {
