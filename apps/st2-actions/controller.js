@@ -184,10 +184,14 @@ angular.module('main')
       var runnersWithFiles = {
         'mistral-v1': 'yaml',
         'mistral-v2': 'yaml',
+        'run-local-script': ['python', 'bash'],
+        'run-remote-script': ['python', 'bash'],
         'local-shell-script': ['python', 'bash'],
         'remote-shell-script': ['python', 'bash'],
+        'run-python': 'python',
         'python-script': 'python',
-        'action-chain': 'yaml'
+        'action-chain': 'yaml',
+        'windows-script': 'powershell'
       };
 
       return action && runnersWithFiles[action.runner_type];
