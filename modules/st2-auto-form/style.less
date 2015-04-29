@@ -76,13 +76,6 @@
       background-color: fade(@blue-darkest, 60%);
     }
 
-    &:-moz-focusring {
-      color: transparent;
-      // an actual text color for firefox
-      // see https://stackoverflow.com/a/11603104
-      text-shadow: 0 0 0 white;
-    }
-
     option {
       color: white;
     }
@@ -119,6 +112,13 @@
 
     -webkit-appearance: none;
        -moz-appearance: none;
+
+    &:-moz-focusring {
+      color: transparent;
+      // an actual text color for firefox
+      // see https://stackoverflow.com/a/11603104
+      text-shadow: 0 0 0 white;
+    }
   }
 
   &__checkbox {
