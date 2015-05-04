@@ -261,7 +261,9 @@
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.rule.name">
-                {{ record.rule.name }}
+                <a ui-sref="rules.general({id: record.rule.id})">
+                  {{ record.rule.name }}
+                </a>
               </dd>
             </dl>
             <dl class="st2-details__panel-body-line">
