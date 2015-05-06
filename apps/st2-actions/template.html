@@ -25,9 +25,10 @@
 
         <div class="st2-flex-table"
             ng-repeat="(name, list) in groups"
+            ng-class="{'st2-flex-table--contracted': $root.tabs.isClosed('action', name)}"
             ng-if="groups && !_.isEmpty(groups)">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
-              ng-click="toggle()">
+              ng-click="$root.tabs.toggle('action', name)">
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 

@@ -31,10 +31,11 @@
       <div class="st2-panel__content">
         <div class="st2-flex-table"
             ng-repeat="group in groups = (history | orderBy:'period':true)"
+            ng-class="{'st2-flex-table--contracted': $root.tabs.isClosed('history', group.period)}"
             ng-if="history && !_.isEmpty(groups)">
 
           <div class="st2-flex-table__caption st2-flex-table__caption--date"
-              ng-click="toggle()">
+              ng-click="$root.tabs.toggle('history', group.period)">
             <h2 class="st2-flex-table__caption-title">{{ group.period | date:'fullDate':'UTC'}}</h2>
           </div>
 
