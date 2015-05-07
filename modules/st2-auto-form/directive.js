@@ -11,7 +11,7 @@ angular.module('main')
       }
 
       return {
-        'string': 'st2-form-input',
+        'string': 'st2-form-text-field',
         'integer': 'st2-form-input',
         'number': 'st2-form-input',
         'boolean': 'st2-form-checkbox',
