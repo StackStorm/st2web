@@ -204,6 +204,11 @@
 
     <div class="st2-details__toolbar">
 
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="rerun.open()"
+          value="Rerun"/>
+
       <div class="st2-details__toolbar-separator"></div>
 
       <div class="st2-details__switch st2-details__switch--of-two"
@@ -353,5 +358,50 @@
   </div>
 
 </main>
+
+<div class="st2-popup"
+    ng-show="$root.isState('^.rerun')"
+    ng-click="rerun.cancel()">
+  <div class="st2-panel__details st2-details st2-popup__details"
+      ng-click="$event.stopPropagation()">
+    <div class="st2-panel__scroller">
+
+      <form name="rerunform">
+
+        <div class="st2-popup__title">
+          Rerun an execution
+        </div>
+
+        <div class="st2-auto-form"
+          spec="rerun.metaSpec"
+          ng-model="record.action"
+          disabled="true">
+        </div>
+
+        <div class="st2-auto-form"
+          spec="rerun.actionSpec"
+          ng-model="rerun.payload">
+        </div>
+
+        <input type="submit"
+            class="st2-forms__button st2-details__toolbar-button"
+            ng-disabled="rerunform.$invalid"
+            ng-click="rerun.submit()"
+            value="Save"/>
+        <input type="button"
+            class="st2-forms__button st2-details__toolbar-button"
+            ng-click="rerun.cancel()"
+            value="Cancel"/>
+
+        <span class="st2-details__toolbar-message st2-details__toolbar-message-error"
+            ng-show="rerunform.err">
+          Error! Check console.
+        </span>
+
+      </form>
+
+    </div>
+  </div>
+</div>
 
 <div class="st2-report"></div>

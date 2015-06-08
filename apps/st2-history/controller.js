@@ -22,6 +22,9 @@ angular.module('main')
       .state('history.code', {
         url: '/{id:\\w+}/code?page&status&action&rule&trigger&trigger_type'
       })
+      .state('history.rerun', {
+        url: '/{id:\\w+}/rerun?page&status&action&rule&trigger&trigger_type'
+      })
 
       ;
 
@@ -217,7 +220,7 @@ angular.module('main')
 
         _.assign(node, record);
 
-        if ($scope.record.id === record.id) {
+        if ($scope.record && $scope.record.id === record.id) {
           _.assign($scope.record, record);
         }
 
@@ -252,6 +255,46 @@ angular.module('main')
         });
       }
     };
+
+    $scope.rerun = (function () {
+      var rerun = $scope.$new();
+
+      rerun.metaSpec = {
+        type: 'object',
+        properties: {
+          ref: {
+            type: 'string',
+            name: 'Action'
+          }
+        }
+      };
+
+
+      rerun.open = function () {
+        $scope.$root.state.go('^.rerun', {id: $scope.record.id});
+        rerun.payload = _.clone($scope.payload);
+        rerun.actionSpec = $scope.actionSpec;
+      };
+
+      rerun.cancel = function () {
+        $scope.$root.state.go('^.general', {id: $scope.record.id});
+      };
+
+      rerun.submit = function () {
+        st2api.client.executions.repeat($scope.record.id, {
+          parameters: rerun.payload
+        }).then(function (record) {
+          $scope.$root.state.go('^.general', {id: record.id});
+        }).catch(function (error) {
+          $scope.rerunform.err = true;
+          $scope.$apply();
+          $scope.rerunform.err = false;
+          console.error(error);
+        });
+      };
+
+      return rerun;
+    })();
 
   })
 
