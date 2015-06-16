@@ -15,8 +15,9 @@ angular.module('main')
       'run-remote-script': 'run-remote',
       'remote-shell-script': 'run-remote',
       'run-python': 'run-python',
-      'python-shell': 'run-python'
+      'python-shell': 'run-python',
       // 'http-runner': 'http'
+      'cloudslang': 'run-local'
     };
 
     var linker = function (scope) {
