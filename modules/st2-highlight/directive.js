@@ -45,7 +45,7 @@ angular.module('main')
             var type = getType(code);
 
             if (type === 'json') {
-              return Prism.highlight(code, Prism.languages['javascript']);
+              return Prism.highlight(code, Prism.languages['json']);
             }
 
             if (type === 'string') {
@@ -55,7 +55,7 @@ angular.module('main')
             }
 
             if (type === 'object') {
-              return Prism.highlight($filter('json')(code, 2), Prism.languages['javascript']);
+              return Prism.highlight($filter('json')(code, 2), Prism.languages['json']);
             }
           }
 
