@@ -19,7 +19,7 @@
     "gulp-angular-templatecache": "^1.5.0",
     "gulp-autoprefixer": "0.0.7",
     "gulp-concat": "^2.2.0",
-    "gulp-csscomb": "^3.0.3",
+    "gulp-csscomb": "3.0.3",
     "gulp-html-replace": "^1.4.1",
     "gulp-jshint": "^1.5.5",
     "gulp-less": "^3.0.2",
