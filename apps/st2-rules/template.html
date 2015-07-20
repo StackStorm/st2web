@@ -31,9 +31,10 @@
       <div class="st2-panel__content">
 
         <div class="st2-flex-table"
+            ng-class="{'st2-flex-table--contracted': $root.tabs.isClosed('rules', 'general')}"
             ng-if="rules && !_.isEmpty(rules)">
           <div class="st2-flex-table__caption"
-              ng-click="toggle()">
+              ng-click="$root.tabs.toggle('rules', 'general')">
             <h2 class="st2-flex-table__caption-title">General</h2>
           </div>
 

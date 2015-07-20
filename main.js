@@ -74,6 +74,29 @@ angular.module('main')
     // $scope.$on('$stateChangeStart', function (event, toState) {
     //   window.name = toState.name;
     // });
+
+    $rootScope.tabs = (function () {
+      var closed = {
+        action: [],
+        history: [],
+        rules: []
+      };
+
+      return {
+        toggle: function (type, name) {
+          var index = closed[type].indexOf(name);
+
+          if (index > -1) {
+            closed[type].splice(index, 1);
+          } else {
+            closed[type].push(name);
+          }
+        },
+        isClosed: function (type, name) {
+          return closed[type].indexOf(name) !== -1;
+        }
+      };
+    })();
   });
 
 angular.module('main')
