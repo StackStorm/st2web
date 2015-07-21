@@ -20,10 +20,10 @@ angular.module('main')
         url: '/new'
       })
       .state('rules.general', {
-        url: '/{id:\\w+}/general?edit'
+        url: '/{ref:\\w+}/general?edit'
       })
       .state('rules.code', {
-        url: '/{id:\\w+}/code?edit'
+        url: '/{ref:\\w+}/code?edit'
       })
 
       ;
@@ -159,8 +159,8 @@ angular.module('main')
         });
     };
 
-    $scope.loadRule = function (id) {
-      var promise = id ? st2api.client.rules.get(id) : pRulesList.then(function (actions) {
+    $scope.loadRule = function (ref) {
+      var promise = ref ? st2api.client.rules.get(ref) : pRulesList.then(function (actions) {
         return _.first(actions);
       });
 
@@ -173,13 +173,13 @@ angular.module('main')
       });
     };
 
-    $scope.$watch('$root.state.params.id', $scope.loadRule);
+    $scope.$watch('$root.state.params.ref', $scope.loadRule);
 
     $scope.edit = function () {
       $scope.rule = angular.copy($scope.rule);
       $scope.form.saved = false;
       $scope.form.err = false;
-      $scope.$root.go({id: $scope.rule.id, edit: true});
+      $scope.$root.go({ref: $scope.rule.ref, edit: true});
     };
 
     $scope.submit = function () {
@@ -187,12 +187,12 @@ angular.module('main')
         $scope.form.$setPristine();
         $scope.form.saved = true;
 
-        var index = _.findIndex($scope.rules, {'id': rule.id});
+        var index = _.findIndex($scope.rules, {'ref': rule.ref});
         $scope.rules[index] = rule;
         $scope.ruleMeta = _.clone(rule);
 
         $scope.$apply();
-        $scope.$root.go({id: rule.id, edit: undefined}, {notify: false});
+        $scope.$root.go({ref: rule.ref, edit: undefined}, {notify: false});
       }).catch(function (error) {
         $scope.form.err = true;
         $scope.$apply();
@@ -202,10 +202,10 @@ angular.module('main')
     };
 
     $scope.cancel = function () {
-      $scope.loadRule($scope.rule.id).then(function () {
+      $scope.loadRule($scope.rule.ref).then(function () {
         $scope.form.$setPristine();
       });
-      $scope.$root.go({id: $scope.rule.id, edit: undefined}, {
+      $scope.$root.go({ref: $scope.rule.ref, edit: undefined}, {
         notify: $scope.form.$dirty
       });
     };
@@ -216,7 +216,7 @@ angular.module('main')
         return;
       }
 
-      st2api.client.rules.delete($scope.rule.id).then(function () {
+      st2api.client.rules.delete($scope.rule.ref).then(function () {
         $scope.$root.state.go('^.list', {}, {reload: true});
       }).catch(function (error) {
         $scope.form.err = true;
@@ -235,7 +235,7 @@ angular.module('main')
           $scope.newform.$setPristine();
           $scope.newform.saved = true;
           $scope.$apply();
-          $scope.$root.state.go('^.general', {id: rule.id}, {reload: true});
+          $scope.$root.state.go('^.general', {ref: rule.ref}, {reload: true});
         }).catch(function (error) {
           $scope.newform.err = true;
           $scope.$apply();

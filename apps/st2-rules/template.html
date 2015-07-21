@@ -48,9 +48,9 @@
           <div class="st2-flex-table__row"
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
-              ng-class="{'st2-flex-table__row--active': rule.id == $parent.rule.id}"
+              ng-class="{'st2-flex-table__row--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in rules"
-              ng-click="$root.go({id: rule.id, edit: undefined})">
+              ng-click="$root.go({ref: rule.ref, edit: undefined})">
             <div class="st2-flex-table__column st2-rules__column-enabled">
               <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
             </div>
@@ -102,14 +102,14 @@
   </div>
 
   <div class="st2-panel__details st2-details"
-      ng-show="rule.id">
+      ng-show="rule.ref">
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
         <span class="st2-label"
             status="ruleMeta.enabled && 'enabled' || 'disabled'">
         </span>
-        <a ui-sref="rules.general({id: rule.id})">
+        <a ui-sref="rules.general({ref: rule.ref})">
           {{ ruleMeta.name }}
         </a>
       </div>
