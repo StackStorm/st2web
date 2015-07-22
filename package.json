@@ -1,5 +1,5 @@
 {
-  "name": "st2-web",
+  "name": "st2web",
   "version": "0.0.0",
   "st2_version": "0.13dev",
   "private": true,
