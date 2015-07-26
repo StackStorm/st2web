@@ -20,10 +20,10 @@ angular.module('main')
         url: '/new'
       })
       .state('rules.general', {
-        url: '/{ref:\\w+}/general?edit'
+        url: '/{ref:[\\w.-]+}/general?edit'
       })
       .state('rules.code', {
-        url: '/{ref:\\w+}/code?edit'
+        url: '/{ref:[\\w.-]+}/code?edit'
       })
 
       ;
