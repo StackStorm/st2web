@@ -90,6 +90,7 @@ angular.module('main')
         st2api.client.executions.list({
           'action': $scope.$root.getRef(action),
           'limit': 5,
+          'exclude_attributes': 'result,trigger_instance',
           'parent': 'null'
         }).then(function (history) {
           $scope.inProgress = false;
