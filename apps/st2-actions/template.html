@@ -24,10 +24,11 @@
       <div class="st2-panel__content">
 
         <div class="st2-flex-table"
-            ng-repeat="(name, list) in groups"
+            ng-repeat="(name, params) in groups"
             ng-if="groups && !_.isEmpty(groups)">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
+            <img src="{{ params.icon }}" />
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
@@ -44,7 +45,7 @@
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
-              ng-repeat="action in list"
+              ng-repeat="action in params.list"
               ng-click="$root.go({ref: action.ref})">
             <div class="st2-flex-table__column st2-actions__column-utility">
               <i class="st2-icon__flow-cascade"

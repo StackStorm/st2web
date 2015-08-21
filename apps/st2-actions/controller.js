@@ -58,6 +58,22 @@ angular.module('main')
           })
           .groupBy('pack')
           .value();
+        _.forEach($scope.groups, function (value, key) {
+          $scope.groups[key] = {  
+            'list': value
+          };
+          st2api.client.packFile.get(key+'/icon.png').then(function(result) {
+            var blob = new Blob([result], {type: 'image/png'});
+            var reader = new FileReader();
+            reader.onloadend = function () {
+              console.log(reader.result);
+              $scope.groups[key]['icon'] = reader.result;
+              $scope.$apply();
+            };
+            reader.readAsDataURL(blob);
+          });
+        });
+        console.log($scope.groups);
 
         $scope.$apply();
       });
