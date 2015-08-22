@@ -63,7 +63,7 @@ angular.module('main')
             'list': value,
             'icon': st2api.client.packFile.route(key+'/icon.png')
           };
-          st2api.client.packFile.get(key+'/icon.png').catch(function (result) {
+          st2api.client.packFile.get(key+'/icon.png').catch(function () {
             delete $scope.groups[key]['icon'];
             $scope.$apply();
           });
