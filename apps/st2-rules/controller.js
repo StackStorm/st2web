@@ -84,7 +84,7 @@ angular.module('main')
 
       return result;
     }).catch(function (err) {
-      $scope.rules = [];
+      $scope.groups = [];
       $scope.error = err;
 
       console.error('Failed to fetch the data: ', err);
@@ -96,11 +96,23 @@ angular.module('main')
 
     var listUpdate = function () {
       pRulesList && pRulesList.then(function (list) {
-        $scope.rules = list && _(list)
-          .filter(function (e) {
-            return e.name.indexOf($scope.filter) > -1;
+        $scope.groups = list && _(list)
+          .filter(function (rule) {
+            return $scope.$root.getRef(rule).indexOf($scope.filter) > -1;
           })
+          .groupBy('pack')
           .value();
+        _.forEach($scope.groups, function (value, key) {
+          $scope.groups[key] = {  
+            'list': value,
+            'icon': st2api.client.packFile.route(key+'/icon.png')
+          };
+          st2api.client.packFile.get(key+'/icon.png').catch(function () {
+            delete $scope.groups[key]['icon'];
+            $scope.$apply();
+          });
+          
+        });
 
         $scope.$apply();
       });
