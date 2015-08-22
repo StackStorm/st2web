@@ -60,20 +60,15 @@ angular.module('main')
           .value();
         _.forEach($scope.groups, function (value, key) {
           $scope.groups[key] = {  
-            'list': value
+            'list': value,
+            'icon': st2api.client.packFile.route(key+'/icon.png')
           };
-          st2api.client.packFile.get(key+'/icon.png').then(function(result) {
-            var blob = new Blob([result], {type: 'image/png'});
-            var reader = new FileReader();
-            reader.onloadend = function () {
-              console.log(reader.result);
-              $scope.groups[key]['icon'] = reader.result;
-              $scope.$apply();
-            };
-            reader.readAsDataURL(blob);
+          st2api.client.packFile.get(key+'/icon.png').catch(function (result) {
+            delete $scope.groups[key]['icon'];
+            $scope.$apply();
           });
+          
         });
-        console.log($scope.groups);
 
         $scope.$apply();
       });

@@ -28,7 +28,8 @@
             ng-if="groups && !_.isEmpty(groups)">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
-            <img src="{{ params.icon }}" />
+            <img src="{{ params.icon }}"
+                ng-if="params.icon" />
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
