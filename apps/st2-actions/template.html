@@ -187,11 +187,12 @@
                   {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
                 </div>
 
-                <div class="st2-flex-table__column st2-actions__details-column-history"
+                <a class="st2-flex-table__column st2-actions__details-column-history"
                     title="Jump to History"
-                    ng-click="$root.state.go('history.general', {action: action.ref, id: record.id}); $event.stopPropagation()">
+                    ui-sref="history.general({action: action.ref, id: record.id})"
+                    ng-click="$event.stopPropagation()">
                   <i class="st2-icon__history"></i>
-              </div>
+              </a>
 
               </div>
               <div class="st2-flex-table__insert"
