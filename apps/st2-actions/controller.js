@@ -69,7 +69,7 @@ angular.module('main')
             if (pack.name in $scope.groups && pack.files.indexOf('icon.png') >= 0) {
               var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
               $scope.groups[pack.name]['icon'] = icon_path;
-            };
+            }
           });
           $scope.$apply();
         });
