@@ -3,7 +3,7 @@
 </a>
 
 <ul class="st2-menu__nav">
-  <li ng-repeat="route in state.get() | filter:isMain" class="st2-menu__nav-item"
+  <li ng-repeat="route in state.get() | filter:isMain | orderBy:position" class="st2-menu__nav-item"
       ng-class="isActive(route) && 'st2-menu__nav-item--active'">
     <a href="#{{ route.url }}">
       <i class="st2-menu__icon"
