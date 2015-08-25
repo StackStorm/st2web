@@ -64,7 +64,7 @@
       border-right: 1px solid rgba(255, 255, 255, .18);
     }
 
-    &--pack img[src] {
+    &--pack img {
       display: inline-block;
 
       width: 32px;
@@ -76,6 +76,9 @@
 
       border-right: 1px solid rgba(255, 255, 255, .18);
       background: white;
+    }
+    &--pack img:not([src]) {
+      display: none;
     }
 
     &--pack:before {

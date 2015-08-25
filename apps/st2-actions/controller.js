@@ -72,7 +72,21 @@ angular.module('main')
             }
           });
           $scope.$apply();
+        }).catch(function (err) {
+          $scope.groups = [];
+          $scope.error = err;
+
+          console.error('Failed to get pack icons: ', err);
+
+          $scope.$apply();
         });
+      }).catch(function (err) {
+        $scope.groups = [];
+        $scope.error = err;
+
+        console.error('Failed to update list: ', err);
+
+        $scope.$apply();
       });
     };
 
