@@ -29,6 +29,7 @@ angular.module('main')
 angular.module('main')
   .controller('MainCtrl', function ($rootScope, $state) {
 
+    // TODO: use a transclude or bind on $stateChangeSuccess instead.
     var scrollToTop = function() {
       document.getElementById('st2-panel__scroller').scrollTop = 0;
     };
