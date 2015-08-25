@@ -59,7 +59,7 @@ angular.module('main')
           .groupBy('pack')
           .value();
         _.forEach($scope.groups, function (value, key) {
-          $scope.groups[key] = {  
+          $scope.groups[key] = {
             'list': value
           };
         });

@@ -103,10 +103,10 @@ angular.module('main')
           .groupBy('pack')
           .value();
         _.forEach($scope.groups, function (value, key) {
-          $scope.groups[key] = {  
+          $scope.groups[key] = {
             'list': value
           };
-          
+
           st2api.client.packs.list().then(function (packs) {
             _(packs).forEach(function(pack) {
               if (pack.name in $scope.groups && pack.files.indexOf('icon.png') >= 0) {
@@ -116,7 +116,7 @@ angular.module('main')
             });
             $scope.$apply();
           });
-          
+
         });
       });
     };
