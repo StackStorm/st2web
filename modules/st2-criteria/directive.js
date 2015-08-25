@@ -54,7 +54,7 @@ angular.module('main')
           };
 
           if (trigger && trigger.payload_schema && trigger.payload_schema.properties) {
-            scope.autocompleteSpec.enum =
+            scope.autocompleteSpec.namespaces =
               _.map(trigger.payload_schema.properties, function (spec, name) {
                 return {
                   name: 'trigger.' + name,
