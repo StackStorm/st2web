@@ -28,6 +28,11 @@ angular.module('main')
 
 angular.module('main')
   .controller('MainCtrl', function ($rootScope, $state) {
+
+    var scrollToTop = function() {
+      document.getElementById('st2-panel__scroller').scrollTop = 0;
+    };
+
     $rootScope.state = $state;
     $rootScope._ = _;
 
@@ -52,10 +57,10 @@ angular.module('main')
       $rootScope.maxPage = Math.ceil($rootScope.total_count / $rootScope.limit);
     });
     $rootScope.prevPage = function () {
-      $rootScope.state.go('.', { page: $rootScope.page - 1 });
+      $rootScope.state.go('.', { page: $rootScope.page - 1 }).then(scrollToTop);
     };
     $rootScope.nextPage = function () {
-      $rootScope.state.go('.', { page: ($rootScope.page || 1) + 1 });
+      $rootScope.state.go('.', { page: ($rootScope.page || 1) + 1 }).then(scrollToTop);
     };
 
     // Filtering
