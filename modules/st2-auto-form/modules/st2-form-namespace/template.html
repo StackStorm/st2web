@@ -1,0 +1,39 @@
+<label class="st2-auto-form__label"
+  ng-class="{'st2-auto-form--required': spec.required}">
+
+  <div class="st2-auto-form__title"
+      ng-if="spec.name || name">
+    {{ spec.name || name }}
+  </div>
+
+  <input type="text"
+    class="st2-auto-form__field st2-auto-form__field--combo"
+    placeholder="{{spec.default}}"
+    ng-required="spec.required"
+    ng-model="rawResult"
+    ng-model-options="{
+      allowInvalid: true
+    }"
+    ng-focus="focus()"
+    ng-blur="blur()"
+    ng-namespaces="spec.namespaces"
+    ng-keydown="keydown($event)"
+    ng-disabled="disabled" />
+
+</label>
+
+<div class="st2-auto-form__suggestions"
+    ng-show="showSuggestions && sample.length">
+  <div class="st2-auto-form__suggestion"
+      ng-repeat="suggestion in sample = (spec.namespaces | filter:{name:rawResult})"
+      ng-class="{'st2-auto-form__suggestion--active': $parent.selected == $index}"
+      ng-click="choose($index)">
+    <div class="st2-details__header-name">{{ suggestion.name }}</div>
+    <div class="st2-details__header-description">{{ suggestion.description }}</div>
+  </div>
+</div>
+
+<p class="st2-auto-form__description"
+    ng-if="spec.description">
+  {{ spec.description }}
+</p>
