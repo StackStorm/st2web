@@ -31,10 +31,12 @@
       <div class="st2-panel__content">
 
         <div class="st2-flex-table"
-            ng-if="rules && !_.isEmpty(rules)">
-          <div class="st2-flex-table__caption"
+            ng-repeat="(name, params) in groups"
+            ng-if="groups && !_.isEmpty(groups)">
+          <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
-            <h2 class="st2-flex-table__caption-title">General</h2>
+            <img ng-src="{{ params.icon }}" />
+            <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
           <div class="st2-flex-table__header">
@@ -49,7 +51,7 @@
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': rule.ref == $parent.rule.ref}"
-              ng-repeat="rule in rules"
+              ng-repeat="rule in params.list"
               ng-click="$root.go({ref: rule.ref, edit: undefined})">
             <div class="st2-flex-table__column st2-rules__column-enabled">
               <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>

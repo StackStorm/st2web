@@ -64,8 +64,35 @@
       border-right: 1px solid rgba(255, 255, 255, .18);
     }
 
+    &--pack img {
+      display: inline-block;
+
+      width: 32px;
+      height: 32px;
+      margin-left: -45px;
+      padding: 5px;
+
+      vertical-align: top;
+
+      border-right: 1px solid rgba(255, 255, 255, .18);
+      background: white;
+    }
+    &--pack img:not([src]) {
+      display: none;
+    }
+
     &--pack:before {
+      font-size: 24px;
+
+      width: 32px;
+      height: 32px;
+      padding: 8px 4px 2px 6px;
+
       content: '\e80b';
+      text-align: center;
+
+      color: black;
+      background: white;
     }
 
     &--date:before {
