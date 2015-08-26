@@ -87,7 +87,7 @@ angular.module('main')
 
   })
 
-  .directive('ngEnums', function enumDirective() {
+  .directive('ngSuggestions', function enumDirective() {
     return {
       require: '?ngModel',
       restrict: 'A',
@@ -96,19 +96,12 @@ angular.module('main')
           return;
         }
 
-        var enums;
+        var suggestions;
 
-        scope.$watch(attrs['ngEnums'], function (attribute) {
-          enums = attribute;
+        scope.$watch(attrs['ngSuggestions'], function (attribute) {
+          suggestions = attribute;
         });
 
-        scope.$watch('ngEnums', function () {
-          ctrl.$validate();
-        });
-
-        ctrl.$validators.enums = function (value) {
-          return _.isEmpty(value) || _.isUndefined(enums) || _.some(enums, {name: value});
-        };
       }
     };
   })
