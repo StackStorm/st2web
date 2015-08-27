@@ -3,6 +3,14 @@
 .st2-action-reporter {
   &__header {
     margin-bottom: 15px;
+
+    .st2-label {
+      position: relative;
+      top: -1px;
+
+      margin: -4px 0;
+      padding: 6px 10px;
+    }
   }
 
   &__hostname {
@@ -22,20 +30,6 @@
     color: @blue-lightest;
     border-radius: 5px 5px 0 0;
     background-color: @blue-darkest;
-  }
-
-  &__timestats {
-    line-height: 1.75;
-
-    margin-top: 10px;
-  }
-
-  &__time {
-    color: white;
-  }
-
-  &__execution-time {
-    color: white;
   }
 
   &__message {
