@@ -239,6 +239,14 @@
           <div class="st2-action-reporter__header">
             <span class="st2-label" status="record.status"></span>
             <div class="st2-action-reporter__timestats">
+              <div class="st2-action-reporter__execution">
+                Execution ID:
+                <input class="st2-action-reporter__uuid"
+                    type="text"
+                    value="{{ record.id }}"
+                    readonly="readonly"
+                    select-on-click />
+              </div>
               <div class="st2-action-reporter__timestats-started">
                 Started:
                 <time class="st2-action-reporter__time"
