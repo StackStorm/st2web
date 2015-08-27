@@ -38,7 +38,7 @@
 
           <div class="st2-flex-table__header">
             <div class="st2-flex-table__column st2-actions__column-utility"
-                ng-if="view.cascade.value">
+                ng-if="view.type.value">
               <i class="st2-icon__flow-cascade"></i>
             </div>
             <div class="st2-flex-table__column st2-actions__column-name"
@@ -62,7 +62,7 @@
               ng-repeat="action in params.list"
               ng-click="$root.go({ref: action.ref})">
             <div class="st2-flex-table__column st2-actions__column-utility"
-                ng-if="view.cascade.value">
+                ng-if="view.type.value">
               <i class="st2-icon__flow-cascade"
                 ng-if="{'action': action} | isExpandable"></i>
             </div>

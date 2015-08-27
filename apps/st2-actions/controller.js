@@ -35,8 +35,8 @@ angular.module('main')
     var savedView = JSON.parse(sessionStorage.getItem('st2ActionView'));
 
     $scope.view = savedView || {
-      'cascade': {
-        title: 'Cascade',
+      'type': {
+        title: 'Type',
         value: true
       },
       'action': {
