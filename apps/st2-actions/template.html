@@ -19,6 +19,10 @@
               ng-model="filter">
           </form>
         </div>
+
+        <div class="st2-panel__toolbar-view">
+          <div class="st2-view" view-settings="view"></div>
+        </div>
       </div>
 
       <div class="st2-panel__content">
@@ -33,12 +37,22 @@
           </div>
 
           <div class="st2-flex-table__header">
-            <div class="st2-flex-table__column st2-actions__column-utility">
+            <div class="st2-flex-table__column st2-actions__column-utility"
+                ng-if="view.cascade.value">
               <i class="st2-icon__flow-cascade"></i>
             </div>
-            <div class="st2-flex-table__column st2-actions__column-name">Action</div>
-            <div class="st2-flex-table__column st2-actions__column-type">Runner</div>
-            <div class="st2-flex-table__column st2-actions__column-desc">Description</div>
+            <div class="st2-flex-table__column st2-actions__column-name"
+                ng-if="view.action.value">
+              Action
+            </div>
+            <div class="st2-flex-table__column st2-actions__column-type"
+                ng-if="view.runner.value">
+              Runner
+            </div>
+            <div class="st2-flex-table__column st2-actions__column-desc"
+                ng-if="view.description.value">
+              Description
+            </div>
           </div>
 
           <div class="st2-flex-table__row"
@@ -47,19 +61,23 @@
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
               ng-repeat="action in params.list"
               ng-click="$root.go({ref: action.ref})">
-            <div class="st2-flex-table__column st2-actions__column-utility">
+            <div class="st2-flex-table__column st2-actions__column-utility"
+                ng-if="view.cascade.value">
               <i class="st2-icon__flow-cascade"
                 ng-if="{'action': action} | isExpandable"></i>
             </div>
             <div class="st2-flex-table__column st2-actions__column-name"
-                title="{{ action.ref }}">
+                title="{{ action.ref }}"
+                ng-if="view.action.value">
               {{ action.ref }}
             </div>
             <div class="st2-flex-table__column st2-actions__column-type"
-                title="{{ action.runner_type }}">
+                title="{{ action.runner_type }}"
+                ng-if="view.runner.value">
               {{ action.runner_type }}
             </div>
-            <div class="st2-flex-table__column st2-actions__column-desc">
+            <div class="st2-flex-table__column st2-actions__column-desc"
+                ng-if="view.description.value">
               {{ action.description }}
             </div>
           </div>
