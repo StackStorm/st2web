@@ -26,6 +26,10 @@
               ng-model="filter">
           </form>
         </div>
+
+        <div class="st2-panel__toolbar-view">
+          <div class="st2-view" view-settings="view"></div>
+        </div>
       </div>
 
       <div class="st2-panel__content">
@@ -40,11 +44,26 @@
           </div>
 
           <div class="st2-flex-table__header">
-            <div class="st2-flex-table__column st2-rules__column-enabled">Enabled</div>
-            <div class="st2-flex-table__column st2-rules__column-name">Name</div>
-            <div class="st2-flex-table__column st2-rules__column-desc">Description</div>
-            <div class="st2-flex-table__column st2-rules__column-trigger">Trigger</div>
-            <div class="st2-flex-table__column st2-rules__column-action">Action</div>
+            <div class="st2-flex-table__column st2-rules__column-enabled"
+                ng-if="view.status.value">
+              Enabled
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-name"
+                ng-if="view.name.value">
+              Name
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-desc"
+                ng-if="view.description.value">
+              Description
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-trigger"
+                ng-if="view.trigger.value">
+              Trigger
+            </div>
+            <div class="st2-flex-table__column st2-rules__column-action"
+                ng-if="view.action.value">
+              Action
+            </div>
           </div>
 
           <div class="st2-flex-table__row"
@@ -53,22 +72,27 @@
               ng-class="{'st2-flex-table__row--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in params.list"
               ng-click="$root.go({ref: rule.ref, edit: undefined})">
-            <div class="st2-flex-table__column st2-rules__column-enabled">
+            <div class="st2-flex-table__column st2-rules__column-enabled"
+                ng-if="view.status.value">
               <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
             </div>
             <div class="st2-flex-table__column st2-rules__column-name"
-                title="{{ rule.name }}">
+                title="{{ rule.name }}"
+                ng-if="view.name.value">
               {{ rule.name }}
             </div>
-            <div class="st2-flex-table__column st2-rules__column-desc">
+            <div class="st2-flex-table__column st2-rules__column-desc"
+                ng-if="view.description.value">
               {{ rule.description }}
             </div>
             <div class="st2-flex-table__column st2-rules__column-trigger"
-                title="{{ rule.trigger.type }}">
+                title="{{ rule.trigger.type }}"
+                ng-if="view.trigger.value">
               {{ rule.trigger.type }}
             </div>
             <div class="st2-flex-table__column st2-rules__column-action"
-                title="{{ rule.action.ref }}">
+                title="{{ rule.action.ref }}"
+                ng-if="view.action.value">
               {{ rule.action.ref }}
             </div>
           </div>

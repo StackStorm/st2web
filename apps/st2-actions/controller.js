@@ -32,6 +32,31 @@ angular.module('main')
     $scope.filter = '';
     $scope.error = null;
 
+    var savedView = JSON.parse(sessionStorage.getItem('st2ActionView'));
+
+    $scope.view = savedView || {
+      'type': {
+        title: 'Type',
+        value: true
+      },
+      'action': {
+        title: 'Action',
+        value: true
+      },
+      'runner': {
+        title: 'Runner',
+        value: true
+      },
+      'description': {
+        title: 'Description',
+        value: true
+      }
+    };
+
+    $scope.$watch('view', function (view) {
+      sessionStorage.setItem('st2ActionView', JSON.stringify(view));
+    }, true);
+
     var pActionList = st2api.client.actions.list().then(function (result) {
       // Hacking around angular-busy bug preventing $digest
       pActionList.then(function () {

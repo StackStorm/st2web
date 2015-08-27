@@ -54,6 +54,35 @@ angular.module('main')
     $scope.filter = '';
     $scope.error = null;
 
+    var savedView = JSON.parse(sessionStorage.getItem('st2RulesView'));
+
+    $scope.view = savedView || {
+      'status': {
+        title: 'Status',
+        value: true
+      },
+      'name': {
+        title: 'Name',
+        value: true
+      },
+      'trigger': {
+        title: 'Trigger',
+        value: true
+      },
+      'action': {
+        title: 'Action',
+        value: true
+      },
+      'description': {
+        title: 'Description',
+        value: true
+      }
+    };
+
+    $scope.$watch('view', function (view) {
+      sessionStorage.setItem('st2RulesView', JSON.stringify(view));
+    }, true);
+
     $scope.metaSpec = {
       type: 'object',
       properties: {
