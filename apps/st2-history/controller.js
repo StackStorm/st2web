@@ -158,6 +158,8 @@ angular.module('main')
       });
 
       promise.then(function (record) {
+        record.execution_time = Math.ceil((new Date(record.end_timestamp).getTime() -
+                                           new Date(record.start_timestamp).getTime()) / 1000);
         $scope.record = record;
 
         // Spec and payload to build a form for the action input. Strict resemblence to form from

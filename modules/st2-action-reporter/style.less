@@ -3,6 +3,14 @@
 .st2-action-reporter {
   &__header {
     margin-bottom: 15px;
+
+    .st2-label {
+      position: relative;
+      top: -1px;
+
+      margin: -4px 0;
+      padding: 6px 10px;
+    }
   }
 
   &__hostname {
@@ -24,10 +32,6 @@
     background-color: @blue-darkest;
   }
 
-  &__time {
-    margin-left: 10px;
-  }
-
   &__message {
     font-family: Oswald;
     font-weight: 200;
@@ -42,5 +46,21 @@
 
   & .st2-highlight + .st2-highlight {
     margin-bottom: 20px;
+  }
+
+  &__uuid {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+
+    width: 200px;
+    padding: 2px 5px;
+
+    text-align: center;
+
+    color: white;
+    border: none;
+    border-radius: 4px;
+    outline: 0;
+    background: #151a1e;
   }
 }
