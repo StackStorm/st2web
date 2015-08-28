@@ -20,6 +20,9 @@ var gulp = require('gulp')
   , ngAnnotate = require('gulp-ng-annotate')
   , uglify = require('gulp-uglify')
   , size = require('gulp-size')
+  , header = require('gulp-header')
+  , git = require('git-rev-sync')
+  , pkg = require('./package.json')
   ;
 
 var express = require('express')
@@ -55,6 +58,13 @@ var debug = function () {
 
 debug();
 
+function buildHeader() {
+  var host = 'https://github.com/'
+    , commitURL = host + pkg.repository + '/commit/' + git.long()
+    ;
+
+  return 'Built ' + new Date().toISOString() + ' from ' + commitURL;
+}
 
 // Gather a list of all bower components installed.
 // We are only interested in JS files since we intend to import all the css files manually through
@@ -207,6 +217,7 @@ gulp.task('production-modules', function () {
   return gulp.src(modules)
     .pipe(ngAnnotate())
     .pipe(concat('modules.js'))
+    .pipe(header('// ' + buildHeader() + '\n'))
     .pipe(gulp.dest('build/js'))
     .pipe(size({
       showFiles: true
