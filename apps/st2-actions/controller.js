@@ -32,6 +32,31 @@ angular.module('main')
     $scope.filter = '';
     $scope.error = null;
 
+    var savedView = JSON.parse(sessionStorage.getItem('st2ActionView'));
+
+    $scope.view = savedView || {
+      'type': {
+        title: 'Type',
+        value: true
+      },
+      'action': {
+        title: 'Action',
+        value: true
+      },
+      'runner': {
+        title: 'Runner',
+        value: true
+      },
+      'description': {
+        title: 'Description',
+        value: true
+      }
+    };
+
+    $scope.$watch('view', function (view) {
+      sessionStorage.setItem('st2ActionView', JSON.stringify(view));
+    }, true);
+
     var pActionList = st2api.client.actions.list().then(function (result) {
       // Hacking around angular-busy bug preventing $digest
       pActionList.then(function () {
@@ -58,6 +83,33 @@ angular.module('main')
           })
           .groupBy('pack')
           .value();
+        _.forEach($scope.groups, function (value, key) {
+          $scope.groups[key] = {
+            'list': value
+          };
+        });
+
+        st2api.client.packs.list().then(function (packs) {
+          _(packs).forEach(function(pack) {
+            if (pack.name in $scope.groups && pack.files.indexOf('icon.png') >= 0) {
+              var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
+              $scope.groups[pack.name]['icon'] = icon_path;
+            }
+          });
+          $scope.$apply();
+        }).catch(function (err) {
+          $scope.groups = [];
+          $scope.error = err;
+
+          console.error('Failed to get pack icons: ', err);
+
+          $scope.$apply();
+        });
+      }).catch(function (err) {
+        $scope.groups = [];
+        $scope.error = err;
+
+        console.error('Failed to update list: ', err);
 
         $scope.$apply();
       });

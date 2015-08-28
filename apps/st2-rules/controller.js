@@ -54,6 +54,35 @@ angular.module('main')
     $scope.filter = '';
     $scope.error = null;
 
+    var savedView = JSON.parse(sessionStorage.getItem('st2RulesView'));
+
+    $scope.view = savedView || {
+      'status': {
+        title: 'Status',
+        value: true
+      },
+      'name': {
+        title: 'Name',
+        value: true
+      },
+      'trigger': {
+        title: 'Trigger',
+        value: true
+      },
+      'action': {
+        title: 'Action',
+        value: true
+      },
+      'description': {
+        title: 'Description',
+        value: true
+      }
+    };
+
+    $scope.$watch('view', function (view) {
+      sessionStorage.setItem('st2RulesView', JSON.stringify(view));
+    }, true);
+
     $scope.metaSpec = {
       type: 'object',
       properties: {
@@ -84,7 +113,7 @@ angular.module('main')
 
       return result;
     }).catch(function (err) {
-      $scope.rules = [];
+      $scope.groups = [];
       $scope.error = err;
 
       console.error('Failed to fetch the data: ', err);
@@ -96,11 +125,40 @@ angular.module('main')
 
     var listUpdate = function () {
       pRulesList && pRulesList.then(function (list) {
-        $scope.rules = list && _(list)
-          .filter(function (e) {
-            return e.name.indexOf($scope.filter) > -1;
+        $scope.groups = list && _(list)
+          .filter(function (rule) {
+            return $scope.$root.getRef(rule).indexOf($scope.filter) > -1;
           })
+          .groupBy('pack')
           .value();
+        _.forEach($scope.groups, function (value, key) {
+          $scope.groups[key] = {
+            'list': value
+          };
+
+          st2api.client.packs.list().then(function (packs) {
+            _(packs).forEach(function(pack) {
+              if (pack.name in $scope.groups && pack.files.indexOf('icon.png') >= 0) {
+                var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
+                $scope.groups[pack.name]['icon'] = icon_path;
+              }
+            });
+            $scope.$apply();
+          }).catch(function (err) {
+            $scope.groups = [];
+            $scope.error = err;
+
+            console.error('Failed to update pack icons: ', err);
+
+            $scope.$apply();
+          });
+
+        });
+      }).catch(function (err) {
+        $scope.groups = [];
+        $scope.error = err;
+
+        console.error('Failed to update list: ', err);
 
         $scope.$apply();
       });

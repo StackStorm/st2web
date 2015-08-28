@@ -4,7 +4,7 @@
 
   <div class="st2-panel__view st2-history" cg-busy="busy">
 
-    <div class="st2-panel__scroller">
+    <div class="st2-panel__scroller" id="st2-panel__scroller">
 
       <div class="st2-panel__toolbar">
         <div class="st2-panel__toolbar-title">
@@ -234,18 +234,67 @@
         ng-class="{'st2-details__body--active': $root.isState(['^.general', '^.list'])}">
 
       <div class="st2-panel__scroller">
-
         <div class="st2-details__panel">
-          <div class="st2-details__panel-heading">
-            <h2 class="st2-details__panel-title">Action Output</h2>
+          <div class="st2-action-reporter__header">
+            <div class="st2-details__panel-body">
+              <dl class="st2-details__panel-body-line">
+                <dt class="st2-details__panel-body-label">
+                  Status:
+                </dt>
+                <dd class="st2-details__panel-body-value">
+                  <span class="st2-label" status="record.status"></span>
+                </dd>
+              </dl>
+              <dl class="st2-details__panel-body-line">
+                <dt class="st2-details__panel-body-label">
+                  Execution ID:
+                </dt>
+                <dd class="st2-details__panel-body-value">
+                  <input class="st2-action-reporter__uuid"
+                    type="text"
+                    value="{{ record.id }}"
+                    readonly="readonly"
+                    select-on-click />
+                </dd>
+              </dl>
+              <dl class="st2-details__panel-body-line">
+                <dt class="st2-details__panel-body-label">
+                  Started:
+                </dt>
+                <dd class="st2-details__panel-body-value">
+                  <time class="st2-action-reporter__time"
+                    datetime="{{record.start_timestamp}}">
+                  {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
+                </time>
+                </dd>
+              </dl>
+              <dl class="st2-details__panel-body-line">
+                <dt class="st2-details__panel-body-label">
+                  Finished:
+                </dt>
+                <dd class="st2-details__panel-body-value">
+                  <time class="st2-action-reporter__time"
+                    datetime="{{record.start_timestamp}}">
+                  {{ record.end_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
+                </time>
+                </dd>
+              </dl>
+              <dl class="st2-details__panel-body-line">
+                <dt class="st2-details__panel-body-label">
+                  Execution time:
+                </dt>
+                <dd class="st2-details__panel-body-value">
+                  <time class="st2-action-reporter__time"
+                    datetime="{{record.start_timestamp}}">
+                  {{ record.execution_time }} s
+                </time>
+                </dd>
+              </dl>
+            </div>
           </div>
 
-          <div class="st2-action-reporter__header">
-            <span class="st2-label" status="record.status"></span>
-            <time class="st2-action-reporter__time"
-                datetime="{{record.start_timestamp}}">
-              {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
-            </time>
+          <div class="st2-details__panel-heading">
+            <h2 class="st2-details__panel-title">Action Output</h2>
           </div>
 
           <div class="st2-details__panel-body">
