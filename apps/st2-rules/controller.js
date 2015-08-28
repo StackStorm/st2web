@@ -245,9 +245,13 @@ angular.module('main')
         $scope.form.$setPristine();
         $scope.form.saved = true;
 
-        var index = _.findIndex($scope.rules, {'ref': rule.ref});
-        $scope.rules[index] = rule;
-        $scope.ruleMeta = _.clone(rule);
+        _($scope.groups).forEach(function(n, group) {
+          var index = _.findIndex($scope.groups[group], {'ref': rule.ref});
+          if (index >= 0) {
+            $scope.groups[group][index] = rule;
+            $scope.ruleMeta = _.clone(rule);
+          }
+        });
 
         $scope.$apply();
         $scope.$root.go({ref: rule.ref, edit: undefined}, {notify: false});
