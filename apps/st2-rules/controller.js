@@ -142,7 +142,7 @@ angular.module('main')
                 var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
                 $scope.groups[pack.name]['icon'] = icon_path;
                 if ($scope.ruleMeta.pack && $scope.ruleMeta.pack === pack.name) {
-                  $scope.ruleMeta.iconPath = icon_path;
+                  $scope.iconPath = icon_path;
                 }
               }
             });
