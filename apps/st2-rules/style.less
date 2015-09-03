@@ -1,22 +1,165 @@
+@import 'colors';
+
 .st2-rules {
   // Table columns
-  .st2-flex-table__column&__column {
-    &-enabled {
-      flex: 1 50px;
-    }
-    &-name {
-      flex: 1 100px;
-    }
-    &-trigger {
-      flex: 1 100px;
-    }
-    &-action {
-      flex: 1 100px;
-    }
-    &-desc {
-      flex: 3 0 200px;
 
-      order: 1;
+  .st2-flex-table {
+    padding-bottom: 10px;
+
+    background: #819bb3;
+
+    &__column {
+      position: relative;
+
+      padding: 10px 15px;
+    }
+    &__row {
+      padding: 0;
+    }
+  }
+
+  .st2-flex-rule {
+    margin: 10px 10px 0;
+    padding: 0;
+
+    border-radius: 3px;
+    background-color: @gray-lightest;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+
+    &__header {
+      position: relative;
+
+      padding: 10px 15px;
+
+      border-bottom: 1px solid #cacaca;
+      border-radius: 3px 3px 0 0;
+      background: white;
+    }
+
+    &__if {
+      overflow: visible;
+
+      padding-right: 5px;
+
+      background: #eee;
+
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: -22px;
+
+        display: block;
+
+        width: 0;
+        height: 0;
+
+        content: '';
+
+        border-width: 26px 11px 26px 11px;
+        border-style: solid;
+        border-color: transparent transparent transparent #eee;
+      }
+      &:before {
+        z-index: 1;
+        right: -23px;
+
+        border-color: transparent transparent transparent #cacaca;
+      }
+    }
+    &__then {
+      overflow: visible;
+
+      padding-left: 25px;
+
+      background: #ddd;
+    }
+  }
+  &__column-name {
+    font-size: 16px;
+
+    color: @orange-bright;
+  }
+  &__column-enabled {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+
+    margin-top: -10px;
+
+    .st2-label {
+      overflow: hidden;
+
+      width: 16px;
+      height: 16px;
+      padding: 0;
+
+      text-indent: -100000px;
+
+      border-radius: 8px;
+    }
+  }
+  &__label {
+    font-family: Oswald;
+    font-size: 22px;
+
+    float: left;
+
+    margin-right: 10px;
+
+    text-transform: uppercase;
+
+    color: rgba(0,0,0,.3);
+  }
+  &__name {
+    font-weight: bold;
+  }
+  &__icon {
+    position: relative;
+
+    float: left;
+
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    margin-left: 2px;
+
+    border-radius: 5px;
+    background: white;
+
+    &-image {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+
+      width: 22px;
+      height: 22px;
+      padding: 5px;
+
+      vertical-align: top;
+
+      border-radius: 5px;
+      background: white;
+    }
+
+    &:after {
+      font-family: 'ststanley';
+      font-size: 22px;
+
+      position: relative;
+      top: 3px;
+      left: 6px;
+
+      width: 22px;
+      height: 22px;
+
+      content: '\e80b';
+      text-align: center;
+
+      color: black;
+      background: white;
     }
   }
 }
