@@ -105,7 +105,7 @@ angular.module('main')
       enabled: true
     };
 
-    var pRulesList = st2api.client.rules.list().then(function (result) {
+    var pRulesList = st2api.client.ruleOverview.list().then(function (result) {
       // Hacking around angular-busy bug preventing $digest
       pRulesList.then(function () {
         $scope.$apply();

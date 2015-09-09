@@ -6,7 +6,7 @@
   .st2-flex-table {
     padding-bottom: 10px;
 
-    background: #819bb3;
+    background: #637789;
 
     &__column {
       position: relative;
@@ -15,6 +15,9 @@
     }
     &__row {
       padding: 0;
+    }
+    &__caption {
+      border-bottom: 1px solid #8d9ca9;
     }
   }
 
@@ -33,7 +36,7 @@
 
       border-bottom: 1px solid #cacaca;
       border-radius: 3px 3px 0 0;
-      background: white;
+      background: #e6eef0;
     }
 
     &__if {
@@ -41,7 +44,7 @@
 
       padding-right: 5px;
 
-      background: #eee;
+      background: #f0f5f6;
 
       &:before,
       &:after {
@@ -59,7 +62,7 @@
 
         border-width: 26px 11px 26px 11px;
         border-style: solid;
-        border-color: transparent transparent transparent #eee;
+        border-color: transparent transparent transparent #f0f5f6;
       }
       &:before {
         z-index: 1;
@@ -73,13 +76,27 @@
 
       padding-left: 25px;
 
-      background: #ddd;
+      background: #dee8eb;
+    }
+  }
+  .st2-flex-rule--active {
+    border-left: 5px solid #fb8000;
+    .st2-flex-rule {
+      &__header {
+        background: white;
+      }
     }
   }
   &__column-name {
     font-size: 16px;
 
-    color: @orange-bright;
+    overflow: hidden;
+
+    margin-right: 35px;
+
+    text-overflow: ellipsis;
+
+    color: #56a8db;
   }
   &__column-enabled {
     position: absolute;
@@ -100,6 +117,9 @@
       border-radius: 8px;
     }
   }
+  &__column-desc {
+    padding-right: 35px;
+  }
   &__label {
     font-family: Oswald;
     font-size: 22px;
@@ -110,10 +130,31 @@
 
     text-transform: uppercase;
 
-    color: rgba(0,0,0,.3);
+    color: #b7d2da;
   }
   &__name {
     font-weight: bold;
+
+    position: relative;
+    top: -2px;
+
+    display: block;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: #56a8db;
+  }
+  &__description {
+    position: relative;
+    top: -2px;
+
+    display: block;
+    overflow: hidden;
+
+    margin-bottom: -4px;
+
+    text-overflow: ellipsis;
   }
   &__icon {
     position: relative;
