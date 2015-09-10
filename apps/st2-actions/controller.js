@@ -91,7 +91,7 @@ angular.module('main')
 
         st2api.client.packs.list().then(function (packs) {
           _(packs).forEach(function(pack) {
-            if (pack.name in $scope.groups && pack.files && pack.files.indexOf('icon.png') >= 0) {
+            if (pack.files && pack.files.indexOf('icon.png') >= 0) {
               var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
               $scope.groups[pack.name]['icon'] = icon_path;
             }

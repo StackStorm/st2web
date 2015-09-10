@@ -70,8 +70,8 @@
                   <span class="st2-rules__label">If</span>
                   <span class="st2-rules__icon">
                     <img class="st2-rules__icon-image"
-                        ng-src="{{ icons[rule.trigger.pack] }}"
-                        ng-if="icons[rule.trigger.pack]">
+                        ng-src="{{ icons[rule.trigger.type.split('.')[0]] }}"
+                        ng-if="icons[rule.trigger.type.split('.')[0]]">
                   </span>
                   <span class="st2-rules__name">
                     {{ rule.trigger.type }}
