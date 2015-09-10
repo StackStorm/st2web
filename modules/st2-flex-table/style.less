@@ -9,6 +9,8 @@
   background-color: transparent;
 
   &__caption {
+    position: relative;
+
     clear: both;
 
     background: @blue;
@@ -65,16 +67,16 @@
     }
 
     &--pack img {
-      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
 
       width: 32px;
       height: 32px;
-      margin-left: -45px;
       padding: 5px;
 
       vertical-align: top;
 
-      border-right: 1px solid rgba(255, 255, 255, .18);
       background: white;
     }
     &--pack img:not([src]) {

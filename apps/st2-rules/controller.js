@@ -105,7 +105,7 @@ angular.module('main')
       enabled: true
     };
 
-    var pRulesList = st2api.client.rules.list().then(function (result) {
+    var pRulesList = st2api.client.ruleOverview.list().then(function (result) {
       // Hacking around angular-busy bug preventing $digest
       pRulesList.then(function () {
         $scope.$apply();
@@ -137,13 +137,11 @@ angular.module('main')
           };
 
           st2api.client.packs.list().then(function (packs) {
+            $scope.icons = {};
             _(packs).forEach(function(pack) {
               if (pack.name in $scope.groups && pack.files && pack.files.indexOf('icon.png') >= 0) {
                 var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
-                $scope.groups[pack.name]['icon'] = icon_path;
-                if ($scope.ruleMeta.pack && $scope.ruleMeta.pack === pack.name) {
-                  $scope.iconPath = icon_path;
-                }
+                $scope.icons[pack.name] = icon_path;
               }
             });
             $scope.$apply();
