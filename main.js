@@ -67,6 +67,13 @@ angular.module('main')
     // Filtering
     var filters = ['status', 'action', 'trigger_type', 'rule'];
 
+    $rootScope.updateFiltersAndGo = function (type, activeFilters) {
+      var params = _.clone($rootScope.state.params);
+      params.page = void 0;
+      params[type] = activeFilters.concat();
+      $rootScope.state.go('.', params);
+    };
+
     $rootScope.$watchCollection('state.params', function (params) {
       $rootScope.active_filters = _.pick(params, filters);
     });

@@ -31,10 +31,14 @@
   &__label {
     position: relative;
 
+    overflow: hidden;
+
+    max-width: 200px;
     padding: 0 10px;
 
     cursor: pointer;
     white-space: nowrap;
+    text-overflow: ellipsis;
 
     &:after {
       font-family: 'ststanley';
@@ -76,6 +80,89 @@
 
   &--active &__variants {
     display: block;
+  }
+
+  &__search {
+    position: relative;
+
+    margin: 6px 5px 15px 10px;
+
+    &:after {
+      font-family: 'ststanley';
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 30px;
+
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      padding: 1px 10px;
+
+      content: '\e80f';
+
+      color: fade(@blue-lightest, 50%);
+    }
+  }
+
+  &__search-bar {
+    font-size: 13px;
+    line-height: 18px;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    padding: 6px 30px 6px 7px;
+
+    border: 0;
+    border-radius: 2px;
+    outline: none;
+    background-color: @blue-dark;
+
+    &::placeholder {
+      color: fade(@blue-lightest, 50%);
+    }
+  }
+
+  &__clear {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1;
+
+    display: block;
+
+    margin: 0 0 5px 10px;
+    padding: 0;
+
+    cursor: pointer;
+
+    color: fade(@blue-lightest, 50%);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+
+    -webkit-appearance: none;
+       -moz-appearance: none;
+
+    &:hover {
+      color: #ff8300;
+    }
+
+    &:before {
+      font-family: 'ststanley';
+      font-size: 9px;
+      font-weight: normal;
+      font-style: normal;
+
+      position: relative;
+      top: -1px;
+
+      margin-right: 5px;
+
+      content: '\e802';
+    }
   }
 
   &__list {
