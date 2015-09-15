@@ -174,7 +174,7 @@
       <input type="submit"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
           ng-show="$root.state.params.edit"
-          ng-disabled="form.$pristine || form.$invalid"
+          ng-disabled="form.$invalid"
           ng-click="submit()"
           value="Save"/>
       <input type="button"
@@ -371,7 +371,7 @@
 
         <input type="submit"
             class="st2-forms__button st2-details__toolbar-button"
-            ng-disabled="newform.$pristine || newform.$invalid"
+            ng-disabled="newform.$invalid"
             ng-click="popup.submit()"
             value="Save"/>
         <input type="button"
