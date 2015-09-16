@@ -5,7 +5,8 @@ angular.module('main')
 
     var parameters = {
       'api': st2api.server.url,
-      'auth': st2api.server.auth
+      'auth': st2api.server.auth,
+      'token': st2api.token
     };
 
     var token = btoa(JSON.stringify(parameters)).replace(/=/g, '');
