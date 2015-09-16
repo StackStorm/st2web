@@ -317,13 +317,13 @@
           <div class="st2-details__panel-body">
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
-                  ng-if="record.rule.name">
-                Rule Name
+                  ng-if="record.rule.ref">
+                Rule
               </dt>
               <dd class="st2-details__panel-body-value"
-                  ng-if="record.rule.name">
+                  ng-if="record.rule.ref">
                 <a ui-sref="rules.general({id: record.rule.id})">
-                  {{ record.rule.name }}
+                  {{ record.rule.ref }}
                 </a>
               </dd>
             </dl>
@@ -348,18 +348,18 @@
           <div class="st2-details__panel-body">
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
-                  ng-if="record.trigger.name">
-                Trigger Name
+                  ng-if="record.trigger.type">
+                Trigger
               </dt>
               <dd class="st2-details__panel-body-value"
-                  ng-if="record.trigger.name">
-                {{ record.trigger.name }}
+                  ng-if="record.trigger.type">
+                {{ record.trigger.type }}
               </dd>
             </dl>
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
                   ng-if="record.trigger_instance.occurrence_time">
-                Occurrence time
+                Occurrence
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.trigger_instance.occurrence_time">
@@ -369,7 +369,7 @@
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
                   ng-if="record.trigger_instance.payload">
-                Trigger payload
+                Payload
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.trigger_instance.payload">

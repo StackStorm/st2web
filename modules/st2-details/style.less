@@ -89,7 +89,6 @@
 
   &__panel {
     margin: 0 0 30px 0;
-    padding-bottom: 20px;
 
     &-heading {
       display: flex;
@@ -105,7 +104,7 @@
               flex: 1;
 
       margin: 0;
-      margin-bottom: -6px;
+      margin-bottom: -2px;
       padding: 0;
 
       letter-spacing: .5px;
@@ -135,26 +134,40 @@
         background-color: @blue-pale;
 
         flex-wrap: wrap;
+
+        &:first-child > * {
+          padding-top: 12px;
+        }
+        &:last-child > * {
+          padding-bottom: 12px;
+        }
       }
 
       &-label {
+        line-height: 20px;
+
         width: 100px;
-        padding: 12px;
+        padding: 7px 12px;
 
         color: @gray-lightest;
         background-color: @blue-dark;
       }
 
       &-value {
+        line-height: 20px;
+
         flex: 1;
 
         margin: 0;
-        padding: 12px;
+        padding: 7px 12px;
 
         color: @gray-darker;
 
         pre {
           margin: 0;
+        }
+        a {
+          color: #00558a;
         }
       }
     }
@@ -197,18 +210,25 @@
       &:hover {
         text-decoration: underline;
       }
+      .st2-label {
+        margin-right: 4px;
+      }
     }
 
     &-description {
       font-size: 14px;
 
-      opacity: .5;
+      margin-top: 7px;
+
+      color: #d1eeff;
     }
 
     &-pack {
       line-height: 16px;
 
       margin-top: 10px;
+
+      color: #d1eeff;
 
       &-icon {
         width: 16px;
@@ -226,7 +246,7 @@
   &__toolbar {
     display: flex;
 
-    padding: 0 20px 5px 20px;
+    padding: 5px 20px 10px 20px;
 
     &-button {
       margin: 0 10px 0 0;
