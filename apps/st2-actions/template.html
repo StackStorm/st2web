@@ -10,6 +10,10 @@
           Actions
         </div>
 
+        <div class="st2-panel__toolbar-actions">
+          <flow-link></flow-link>
+        </div>
+
         <div class="st2-panel__toolbar-search"
             ng-show="groups">
           <form>
@@ -123,6 +127,10 @@
     </div>
 
     <div class="st2-details__toolbar">
+
+      <flow-link action="{{ action.ref }}"
+          ng-if="action.runner_type == 'mistral-v2'">
+      </flow-link>
 
       <div class="st2-details__toolbar-separator"></div>
 
