@@ -24,7 +24,7 @@ angular.module('main')
           element.remove();
         }
       },
-      templateUrl: '/modules/st2-flow/template.html'
+      templateUrl: 'modules/st2-flow/template.html'
     };
 
   });
