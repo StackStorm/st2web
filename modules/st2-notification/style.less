@@ -1,0 +1,51 @@
+.st2-notification {
+  position: fixed;
+  z-index: 9999;
+
+  width: 300px;
+
+  cursor: pointer;
+  transition: all ease .5s;
+
+  color: #fff;
+  background: #428bca;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, .3);
+
+  &:hover {
+    opacity: .7;
+  }
+
+  &.killed {
+    opacity: 0;
+  }
+
+  &.warning {
+    background: #f0ad4e;
+  }
+
+  &.error {
+    background: #d9534f;
+  }
+
+  &.success {
+    background: #5cb85c;
+  }
+
+  &.info {
+    background: #5bc0de;
+  }
+
+  &__title {
+    font-size: 13px;
+    font-weight: bold;
+
+    margin: 10px 10px 0 10px;
+    padding: 0 0 5px 0;
+
+    border-bottom: 1px solid rgba(255, 255, 255, .33);
+  }
+
+  &__message {
+    margin: 10px;
+  }
+}
