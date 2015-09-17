@@ -33,7 +33,7 @@ angular.module('main')
 angular.module('main')
 
   // List history records
-  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope) {
+  .controller('st2HistoryCtrl', function ($scope, st2api, $rootScope, Notification) {
 
     var pHistoryList;
 
@@ -137,7 +137,7 @@ angular.module('main')
         $scope.groups = [];
         $scope.error = err;
 
-        console.error('Failed to fetch the data: ', err);
+        Notification.criticalError(err, 'Failed to fetch data');
 
         $scope.$apply();
       });
@@ -289,11 +289,11 @@ angular.module('main')
           parameters: rerun.payload
         }).then(function (record) {
           $scope.$root.state.go('^.general', {id: record.id});
-        }).catch(function (error) {
+        }).catch(function (err) {
           $scope.rerunform.err = true;
           $scope.$apply();
           $scope.rerunform.err = false;
-          console.error(error);
+          Notification.criticalError(err, 'Failed to rerun execution');
         });
       };
 

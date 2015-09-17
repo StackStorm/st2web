@@ -49,7 +49,7 @@ angular.module('main')
 angular.module('main')
 
   // List rules
-  .controller('st2RulesCtrl', function ($scope, st2api) {
+  .controller('st2RulesCtrl', function ($scope, st2api, Notification) {
 
     $scope.filter = '';
     $scope.error = null;
@@ -116,7 +116,7 @@ angular.module('main')
       $scope.groups = [];
       $scope.error = err;
 
-      console.error('Failed to fetch the data: ', err);
+      Notification.criticalError(err, 'Failed to fetch data');
 
       $scope.$apply();
     });
@@ -149,7 +149,7 @@ angular.module('main')
             $scope.groups = [];
             $scope.error = err;
 
-            console.error('Failed to update pack icons: ', err);
+            Notification.criticalError(err, 'Failed to update pack icons');
 
             $scope.$apply();
           });
@@ -159,7 +159,7 @@ angular.module('main')
         $scope.groups = [];
         $scope.error = err;
 
-        console.error('Failed to update list: ', err);
+        Notification.criticalError(err, 'Failed to update list');
 
         $scope.$apply();
       });
@@ -256,11 +256,11 @@ angular.module('main')
 
         $scope.$apply();
         $scope.$root.go({ref: rule.ref, edit: undefined}, {notify: false});
-      }).catch(function (error) {
+      }).catch(function (err) {
         $scope.form.err = true;
         $scope.$apply();
         $scope.form.err = false; // that a hack and there should be another way to rerun animation
-        console.error(error);
+        Notification.criticalError(err, 'Failed to edit rule');
       });
     };
 
@@ -281,11 +281,11 @@ angular.module('main')
 
       st2api.client.rules.delete($scope.rule.ref).then(function () {
         $scope.$root.state.go('^.list', {}, {reload: true});
-      }).catch(function (error) {
+      }).catch(function (err) {
         $scope.form.err = true;
         $scope.$apply();
         $scope.form.err = false; // that a hack and there should be another way to rerun animation
-        console.error(error);
+        Notification.criticalError(err, 'Failed to delete rule');
       });
     };
 
@@ -299,11 +299,11 @@ angular.module('main')
           $scope.newform.saved = true;
           $scope.$apply();
           $scope.$root.state.go('^.general', {ref: rule.ref}, {reload: true});
-        }).catch(function (error) {
+        }).catch(function (err) {
           $scope.newform.err = true;
           $scope.$apply();
           $scope.newform.err = false;
-          console.error(error);
+          Notification.criticalError(err, 'Failed to create rule');
         });
       },
       cancel: function () {
