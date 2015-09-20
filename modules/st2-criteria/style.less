@@ -8,8 +8,6 @@
 
     display: flex;
 
-    margin-bottom: -20px;
-
     word-spacing: 3px;
 
     flex-wrap: wrap;
@@ -18,14 +16,18 @@
       display: block;
 
       width: 100%;
-      margin-top: -12px; // TODO: find a better way
+      margin-top: -10px; // TODO: find a better way
 
       content: 'and';
       text-align: center;
     }
 
-    &:last-of-type:after {
-      content: '\00a0';
+    &:last-child {
+      margin-bottom: -12px;
+
+      &:after {
+        content: '';
+      }
     }
   }
 
@@ -34,7 +36,6 @@
     flex: 1;
 
     margin-right: 4px;
-    margin-bottom: 2px;
 
     vertical-align: top;
   }
@@ -54,6 +55,6 @@
   }
 
   &__buttons {
-    height: 0;
+    margin-top: 20px;
   }
 }
