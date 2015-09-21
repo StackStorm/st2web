@@ -66,6 +66,7 @@ angular.module('main')
           throw err;
         }).then(function (token) {
           this.token = token;
+          window.name = 'st2web+' + this.client.index.url;
         }.bind(this));
       } else {
         promise = $q(function (resolve) {
