@@ -20,7 +20,12 @@ angular.module('main')
         if (st2api.server.flow) {
           scope.flow_token = token;
           scope.flow_url = st2api.server.flow;
-          scope.target = 'st2flow+' + st2api.client.index.url;
+
+          var target = 'st2flow+' + st2api.client.index.url;
+
+          scope.$watch('action', function (action) {
+            scope.target = target + (action ? '+' + action : '');
+          });
         } else {
           element.remove();
         }
