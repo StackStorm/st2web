@@ -83,6 +83,7 @@ var modules = settings.js.map(function (pattern) {
 });
 
 modules.push('node_modules/st2client/dist/st2client.js');
+modules.push('node_modules/yamljs/dist/yaml.min.js');
 
 
 gulp.task('gulphint', function () {
