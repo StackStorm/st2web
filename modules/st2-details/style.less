@@ -178,10 +178,12 @@
   }
 
   &__header {
-    margin: 20px 20px 10px 20px;
-    padding: 20px;
+    overflow: hidden;
 
-    border-radius: 3px;
+    margin: 20px 20px 10px 20px;
+    padding-top: 20px;
+
+    border-radius: 4px;
     background: @blue-dark;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
 
@@ -189,36 +191,106 @@
       font-size: 16px;
       font-weight: 600;
 
+      padding: 0 20px;
+
+      word-break: break-all;
+
       a {
         text-decoration: none;
 
         color: #fff;
       }
+
       &:hover {
         text-decoration: underline;
+      }
+
+      .st2-label {
+        float: right;
+
+        width: 16px;
+        height: 16px;
+        margin-left: 10px;
+
+        text-indent: -100000px;
       }
     }
 
     &-description {
       font-size: 14px;
 
-      opacity: .5;
+      margin-top: 6px;
+      margin-bottom: 11px;
+      padding: 0 20px;
+
+      opacity: .75;
+
+      &:last-child {
+        margin-bottom: 20px;
+      }
     }
 
-    &-pack {
-      line-height: 16px;
+    &-conditions {
+      display: table;
 
-      margin-top: 10px;
+      width: 100%;
+    }
 
-      &-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 3px;
+    &-condition {
+      display: table-row;
 
-        vertical-align: top;
+      &--if {
+        background: #2e383f;
+      }
 
-        border-radius: 4px;
-        background: white;
+      &--if &-label,
+      &--if &-icon,
+      &--if &-name {
+        box-shadow: inset 0 2px 2px rgba(0, 0, 0, .1);
+      }
+
+      &--then {
+        background: #394854;
+      }
+
+      &-label,
+      &-icon,
+      &-name {
+        line-height: 32px;
+
+        display: table-cell;
+
+        height: 32px;
+        padding: 7px 0;
+
+        vertical-align: middle;
+      }
+
+      &-label {
+        font-family: Oswald;
+        font-size: 22px;
+
+        width: 1px;
+        padding-right: 12px;
+        padding-left: 20px;
+
+        text-align: right;
+        vertical-align: middle;
+        text-transform: uppercase;
+
+        color: #829faa;
+      }
+
+      &-name {
+        font-size: 14px;
+
+        width: 100%;
+        padding-right: 20px;
+        padding-left: 12px;
+
+        vertical-align: middle;
+
+        color: #fff;
       }
     }
   }
