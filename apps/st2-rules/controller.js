@@ -280,7 +280,7 @@ angular.module('main')
       }
 
       st2api.client.rules.delete($scope.rule.ref).then(function () {
-        $scope.$root.state.go('^.list', {}, {reload: true});
+        $scope.$root.go('^.list', {}, {reload: true});
       }).catch(function (error) {
         $scope.form.err = true;
         $scope.$apply();
@@ -291,14 +291,14 @@ angular.module('main')
 
     $scope.popup = {
       open: function () {
-        $scope.$root.state.go('^.new');
+        $scope.$root.go('^.new');
       },
       submit: function () {
         st2api.client.rules.create(angular.copy($scope.newRule)).then(function (rule) {
           $scope.newform.$setPristine();
           $scope.newform.saved = true;
           $scope.$apply();
-          $scope.$root.state.go('^.general', {ref: rule.ref}, {reload: true});
+          $scope.$root.go('^.general', {ref: rule.ref}, {reload: true});
         }).catch(function (error) {
           $scope.newform.err = true;
           $scope.$apply();
@@ -307,7 +307,7 @@ angular.module('main')
         });
       },
       cancel: function () {
-        $scope.$root.state.go('^.list');
+        $scope.$root.go('^.list');
       }
     };
 

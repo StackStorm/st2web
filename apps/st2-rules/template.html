@@ -197,11 +197,11 @@
             'st2-details__switch--second': $root.isState('^.code')
           }">
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.general', $root.state.params)">
+            ng-click="$root.go('^.general', {ref: rule.ref})">
           <i class="st2-icon__cogs"></i>
         </div>
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.code', $root.state.params)">
+            ng-click="$root.go('^.code', {ref: rule.ref})">
           <i class="st2-icon__code"></i>
         </div>
       </div>
