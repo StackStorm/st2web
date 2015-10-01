@@ -39,7 +39,9 @@ angular.module('main')
             'td_lt': 'Earlier Than',
             'timediff_lt': 'Earlier Than',
             'td_gt': 'Later Than',
-            'timediff_gt': 'Later Than'
+            'timediff_gt': 'Later Than',
+            'exists': 'Exists',
+            'nexists': 'Doesn\'t Exist'
           },
           required: true
         };

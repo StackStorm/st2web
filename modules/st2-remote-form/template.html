@@ -7,9 +7,9 @@
 <div class="st2-manual-form st2-form-combobox"
   name="{{name}}"
   spec="suggestionSpec"
-  ng-enums="suggestionSpec.enum"
-  ng-model="ngModel[IDENT]"
-  ng-if="!disabled">
+  ng-suggestions="suggestionSpec.enum"
+  disabled="disabled"
+  ng-model="ngModel[IDENT]">
 </div>
 <div ng-switch="form[name].$valid">
   <div class="st2-auto-form__description"

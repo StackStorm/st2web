@@ -11,10 +11,10 @@
         </div>
 
         <div class="st2-panel__toolbar-actions">
-          <button class="st2-forms__button st2-panel__toolbar-button"
+          <a class="st2-forms__button st2-panel__toolbar-button"
               ng-click="popup.open()">
             <i class="st2-icon__plus"></i>
-          </button>
+          </a>
         </div>
 
         <div class="st2-panel__toolbar-search"
@@ -26,10 +26,6 @@
               ng-model="filter">
           </form>
         </div>
-
-        <div class="st2-panel__toolbar-view">
-          <div class="st2-view" view-settings="view"></div>
-        </div>
       </div>
 
       <div class="st2-panel__content">
@@ -39,61 +35,68 @@
             ng-if="groups && !_.isEmpty(groups)">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
-            <img ng-src="{{ params.icon }}" />
+            <img ng-src="{{ icons[name] }}" />
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
-          <div class="st2-flex-table__header">
-            <div class="st2-flex-table__column st2-rules__column-enabled"
-                ng-if="view.status.value">
-              Enabled
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-name"
-                ng-if="view.name.value">
-              Name
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-desc"
-                ng-if="view.description.value">
-              Description
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-trigger"
-                ng-if="view.trigger.value">
-              Trigger
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-action"
-                ng-if="view.action.value">
-              Action
-            </div>
-          </div>
-
-          <div class="st2-flex-table__row"
-              ng-class-odd="'st2-flex-table__row--odd'"
-              ng-class-even="'st2-flex-table__row--even'"
-              ng-class="{'st2-flex-table__row--active': rule.ref == $parent.rule.ref}"
+          <div class="st2-flex-rule"
+              ng-class="{'st2-flex-rule--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in params.list"
               ng-click="$root.go({ref: rule.ref, edit: undefined})">
-            <div class="st2-flex-table__column st2-rules__column-enabled"
-                ng-if="view.status.value">
-              <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+            <div class="st2-flex-rule__header">
+              <div class="st2-rules__column-enabled"
+                  ng-if="view.status.value">
+                <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
+              </div>
+              <div class="st2-rules__column-name"
+                  title="{{ rule.name }}"
+                  ng-if="view.name.value">
+                {{ rule.name }}
+              </div>
+              <div class="st2-rules__column-desc"
+                  ng-if="view.description.value">
+                {{ rule.description }}
+              </div>
             </div>
-            <div class="st2-flex-table__column st2-rules__column-name"
-                title="{{ rule.name }}"
-                ng-if="view.name.value">
-              {{ rule.name }}
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-desc"
-                ng-if="view.description.value">
-              {{ rule.description }}
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-trigger"
-                title="{{ rule.trigger.type }}"
-                ng-if="view.trigger.value">
-              {{ rule.trigger.type }}
-            </div>
-            <div class="st2-flex-table__column st2-rules__column-action"
-                title="{{ rule.action.ref }}"
-                ng-if="view.action.value">
-              {{ rule.action.ref }}
+            <div class="st2-flex-table__row">
+              <div class="st2-flex-table__column st2-flex-rule__if">
+                <div class="st2-rules__column-trigger"
+                    title="{{ rule.trigger.type }}"
+                    ng-if="view.trigger.value">
+                  <span class="st2-rules__label">If</span>
+                  <span class="st2-pack-icon">
+                    <img class="st2-pack-icon__image"
+                        ng-src="{{ icons[rule.trigger.type.split('.')[0]] }}"
+                        ng-if="icons[rule.trigger.type.split('.')[0]]">
+                  </span>
+                  <span class="st2-rules__name">
+                    {{ rule.trigger.type }}
+                  </span>
+                  <span class="st2-rules__description"
+                      ng-if="rule.trigger.description">
+                    {{ rule.trigger.description }}
+                  </span>
+                </div>
+              </div>
+              <div class="st2-flex-table__column st2-flex-rule__then">
+                <div class="st2-rules__column-action"
+                    title="{{ rule.action.ref }}"
+                    ng-if="view.action.value">
+                  <span class="st2-rules__label">Then</span>
+                  <span class="st2-pack-icon">
+                    <img class="st2-pack-icon__image"
+                        ng-src="{{ icons[rule.action.ref.split('.')[0]] }}"
+                        ng-if="icons[rule.action.ref.split('.')[0]]">
+                  </span>
+
+                  <span class="st2-rules__name">
+                    {{ rule.action.ref }}
+                  </span>
+                  <span class="st2-rules__description">
+                    {{ rule.action.description }}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -132,7 +135,7 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
-        <span class="st2-label"
+        <span class="st2-label st2-label--short"
             status="ruleMeta.enabled && 'enabled' || 'disabled'">
         </span>
         <a ui-sref="rules.general({ref: rule.ref})">
@@ -141,6 +144,34 @@
       </div>
       <div class="st2-details__header-description">
         {{ ruleMeta.description }}
+      </div>
+      <div class="st2-details__header-conditions">
+        <div class="st2-details__header-condition st2-details__header-condition--if">
+          <span class="st2-details__header-condition-label">If</span>
+          <span class="st2-details__header-condition-icon">
+            <span class="st2-pack-icon">
+              <img class="st2-pack-icon__image"
+                  ng-src="{{ icons[rule.trigger.type.split('.')[0]] }}"
+                  ng-if="icons[rule.trigger.type.split('.')[0]]">
+            </span>
+          </span>
+          <span class="st2-details__header-condition-name">
+            {{ rule.trigger.type }}
+          </span>
+        </div>
+        <div class="st2-details__header-condition st2-details__header-condition--then">
+          <span class="st2-details__header-condition-label">Then</span>
+          <span class="st2-details__header-condition-icon">
+            <span class="st2-pack-icon">
+              <img class="st2-pack-icon__image"
+                  ng-src="{{ icons[rule.action.ref.split('.')[0]] }}"
+                  ng-if="icons[rule.action.ref.split('.')[0]]">
+            </span>
+          </span>
+          <span class="st2-details__header-condition-name">
+            {{ rule.action.ref }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -163,7 +194,7 @@
       <input type="submit"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
           ng-show="$root.state.params.edit"
-          ng-disabled="form.$pristine || form.$invalid"
+          ng-disabled="form.$invalid"
           ng-click="submit()"
           value="Save"/>
       <input type="button"
@@ -360,7 +391,7 @@
 
         <input type="submit"
             class="st2-forms__button st2-details__toolbar-button"
-            ng-disabled="newform.$pristine || newform.$invalid"
+            ng-disabled="newform.$invalid"
             ng-click="popup.submit()"
             value="Save"/>
         <input type="button"

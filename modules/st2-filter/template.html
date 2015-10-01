@@ -1,13 +1,20 @@
 <div class="st2-filter__label"
-  ng-class="{'st2-filter__label--active': $root.active_filters[type]}"
+  ng-class="{'st2-filter__label--active': activeItems.length}"
   ng-click="toggle()">
-  {{ (label || type) | capitalize }}
+  {{ label | capitalize }}<!--
+--><span class="st2-filter__label-active-items" ng-show="activeItems.length"><!--
+  -->: {{ activeItems.join(', ') }}
+   </span>
 </div>
 <div class="st2-filter__variants">
+  <div class="st2-filter__search" ng-show="items.length > 4">
+    <input type="text" class="st2-filter__search-bar" placeholder="Find" ng-model="search">
+  </div>
+  <button class="st2-filter__clear" ng-click="clear()" ng-if="multiple && activeItems.length">Clear selected</button>
   <div class="st2-filter__list">
     <div class="st2-filter__item"
-        ng-class="{'st2-filter__item--active': name == $root.active_filters[type]}"
-        ng-repeat="name in filters[type] | orderBy:'toString()' track by $index"
+        ng-class="{'st2-filter__item--active': activeItems.indexOf(name) > -1}"
+        ng-repeat="name in itemsToShow track by $index"
         ng-click="pick(name)">
       {{ name }}
     </div>

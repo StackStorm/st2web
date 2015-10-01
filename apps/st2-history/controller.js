@@ -158,8 +158,10 @@ angular.module('main')
       });
 
       promise.then(function (record) {
-        record.execution_time = Math.ceil((new Date(record.end_timestamp).getTime() -
-                                           new Date(record.start_timestamp).getTime()) / 1000);
+        if (record.end_timestamp) {
+          record.execution_time = Math.ceil((new Date(record.end_timestamp).getTime() -
+                                             new Date(record.start_timestamp).getTime()) / 1000);
+        }
         $scope.record = record;
 
         // Spec and payload to build a form for the action input. Strict resemblence to form from
@@ -303,14 +305,11 @@ angular.module('main')
   .filter('fmtParam', function () {
     var fmtParam = function (value) {
       if (_.isString(value)) {
-        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
+        return '"' + value + '"';
       }
 
       if (_.isArray(value)) {
-        return '[' +
-        _(value).first(3).map(fmtParam).join(', ') +
-        (value.length > 3 ? ',..' : '') +
-        ']';
+        return '[' + _(value).map(fmtParam).join(', ') + ']';
       }
 
       return value;

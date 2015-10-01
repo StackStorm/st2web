@@ -1,22 +1,165 @@
+@import 'colors';
+
 .st2-rules {
   // Table columns
-  .st2-flex-table__column&__column {
-    &-enabled {
-      flex: 1 50px;
-    }
-    &-name {
-      flex: 1 100px;
-    }
-    &-trigger {
-      flex: 1 100px;
-    }
-    &-action {
-      flex: 1 100px;
-    }
-    &-desc {
-      flex: 3 0 200px;
 
-      order: 1;
+  .st2-flex-table {
+    padding-bottom: 10px;
+
+    background: #637789;
+
+    &__column {
+      position: relative;
+
+      padding: 10px 15px;
     }
+    &__row {
+      padding: 0;
+    }
+    &__caption {
+      border-bottom: 1px solid #8d9ca9;
+    }
+  }
+
+  .st2-flex-rule {
+    margin: 10px 10px 0;
+    padding: 0;
+
+    border-radius: 3px;
+    background-color: @gray-lightest;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+
+    &__header {
+      position: relative;
+
+      padding: 10px 15px;
+
+      border-bottom: 1px solid #cacaca;
+      border-radius: 3px 3px 0 0;
+      background: #e6eef0;
+    }
+
+    &__if {
+      overflow: visible;
+
+      padding-right: 5px;
+
+      background: #f0f5f6;
+
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: -22px;
+
+        display: block;
+
+        width: 0;
+        height: 0;
+
+        content: '';
+
+        border-width: 26px 11px 26px 11px;
+        border-style: solid;
+        border-color: transparent transparent transparent #f0f5f6;
+      }
+      &:before {
+        z-index: 1;
+        right: -23px;
+
+        border-color: transparent transparent transparent #cacaca;
+      }
+    }
+    &__then {
+      overflow: visible;
+
+      padding-left: 25px;
+
+      background: #dee8eb;
+    }
+  }
+  .st2-flex-rule--active {
+    border-left: 5px solid #fb8000;
+    .st2-flex-rule {
+      &__header {
+        background: white;
+      }
+    }
+  }
+  &__column-name {
+    font-size: 16px;
+
+    overflow: hidden;
+
+    margin-right: 35px;
+
+    text-overflow: ellipsis;
+
+    color: #56a8db;
+  }
+  &__column-enabled {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+
+    margin-top: -10px;
+
+    .st2-label {
+      overflow: hidden;
+
+      width: 16px;
+      height: 16px;
+      padding: 0;
+
+      text-indent: -100000px;
+
+      border-radius: 8px;
+    }
+  }
+  &__column-desc {
+    padding-right: 35px;
+  }
+  &__label {
+    font-family: Oswald;
+    font-size: 22px;
+
+    float: left;
+
+    margin-right: 10px;
+
+    text-transform: uppercase;
+
+    color: #b7d2da;
+  }
+  &__name {
+    font-weight: bold;
+
+    position: relative;
+    top: -2px;
+
+    display: block;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: #56a8db;
+  }
+  &__description {
+    position: relative;
+    top: -2px;
+
+    display: block;
+    overflow: hidden;
+
+    margin-bottom: -4px;
+
+    text-overflow: ellipsis;
+  }
+
+  .st2-pack-icon {
+    float: left;
+
+    margin: -5px 12px -5px 2px;
   }
 }
