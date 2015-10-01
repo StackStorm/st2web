@@ -1,0 +1,44 @@
+@size: 32px;
+
+.st2-pack-icon {
+  position: relative;
+
+  display: inline-block;
+
+  width: @size;
+  height: @size;
+
+  vertical-align: middle;
+
+  border: 5px solid #fff;
+  border-radius: 5px;
+  background: #fff;
+
+  &:after {
+    font-family: 'ststanley';
+    font-size: @size;
+    line-height: 1;
+
+    position: absolute;
+    top: -1px;
+    left: 1px;
+
+    width: @size;
+    height: @size;
+
+    content: '\e80b';
+    text-align: center;
+
+    color: #000;
+  }
+}
+
+.st2-pack-icon__image {
+  position: relative;
+  z-index: 1;
+
+  width: @size;
+  height: @size;
+
+  background: #fff;
+}
