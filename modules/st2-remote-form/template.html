@@ -9,7 +9,8 @@
   spec="suggestionSpec"
   ng-suggestions="suggestionSpec.enum"
   disabled="disabled"
-  ng-model="ngModel[IDENT]">
+  ng-model="ngModel[IDENT]"
+  ng-if="!disabled">
 </div>
 <div ng-switch="form[name].$valid">
   <div class="st2-auto-form__description"
