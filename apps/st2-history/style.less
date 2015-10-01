@@ -22,6 +22,8 @@
     }
     &-meta {
       flex: 0 90px;
+
+      padding-top: 2px;
     }
     &-action {
       flex: 3 90px;
@@ -50,18 +52,22 @@
   &__column-app-name {
     font-weight: normal;
   }
+  &__column-app-name,
+  &__column-rule-name {
+    padding-top: 1px;
+  }
 
   &__column-action-params {
     font-size: .8em;
     font-weight: normal;
-    line-height: normal;
+    line-height: 1.2em;
 
     display: inline-block;
     overflow: hidden;
 
     max-width: 100%;
-    margin: 0 -4px;
-    padding: 0 3px 1px;
+    margin: 2px -4px 0;
+    padding: 1px 3px 0;
 
     text-overflow: ellipsis;
 

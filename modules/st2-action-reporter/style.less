@@ -2,7 +2,8 @@
 
 .st2-action-reporter {
   &__header {
-    margin-bottom: 15px;
+    margin-top: -10px;
+    margin-bottom: 30px;
 
     .st2-label {
       position: relative;
@@ -33,15 +34,19 @@
   }
 
   &__message {
-    font-family: Oswald;
-    font-weight: 200;
+    font-family: Inconsolata;
+    font-size: 14px;
 
-    padding: 20px 0;
+    display: block;
 
-    text-align: center;
-    text-transform: uppercase;
+    min-height: 20px;
+    margin: -10px 0 0 0;
+    padding: 13px 13px 10px;
 
-    color: #555;
+    color: #fff;
+    color: #d8d8d8;
+    border-radius: 4px;
+    background-color: #151a1e;
   }
 
   & .st2-highlight + .st2-highlight {
@@ -56,6 +61,7 @@
     padding: 2px 5px;
 
     text-align: center;
+    vertical-align: bottom;
 
     color: white;
     border: none;
