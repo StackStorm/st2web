@@ -36,12 +36,18 @@
 
     overflow: hidden;
 
-    max-width: 200px;
+    max-width: 170px;
     padding: 0 10px;
 
     cursor: pointer;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    @media (max-width: 1279px) {
+      &-active-items {
+        display: none;
+      }
+    }
 
     &:after {
       font-family: 'ststanley';
@@ -49,7 +55,7 @@
       font-weight: normal;
       font-style: normal;
 
-      display: inline-block;
+      display: inline;
 
       padding-left: 5px;
       // may always broke if we won't pay enough attention to keeping the same codes

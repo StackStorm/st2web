@@ -93,18 +93,19 @@
               <span class="st2-history__column-action-name">
                 {{ $root.getRef(record.action) }}
               </span>
-              <span class="st2-history__column-action-params"
-                  ng-if="view.action.subview.params.value"><!--
-            !--><span class="st2-history__column-action-param-name"
-                    ng-repeat-start="(name, value) in record.parameters"><!--
-              !-->{{ name }}=<!--
-            !--></span><!--
-            !--><span class="st2-history__column-action-param-value"><!--
-              !-->{{ value | fmtParam }}<!--
-            !--></span><!--
-            !--><span ng-if="!$last"
-                    ng-repeat-end>, </span><!--
-          !--></span>
+              <span class="st2-history__column-action-params st2-proportional"
+                  ng-if="view.action.subview.params.value">
+                <span class="st2-history__column-action-param"
+                    ng-repeat="(name, value) in record.parameters"><!--
+               --><span ng-if="!$first">,&nbsp;</span><!--
+               --><span class="st2-history__column-action-param-name"><!--
+                 -->{{ name }}=<!--
+               --></span><!--
+               --><span class="st2-history__column-action-param-value"><!--
+                 -->{{ value | fmtParam }}<!--
+               --></span><!--
+             --></span>
+              </span>
             </div>
 
             <div class="st2-flex-table__column st2-history__column-triggered"

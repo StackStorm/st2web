@@ -305,14 +305,11 @@ angular.module('main')
   .filter('fmtParam', function () {
     var fmtParam = function (value) {
       if (_.isString(value)) {
-        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
+        return '"' + value + '"';
       }
 
       if (_.isArray(value)) {
-        return '[' +
-        _(value).first(3).map(fmtParam).join(', ') +
-        (value.length > 3 ? ',..' : '') +
-        ']';
+        return '[' + _(value).map(fmtParam).join(', ') + ']';
       }
 
       return value;
