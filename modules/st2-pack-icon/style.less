@@ -1,4 +1,5 @@
 @size: 32px;
+@sizesm: 24px;
 
 .st2-pack-icon {
   position: relative;
@@ -31,14 +32,35 @@
 
     color: #000;
   }
-}
 
-.st2-pack-icon__image {
-  position: relative;
-  z-index: 1;
+  &-small {
+    width: @sizesm;
+    height: @sizesm;
 
-  width: @size;
-  height: @size;
+    border: 4px solid #fff;
 
-  background: #fff;
+    &:after {
+      font-size: @sizesm;
+
+      top: 0;
+
+      width: @sizesm;
+      height: @sizesm;
+    }
+  }
+
+  &__image {
+    position: relative;
+    z-index: 1;
+
+    width: @size;
+    height: @size;
+
+    background: #fff;
+
+    &-small {
+      width: @sizesm;
+      height: @sizesm;
+    }
+  }
 }
