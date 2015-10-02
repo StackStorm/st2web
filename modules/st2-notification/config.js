@@ -4,8 +4,8 @@ angular.module('main')
   .config(function ($provide, NotificationProvider) {
     NotificationProvider.setOptions({
       delay: 10000,
-      startTop: 20,
-      startRight: 20,
+      startTop: 10,
+      startRight: 10,
       verticalSpacing: 10,
       horizontalSpacing: 20,
       positionX: 'left',

@@ -1,4 +1,6 @@
 .st2-notification {
+  font-family: 'Open Sans';
+
   position: fixed;
   z-index: 9999;
 
@@ -9,7 +11,7 @@
 
   color: #fff;
   background: #428bca;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, .3);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
 
   &:hover {
     opacity: .7;
@@ -36,16 +38,17 @@
   }
 
   &__title {
-    font-size: 13px;
-    font-weight: bold;
+    font-family: 'Oswald';
+    font-size: 14px;
+    font-weight: normal;
 
     margin: 10px 10px 0 10px;
-    padding: 0 0 5px 0;
+    padding: 0 0 7px 0;
 
     border-bottom: 1px solid rgba(255, 255, 255, .33);
   }
 
   &__message {
-    margin: 10px;
+    margin: 7px 10px 10px;
   }
 }
