@@ -247,6 +247,8 @@ angular.module('main')
         $scope.form.$setPristine();
         $scope.form.saved = true;
 
+        return st2api.client.ruleOverview.get(rule.ref);
+      }).then(function (rule) {
         _($scope.groups).forEach(function(n, group) {
           var index = _.findIndex($scope.groups[group].list, {'id': rule.id});
           if (index >= 0) {
