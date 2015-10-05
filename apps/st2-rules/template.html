@@ -151,12 +151,12 @@
           <span class="st2-details__header-condition-icon">
             <span class="st2-pack-icon st2-pack-icon-small">
               <img class="st2-pack-icon__image st2-pack-icon__image-small"
-                  ng-src="{{ icons[rule.trigger.type.split('.')[0]] }}"
-                  ng-if="icons[rule.trigger.type.split('.')[0]]">
+                  ng-src="{{ icons[ruleMeta.trigger.type.split('.')[0]] }}"
+                  ng-if="icons[ruleMeta.trigger.type.split('.')[0]]">
             </span>
           </span>
           <span class="st2-details__header-condition-name">
-            {{ rule.trigger.type }}
+            {{ ruleMeta.trigger.type }}
           </span>
         </div>
         <div class="st2-details__header-condition st2-details__header-condition--then">
@@ -164,12 +164,12 @@
           <span class="st2-details__header-condition-icon">
             <span class="st2-pack-icon st2-pack-icon-small">
               <img class="st2-pack-icon__image st2-pack-icon__image-small"
-                  ng-src="{{ icons[rule.action.ref.split('.')[0]] }}"
-                  ng-if="icons[rule.action.ref.split('.')[0]]">
+                  ng-src="{{ icons[ruleMeta.action.ref.split('.')[0]] }}"
+                  ng-if="icons[ruleMeta.action.ref.split('.')[0]]">
             </span>
           </span>
           <span class="st2-details__header-condition-name">
-            {{ rule.action.ref }}
+            {{ ruleMeta.action.ref }}
           </span>
         </div>
       </div>

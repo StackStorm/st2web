@@ -225,7 +225,7 @@ angular.module('main')
 
       return promise.then(function (rule) {
         if (rule) {
-          $scope.ruleMeta = _.clone(rule);
+          $scope.ruleMeta = _.cloneDeep(rule);
           $scope.rule = rule;
           $scope.$apply();
         }
@@ -253,7 +253,7 @@ angular.module('main')
           var index = _.findIndex($scope.groups[group].list, {'id': rule.id});
           if (index >= 0) {
             $scope.groups[group].list[index] = rule;
-            $scope.ruleMeta = _.clone(rule);
+            $scope.ruleMeta = _.cloneDeep(rule);
           }
         });
 
