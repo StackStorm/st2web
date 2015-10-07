@@ -9,7 +9,7 @@
   spec="suggestionSpec"
   ng-suggestions="suggestionSpec.enum"
   disabled="disabled"
-  ng-model="ngModel[IDENT]"
+  ng-model="$parent.ngModel[IDENT]"
   ng-if="!disabled">
 </div>
 <div ng-switch="form[name].$valid">
