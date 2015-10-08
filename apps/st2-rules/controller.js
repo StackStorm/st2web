@@ -268,11 +268,12 @@ angular.module('main')
     };
 
     $scope.cancel = function () {
-      $scope.loadRule($scope.rule.ref).then(function () {
-        $scope.form.$setPristine();
-      });
       $scope.$root.go({ref: $scope.rule.ref, edit: undefined}, {
         notify: $scope.form.$dirty
+      }).then(function () {
+        return $scope.loadRule($scope.rule.ref);
+      }).then(function () {
+        $scope.form.$setPristine();
       });
     };
 
