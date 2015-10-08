@@ -225,7 +225,7 @@ angular.module('main')
 
       return promise.then(function (rule) {
         if (rule) {
-          $scope.ruleMeta = _.clone(rule);
+          $scope.ruleMeta = _.cloneDeep(rule);
           $scope.rule = rule;
           $scope.$apply();
         }
@@ -243,14 +243,17 @@ angular.module('main')
 
     $scope.submit = function () {
       st2api.client.rules.edit(angular.copy($scope.rule)).then(function (rule) {
+        $scope.rule = rule;
         $scope.form.$setPristine();
         $scope.form.saved = true;
 
+        return st2api.client.ruleOverview.get(rule.ref);
+      }).then(function (rule) {
         _($scope.groups).forEach(function(n, group) {
-          var index = _.findIndex($scope.groups[group], {'ref': rule.ref});
+          var index = _.findIndex($scope.groups[group].list, {'id': rule.id});
           if (index >= 0) {
-            $scope.groups[group][index] = rule;
-            $scope.ruleMeta = _.clone(rule);
+            $scope.groups[group].list[index] = rule;
+            $scope.ruleMeta = _.cloneDeep(rule);
           }
         });
 
