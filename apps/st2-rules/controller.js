@@ -93,13 +93,35 @@ angular.module('main')
         },
         description: {
           type: 'string'
-        },
-        enabled: {
-          type: 'boolean',
-          default: true
         }
       }
     };
+
+    $scope.enabledSpec = {
+      name: 'enabled',
+      type: 'boolean',
+      default: true
+    };
+
+    $scope.packSpec = {
+      name: 'pack',
+      required: true,
+      default: 'default',
+      enum: [{
+        name: 'default',
+        description: 'The default pack'
+      }]
+    };
+
+    st2api.client.packs.list()
+      .then(function (packs) {
+        packs.forEach(function (pack) {
+          $scope.packSpec.enum.push({
+            name: pack.ref,
+            description: pack.description
+          });
+        });
+      });
 
     $scope.newRule = {
       enabled: true
