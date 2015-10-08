@@ -275,20 +275,20 @@ angular.module('main')
 
 
       rerun.open = function () {
-        $scope.$root.state.go('^.rerun', {id: $scope.record.id});
+        $scope.$root.go('^.rerun', {id: $scope.record.id});
         rerun.payload = _.clone($scope.payload);
         rerun.actionSpec = $scope.actionSpec;
       };
 
       rerun.cancel = function () {
-        $scope.$root.state.go('^.general', {id: $scope.record.id});
+        $scope.$root.go('^.general', {id: $scope.record.id});
       };
 
       rerun.submit = function () {
         st2api.client.executions.repeat($scope.record.id, {
           parameters: rerun.payload
         }).then(function (record) {
-          $scope.$root.state.go('^.general', {id: record.id});
+          $scope.$root.go('^.general', {id: record.id});
         }).catch(function (error) {
           $scope.rerunform.err = true;
           $scope.$apply();

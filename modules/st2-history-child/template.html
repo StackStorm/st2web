@@ -23,7 +23,7 @@
       ng-class-even="'st2-flex-table__row--even'"
       ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
       ng-repeat-start="record in workflow._children | orderBy:'start_timestamp'"
-      ng-click="$root.go($root._.defaults({id: record.id}, $root.state.params))">
+      ng-click="$root.go({id: record.id})">
 
 
     <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility"

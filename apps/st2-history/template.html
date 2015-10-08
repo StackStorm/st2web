@@ -64,7 +64,7 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
               ng-repeat-start="record in group.records | orderBy:'start_timestamp':true"
-              ng-click="$root.go(_.defaults({id: record.id}, $root.state.params))">
+              ng-click="$root.go({id: record.id})">
 
             <div class="st2-flex-table__column st2-history__column-utility"
                 ng-click="(record | isExpandable) && expand(record, $event)">
@@ -224,11 +224,11 @@
             'st2-details__switch--second': $root.isState('^.code')
           }">
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.general', {id: record.id})">
+            ng-click="$root.go('^.general', {id: record.id})">
           <i class="st2-icon__cogs"></i>
         </div>
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.code', {id: record.id})">
+            ng-click="$root.go('^.code', {id: record.id})">
           <i class="st2-icon__code"></i>
         </div>
       </div>
