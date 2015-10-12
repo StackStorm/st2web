@@ -183,6 +183,12 @@ angular.module('main')
         }
 
         $scope.$apply();
+      }).catch(function (err) {
+        if (!id && err.status === 403) {
+          return;
+        }
+
+        Notification.criticalError(err, 'Failed to fetch execution');
       });
     });
 

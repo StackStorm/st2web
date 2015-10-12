@@ -219,8 +219,11 @@ angular.module('main')
     };
 
     $scope.loadRule = function (ref) {
-      var promise = ref ? st2api.client.rules.get(ref) : pRulesList.then(function (actions) {
-        return _.first(actions);
+      var promise = ref ? st2api.client.rules.get(ref) : pRulesList.then(function (rules) {
+        // We could simply return the first rule in the list,
+        // but it would be inconsistent with 403 errors when
+        // trying to view the other rules
+        return st2api.client.rules.get(_.first(rules).ref);
       });
 
       return promise.then(function (rule) {
@@ -229,6 +232,12 @@ angular.module('main')
           $scope.rule = rule;
           $scope.$apply();
         }
+      }).catch(function (err) {
+        if (!ref && err.status === 403) {
+          return;
+        }
+
+        Notification.criticalError(err, 'Failed to fetch rule');
       });
     };
 
