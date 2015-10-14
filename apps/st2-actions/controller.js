@@ -27,7 +27,7 @@ angular.module('main')
 
 angular.module('main')
 
-  .controller('st2ActionsCtrl', function ($scope, st2api, $filter) {
+  .controller('st2ActionsCtrl', function ($scope, st2api, $filter, Notification) {
 
     $scope.filter = '';
     $scope.error = null;
@@ -68,7 +68,7 @@ angular.module('main')
       $scope.groups = [];
       $scope.error = err;
 
-      console.error('Failed to fetch the data: ', err);
+      Notification.criticalError(err, 'Failed to fetch data');
 
       $scope.$apply();
     });
@@ -102,7 +102,7 @@ angular.module('main')
           $scope.groups = [];
           $scope.error = err;
 
-          console.error('Failed to update pack icons: ', err);
+          Notification.criticalError(err, 'Failed to update pack icons');
 
           $scope.$apply();
         });
@@ -110,7 +110,7 @@ angular.module('main')
         $scope.groups = [];
         $scope.error = err;
 
-        console.error('Failed to update list: ', err);
+        Notification.criticalError(err, 'Failed to update list');
 
         $scope.$apply();
       });
@@ -153,7 +153,7 @@ angular.module('main')
 
           $scope.$apply();
         }).catch(function (err) {
-          console.error(err);
+          Notification.criticalError(err, 'Failed to fetch action history');
         });
 
         var fileLang = $scope.actionFile(action);
@@ -170,7 +170,7 @@ angular.module('main')
 
             $scope.$apply();
           }).catch(function (err) {
-            console.error(err);
+            Notification.criticalError(err, 'Failed to fetch action code');
           });
         }
 
@@ -229,7 +229,7 @@ angular.module('main')
         action: $scope.$root.getRef(action),
         parameters: payload
       }).catch(function (err) {
-        console.error(err);
+        Notification.criticalError(err, 'Failed to run action');
       });
     };
 
