@@ -41,7 +41,7 @@ angular.module('main')
             'td_gt': 'Later Than',
             'timediff_gt': 'Later Than',
             'exists': 'Exists',
-            'nexists': "Doesn't Exist"
+            'nexists': 'Doesn\'t Exist'
           },
           required: true
         };

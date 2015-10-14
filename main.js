@@ -37,9 +37,13 @@ angular.module('main')
     $rootScope.state = $state;
     $rootScope._ = _;
 
-    $rootScope.go = function (params, opts) {
-      var isList = $rootScope.state.includes('^.list');
-      return $rootScope.state.go(isList ? '^.general' : '.', params, opts);
+    $rootScope.go = function (state, params, opts) {
+      if (!_.isString(state)) {
+        opts = params;
+        params = state;
+        state = $rootScope.state.includes('^.list') ? '^.general' : '.';
+      }
+      return $rootScope.state.go(state, _.assign({}, $rootScope.state.params, params), opts);
     };
 
     $rootScope.isState = function (states) {
@@ -103,6 +107,16 @@ angular.module('main')
     return function (string) {
       if (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+    };
+  });
+
+angular.module('main')
+  .filter('yaml', function () {
+    /*global YAML:true*/
+    return function (input) {
+      if (typeof input !== 'undefined') {
+        return '---\n' + YAML.stringify(input, Infinity, 2);
       }
     };
   });

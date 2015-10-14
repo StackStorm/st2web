@@ -11,10 +11,10 @@
         </div>
 
         <div class="st2-panel__toolbar-actions">
-          <button class="st2-forms__button st2-panel__toolbar-button"
+          <a class="st2-forms__button st2-panel__toolbar-button"
               ng-click="popup.open()">
             <i class="st2-icon__plus"></i>
-          </button>
+          </a>
         </div>
 
         <div class="st2-panel__toolbar-search"
@@ -26,17 +26,13 @@
               ng-model="filter">
           </form>
         </div>
-
-        <div class="st2-panel__toolbar-view">
-          <div class="st2-view" view-settings="view"></div>
-        </div>
       </div>
 
       <div class="st2-panel__content">
 
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
-            ng-if="groups && !_.isEmpty(groups)">
+            ng-if="groups && !_.isEmpty(groups) && !_.isUndefined(params)">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
             <img ng-src="{{ icons[name] }}" />
@@ -68,8 +64,8 @@
                     title="{{ rule.trigger.type }}"
                     ng-if="view.trigger.value">
                   <span class="st2-rules__label">If</span>
-                  <span class="st2-rules__icon">
-                    <img class="st2-rules__icon-image"
+                  <span class="st2-pack-icon">
+                    <img class="st2-pack-icon__image"
                         ng-src="{{ icons[rule.trigger.type.split('.')[0]] }}"
                         ng-if="icons[rule.trigger.type.split('.')[0]]">
                   </span>
@@ -87,8 +83,8 @@
                     title="{{ rule.action.ref }}"
                     ng-if="view.action.value">
                   <span class="st2-rules__label">Then</span>
-                  <span class="st2-rules__icon">
-                    <img class="st2-rules__icon-image"
+                  <span class="st2-pack-icon">
+                    <img class="st2-pack-icon__image"
                         ng-src="{{ icons[rule.action.ref.split('.')[0]] }}"
                         ng-if="icons[rule.action.ref.split('.')[0]]">
                   </span>
@@ -139,7 +135,7 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
-        <span class="st2-label"
+        <span class="st2-label st2-label--short"
             status="ruleMeta.enabled && 'enabled' || 'disabled'">
         </span>
         <a ui-sref="rules.general({ref: rule.ref})">
@@ -149,9 +145,33 @@
       <div class="st2-details__header-description">
         {{ ruleMeta.description }}
       </div>
-      <div class="st2-details__header-pack">
-        <img class="st2-details__header-pack-icon" ng-src="{{ icons[ruleMeta.pack] }}" ng-if="icons[ruleMeta.pack]"/>
-        {{ ruleMeta.pack }}
+      <div class="st2-details__header-conditions">
+        <div class="st2-details__header-condition st2-details__header-condition--if">
+          <span class="st2-details__header-condition-label">If</span>
+          <span class="st2-details__header-condition-icon">
+            <span class="st2-pack-icon st2-pack-icon-small">
+              <img class="st2-pack-icon__image st2-pack-icon__image-small"
+                  ng-src="{{ icons[ruleMeta.trigger.type.split('.')[0]] }}"
+                  ng-if="icons[ruleMeta.trigger.type.split('.')[0]]">
+            </span>
+          </span>
+          <span class="st2-details__header-condition-name">
+            {{ ruleMeta.trigger.type }}
+          </span>
+        </div>
+        <div class="st2-details__header-condition st2-details__header-condition--then">
+          <span class="st2-details__header-condition-label">Then</span>
+          <span class="st2-details__header-condition-icon">
+            <span class="st2-pack-icon st2-pack-icon-small">
+              <img class="st2-pack-icon__image st2-pack-icon__image-small"
+                  ng-src="{{ icons[ruleMeta.action.ref.split('.')[0]] }}"
+                  ng-if="icons[ruleMeta.action.ref.split('.')[0]]">
+            </span>
+          </span>
+          <span class="st2-details__header-condition-name">
+            {{ ruleMeta.action.ref }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -174,7 +194,7 @@
       <input type="submit"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
           ng-show="$root.state.params.edit"
-          ng-disabled="form.$pristine || form.$invalid"
+          ng-disabled="form.$invalid"
           ng-click="submit()"
           value="Save"/>
       <input type="button"
@@ -196,11 +216,11 @@
             'st2-details__switch--second': $root.isState('^.code')
           }">
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.general', $root.state.params)">
+            ng-click="$root.go('^.general', {ref: rule.ref})">
           <i class="st2-icon__cogs"></i>
         </div>
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.code', $root.state.params)">
+            ng-click="$root.go('^.code', {ref: rule.ref})">
           <i class="st2-icon__code"></i>
         </div>
       </div>
@@ -274,6 +294,25 @@
                 ng-model="rule">
               </div>
 
+              <div class="st2-form-text"
+                name="pack"
+                spec="packSpec"
+                ng-model="rule.pack"
+                ng-if="!$root.state.params.edit">
+              </div>
+              <div class="st2-manual-form st2-form-combobox"
+                name="pack"
+                spec="packSpec"
+                ng-suggestions="packSpec.enum"
+                ng-model="rule.pack"
+                ng-if="$root.state.params.edit">
+              </div>
+
+              <div class="st2-manual-form st2-form-checkbox"
+                  spec="enabledSpec"
+                  ng-model="rule.enabled">
+              </div>
+
             </div>
           </div>
 
@@ -286,7 +325,7 @@
         ng-class="{'st2-details__body--active': $root.isState('^.code')}">
       <div class="st2-panel__scroller">
 
-        <div class="st2-highlight" code="rule | json" lines="20" language="javascript"></div>
+        <div class="st2-highlight" code="rule | yaml" lines="20" language="yaml"></div>
 
       </div>
     </div>
@@ -314,6 +353,18 @@
             <div class="st2-auto-form"
               spec="metaSpec"
               ng-model="newRule">
+            </div>
+
+            <div class="st2-manual-form st2-form-combobox"
+              name="pack"
+              spec="packSpec"
+              ng-suggestions="packSpec.enum"
+              ng-model="newRule.pack">
+            </div>
+
+            <div class="st2-manual-form st2-form-checkbox"
+                spec="enabledSpec"
+                ng-model="newRule.enabled">
             </div>
 
           </div>
@@ -366,7 +417,7 @@
 
         <input type="submit"
             class="st2-forms__button st2-details__toolbar-button"
-            ng-disabled="newform.$pristine || newform.$invalid"
+            ng-disabled="newform.$invalid"
             ng-click="popup.submit()"
             value="Save"/>
         <input type="button"

@@ -89,7 +89,6 @@
 
   &__panel {
     margin: 0 0 30px 0;
-    padding-bottom: 20px;
 
     &-heading {
       display: flex;
@@ -105,7 +104,7 @@
               flex: 1;
 
       margin: 0;
-      margin-bottom: -6px;
+      margin-bottom: -2px;
       padding: 0;
 
       letter-spacing: .5px;
@@ -135,26 +134,40 @@
         background-color: @blue-pale;
 
         flex-wrap: wrap;
+
+        &:first-child > * {
+          padding-top: 12px;
+        }
+        &:last-child > * {
+          padding-bottom: 12px;
+        }
       }
 
       &-label {
+        line-height: 20px;
+
         width: 100px;
-        padding: 12px;
+        padding: 7px 12px;
 
         color: @gray-lightest;
         background-color: @blue-dark;
       }
 
       &-value {
+        line-height: 20px;
+
         flex: 1;
 
         margin: 0;
-        padding: 12px;
+        padding: 7px 12px;
 
         color: @gray-darker;
 
         pre {
           margin: 0;
+        }
+        a {
+          color: #00558a;
         }
       }
     }
@@ -162,9 +175,9 @@
     &-empty {
       font-weight: 200;
 
-      padding: 20px 0 40px;
+      padding: 0 0 15px;
 
-      text-align: center;
+      text-align: left;
 
       color: @blue-light;
     }
@@ -178,10 +191,12 @@
   }
 
   &__header {
-    margin: 20px 20px 10px 20px;
-    padding: 20px;
+    overflow: hidden;
 
-    border-radius: 3px;
+    margin: 20px 20px 10px 20px;
+    padding-top: 20px;
+
+    border-radius: 4px;
     background: @blue-dark;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
 
@@ -189,36 +204,108 @@
       font-size: 16px;
       font-weight: 600;
 
+      padding: 0 20px;
+
+      word-break: break-all;
+
       a {
         text-decoration: none;
 
         color: #fff;
       }
+
       &:hover {
         text-decoration: underline;
+      }
+
+      .st2-label {
+        float: right;
+
+        width: 16px;
+        height: 16px;
+        margin-top: 3px;
+        margin-left: 10px;
+
+        text-indent: -100000px;
       }
     }
 
     &-description {
       font-size: 14px;
 
-      opacity: .5;
+      margin-top: 6px;
+      margin-bottom: 20px;
+      padding: 0 20px;
+
+      color: #d1eeff;
     }
 
-    &-pack {
-      line-height: 16px;
+    &-conditions {
+      display: table;
 
-      margin-top: 10px;
+      width: 100%;
+    }
 
-      &-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 3px;
+    &-condition {
+      display: table-row;
 
-        vertical-align: top;
+      &--if {
+        background: #2e383f;
+      }
 
-        border-radius: 4px;
-        background: white;
+      .st2-pack-icon {
+        position: relative;
+        top: -1px;
+      }
+
+      &--if &-label,
+      &--if &-icon,
+      &--if &-name {
+        box-shadow: inset 0 2px 2px rgba(0, 0, 0, .1);
+      }
+
+      &--then {
+        background: #394854;
+      }
+
+      &-label,
+      &-icon,
+      &-name {
+        line-height: 32px;
+
+        display: table-cell;
+
+        height: 32px;
+        padding: 7px 0;
+
+        vertical-align: middle;
+      }
+
+      &-label {
+        font-family: Oswald;
+        font-size: 22px;
+
+        width: 1px;
+        padding-right: 12px;
+        padding-left: 20px;
+
+        text-align: right;
+        vertical-align: middle;
+        text-transform: uppercase;
+
+        color: #829faa;
+      }
+
+      &-name {
+        font-size: 14px;
+
+        width: 100%;
+        padding-right: 20px;
+        padding-left: 12px;
+
+        vertical-align: middle;
+
+        color: #d1eeff;
       }
     }
   }
@@ -226,7 +313,7 @@
   &__toolbar {
     display: flex;
 
-    padding: 0 20px 5px 20px;
+    padding: 5px 20px 10px 20px;
 
     &-button {
       margin: 0 10px 0 0;

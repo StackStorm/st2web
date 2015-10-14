@@ -6,7 +6,7 @@ angular.module('main')
     return {
       restrict: 'C',
       scope: {
-        defaultLabel: '@label',
+        label: '@label',
         multiple: '@',
         items: '=',
         activeItemsSrc: '=activeItems'
@@ -71,12 +71,7 @@ angular.module('main')
         });
 
         scope.$watch('activeItems', function (activeItems) {
-          scope.label = scope.defaultLabel;
-
-          if (activeItems.length) {
-            activeItems.sort();
-            scope.label += ': ' + activeItems.join(', ');
-          }
+          activeItems.sort();
         });
 
         scope.$watch('search', scope.refreshItemsToShow);

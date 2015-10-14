@@ -93,13 +93,32 @@ angular.module('main')
         },
         description: {
           type: 'string'
-        },
-        enabled: {
-          type: 'boolean',
-          default: true
         }
       }
     };
+
+    $scope.enabledSpec = {
+      name: 'enabled',
+      type: 'boolean',
+      default: true
+    };
+
+    $scope.packSpec = {
+      name: 'pack',
+      required: true,
+      default: 'default',
+      enum: []
+    };
+
+    st2api.client.packs.list()
+      .then(function (packs) {
+        packs.forEach(function (pack) {
+          $scope.packSpec.enum.push({
+            name: pack.ref,
+            description: pack.description
+          });
+        });
+      });
 
     $scope.newRule = {
       enabled: true
@@ -228,7 +247,7 @@ angular.module('main')
 
       return promise.then(function (rule) {
         if (rule) {
-          $scope.ruleMeta = _.clone(rule);
+          $scope.ruleMeta = _.cloneDeep(rule);
           $scope.rule = rule;
           $scope.$apply();
         }
@@ -251,17 +270,34 @@ angular.module('main')
     };
 
     $scope.submit = function () {
+      var oldRulePack = $scope.ruleMeta.pack;
+
       st2api.client.rules.edit(angular.copy($scope.rule)).then(function (rule) {
+        $scope.rule = rule;
+        $scope.ruleMeta = _.cloneDeep(rule);
         $scope.form.$setPristine();
         $scope.form.saved = true;
 
-        _($scope.groups).forEach(function(n, group) {
-          var index = _.findIndex($scope.groups[group], {'ref': rule.ref});
-          if (index >= 0) {
-            $scope.groups[group][index] = rule;
-            $scope.ruleMeta = _.clone(rule);
+        return st2api.client.ruleOverview.get(rule.ref);
+      }).then(function (rule) {
+        var newRulePack = rule.pack,
+            oldGroupList = $scope.groups[oldRulePack].list,
+            ruleIndex = _.findIndex(oldGroupList, {'id': rule.id});
+
+        if (oldRulePack === newRulePack) {
+          oldGroupList[ruleIndex] = rule;
+        } else {
+          if (oldGroupList.length === 1) {
+            $scope.groups[oldRulePack] = undefined;
+          } else {
+            oldGroupList.splice(ruleIndex, 1);
           }
-        });
+
+          $scope.groups[newRulePack] = $scope.groups[newRulePack] || {
+            list: []
+          };
+          $scope.groups[newRulePack].list.push(rule);
+        }
 
         $scope.$apply();
         $scope.$root.go({ref: rule.ref, edit: undefined}, {notify: false});
@@ -274,11 +310,12 @@ angular.module('main')
     };
 
     $scope.cancel = function () {
-      $scope.loadRule($scope.rule.ref).then(function () {
-        $scope.form.$setPristine();
-      });
       $scope.$root.go({ref: $scope.rule.ref, edit: undefined}, {
         notify: $scope.form.$dirty
+      }).then(function () {
+        return $scope.loadRule($scope.rule.ref);
+      }).then(function () {
+        $scope.form.$setPristine();
       });
     };
 
@@ -289,7 +326,7 @@ angular.module('main')
       }
 
       st2api.client.rules.delete($scope.rule.ref).then(function () {
-        $scope.$root.state.go('^.list', {}, {reload: true});
+        $scope.$root.go('^.list', {}, {reload: true});
       }).catch(function (err) {
         $scope.form.err = true;
         $scope.$apply();
@@ -300,14 +337,14 @@ angular.module('main')
 
     $scope.popup = {
       open: function () {
-        $scope.$root.state.go('^.new');
+        $scope.$root.go('^.new');
       },
       submit: function () {
         st2api.client.rules.create(angular.copy($scope.newRule)).then(function (rule) {
           $scope.newform.$setPristine();
           $scope.newform.saved = true;
           $scope.$apply();
-          $scope.$root.state.go('^.general', {ref: rule.ref}, {reload: true});
+          $scope.$root.go('^.general', {ref: rule.ref}, {reload: true});
         }).catch(function (err) {
           $scope.newform.err = true;
           $scope.$apply();
@@ -316,7 +353,7 @@ angular.module('main')
         });
       },
       cancel: function () {
-        $scope.$root.state.go('^.list');
+        $scope.$root.go('^.list');
       }
     };
 

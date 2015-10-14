@@ -281,20 +281,20 @@ angular.module('main')
 
 
       rerun.open = function () {
-        $scope.$root.state.go('^.rerun', {id: $scope.record.id});
+        $scope.$root.go('^.rerun', {id: $scope.record.id});
         rerun.payload = _.clone($scope.payload);
         rerun.actionSpec = $scope.actionSpec;
       };
 
       rerun.cancel = function () {
-        $scope.$root.state.go('^.general', {id: $scope.record.id});
+        $scope.$root.go('^.general', {id: $scope.record.id});
       };
 
       rerun.submit = function () {
         st2api.client.executions.repeat($scope.record.id, {
           parameters: rerun.payload
         }).then(function (record) {
-          $scope.$root.state.go('^.general', {id: record.id});
+          $scope.$root.go('^.general', {id: record.id});
         }).catch(function (err) {
           $scope.rerunform.err = true;
           $scope.$apply();
@@ -311,14 +311,11 @@ angular.module('main')
   .filter('fmtParam', function () {
     var fmtParam = function (value) {
       if (_.isString(value)) {
-        return '"' + (value.length < 20 ? value : value.substr(0, 20) + '...') + '"';
+        return '"' + value + '"';
       }
 
       if (_.isArray(value)) {
-        return '[' +
-        _(value).first(3).map(fmtParam).join(', ') +
-        (value.length > 3 ? ',..' : '') +
-        ']';
+        return '[' + _(value).map(fmtParam).join(', ') + ']';
       }
 
       return value;

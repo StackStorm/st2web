@@ -10,6 +10,10 @@
           Actions
         </div>
 
+        <div class="st2-panel__toolbar-actions">
+          <flow-link></flow-link>
+        </div>
+
         <div class="st2-panel__toolbar-search"
             ng-show="groups">
           <form>
@@ -124,6 +128,10 @@
 
     <div class="st2-details__toolbar">
 
+      <flow-link action="{{ action.ref }}"
+          ng-if="action.runner_type == 'mistral-v2'">
+      </flow-link>
+
       <div class="st2-details__toolbar-separator"></div>
 
       <div class="st2-details__switch st2-details__switch--of-two"
@@ -132,11 +140,11 @@
             'st2-details__switch--second': $root.isState('^.code')
           }">
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.general', {ref: action.ref})">
+            ng-click="$root.go('^.general', {ref: action.ref})">
           <i class="st2-icon__cogs"></i>
         </div>
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.code', {ref: action.ref})">
+            ng-click="$root.go('^.code', {ref: action.ref})">
           <i class="st2-icon__code"></i>
         </div>
       </div>

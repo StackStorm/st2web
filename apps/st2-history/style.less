@@ -1,12 +1,98 @@
+@import 'colors';
+
 .st2-history {
+  // Table columns
   .st2-flex-table__column&__column {
     &-utility {
+      font-size: 10px;
+
+      position: relative;
+
       flex: none;
 
       width: 30px;
+
+      i {
+        position: absolute;
+        top: 50%;
+
+        height: 14px;
+        margin-top: -7px;
+      }
     }
     &-meta {
       flex: 0 90px;
+
+      padding-top: 2px;
     }
+    &-action {
+      flex: 3 90px;
+    }
+    &-triggered {
+      flex: 2 90px;
+    }
+  }
+
+  &__column-action-name,
+  &__column-rule-name,
+  &__column-trigger-type,
+  &__column-user-name,
+  &__column-app-name {
+    font-weight: bold;
+    line-height: normal;
+
+    display: block;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+  &__column-trigger-type,
+  &__column-user-name,
+  &__column-app-name {
+    font-weight: normal;
+  }
+  &__column-app-name,
+  &__column-rule-name {
+    padding-top: 1px;
+  }
+
+  &__column-action-params {
+    font-size: .8em;
+    font-weight: normal;
+    line-height: 1.2em;
+
+    display: inline-block;
+    overflow: hidden;
+
+    max-width: 100%;
+    margin: 2px -4px 0;
+    padding: 1px 3px 0;
+
+    text-overflow: ellipsis;
+
+    border: 1px solid rgba(214, 214, 214, .65);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, .25);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__column-action-param {
+    display: inline-block;
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__column-meta-status {
+    word-spacing: 10px;
+  }
+
+  .st2-history-child {
+    background-color: @gray-dark;
   }
 }

@@ -44,6 +44,8 @@ angular.module('main')
 
       var client = st2client(opts);
 
+      window.name = 'st2web+' + client.index.url;
+
       return client;
     };
 

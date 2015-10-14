@@ -64,7 +64,7 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
               ng-repeat-start="record in group.records | orderBy:'start_timestamp':true"
-              ng-click="$root.go(_.defaults({id: record.id}, $root.state.params))">
+              ng-click="$root.go({id: record.id})">
 
             <div class="st2-flex-table__column st2-history__column-utility"
                 ng-click="(record | isExpandable) && expand(record, $event)">
@@ -93,18 +93,19 @@
               <span class="st2-history__column-action-name">
                 {{ $root.getRef(record.action) }}
               </span>
-              <span class="st2-history__column-action-params"
-                  ng-if="view.action.subview.params.value"><!--
-            !--><span class="st2-history__column-action-param-name"
-                    ng-repeat-start="(name, value) in record.parameters"><!--
-              !-->{{ name }}=<!--
-            !--></span><!--
-            !--><span class="st2-history__column-action-param-value"><!--
-              !-->{{ value | fmtParam }}<!--
-            !--></span><!--
-            !--><span ng-if="!$last"
-                    ng-repeat-end>, </span><!--
-          !--></span>
+              <span class="st2-history__column-action-params st2-proportional"
+                  ng-if="view.action.subview.params.value">
+                <span class="st2-history__column-action-param"
+                    ng-repeat="(name, value) in record.parameters"><!--
+               --><span ng-if="!$first">,&nbsp;</span><!--
+               --><span class="st2-history__column-action-param-name"><!--
+                 -->{{ name }}=<!--
+               --></span><!--
+               --><span class="st2-history__column-action-param-value"><!--
+                 -->{{ value | fmtParam }}<!--
+               --></span><!--
+             --></span>
+              </span>
             </div>
 
             <div class="st2-flex-table__column st2-history__column-triggered"
@@ -223,11 +224,11 @@
             'st2-details__switch--second': $root.isState('^.code')
           }">
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.general', {id: record.id})">
+            ng-click="$root.go('^.general', {id: record.id})">
           <i class="st2-icon__cogs"></i>
         </div>
         <div class="st2-details__switch-item"
-            ng-click="$root.state.go('^.code', {id: record.id})">
+            ng-click="$root.go('^.code', {id: record.id})">
           <i class="st2-icon__code"></i>
         </div>
       </div>
@@ -317,13 +318,13 @@
           <div class="st2-details__panel-body">
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
-                  ng-if="record.rule.name">
-                Rule Name
+                  ng-if="record.rule.ref">
+                Rule
               </dt>
               <dd class="st2-details__panel-body-value"
-                  ng-if="record.rule.name">
+                  ng-if="record.rule.ref">
                 <a ui-sref="rules.general({id: record.rule.id})">
-                  {{ record.rule.name }}
+                  {{ record.rule.ref }}
                 </a>
               </dd>
             </dl>
@@ -348,18 +349,18 @@
           <div class="st2-details__panel-body">
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
-                  ng-if="record.trigger.name">
-                Trigger Name
+                  ng-if="record.trigger.type">
+                Trigger
               </dt>
               <dd class="st2-details__panel-body-value"
-                  ng-if="record.trigger.name">
-                {{ record.trigger.name }}
+                  ng-if="record.trigger.type">
+                {{ record.trigger.type }}
               </dd>
             </dl>
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
                   ng-if="record.trigger_instance.occurrence_time">
-                Occurrence time
+                Occurrence
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.trigger_instance.occurrence_time">
@@ -369,7 +370,7 @@
             <dl class="st2-details__panel-body-line">
               <dt class="st2-details__panel-body-label"
                   ng-if="record.trigger_instance.payload">
-                Trigger payload
+                Payload
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.trigger_instance.payload">

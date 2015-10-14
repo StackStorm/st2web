@@ -1,7 +1,10 @@
 <div class="st2-filter__label"
   ng-class="{'st2-filter__label--active': activeItems.length}"
   ng-click="toggle()">
-  {{ label | capitalize }}
+  {{ label | capitalize }}<!--
+--><span class="st2-filter__label-active-items" ng-show="activeItems.length"><!--
+  -->: {{ activeItems.join(', ') }}
+   </span>
 </div>
 <div class="st2-filter__variants">
   <div class="st2-filter__search" ng-show="items.length > 4">
