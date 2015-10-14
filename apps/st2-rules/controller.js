@@ -93,13 +93,32 @@ angular.module('main')
         },
         description: {
           type: 'string'
-        },
-        enabled: {
-          type: 'boolean',
-          default: true
         }
       }
     };
+
+    $scope.enabledSpec = {
+      name: 'enabled',
+      type: 'boolean',
+      default: true
+    };
+
+    $scope.packSpec = {
+      name: 'pack',
+      required: true,
+      default: 'default',
+      enum: []
+    };
+
+    st2api.client.packs.list()
+      .then(function (packs) {
+        packs.forEach(function (pack) {
+          $scope.packSpec.enum.push({
+            name: pack.ref,
+            description: pack.description
+          });
+        });
+      });
 
     $scope.newRule = {
       enabled: true
@@ -242,20 +261,34 @@ angular.module('main')
     };
 
     $scope.submit = function () {
+      var oldRulePack = $scope.ruleMeta.pack;
+
       st2api.client.rules.edit(angular.copy($scope.rule)).then(function (rule) {
         $scope.rule = rule;
+        $scope.ruleMeta = _.cloneDeep(rule);
         $scope.form.$setPristine();
         $scope.form.saved = true;
 
         return st2api.client.ruleOverview.get(rule.ref);
       }).then(function (rule) {
-        _($scope.groups).forEach(function(n, group) {
-          var index = _.findIndex($scope.groups[group].list, {'id': rule.id});
-          if (index >= 0) {
-            $scope.groups[group].list[index] = rule;
-            $scope.ruleMeta = _.cloneDeep(rule);
+        var newRulePack = rule.pack,
+            oldGroupList = $scope.groups[oldRulePack].list,
+            ruleIndex = _.findIndex(oldGroupList, {'id': rule.id});
+
+        if (oldRulePack === newRulePack) {
+          oldGroupList[ruleIndex] = rule;
+        } else {
+          if (oldGroupList.length === 1) {
+            $scope.groups[oldRulePack] = undefined;
+          } else {
+            oldGroupList.splice(ruleIndex, 1);
           }
-        });
+
+          $scope.groups[newRulePack] = $scope.groups[newRulePack] || {
+            list: []
+          };
+          $scope.groups[newRulePack].list.push(rule);
+        }
 
         $scope.$apply();
         $scope.$root.go({ref: rule.ref, edit: undefined}, {notify: false});

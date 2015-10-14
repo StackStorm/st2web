@@ -32,7 +32,7 @@
 
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
-            ng-if="groups && !_.isEmpty(groups)">
+            ng-if="groups && !_.isEmpty(groups) && !_.isUndefined(params)">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
             <img ng-src="{{ icons[name] }}" />
@@ -299,6 +299,25 @@
                 ng-model="rule">
               </div>
 
+              <div class="st2-form-text"
+                name="pack"
+                spec="packSpec"
+                ng-model="rule.pack"
+                ng-if="!$root.state.params.edit">
+              </div>
+              <div class="st2-manual-form st2-form-combobox"
+                name="pack"
+                spec="packSpec"
+                ng-suggestions="packSpec.enum"
+                ng-model="rule.pack"
+                ng-if="$root.state.params.edit">
+              </div>
+
+              <div class="st2-manual-form st2-form-checkbox"
+                  spec="enabledSpec"
+                  ng-model="rule.enabled">
+              </div>
+
             </div>
           </div>
 
@@ -339,6 +358,18 @@
             <div class="st2-auto-form"
               spec="metaSpec"
               ng-model="newRule">
+            </div>
+
+            <div class="st2-manual-form st2-form-combobox"
+              name="pack"
+              spec="packSpec"
+              ng-suggestions="packSpec.enum"
+              ng-model="newRule.pack">
+            </div>
+
+            <div class="st2-manual-form st2-form-checkbox"
+                spec="enabledSpec"
+                ng-model="newRule.enabled">
             </div>
 
           </div>
