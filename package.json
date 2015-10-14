@@ -36,6 +36,7 @@
     "main-bower-files": "^2.4.0",
     "mocha": "^1.18.2",
     "protractor": "^1.2.0",
-    "request": "^2.49.0"
+    "request": "^2.49.0",
+    "yamljs": "^0.2.4"
   }
 }

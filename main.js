@@ -110,3 +110,13 @@ angular.module('main')
       }
     };
   });
+
+angular.module('main')
+  .filter('yaml', function () {
+    /*global YAML:true*/
+    return function (input) {
+      if (typeof input !== 'undefined') {
+        return '---\n' + YAML.stringify(input, Infinity, 2);
+      }
+    };
+  });
