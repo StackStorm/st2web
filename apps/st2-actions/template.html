@@ -160,7 +160,7 @@
             <h2 class="st2-details__panel-title">Parameters</h2>
           </div>
           <div class="st2-details__panel-body">
-            <form role="form" class="st2-details__form"
+            <form name="runForm" role="form" class="st2-details__form"
                 ng-submit="runAction(action, payload)">
               <div class="st2-details__panel-empty"
                   ng-if="_.isEmpty(action.parameters) || _.every(action.parameters, 'immutable')">
@@ -170,7 +170,10 @@
                 spec="actionSpec"
                 ng-model="payload">
               </div>
-              <button type="submit" class="st2-forms__button">Run</button>
+              <button type="submit" class="st2-forms__button"
+                  ng-disabled="runForm.$invalid">
+                Run
+              </button>
             </form>
           </div>
         </div>

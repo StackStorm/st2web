@@ -17,7 +17,7 @@ angular.module('main')
         'boolean': 'st2-form-checkbox',
         'select': 'st2-form-select',
         'array': 'st2-form-array',
-        'object': null
+        'object': 'st2-form-object'
       }[type];
     };
 
