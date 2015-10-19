@@ -67,6 +67,7 @@
       box-shadow: none;
     }
 
+    &.ng-dirty.ng-invalid,
     &.ng-touched.ng-invalid {
       box-shadow: 0 0 0 1px red;
     }
@@ -88,66 +89,28 @@
     overflow: hidden;
 
     height: 28px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 9px 12px;
 
     resize: none;
-    cursor: inherit;
+    cursor: text;
     word-wrap: break-word;
 
-    background: transparent;
-
-    &.ng-invalid {
-      box-shadow: none;
-    }
-
     &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 13px;
+      height: 13px;
 
       background-color: transparent;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
+      border: 4px solid rgba(0, 0, 0, 0);
+      border-radius: 11px;
       background-color: rgba(117, 117, 117, .3);
+      background-clip: padding-box;
 
       &:hover {
         background-color: rgba(117, 117, 117, .7);
       }
-    }
-  }
-
-  &__text-field &__field-container {
-    display: block;
-
-    padding: 4px 4px 4px 0;
-
-    cursor: text;
-
-    background: @blue-darkest;
-
-    &--focused {
-      background-color: fade(@blue-darkest, 60%);
-    }
-
-    &--disabled {
-      cursor: default;
-
-      color: @blue-light;
-      border-color: transparent;
-      background-color: rgba(54, 64, 73, .65);
-    }
-
-    &--readonly {
-      cursor: not-allowed;
-
-      color: rgba(255, 255, 255, .36);
-      background-color: red;
-    }
-
-    &--invalid.st2-auto-form__field-container--touched {
-      box-shadow: 0 0 0 1px red;
     }
   }
 

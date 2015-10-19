@@ -9,6 +9,7 @@ angular.module('main')
       restrict: 'C',
       require: 'ngModel',
       scope: {
+        'name': '@title',
         'spec': '=',
         'options': '=',
         'ngModel': '=',
@@ -19,7 +20,9 @@ angular.module('main')
         var textarea = $element[0].querySelector('.st2-auto-form__field'),
             $textarea = angular.element(textarea);
 
-        scope.name = ctrl.$name;
+        if (!scope.name) {
+          scope.name = ctrl.$name;
+        }
 
         if (!textarea || textarea.nodeName !== 'TEXTAREA' || !$window.getComputedStyle) {
           return;
