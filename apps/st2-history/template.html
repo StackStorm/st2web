@@ -412,7 +412,7 @@
 </main>
 
 <div class="st2-popup"
-    ng-show="$root.isState('^.rerun')"
+    ng-if="$root.isState('^.rerun')"
     ng-click="rerun.cancel()">
   <div class="st2-panel__details st2-details st2-popup__details"
       ng-click="$event.stopPropagation()">
