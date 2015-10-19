@@ -238,11 +238,14 @@ angular.module('main')
     };
 
     $scope.loadRule = function (ref) {
+
       var promise = ref ? st2api.client.rules.get(ref) : pRulesList.then(function (rules) {
         // We could simply return the first rule in the list,
         // but it would be inconsistent with 403 errors when
         // trying to view the other rules
-        return st2api.client.rules.get(_.first(rules).ref);
+        if (rules.length) {
+          return st2api.client.rules.get(_.first(rules).ref);
+        }
       });
 
       return promise.then(function (rule) {
