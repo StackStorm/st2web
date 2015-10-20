@@ -2,7 +2,6 @@
 angular.module('main')
   .config(function ($stateProvider) {
 
-    // TODO: Fix order. Rules should go second in main menu.
     $stateProvider
       .state('rules', {
         abstract: true,
@@ -239,10 +238,12 @@ angular.module('main')
 
     $scope.loadRule = function (ref) {
       var promise = ref ? st2api.client.rules.get(ref) : pRulesList.then(function (rules) {
-        // We could simply return the first rule in the list,
-        // but it would be inconsistent with 403 errors when
-        // trying to view the other rules
-        return st2api.client.rules.get(_.first(rules).ref);
+        var first = _.first(rules);
+        if (first) {
+          return st2api.client.rules.get(first.ref);
+        } else {
+          throw null;
+        }
       });
 
       return promise.then(function (rule) {
@@ -252,6 +253,10 @@ angular.module('main')
           $scope.$apply();
         }
       }).catch(function (err) {
+        if (!err) {
+          return;
+        }
+
         if (!ref && err.status === 403) {
           return;
         }
