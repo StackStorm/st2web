@@ -7,10 +7,10 @@ var gulp = require('gulp')
   , es = require('event-stream')
   , less = require('gulp-less')
   , concat = require('gulp-concat')
-  , util = require('gulp-util')
+  , webserver = require('gulp-webserver')
   , prefix = require('gulp-autoprefixer')
   , fontelloUpdate = require('fontello-update')
-  , protractor = require('gulp-protractor').protractor
+  , mocha = require('gulp-mocha')
   , plumber = require('gulp-plumber')
   , htmlreplace = require('gulp-html-replace')
   , bowerFiles = require('main-bower-files')
@@ -26,7 +26,7 @@ var gulp = require('gulp')
   ;
 
 var express = require('express')
-  , http = require('http')
+  , server
   , app = express();
 
 app.use(express.static(__dirname));
@@ -138,37 +138,23 @@ gulp.task('html', ['scripts'], function () {
 });
 
 
-gulp.task('serve', ['build'], function (cb) {
-  http
-    .createServer(app)
-    .listen(settings.port, function () {
-      util.log('Server started on', settings.port, 'port');
-      cb();
-    })
-    .on('error', function (err) {
-      if (err.code === 'EADDRINUSE') {
-        util.log('Port', settings.port, 'is already taken by another process');
-        cb();
-      } else {
-        cb(err);
-      }
-    })
-    .unref();
+gulp.task('serve', ['build'], function () {
+  server = gulp.src('.')
+    .pipe(webserver({
+      host: '0.0.0.0',
+      port: 3000
+    }));
+
+  return server;
 });
 
-gulp.task('test', ['build', 'serve'], function (cb) {
-  gulp.src(['./tests/*.js'])
-    .pipe(protractor({
-      configFile: 'protractor.js',
-      args: ['--baseUrl', 'http://localhost:' + settings.port]
+gulp.task('test', ['build', 'serve'], function () {
+  return gulp.src('tests/**/test-*.js', {read: false})
+    .pipe(mocha({
+      reporter: 'dot'
     }))
-    .on('error', function (e) {
-      util.log('E2E test failed:', e.message);
-      cb(e);
-    })
     .on('end', function () {
-      util.log('E2E test finished successfully');
-      cb();
+      server.emit('kill');
     });
 });
 
