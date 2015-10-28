@@ -3,7 +3,7 @@ angular.module('main')
   .directive('st2FormInput', function () {
     return {
       restrict: 'C',
-      require: 'ngModel',
+      require: ['ngModel', '^?form'],
       scope: {
         'spec': '=',
         'options': '=',
@@ -11,7 +11,10 @@ angular.module('main')
         'disabled': '='
       },
       templateUrl: 'modules/st2-auto-form/modules/st2-form-input/template.html',
-      link: function (scope, element, attrs, ctrl) {
+      link: function (scope, element, attrs, ctrls) {
+        var ctrl = ctrls[0];
+        var form = ctrls[1];
+
         scope.name = ctrl.$name;
 
         ctrl.$render = function () {
@@ -19,12 +22,36 @@ angular.module('main')
         };
 
         scope.$watch('rawResult', function (rawResult) {
+          var innerCtrl = form[ ctrl.$name + '__inner' ];
+
           ctrl.$setViewValue({
             number: function () {
-              return _.isUndefined(rawResult) ? rawResult : parseFloat(rawResult);
+              innerCtrl.$setValidity('number', true);
+
+              if (_.isUndefined(rawResult)) {
+                return rawResult;
+              }
+
+              if (_.isNaN(+rawResult)) {
+                innerCtrl.$setValidity('number', false);
+                return;
+              }
+
+              return parseFloat(rawResult);
             },
             integer: function () {
-              return _.isUndefined(rawResult) ? rawResult : parseInt(rawResult);
+              innerCtrl.$setValidity('integer', true);
+
+              if (_.isUndefined(rawResult)) {
+                return rawResult;
+              }
+
+              if (_.isNaN(+rawResult) || ~(rawResult+'').indexOf('.')) { // jshint ignore:line
+                innerCtrl.$setValidity('integer', false);
+                return;
+              }
+
+              return parseInt(rawResult);
             },
             string: function () {
               return rawResult;

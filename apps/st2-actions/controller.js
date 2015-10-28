@@ -127,7 +127,12 @@ angular.module('main')
 
     $scope.$watch('$root.state.params.ref', function (ref) {
       var promise = ref ? st2api.client.actionOverview.get(ref) : pActionList.then(function (actions) {
-        return st2api.client.actionOverview.get(_.first(actions).ref);
+        var first = _.first(actions);
+        if (first) {
+          return st2api.client.actionOverview.get(first.ref);
+        } else {
+          throw null;
+        }
       });
 
       promise.then(function (action) {
@@ -175,6 +180,12 @@ angular.module('main')
         }
 
         $scope.$apply();
+      }).catch(function (err) {
+        if (!err) {
+          return;
+        }
+
+        throw err;
       });
     });
 

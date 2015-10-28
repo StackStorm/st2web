@@ -154,7 +154,12 @@ angular.module('main')
       }
 
       var promise = id ? st2api.client.executions.get(id) : pHistoryList.then(function (records) {
-        return st2api.client.executions.get(_.first(records).id);
+        var first = _.first(records);
+        if (first) {
+          return st2api.client.executions.get(first.id);
+        } else {
+          throw null;
+        }
       });
 
       promise.then(function (record) {
@@ -184,6 +189,10 @@ angular.module('main')
 
         $scope.$apply();
       }).catch(function (err) {
+        if (!err) {
+          return;
+        }
+
         if (!id && err.status === 403) {
           return;
         }
