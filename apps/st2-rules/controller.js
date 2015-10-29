@@ -153,25 +153,24 @@ angular.module('main')
           $scope.groups[key] = {
             'list': value
           };
+        });
 
-          st2api.client.packs.list().then(function (packs) {
-            $scope.icons = {};
-            _(packs).forEach(function(pack) {
-              if (pack.files && pack.files.indexOf('icon.png') >= 0) {
-                var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
-                $scope.icons[pack.name] = icon_path;
-              }
-            });
-            $scope.$apply();
-          }).catch(function (err) {
-            $scope.groups = [];
-            $scope.error = err;
-
-            Notification.criticalError(err, 'Failed to update pack icons');
-
-            $scope.$apply();
+        st2api.client.packs.list().then(function (packs) {
+          $scope.icons = {};
+          _(packs).forEach(function(pack) {
+            if (pack.files && pack.files.indexOf('icon.png') >= 0) {
+              var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
+              $scope.icons[pack.name] = icon_path;
+            }
           });
+          $scope.$apply();
+        }).catch(function (err) {
+          $scope.groups = [];
+          $scope.error = err;
 
+          Notification.criticalError(err, 'Failed to update pack icons');
+
+          $scope.$apply();
         });
       }).catch(function (err) {
         $scope.groups = [];
