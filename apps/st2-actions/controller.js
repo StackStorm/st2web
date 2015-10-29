@@ -99,12 +99,7 @@ angular.module('main')
           });
           $scope.$apply();
         }).catch(function (err) {
-          $scope.groups = [];
-          $scope.error = err;
-
           Notification.criticalError(err, 'Failed to update pack icons');
-
-          $scope.$apply();
         });
       }).catch(function (err) {
         $scope.groups = [];
