@@ -112,9 +112,9 @@
                 ng-switch="record.rule && record.trigger && true"
                 ng-if="view.trigger.value">
               <span ng-switch-when="true"
-                  title="{{ record.rule.name }} ({{ record.trigger.type }})">
+                  title="{{ record.rule.ref }} ({{ record.trigger.type }})">
                 <span class="st2-history__column-rule-name">
-                  {{ record.rule.name }}
+                  {{ record.rule.ref }}
                 </span>
                 <span class="st2-history__column-trigger-type">
                   {{ record.trigger.type }}

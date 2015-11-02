@@ -49,9 +49,9 @@
                 <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
               </div>
               <div class="st2-rules__column-name"
-                  title="{{ rule.name }}"
+                  title="{{ rule.ref }}"
                   ng-if="view.name.value">
-                {{ rule.name }}
+                {{ rule.ref }}
               </div>
               <div class="st2-rules__column-desc"
                   ng-if="view.description.value">
@@ -139,7 +139,7 @@
             status="ruleMeta.enabled && 'enabled' || 'disabled'">
         </span>
         <a ui-sref="rules.general({ref: rule.ref})">
-          {{ ruleMeta.name }}
+          {{ ruleMeta.ref }}
         </a>
       </div>
       <div class="st2-details__header-description">
