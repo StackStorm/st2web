@@ -325,7 +325,7 @@ angular.module('main')
     };
 
     $scope.delete = function () {
-      var result = window.confirm('Do you really want to delete rule "' + $scope.rule.name + '"?');
+      var result = window.confirm('Do you really want to delete rule "' + $scope.rule.ref + '"?');
       if (!result) {
         return;
       }
