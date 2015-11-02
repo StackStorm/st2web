@@ -26,6 +26,10 @@ angular.module('main')
                 scope.suggestionSpec = spec;
                 scope.$apply();
               });
+          } else {
+            scope.suggestionSpec = {
+              name: 'name'
+            };
           }
         });
 
