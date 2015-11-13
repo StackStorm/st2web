@@ -37,6 +37,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   }, 
-  "st2_version": "1.1.0", 
+  "st2_version": "1.1.1", 
   "version": "0.0.0"
 }
