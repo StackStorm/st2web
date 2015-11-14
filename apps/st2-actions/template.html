@@ -64,7 +64,9 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
               ng-repeat="action in params.list"
-              ng-click="$root.go({ref: action.ref})">
+              ng-click="$root.go({ref: action.ref})"
+              st2-scroll-into-view="{{ action.ref == $parent.action.ref }}"
+              st2-scroll-into-view-container="st2-panel__scroller">
             <div class="st2-flex-table__column st2-actions__column-utility"
                 ng-if="view.type.value">
               <i class="st2-icon__flow-cascade"

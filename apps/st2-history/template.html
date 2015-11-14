@@ -64,7 +64,9 @@
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
               ng-repeat-start="record in group.records | orderBy:'start_timestamp':true"
-              ng-click="$root.go({id: record.id})">
+              ng-click="$root.go({id: record.id})"
+              st2-scroll-into-view="{{ record.id === $parent.record.id }}"
+              st2-scroll-into-view-container="st2-panel__scroller">
 
             <div class="st2-flex-table__column st2-history__column-utility"
                 ng-click="(record | isExpandable) && expand(record, $event)">
