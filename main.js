@@ -91,6 +91,10 @@ angular.module('main')
     // $scope.$on('$stateChangeStart', function (event, toState) {
     //   window.name = toState.name;
     // });
+
+    $rootScope.toggleAll = function () {
+      $rootScope.$broadcast('toggleFlexTables');
+    };
   });
 
 angular.module('main')

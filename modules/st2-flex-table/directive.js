@@ -11,6 +11,7 @@ angular.module('main')
         scope.toggle = function () {
           element.toggleClass('st2-flex-table--contracted');
         };
+        scope.$on('toggleFlexTables', scope.toggle);
       }
     };
 
