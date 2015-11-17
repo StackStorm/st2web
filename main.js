@@ -95,6 +95,18 @@ angular.module('main')
     $rootScope.toggleAll = function () {
       $rootScope.$broadcast('toggleFlexTables');
     };
+
+    $rootScope.isFlexTableCollapsed = (function() {
+      var collapsedFlexTables = {};
+
+      $rootScope.$on('toggleFlexTable', function(event, id) {
+        collapsedFlexTables[id] = !collapsedFlexTables[id];
+      });
+
+      return function isFlexTableCollapsed(id) {
+        return !!collapsedFlexTables[id];
+      };
+    })();
   });
 
 angular.module('main')
