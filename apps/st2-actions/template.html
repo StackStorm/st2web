@@ -27,13 +27,17 @@
         <div class="st2-panel__toolbar-view">
           <div class="st2-view" view-settings="view"></div>
         </div>
+
+        <div class="st2-panel__toolbar-toggle-all" ng-click="toggleAll()"></div>
       </div>
 
       <div class="st2-panel__content">
 
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
-            ng-if="groups && !_.isEmpty(groups)">
+            ng-if="groups && !_.isEmpty(groups)"
+            st2-flex-table-id="action.{{ name }}"
+            st2-flex-table-collapsed="{{ isFlexTableCollapsed(id) }}">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
             <img ng-src="{{ icons[name] }}" />
