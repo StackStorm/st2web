@@ -82,12 +82,12 @@ angular.module('main')
             return $scope.$root.getRef(action).indexOf($scope.filter) > -1;
           })
           .groupBy('pack')
+          .mapValues(function (group) {
+            return {
+              list: group
+            };
+          })
           .value();
-        _.forEach($scope.groups, function (value, key) {
-          $scope.groups[key] = {
-            'list': value
-          };
-        });
 
         st2api.client.packs.list().then(function (packs) {
           $scope.icons = {};
@@ -99,12 +99,7 @@ angular.module('main')
           });
           $scope.$apply();
         }).catch(function (err) {
-          $scope.groups = [];
-          $scope.error = err;
-
           Notification.criticalError(err, 'Failed to update pack icons');
-
-          $scope.$apply();
         });
       }).catch(function (err) {
         $scope.groups = [];
