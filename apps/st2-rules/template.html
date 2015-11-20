@@ -46,7 +46,9 @@
           <div class="st2-flex-rule"
               ng-class="{'st2-flex-rule--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in params.list"
-              ng-click="$root.go({ref: rule.ref, edit: undefined})">
+              ng-click="$root.go({ref: rule.ref, edit: undefined})"
+              st2-scroll-into-view="{{ rule.ref === $parent.rule.ref }}"
+              st2-scroll-into-view-container="st2-panel__scroller">
             <div class="st2-flex-rule__header">
               <div class="st2-rules__column-enabled"
                   ng-if="view.status.value">
