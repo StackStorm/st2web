@@ -7,7 +7,8 @@
     <div class="st2-login__error" ng-show="error">
       {{ error }}
     </div>
-    <label class="st2-login__row st2-auto-form__select">
+    <label class="st2-login__row st2-auto-form__select"
+        ng-show="servers">
 
       <select class="st2-auto-form__field st2-login__field"
           ng-model="server"

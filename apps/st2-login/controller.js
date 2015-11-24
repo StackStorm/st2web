@@ -48,7 +48,7 @@ angular.module('main')
     };
 
     $scope.servers = st2Config.hosts;
-    $scope.server = $scope.servers[0];
+    $scope.server = $scope.servers && $scope.servers[0] || { auth: true };
 
     $scope.remember = true;
 

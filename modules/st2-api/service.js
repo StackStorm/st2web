@@ -7,38 +7,50 @@ angular.module('main')
     this.token = {};
 
     var initClient = function (server, token) {
-      var url = (function () {
-        if (_.find(st2Config.hosts, {url: server.url})) {
-          return server.url;
-        } else {
-          return _.first(st2Config.hosts).url;
-        }
-      })();
+      var opts;
 
-      var api = new URI.parse(url);
+      if (st2Config.hosts) {
+        var url = (function () {
+          if (_.find(st2Config.hosts, {url: server.url})) {
+            return server.url;
+          } else {
+            return _.first(st2Config.hosts).url;
+          }
+        })();
 
-      if (api.port && !api.hostname) {
-        api.hostname = window.location.hostname;
-      }
+        var api = new URI.parse(url);
 
-      var opts = {
-        protocol: api.protocol,
-        host: api.hostname,
-        port: api.port,
-        token: !_.isEmpty(token) ? token : undefined
-      };
-
-      if (server.auth && _.isString(server.auth)) {
-        var auth = URI.parse(server.auth);
-
-        if (auth.port && !auth.hostname) {
-          auth.hostname = window.location.hostname;
+        if (api.port && !api.hostname) {
+          api.hostname = window.location.hostname;
         }
 
-        opts['auth'] = {
-          protocol: auth.protocol,
-          host: auth.hostname,
-          port: auth.port
+        opts = {
+          protocol: api.protocol,
+          host: api.hostname,
+          port: api.port,
+          prefix: api.path,
+          token: !_.isEmpty(token) ? token : undefined
+        };
+
+        if (server.auth && _.isString(server.auth)) {
+          var auth = URI.parse(server.auth);
+
+          if (auth.port && !auth.hostname) {
+            auth.hostname = window.location.hostname;
+          }
+
+          opts['auth'] = {
+            protocol: auth.protocol,
+            host: auth.hostname,
+            port: auth.port,
+            prefix: auth.path
+          };
+        }
+      } else {
+        opts = {
+          api: 'https://' + window.location.hostname + ':443/api',
+          auth: 'https://' + window.location.hostname + ':443/auth',
+          token: !_.isEmpty(token) ? token : undefined
         };
       }
 
