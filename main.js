@@ -27,7 +27,7 @@ angular.module('main')
   });
 
 angular.module('main')
-  .controller('MainCtrl', function ($rootScope, $state) {
+  .controller('MainCtrl', function ($rootScope, $state, st2FlexTableService) {
 
     // TODO: use a transclude or bind on $stateChangeSuccess instead.
     var scrollToTop = function() {
@@ -87,26 +87,8 @@ angular.module('main')
       return entity && [entity.pack, entity.name].join('.');
     };
 
-    // Don't forget to add a target for every href in menu
-    // $scope.$on('$stateChangeStart', function (event, toState) {
-    //   window.name = toState.name;
-    // });
-
-    $rootScope.toggleAll = function () {
-      $rootScope.$broadcast('toggleFlexTables');
-    };
-
-    $rootScope.isFlexTableCollapsed = (function() {
-      var collapsedFlexTables = {};
-
-      $rootScope.$on('toggleFlexTable', function(event, id) {
-        collapsedFlexTables[id] = !collapsedFlexTables[id];
-      });
-
-      return function isFlexTableCollapsed(id) {
-        return !!collapsedFlexTables[id];
-      };
-    })();
+    $rootScope.toggleFlexTables = st2FlexTableService.toggleType.bind(st2FlexTableService);
+    $rootScope.areFlexTablesCollapsed = st2FlexTableService.isTypeCollapsed.bind(st2FlexTableService);
   });
 
 angular.module('main')

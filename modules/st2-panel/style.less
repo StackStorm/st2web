@@ -164,6 +164,7 @@
       display: flex;
       flex: 0 0 auto;
 
+      width: 15px;
       margin-right: 6px;
       padding: 0 7px;
 
@@ -180,6 +181,11 @@
 
         content: '\e804';
         text-align: center;
+      }
+
+      &--collapsed:after {
+        content: '\e803';
+        text-align: right;
       }
     }
   }

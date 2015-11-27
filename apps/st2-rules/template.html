@@ -27,7 +27,9 @@
           </form>
         </div>
 
-        <div class="st2-panel__toolbar-toggle-all" ng-click="toggleAll()"></div>
+        <div class="st2-panel__toolbar-toggle-all"
+            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('rules')}"
+            ng-click="toggleFlexTables('rules')"></div>
       </div>
 
       <div class="st2-panel__content">
@@ -35,8 +37,9 @@
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
             ng-if="groups && !_.isEmpty(groups) && !_.isUndefined(params)"
-            st2-flex-table-id="rule.{{ name }}"
-            st2-flex-table-collapsed="{{ isFlexTableCollapsed(id) }}">
+            ng-class="{'st2-flex-table--collapsed': isCollapsed()}"
+            st2-flex-table-type="rules"
+            st2-flex-table-id="{{ name }}">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"
               ng-click="toggle()">
             <img ng-src="{{ icons[name] }}" />
