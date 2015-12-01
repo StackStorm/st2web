@@ -31,15 +31,18 @@
           <div class="st2-view" view-settings="view"></div>
         </div>
 
-        <div class="st2-panel__toolbar-toggle-all" ng-click="toggleAll()"></div>
+        <div class="st2-panel__toolbar-toggle-all"
+            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('history')}"
+            ng-click="toggleFlexTables('history')"></div>
       </div>
 
       <div class="st2-panel__content">
         <div class="st2-flex-table"
             ng-repeat="group in groups = (history | orderBy:'period':true)"
             ng-if="history && !_.isEmpty(groups)"
-            st2-flex-table-id="history.{{ group.period }}"
-            st2-flex-table-collapsed="{{ isFlexTableCollapsed(id) }}">
+            ng-class="{'st2-flex-table--collapsed': isCollapsed()}"
+            st2-flex-table-type="history"
+            st2-flex-table-id="{{ group.period }}">
 
           <div class="st2-flex-table__caption st2-flex-table__caption--date"
               ng-click="toggle()">
