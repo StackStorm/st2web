@@ -1,3 +1,4 @@
+/* global Reamaze */
 'use strict';
 
 angular.module('main')
@@ -5,7 +6,9 @@ angular.module('main')
 
     return {
       restrict: 'C',
-      templateUrl: 'modules/st2-report/template.html'
+      link: function () {
+        Reamaze.reload();
+      }
     };
 
   });
