@@ -264,11 +264,24 @@
                   Execution ID:
                 </dt>
                 <dd class="st2-details__panel-body-value">
-                  <input class="st2-action-reporter__uuid"
-                    type="text"
-                    value="{{ record.id }}"
-                    readonly="readonly"
-                    select-on-click />
+                  <div class="st2-action-reporter__uuid"
+                      contenteditable="true"
+                      select-on-click>
+                    {{ record.id }}
+                  </div>
+                </dd>
+              </dl>
+              <dl class="st2-details__panel-body-line"
+                  ng-if="record.context.trace_context.trace_tag">
+                <dt class="st2-details__panel-body-label">
+                  Trace Tag:
+                </dt>
+                <dd class="st2-details__panel-body-value">
+                  <div class="st2-action-reporter__uuid"
+                      contenteditable="true"
+                      select-on-click>
+                    {{ record.context.trace_context.trace_tag }}
+                  </div>
                 </dd>
               </dl>
               <dl class="st2-details__panel-body-line">

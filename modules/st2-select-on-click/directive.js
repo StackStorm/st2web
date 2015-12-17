@@ -6,9 +6,11 @@ angular.module('main')
       restrict: 'A',
       link: function (scope, element) {
         element.on('click', function () {
-          if (!$window.getSelection().toString()) {
-            this.setSelectionRange(0, this.value.length);
-          }
+          var range = document.createRange();
+          range.selectNodeContents(this);
+          var sel = $window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
         });
       }
     };

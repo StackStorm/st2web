@@ -170,7 +170,7 @@
           </div>
           <div class="st2-details__panel-body">
             <form name="runForm" role="form" class="st2-details__form"
-                ng-submit="runAction(action, payload)">
+                ng-submit="runAction(action, payload, trace)">
               <div class="st2-details__panel-empty"
                   ng-if="_.isEmpty(action.parameters) || _.every(action.parameters, 'immutable')">
                 Action has no mutable parameters
@@ -179,6 +179,10 @@
                 spec="actionSpec"
                 ng-model="payload">
               </div>
+              <div class="st2-auto-form__line st2-form__text-field"
+                name="trace-tag"
+                spec="traceSpec"
+                ng-model="trace"></div>
               <button type="submit" class="st2-forms__button"
                   ng-disabled="runForm.$invalid">
                 Run

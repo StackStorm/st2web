@@ -53,6 +53,10 @@ angular.module('main')
       }
     };
 
+    $scope.traceSpec = {
+      type: 'text'
+    };
+
     $scope.$watch('view', function (view) {
       sessionStorage.setItem('st2ActionView', JSON.stringify(view));
     }, true);
@@ -137,6 +141,7 @@ angular.module('main')
           properties: action.parameters
         };
 
+        $scope.trace = undefined;
         $scope.payload = {};
         $scope.inProgress = true;
 
@@ -230,10 +235,15 @@ angular.module('main')
     });
 
     // Running an action
-    $scope.runAction = function (action, payload) {
+    $scope.runAction = function (action, payload, trace) {
       st2api.client.executions.create({
         action: $scope.$root.getRef(action),
-        parameters: payload
+        parameters: payload,
+        context: {
+          trace_context: {
+            trace_tag: trace
+          }
+        }
       }).catch(function (err) {
         Notification.criticalError(err, 'Failed to run action');
       });
