@@ -1,13 +1,12 @@
-/* global Reamaze */
 'use strict';
 
 angular.module('main')
-  .directive('st2Report', function () {
+  .directive('st2Report', function ($window) {
 
     return {
       restrict: 'C',
       link: function () {
-        Reamaze.reload();
+        $window.Reamaze && $window.Reamaze.reload();
       }
     };
 
