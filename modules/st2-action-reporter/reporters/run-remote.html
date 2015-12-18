@@ -4,21 +4,27 @@
       ng-if="result.stdout">
     Output
   </div>
-  <div class="st2-highlight" code="result.stdout"></div>
+  <div class="st2-highlight"
+      code="result.stdout"
+      ng-if="result.stdout">
+  </div>
 
   <div class="st2-action-reporter__source"
       ng-if="result.stderr">
     Error
   </div>
-  <div class="st2-highlight" code="result.stderr"></div>
+  <div class="st2-highlight"
+      code="result.stderr"
+      ng-if="result.stderr">
+  </div>
 
   <div class="st2-action-reporter__source"
       ng-if="result.traceback">
     Traceback
   </div>
   <div class="st2-highlight"
-    code="getTraceback(result)"
-    ng-if="result.traceback">
+      code="getTraceback(result)"
+      ng-if="result.traceback">
   </div>
 
   <div class="st2-action-reporter__message"
