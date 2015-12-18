@@ -2,15 +2,30 @@
     ng-if="execution.result.stdout">
   Output
 </div>
-<div class="st2-highlight" code="execution.result.stdout"></div>
+<div class="st2-highlight"
+    code="execution.result.stdout"
+    ng-if="execution.result.stdout">
+</div>
 
 <div class="st2-action-reporter__source"
     ng-if="execution.result.stderr">
   Error
 </div>
-<div class="st2-highlight" code="execution.result.stderr"></div>
+<div class="st2-highlight"
+    code="execution.result.stderr"
+    ng-if="execution.result.stderr">
+</div>
+
+<div class="st2-action-reporter__source"
+    ng-if="execution.result.traceback">
+  Traceback
+</div>
+<div class="st2-highlight"
+    code="getTraceback(execution.result)"
+    ng-if="execution.result.traceback">
+</div>
 
 <div class="st2-action-reporter__message"
-    ng-if="!execution.result.stderr && !execution.result.stdout">
+    ng-if="!execution.result.stderr && !execution.result.stdout && !execution.result.traceback">
   Action produced no data
 </div>
