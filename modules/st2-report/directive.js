@@ -6,7 +6,7 @@ angular.module('main')
     return {
       restrict: 'C',
       link: function () {
-        $window.Reamaze && $window.Reamaze.reload();
+        $window.Reamaze && $window.Reamaze.reload && $window.Reamaze.reload();
       }
     };
 
