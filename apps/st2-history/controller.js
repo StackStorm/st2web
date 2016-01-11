@@ -315,6 +315,16 @@ angular.module('main')
       return rerun;
     })();
 
+    $scope.cancel = function () {
+      st2api.client.executions.delete($scope.record.id)
+        .then(function () {
+          Notification.primary('Requesting execution cancellation');
+        })
+        .catch(function (err) {
+          Notification.criticalError(err, 'Failed to cancel execution');
+        });
+    };
+
   })
 
   .filter('fmtParam', function () {
