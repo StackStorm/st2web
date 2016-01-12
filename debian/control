@@ -1,0 +1,15 @@
+Source: st2web
+Section: unknown
+Priority: optional
+Maintainer: StackStorm Engineering <opsadmin@stackstorm.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://github.com/stackstorm/st2web.git
+#Vcs-Browser: https://github.com/stackstorm/st2web
+
+Package: st2web
+Architecture: any
+Pre-Depends: dpkg (>= 1.16.16)
+Description: St2Web - StackStorm Web UI
+ <insert long description, indented with spaces>

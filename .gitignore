@@ -5,3 +5,8 @@ css
 build
 
 .htmlhintrc
+
+debian/st2web
+debian/*.debhelper.log
+debian/*.substvars
+debian/files
