@@ -27,7 +27,6 @@ machine:
 checkout:
   post:
     - git clone --depth 1 ${ST2_PACKAGES_REPO} /home/ubuntu/st2web/st2-packages
-    - .circle/buildenv.sh
 
 test:
   post:
