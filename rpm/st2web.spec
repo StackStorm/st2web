@@ -1,7 +1,7 @@
-%define st2pkg_version %(node -e "console.log(require('./package.json').st2_version);")
+%define pkg_version %(node -e "console.log(require('./package.json').st2_version);")
 
-%define version %(echo "${ST2PKG_VERSION:-%{st2pkg_version}}")
-%define release %(echo "${ST2PKG_RELEASE:-1}")
+%define version %(echo "${PKG_VERSION:-%{pkg_version}}")
+%define release %(echo "${PKG_RELEASE:-1}")
 
 Name:           st2web
 Version:        %{version}

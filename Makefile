@@ -1,11 +1,11 @@
-ST2_COMPONENT := $(notdir $(CURDIR))
-ST2PKG_RELEASE ?= 1
-ST2PKG_VERSION ?= $(shell node -e "console.log(require('./package.json').st2_version)")
+COMPONENT := $(notdir $(CURDIR))
+PKG_RELEASE ?= 1
+PKG_VERSION ?= $(shell node -e "console.log(require('./package.json').st2_version)")
 PREFIX ?= /opt/stackstorm/static/webui
 
 ifneq (,$(wildcard /etc/debian_version))
 	DEBIAN := 1
-	DESTDIR ?= $(CURDIR)/debian/$(ST2_COMPONENT)
+	DESTDIR ?= $(CURDIR)/debian/$(COMPONENT)
 else
 	REDHAT := 1
 endif
@@ -26,5 +26,5 @@ install: changelog
 
 changelog:
 ifeq ($(DEBIAN),1)
-	debchange -v $(ST2PKG_VERSION)-$(ST2PKG_RELEASE) -M ""
+	debchange -v $(PKG_VERSION)-$(PKG_RELEASE) -M ""
 endif
