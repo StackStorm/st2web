@@ -3,24 +3,22 @@
 # BINTRAY_ACCOUNT
 # BINTRAY_API_KEY
 general:
-  # Don't run CI for PR, only for major branches
-  branches:
-    only:
-      - master
-      - /v[0-9]+(\.[0-9]+)*/
-      - feature/circleci
   artifacts:
     - ~/packages
 
 machine:
   environment:
+    DISTROS: "wheezy jessie trusty el7"
+    PKGTYPE: "deb deb deb rpm"
+    NOTESTS: "el7"
     ST2_PACKAGES_REPO: https://github.com/StackStorm/st2-packages
+    DEPLOY_PACKAGES: 1
   pre:
     - mkdir -p ~/packages
 
 checkout:
   post:
-    - git clone --depth 1 ${ST2_PACKAGES_REPO} /home/ubuntu/st2web/st2-packages
+    - git clone --depth 1 ${ST2_PACKAGES_REPO} ~/st2-packages
 
 dependencies:
   pre:
@@ -32,6 +30,8 @@ dependencies:
 test:
   post:
     - node_modules/.bin/gulp production
+    - dpkg-buildpackage -b -uc -us
+    - rpmbuild -bb rpm/st2web.spec
 
 deployment:
   publish:
@@ -41,18 +41,18 @@ deployment:
       - /v[0-9]+(\.[0-9]+)*/
       - feature/circleci
     commands:
-      - dpkg-buildpackage -b -uc -us
-      - rpmbuild -bb rpm/st2web.spec
-      # # Deploy to Bintray all artifacts for respective distros in parallel
-      # - |
-      #   DISTROS=($DISTROS)
-      #   for i in $(seq 0 $((CIRCLE_NODE_TOTAL-1))); do
-      #     echo Deploying Bintray artifacts for "${DISTROS[$i]}" ...
-      #     .circle/bintray.sh deploy ${DISTROS[$i]}_staging ~/packages/${DISTROS[$i]} &
-      #   done
-      #   wait
-      # - .circle/docker.sh deploy st2actionrunner st2api st2auth st2exporter st2notifier st2resultstracker st2rulesengine st2sensorcontainer
-      # - .circle/save_payload.py ~/packages
+      # Deploy to Bintray all artifacts for respective distros in parallel
+      - |
+        DISTROS=($DISTROS)
+        PKGTYPE=($PKGTYPE)
+        for i in ${!DISTROS[@]}; do
+          mkdir -p ~/packages/${DISTROS[$i]}
+          cp ../*.${PKGTYPE[$i]} ~/packages/${DISTROS[$i]}
+          echo Deploying Bintray artifacts for "${DISTROS[$i]}" ...
+        done
+        wait
+      #   .circle/bintray.sh deploy ${DISTROS[$i]}_staging ~/packages/${DISTROS[$i]} &
+      - ~/st2-packages/.circle/save_payload.py ~/packages
 
 # experimental:
 #   notify:
