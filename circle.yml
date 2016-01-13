@@ -49,9 +49,9 @@ deployment:
           mkdir -p ~/packages/${DISTROS[$i]}
           cp ../*.${PKGTYPE[$i]} ~/packages/${DISTROS[$i]}
           echo Deploying Bintray artifacts for "${DISTROS[$i]}" ...
+          ~/st2-packages/.circle/bintray.sh deploy ${DISTROS[$i]}_staging ~/packages/${DISTROS[$i]} &
         done
         wait
-      #   .circle/bintray.sh deploy ${DISTROS[$i]}_staging ~/packages/${DISTROS[$i]} &
       - ~/st2-packages/.circle/save_payload.py ~/packages
 
 # experimental:
