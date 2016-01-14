@@ -1,0 +1,13 @@
+approve_by_comment: true
+approve_regex: ^:\+1:
+reject_regex: ^:\-1:
+reset_on_push: true
+reset_on_reopened: true
+reviewers:
+  members:
+  - dzimine
+  - emedvedev
+  - enykeev
+  - Kami
+  name: default
+  required: 1
