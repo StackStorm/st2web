@@ -18,7 +18,12 @@ machine:
 checkout:
   post:
     - git clone -b fix/bintray_nextrevision_reuse --depth 1 ${ST2_PACKAGES_REPO} ~/st2-packages
-    - ~/st2-packages/.circle/build-web-env.sh
+    - |
+      DISTROS=($DISTROS)
+      PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
+      PKG_RELEASE=$(~/st2-packages/.circle/bintray.sh next-revision ${DISTROS[0]}_staging ${PKG_VERSION} st2web)
+      echo "export PKG_VERSION=${PKG_VERSION}" >> ~/.circlerc
+      echo "export PKG_RELEASE=${PKG_RELEASE}" >> ~/.circlerc
 
 dependencies:
   pre:
@@ -54,9 +59,9 @@ deployment:
         wait
       - ~/st2-packages/.circle/save_payload.py ~/packages
 
-# experimental:
-#   notify:
-#     branches:
-#       only:
-#         - master
-#         - /v[0-9]+(\.[0-9]+)*/
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+        - /v[0-9]+(\.[0-9]+)*/
