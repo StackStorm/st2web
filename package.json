@@ -1,7 +1,7 @@
 {
   "name": "st2web",
   "version": "0.0.0",
-  "st2_version": "1.3dev",
+  "st2_version": "1.4dev",
   "private": true,
   "scripts": {
     "test": "echo \"no test specified\" && exit 0"
