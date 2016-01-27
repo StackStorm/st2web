@@ -241,7 +241,7 @@ gulp.task('production-html', function () {
 });
 
 gulp.task('production-static', function () {
-  return gulp.src(['img/*', 'font/*', 'config.js'], { base: __dirname + '/'})
+  return gulp.src(['img/*', 'font/*', 'config.js', 'favicon.ico'], { base: __dirname + '/'})
     .pipe(gulp.dest('build/'))
     ;
 });
