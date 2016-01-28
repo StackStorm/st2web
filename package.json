@@ -8,7 +8,8 @@
   },
   "repository": "stackstorm/st2web",
   "dependencies": {
-    "st2client": "^0.4.3"
+    "st2client": "^0.4.3",
+    "urijs": "^1.17.0"
   },
   "devDependencies": {
     "chai": "^3.3.0",
@@ -37,6 +38,7 @@
     "main-bower-files": "^2.4.0",
     "request": "^2.49.0",
     "yamljs": "^0.2.4",
+    "yargs": "^3.32.0",
     "zombie": "https://github.com/enykeev/zombie/releases/download/enykeev-1/zombie-4.1.0.tgz"
   }
 }

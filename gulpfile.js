@@ -23,10 +23,12 @@ var gulp = require('gulp')
   , header = require('gulp-header')
   , git = require('git-rev-sync')
   , pkg = require('./package.json')
+  , yargs = require('yargs')
   ;
 
 var express = require('express')
   , server
+  , argv = yargs.argv
   , app = express();
 
 app.use(express.static(__dirname));
@@ -149,7 +151,7 @@ gulp.task('serve', ['build'], function () {
 });
 
 gulp.task('test', ['build', 'serve'], function () {
-  return gulp.src('tests/**/test-*.js', {read: false})
+  return gulp.src(argv['test-files'] || 'tests/**/test-*.js', {read: false})
     .pipe(mocha({
       reporter: 'dot'
     }))

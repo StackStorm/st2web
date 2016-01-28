@@ -31,7 +31,7 @@ describe('User visits rules page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return new RegExp('^http://172.168.60.10:9101/v1/rules/views$').test(e.url);
+        return new RegExp('^https://example.com/api/v1/rules/views$').test(e.url);
       });
     });
 
@@ -58,7 +58,7 @@ describe('User visits rules page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        var match = e.url.match(new RegExp('^http://172.168.60.10:9101/v1/rules/([\\w.-]+)$'));
+        var match = e.url.match(new RegExp('^https://example.com/api/v1/rules/([\\w.-]+)$'));
         return match && match[1] && match[1] !== 'views';
       });
     });
@@ -83,7 +83,7 @@ describe('User visits rules page', function () {
       browser.assert.element(util.name('delete_button'), 'Delete button is missing');
 
       browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
-      browser.assert.text(util.name('header_name'), rule.name, 'Wrong name in header');
+      browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
       browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
       browser.assert.text(util.name('header_if'), 'If ' + rule.trigger.ref, 'Wrong if in header');
       browser.assert.text(util.name('header_then'), 'Then ' + rule.action.ref, 'Wrong then in header');

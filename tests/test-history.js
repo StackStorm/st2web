@@ -31,7 +31,7 @@ describe('User visits history page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return ~e.url.indexOf('http://172.168.60.10:9101/v1/executions?'); //jshint ignore:line
+        return ~e.url.indexOf('https://example.com/api/v1/executions?'); //jshint ignore:line
       });
     });
 
@@ -59,7 +59,7 @@ describe('User visits history page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return new RegExp('^http://172.168.60.10:9101/v1/executions/\\w+$').test(e.url);
+        return new RegExp('^https://example.com/api/v1/executions/\\w+$').test(e.url);
       });
     });
 
@@ -85,7 +85,7 @@ describe('User visits history page', function () {
       browser.assert.text(util.name('header_description'), execution.action.description, 'Wrong description in header');
 
       browser.assert.text(util.name('status'), util.capitalize(execution.status), 'Wrong status');
-      browser.assert.attribute(util.name('execution_id'), 'value', execution.id, 'Wrong execution id');
+      browser.assert.text(util.name('execution_id'), execution.id, 'Wrong execution id');
       browser.assert.text(util.name('start_timestamp'), util.formatUTC(execution.start_timestamp), 'Wrong start time');
       browser.assert.text(util.name('end_timestamp'), util.formatUTC(execution.end_timestamp), 'Wrong end time');
 
@@ -122,7 +122,7 @@ describe('User visits history page', function () {
           browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
 
           var resource = browser.resources.filter(function (e) {
-            return e.request.method === 'POST' && new RegExp('^http://172.168.60.10:9101/v1/executions/\\w+/re_run$').test(e.url);
+            return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions/\\w+/re_run$').test(e.url);
           });
 
           expect(resource).to.have.length(1, 'Rerun should make a single request');

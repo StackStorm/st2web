@@ -31,7 +31,7 @@ describe('User visits actions page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return new RegExp('^http://172.168.60.10:9101/v1/actions$').test(e.url);
+        return new RegExp('^https://example.com/api/v1/actions$').test(e.url);
       });
     });
 
@@ -58,7 +58,7 @@ describe('User visits actions page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return new RegExp('^http://172.168.60.10:9101/v1/actions/views/overview/[\\w.-]+$').test(e.url);
+        return new RegExp('^https://example.com/api/v1/actions/views/overview/[\\w.-]+$').test(e.url);
       });
     });
 
