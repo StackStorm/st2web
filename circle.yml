@@ -5,6 +5,7 @@
 general:
   artifacts:
     - ~/packages
+    - ~/logs
 
 machine:
   node:
@@ -19,7 +20,7 @@ machine:
     ST2_USERNAME: admin
     ST2_PASSWORD: 123
   pre:
-    - mkdir -p ~/packages
+    - mkdir -p ~/packages ~/logs
     # Need latest Docker version for some features to work (CircleCI by default works with outdated version)
     - |
       sudo curl -L -o /usr/bin/docker 'http://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci'
@@ -54,6 +55,7 @@ test:
   post:
     - dpkg-buildpackage -b -uc -us
     - rpmbuild -bb rpm/st2web.spec
+    - for name in $(docker ps -a --format "{{.Names}}"); do docker logs ${name} > ~/logs/${name}.log 2>&1; done
 
 deployment:
   publish:
