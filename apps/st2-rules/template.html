@@ -47,6 +47,7 @@
           </div>
 
           <div class="st2-flex-rule"
+              data-name="rule"
               ng-class="{'st2-flex-rule--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in params.list"
               ng-click="$root.go({ref: rule.ref, edit: undefined})"
@@ -140,22 +141,24 @@
   </div>
 
   <div class="st2-panel__details st2-details"
+      data-name="details"
       ng-show="rule.ref">
 
     <div class="st2-details__header">
       <div class="st2-details__header-name">
         <span class="st2-label st2-label--short"
+            data-name="status"
             status="ruleMeta.enabled && 'enabled' || 'disabled'">
         </span>
-        <a ui-sref="rules.general({ref: rule.ref})">
+        <a ui-sref="rules.general({ref: rule.ref})" data-name="header_name">
           {{ ruleMeta.ref }}
         </a>
       </div>
-      <div class="st2-details__header-description">
+      <div class="st2-details__header-description" data-name="header_description">
         {{ ruleMeta.description }}
       </div>
       <div class="st2-details__header-conditions">
-        <div class="st2-details__header-condition st2-details__header-condition--if">
+        <div class="st2-details__header-condition st2-details__header-condition--if" data-name="header_if">
           <span class="st2-details__header-condition-label">If</span>
           <span class="st2-details__header-condition-icon">
             <span class="st2-pack-icon st2-pack-icon-small">
@@ -168,7 +171,7 @@
             {{ ruleMeta.trigger.type }}
           </span>
         </div>
-        <div class="st2-details__header-condition st2-details__header-condition--then">
+        <div class="st2-details__header-condition st2-details__header-condition--then" data-name="header_then">
           <span class="st2-details__header-condition-label">Then</span>
           <span class="st2-details__header-condition-icon">
             <span class="st2-pack-icon st2-pack-icon-small">
@@ -186,6 +189,7 @@
 
     <div class="st2-details__toolbar">
       <input type="button"
+          data-name="edit_button"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
           ng-click="edit()"
           ng-hide="$root.state.params.edit"
@@ -195,6 +199,7 @@
           ng-hide="$root.state.params.edit"
           value="Duplicate"/> -->
       <input type="button"
+          data-name="delete_button"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
           ng-hide="$root.state.params.edit"
           ng-click="delete()"
@@ -249,6 +254,7 @@
             <div class="st2-details__panel-body">
 
               <div class="st2-remote-form"
+                  data-name="rule_trigger_form"
                   name="trigger"
                   disabled="!$root.state.params.edit"
                   suggester="triggerSuggester"
@@ -266,6 +272,7 @@
             <div class="st2-details__panel-body">
 
               <div class="st2-criteria"
+                data-name="rule_criteria_form"
                 ng-model="rule.criteria"
                 trigger="trigger"
                 disabled="!$root.state.params.edit">
@@ -281,6 +288,7 @@
             <div class="st2-details__panel-body">
 
               <div class="st2-remote-form"
+                  data-name="rule_action_form"
                   name="action"
                   disabled="!$root.state.params.edit"
                   suggester="actionSuggester"
@@ -334,7 +342,12 @@
         ng-class="{'st2-details__body--active': $root.isState('^.code')}">
       <div class="st2-panel__scroller">
 
-        <div class="st2-highlight" code="rule | yaml" lines="20" language="yaml"></div>
+        <div class="st2-highlight"
+            data-name="rule_code"
+            code="rule | yaml"
+            lines="20"
+            language="yaml">
+        </div>
 
       </div>
     </div>

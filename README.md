@@ -80,30 +80,13 @@ Then, you can find compiled version of the project in `build/` folder. You can j
 
 Testing
 -------
+We're using [zombie](https://github.com/assaf/zombie) as our headless browser for integration testing. It is a simulated environment (virtual DOM) so there's no need in WebDriver or a real browser to be present.
 
-For now, we don't have the UI to test, so we are using st2-docs application to make sure we are aware of any changes happening in StackStorm API. Take it as some sort of a live guide.
+First of all, you need to make sure you have a running copy of st2 to run tests against. We're using [custom docker-compose](https://github.com/enykeev/st2box/) deployment for our automated tests, but the [AIO](https://docs.stackstorm.com/install/all_in_one.html) deployment will work just as good (though will take more time to deploy).
 
-First of all, you need to make sure you have [Java Development Kit (JDK)][JDK] installed
+To let test runner know the details of your st2 installation, you need to set ST2_HOST, ST2_USERNAME and ST2_PASSWORD env variables, then call `gulp test`.
 
-    $ java -version
-    java version "1.6.0_65"
-    Java(TM) SE Runtime Environment (build 1.6.0_65-b14-462-11M4609)
-    Java HotSpot(TM) 64-Bit Server VM (build 20.65-b04-462, mixed mode)
-
-[JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-
-Then, you would need to update and start a webdriver for Selenium tests to run on
-
-    $ node_modules/.bin/webdriver-manager update
-    $ node_modules/.bin/webdriver-manager start
-
-Or if you want, you can setup Selenium to [start as a launchd service][selguide].
-[selguide]: http://blog.richardknop.com/2013/06/installing-selenium-2-on-mac-os-as-service/
-
-You should also make sure, StackStorm is running and in the stock state. For that, follow
-[devenv](https://github.com/StackStorm/devenv) and [Stanley](https://github.com/StackStorm/st2) README files.
-
-After that, `gulp test` should finish successfully.
+    $ ST2_HOST=localhost ST2_USERNAME=admin ST2_PASSWORD=123 gulp test
 
 Copyright, License, and Contributors Agreement
 ----------------------------------------------
