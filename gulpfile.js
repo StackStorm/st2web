@@ -13,7 +13,6 @@ var gulp = require('gulp')
   , mocha = require('gulp-mocha')
   , plumber = require('gulp-plumber')
   , htmlreplace = require('gulp-html-replace')
-  , bowerFiles = require('main-bower-files')
   , glob = require('glob')
   , csscomb = require('gulp-csscomb')
   , templateCache = require('gulp-angular-templatecache')
@@ -68,14 +67,26 @@ function buildHeader() {
   return 'Built ' + new Date().toISOString() + ' from ' + commitURL;
 }
 
-// Gather a list of all bower components installed.
+// Gather a list of all components installed.
 // We are only interested in JS files since we intend to import all the css files manually through
 // less import.
-var components = bowerFiles({
-  filter: /\.js/
-}).map(function (file) {
-  return path.relative('.', file);
-});
+var components = [
+  'node_modules/angular/angular.js',
+  'node_modules/angular-ui-notification/dist/angular-ui-notification.min.js',
+  'node_modules/angular-moment/angular-moment.js',
+  'node_modules/angular-sanitize/angular-sanitize.js',
+  'node_modules/angular-ui-router/release/angular-ui-router.js',
+  'node_modules/angular-busy/dist/angular-busy.js',
+  'node_modules/lodash/dist/lodash.js',
+  'node_modules/urijs/src/URI.js',
+  'node_modules/prismjs/prism.js',
+  'node_modules/prismjs/components/prism-bash.js',
+  'node_modules/prismjs/components/prism-yaml.js',
+  'node_modules/prismjs/components/prism-powershell.js',
+  'node_modules/prismjs/components/prism-python.js',
+  'node_modules/prismjs/components/prism-json.js',
+  'node_modules/moment/moment.js'
+];
 
 // Gathering a list of all the modules we have.
 var modules = settings.js.map(function (pattern) {
