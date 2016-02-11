@@ -1,6 +1,7 @@
 /* jshint node:true */
 'use strict';
 var URI = require('urijs');
+var zombie = require('zombie');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -17,6 +18,10 @@ module.exports = function (browser) {
 
   browser.pipeline.addHandler(function(browser, request, response) {
     var url = new URI(response.url);
+
+    if (url.path() === '/config.js') {
+      return new zombie.Response('angular.module(\'main\').constant(\'st2Config\', {})');
+    }
 
     if (url.host() === process.env.ST2_HOST) {
       response._url = url.host('example.com').toString();
