@@ -42,10 +42,8 @@ checkout:
 dependencies:
   pre:
     - sudo apt-get install rpm
-    - npm install bower
     - sudo pip install docker-compose
   post:
-    - node_modules/.bin/bower install
     - docker-compose -f ~/st2box/docker-compose.yaml pull
 
 test:
