@@ -1,7 +1,8 @@
 /* jshint node: true */
 'use strict';
 
-var gulp = require('gulp')
+var _ = require('lodash')
+  , gulp = require('gulp')
   , jshint = require('gulp-jshint')
   , path = require('path')
   , es = require('event-stream')
@@ -12,17 +13,21 @@ var gulp = require('gulp')
   , fontelloUpdate = require('fontello-update')
   , mocha = require('gulp-mocha')
   , plumber = require('gulp-plumber')
-  , htmlreplace = require('gulp-html-replace')
-  , glob = require('glob')
   , csscomb = require('gulp-csscomb')
   , templateCache = require('gulp-angular-templatecache')
-  , ngAnnotate = require('gulp-ng-annotate')
   , uglify = require('gulp-uglify')
   , size = require('gulp-size')
   , header = require('gulp-header')
   , git = require('git-rev-sync')
   , pkg = require('./package.json')
   , yargs = require('yargs')
+  , browserify = require('browserify')
+  , watchify = require('watchify')
+  , babelify = require('babelify')
+  , gutil = require('gulp-util')
+  , source = require('vinyl-source-stream')
+  , buffer = require('vinyl-buffer')
+  , sourcemaps = require('gulp-sourcemaps')
   ;
 
 var express = require('express')
@@ -67,36 +72,66 @@ function buildHeader() {
   return 'Built ' + new Date().toISOString() + ' from ' + commitURL;
 }
 
-// Gather a list of all components installed.
-// We are only interested in JS files since we intend to import all the css files manually through
-// less import.
-var components = [
-  'node_modules/angular/angular.js',
-  'node_modules/angular-ui-notification/dist/angular-ui-notification.min.js',
-  'node_modules/angular-moment/angular-moment.js',
-  'node_modules/angular-sanitize/angular-sanitize.js',
-  'node_modules/angular-ui-router/release/angular-ui-router.js',
-  'node_modules/angular-busy/dist/angular-busy.js',
-  'node_modules/lodash/dist/lodash.js',
-  'node_modules/urijs/src/URI.js',
-  'node_modules/prismjs/prism.js',
-  'node_modules/prismjs/components/prism-bash.js',
-  'node_modules/prismjs/components/prism-yaml.js',
-  'node_modules/prismjs/components/prism-powershell.js',
-  'node_modules/prismjs/components/prism-python.js',
-  'node_modules/prismjs/components/prism-json.js',
-  'node_modules/moment/moment.js'
-];
+function bundle() {
+  var customOpts = {
+    entries: ['main.js'],
+    debug: true
+  };
+  var opts = _.assign({}, watchify.args, customOpts);
 
-// Gathering a list of all the modules we have.
-var modules = settings.js.map(function (pattern) {
-  return glob.sync(pattern);
-}).reduce(function(a, b) {
-  return a.concat(b);
-});
+  var b = !global.watch ? browserify(opts) : watchify(browserify(opts))
+    .on('update', function () {
+      bundle(b);
+    });
 
-modules.push('node_modules/st2client/dist/st2client.js');
-modules.push('node_modules/yamljs/dist/yaml.js');
+  b
+    .transform(require('ngify'), {
+      moduleTemplate: ';',
+      jsTemplates: {
+        provider:   'module.exports.$inject = [ {inject} ];',
+        factory:    'module.exports.$inject = [ {inject} ];',
+        service:    'module.exports.$inject = [ {inject} ];',
+        animation:  'module.exports.$inject = [ {inject} ];',
+        filter:     'module.exports.$inject = [ {inject} ];',
+        controller: 'module.exports.$inject = [ {inject} ];',
+        directive:  'module.exports.$inject = [ {inject} ];',
+
+        value:    '',
+        constant: '',
+
+        config: 'module.exports.$inject = [ {inject} ];',
+        run:    'module.exports.$inject = [ {inject} ];'
+      }
+    })
+    .transform(babelify.configure({
+      // Make sure to change in test_compiler.js too
+      // optional: ['es7.classProperties']
+    }))
+    .on('log', gutil.log)
+    ;
+
+  return b.bundle()
+    .on('error', function (error) {
+      gutil.log(
+        gutil.colors.cyan('Browserify') + gutil.colors.red(' found unhandled error:\n'),
+        error.toString()
+      );
+      this.emit('end');
+    })
+    .pipe(source('main.js'))
+    .pipe(buffer())
+    .pipe(header('/* ' + buildHeader() + ' */'))
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist/'))
+    .pipe(size({
+      showFiles: true
+    }))
+    .pipe(size({
+      showFiles: true,
+      gzip: true
+    }));
+}
 
 
 gulp.task('gulphint', function () {
@@ -107,12 +142,20 @@ gulp.task('gulphint', function () {
     ;
 });
 
-gulp.task('scripts', function () {
+gulp.task('lint', function () {
   return gulp.src(settings.js, { cwd: settings.dev })
     .pipe(plumber())
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
     ;
+});
+
+gulp.task('setWatch', function () {
+  global.watch = true;
+});
+
+gulp.task('browserify', function () {
+  return bundle();
 });
 
 gulp.task('font', function () {
@@ -134,22 +177,6 @@ gulp.task('styles', function () {
     .pipe(gulp.dest(path.join(settings.dev, settings.styles.dest)))
     ;
 });
-
-gulp.task('html', ['scripts'], function () {
-  return gulp.src('index.html')
-    .pipe(plumber())
-    .pipe(htmlreplace({
-      components: components,
-      modules: modules
-    }, {
-      // Keep blocks in place to be able to reuse the same filename over and over.
-      keepUnassigned: true,
-      keepBlockTags: true
-    }))
-    .pipe(gulp.dest('.'))
-    ;
-});
-
 
 gulp.task('serve', ['build'], function () {
   server = gulp.src('.')
@@ -199,48 +226,8 @@ gulp.task('production-styles', ['styles'], function () {
     }));
 });
 
-gulp.task('production-components', function () {
-  return gulp.src(components)
-    .pipe(concat('components.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('build/js'))
-    .pipe(size({
-      showFiles: true
-    }))
-    .pipe(size({
-      showFiles: true,
-      gzip: true
-    }));
-});
-
-gulp.task('production-modules', function () {
-  return gulp.src(modules)
-    .pipe(ngAnnotate())
-    .pipe(concat('modules.js'))
-    .pipe(header('// ' + buildHeader() + '\n'))
-    .pipe(gulp.dest('build/js'))
-    .pipe(size({
-      showFiles: true
-    }))
-    .pipe(size({
-      showFiles: true,
-      gzip: true
-    }));
-});
-
-gulp.task('production-html', function () {
-  return gulp.src('index.html')
-    .pipe(htmlreplace({
-      components: 'js/components.js',
-      modules: 'js/modules.js',
-      templates: 'js/templates.js'
-    }))
-    .pipe(gulp.dest('build/'))
-    ;
-});
-
 gulp.task('production-static', function () {
-  return gulp.src(['img/*', 'font/*', 'config.js', 'favicon.ico'], { base: __dirname + '/'})
+  return gulp.src(['index.html', 'img/*', 'font/*', 'config.js', 'favicon.ico'], { base: __dirname + '/'})
     .pipe(gulp.dest('build/'))
     ;
 });
@@ -248,17 +235,14 @@ gulp.task('production-static', function () {
 gulp.task('production', [
   'production-template',
   'production-styles',
-  'production-components',
-  'production-modules',
-  'production-html',
   'production-static'
 ]);
 
 
-gulp.task('watch', function () {
-  gulp.watch(settings.js, ['scripts', 'html']);
+gulp.task('watch', ['setWatch', 'browserify'], function () {
+  gulp.watch(settings.js, ['lint']);
   gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
-gulp.task('build', ['gulphint', 'scripts', 'styles', 'html']);
+gulp.task('build', ['gulphint', 'lint', 'styles']);
 gulp.task('default', ['build', 'watch', 'serve']);

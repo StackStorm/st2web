@@ -1,6 +1,40 @@
 'use strict';
 
-angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize', 'cgBusy', 'ui-notification'])
+var _ = require('lodash');
+
+angular
+  .module('main', [
+    require('angular-ui-router'),
+    require('angular-moment') && 'angularMoment',
+    require('angular-sanitize'),
+    require('angular-busy') && 'cgBusy',
+    require('angular-ui-notification'),
+    // modules
+    require('./modules/st2-action-reporter').name,
+    require('./modules/st2-api').name,
+    require('./modules/st2-auto-form').name,
+    require('./modules/st2-criteria').name,
+    require('./modules/st2-filter').name,
+    require('./modules/st2-flex-table').name,
+    require('./modules/st2-flow').name,
+    require('./modules/st2-highlight').name,
+    require('./modules/st2-history-child').name,
+    require('./modules/st2-label').name,
+    require('./modules/st2-menu').name,
+    require('./modules/st2-proportional').name,
+    require('./modules/st2-remote-form').name,
+    require('./modules/st2-report').name,
+    require('./modules/st2-scroll-into-view').name,
+    require('./modules/st2-select-on-click').name,
+    require('./modules/st2-value-format').name,
+    require('./modules/st2-view').name,
+
+    require('./apps/st2-actions').name,
+    require('./apps/st2-history').name,
+    require('./apps/st2-login').name,
+    require('./apps/st2-rules').name
+
+  ])
   .config(function ($urlRouterProvider) {
 
     // Remove tailing slash from url before looking for state
@@ -111,7 +145,8 @@ angular.module('main')
 
 angular.module('main')
   .filter('yaml', function () {
-    /*global YAML:true*/
+    var YAML = require('yamljs');
+
     return function (input) {
       if (typeof input !== 'undefined') {
         return '---\n' + YAML.stringify(input, Infinity, 2);
