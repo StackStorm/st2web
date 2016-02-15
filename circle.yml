@@ -1,41 +1,65 @@
 # Setup in CircleCI account the following ENV variables:
-# BINTRAY_ORGANIZATION
+# IS_PRODUCTION (default: 0)
+# IS_ENTERPRISE
+# BINTRAY_ORGANIZATION (default: stackstorm)
 # BINTRAY_ACCOUNT
 # BINTRAY_API_KEY
+# PACKAGECLOUD_ORGANIZATION (default: stackstorm)
+# PACKAGECLOUD_TOKEN
 general:
   artifacts:
     - ~/packages
+    - ~/logs
 
 machine:
+  node:
+    version: 4.2.2
   environment:
     DISTROS: "wheezy jessie trusty el6 el7"
     PKGTYPE: "deb deb deb rpm rpm"
     ST2_PACKAGES_REPO: https://github.com/StackStorm/st2-packages
+    ST2_TEST_ENVIRONEMENT: https://github.com/enykeev/st2box
     DEPLOY_PACKAGES: 1
+    ST2_HOST: localhost
+    ST2_USERNAME: admin
+    ST2_PASSWORD: 123
   pre:
-    - mkdir -p ~/packages
+    - mkdir -p ~/packages ~/logs
+    # Need latest Docker version for some features to work (CircleCI by default works with outdated version)
+    - |
+      sudo curl -L -o /usr/bin/docker 'http://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci'
+      sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
 
 checkout:
   post:
     - git clone --depth 1 ${ST2_PACKAGES_REPO} ~/st2-packages
+    - git clone --depth 1 ${ST2_TEST_ENVIRONEMENT} ~/st2box
     - |
-      DISTROS=($DISTROS)
       PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
-      PKG_RELEASE=$(~/st2-packages/.circle/bintray.sh next-revision ${DISTROS[0]}_staging ${PKG_VERSION} st2web)
+      PKG_RELEASE=$(~/st2-packages/.circle/packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
       echo "export PKG_VERSION=${PKG_VERSION}" >> ~/.circlerc
       echo "export PKG_RELEASE=${PKG_RELEASE}" >> ~/.circlerc
 
 dependencies:
   pre:
-    - sudo apt-get install rpm
     - npm install bower
+    - sudo apt-get install rpm parallel jq
+    - gem install package_cloud
+    - sudo pip install docker-compose
   post:
     - node_modules/.bin/bower install
+    - docker-compose -f ~/st2box/docker-compose.yaml pull
 
 test:
+  pre:
+    - docker-compose -f ~/st2box/docker-compose.yaml up -d
+    - docker-compose -f ~/st2box/docker-compose.yaml run client st2 run core.noop
   post:
     - dpkg-buildpackage -b -uc -us
     - rpmbuild -bb rpm/st2web.spec
+    - for name in $(docker ps -a --format "{{.Names}}"); do docker logs ${name} > ~/logs/${name}.log 2>&1; done
 
 deployment:
   publish:
@@ -45,17 +69,17 @@ deployment:
       - /v[0-9]+(\.[0-9]+)*/
       - feature/circleci
     commands:
-      # Deploy to Bintray all artifacts for respective distros in parallel
       - |
         DISTROS=($DISTROS)
         PKGTYPE=($PKGTYPE)
         for i in ${!DISTROS[@]}; do
           mkdir -p ~/packages/${DISTROS[$i]}
           cp ../*.${PKGTYPE[$i]} ~/packages/${DISTROS[$i]}
-          echo Deploying Bintray artifacts for "${DISTROS[$i]}" ...
-          ~/st2-packages/.circle/bintray.sh deploy ${DISTROS[$i]}_staging ~/packages/${DISTROS[$i]} &
         done
-        wait
+      # Deploy to Bintray all artifacts for respective distros in parallel
+      - "parallel -v -j0 --line-buffer ~/st2-packages/.circle/bintray.sh deploy {}_staging ~/packages/{} ::: ${DISTROS}"
+      # Deploy to PackageCloud all artifacts for respective distros in parallel
+      - "parallel -v -j0 --line-buffer ~/st2-packages/.circle/packagecloud.sh deploy {} ~/packages/{} ::: ${DISTROS}"
       - ~/st2-packages/.circle/save_payload.py ~/packages
 
 experimental:
