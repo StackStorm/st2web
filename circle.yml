@@ -1,7 +1,11 @@
 # Setup in CircleCI account the following ENV variables:
-# BINTRAY_ORGANIZATION
+# IS_PRODUCTION (default: 0)
+# IS_ENTERPRISE
+# BINTRAY_ORGANIZATION (default: stackstorm)
 # BINTRAY_ACCOUNT
 # BINTRAY_API_KEY
+# PACKAGECLOUD_ORGANIZATION (default: stackstorm)
+# PACKAGECLOUD_TOKEN
 general:
   artifacts:
     - ~/packages
@@ -33,15 +37,15 @@ checkout:
     - git clone --depth 1 ${ST2_PACKAGES_REPO} ~/st2-packages
     - git clone --depth 1 ${ST2_TEST_ENVIRONEMENT} ~/st2box
     - |
-      DISTROS=($DISTROS)
       PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
-      PKG_RELEASE=$(~/st2-packages/.circle/bintray.sh next-revision ${DISTROS[0]}_staging ${PKG_VERSION} st2web)
+      PKG_RELEASE=$(~/st2-packages/.circle/packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
       echo "export PKG_VERSION=${PKG_VERSION}" >> ~/.circlerc
       echo "export PKG_RELEASE=${PKG_RELEASE}" >> ~/.circlerc
 
 dependencies:
   pre:
-    - sudo apt-get install rpm
+    - sudo apt-get install rpm parallel jq
+    - gem install package_cloud
     - sudo pip install docker-compose
   post:
     - docker-compose -f ~/st2box/docker-compose.yaml pull
@@ -63,17 +67,17 @@ deployment:
       - /v[0-9]+(\.[0-9]+)*/
       - feature/circleci
     commands:
-      # Deploy to Bintray all artifacts for respective distros in parallel
       - |
         DISTROS=($DISTROS)
         PKGTYPE=($PKGTYPE)
         for i in ${!DISTROS[@]}; do
           mkdir -p ~/packages/${DISTROS[$i]}
           cp ../*.${PKGTYPE[$i]} ~/packages/${DISTROS[$i]}
-          echo Deploying Bintray artifacts for "${DISTROS[$i]}" ...
-          ~/st2-packages/.circle/bintray.sh deploy ${DISTROS[$i]}_staging ~/packages/${DISTROS[$i]} &
         done
-        wait
+      # Deploy to Bintray all artifacts for respective distros in parallel
+      - "parallel -v -j0 --line-buffer ~/st2-packages/.circle/bintray.sh deploy {}_staging ~/packages/{} ::: ${DISTROS}"
+      # Deploy to PackageCloud all artifacts for respective distros in parallel
+      - "parallel -v -j0 --line-buffer ~/st2-packages/.circle/packagecloud.sh deploy {} ~/packages/{} ::: ${DISTROS}"
       - ~/st2-packages/.circle/save_payload.py ~/packages
 
 experimental:
