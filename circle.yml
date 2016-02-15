@@ -44,10 +44,12 @@ checkout:
 
 dependencies:
   pre:
+    - npm install bower
     - sudo apt-get install rpm parallel jq
     - gem install package_cloud
     - sudo pip install docker-compose
   post:
+    - node_modules/.bin/bower install
     - docker-compose -f ~/st2box/docker-compose.yaml pull
 
 test:
