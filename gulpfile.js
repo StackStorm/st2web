@@ -14,7 +14,6 @@ var _ = require('lodash')
   , mocha = require('gulp-mocha')
   , plumber = require('gulp-plumber')
   , csscomb = require('gulp-csscomb')
-  , templateCache = require('gulp-angular-templatecache')
   , uglify = require('gulp-uglify')
   , size = require('gulp-size')
   , header = require('gulp-header')
@@ -28,6 +27,7 @@ var _ = require('lodash')
   , source = require('vinyl-source-stream')
   , buffer = require('vinyl-buffer')
   , sourcemaps = require('gulp-sourcemaps')
+  , rename = require('gulp-rename')
   ;
 
 var express = require('express')
@@ -45,6 +45,12 @@ var settings = {
     src: ['./less/style.less', './apps/**/*.less', './modules/**/*.less'],
     includes: 'less/',
     dest: 'css'
+  },
+  modules: {
+    'main.js': 'main.js',
+    'dependencies.js': 'dependencies.js',
+    'apps.js': 'apps/index.js',
+    'modules.js': 'modules/index.js'
   },
   html: 'index.html'
 };
@@ -72,16 +78,16 @@ function buildHeader() {
   return 'Built ' + new Date().toISOString() + ' from ' + commitURL;
 }
 
-function bundle() {
+function bundle(file, name) {
   var customOpts = {
-    entries: ['main.js'],
+    entries: [file],
     debug: true
   };
   var opts = _.assign({}, watchify.args, customOpts);
 
   var b = !global.watch ? browserify(opts) : watchify(browserify(opts))
     .on('update', function () {
-      bundle(b);
+      bundle(file, name);
     });
 
   b
@@ -119,7 +125,7 @@ function bundle() {
       );
       this.emit('end');
     })
-    .pipe(source('main.js'))
+    .pipe(source(name))
     .pipe(buffer())
     .pipe(header('/* ' + buildHeader() + ' */'))
     .pipe(sourcemaps.init({ loadMaps: true }))
@@ -156,7 +162,9 @@ gulp.task('setWatch', function () {
 });
 
 gulp.task('browserify', function () {
-  return bundle();
+  var tasks = _.map(settings.modules, bundle);
+
+  return es.merge.apply(null, tasks);
 });
 
 gulp.task('font', function () {
@@ -200,12 +208,15 @@ gulp.task('test', ['build', 'serve'], function () {
 });
 
 
-gulp.task('production-template', function () {
-  return gulp.src(['./apps/**/*.html', './modules/**/*.html'], { base: __dirname + '/'})
-    .pipe(templateCache({
-      module: 'main'
+gulp.task('production-scripts', ['browserify'], function () {
+  return gulp.src(['./js/*.js'], { base: __dirname + '/'})
+    .pipe(uglify({
+      mangle: false,
+      compress: {
+        keep_fnames: true
+      }
     }))
-    .pipe(gulp.dest('build/js'))
+    .pipe(gulp.dest('build'))
     .pipe(size({
       showFiles: true
     }))
@@ -213,6 +224,17 @@ gulp.task('production-template', function () {
       showFiles: true,
       gzip: true
     }));
+});
+
+gulp.task('production-libs', function () {
+  return gulp.src([
+    'node_modules/angular/angular.min.js',
+    'node_modules/lodash/dist/lodash.min.js'
+  ], { base: __dirname + '/'}).pipe(rename(function (path) {
+      path.basename = path.basename.split('.')[0];
+    }))
+    .pipe(gulp.dest('build/'))
+    ;
 });
 
 gulp.task('production-styles', ['styles'], function () {
@@ -228,14 +250,21 @@ gulp.task('production-styles', ['styles'], function () {
 });
 
 gulp.task('production-static', function () {
-  return gulp.src(['index.html', 'img/*', 'font/*', 'config.js', 'favicon.ico'], { base: __dirname + '/'})
+  return gulp.src([
+    'index.html',
+    'img/*',
+    'font/*',
+    'config.js',
+    'favicon.ico'
+  ], { base: __dirname + '/'})
     .pipe(gulp.dest('build/'))
     ;
 });
 
 gulp.task('production', [
-  'production-template',
+  'production-scripts',
   'production-styles',
+  'production-libs',
   'production-static'
 ]);
 

@@ -74,6 +74,7 @@
 
   // Custom Globals
   "globals"       : {         // additional predefined global variables
+    "_": true,
     "angular": true
   }
 }
