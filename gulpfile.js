@@ -268,6 +268,26 @@ gulp.task('production', [
   'production-static'
 ]);
 
+gulp.task('serve-production', ['production'], function () {
+  server = gulp.src('./build')
+    .pipe(webserver({
+      host: '0.0.0.0',
+      port: 3000
+    }));
+
+  return server;
+});
+
+gulp.task('test-production', ['production', 'serve-production'], function () {
+  return gulp.src(argv['test-files'] || 'tests/**/test-*.js', {read: false})
+    .pipe(mocha({
+      reporter: 'dot'
+    }))
+    .on('end', function () {
+      server.emit('kill');
+    });
+});
+
 
 gulp.task('watch', ['setWatch', 'browserify'], function () {
   gulp.watch(settings.js, ['lint']);

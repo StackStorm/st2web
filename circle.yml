@@ -57,11 +57,15 @@ test:
   pre:
     - docker-compose -f ~/st2box/docker-compose.yaml run client st2 run core.noop
   post:
+    - docker-compose -f ~/st2box/docker-compose.yaml down
+    - docker-compose -f ~/st2box/docker-compose.yaml up -d
+    - docker-compose -f ~/st2box/docker-compose.yaml run client st2 run core.noop
+    - docker-compose -f ~/st2box/docker-compose.yaml run client st2 execution list
+    - gulp test-production
     - |
         for container in $(docker ps -a --format "{{.Names}}"); do
           docker logs ${container} > ${CIRCLE_ARTIFACTS}/logs/${container}.log 2>&1
         done
-  override:
     - |
         make deb
         echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} $CIRCLE_ARTIFACTS/{}
