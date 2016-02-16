@@ -274,5 +274,5 @@ gulp.task('watch', ['setWatch', 'browserify'], function () {
   gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
-gulp.task('build', ['gulphint', 'lint', 'styles']);
+gulp.task('build', ['gulphint', 'lint', 'styles', 'browserify']);
 gulp.task('default', ['build', 'watch', 'serve']);
