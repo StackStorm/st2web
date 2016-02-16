@@ -2,8 +2,8 @@ npm-debug.log
 node_modules
 components
 css
+js
 build
-dist
 
 .htmlhintrc
 

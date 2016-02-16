@@ -10,6 +10,8 @@ require('prismjs/components/prism-powershell');
 require('prismjs/components/prism-python');
 require('prismjs/components/prism-json');
 
+var template = require('./template.html');
+
 module.exports =
   function st2Highlight($filter) {
 
@@ -106,7 +108,7 @@ module.exports =
         lines: '@',
         language: '@'
       },
-      templateUrl: 'modules/st2-highlight/template.html',
+      templateUrl: template,
       link: postLink
     };
 

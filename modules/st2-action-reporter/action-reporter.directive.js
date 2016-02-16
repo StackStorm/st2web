@@ -1,32 +1,13 @@
 'use strict';
 
+var reporters = require('./reporters');
+
 module.exports =
   function st2ActionReporter() {
-    var reporters = {
-      'run-local': 'run-local',
-      'local-shell-cmd': 'run-local',
-      'run-remote': 'run-remote',
-      'remote-shell-cmd': 'run-remote',
-      // 'action-chain': 'action-chain',
-      // 'workflow': 'action-chain',
-      // 'mistral-v1': 'action-chain',
-      // 'mistral-v2': 'action-chain',
-      'run-local-script': 'run-local',
-      'local-shell-script': 'run-local',
-      'run-remote-script': 'run-remote',
-      'remote-shell-script': 'run-remote',
-      'run-python': 'run-python',
-      'python-shell': 'run-python',
-      // 'http-runner': 'http'
-      'cloudslang': 'run-local'
-    };
-
     var linker = function (scope) {
       // Partial router
       scope.getReporter = function (runner) {
-        var template = 'modules/st2-action-reporter/reporters/{{ name }}.html';
-
-        return template.split('{{ name }}').join(reporters[runner] || 'debug');
+        return reporters[runner] || reporters['debug'];
       };
 
       scope.getTraceback = function (result) {

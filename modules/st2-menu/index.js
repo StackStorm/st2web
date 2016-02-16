@@ -1,7 +1,9 @@
 'use strict';
 
+var mod = module.exports = angular.module('main.modules.st2Menu', []);
+
 var directive = require('./menu.directive.js');
 
-module.exports = angular.module('main.modules.st2Menu', [])
+mod
   .directive(directive.name, directive)
   ;

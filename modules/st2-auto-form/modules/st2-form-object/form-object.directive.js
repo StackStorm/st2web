@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2FormObject() {
     return {
@@ -11,7 +13,7 @@ module.exports =
         'ngModel': '=',
         'disabled': '='
       },
-      templateUrl: 'modules/st2-auto-form/modules/st2-form-object/template.html',
+      templateUrl: template,
       link: function (scope, element, attrs, ctrls) {
         var ctrl = ctrls[0];
         var form = ctrls[1];

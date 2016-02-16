@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function flowLink(st2api, st2Config) {
 
@@ -30,7 +32,7 @@ module.exports =
           element.remove();
         }
       },
-      templateUrl: 'modules/st2-flow/template.html'
+      templateUrl: template
     };
 
   };

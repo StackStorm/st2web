@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports = function st2RulesConfig($stateProvider) {
 
   $stateProvider
@@ -8,7 +10,7 @@ module.exports = function st2RulesConfig($stateProvider) {
       url: '/rules',
       icon: 'st2-icon__rules',
       controller: 'st2RulesCtrl',
-      templateUrl: 'apps/st2-rules/template.html',
+      templateUrl: template,
       title: 'Rules',
       position: 3
     })

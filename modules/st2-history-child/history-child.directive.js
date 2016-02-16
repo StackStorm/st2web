@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2HistoryChild(st2api) {
 
@@ -9,7 +11,7 @@ module.exports =
         'workflow': '=',
         'view': '='
       },
-      template: '<div ng-include="\'modules/st2-history-child/template.html\'"></div>',
+      template: '<div ng-include="\'' + template + '\'"></div>',
       link: function postLink(scope) {
         scope.getTaskName = function (record) {
           return {

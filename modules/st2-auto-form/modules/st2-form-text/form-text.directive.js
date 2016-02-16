@@ -3,6 +3,8 @@
 var _ = require('lodash')
   ;
 
+var template = require('./template.html');
+
 module.exports =
   function st2FormText() {
     var showLabel = function() {
@@ -26,7 +28,7 @@ module.exports =
         'ngModel': '=',
         'disabled': '='
       },
-      templateUrl: 'modules/st2-auto-form/modules/st2-form-text/template.html',
+      templateUrl: template,
       link: function (scope, element, attrs, ctrl) {
         scope.name = ctrl.$name;
         scope.showLabel = showLabel(scope.name);

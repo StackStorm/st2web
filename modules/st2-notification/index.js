@@ -1,7 +1,9 @@
 'use strict';
 
+var mod = module.exports = angular.module('main.modules.st2Notification', []);
+
 var config = require('./notification.config.js');
 
-module.exports = angular.module('main.modules.st2Notification', [])
+mod
   .config(config)
   ;

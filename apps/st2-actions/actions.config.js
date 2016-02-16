@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports = function st2ActionsConfig($stateProvider) {
   $stateProvider
     .state('actions', {
@@ -7,7 +9,7 @@ module.exports = function st2ActionsConfig($stateProvider) {
       url: '/actions',
       icon: 'st2-icon__actions',
       controller: 'st2ActionsCtrl',
-      templateUrl: 'apps/st2-actions/template.html',
+      templateUrl: template,
       title: 'Actions',
       position: 2
     })

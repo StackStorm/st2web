@@ -1,7 +1,9 @@
 'use strict';
 
+var mod = module.exports = angular.module('main.modules.st2Label', []);
+
 var directive = require('./label.directive.js');
 
-module.exports = angular.module('main.modules.st2Label', [])
+mod
   .directive(directive.name, directive)
   ;

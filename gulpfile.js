@@ -87,6 +87,7 @@ function bundle() {
   b
     .transform(require('ngify'), {
       moduleTemplate: ';',
+      htmlTemplate: 'module.exports = __dirname + \'/\' + \'{htmlName}\'; angular.module(require(\'.\').name).run([\'$templateCache\', function($templateCache){$templateCache.put(module.exports,\'{html}\')}]); var ignore = { module: {} }; ignore.',
       jsTemplates: {
         provider:   'module.exports.$inject = [ {inject} ];',
         factory:    'module.exports.$inject = [ {inject} ];',
@@ -123,7 +124,7 @@ function bundle() {
     .pipe(header('/* ' + buildHeader() + ' */'))
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/'))
+    .pipe(gulp.dest('js/'))
     .pipe(size({
       showFiles: true
     }))

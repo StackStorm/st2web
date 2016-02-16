@@ -1,7 +1,9 @@
 'use strict';
 
+var mod = module.exports = angular.module('main.modules.st2View', []);
+
 var directive = require('./view.directive.js');
 
-module.exports = angular.module('main.modules.st2View', [])
+mod
   .directive(directive.name, directive)
   ;

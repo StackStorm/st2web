@@ -3,6 +3,8 @@
 var _ = require('lodash')
   ;
 
+var template = require('./template.html');
+
 module.exports =
   function st2Criteria() {
 
@@ -14,7 +16,7 @@ module.exports =
         disabled: '=',
         trigger: '='
       },
-      templateUrl: 'modules/st2-criteria/template.html',
+      templateUrl: template,
       link: function postLink(scope, element, attrs, ctrl) {
         scope.ngModel = scope.ngModel || {};
 

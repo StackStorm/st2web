@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2Filter($parse) {
 
@@ -11,7 +13,7 @@ module.exports =
         items: '=',
         activeItemsSrc: '=activeItems'
       },
-      templateUrl: 'modules/st2-filter/template.html',
+      templateUrl: template,
       link: function postLink(scope, element, attrs) {
         var onChange = $parse(attrs.onChange);
         var listElement = element[0].getElementsByClassName('st2-filter__list')[0];

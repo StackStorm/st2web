@@ -3,6 +3,8 @@
 var _ = require('lodash')
   ;
 
+var template = require('./template.html');
+
 module.exports =
   function st2AutoForm($templateRequest, $compile) {
     // TODO: figure out what other fields do we need.
@@ -25,7 +27,7 @@ module.exports =
       }[type];
     };
 
-    var pTemplate = $templateRequest('modules/st2-auto-form/template.html');
+    var pTemplate = $templateRequest(template);
 
     return {
       restrict: 'C',

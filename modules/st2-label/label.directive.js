@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2Label() {
 
@@ -36,7 +38,7 @@ module.exports =
       scope: {
         'status': '='
       },
-      templateUrl: 'modules/st2-label/template.html',
+      templateUrl: template,
       link: function postLink(scope, element) {
         scope.$watch('status', function (current, previous) {
           scope.state = states[scope.status] || {};

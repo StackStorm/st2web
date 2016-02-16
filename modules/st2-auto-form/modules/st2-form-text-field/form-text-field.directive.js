@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2FormTextField() {
     var minRows = 1
@@ -15,7 +17,7 @@ module.exports =
         'ngModel': '=',
         'disabled': '='
       },
-      templateUrl: 'modules/st2-auto-form/modules/st2-form-text-field/template.html',
+      templateUrl: template,
       link: function (scope, $element, attrs, ctrl) {
         var field = $element[0].querySelector('.st2-auto-form__field');
         var computed = window.getComputedStyle(field);

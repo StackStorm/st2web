@@ -1,7 +1,9 @@
 'use strict';
 
+var mod = module.exports = angular.module('main.modules.st2Report', []);
+
 var directive = require('./report.directive.js');
 
-module.exports = angular.module('main.modules.st2Report', [])
+mod
   .directive(directive.name, directive)
   ;

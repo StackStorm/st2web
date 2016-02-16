@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2RemoteForm() {
 
@@ -13,7 +15,7 @@ module.exports =
         loader: '=',
         ngModel: '='
       },
-      templateUrl: 'modules/st2-remote-form/template.html',
+      templateUrl: template,
       link: function postLink(scope, element, attrs, ctrls) {
 
         scope.form = ctrls[1];

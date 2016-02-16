@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports =
   function st2NotificationConfig($provide, NotificationProvider) {
     NotificationProvider.setOptions({
@@ -10,7 +12,7 @@ module.exports =
       horizontalSpacing: 20,
       positionX: 'left',
       positionY: 'bottom',
-      templateUrl: 'modules/st2-notification/template.html'
+      templateUrl: template
     });
 
     $provide.decorator('Notification', function ($delegate) {

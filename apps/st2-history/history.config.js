@@ -1,5 +1,7 @@
 'use strict';
 
+var template = require('./template.html');
+
 module.exports = function st2HistoryConfig($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/history');
 
@@ -9,7 +11,7 @@ module.exports = function st2HistoryConfig($stateProvider, $urlRouterProvider) {
       url: '/history',
       icon: 'st2-icon__history',
       controller: 'st2HistoryCtrl',
-      templateUrl: 'apps/st2-history/template.html',
+      templateUrl: template,
       title: 'History',
       position: 1
     })

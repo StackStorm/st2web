@@ -7,7 +7,6 @@ angular
     require('angular-ui-router'),
     require('angular-moment') && 'angularMoment',
     require('angular-sanitize'),
-    require('angular-busy') && 'cgBusy',
     require('angular-ui-notification'),
     // modules
     require('./modules/st2-action-reporter').name,
@@ -21,6 +20,7 @@ angular
     require('./modules/st2-history-child').name,
     require('./modules/st2-label').name,
     require('./modules/st2-menu').name,
+    require('./modules/st2-panel').name,
     require('./modules/st2-proportional').name,
     require('./modules/st2-remote-form').name,
     require('./modules/st2-report').name,
@@ -28,13 +28,14 @@ angular
     require('./modules/st2-select-on-click').name,
     require('./modules/st2-value-format').name,
     require('./modules/st2-view').name,
-
+    // apps
     require('./apps/st2-actions').name,
     require('./apps/st2-history').name,
     require('./apps/st2-login').name,
     require('./apps/st2-rules').name
+  ]);
 
-  ])
+angular.module('main')
   .config(function ($urlRouterProvider) {
 
     // Remove tailing slash from url before looking for state
@@ -51,13 +52,6 @@ angular
       }
     });
 
-  });
-
-angular.module('main')
-  .value('cgBusyDefaults',{
-    backdrop: false,
-    delay: 1000,
-    templateUrl: 'modules/st2-panel/loader.html'
   });
 
 angular.module('main')

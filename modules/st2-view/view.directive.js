@@ -3,6 +3,8 @@
 var _ = require('lodash')
   ;
 
+var template = require('./template.html');
+
 module.exports =
   function st2View() {
 
@@ -11,7 +13,7 @@ module.exports =
       scope: {
         viewSettings: '='
       },
-      templateUrl: 'modules/st2-view/template.html',
+      templateUrl: template,
       link: function postLink(scope, element) {
         scope.$watch('viewSettings', function (settings) {
           scope.viewList = _(settings).map(function (setting) {

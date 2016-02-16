@@ -3,6 +3,8 @@
 var _ = require('lodash')
   ;
 
+var template = require('./template.html');
+
 module.exports =
   function st2FormInput() {
     return {
@@ -14,7 +16,7 @@ module.exports =
         'ngModel': '=',
         'disabled': '='
       },
-      templateUrl: 'modules/st2-auto-form/modules/st2-form-input/template.html',
+      templateUrl: template,
       link: function (scope, element, attrs, ctrls) {
         var ctrl = ctrls[0];
         var form = ctrls[1];
