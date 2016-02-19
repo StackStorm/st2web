@@ -249,6 +249,11 @@
 
         <form name="form">
 
+          <div class="st2-manual-form st2-form-checkbox"
+              spec="enabledSpec"
+              ng-model="rule.enabled">
+          </div>
+
           <div class="st2-details__panel">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Trigger</h2>
@@ -325,11 +330,6 @@
                 ng-suggestions="packSpec.enum"
                 ng-model="rule.pack"
                 ng-if="$root.state.params.edit">
-              </div>
-
-              <div class="st2-manual-form st2-form-checkbox"
-                  spec="enabledSpec"
-                  ng-model="rule.enabled">
               </div>
 
             </div>
