@@ -14,15 +14,13 @@ First of all, you need to make sure you have latest stable `node` and `npm` pack
     $ npm -v
     1.4.9
 
-then you need to globally install `bower` and `gulp`
+then you need to globally install `gulp`
 
-    $ npm install -g bower
     $ npm install -g gulp
 
 then you need to install the requirements
 
     $ npm install
-    $ bower install
 
 and finally run build system to fetch the font, compile css and so on
 
