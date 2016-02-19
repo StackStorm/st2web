@@ -181,7 +181,9 @@
             </span>
           </span>
           <span class="st2-details__header-condition-name">
-            {{ ruleMeta.action.ref }}
+            <a ui-sref="actions.general({ref: ruleMeta.action.ref})">
+              {{ ruleMeta.action.ref }}
+            </a>
           </span>
         </div>
       </div>
