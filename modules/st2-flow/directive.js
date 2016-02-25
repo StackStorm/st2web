@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('main')
-  .directive('flowLink', function (st2api) {
+  .directive('flowLink', function (st2api, st2Config) {
 
     var parameters = {
       'api': st2api.server.url,
@@ -17,9 +17,9 @@ angular.module('main')
         action: '@'
       },
       link: function (scope, element) {
-        if (st2api.server.flow) {
+        if (st2api.server.flow || st2Config.flow) {
           scope.flow_token = token;
-          scope.flow_url = st2api.server.flow;
+          scope.flow_url = st2api.server.flow || st2Config.flow;
 
           var target = 'st2flow+' + st2api.client.index.url;
 
