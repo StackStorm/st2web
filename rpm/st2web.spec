@@ -1,10 +1,13 @@
 %define pkg_version %(node -e "console.log(require('./package.json').st2_version);")
-
 %define version %(echo "${PKG_VERSION:-%{pkg_version}}")
 %define release %(echo "${PKG_RELEASE:-1}")
+#define epoch %(_epoch=`echo %{version} | grep -q dev || echo 1`; echo "${_epoch:-0}")
 
 Name:           st2web
 Version:        %{version}
+%if 0%{?epoch}
+Epoch: %{epoch}
+%endif
 Release:        %{release}
 Summary:        St2Web - StackStorm Web UI
 
