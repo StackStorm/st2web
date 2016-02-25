@@ -6,41 +6,43 @@
 # BINTRAY_API_KEY
 # PACKAGECLOUD_ORGANIZATION (default: stackstorm)
 # PACKAGECLOUD_TOKEN
-general:
-  artifacts:
-    - ~/packages
-    - ~/logs
-
 machine:
   node:
     version: 4.2.2
   environment:
-    DISTROS: "wheezy jessie trusty el6 el7"
-    PKGTYPE: "deb deb deb rpm rpm"
-    ST2_PACKAGES_REPO: https://github.com/StackStorm/st2-packages
-    ST2_TEST_ENVIRONEMENT: https://github.com/enykeev/st2box
     DEPLOY_PACKAGES: 1
+    DEB: wheezy jessie trusty
+    RPM: el6 el7
+    ST2_TEST_ENVIRONEMENT: https://github.com/enykeev/st2box
     ST2_HOST: localhost
     ST2_USERNAME: admin
     ST2_PASSWORD: 123
   pre:
-    - mkdir -p ~/packages ~/logs
-    # Need latest Docker version for some features to work (CircleCI by default works with outdated version)
     - |
-      sudo curl -L -o /usr/bin/docker 'http://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci'
-      sudo chmod 0755 /usr/bin/docker
+        # We need docker >= 1.9, for the current compose project
+        sudo curl -L -o /usr/bin/docker 'http://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci'
+        sudo chmod 0755 /usr/bin/docker
+  post:
+    - cd ${CIRCLE_ARTIFACTS} && mkdir ${DEB} ${RPM} logs
   services:
     - docker
 
 checkout:
+  pre:
+    - |
+        # Download helper scripts (for packagecloud)
+        mkdir ~/scripts
+        wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
+        wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/save_payload.py > ~/scripts/save_payload.py
+        chmod 755 ~/scripts/{packagecloud.sh,save_payload.py}
+        echo "export PATH=${HOME}/scripts:${PATH}" >> ~/.circlerc
   post:
-    - git clone --depth 1 ${ST2_PACKAGES_REPO} ~/st2-packages
     - git clone --depth 1 ${ST2_TEST_ENVIRONEMENT} ~/st2box
     - |
-      PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
-      PKG_RELEASE=$(~/st2-packages/.circle/packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
-      echo "export PKG_VERSION=${PKG_VERSION}" >> ~/.circlerc
-      echo "export PKG_RELEASE=${PKG_RELEASE}" >> ~/.circlerc
+        PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
+        PKG_RELEASE=$(packagecloud.sh next-revision wheezy ${PKG_VERSION} st2web)
+        echo "export PKG_VERSION=${PKG_VERSION}" >> ~/.circlerc
+        echo "export PKG_RELEASE=${PKG_RELEASE}" >> ~/.circlerc
 
 dependencies:
   pre:
@@ -51,15 +53,24 @@ dependencies:
   post:
     - node_modules/.bin/bower install
     - docker-compose -f ~/st2box/docker-compose.yaml pull
+    - docker-compose -f ~/st2box/docker-compose.yaml up -d
 
 test:
   pre:
-    - docker-compose -f ~/st2box/docker-compose.yaml up -d
     - docker-compose -f ~/st2box/docker-compose.yaml run client st2 run core.noop
   post:
-    - dpkg-buildpackage -b -uc -us
-    - rpmbuild -bb rpm/st2web.spec
-    - for name in $(docker ps -a --format "{{.Names}}"); do docker logs ${name} > ~/logs/${name}.log 2>&1; done
+    - |
+        for container in $(docker ps -a --format "{{.Names}}"); do
+          docker logs ${container} > ${CIRCLE_ARTIFACTS}/logs/${container}.log 2>&1
+        done
+  override:
+    - |
+        make deb
+        echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} $CIRCLE_ARTIFACTS/{}
+    - |
+        make rpm
+        echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm $CIRCLE_ARTIFACTS/{}
+
 
 deployment:
   publish:
@@ -70,17 +81,10 @@ deployment:
       - feature/circleci
     commands:
       - |
-        DISTROS=($DISTROS)
-        PKGTYPE=($PKGTYPE)
-        for i in ${!DISTROS[@]}; do
-          mkdir -p ~/packages/${DISTROS[$i]}
-          cp ../*.${PKGTYPE[$i]} ~/packages/${DISTROS[$i]}
-        done
-      # Deploy to Bintray all artifacts for respective distros in parallel
-      - "parallel -v -j0 --line-buffer ~/st2-packages/.circle/bintray.sh deploy {}_staging ~/packages/{} ::: ${DISTROS}"
-      # Deploy to PackageCloud all artifacts for respective distros in parallel
-      - "parallel -v -j0 --line-buffer ~/st2-packages/.circle/packagecloud.sh deploy {} ~/packages/{} ::: ${DISTROS}"
-      - ~/st2-packages/.circle/save_payload.py ~/packages
+          for distro in ${RPM} ${DEB}; do
+            packagecloud.sh deploy $distro $CIRCLE_ARTIFACTS/$distro
+          done
+      - DISTROS="$DEB $RPM" save_payload.py ${CIRCLE_ARTIFACTS}
 
 experimental:
   notify:
