@@ -15,7 +15,7 @@ License:        Apache
 URL:            https://github.com/stackstorm/st2web
 Source0:        st2web
 
-Prefix:         /opt/stackstorm/static/webui
+Prefix:         /opt/stackstorm/webui
 
 %define _builddir %(pwd)
 %define _rpmdir %(pwd)/..
