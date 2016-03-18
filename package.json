@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "st2client": "^0.4.3"
+    "st2client": "0.4.4"
   },
   "devDependencies": {
     "chai": "^1.9.1",
