@@ -3,37 +3,26 @@
 
 var _ = require('lodash')
   , gulp = require('gulp')
-  , jshint = require('gulp-jshint')
+  , loadPlugins = require('gulp-load-plugins')
   , path = require('path')
   , es = require('event-stream')
-  , less = require('gulp-less')
-  , concat = require('gulp-concat')
-  , webserver = require('gulp-webserver')
-  , prefix = require('gulp-autoprefixer')
   , fontelloUpdate = require('fontello-update')
-  , mocha = require('gulp-mocha')
-  , plumber = require('gulp-plumber')
-  , csscomb = require('gulp-csscomb')
-  , uglify = require('gulp-uglify')
-  , size = require('gulp-size')
-  , header = require('gulp-header')
   , git = require('git-rev-sync')
   , pkg = require('./package.json')
   , yargs = require('yargs')
   , browserify = require('browserify')
   , watchify = require('watchify')
   , babelify = require('babelify')
-  , gutil = require('gulp-util')
   , source = require('vinyl-source-stream')
   , buffer = require('vinyl-buffer')
-  , sourcemaps = require('gulp-sourcemaps')
-  , rename = require('gulp-rename')
   ;
 
 var express = require('express')
   , server
   , argv = yargs.argv
-  , app = express();
+  , app = express()
+  , plugins = loadPlugins()
+  ;
 
 app.use(express.static(__dirname));
 
@@ -114,27 +103,27 @@ function bundle(file, name) {
       // Make sure to change in test_compiler.js too
       // optional: ['es7.classProperties']
     }))
-    .on('log', gutil.log)
+    .on('log', plugins.util.log)
     ;
 
   return b.bundle()
     .on('error', function (error) {
-      gutil.log(
-        gutil.colors.cyan('Browserify') + gutil.colors.red(' found unhandled error:\n'),
+      plugins.util.log(
+        plugins.util.colors.cyan('Browserify') + plugins.util.colors.red(' found unhandled error:\n'),
         error.toString()
       );
       this.emit('end');
     })
     .pipe(source(name))
     .pipe(buffer())
-    .pipe(header('/* ' + buildHeader() + ' */'))
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
+    .pipe(plugins.header('/* ' + buildHeader() + ' */'))
+    .pipe(plugins.sourcemaps.init({ loadMaps: true }))
+    .pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest('js/'))
-    .pipe(size({
+    .pipe(plugins.size({
       showFiles: true
     }))
-    .pipe(size({
+    .pipe(plugins.size({
       showFiles: true,
       gzip: true
     }));
@@ -143,17 +132,17 @@ function bundle(file, name) {
 
 gulp.task('gulphint', function () {
   return gulp.src('gulpfile.js')
-    .pipe(plumber())
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
+    .pipe(plugins.plumber())
+    .pipe(plugins.jshint())
+    .pipe(plugins.jshint.reporter('default'))
     ;
 });
 
 gulp.task('lint', function () {
   return gulp.src(settings.js, { cwd: settings.dev })
-    .pipe(plumber())
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
+    .pipe(plugins.plumber())
+    .pipe(plugins.jshint())
+    .pipe(plugins.jshint.reporter('default'))
     ;
 });
 
@@ -181,19 +170,19 @@ gulp.task('font', function () {
 
 gulp.task('styles', function () {
   return gulp.src(settings.styles.src, { base: settings.dev })
-    .pipe(plumber())
-    .pipe(csscomb())
+    .pipe(plugins.plumber())
+    .pipe(plugins.csscomb())
     .pipe(gulp.dest(settings.dev))
-    .pipe(less({ paths: [path.join(settings.dev, settings.styles.includes)] }))
-    .pipe(concat('style.css'))
-    .pipe(prefix())
+    .pipe(plugins.less({ paths: [path.join(settings.dev, settings.styles.includes)] }))
+    .pipe(plugins.concat('style.css'))
+    .pipe(plugins.autoprefixer())
     .pipe(gulp.dest(path.join(settings.dev, settings.styles.dest)))
     ;
 });
 
 gulp.task('serve', function () {
   server = gulp.src('.')
-    .pipe(webserver({
+    .pipe(plugins.webserver({
       host: '0.0.0.0',
       port: 3000
     }));
@@ -203,7 +192,7 @@ gulp.task('serve', function () {
 
 gulp.task('test', ['build', 'serve'], function () {
   return gulp.src(argv['test-files'] || 'tests/**/test-*.js', {read: false})
-    .pipe(mocha({
+    .pipe(plugins.mocha({
       reporter: 'dot'
     }))
     .on('end', function () {
@@ -214,17 +203,17 @@ gulp.task('test', ['build', 'serve'], function () {
 
 gulp.task('production-scripts', ['browserify'], function () {
   return gulp.src(['./js/*.js'], { base: __dirname + '/'})
-    .pipe(uglify({
+    .pipe(plugins.uglify({
       mangle: false,
       compress: {
         keep_fnames: true
       }
     }))
     .pipe(gulp.dest('build'))
-    .pipe(size({
+    .pipe(plugins.size({
       showFiles: true
     }))
-    .pipe(size({
+    .pipe(plugins.size({
       showFiles: true,
       gzip: true
     }));
@@ -234,7 +223,7 @@ gulp.task('production-libs', function () {
   return gulp.src([
     'node_modules/angular/angular.min.js',
     'node_modules/lodash/dist/lodash.min.js'
-  ], { base: __dirname + '/'}).pipe(rename(function (path) {
+  ], { base: __dirname + '/'}).pipe(plugins.rename(function (path) {
       path.basename = path.basename.split('.')[0];
     }))
     .pipe(gulp.dest('build/'))
@@ -244,10 +233,10 @@ gulp.task('production-libs', function () {
 gulp.task('production-styles', ['styles'], function () {
   return gulp.src('./css/*.css')
     .pipe(gulp.dest('build/css/'))
-    .pipe(size({
+    .pipe(plugins.size({
       showFiles: true
     }))
-    .pipe(size({
+    .pipe(plugins.size({
       showFiles: true,
       gzip: true
     }));
@@ -274,7 +263,7 @@ gulp.task('production', [
 
 gulp.task('serve-production', ['production'], function () {
   server = gulp.src('./build')
-    .pipe(webserver({
+    .pipe(plugins.webserver({
       host: '0.0.0.0',
       port: 3000
     }));
@@ -284,7 +273,7 @@ gulp.task('serve-production', ['production'], function () {
 
 gulp.task('test-production', ['production', 'serve-production'], function () {
   return gulp.src(argv['test-files'] || 'tests/**/test-*.js', {read: false})
-    .pipe(mocha({
+    .pipe(plugins.mocha({
       reporter: 'dot'
     }))
     .on('end', function () {
