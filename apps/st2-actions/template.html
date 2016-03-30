@@ -67,7 +67,7 @@
           </div>
 
           <div class="st2-flex-table__row"
-              data-name="action"
+              data-test="action"
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
@@ -125,23 +125,23 @@
   </div>
 
   <div class="st2-panel__details st2-details"
-      data-name="details"
+      data-test="details"
       ng-show="action">
 
     <div class="st2-details__header">
-      <div class="st2-details__header-name" data-name="header_name">
+      <div class="st2-details__header-name" data-test="header_name">
         <a ui-sref="actions.general({ref:action.ref})">
           {{ action.ref }}
         </a>
       </div>
-      <div class="st2-details__header-description" data-name="header_description">
+      <div class="st2-details__header-description" data-test="header_description">
         {{ action.description }}
       </div>
     </div>
 
     <div class="st2-details__toolbar">
 
-      <flow-link action="{{ action.ref }}" data-name="flow_link"
+      <flow-link action="{{ action.ref }}" data-test="flow_link"
           ng-if="action.runner_type == 'mistral-v2'">
       </flow-link>
 
@@ -180,7 +180,7 @@
                 Action has no mutable parameters
               </div>
               <div class="st2-auto-form"
-                data-name="action_parameters"
+                data-test="action_parameters"
                 spec="actionSpec"
                 ng-model="payload">
               </div>
@@ -205,7 +205,7 @@
           <div class="st2-details__panel-body">
 
             <div class="st2-flex-table"
-                data-name="action_executions"
+                data-test="action_executions"
                 ng-if="!_.isEmpty(history)">
               <div class="st2-flex-table__row"
                   ng-class-odd="'st2-flex-table__row--odd'"
@@ -263,7 +263,7 @@
             </div>
 
             <div class="st2-details__panel-empty"
-                data-name="no_executions_message"
+                data-test="no_executions_message"
                 ng-if="_.isEmpty(history)">
               No history records for this action
             </div>
@@ -291,7 +291,7 @@
           </div>
           <div class="st2-details__panel-body">
             <div class="st2-highlight"
-                data-name="action_code"
+                data-test="action_code"
                 code="file"
                 lines="20"
                 language="{{ fileLang }}">
@@ -300,7 +300,7 @@
         </div>
 
         <div class="st2-details__panel"
-            data-name="no_code_message"
+            data-test="no_code_message"
             ng-if="!actionFile(action)">
           <div class="st2-details__panel-empty">
             This action has no code associated
