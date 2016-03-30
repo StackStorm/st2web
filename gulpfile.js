@@ -85,7 +85,7 @@ function bundle(file, name) {
   };
   var opts = _.assign({}, watchify.args, customOpts);
 
-  var b = !global.watch ? browserify(opts) : watchify(browserify(opts))
+  var b = !global.watch ? browserify(opts) : watchify(browserify(opts), { poll: 100 })
     .on('update', function () {
       bundle(file, name);
     });
@@ -157,11 +157,15 @@ gulp.task('lint', function () {
     ;
 });
 
-gulp.task('setWatch', function () {
-  global.watch = true;
+gulp.task('browserify', function () {
+  var tasks = _.map(settings.modules, bundle);
+
+  return es.merge.apply(null, tasks);
 });
 
-gulp.task('browserify', function () {
+gulp.task('watchify', function () {
+  global.watch = true;
+
   var tasks = _.map(settings.modules, bundle);
 
   return es.merge.apply(null, tasks);
@@ -187,7 +191,7 @@ gulp.task('styles', function () {
     ;
 });
 
-gulp.task('serve', ['build'], function () {
+gulp.task('serve', function () {
   server = gulp.src('.')
     .pipe(webserver({
       host: '0.0.0.0',
@@ -289,10 +293,10 @@ gulp.task('test-production', ['production', 'serve-production'], function () {
 });
 
 
-gulp.task('watch', ['setWatch', 'browserify'], function () {
+gulp.task('watch', ['watchify'], function () {
   gulp.watch(settings.js, ['lint']);
   gulp.watch(settings.styles.src.concat(settings.styles.includes), ['styles']);
 });
 
 gulp.task('build', ['gulphint', 'lint', 'styles', 'browserify']);
-gulp.task('default', ['build', 'watch', 'serve']);
+gulp.task('default', ['gulphint', 'lint', 'styles', 'watch', 'serve']);
