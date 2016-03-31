@@ -32,7 +32,15 @@ function bundle(file, name) {
 
   var b = !global.watch ? browserify(opts) : watchify(browserify(opts), { poll: 100 })
     .on('update', function () {
-      bundle(file, name);
+      bundle(file, name)
+        .pipe(plugins.size({
+          showFiles: true
+        }))
+        .pipe(plugins.size({
+          showFiles: true,
+          gzip: true
+        }))
+        ;
     });
 
   b
@@ -76,19 +84,21 @@ function bundle(file, name) {
     .pipe(plugins.header('/* ' + buildHeader() + ' */'))
     .pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest('js/'))
+    ;
+}
+
+gulp.task('browserify', function () {
+  var tasks = _.map(settings.modules, bundle);
+
+  return es.merge.apply(null, tasks)
     .pipe(plugins.size({
       showFiles: true
     }))
     .pipe(plugins.size({
       showFiles: true,
       gzip: true
-    }));
-}
-
-gulp.task('browserify', function () {
-  var tasks = _.map(settings.modules, bundle);
-
-  return es.merge.apply(null, tasks);
+    }))
+    ;
 });
 
 gulp.task('watchify', function () {
@@ -96,5 +106,13 @@ gulp.task('watchify', function () {
 
   var tasks = _.map(settings.modules, bundle);
 
-  return es.merge.apply(null, tasks);
+  return es.merge.apply(null, tasks)
+    .pipe(plugins.size({
+      showFiles: true
+    }))
+    .pipe(plugins.size({
+      showFiles: true,
+      gzip: true
+    }))
+    ;
 });
