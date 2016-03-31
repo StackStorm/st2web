@@ -1,0 +1,43 @@
+{
+  "port": 3000,
+  "dev": ".",
+  "js": ["main.js", "modules/**/*.js", "apps/**/*.js"],
+  "styles": {
+    "src": ["./less/style.less", "./apps/**/*.less", "./modules/**/*.less"],
+    "includes": "less/",
+    "dest": "css"
+  },
+  "modules": {
+    "main.js": "main.js",
+    "dependencies.js": "dependencies.js",
+    "apps.js": "apps/index.js",
+    "modules.js": "modules/index.js"
+  },
+  "html": "index.html",
+  "production": {
+    "dest": "build/",
+    "libs": [
+      "node_modules/angular/angular.min.js",
+      "node_modules/lodash/dist/lodash.min.js"
+    ],
+    "scripts": [
+      "js/*.js"
+    ],
+    "static": [
+      "index.html",
+      "img/*",
+      "font/*",
+      "config.js",
+      "favicon.ico"
+    ],
+    "styles": [
+      "css/*.css"
+    ],
+    "tests": [
+      "tests/**/test-*.js"
+    ]
+  },
+  "tests": [
+    "tests/**/test-*.js"
+  ]
+}
