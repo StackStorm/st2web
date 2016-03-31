@@ -162,7 +162,7 @@ module.exports =
           return;
         }
 
-        throw err;
+        Notification.criticalError(err, 'Failed to fetch action');
       });
     });
 
