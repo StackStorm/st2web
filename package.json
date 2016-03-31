@@ -10,12 +10,9 @@
   "dependencies": {
     "angular": "1.3.20",
     "angular-busy": "4.1.3",
-    "angular-moment": "0.8.3",
-    "angular-sanitize": "1.3.20",
     "angular-ui-notification": "0.1.0",
     "angular-ui-router": "0.2.18",
     "lodash": "2.4.2",
-    "moment": "2.8.4",
     "normalize.css": "3.0.3",
     "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",
     "st2client": "0.4.4",
