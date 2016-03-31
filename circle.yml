@@ -1,9 +1,6 @@
 # Setup in CircleCI account the following ENV variables:
 # IS_PRODUCTION (default: 0)
 # IS_ENTERPRISE
-# BINTRAY_ORGANIZATION (default: stackstorm)
-# BINTRAY_ACCOUNT
-# BINTRAY_API_KEY
 # PACKAGECLOUD_ORGANIZATION (default: stackstorm)
 # PACKAGECLOUD_TOKEN
 machine:
