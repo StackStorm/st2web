@@ -17,7 +17,7 @@
     "lodash": "2.4.2",
     "moment": "2.8.4",
     "normalize.css": "3.0.3",
-    "prism": "git://github.com/enykeev/prism.git#fix/json_string_special",
+    "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",
     "st2client": "0.4.4",
     "urijs": "1.17.1"
   },
