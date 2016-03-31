@@ -6,7 +6,7 @@ var gulp = require('gulp')
   ;
 
 gulp.task('lint', function () {
-  return gulp.src(settings.js, { cwd: settings.dev })
+  return gulp.src(settings.lint, { cwd: settings.dev })
     .pipe(plugins.plumber())
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('default'))
