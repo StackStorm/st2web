@@ -13,6 +13,7 @@ module.exports = angular.module('main.modules', [
   require('./st2-history-child').name,
   require('./st2-label').name,
   require('./st2-menu').name,
+  require('./st2-notification').name,
   require('./st2-panel').name,
   require('./st2-proportional').name,
   require('./st2-remote-form').name,
