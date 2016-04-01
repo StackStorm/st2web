@@ -3017,9 +3017,9 @@
       }
     },
     "gulp-csscomb": {
-      "version": "3.0.4",
-      "from": "gulp-csscomb@3.0.4",
-      "resolved": "https://registry.npmjs.org/gulp-csscomb/-/gulp-csscomb-3.0.4.tgz",
+      "version": "3.0.7",
+      "from": "gulp-csscomb@latest",
+      "resolved": "https://registry.npmjs.org/gulp-csscomb/-/gulp-csscomb-3.0.7.tgz",
       "dependencies": {
         "csscomb": {
           "version": "3.1.8",
@@ -3140,7 +3140,7 @@
             },
             "xtend": {
               "version": "4.0.1",
-              "from": "xtend@>=4.0.0 <4.1.0-0",
+              "from": "xtend@>=4.0.0 <4.1.0",
               "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.1.tgz"
             }
           }
