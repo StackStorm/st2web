@@ -17,7 +17,8 @@
     "dest": "build/",
     "libs": [
       "node_modules/angular/angular.min.js",
-      "node_modules/lodash/dist/lodash.min.js"
+      "node_modules/lodash/dist/lodash.min.js",
+      "node_modules/st2client/dist/st2client.js"
     ],
     "scripts": [
       "js/*.js"
@@ -44,5 +45,9 @@
   ],
   "tests": [
     "tests/**/test-*.js"
-  ]
+  ],
+  "globalShim": {
+    "lodash": "_",
+    "st2client": "st2client"
+  }
 }

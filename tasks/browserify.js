@@ -13,6 +13,7 @@ var gulp = require('gulp')
   , babelify = require('babelify')
   , source = require('vinyl-source-stream')
   , buffer = require('vinyl-buffer')
+  , globalShim = require('browserify-global-shim')
   ;
 
 function buildHeader() {
@@ -25,6 +26,7 @@ function buildHeader() {
 
 function bundle(file, name) {
   var customOpts = {
+    fullPaths: true,
     entries: [file],
     debug: true
   };
@@ -44,6 +46,7 @@ function bundle(file, name) {
     });
 
   b
+    .transform(globalShim.configure(settings.globalShim))
     .transform(require('ngify'), {
       moduleTemplate: ';',
       htmlTemplate: 'module.exports = __dirname + \'/\' + \'{htmlName}\'; angular.module(require(\'.\').name).run([\'$templateCache\', function($templateCache){$templateCache.put(module.exports,\'{html}\')}]); var ignore = { module: {} }; ignore.',

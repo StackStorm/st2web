@@ -106,11 +106,13 @@ angular.module('main')
 
 angular.module('main')
   .filter('yaml', function () {
-    var YAML = require('yamljs');
+    var Dumper = require('yamljs/lib/Dumper');
 
     return function (input) {
       if (typeof input !== 'undefined') {
-        return '---\n' + YAML.stringify(input, Infinity, 2);
+        var yaml = new Dumper();
+        yaml.indentation = 2;
+        return '---\n' + yaml.dump(input, Infinity, 0, null, null);
       }
     };
   });
