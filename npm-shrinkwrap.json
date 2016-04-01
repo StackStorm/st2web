@@ -18,9 +18,9 @@
       "resolved": "https://registry.npmjs.org/angular-ui-notification/-/angular-ui-notification-0.1.0.tgz"
     },
     "angular-ui-router": {
-      "version": "0.2.18",
-      "from": "angular-ui-router@0.2.18",
-      "resolved": "https://registry.npmjs.org/angular-ui-router/-/angular-ui-router-0.2.18.tgz"
+      "version": "1.0.0-alpha.1",
+      "from": "angular-ui-router@latest",
+      "resolved": "https://registry.npmjs.org/angular-ui-router/-/angular-ui-router-1.0.0-alpha.1.tgz"
     },
     "babelify": {
       "version": "7.2.0",

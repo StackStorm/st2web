@@ -21,7 +21,11 @@ describe('User visits login', function () {
   });
 
   it('should have correct url', function () {
-    browser.assert.url('http://example.com/');
+    browser.assert.url('http://example.com/#/history');
+  });
+
+  it('should have login form present', function () {
+    browser.assert.element(util.name('login'), 'Login form is missing');
   });
 
   describe('Submit', function () {
@@ -35,6 +39,10 @@ describe('User visits login', function () {
 
     it('should have correct url', function () {
       browser.assert.url('http://example.com/#/history');
+    });
+
+    it('should have history panel present', function () {
+      browser.assert.element(util.name('history_panel'), 'History panel is missing');
     });
   });
 
