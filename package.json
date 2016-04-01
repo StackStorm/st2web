@@ -13,7 +13,7 @@
     "angular-ui-notification": "0.1.0",
     "angular-ui-router": "1.0.0-alpha.1",
     "lodash": "2.4.2",
-    "normalize.css": "3.0.3",
+    "normalize.css": "4.0.0",
     "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",
     "st2client": "0.4.4",
     "urijs": "1.17.1"

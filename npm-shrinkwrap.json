@@ -6523,9 +6523,9 @@
       }
     },
     "normalize.css": {
-      "version": "3.0.3",
-      "from": "normalize.css@3.0.3",
-      "resolved": "https://registry.npmjs.org/normalize.css/-/normalize.css-3.0.3.tgz"
+      "version": "4.0.0",
+      "from": "normalize.css@latest",
+      "resolved": "https://registry.npmjs.org/normalize.css/-/normalize.css-4.0.0.tgz"
     },
     "prismjs": {
       "version": "0.0.1",
