@@ -1,19 +1,34 @@
 .st2-label {
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 11px;
+  &__label {
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 11px;
 
-  display: inline-block;
+    display: inline-block;
 
-  padding: 8px 10px;
+    padding: 8px 10px;
 
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
 
-  color: #fff;
-  border-radius: 2px;
-  background-color: #777;
+    color: #fff;
+    border-radius: 2px;
+    background-color: #777;
+
+    &:before {
+      font-family: 'ststanley';
+      font-size: 9px;
+      font-weight: normal;
+      font-style: normal;
+
+      display: inline-block;
+
+      margin-right: 3px;
+
+      vertical-align: baseline;
+    }
+  }
 
   &--primary {
     background-color: #428bca;
@@ -29,19 +44,6 @@
   }
   &--danger {
     background-color: #d9534f;
-  }
-
-  &:before {
-    font-family: 'ststanley';
-    font-size: 9px;
-    font-weight: normal;
-    font-style: normal;
-
-    display: inline-block;
-
-    margin-right: 3px;
-
-    vertical-align: baseline;
   }
 
   &--failed {
@@ -69,7 +71,7 @@
     }
   }
 
-  &--short {
+  &--short &__label {
     overflow: hidden;
 
     box-sizing: border-box;
@@ -85,7 +87,7 @@
     }
   }
 
-  &--progress&--short {
+  &--short &--progress {
     animation: breathe 1s ease-in-out infinite alternate;
   }
 
