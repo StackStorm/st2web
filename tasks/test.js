@@ -10,7 +10,10 @@ var gulp = require('gulp')
 gulp.task('test', ['build', 'serve'], function () {
   return gulp.src(argv['test-files'] || settings.tests, {read: false})
     .pipe(plugins.mocha({
-      reporter: 'dot'
+      reporter: 'dot',
+      compilers: {
+        js: require('babelify/node_modules/babel-core/register')(settings.babel)
+      }
     }))
     .on('end', function () {
       var tasks = require('.');

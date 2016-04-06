@@ -46,6 +46,7 @@ function bundle(file, name) {
     });
 
   b
+    .transform(babelify.configure(settings.babel))
     .transform(globalShim.configure(settings.globalShim))
     .transform(require('ngify'), {
       moduleTemplate: ';',
@@ -66,10 +67,6 @@ function bundle(file, name) {
         run:    'module.exports.$inject = [ {inject} ];'
       }
     })
-    .transform(babelify.configure({
-      // Make sure to change in test_compiler.js too
-      // optional: ['es7.classProperties']
-    }))
     .on('log', plugins.util.log)
     ;
 

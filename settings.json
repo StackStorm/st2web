@@ -49,5 +49,10 @@
   "globalShim": {
     "lodash": "_",
     "st2client": "st2client"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }

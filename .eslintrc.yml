@@ -1,4 +1,7 @@
 ---
+parserOptions:
+  ecmaVersion: 6
+  sourceType: module
 env:
   jasmine: true
   node: true
