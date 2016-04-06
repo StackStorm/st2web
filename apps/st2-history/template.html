@@ -67,7 +67,7 @@
           </div>
 
           <div class="st2-flex-table__row"
-              data-name="record"
+              data-test="record"
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
@@ -208,16 +208,16 @@
   </div>
 
   <div class="st2-panel__details st2-details"
-      data-name="details"
+      data-test="details"
       ng-show="record">
 
     <div class="st2-details__header">
-      <div class="st2-details__header-name" data-name="header_name">
+      <div class="st2-details__header-name" data-test="header_name">
         <a ui-sref="actions.general({ref:$root.getRef(record.action)})">
           {{ $root.getRef(record.action) }}
         </a>
       </div>
-      <div class="st2-details__header-description" data-name="header_description">
+      <div class="st2-details__header-description" data-test="header_description">
         {{ record.action.description }}
       </div>
     </div>
@@ -226,7 +226,7 @@
 
       <input type="button"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          data-name="rerun_button"
+          data-test="rerun_button"
           ng-click="rerun.open()"
           value="Rerun"/>
 
@@ -267,7 +267,7 @@
                   Status:
                 </dt>
                 <dd class="st2-details__panel-body-value">
-                  <span class="st2-label" status="record.status" data-name="status"></span>
+                  <span class="st2-label" status="record.status" data-test="status"></span>
                 </dd>
               </dl>
               <dl class="st2-details__panel-body-line">
@@ -277,7 +277,7 @@
                 <dd class="st2-details__panel-body-value">
                   <div class="st2-action-reporter__uuid"
                       contenteditable="true"
-                      data-name="execution_id"
+                      data-test="execution_id"
                       select-on-click>
                     {{ record.id }}
                   </div>
@@ -302,7 +302,7 @@
                 </dt>
                 <dd class="st2-details__panel-body-value">
                   <time class="st2-action-reporter__time"
-                      data-name="start_timestamp"
+                      data-test="start_timestamp"
                       datetime="{{record.start_timestamp}}">
                     {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
                   </time>
@@ -314,7 +314,7 @@
                 </dt>
                 <dd class="st2-details__panel-body-value">
                   <time class="st2-action-reporter__time"
-                      data-name="end_timestamp"
+                      data-test="end_timestamp"
                       datetime="{{record.end_timestamp}}">
                     {{ record.end_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
                   </time>
@@ -327,7 +327,7 @@
                 </dt>
                 <dd class="st2-details__panel-body-value">
                   <span class="st2-action-reporter__time"
-                      data-name="execution_time">
+                      data-test="execution_time">
                     {{ record.execution_time }} s
                   </span>
                 </dd>
@@ -341,7 +341,7 @@
 
           <div class="st2-details__panel-body">
             <div class="st2-action-reporter"
-                data-name="action_output"
+                data-test="action_output"
                 runner="record.runner.name"
                 execution="record"></div>
           </div>
@@ -425,7 +425,7 @@
           <div class="st2-details__panel-body">
             <form role="form" class="st2-details__form">
               <div class="st2-auto-form"
-                data-name="action_input"
+                data-test="action_input"
                 spec="actionSpec"
                 disabled="true"
                 ng-model="payload">
@@ -444,7 +444,7 @@
         <div class="st2-details__panel">
           <div class="st2-details__panel-body">
             <div class="st2-highlight"
-                data-name="record_code"
+                data-test="record_code"
                 code="record | json"
                 lines="20"
                 language="json">
@@ -460,7 +460,7 @@
 </main>
 
 <div class="st2-popup"
-    data-name="rerun_popup"
+    data-test="rerun_popup"
     ng-if="$root.isState('^.rerun')"
     ng-click="rerun.cancel()">
   <div class="st2-panel__details st2-details st2-popup__details"
@@ -474,26 +474,26 @@
         </div>
 
         <div class="st2-auto-form"
-          data-name="rerun_form_meta"
+          data-test="rerun_form_meta"
           spec="rerun.metaSpec"
           ng-model="record.action"
           disabled="true">
         </div>
 
         <div class="st2-auto-form"
-          data-name="rerun_form_action"
+          data-test="rerun_form_action"
           spec="rerun.actionSpec"
           ng-model="rerun.payload">
         </div>
 
         <input type="submit"
-            data-name="rerun_submit"
+            data-test="rerun_submit"
             class="st2-forms__button st2-details__toolbar-button"
             ng-disabled="rerunform.$invalid"
             ng-click="rerun.submit()"
             value="Run"/>
         <input type="button"
-            data-name="rerun_cancel"
+            data-test="rerun_cancel"
             class="st2-forms__button st2-details__toolbar-button"
             ng-click="rerun.cancel()"
             value="Cancel"/>

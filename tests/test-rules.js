@@ -85,7 +85,7 @@ describe('User visits rules page', function () {
       browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
       browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
       browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
-      browser.assert.text(util.name('header_if'), 'If ' + rule.trigger.ref, 'Wrong if in header');
+      browser.assert.text(util.name('header_if'), 'If ' + rule.trigger.type, 'Wrong if in header');
       browser.assert.text(util.name('header_then'), 'Then ' + rule.action.ref, 'Wrong then in header');
 
       browser.assert.element(util.name('rule_trigger_form'), 'Rule trigger form is missing');

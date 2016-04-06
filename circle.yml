@@ -1,9 +1,6 @@
 # Setup in CircleCI account the following ENV variables:
 # IS_PRODUCTION (default: 0)
 # IS_ENTERPRISE
-# BINTRAY_ORGANIZATION (default: stackstorm)
-# BINTRAY_ACCOUNT
-# BINTRAY_API_KEY
 # PACKAGECLOUD_ORGANIZATION (default: stackstorm)
 # PACKAGECLOUD_TOKEN
 machine:
@@ -57,11 +54,15 @@ test:
   pre:
     - docker-compose -f ~/st2box/docker-compose.yaml run client st2 run core.noop
   post:
+    - docker-compose -f ~/st2box/docker-compose.yaml down
+    - docker-compose -f ~/st2box/docker-compose.yaml up -d
+    - docker-compose -f ~/st2box/docker-compose.yaml run client st2 run core.noop
+    - docker-compose -f ~/st2box/docker-compose.yaml run client st2 execution list
+    - gulp test-production
     - |
         for container in $(docker ps -a --format "{{.Names}}"); do
           docker logs ${container} > ${CIRCLE_ARTIFACTS}/logs/${container}.log 2>&1
         done
-  override:
     - |
         make deb
         echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} $CIRCLE_ARTIFACTS/{}

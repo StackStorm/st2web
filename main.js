@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize', 'cgBusy', 'ui-notification'])
+angular.module('main', ['main.dependencies', 'main.modules', 'main.apps']);
+
+angular.module('main')
   .config(function ($urlRouterProvider) {
 
     // Remove tailing slash from url before looking for state
@@ -17,13 +19,6 @@ angular.module('main', ['ui.router', 'angularMoment', 'ngSanitize', 'cgBusy', 'u
       }
     });
 
-  });
-
-angular.module('main')
-  .value('cgBusyDefaults',{
-    backdrop: false,
-    delay: 1000,
-    templateUrl: 'modules/st2-panel/loader.html'
   });
 
 angular.module('main')
@@ -111,10 +106,13 @@ angular.module('main')
 
 angular.module('main')
   .filter('yaml', function () {
-    /*global YAML:true*/
+    var Dumper = require('yamljs/lib/Dumper');
+
     return function (input) {
       if (typeof input !== 'undefined') {
-        return '---\n' + YAML.stringify(input, Infinity, 2);
+        var yaml = new Dumper();
+        yaml.indentation = 2;
+        return '---\n' + yaml.dump(input, Infinity, 0, null, null);
       }
     };
   });
