@@ -10,7 +10,7 @@ module.exports = function fmtParam() {
     }
 
     if (_.isArray(value)) {
-      return '[' + _(value).map(fmtParam).join(', ') + ']';
+      return '[' + _(value).map(_fmtParam).join(', ') + ']';
     }
 
     return value;
