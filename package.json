@@ -45,6 +45,7 @@
     "gulp-webserver": "0.9.1",
     "jshint": "2.9.1",
     "ngify": "1.4.1",
+    "npm-shrinkwrap": "200.5.1",
     "request": "2.69.0",
     "require-dir": "0.3.0",
     "vinyl-buffer": "1.0.0",
