@@ -31,7 +31,7 @@ describe('User visits history page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return ~e.url.indexOf('https://example.com/api/v1/executions?'); //jshint ignore:line
+        return ~e.url.indexOf('https://example.com/api/v1/executions?'); // eslint-disable-line no-bitwise
       });
     });
 

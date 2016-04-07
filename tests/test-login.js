@@ -11,7 +11,7 @@ describe('User visits login', function () {
   var util = utilFactory(browser);
 
   before(function () {
-    this.timeout(5000);
+    this.timeout(10000);
 
     return browser.visit('/');
   });
