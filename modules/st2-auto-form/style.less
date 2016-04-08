@@ -24,8 +24,21 @@
     padding-bottom: 8px;
   }
 
-  &--required &__title:after {
-    content: ' *';
+  &__type {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 34px;
+
+    position: absolute;
+    right: 0;
+
+    width: 36px;
+    height: 36px;
+
+    user-select: none;
+    text-align: center;
+
+    color: @blue-dark;
   }
 
   &__field {
@@ -67,6 +80,7 @@
       box-shadow: none;
     }
 
+    &--invalid,
     &.ng-dirty.ng-invalid,
     &.ng-touched.ng-invalid {
       box-shadow: 0 0 0 1px red;
@@ -199,6 +213,11 @@
 
     margin: 0;
     padding: 0;
+
+    &-block {
+      font-size: 15px;
+      line-height: 36px;
+    }
 
     &-label {
       font-weight: 100;

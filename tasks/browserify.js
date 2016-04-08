@@ -47,7 +47,6 @@ function bundle(file, name) {
 
   b
     .transform(babelify.configure(settings.babel))
-    .transform(globalShim.configure(settings.globalShim))
     .transform(require('ngify'), {
       moduleTemplate: ';',
       htmlTemplate: 'module.exports = __dirname + \'/\' + \'{htmlName}\'; angular.module(require(\'.\').name).run([\'$templateCache\', function($templateCache){$templateCache.put(module.exports,\'{html}\')}]); var ignore = { module: {} }; ignore.',
@@ -67,6 +66,7 @@ function bundle(file, name) {
         run:    'module.exports.$inject = [ {inject} ];'
       }
     })
+    .transform(globalShim.configure(settings.globalShim), {global: true})
     .on('log', plugins.util.log)
     ;
 

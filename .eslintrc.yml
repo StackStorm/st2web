@@ -1,6 +1,8 @@
 ---
 plugins:
   - react
+extends:
+  - plugin:react/recommended
 parser: babel-eslint
 parserOptions:
   ecmaVersion: 6
@@ -59,8 +61,8 @@ rules:
     - error
     - single
   semi:
-    - off
-    - never
+    - error
+    - always
   valid-typeof: error
   wrap-iife:
     - error

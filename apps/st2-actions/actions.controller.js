@@ -211,6 +211,10 @@ module.exports =
 
     });
 
+    $scope.onChange = function (name, value) {
+      $scope.payload[name] = value;
+    };
+
     // Running an action
     $scope.runAction = function (action, payload, trace) {
       st2api.client.executions.create({

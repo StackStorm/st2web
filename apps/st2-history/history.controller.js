@@ -260,9 +260,11 @@ module.exports =
       };
 
 
+      rerun.payload = {};
+
       rerun.open = function () {
         $scope.$root.go('^.rerun', {id: $scope.record.id});
-        rerun.payload = _.clone($scope.payload);
+        rerun.payload = _.clone($scope.payload) || {};
         rerun.actionSpec = $scope.actionSpec;
       };
 
@@ -281,6 +283,10 @@ module.exports =
           $scope.rerunform.err = false;
           Notification.criticalError(err, 'Failed to rerun execution');
         });
+      };
+
+      rerun.onChange = function (name, value) {
+        rerun.payload[name] = value;
       };
 
       return rerun;

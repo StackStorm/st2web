@@ -10671,6 +10671,10 @@
       "version": "0.14.8",
       "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-0.14.8.tgz"
     },
+    "react-textarea-autosize": {
+      "version": "3.3.1",
+      "resolved": "https://registry.npmjs.org/react-textarea-autosize/-/react-textarea-autosize-3.3.1.tgz"
+    },
     "request": {
       "version": "2.69.0",
       "resolved": "https://registry.npmjs.org/request/-/request-2.69.0.tgz",
@@ -11046,6 +11050,10 @@
     "urijs": {
       "version": "1.17.1",
       "resolved": "https://registry.npmjs.org/urijs/-/urijs-1.17.1.tgz"
+    },
+    "validator": {
+      "version": "5.2.0",
+      "resolved": "https://registry.npmjs.org/validator/-/validator-5.2.0.tgz"
     },
     "vinyl-buffer": {
       "version": "1.0.0",

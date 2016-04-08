@@ -426,6 +426,7 @@
             <form role="form" class="st2-details__form">
               <div class="st2-auto-form"
                 data-test="action_input"
+                watch-depth="reference"
                 spec="actionSpec"
                 disabled="true"
                 ng-model="payload">
@@ -482,7 +483,9 @@
 
         <div class="st2-auto-form"
           data-test="rerun_form_action"
+          watch-depth="reference"
           spec="rerun.actionSpec"
+          on-change="rerun.onChange"
           ng-model="rerun.payload">
         </div>
 
@@ -497,6 +500,12 @@
             class="st2-forms__button st2-details__toolbar-button"
             ng-click="rerun.cancel()"
             value="Cancel"/>
+
+        <div class="st2-highlight"
+            code="rerun.payload | json"
+            lines="20"
+            language="json">
+        </div>
 
       </form>
 
