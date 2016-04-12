@@ -7,6 +7,7 @@ import IntegerField from './fields/integer';
 import BooleanField from './fields/boolean';
 import StringField from './fields/string';
 import ObjectField from './fields/object';
+import EnumField from './fields/enum';
 
 class AutoForm extends React.Component {
   static propTypes = {
@@ -17,6 +18,9 @@ class AutoForm extends React.Component {
   }
 
   getElementByField(field) {
+    if (field.enum) {
+      return EnumField;
+    }
     switch (field.type) {
       case 'array':
         return ArrayField;

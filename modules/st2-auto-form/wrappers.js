@@ -3,12 +3,13 @@ import React from 'react';
 
 class Label extends React.Component {
   static propTypes = {
+    className: React.PropTypes.string,
     children: React.PropTypes.any.isRequired
   }
 
   render() {
     const props = {
-      className: 'st2-auto-form__label st2-auto-form__text-field'
+      className: 'st2-auto-form__label ' + (this.props.className || 'st2-auto-form__text-field')
     };
 
     return <label {...props}>
@@ -88,12 +89,13 @@ export class TextFieldWrapper extends React.Component {
     invalid: React.PropTypes.string,
     disabled: React.PropTypes.bool,
     children: React.PropTypes.element.isRequired,
-    icon: React.PropTypes.string
+    icon: React.PropTypes.string,
+    labelClass: React.PropTypes.string
   }
 
   render() {
     const line = <div className='st2-auto-form__line'>
-      <Label>
+      <Label className={this.props.labelClass} >
         <Title {...this.props} />
         <ErrorMessage>{ this.props.invalid }</ErrorMessage>
         <Icon name={ this.props.icon } />

@@ -23,7 +23,7 @@ class BaseTextareaFieldStub extends BaseTextareaField {
   }
 }
 
-describe('AutoForm BaseTextField', () => {
+describe('AutoForm BaseTextareaField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
