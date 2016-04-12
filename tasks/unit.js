@@ -7,16 +7,13 @@ var gulp = require('gulp')
   , argv = require('yargs').argv
   ;
 
-gulp.task('test', ['unit', 'build', 'serve'], function () {
-  return gulp.src(argv['test-files'] || settings.tests, {read: false})
+gulp.task('unit', function () {
+  return gulp.src(argv['test-files'] || settings.units, {read: false})
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
         js: require('babelify/node_modules/babel-core/register')(settings.babel)
       }
     }))
-    .on('end', function () {
-      var tasks = require('.');
-      tasks.serve.emit('kill');
-    });
+    ;
 });

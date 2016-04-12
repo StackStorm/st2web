@@ -26,8 +26,9 @@ export default class ArrayField extends BaseTextField {
   static icon = '[ ]'
 
   fromStateValue(value) {
+    const { items } = this.props.spec;
     return value === '' ? void 0 : split(value)
-      .map(v => typeConversions[this.props.spec.items.type](v))
+      .map(v => typeConversions[items && items.type || 'string'](v))
       ;
   }
 
@@ -44,6 +45,6 @@ export default class ArrayField extends BaseTextField {
       return false;
     }
 
-    return list.every(v => typeChecks[items.type || 'string'](v));
+    return list.every(v => typeChecks[items && items.type || 'string'](v));
   }
 }
