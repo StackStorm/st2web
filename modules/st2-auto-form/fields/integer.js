@@ -14,6 +14,11 @@ export default class IntegerField extends BaseTextField {
   }
 
   validate(v, spec={}) {
-    return v !== '' ? validator.isInt(v) : !spec.required;
+    const invalid = super.validate(v, spec);
+    if (invalid) {
+      return invalid;
+    };
+
+    return v && !validator.isInt(v) && `'${v}' is not an integer`;
   }
 }

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { BaseTextareaField } from './base';
 
 export default class ObjectField extends BaseTextareaField {
@@ -11,12 +12,20 @@ export default class ObjectField extends BaseTextareaField {
     return JSON.stringify(v);
   }
 
-  validate(v) {
+  validate(v, spec) {
+    const invalid = super.validate(v, spec);
+    if (invalid) {
+      return invalid;
+    };
+
     try {
-      v && JSON.parse(v);
-      return true;
-    } catch(e) {
+      const o = v && JSON.parse(v);
+      if (o && !_.isPlainObject(o)) {
+        return 'value is not an object';
+      }
       return false;
+    } catch(e) {
+      return e.message;
     }
   }
 }

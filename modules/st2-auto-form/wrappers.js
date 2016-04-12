@@ -36,6 +36,22 @@ class Title extends React.Component {
   }
 }
 
+class ErrorMessage extends React.Component {
+  static propTypes = {
+    children: React.PropTypes.string
+  }
+
+  render() {
+    const props = {
+      className: 'st2-auto-form__error'
+    };
+
+    return <span {...props} >
+      { this.props.children }
+    </span>;
+  }
+}
+
 class Icon extends React.Component {
   static propTypes = {
     name: React.PropTypes.string
@@ -69,6 +85,7 @@ export class TextFieldWrapper extends React.Component {
     name: React.PropTypes.string,
     spec: React.PropTypes.object,
     value: React.PropTypes.any,
+    invalid: React.PropTypes.string,
     disabled: React.PropTypes.bool,
     children: React.PropTypes.element.isRequired,
     icon: React.PropTypes.string
@@ -78,6 +95,7 @@ export class TextFieldWrapper extends React.Component {
     const line = <div className='st2-auto-form__line'>
       <Label>
         <Title {...this.props} />
+        <ErrorMessage>{ this.props.invalid }</ErrorMessage>
         <Icon name={ this.props.icon } />
         { this.props.children }
       </Label>

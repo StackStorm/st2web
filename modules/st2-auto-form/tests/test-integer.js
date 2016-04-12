@@ -53,8 +53,16 @@ describe('AutoForm IntegerField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(SyntaxError);
+    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
+  });
+
+  it('does not allow you to put a float in the field', () => {
+    const c = new TestComponent(<IntegerField />);
+
+    c.makeChange('invalid');
+
+    expect(() => c.value()).to.throw(Error);
   });
 });

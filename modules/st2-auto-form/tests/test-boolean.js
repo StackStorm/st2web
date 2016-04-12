@@ -53,8 +53,6 @@ describe('AutoForm BooleanField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue('checked')).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(SyntaxError);
-
-    expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
+    expect(() => c.value()).to.throw(Error);
   });
 });

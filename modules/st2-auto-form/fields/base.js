@@ -28,16 +28,26 @@ export class BaseTextField extends React.Component {
     throw new Error('not implemented');
   }
 
-  validate() {
-    return true;
+  validate(v, spec={}) {
+    if (v === '' && spec.required) {
+      return 'parameter is required';
+    }
+
+    return false;
   }
 
   getValue() {
+    const invalid = this.validate(this.state.value, this.props.spec);
+
+    if (invalid) {
+      throw new Error(invalid);
+    }
+
     return this.fromStateValue(this.state.value);
   }
 
   handleChange(value) {
-    const invalid = !this.validate(value, this.props.spec);
+    const invalid = this.validate(value, this.props.spec);
 
     this.setState({ value, invalid }, this.props.onChange && !invalid && this.emitChange);
   }
@@ -57,10 +67,18 @@ export class BaseTextField extends React.Component {
 
   render() {
     const { icon } = this.constructor;
+    const { invalid } = this.state;
+    const { spec={} } = this.props;
+
+    const wrapperProps = Object.assign({}, this.props);
+
+    if (invalid) {
+      wrapperProps.invalid = invalid;
+    }
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: this.props.spec.default,
+      placeholder: spec.default,
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e.target.value)
@@ -70,7 +88,7 @@ export class BaseTextField extends React.Component {
       inputProps.className += ' ' + 'st2-auto-form__field--invalid';
     }
 
-    return <TextFieldWrapper icon={icon} {...this.props} >
+    return <TextFieldWrapper icon={icon} {...wrapperProps} >
       <input {...inputProps} />
     </TextFieldWrapper>;
   }
@@ -79,10 +97,18 @@ export class BaseTextField extends React.Component {
 export class BaseTextareaField extends BaseTextField {
   render() {
     const { icon } = this.constructor;
+    const { invalid } = this.state;
+    const { spec={} } = this.props;
+
+    const wrapperProps = Object.assign({}, this.props);
+
+    if (invalid) {
+      wrapperProps.invalid = invalid;
+    }
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: this.props.spec.default,
+      placeholder: spec.default,
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e.target.value),
@@ -94,7 +120,7 @@ export class BaseTextareaField extends BaseTextField {
       inputProps.className += ' ' + 'st2-auto-form__field--invalid';
     }
 
-    return <TextFieldWrapper icon={icon} {...this.props} >
+    return <TextFieldWrapper icon={icon} {...wrapperProps} >
       <Textarea {...inputProps} />
     </TextFieldWrapper>;
   }

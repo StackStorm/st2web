@@ -13,7 +13,7 @@ export default class BooleanField extends BaseTextField {
   }
 
   validate(v) {
-    return typeof v === 'boolean';
+    return typeof v !== 'boolean' && `'${v}' is not boolean`;
   }
 
   render() {

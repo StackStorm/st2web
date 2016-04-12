@@ -1,9 +1,12 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
-import { expect } from 'chai';
+import chai, { expect } from 'chai';
 import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 import Textarea from 'react-textarea-autosize';
 
+chai.use(sinonChai);
+
+import { TestComponent } from './utils';
 import { BaseTextareaField } from '../fields/base';
 
 class BaseTextareaFieldStub extends BaseTextareaField {
@@ -16,7 +19,7 @@ class BaseTextareaFieldStub extends BaseTextareaField {
   }
 
   validate(v) {
-    return v !== 'invalid';
+    return v === 'invalid' && 'invalid message';
   }
 }
 
@@ -27,11 +30,9 @@ describe('AutoForm BaseTextField', () => {
       spec: {}
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<BaseTextareaFieldStub {...props} />);
-    const output = renderer.getRenderOutput();
+    const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
 
-    expect(output.props.children).to.have.property('type', Textarea);
+    expect(c.fieldType()).to.be.equal(Textarea);
   });
 
   it('invokes onChange callback the moment child\'s onChange callback is called', () => {
@@ -42,17 +43,12 @@ describe('AutoForm BaseTextField', () => {
       onChange
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<BaseTextareaFieldStub {...props} />);
+    const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
 
-    const event = { target: { value: 'test' } };
-    const field = renderer.getRenderOutput().props.children;
-    field.props.onChange(event);
+    c.makeChange('test');
 
-    const output = renderer.getRenderOutput();
-
-    expect(onChange.withArgs('test').calledOnce).to.be.true;
-    expect(output.props.children).to.have.deep.property('props.value', 'test');
+    expect(onChange.withArgs('test')).to.be.calledOnce;
+    expect(c.fieldValue()).to.be.equal('test');
   });
 
   it('does not invoke onChange callback if validation fails instead sets a class', () => {
@@ -63,18 +59,12 @@ describe('AutoForm BaseTextField', () => {
       onChange
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<BaseTextareaFieldStub {...props} />);
+    const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
 
-    const event = { target: { value: 'invalid' } };
-    const field = renderer.getRenderOutput().props.children;
-    field.props.onChange(event);
+    c.makeChange('invalid');
 
-    const output = renderer.getRenderOutput();
-
-    expect(onChange.withArgs('invalid').calledOnce).to.be.false;
-    expect(output.props.children).to.have.deep.property('props.value', 'invalid');
-    expect(output.props.children).to.have.deep.property('props.className')
-      .that.have.string('st2-auto-form__field--invalid');
+    expect(onChange.withArgs('invalid')).to.not.be.called;
+    expect(c.fieldValue()).to.be.equal('invalid');
+    expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
 });
