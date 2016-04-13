@@ -191,15 +191,15 @@
         </div>
       </div>
 
-      <button class="st2-panel__prev-button st2-forms__button-left"
+      <button class="st2-forms__button-left st2-forms__button-prev"
           ng-click="prevPage()"
-          ng-class="{'st2-forms__button-left--disabled': ($root.page || 1) < 2}"
+          ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
           ng-if="!error && !_.isEmpty(groups)">
         Previous
       </button>
-      <button class="st2-panel__next-button st2-forms__button-right"
+      <button class="st2-forms__button-right st2-forms__button-next"
           ng-click="nextPage()"
-          ng-class="{'st2-forms__button-right--disabled': ($root.page || 1) >= $root.maxPage}"
+          ng-class="{'st2-forms__button-next--disabled': ($root.page || 1) >= $root.maxPage}"
           ng-if="!error && !_.isEmpty(groups)">
         Next
       </button>
@@ -489,19 +489,25 @@
           ng-model="rerun.payload">
         </div>
 
-        <input type="submit"
-            data-test="rerun_submit"
-            class="st2-forms__button st2-details__toolbar-button"
-            ng-disabled="rerunform.$invalid"
-            ng-click="rerun.submit()"
-            value="Run"/>
-        <input type="button"
-            data-test="rerun_cancel"
-            class="st2-forms__button st2-details__toolbar-button"
-            ng-click="rerun.cancel()"
-            value="Cancel"/>
+        <div class="st2-forms__buttons-panel">
+          <input type="submit"
+              data-test="rerun_submit"
+              class="st2-forms__button st2-details__toolbar-button"
+              ng-disabled="rerunform.$invalid"
+              ng-click="rerun.submit()"
+              value="Run"/>
+          <input type="button"
+              data-test="rerun_cancel"
+              class="st2-forms__button st2-details__toolbar-button"
+              ng-click="rerun.cancel()"
+              value="Cancel"/>
+          <input type="button" class="st2-forms__button st2-forms__button-right"
+              ng-click="rerun.preview = !rerun.preview"
+              value="Preview" />
+        </div>
 
         <div class="st2-highlight"
+            ng-show="rerun.preview"
             code="rerun.payload | json"
             lines="20"
             language="json">

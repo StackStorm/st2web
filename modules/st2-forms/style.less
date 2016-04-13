@@ -11,8 +11,8 @@
   }
 
   &__button,
-  &__button-left,
-  &__button-right {
+  &__button-prev,
+  &__button-next {
     font-family: Oswald;
     font-size: 14px;
     font-weight: 200;
@@ -78,7 +78,7 @@
     }
   }
 
-  &__button-left {
+  &__button-prev {
     margin-left: 10px;
 
     &:before {
@@ -96,7 +96,7 @@
     }
   }
 
-  &__button-right {
+  &__button-next {
     margin-right: 10px;
 
     &:after {
@@ -114,6 +114,17 @@
     }
   }
 
+  &__button-left {
+    float: left;
+  }
+
+  &__button-right {
+    float: right;
+  }
+
+  &__buttons-panel {
+    margin-bottom: 10px;
+  }
 
   &__field {
     font-weight: normal;
