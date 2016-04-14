@@ -9,7 +9,7 @@ import StringField from './fields/string';
 import ObjectField from './fields/object';
 import EnumField from './fields/enum';
 
-class AutoForm extends React.Component {
+export default class AutoForm extends React.Component {
   static propTypes = {
     spec: React.PropTypes.object,
     ngModel: React.PropTypes.object,
@@ -70,5 +70,3 @@ class AutoForm extends React.Component {
     </div>;
   }
 }
-
-module.exports = AutoForm;

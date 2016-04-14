@@ -64,13 +64,13 @@ module.exports =
 
     var listFormat = function () {
       // Group all the records by periods of 24 hour
-      var period = 24 * 60 * 60 * 1000;
+      var timeframe = 24 * 60 * 60 * 1000;
 
       $scope.history = $scope.historyList && _($scope.historyList)
         .filter({parent: undefined})
         .groupBy(function (record) {
           var time = record.start_timestamp;
-          return new Date(Math.floor(+new Date(time) / period) * period).toISOString();
+          return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
         })
         .map(function (records, period) {
           return {
@@ -246,51 +246,28 @@ module.exports =
       }
     };
 
-    $scope.rerun = (function () {
-      var rerun = $scope.$new();
-
-      rerun.metaSpec = {
-        type: 'object',
-        properties: {
-          ref: {
-            type: 'string',
-            name: 'Action'
-          }
-        }
-      };
-
-
-      rerun.payload = {};
-
-      rerun.open = function () {
+    $scope.rerun = {
+      open: function () {
         $scope.$root.go('^.rerun', {id: $scope.record.id});
-        rerun.payload = _.clone($scope.payload) || {};
-        rerun.actionSpec = $scope.actionSpec;
-      };
+      },
 
-      rerun.cancel = function () {
+      cancel: function () {
         $scope.$root.go('^.general', {id: $scope.record.id});
-      };
+      },
 
-      rerun.submit = function () {
-        st2api.client.executions.repeat($scope.record.id, {
-          parameters: rerun.payload
-        }).then(function (record) {
-          $scope.$root.go('^.general', {id: record.id});
-        }).catch(function (err) {
-          $scope.rerunform.err = true;
-          $scope.$apply();
-          $scope.rerunform.err = false;
-          Notification.criticalError(err, 'Failed to rerun execution');
-        });
-      };
-
-      rerun.onChange = function (name, value) {
-        rerun.payload[name] = value;
-      };
-
-      return rerun;
-    })();
+      submit: function (parameters) {
+        st2api.client.executions.repeat($scope.record.id, { parameters })
+          .then((record) => {
+            $scope.$root.go('^.general', {id: record.id});
+          })
+          .catch((err) => {
+            $scope.rerunform.err = true;
+            $scope.$apply();
+            $scope.rerunform.err = false;
+            Notification.criticalError(err, 'Failed to rerun execution');
+          });
+      }
+    };
 
     $scope.cancel = function () {
       st2api.client.executions.delete($scope.record.id)

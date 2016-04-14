@@ -1,12 +1,11 @@
 'use strict';
 
-import component from './auto-form.component.js';
+import component from './rerun-popup.component.js';
 
 module.exports =
-  function st2AutoForm(reactDirective) {
+  function st2Rerun(reactDirective) {
     var overrides = {
-      restrict: 'C',
-      require: 'ngModel'
+      restrict: 'C'
     };
 
     const a = reactDirective(component, null, overrides);

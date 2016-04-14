@@ -460,63 +460,13 @@
 
 </main>
 
-<div class="st2-popup"
-    data-test="rerun_popup"
-    ng-if="$root.isState('^.rerun')"
-    ng-click="rerun.cancel()">
-  <div class="st2-panel__details st2-details st2-popup__details"
-      ng-click="$event.stopPropagation()">
-    <div class="st2-panel__scroller">
-
-      <form name="rerunform">
-
-        <div class="st2-popup__title">
-          Rerun an execution
-        </div>
-
-        <div class="st2-auto-form"
-          data-test="rerun_form_meta"
-          spec="rerun.metaSpec"
-          ng-model="record.action"
-          disabled="true">
-        </div>
-
-        <div class="st2-auto-form"
-          data-test="rerun_form_action"
-          watch-depth="reference"
-          spec="rerun.actionSpec"
-          on-change="rerun.onChange"
-          ng-model="rerun.payload">
-        </div>
-
-        <div class="st2-forms__buttons-panel">
-          <input type="submit"
-              data-test="rerun_submit"
-              class="st2-forms__button st2-details__toolbar-button"
-              ng-disabled="rerunform.$invalid"
-              ng-click="rerun.submit()"
-              value="Run"/>
-          <input type="button"
-              data-test="rerun_cancel"
-              class="st2-forms__button st2-details__toolbar-button"
-              ng-click="rerun.cancel()"
-              value="Cancel"/>
-          <input type="button" class="st2-forms__button st2-forms__button-right"
-              ng-click="rerun.preview = !rerun.preview"
-              value="Preview" />
-        </div>
-
-        <div class="st2-highlight"
-            ng-show="rerun.preview"
-            code="rerun.payload | json"
-            lines="20"
-            language="json">
-        </div>
-
-      </form>
-
-    </div>
-  </div>
+<div class="st2-rerun"
+  ng-if="$root.isState('^.rerun')"
+  action="record.action.ref"
+  spec="actionSpec"
+  payload="payload"
+  on-submit="rerun.submit"
+  on-cancel="rerun.cancel">
 </div>
 
 <div class="st2-report"></div>
