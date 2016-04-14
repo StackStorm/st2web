@@ -59,7 +59,7 @@ export class BaseTextField extends React.Component {
   componentWillReceiveProps(nextProps) {
     var { value } = nextProps;
 
-    if (this.props.value !== value) {
+    if (!_.isEqual(this.props.value, value)) {
       value = this.toStateValue(value);
       this.setState({ value });
     }
