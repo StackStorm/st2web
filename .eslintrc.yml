@@ -15,6 +15,7 @@ env:
   mocha: true
   browser: true
   builtin: true
+  es6: true
 globals:
   _: true
   angular: true
