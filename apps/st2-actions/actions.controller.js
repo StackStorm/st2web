@@ -62,7 +62,8 @@ module.exports =
       pActionList && pActionList.then(function (list) {
         $scope.groups = list && _(list)
           .filter(function (action) {
-            return $scope.$root.getRef(action).indexOf($scope.filter) > -1;
+            var ref = $scope.$root.getRef(action);
+            return ref.toLowerCase().indexOf($scope.filter.toLowerCase()) > -1;
           })
           .groupBy('pack')
           .mapValues(function (group) {
