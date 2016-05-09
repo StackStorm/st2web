@@ -3,7 +3,7 @@ import TestUtils from 'react-addons-test-utils';
 import { expect } from 'chai';
 const sinon = require('sinon');
 
-const Component = require('../auto-form.component.js');
+import Component from '../auto-form.component.js';
 
 import StringField from '../fields/string';
 

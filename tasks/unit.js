@@ -15,5 +15,9 @@ gulp.task('unit', function () {
         js: require('babelify/node_modules/babel-core/register')(settings.babel)
       }
     }))
+    .on('error', function () {
+      var tasks = require('.');
+      tasks.serve.emit('kill');
+    });
     ;
 });
