@@ -21,7 +21,7 @@ module.exports =
           }
         })();
 
-        var api = new URI.parse(url);
+        var api = URI.parse(url);
 
         if (api.port && !api.hostname) {
           api.hostname = window.location.hostname;
@@ -42,7 +42,7 @@ module.exports =
             auth.hostname = window.location.hostname;
           }
 
-          opts['auth'] = {
+          opts.auth = {
             protocol: auth.protocol,
             host: auth.hostname,
             port: auth.port,
@@ -123,7 +123,9 @@ module.exports =
       var session = JSON.parse(localStorage.getItem('st2Session'));
       this.token = session.token || {};
       this.server = session.server;
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
 
     if (this.server && this.token) {
       this.client = initClient(this.server, this.token);

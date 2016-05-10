@@ -52,7 +52,7 @@ module.exports =
                 return rawResult;
               }
 
-              if (_.isNaN(+rawResult) || ~(rawResult+'').indexOf('.')) { // jshint ignore:line
+              if (_.isNaN(+rawResult) || ~(rawResult+'').indexOf('.')) { // eslint-disable-line no-bitwise
                 innerCtrl.$setValidity('integer', false);
                 return;
               }

@@ -58,19 +58,20 @@ module.exports =
         nextChild = childrenByWidth[childrenToShrink.length];
         newWidth = nextChild ? nextChild.width : containerWidth / children.length;
 
-        /*jshint loopfunc: true */
+        /*eslint no-loop-func: 0 */
         childrenToShrink.forEach(function(child) {
           child.width = newWidth;
         });
-        childrenWidth = childrenByWidth.reduce(function(childrenWidth, child) {
-          return childrenWidth + child.width;
+        /*eslint no-loop-func: 0 */
+        childrenWidth = childrenByWidth.reduce(function(width, child) {
+          return width + child.width;
         }, 0);
       }
 
       freeSpace = (containerWidth - childrenWidth) / childrenToShrink.length;
       childrenToShrink.forEach(function(child) {
         // Currently only works with box-sizing: border-box
-        child.element.style.width = (child.width + freeSpace) + 'px';
+        child.element.style.width = child.width + freeSpace + 'px';
       });
     }
   };
