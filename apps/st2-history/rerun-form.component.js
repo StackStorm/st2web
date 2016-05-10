@@ -24,13 +24,18 @@ export default class RerunForm extends React.Component {
     this.setState({ payload });
   }
 
-  handleSubmit () {
+  handleSubmit(e) {
+    e.preventDefault();
+
     const { onSubmit } = this.props;
 
     return onSubmit && onSubmit(this.state.payload);
   }
 
-  handleCancel() {
+  handleCancel(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     const { onCancel } = this.props;
 
     return onCancel && onCancel();
@@ -51,7 +56,7 @@ export default class RerunForm extends React.Component {
 
   render() {
     const formProps = {
-      onSubmit: () => this.handleSubmit()
+      onSubmit: (e) => this.handleSubmit(e)
     };
 
     const stringProps = {
@@ -75,7 +80,7 @@ export default class RerunForm extends React.Component {
     const cancelProps = {
       type: 'button',
       className: 'st2-forms__button st2-details__toolbar-button',
-      onClick: () => this.handleCancel()
+      onClick: (e) => this.handleCancel(e)
     };
 
     const previewProps = {

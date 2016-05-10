@@ -119,7 +119,7 @@ describe('User visits history page', function () {
         });
     });
 
-    it.skip('should rerun the action on submit button', function () {
+    it('should rerun the action on submit button', function () {
       return browser.pressButton(util.name('rerun_submit'))
         .then(function () {
           var resource = browser.resources.filter(function (e) {
