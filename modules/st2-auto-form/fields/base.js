@@ -9,7 +9,8 @@ export class BaseTextField extends React.Component {
     spec: React.PropTypes.object,
     value: React.PropTypes.any,
     disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
+    'data-test': React.PropTypes.string
   }
 
   constructor(props) {
@@ -81,7 +82,8 @@ export class BaseTextField extends React.Component {
       placeholder: spec.default,
       disabled: this.props.disabled,
       value: this.state.value,
-      onChange: (e) => this.handleChange(e.target.value)
+      onChange: (e) => this.handleChange(e.target.value),
+      'data-test': this.props['data-test']
     };
 
     if (this.state.invalid) {
@@ -113,7 +115,8 @@ export class BaseTextareaField extends BaseTextField {
       value: this.state.value,
       onChange: (e) => this.handleChange(e.target.value),
       minRows: 1,
-      maxRows: 10
+      maxRows: 10,
+      'data-test': this.props['data-test']
     };
 
     if (this.state.invalid) {

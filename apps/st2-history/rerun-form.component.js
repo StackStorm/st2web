@@ -89,7 +89,7 @@ export default class RerunForm extends React.Component {
         Rerun an execution
       </div>
 
-      <StringField {...stringProps} />
+      <StringField data-test='rerun_form_action' {...stringProps} />
 
       <AutoForm {...autoFormProps} />
 
