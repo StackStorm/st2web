@@ -9,6 +9,7 @@ var gulp = require('gulp')
 
 gulp.task('unit', function () {
   return gulp.src(argv['test-files'] || settings.units, {read: false})
+    .pipe(plugins.plumber())
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
@@ -16,6 +17,7 @@ gulp.task('unit', function () {
       }
     }))
     .on('error', function () {
+      // Yes, `error`, not `end` since it would kill the server before integration tests start
       var tasks = require('.');
       tasks.serve.emit('kill');
     });

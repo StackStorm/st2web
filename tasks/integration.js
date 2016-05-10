@@ -9,13 +9,14 @@ var gulp = require('gulp')
 
 gulp.task('integration', ['build', 'serve'], function () {
   return gulp.src(argv['test-files'] || settings.tests, {read: false})
+    .pipe(plugins.plumber())
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
         js: require('babelify/node_modules/babel-core/register')(settings.babel)
       }
     }))
-    .on('error', function () {
+    .on('end', function () {
       var tasks = require('.');
       tasks.serve.emit('kill');
     });

@@ -9,6 +9,7 @@ var gulp = require('gulp')
 
 gulp.task('test-production', ['production', 'serve-production'], function () {
   return gulp.src(argv['test-files'] || settings.production.tests, { read: false })
+    .pipe(plugins.plumber())
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
