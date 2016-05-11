@@ -51,7 +51,7 @@ module.exports = function (browser) {
       return new Date(date).toUTCString().replace('GMT', 'UTC');
     },
     name: function (name) {
-      return '[data-test="' + name + '"]';
+      return '[data-test~="' + name + '"]';
     }
   };
 };

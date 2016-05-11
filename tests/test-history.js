@@ -153,8 +153,7 @@ describe('User visits history page', function () {
           browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
         })
         .then(function () {
-          var element = browser.query(util.name('rerun_popup'));
-          browser.fire(element, 'click');
+          browser.click(util.name('rerun_popup'));
         })
         .then(function () {
           browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');

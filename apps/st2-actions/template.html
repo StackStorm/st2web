@@ -67,7 +67,7 @@
           </div>
 
           <div class="st2-flex-table__row"
-              data-test="action"
+              data-test="action action:{{action.ref}}"
               ng-class-odd="'st2-flex-table__row--odd'"
               ng-class-even="'st2-flex-table__row--even'"
               ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
@@ -193,6 +193,7 @@
 
               <div class="st2-forms__buttons-panel">
                 <button type="submit" class="st2-forms__button"
+                    data-test="run_submit"
                     ng-disabled="runForm.$invalid">
                   Run
                 </button>

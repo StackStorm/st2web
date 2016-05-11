@@ -69,7 +69,8 @@ export default class AutoForm extends React.Component {
             spec: field,
             value: ngModel && ngModel[name],
             disabled: disabled,
-            onChange: (value) => this.handleChange(name, value)
+            onChange: (value) => this.handleChange(name, value),
+            'data-test': `field:${name}`
           };
 
           const FieldElement = this.getElementByField(field);
