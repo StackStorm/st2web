@@ -16,9 +16,3 @@ gulp.task('serve', function () {
 
   return server;
 });
-
-module.exports = {
-  emit: function (e) {
-    return server.emit(e);
-  }
-};

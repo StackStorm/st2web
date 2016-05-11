@@ -4,7 +4,7 @@ var Browser = require('zombie');
 
 var utilFactory = require('./util');
 
-Browser.localhost('example.com', 3000);
+Browser.localhost('example.com', process.env.PORT || 3000);
 
 describe('User visits login', function () {
   var browser = new Browser();

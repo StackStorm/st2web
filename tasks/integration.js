@@ -7,7 +7,19 @@ var gulp = require('gulp')
   , argv = require('yargs').argv
   ;
 
-gulp.task('integration', ['build', 'serve'], function () {
+gulp.task('integration', ['build'], function () {
+  var server = gulp.src('.')
+    .pipe(plugins.webserver({
+      host: '0.0.0.0',
+      port: 3001
+    }));
+
+  plugins.env({
+    vars: {
+      PORT: 3001
+    }
+  });
+
   return gulp.src(argv['test-files'] || settings.tests, {read: false})
     .pipe(plugins.plumber())
     .pipe(plugins.mocha({
@@ -17,7 +29,6 @@ gulp.task('integration', ['build', 'serve'], function () {
       }
     }))
     .on('end', function () {
-      var tasks = require('.');
-      tasks.serve.emit('kill');
+      server.emit('kill');
     });
 });

@@ -6,7 +6,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var utilFactory = require('./util');
 
-Browser.localhost('example.com', 3000);
+Browser.localhost('example.com', process.env.PORT || 3000);
 
 describe('User visits rules page', function () {
   var browser = new Browser();

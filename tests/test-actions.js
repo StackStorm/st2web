@@ -6,7 +6,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var utilFactory = require('./util');
 
-Browser.localhost('example.com', 3000);
+Browser.localhost('example.com', process.env.PORT || 3000);
 
 describe('User visits actions page', function () {
   var browser = new Browser();
@@ -68,9 +68,9 @@ describe('User visits actions page', function () {
     });
 
     it('should recieve a response containing an action', function () {
-      var execution = JSON.parse(resource[0].response.body);
+      var action = JSON.parse(resource[0].response.body);
 
-      expect(execution).to.be.an('object');
+      expect(action).to.be.an('object');
     });
 
     it('should have action details present', function () {
