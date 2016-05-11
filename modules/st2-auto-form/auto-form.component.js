@@ -51,9 +51,19 @@ export default class AutoForm extends React.Component {
   render() {
     const { spec, ngModel, disabled } = this.props;
 
+    const fields = _(spec && spec.properties)
+      .map((field, name) => {
+        field._name = name;
+        return field;
+      })
+      .reject('immutable')
+      .sortBy('position')
+      .value();
+
     return <div>
       {
-        _.map(spec && spec.properties, (field, name) => {
+        fields.map(field => {
+          const name = field._name;
           const props = {
             name: name,
             spec: field,
