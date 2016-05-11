@@ -142,11 +142,19 @@ module.exports =
 
         // Spec and payload to build a form for the action input. Strict resemblence to form from
         // Action tab is not guaranteed.
+        const properties = {};
+
+        for (const [ k, v ] of _.pairs(record.runner.runner_parameters)) {
+          properties[k] = Object.assign({}, properties[k], v);
+        }
+
+        for (const [ k, v ] of _.pairs(record.action.parameters)) {
+          properties[k] = Object.assign({}, properties[k], v);
+        }
+
         $scope.actionSpec = {
           type: 'object',
-          properties: _({})
-            .defaults(record.action.parameters, record.runner.runner_parameters)
-            .value()
+          properties
         };
 
         $scope.payload = _.clone(record.parameters);
