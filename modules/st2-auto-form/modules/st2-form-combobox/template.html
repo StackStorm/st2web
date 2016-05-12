@@ -8,6 +8,7 @@
 
   <input type="text"
     class="st2-auto-form__field st2-auto-form__field--combo"
+    data-test="field:{{spec.name || name}}"
     placeholder="{{spec.default}}"
     ng-required="spec.required"
     ng-model="rawResult"

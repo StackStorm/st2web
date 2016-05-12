@@ -12,6 +12,7 @@
 
         <div class="st2-panel__toolbar-actions">
           <a class="st2-forms__button st2-panel__toolbar-button"
+              data-test="rule_create_button"
               ng-click="popup.open()">
             <i class="st2-icon__plus"></i>
           </a>
@@ -47,7 +48,7 @@
           </div>
 
           <div class="st2-flex-rule"
-              data-test="rule"
+              data-test="rule rule:{{ rule.ref }}"
               ng-class="{'st2-flex-rule--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in params.list"
               ng-click="$root.go({ref: rule.ref, edit: undefined})"
@@ -360,6 +361,7 @@
 
 <div class="st2-popup"
     ng-show="$root.isState('^.new')"
+    data-test="rule_create_popup"
     ng-click="popup.cancel()">
   <div class="st2-panel__details st2-details st2-popup__details"
       ng-click="$event.stopPropagation()">
@@ -376,6 +378,8 @@
 
             <div class="st2-auto-form"
               spec="metaSpec"
+              watch-depth="reference"
+              on-change="popup.onChange"
               ng-model="newRule">
             </div>
 
@@ -401,6 +405,7 @@
           <div class="st2-details__panel-body">
 
             <div class="st2-remote-form"
+                data-test="rule_create_trigger_form"
                 name="trigger"
                 suggester="triggerSuggester"
                 loader="triggerLoader"
@@ -430,6 +435,7 @@
           <div class="st2-details__panel-body">
 
             <div class="st2-remote-form"
+                data-test="rule_create_action_form"
                 name="action"
                 suggester="actionSuggester"
                 loader="actionLoader"
@@ -443,6 +449,7 @@
             class="st2-forms__button st2-details__toolbar-button"
             ng-disabled="newform.$invalid"
             ng-click="popup.submit()"
+            data-test="rule_create_submit"
             value="Save"/>
         <input type="button"
             class="st2-forms__button st2-details__toolbar-button"

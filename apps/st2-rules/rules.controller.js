@@ -309,6 +309,9 @@ module.exports =
       },
       cancel: function () {
         $scope.$root.go('^.list');
+      },
+      onChange: function (name, value) {
+        $scope.newRule[name] = value;
       }
     };
 
