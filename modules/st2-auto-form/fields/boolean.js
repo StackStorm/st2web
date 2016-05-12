@@ -9,14 +9,18 @@ export default class BooleanField extends BaseTextField {
   }
 
   fromStateValue(v) {
-    return !!v;
+    return v !== void 0 ? !!v : void 0;
   }
 
   validate(v) {
-    return typeof v !== 'boolean' && `'${v}' is not boolean`;
+    return v !== void 0 && typeof v !== 'boolean' && `'${v}' is not boolean`;
   }
 
   render() {
+    const wrapperProps = Object.assign({}, this.props, {
+      onReset: () => this.handleChange(void 0)
+    });
+
     const inputProps = {
       className: 'st2-auto-form__checkbox',
       disabled: this.props.disabled,
@@ -24,7 +28,11 @@ export default class BooleanField extends BaseTextField {
       onChange: (e) => this.handleChange(e.target.checked)
     };
 
-    return <BooleanFieldWrapper {...this.props} >
+    if (this.props.spec.default && this.state.value === void 0) {
+      inputProps.className += ' ' + 'st2-auto-form__checkbox--default';
+    }
+
+    return <BooleanFieldWrapper {...wrapperProps} >
       <input type='checkbox' {...inputProps} />
     </BooleanFieldWrapper>;
   }

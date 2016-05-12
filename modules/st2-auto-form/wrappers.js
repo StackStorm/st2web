@@ -69,6 +69,29 @@ class Icon extends React.Component {
   }
 }
 
+class Button extends React.Component {
+  static propTypes = {
+    icon: React.PropTypes.string,
+    title: React.PropTypes.string,
+    onClick: React.PropTypes.func
+  }
+
+  handleClick(e) {
+    e.preventDefault();
+    return this.props.onClick && this.props.onClick(e);
+  }
+
+  render() {
+    const props = {
+      className: `st2-auto-form__button st2-icon__${this.props.icon}`,
+      onClick: (e) => this.handleClick(e),
+      title: this.props.title
+    };
+
+    return <span {...props} />;
+  }
+}
+
 class Description extends React.Component {
   static propTypes = {
     spec: React.PropTypes.object
@@ -114,7 +137,12 @@ export class BooleanFieldWrapper extends React.Component {
     spec: React.PropTypes.object,
     value: React.PropTypes.any,
     disabled: React.PropTypes.bool,
-    children: React.PropTypes.element.isRequired
+    children: React.PropTypes.element.isRequired,
+    onReset: React.PropTypes.func
+  }
+
+  handleReset() {
+    return this.props.onReset && this.props.onReset();
   }
 
   render() {
@@ -124,6 +152,12 @@ export class BooleanFieldWrapper extends React.Component {
       className: 'st2-auto-form__checkbox-block',
     };
 
+    const buttonProps = {
+      icon: 'cancel',
+      title: 'reset default',
+      onClick: () => this.handleReset()
+    };
+
     const labelProps = {
       className: 'st2-auto-form__checkbox-label',
     };
@@ -131,6 +165,7 @@ export class BooleanFieldWrapper extends React.Component {
     const line = <div className='st2-auto-form__line'>
       <Label>
         <div {...blockProps} >
+          <Button {...buttonProps} />
           { this.props.children }
           <span {...labelProps} >{ spec.name || name }</span>
         </div>

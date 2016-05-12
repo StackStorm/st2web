@@ -53,6 +53,34 @@
     color: @blue-dark;
   }
 
+  &__button {
+    font-size: 14px;
+    line-height: 34px;
+
+    position: absolute;
+    right: 0;
+
+    width: 36px;
+    height: 36px;
+
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+
+    color: @blue-darker;
+    text-shadow: 0 1px 0 @blue-dark,
+    1px 0 0 @blue-dark,
+    0 -1px 0 @blue-dark,
+    -1px 0 0 @blue-dark;
+
+    &:hover {
+      text-shadow: 0 1px 0 @blue,
+      1px 0 0 @blue,
+      0 -1px 0 @blue,
+      -1px 0 0 @blue;
+    }
+  }
+
   &__field {
     font-weight: normal;
 
@@ -255,18 +283,27 @@
       margin-right: .3em;
 
       content: '\00a0';
+      content: '\e80a';
       text-decoration: inherit;
 
-      color: #01c8ff;
+      color: @blue-lightest;
       border: 0;
       background-color: @blue-darkest;
-    }
-
-    &:checked + &-label:before {
-      content: '\e80a';
-
       text-shadow: 1px 0 1px #000,
       1px 1px 1px #000;
+    }
+
+    &:not(:checked) + &-label:before {
+      color: transparent;
+      text-shadow: none;
+    }
+
+    &--default:not(:checked) + &-label:before {
+      color: @blue-darkest;
+      text-shadow: 0 1px 0 mix(@blue-lightest, @blue-darkest, 50%),
+      1px 0 0 mix(@blue-lightest, @blue-darkest, 50%),
+      0 -1px 0 mix(@blue-lightest, @blue-darkest, 50%),
+      -1px 0 0 mix(@blue-lightest, @blue-darkest, 50%);
     }
   }
 
