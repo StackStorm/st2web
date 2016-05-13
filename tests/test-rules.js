@@ -58,6 +58,19 @@ describe('User visits rules page', function () {
       var elements = browser.queryAll(util.name('rule'));
       expect(elements[0].className).to.have.string('st2-flex-rule--active');
     });
+
+    it('should filter rules (case insensitive)', function () {
+      return browser.fill(util.name('filter'), 'cHatoPs.')
+        .wait()
+        .then(function () {
+          var rules = browser.queryAll(util.name('rule'));
+
+          expect(rules).to.have.length.at.least(1, 'All the rules has been filtered out');
+          for (const rule of rules) {
+            expect(rule.getAttribute('data-test')).to.have.string('rule:chatops.');
+          }
+        });
+    });
   });
 
   describe('Details view', function () {

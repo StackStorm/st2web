@@ -56,6 +56,19 @@ describe('User visits actions page', function () {
       var elements = browser.queryAll(util.name('action'));
       expect(elements[0].className).to.have.string('st2-flex-table__row--active');
     });
+
+    it('should filter actions (case insensitive)', function () {
+      return browser.fill(util.name('filter'), 'CORE.')
+        .wait()
+        .then(function () {
+          var actions = browser.queryAll(util.name('action'));
+
+          expect(actions).to.have.length.at.least(1, 'All the actions has been filtered out');
+          for (const action of actions) {
+            expect(action.getAttribute('data-test')).to.have.string('action:core.');
+          }
+        });
+    });
   });
 
   describe('Details view', function () {
