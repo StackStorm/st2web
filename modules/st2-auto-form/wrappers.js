@@ -165,7 +165,7 @@ export class BooleanFieldWrapper extends React.Component {
     const line = <div className='st2-auto-form__line'>
       <Label>
         <div {...blockProps} >
-          <Button {...buttonProps} />
+          { !this.props.disabled && <Button {...buttonProps} /> }
           { this.props.children }
           <span {...labelProps} >{ spec.name || name }</span>
         </div>
