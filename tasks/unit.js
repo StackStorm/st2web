@@ -16,10 +16,5 @@ gulp.task('unit', function () {
         js: require('babelify/node_modules/babel-core/register')(settings.babel)
       }
     }))
-    .on('error', function () {
-      // Yes, `error`, not `end` since it would kill the server before integration tests start
-      var tasks = require('.');
-      tasks.serve.emit('kill');
-    });
     ;
 });

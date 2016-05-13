@@ -290,6 +290,10 @@ module.exports =
       });
     };
 
+    $scope.onChange = function (name, value) {
+      $scope.rule[name] = value;
+    };
+
     $scope.popup = {
       open: function () {
         $scope.$root.go('^.new');
@@ -309,6 +313,9 @@ module.exports =
       },
       cancel: function () {
         $scope.$root.go('^.list');
+      },
+      onChange: function (name, value) {
+        $scope.newRule[name] = value;
       }
     };
 

@@ -6,7 +6,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var utilFactory = require('./util');
 
-Browser.localhost('example.com', 3000);
+Browser.localhost('example.com', process.env.PORT || 3000);
 
 describe('User visits history page', function () {
   var browser = new Browser();
@@ -153,8 +153,7 @@ describe('User visits history page', function () {
           browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
         })
         .then(function () {
-          var element = browser.query(util.name('rerun_popup'));
-          browser.fire(element, 'click');
+          browser.click(util.name('rerun_popup'));
         })
         .then(function () {
           browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
