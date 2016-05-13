@@ -53,6 +53,10 @@ module.exports =
           }
         });
 
+        scope.onChange = function (name, value) {
+          scope.ngModel.parameters[name] = value;
+        };
+
       }
     };
 

@@ -209,6 +209,7 @@
           value="Delete"/>
 
       <input type="submit"
+          data-test="save_button"
           class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
           ng-show="$root.state.params.edit"
           ng-disabled="form.$invalid"
@@ -316,6 +317,8 @@
 
               <div class="st2-auto-form"
                 spec="metaSpec"
+                watch-depth="reference"
+                on-change="onChange"
                 ng-model="rule">
               </div>
 

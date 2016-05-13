@@ -176,7 +176,7 @@ describe('User visits rules page', function () {
         });
       });
 
-      it('should make a call to actions endpoint once', function () {
+      it('should make a call to rules endpoint once', function () {
         expect(resource).to.have.length.at.least(1, 'Rules endpoint has not been called');
         expect(resource).to.have.length.at.most(1, 'Rules endpoint called several times');
       });
@@ -200,6 +200,59 @@ describe('User visits rules page', function () {
         browser.assert.element(util.name('rule_action_form'), 'Rule action form is missing');
 
         browser.assert.element(util.name('rule_code'), 'Rule code is missing');
+      });
+    });
+
+    describe('clicks Edit button', function () {
+      before(function () {
+        return browser.click(util.name('edit_button'));
+      });
+
+      it('should have correct url', function () {
+        browser.assert.url('http://example.com/#/rules/packs.test' + uniqueId + '/general?edit=true');
+      });
+
+      describe('changes the rule', function () {
+        var resource;
+
+        before(function () {
+          return browser
+            .fill(util.name('field:description').in('details'), 'thing')
+            .fill(util.name('field:message').in('rule_action_form').in('details'), '{"a":"b"}')
+            .wait()
+            .then(function () {
+              return browser.pressButton(util.name('save_button'));
+            })
+            .then(function () {
+              resource = browser.resources.filter(function (e) {
+                if (e.request.method !== 'PUT') {
+                  return false;
+                }
+
+                if (!new RegExp('^https://example.com/api/v1/rules/\\w+$').test(e.url)) {
+                  return false;
+                }
+
+                var rule = JSON.parse(e.response.body);
+
+                return rule.ref === 'packs.test' + uniqueId;
+              });
+            })
+            ;
+        });
+
+        it('should make a call to rules endpoint once', function () {
+          expect(resource).to.have.length.at.least(1, 'Rules endpoint has not been called');
+          expect(resource).to.have.length.at.most(1, 'Rules endpoint called several times');
+        });
+
+        it('should recieve a response containing a number of rules', function () {
+          var rule = JSON.parse(resource[0].response.body);
+
+          expect(rule).to.have.property('description', 'thing');
+          expect(rule).to.have.deep.property('action.parameters.message')
+            .that.deep.equal({a: 'b'});
+        });
       });
     });
 

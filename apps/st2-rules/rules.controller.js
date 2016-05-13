@@ -290,6 +290,10 @@ module.exports =
       });
     };
 
+    $scope.onChange = function (name, value) {
+      $scope.rule[name] = value;
+    };
+
     $scope.popup = {
       open: function () {
         $scope.$root.go('^.new');
