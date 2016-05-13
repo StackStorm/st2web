@@ -7,7 +7,7 @@ module.exports =
     var linker = function (scope) {
       // Partial router
       scope.getReporter = function (runner) {
-        return reporters[runner] || reporters['debug'];
+        return reporters[runner] || reporters.debug;
       };
 
       scope.getTraceback = function (result) {

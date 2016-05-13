@@ -18,8 +18,10 @@
     "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",
     "react": "0.14.8",
     "react-dom": "0.14.8",
+    "react-textarea-autosize": "3.3.1",
     "st2client": "0.4.4",
-    "urijs": "1.17.1"
+    "urijs": "1.17.1",
+    "validator": "5.2.0"
   },
   "devDependencies": {
     "babel-eslint": "6.0.2",
@@ -54,8 +56,11 @@
     "gulp-webserver": "0.9.1",
     "ngify": "1.4.1",
     "npm-shrinkwrap": "200.5.1",
+    "react-addons-test-utils": "0.14.8",
     "request": "2.69.0",
     "require-dir": "0.3.0",
+    "sinon": "1.17.3",
+    "sinon-chai": "2.8.0",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.7.0",

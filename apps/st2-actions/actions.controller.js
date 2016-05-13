@@ -9,6 +9,8 @@ module.exports =
     $scope.filter = '';
     $scope.error = null;
 
+    $scope.preview = false;
+
     var savedView = JSON.parse(sessionStorage.getItem('st2ActionView'));
 
     $scope.view = savedView || {
@@ -210,6 +212,10 @@ module.exports =
       });
 
     });
+
+    $scope.onChange = function (name, value) {
+      $scope.payload[name] = value;
+    };
 
     // Running an action
     $scope.runAction = function (action, payload, trace) {

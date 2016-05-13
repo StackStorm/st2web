@@ -12,15 +12,6 @@
     width: 480px;
   }
 
-  &__prev-button {
-    float: left;
-  }
-
-  &__next-button {
-    // Lazy me. Careful with that.
-    float: right;
-  }
-
   &__view {
     // for .st2-panel__back-button to fill the right block
     position: relative;
@@ -146,7 +137,7 @@
 
         content: '\e80f';
 
-        color: fade(@blue-light, 40%);
+        color: @blue-dark;
       }
     }
 
@@ -198,6 +189,7 @@
     width: 100%;
     padding: 8px 30px 8px 10px;
 
+    color: @gray-white;
     border: 0;
     outline: none;
     background-color: @blue-darkest;

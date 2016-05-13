@@ -41,7 +41,7 @@ module.exports =
       },
       toggleType: function (type, value) {
         var self = this;
-        var collapse = (typeof value === 'undefined') ? !this.isTypeCollapsed(type) : value;
+        var collapse = typeof value === 'undefined' ? !this.isTypeCollapsed(type) : value;
 
         Object.keys(collapsed[type]).forEach(function(id) {
           self.toggle(type, id, collapse);

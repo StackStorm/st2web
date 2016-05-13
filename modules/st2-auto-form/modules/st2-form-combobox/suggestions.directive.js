@@ -9,13 +9,6 @@ module.exports =
         if (!ctrl) {
           return;
         }
-
-        var suggestions;
-
-        scope.$watch(attrs['ngSuggestions'], function (attribute) {
-          suggestions = attribute;
-        });
-
       }
     };
   };

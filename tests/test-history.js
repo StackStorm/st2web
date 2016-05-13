@@ -104,50 +104,61 @@ describe('User visits history page', function () {
     });
 
     it('should open on button click', function () {
-      browser.pressButton(util.name('rerun_button'));
-
-      browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
+      browser.pressButton(util.name('rerun_button'))
+        .then(function () {
+          browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
+        });
     });
 
     it('should show a form', function () {
-      browser.assert.element(util.name('rerun_form_meta'), 'Action name is missing');
-      browser.assert.element(util.name('rerun_form_action'), 'Action input is missing');
-      browser.assert.element(util.name('rerun_submit'), 'Submit button is missing');
-      browser.assert.element(util.name('rerun_cancel'), 'Cancel button is missing');
+      return browser.pressButton(util.name('rerun_button'))
+        .then(function () {
+          browser.assert.element(util.name('rerun_form_action'), 'Action input is missing');
+          browser.assert.element(util.name('rerun_submit'), 'Submit button is missing');
+          browser.assert.element(util.name('rerun_cancel'), 'Cancel button is missing');
+        });
     });
 
     it('should rerun the action on submit button', function () {
       return browser.pressButton(util.name('rerun_submit'))
         .then(function () {
-          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
-
           var resource = browser.resources.filter(function (e) {
             return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions/\\w+/re_run$').test(e.url);
           });
 
           expect(resource).to.have.length(1, 'Rerun should make a single request');
 
+          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+
           // TODO: check stream event
         });
     });
 
     it('should close the popup on cancel button', function () {
-      browser.pressButton(util.name('rerun_button'));
-      browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
-
-      browser.pressButton(util.name('rerun_cancel'));
-
-      browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+      return browser.pressButton(util.name('rerun_button'))
+        .then(function () {
+          browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
+        })
+        .then(function () {
+          return browser.pressButton(util.name('rerun_cancel'));
+        })
+        .then(function () {
+          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+        });
     });
 
     it('should close the popup on clicking outside the view', function () {
-      browser.pressButton(util.name('rerun_button'));
-      browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
-
-      var element = browser.query(util.name('rerun_popup'));
-      browser.fire(element, 'click');
-
-      browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+      return browser.pressButton(util.name('rerun_button'))
+        .then(function () {
+          browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
+        })
+        .then(function () {
+          var element = browser.query(util.name('rerun_popup'));
+          browser.fire(element, 'click');
+        })
+        .then(function () {
+          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+        });
     });
   });
 

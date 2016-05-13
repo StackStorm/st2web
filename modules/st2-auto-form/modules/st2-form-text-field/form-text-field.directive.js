@@ -23,8 +23,8 @@ module.exports =
         var computed = window.getComputedStyle(field);
         var lineHeight = parseInt(computed.lineHeight);
         var paddings = parseInt(computed.paddingTop) + parseInt(computed.paddingBottom);
-        var minHeight = paddings + (minRows * lineHeight);
-        var maxHeight = paddings + (maxRows * lineHeight);
+        var minHeight = paddings + minRows * lineHeight;
+        var maxHeight = paddings + maxRows * lineHeight;
         field.style.minHeight = minHeight + 'px';
         field.style.maxHeight = maxHeight + 'px';
 

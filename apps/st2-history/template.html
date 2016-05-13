@@ -191,15 +191,15 @@
         </div>
       </div>
 
-      <button class="st2-panel__prev-button st2-forms__button-left"
+      <button class="st2-forms__button-left st2-forms__button-prev"
           ng-click="prevPage()"
-          ng-class="{'st2-forms__button-left--disabled': ($root.page || 1) < 2}"
+          ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
           ng-if="!error && !_.isEmpty(groups)">
         Previous
       </button>
-      <button class="st2-panel__next-button st2-forms__button-right"
+      <button class="st2-forms__button-right st2-forms__button-next"
           ng-click="nextPage()"
-          ng-class="{'st2-forms__button-right--disabled': ($root.page || 1) >= $root.maxPage}"
+          ng-class="{'st2-forms__button-next--disabled': ($root.page || 1) >= $root.maxPage}"
           ng-if="!error && !_.isEmpty(groups)">
         Next
       </button>
@@ -426,6 +426,7 @@
             <form role="form" class="st2-details__form">
               <div class="st2-auto-form"
                 data-test="action_input"
+                watch-depth="reference"
                 spec="actionSpec"
                 disabled="true"
                 ng-model="payload">
@@ -459,49 +460,13 @@
 
 </main>
 
-<div class="st2-popup"
-    data-test="rerun_popup"
-    ng-if="$root.isState('^.rerun')"
-    ng-click="rerun.cancel()">
-  <div class="st2-panel__details st2-details st2-popup__details"
-      ng-click="$event.stopPropagation()">
-    <div class="st2-panel__scroller">
-
-      <form name="rerunform">
-
-        <div class="st2-popup__title">
-          Rerun an execution
-        </div>
-
-        <div class="st2-auto-form"
-          data-test="rerun_form_meta"
-          spec="rerun.metaSpec"
-          ng-model="record.action"
-          disabled="true">
-        </div>
-
-        <div class="st2-auto-form"
-          data-test="rerun_form_action"
-          spec="rerun.actionSpec"
-          ng-model="rerun.payload">
-        </div>
-
-        <input type="submit"
-            data-test="rerun_submit"
-            class="st2-forms__button st2-details__toolbar-button"
-            ng-disabled="rerunform.$invalid"
-            ng-click="rerun.submit()"
-            value="Run"/>
-        <input type="button"
-            data-test="rerun_cancel"
-            class="st2-forms__button st2-details__toolbar-button"
-            ng-click="rerun.cancel()"
-            value="Cancel"/>
-
-      </form>
-
-    </div>
-  </div>
+<div class="st2-rerun"
+  ng-if="$root.isState('^.rerun')"
+  action="record.action.ref"
+  spec="actionSpec"
+  payload="payload"
+  on-submit="rerun.submit"
+  on-cancel="rerun.cancel">
 </div>
 
 <div class="st2-report"></div>

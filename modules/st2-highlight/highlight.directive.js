@@ -24,7 +24,9 @@ module.exports =
         }
 
         return 'json';
-      } catch (e) {}
+      } catch (e) {
+        // do nothing
+      }
 
       if (_.isString(string)) {
         return 'string';
@@ -56,7 +58,7 @@ module.exports =
             var type = getType(code);
 
             if (type === 'json') {
-              return Prism.highlight(code, Prism.languages['json']);
+              return Prism.highlight(code, Prism.languages.json);
             }
 
             if (type === 'string') {
@@ -66,7 +68,7 @@ module.exports =
             }
 
             if (type === 'object') {
-              return Prism.highlight($filter('json')(code, 2), Prism.languages['json']);
+              return Prism.highlight($filter('json')(code, 2), Prism.languages.json);
             }
           }
 

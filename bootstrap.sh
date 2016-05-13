@@ -13,5 +13,13 @@ loglevel=http
 save-prefix=
 EOF
 
+# mount node_modules locally and make them persist through the reboot
+mkdir -p /home/vagrant/node_modules
+chown vagrant:vagrant /home/vagrant/node_modules
+mount --bind /home/vagrant/node_modules/ /vagrant/node_modules
+cat <<EOF >> /etc/fstab
+/home/vagrant/node_modules/	/vagrant/node_modules	none	bind
+EOF
+
 # Change default CWD to /vagrant
 echo "cd /vagrant" >> /home/vagrant/.bashrc

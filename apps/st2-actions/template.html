@@ -181,6 +181,8 @@
               </div>
               <div class="st2-auto-form"
                 data-test="action_parameters"
+                watch-depth="reference"
+                on-change="onChange"
                 spec="actionSpec"
                 ng-model="payload">
               </div>
@@ -188,10 +190,23 @@
                 name="trace-tag"
                 spec="traceSpec"
                 ng-model="trace"></div>
-              <button type="submit" class="st2-forms__button"
-                  ng-disabled="runForm.$invalid">
-                Run
-              </button>
+
+              <div class="st2-forms__buttons-panel">
+                <button type="submit" class="st2-forms__button"
+                    ng-disabled="runForm.$invalid">
+                  Run
+                </button>
+                <input type="button" class="st2-forms__button st2-forms__button-right"
+                    ng-click="preview = !preview"
+                    value="Preview" />
+              </div>
+
+              <div class="st2-highlight"
+                  ng-show="preview"
+                  code="payload | json"
+                  lines="20"
+                  language="json">
+              </div>
             </form>
           </div>
         </div>
