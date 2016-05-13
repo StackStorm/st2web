@@ -18,7 +18,10 @@
     "libs": [
       "node_modules/angular/angular.min.js",
       "node_modules/lodash/dist/lodash.min.js",
-      "node_modules/st2client/dist/st2client.js"
+      "node_modules/st2client/dist/st2client.js",
+      "node_modules/react/dist/react.min.js",
+      "node_modules/react-dom/dist/react-dom.min.js",
+      "node_modules/ngreact/ngReact.min.js"
     ],
     "scripts": [
       "js/*.js"
@@ -48,6 +51,17 @@
   ],
   "globalShim": {
     "lodash": "_",
-    "st2client": "st2client"
+    "st2client": "st2client",
+    "angular": "angular",
+    "react": "React"
+  },
+  "babel": {
+    "plugins": [
+      "transform-class-properties"
+    ],
+    "presets": [
+      "es2015",
+      "react"
+    ]
   }
 }
