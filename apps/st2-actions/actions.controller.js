@@ -40,8 +40,9 @@ module.exports =
       sessionStorage.setItem('st2ActionView', JSON.stringify(view));
     }, true);
 
-    var pActionList = st2api.client.actions.list().then(function (result) {
-      // Hacking around angular-busy bug preventing $digest
+    var pActionList = st2api.client.actions.list({
+      exclude_attributes: 'parameters,notify'
+    }).then(function (result) {      // Hacking around angular-busy bug preventing $digest
       pActionList.then(function () {
         $scope.$apply();
       });
