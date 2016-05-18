@@ -62,4 +62,16 @@ describe('AutoForm ArrayField', () => {
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
 
+  it('displays default value as serialized json string', () => {
+    const props = {
+      name: 'test',
+      spec: {
+        default: [1,2,3]
+      }
+    };
+
+    const c = new TestComponent(<ArrayField {...props} />);
+
+    expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
+  });
 });

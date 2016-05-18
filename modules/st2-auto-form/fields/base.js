@@ -79,7 +79,7 @@ export class BaseTextField extends React.Component {
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: spec.default,
+      placeholder: this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e.target.value),
@@ -110,7 +110,7 @@ export class BaseTextareaField extends BaseTextField {
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: spec.default,
+      placeholder: this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e.target.value),
