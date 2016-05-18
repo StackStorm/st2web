@@ -40,6 +40,7 @@
             ng-repeat="(name, params) in groups"
             ng-if="groups && !_.isEmpty(groups)"
             ng-class="{'st2-flex-table--collapsed': isCollapsed()}"
+            data-test="pack pack:{{ name }}"
             st2-flex-table-type="actions"
             st2-flex-table-id="{{ name }}">
           <div class="st2-flex-table__caption st2-flex-table__caption--pack"

@@ -135,6 +135,11 @@ describe('User visits actions page', function () {
         var element = browser.query(util.name('action:core.announcement'));
         expect(element.className).to.have.string('st2-flex-table__row--active');
       });
+
+      it('should expand the pack', function () {
+        var element = browser.query(util.name('pack:core'));
+        expect(element.className).to.not.have.string('st2-flex-table--collapsed');
+      });
     });
 
     describe('Details view', function () {
