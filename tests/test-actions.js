@@ -31,7 +31,7 @@ describe('User visits actions page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return new RegExp('^https://example.com/api/v1/actions$').test(e.url);
+        return new RegExp('^https://example.com/api/v1/actions[?]').test(e.url);
       });
     });
 
