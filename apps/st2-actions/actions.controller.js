@@ -4,7 +4,7 @@ var _ = require('lodash')
   ;
 
 module.exports =
-  function st2ActionsCtrl($scope, st2api, $filter, Notification) {
+  function st2ActionsCtrl($scope, st2api, $filter, Notification, st2FlexTableService) {
 
     $scope.filter = '';
     $scope.error = null;
@@ -106,7 +106,12 @@ module.exports =
     };
 
     $scope.$watch('$root.state.params.ref', function (ref) {
-      var promise = ref ? st2api.client.actionOverview.get(ref) : pActionList.then(function (actions) {
+      var promise = ref ? st2api.client.actionOverview.get(ref).then(function (action) {
+        st2FlexTableService.toggle('actions', action.pack, false);
+        $scope.$apply();
+
+        return action;
+      }) : pActionList.then(function (actions) {
         var first = _.first(actions);
         if (first) {
           return st2api.client.actionOverview.get(first.ref);
