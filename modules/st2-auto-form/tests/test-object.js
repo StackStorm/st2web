@@ -58,4 +58,17 @@ describe('AutoForm ObjectField', () => {
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
+
+  it('displays default value as serialized json string', () => {
+    const props = {
+      name: 'test',
+      spec: {
+        default: {}
+      }
+    };
+
+    const c = new TestComponent(<ObjectField {...props} />);
+
+    expect(c.field().props.placeholder).to.be.equal('{}');
+  });
 });
