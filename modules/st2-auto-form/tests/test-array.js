@@ -74,4 +74,13 @@ describe('AutoForm ArrayField', () => {
 
     expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
   });
+
+  it('allows you to put a jinja template in the field', () => {
+    const c = new TestComponent(<ArrayField />);
+
+    c.makeChange('{{ system.user }}');
+
+    expect(c.fieldValue()).to.be.equal('{{ system.user }}');
+    expect(c.value()).to.be.deep.equal('{{ system.user }}');
+  });
 });

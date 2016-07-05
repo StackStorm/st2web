@@ -57,4 +57,13 @@ describe('AutoForm NumberField', () => {
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
+
+  it('allows you to put a jinja template in the field', () => {
+    const c = new TestComponent(<NumberField />);
+
+    c.makeChange('{{ system.user }}');
+
+    expect(c.fieldValue()).to.be.equal('{{ system.user }}');
+    expect(c.value()).to.be.deep.equal('{{ system.user }}');
+  });
 });
