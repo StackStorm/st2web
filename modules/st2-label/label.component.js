@@ -26,6 +26,12 @@ var states = {
   },
   'scheduled': {
     class: 'st2-label--progress'
+  },
+  'canceling': {
+    class: 'st2-label--warning'
+  },
+  'canceled': {
+    class: 'st2-label--warning'
   }
 };
 
