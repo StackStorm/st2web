@@ -104,7 +104,15 @@ export default class RerunForm extends React.Component {
         <button data-test='rerun_preview' {...previewProps} >Preview</button>
       </div>
 
-      { this.state.preview && <div>{ JSON.stringify(this.state.payload) }</div> }
+      {
+        this.state.preview && <div className="st2-highlight__well">
+          <pre>
+            <code>
+              { JSON.stringify(this.state.payload, null, 2) }
+            </code>
+          </pre>
+        </div>
+      }
 
     </form>;
   }
