@@ -15,7 +15,7 @@ export default class IntegerField extends BaseTextField {
 
   validate(v, spec={}) {
     const invalid = super.validate(v, spec);
-    if (invalid) {
+    if (invalid !== void 0) {
       return invalid;
     };
 
