@@ -65,4 +65,13 @@ describe('AutoForm IntegerField', () => {
 
     expect(() => c.value()).to.throw(Error);
   });
+
+  it('allows you to put a jinja template in the field', () => {
+    const c = new TestComponent(<IntegerField />);
+
+    c.makeChange('{{ system.user }}');
+
+    expect(c.fieldValue()).to.be.equal('{{ system.user }}');
+    expect(c.value()).to.be.deep.equal('{{ system.user }}');
+  });
 });

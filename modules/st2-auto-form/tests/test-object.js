@@ -71,4 +71,13 @@ describe('AutoForm ObjectField', () => {
 
     expect(c.field().props.placeholder).to.be.equal('{}');
   });
+
+  it('allows you to put a jinja template in the field', () => {
+    const c = new TestComponent(<ObjectField />);
+
+    c.makeChange('{{ system.user }}');
+
+    expect(c.fieldValue()).to.be.equal('{{ system.user }}');
+    expect(c.value()).to.be.deep.equal('{{ system.user }}');
+  });
 });

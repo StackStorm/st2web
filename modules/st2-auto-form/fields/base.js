@@ -1,7 +1,12 @@
+import _ from 'lodash';
 import React from 'react';
 import Textarea from 'react-textarea-autosize';
 
 import { TextFieldWrapper } from '../wrappers';
+
+function isJinja(v) {
+  return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
+}
 
 export class BaseTextField extends React.Component {
   static propTypes = {
@@ -34,7 +39,9 @@ export class BaseTextField extends React.Component {
       return 'parameter is required';
     }
 
-    return false;
+    if (isJinja(v)) {
+      return false;
+    }
   }
 
   getValue() {
@@ -42,6 +49,10 @@ export class BaseTextField extends React.Component {
 
     if (invalid) {
       throw new Error(invalid);
+    }
+
+    if (isJinja(this.state.value)) {
+      return this.state.value;
     }
 
     return this.fromStateValue(this.state.value);
