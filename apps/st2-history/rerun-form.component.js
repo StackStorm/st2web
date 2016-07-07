@@ -12,8 +12,12 @@ export default class RerunForm extends React.Component {
     onCancel: React.PropTypes.func
   }
 
-  state = {
-    payload: {}
+  constructor(props) {
+    super(props);
+
+    var { payload={} } = props;
+
+    this.state = { payload };
   }
 
   handleChange(name, value) {

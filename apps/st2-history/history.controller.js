@@ -264,7 +264,9 @@ module.exports =
       },
 
       submit: function (parameters) {
-        st2api.client.executions.repeat($scope.record.id, { parameters })
+        st2api.client.executions.repeat($scope.record.id, { parameters }, {
+          no_merge: true
+        })
           .then((record) => {
             $scope.$root.go('^.general', {id: record.id});
           })

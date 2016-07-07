@@ -123,7 +123,7 @@ describe('User visits history page', function () {
       return browser.pressButton(util.name('rerun_submit'))
         .then(function () {
           var resource = browser.resources.filter(function (e) {
-            return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions/\\w+/re_run$').test(e.url);
+            return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions/\\w+/re_run\\?no_merge=true$').test(e.url);
           });
 
           expect(resource).to.have.length(1, 'Rerun should make a single request');
