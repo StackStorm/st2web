@@ -50,7 +50,7 @@ export default class ArrayField extends BaseTextField {
 
   validate(value, spec={}) {
     const invalid = super.validate(value, spec);
-    if (invalid) {
+    if (invalid !== void 0) {
       return invalid;
     };
 
