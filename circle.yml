@@ -8,7 +8,7 @@ machine:
     version: 4.2.2
   environment:
     DEPLOY_PACKAGES: 1
-    DEB: wheezy jessie trusty
+    DEB: wheezy jessie trusty xenial
     RPM: el6 el7
     ST2_TEST_ENVIRONEMENT: https://github.com/enykeev/st2box
     ST2_HOST: localhost
