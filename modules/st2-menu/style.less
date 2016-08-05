@@ -1,21 +1,37 @@
 @import 'colors';
 
 .st2-menu {
-  font-family: Oswald;
-  font-weight: 200;
+  font-family: Dual,Roboto,sans-serif;
+  font-size: 16px;
+  font-weight: normal;
 
   display: flex;
 
   user-select: none;
   letter-spacing: .04em;
 
-  color: #eee;
-  border-top: 5px solid #ff8300;
-  background-color: @blue-darkest;
+  color: white;
+  background-color: @blue-darken-3;
 
   align-items: center;
   // This font also hinted pretty badly for the fnt size we are using.
   // One of H's stems keep getting into another column of pixels on any letter spacing.
+
+  &--blue {
+    background: linear-gradient(45deg, rgb(0, 115, 150) 0%, rgb(68, 50, 153) 100%);
+  }
+
+  &--green {
+    background: linear-gradient(45deg, rgba(0,115,119,1) 0%, rgba(97,159,66,1) 100%);
+  }
+
+  &--red {
+    background: linear-gradient(45deg, rgb(189, 80, 48) 0%, rgb(165, 24, 144) 100%);
+  }
+
+  &--purple {
+    background: linear-gradient(45deg, rgb(152, 29, 151) 0%, rgb(32, 76, 151) 100%);
+  }
 
   &__logo {
     padding: 10px 20px;
@@ -26,57 +42,63 @@
     color: transparent;
 
     img {
-      width: 24px;
+      width: 124px;
     }
+  }
+
+  &__product-title {
+    color: white;
+  }
+
+  // TODO: Remove this ugliness
+  &__spacer {
+    flex: 1;
   }
 
   &__nav {
     display: flex;
-    flex: 1;
 
-    margin: 10px 20px;
+    margin: 0;
     padding: 0;
 
     list-style: none;
   }
 
   &__nav-item {
-    margin: 0 5px;
+    font-size: 10px;
 
-    a {
-      font-weight: 400;
+    display: block;
+
+    min-width: 35px;
+    height: 72px;
+    padding: 0 16px;
+
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    color: white;
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: rgba(0,0,0,.1);
+    }
+
+    i {
+      font-size: 20px;
+      line-height: 35px;
 
       display: block;
 
-      min-width: 65px;
-      padding: 0 11px;
+      width: 35px;
+      height: 35px;
+      margin: 8px auto;
 
-      text-align: center;
-      text-decoration: none;
-      text-transform: uppercase;
-
-      color: #737373;
-      border: 1px solid transparent;
+      border-radius: 50%;
     }
 
-    &:hover a {
-      color: #ff8300;
-    }
-
-    &--active a {
-      color: #ff8300;
-      border-color: rgba(255, 131, 0, .4);
-      background-color: @blue-darkest;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
-      text-shadow: 1px 1px 1px rgba(0,0,0,.5);
-    }
-  }
-
-  &__icon {
-    font-size: 14px;
-    line-height: 34px;
-    &:before {
-      margin-right: .2em;
+    &--active i {
+      background-color: @yellow-base;
     }
   }
 
@@ -89,18 +111,18 @@
     white-space: nowrap;
     text-transform: lowercase;
 
-    color: @blue-lightest;
-
     &-item {
+      font-weight: 600;
+
+      height: 40px;
       padding: 0 10px;
 
       user-select: text;
       white-space: nowrap;
 
       i {
-        font-size: 10px;
-
-        margin-right: 3px;
+        font-size: 20px;
+        font-weight: normal;
       }
 
       &[ng-click] {

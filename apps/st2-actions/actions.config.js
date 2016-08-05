@@ -7,7 +7,7 @@ module.exports = function st2ActionsConfig($stateProvider) {
     .state('actions', {
       abstract: true,
       url: '/actions',
-      icon: 'st2-icon__actions',
+      icon: 'icon-play',
       controller: 'st2ActionsCtrl',
       templateUrl: template,
       title: 'Actions',

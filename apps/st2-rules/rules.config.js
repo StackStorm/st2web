@@ -8,7 +8,7 @@ module.exports = function st2RulesConfig($stateProvider) {
     .state('rules', {
       abstract: true,
       url: '/rules',
-      icon: 'st2-icon__rules',
+      icon: 'icon-book-closed',
       controller: 'st2RulesCtrl',
       templateUrl: template,
       title: 'Rules',

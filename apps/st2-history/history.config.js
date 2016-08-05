@@ -9,7 +9,7 @@ module.exports = function st2HistoryConfig($stateProvider, $urlRouterProvider) {
     .state('history', {
       abstract: true,
       url: '/history',
-      icon: 'st2-icon__history',
+      icon: 'icon-history',
       controller: 'st2HistoryCtrl',
       templateUrl: template,
       title: 'History',

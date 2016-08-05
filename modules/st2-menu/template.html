@@ -1,25 +1,25 @@
 <a href="#" class="st2-menu__logo">
-  <img src="img/logo.svg" alt="StackStorm Stanley">
+  <img src="img/logo-brocade.svg" alt="Brocade Workflow Composer">
+  <div class="st2-menu__product-title">
+    Workflow composer
+  </div>
 </a>
 
-<ul class="st2-menu__nav">
-  <li ng-repeat="route in state.get() | filter:isMain | orderBy:position" class="st2-menu__nav-item"
-      ng-class="isActive(route) && 'st2-menu__nav-item--active'">
-    <a href="#{{ route.url }}">
-      <i class="st2-menu__icon"
-          ng-class="route.icon"></i>
-      {{ route.title }}
-    </a>
-  </li>
-</ul>
+<div class="st2-menu__spacer"></div>
 
 <div class="st2-menu__server">
   <span class="st2-menu__server-item">
-    <i class="st2-icon__user"></i>
     {{ user || 'Stanley' }}@{{ server.name }}
+    <i class="st2-menu__icon icon-user"></i>
   </span>
-  |
-  <span class="st2-menu__server-item" ng-click="disconnect()">
-    Disconnect
-  </div>
+</div>
+
+<div class="st2-menu__nav">
+  <a href="#{{ route.url }}" class="st2-menu__nav-item"
+      ng-repeat="route in state.get() | filter:isMain | orderBy:position" class="st2-menu__nav-item"
+      ng-class="isActive(route) && 'st2-menu__nav-item--active'">
+    <i class="st2-menu__icon"
+        ng-class="route.icon"></i>
+    {{ route.title }}
+  </a>
 </div>
