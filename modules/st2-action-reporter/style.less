@@ -1,6 +1,8 @@
 @import 'colors';
 
 .st2-action-reporter {
+  position: relative;
+
   &__header {
     margin-top: -10px;
     margin-bottom: 30px;
@@ -21,32 +23,22 @@
   }
 
   &__source {
-    font-size: 11px;
+    font-size: 13px;
+
+    position: absolute;
+    right: 0;
 
     display: inline-block;
 
-    margin: 0 0 -5px;
-    padding: 5px 10px 8px;
+    padding: 3px 5px;
 
-    color: @blue-lightest;
-    border-radius: 5px 5px 0 0;
-    background-color: @blue-darkest;
+    text-transform: lowercase;
+
+    color: @grey-base;
   }
 
-  &__message {
-    font-family: Inconsolata;
-    font-size: 14px;
-
-    display: block;
-
-    min-height: 20px;
-    margin: -10px 0 0 0;
-    padding: 13px 13px 10px;
-
-    color: #fff;
-    color: #d8d8d8;
-    border-radius: 4px;
-    background-color: #151a1e;
+  &__message .st2-highlight__well {
+    color: @grey-lighten-2;
   }
 
   & .st2-highlight + .st2-highlight {

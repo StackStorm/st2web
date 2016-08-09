@@ -3,38 +3,39 @@
 <main class="st2-panel">
 
   <div class="st2-panel__view st2-actions" cg-busy="busy">
-    <div class="st2-panel__scroller" id="st2-panel__scroller">
-
-      <div class="st2-panel__toolbar">
-        <div class="st2-panel__toolbar-title">
-          Actions
-        </div>
-
-        <div class="st2-panel__toolbar-actions">
-          <flow-link></flow-link>
-        </div>
-
-        <div class="st2-panel__toolbar-search"
-            ng-show="groups">
-          <form>
-            <input type="search"
-              class="st2-panel__search-bar"
-              data-test="filter"
-              placeholder="Filter"
-              ng-model="filter">
-          </form>
-        </div>
-
-        <div class="st2-panel__toolbar-view">
-          <div class="st2-view" view-settings="view"></div>
-        </div>
-
-        <div class="st2-panel__toolbar-toggle-all"
-            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('actions')}"
-            ng-click="toggleFlexTables('actions')"></div>
+    <div class="st2-panel__toolbar">
+      <div class="st2-panel__toolbar-actions">
+        <flow-link></flow-link>
       </div>
 
-      <div class="st2-panel__content">
+      <div class="st2-panel__toolbar-title">
+        Actions
+      </div>
+
+      <div class="st2-panel__toolbar-search"
+          ng-show="groups">
+        <form>
+          <input type="search"
+            class="st2-panel__search-bar"
+            data-test="filter"
+            placeholder="Filter"
+            ng-model="filter">
+          <i class="icon-lens"></i>
+        </form>
+      </div>
+
+      <div class="st2-panel__toolbar-view">
+        <div class="st2-view" view-settings="view"></div>
+      </div>
+
+      <div class="st2-panel__toolbar-toggle-all"
+          ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('actions')}"
+          ng-click="toggleFlexTables('actions')"></div>
+    </div>
+
+    <div class="st2-panel__content">
+
+      <div class="st2-panel__scroller" id="st2-panel__scroller">
 
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
@@ -130,17 +131,6 @@
       data-test="details"
       ng-show="action">
 
-    <div class="st2-details__header">
-      <div class="st2-details__header-name" data-test="header_name">
-        <a ui-sref="actions.general({ref:action.ref})">
-          {{ action.ref }}
-        </a>
-      </div>
-      <div class="st2-details__header-description" data-test="header_description">
-        {{ action.description }}
-      </div>
-    </div>
-
     <div class="st2-details__toolbar">
 
       <flow-link action="{{ action.ref }}" data-test="flow_link"
@@ -164,6 +154,17 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="st2-details__header">
+      <div class="st2-details__header-name" data-test="header_name">
+        <a ui-sref="actions.general({ref:action.ref})">
+          {{ action.ref }}
+        </a>
+      </div>
+      <div class="st2-details__header-description" data-test="header_description">
+        {{ action.description }}
+      </div>
     </div>
 
     <div class="st2-details__body"
@@ -214,7 +215,7 @@
           </div>
         </div>
 
-        <div class="st2-details__panel">
+        <div class="st2-details__panel st2-actions__executions">
           <div class="st2-details__panel-heading">
             <h2 class="st2-details__panel-title">
               Executions
@@ -232,7 +233,7 @@
                   ng-click="expand(record, $event)">
 
                 <div class="st2-flex-table__column st2-actions__details-column-utility">
-                  <i ng-class="'st2-icon__' + (record._expanded && 'down-open' || 'right-open')">
+                  <i ng-class="'icon-chevron-' + (record._expanded && 'down' || 'up')">
                   </i>
                 </div>
 
@@ -259,7 +260,7 @@
                     title="Jump to History"
                     ui-sref="history.general({action: action.ref, id: record.id})"
                     ng-click="$event.stopPropagation()">
-                  <i class="st2-icon__history"></i>
+                  <i class="icon-history"></i>
                 </a>
 
               </div>

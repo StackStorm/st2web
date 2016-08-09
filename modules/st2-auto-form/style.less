@@ -33,13 +33,13 @@
     top: 0;
     right: 0;
 
-    color: red;
+    color: @red-darken-2;
   }
 
   &__type {
     font-size: 18px;
-    font-weight: bold;
-    line-height: 34px;
+    font-weight: normal;
+    line-height: 38px;
 
     position: absolute;
     right: 0;
@@ -50,7 +50,7 @@
     user-select: none;
     text-align: center;
 
-    color: @blue-dark;
+    color: @grey-base;
   }
 
   &__button {
@@ -67,17 +67,14 @@
     user-select: none;
     text-align: center;
 
-    color: @blue-darker;
-    text-shadow: 0 1px 0 @blue-dark,
-    1px 0 0 @blue-dark,
-    0 -1px 0 @blue-dark,
-    -1px 0 0 @blue-dark;
+    color: @grey-lighten-5;
+    text-shadow: 0 1px 0 @grey-base,
+    1px 0 0 @grey-base,
+    0 -1px 0 @grey-base,
+    -1px 0 0 @grey-base;
 
     &:hover {
-      text-shadow: 0 1px 0 @blue,
-      1px 0 0 @blue,
-      0 -1px 0 @blue,
-      -1px 0 0 @blue;
+      color: white;
     }
   }
 
@@ -91,44 +88,36 @@
     height: 36px;
     padding: 0 12px;
 
-    color: white;
+    color: black;
     border: none;
     outline: 0;
-    background-color: @blue-darkest;
-
-    &[readonly] {
-      cursor: not-allowed;
-
-      color: rgba(255, 255, 255, .36);
-      background-color: red;
-    }
+    background-color: white;
+    box-shadow: 0 1px 0 @grey-lighten-2;
 
     &[disabled] {
       cursor: default;
 
-      color: @blue-light;
+      color: @grey-lighten-3;
       border-color: transparent;
-      background-color: rgba(54, 64, 73, .65);
     }
 
     &::placeholder {
-      color: fade(@blue-light, 40%);
+      color: @grey-lighten-3;
     }
 
     &:invalid {
-      // TODO: not sure whether this is intentional or a bug, but shadow doesn't match
       box-shadow: none;
     }
 
-    &--invalid,
-    &.ng-dirty.ng-invalid,
-    &.ng-touched.ng-invalid {
-      box-shadow: 0 0 0 1px red;
+    &:focus {
+      box-shadow: 0 1px 0 @aqua-base;
     }
 
-    &:focus {
-      // TODO @gmedrano: apparently, we need another color in between of darker and darkest.
-      background-color: fade(@blue-darkest, 60%);
+    &--invalid,
+    &--invalid:focus,
+    &.ng-dirty.ng-invalid,
+    &.ng-touched.ng-invalid {
+      box-shadow: 0 1px 0 @red-darken-2;
     }
 
     option {
@@ -148,19 +137,19 @@
 
     cursor: default;
 
-    color: @blue-light;
-    background-color: rgba(54, 64, 73, .65);
+    color: @grey-lighten-1;
+    background-color: white;
+    box-shadow: 0 1px 0 @grey-lighten-2;
   }
 
   &__text,
   &__link {
     line-height: 36px;
 
-    color: @blue-light;
+    color: @grey-lighten-3;
   }
 
   &__text-field &__field {
-    font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     line-height: 18px;
 
@@ -212,8 +201,8 @@
     position: relative;
 
     &:after {
-      font-family: 'ststanley';
-      font-size: 12px;
+      font-family: 'brocadeicons';
+      font-size: 18px;
       font-weight: normal;
       font-style: normal;
       line-height: 36px;
@@ -226,11 +215,11 @@
 
       padding: 0 10px 0 0;
 
-      content: '\e804';
+      content: '\e91c';
       vertical-align: middle;
       pointer-events: none;
 
-      color: @blue-dark;
+      color: black;
     }
   }
 
@@ -270,27 +259,25 @@
     }
 
     & + &-label:before {
-      font-family: 'ststanley';
+      font-family: 'brocadeicons';
       font-size: 12px;
       font-weight: normal;
       font-style: normal;
-      line-height: 16px;
+      line-height: 10px;
 
       display: inline-block;
 
-      width: 14px;
-      height: 14px;
+      width: 10px;
+      height: 10px;
       margin-right: .3em;
 
-      content: '\00a0';
-      content: '\e80a';
+      content: '\e968';
       text-decoration: inherit;
 
-      color: @blue-lightest;
-      border: 0;
-      background-color: @blue-darkest;
-      text-shadow: 1px 0 1px #000,
-      1px 1px 1px #000;
+      color: @aqua-base;
+      border: 1px solid black;
+      background-color: transparent;
+      text-shadow: 1px 0 0 #eee, 0 -1px 0 #eee;
     }
 
     &:not(:checked) + &-label:before {
@@ -299,11 +286,12 @@
     }
 
     &--default:not(:checked) + &-label:before {
-      color: @blue-darkest;
-      text-shadow: 0 1px 0 mix(@blue-lightest, @blue-darkest, 50%),
-      1px 0 0 mix(@blue-lightest, @blue-darkest, 50%),
-      0 -1px 0 mix(@blue-lightest, @blue-darkest, 50%),
-      -1px 0 0 mix(@blue-lightest, @blue-darkest, 50%);
+      color: @grey-lighten-2;
+      text-shadow: 1px 0 0 #eee, 0 -1px 0 #eee;
+    }
+
+    &[disabled] + &-label:before {
+      border: 1px solid @grey-lighten-3;
     }
   }
 
@@ -311,7 +299,7 @@
     margin-top: -5px;
 
     opacity: .7;
-    color: #d1eeff;
+    color: @grey-darken-1;
   }
 
   &__suggestions {

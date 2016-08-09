@@ -27,8 +27,8 @@
       ng-if="result.traceback">
   </div>
 
-  <div class="st2-action-reporter__message"
+  <div class="st2-highlight st2-action-reporter__message"
+      code="'// Action produced no data'"
       ng-if="!result.stderr && !result.stdout && !result.traceback">
-    Action produced no data on the host
   </div>
 </div>

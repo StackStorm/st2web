@@ -3,38 +3,41 @@
 <main class="st2-panel">
 
   <div class="st2-panel__view st2-rules" cg-busy="busy">
-    <div class="st2-panel__scroller" id="st2-panel__scroller">
 
-      <div class="st2-panel__toolbar">
-        <div class="st2-panel__toolbar-title">
-          Rules
-        </div>
+    <div class="st2-panel__toolbar">
 
-        <div class="st2-panel__toolbar-actions">
-          <a class="st2-forms__button st2-panel__toolbar-button"
-              data-test="rule_create_button"
-              ng-click="popup.open()">
-            <i class="st2-icon__plus"></i>
-          </a>
-        </div>
-
-        <div class="st2-panel__toolbar-search"
-            ng-show="groups">
-          <form>
-            <input type="search"
-              class="st2-panel__search-bar"
-              data-test="filter"
-              placeholder="Filter"
-              ng-model="filter">
-          </form>
-        </div>
-
-        <div class="st2-panel__toolbar-toggle-all"
-            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('rules')}"
-            ng-click="toggleFlexTables('rules')"></div>
+      <div class="st2-panel__toolbar-actions">
+        <a class="st2-panel__toolbar-button"
+            data-test="rule_create_button"
+            ng-click="popup.open()">
+          <i class="icon-plus"></i>
+        </a>
       </div>
 
-      <div class="st2-panel__content">
+      <div class="st2-panel__toolbar-title">
+        Rules
+      </div>
+
+      <div class="st2-panel__toolbar-search"
+          ng-show="groups">
+        <form>
+          <input type="search"
+            class="st2-panel__search-bar"
+            data-test="filter"
+            placeholder="Filter"
+            ng-model="filter" />
+          <i class="icon-lens"></i>
+        </form>
+      </div>
+
+      <div class="st2-panel__toolbar-toggle-all"
+          ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('rules')}"
+          ng-click="toggleFlexTables('rules')"></div>
+    </div>
+
+    <div class="st2-panel__content">
+
+      <div class="st2-panel__scroller" id="st2-panel__scroller">
 
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
@@ -146,51 +149,6 @@
       data-test="details"
       ng-show="rule.ref">
 
-    <div class="st2-details__header">
-      <div class="st2-details__header-name">
-        <span class="st2-label"
-            data-test="status"
-            status="ruleMeta.enabled && 'enabled' || 'disabled'">
-        </span>
-        <a ui-sref="rules.general({ref: rule.ref})" data-test="header_name">
-          {{ ruleMeta.ref }}
-        </a>
-      </div>
-      <div class="st2-details__header-description" data-test="header_description">
-        {{ ruleMeta.description }}
-      </div>
-      <div class="st2-details__header-conditions">
-        <div class="st2-details__header-condition st2-details__header-condition--if" data-test="header_if">
-          <span class="st2-details__header-condition-label">If</span>
-          <span class="st2-details__header-condition-icon">
-            <span class="st2-pack-icon st2-pack-icon-small">
-              <img class="st2-pack-icon__image st2-pack-icon__image-small"
-                  ng-src="{{ icons[ruleMeta.trigger.type.split('.')[0]] }}"
-                  ng-if="icons[ruleMeta.trigger.type.split('.')[0]]">
-            </span>
-          </span>
-          <span class="st2-details__header-condition-name">
-            {{ ruleMeta.trigger.type }}
-          </span>
-        </div>
-        <div class="st2-details__header-condition st2-details__header-condition--then" data-test="header_then">
-          <span class="st2-details__header-condition-label">Then</span>
-          <span class="st2-details__header-condition-icon">
-            <span class="st2-pack-icon st2-pack-icon-small">
-              <img class="st2-pack-icon__image st2-pack-icon__image-small"
-                  ng-src="{{ icons[ruleMeta.action.ref.split('.')[0]] }}"
-                  ng-if="icons[ruleMeta.action.ref.split('.')[0]]">
-            </span>
-          </span>
-          <span class="st2-details__header-condition-name">
-            <a ui-sref="actions.general({ref: ruleMeta.action.ref})">
-              {{ ruleMeta.action.ref }}
-            </a>
-          </span>
-        </div>
-      </div>
-    </div>
-
     <div class="st2-details__toolbar">
       <input type="button"
           data-test="edit_button"
@@ -244,6 +202,51 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="st2-details__header">
+      <div class="st2-details__header-name">
+        <span class="st2-label"
+            data-test="status"
+            status="ruleMeta.enabled && 'enabled' || 'disabled'">
+        </span>
+        <a ui-sref="rules.general({ref: rule.ref})" data-test="header_name">
+          {{ ruleMeta.ref }}
+        </a>
+      </div>
+      <div class="st2-details__header-description" data-test="header_description">
+        {{ ruleMeta.description }}
+      </div>
+      <div class="st2-details__header-conditions">
+        <div class="st2-details__header-condition st2-details__header-condition--if" data-test="header_if">
+          <span class="st2-details__header-condition-label">If</span>
+          <span class="st2-details__header-condition-icon">
+            <span class="st2-pack-icon st2-pack-icon-small">
+              <img class="st2-pack-icon__image st2-pack-icon__image-small"
+                  ng-src="{{ icons[ruleMeta.trigger.type.split('.')[0]] }}"
+                  ng-if="icons[ruleMeta.trigger.type.split('.')[0]]">
+            </span>
+          </span>
+          <span class="st2-details__header-condition-name">
+            {{ ruleMeta.trigger.type }}
+          </span>
+        </div>
+        <div class="st2-details__header-condition st2-details__header-condition--then" data-test="header_then">
+          <span class="st2-details__header-condition-label">Then</span>
+          <span class="st2-details__header-condition-icon">
+            <span class="st2-pack-icon st2-pack-icon-small">
+              <img class="st2-pack-icon__image st2-pack-icon__image-small"
+                  ng-src="{{ icons[ruleMeta.action.ref.split('.')[0]] }}"
+                  ng-if="icons[ruleMeta.action.ref.split('.')[0]]">
+            </span>
+          </span>
+          <span class="st2-details__header-condition-name">
+            <a ui-sref="actions.general({ref: ruleMeta.action.ref})">
+              {{ ruleMeta.action.ref }}
+            </a>
+          </span>
+        </div>
+      </div>
     </div>
 
     <div class="st2-details__body"
@@ -310,7 +313,7 @@
           </div>
 
           <div class="st2-details__panel"
-              ng-show="$root.state.params.edit">
+              ng-if="$root.state.params.edit">
             <div class="st2-details__panel-heading">
               <h2 class="st2-details__panel-title">Rule</h2>
             </div>
@@ -349,7 +352,7 @@
         ng-class="{'st2-details__body--active': $root.isState('^.code')}">
       <div class="st2-panel__scroller">
 
-        <div class="st2-highlight"
+        <div class="st2-highlight st2-details__panel"
             data-test="rule_code"
             code="rule | yaml"
             lines="20"

@@ -3,9 +3,7 @@
 .st2-flex-table {
   position: relative;
 
-  margin-bottom: 20px;
-
-  color: @text;
+  color: black;
   background-color: transparent;
 
   &__caption {
@@ -13,57 +11,58 @@
 
     clear: both;
 
-    background: @blue;
+    margin: 10px;
+    margin-left: 10px;
 
     &-title {
-      font-family: Oswald;
       font-size: 15px;
       font-weight: 400;
+      line-height: 42px;
 
       display: inline-block;
 
       margin: 0;
-      padding: 10px 15px;
 
       letter-spacing: .6px;
       text-transform: uppercase;
 
-      color: #fff;
+      color: black;
     }
 
     &[ng-click] {
       cursor: pointer;
 
       &:after {
-        font-family: 'ststanley';
+        font-family: 'brocadeicons';
+        font-size: 15px;
         font-weight: normal;
         font-style: normal;
 
         position: absolute;
         top: 14px;
-        right: 14px;
+        right: 13px;
 
         display: block;
 
-        content: '\e804';
+        content: '\e95f';
 
-        color: rgba(255, 255, 255, .6);
+        color: rgba(0, 0, 0, .6);
       }
     }
 
     &:before {
+      // Calendar icon is missing in brocade pack
       font-family: 'ststanley';
+      font-size: 24px;
       font-weight: normal;
       font-style: normal;
+      line-height: 42px;
 
       display: inline-block;
 
-      padding: 14px;
+      padding: 0 12px;
 
       vertical-align: top;
-
-      color: #fff;
-      border-right: 1px solid rgba(255, 255, 255, .18);
     }
 
     &--pack img {
@@ -77,6 +76,7 @@
 
       vertical-align: top;
 
+      border-radius: 5px;
       background: white;
     }
     &--pack img:not([src]) {
@@ -88,12 +88,14 @@
 
       width: 32px;
       height: 32px;
+      margin-right: 5px;
       padding: 8px 4px 2px 6px;
 
       content: '\e80b';
       text-align: center;
 
       color: black;
+      border-radius: 5px;
       background: white;
     }
 
@@ -103,7 +105,7 @@
   }
 
   &--collapsed &__caption[ng-click]:after {
-    content: '\e803';
+    content: '\e960';
   }
 
   &--collapsed &__row,
@@ -132,7 +134,6 @@
     text-transform: uppercase;
 
     color: #fff;
-    background-color: @blue-dull;
   }
 
   &__column {
@@ -145,39 +146,13 @@
     text-overflow: ellipsis;
   }
 
-  &__row {
-    &--even {
-      background-color: @gray-white;
-    }
-    &--odd {
-      background-color: @blue-pale;
-    }
-
-    &&--active,
-    &&--active:hover {
-      font-weight: 600;
-
-      color: white;
-      // Specificity of 0030
-      background-color: @orange-bright;
-
-      .st2-label--warning {
-        background-color: #ffd54e;
-      }
-    }
-  }
-
   &__row:hover {
     // Specificity of 0020
     cursor: pointer;
-
-    background-color: @orange-pale;
   }
 
   &--passive &__row:hover {
     cursor: default;
-
-    background-color: initial;
   }
 
   &--passive &__row--even:hover {
@@ -188,8 +163,5 @@
     flex: 1;
 
     margin: 0;
-    padding: 10px;
-
-    background-color: @gray-white;
   }
 }

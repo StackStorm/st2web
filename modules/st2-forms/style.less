@@ -13,7 +13,6 @@
   &__button,
   &__button-prev,
   &__button-next {
-    font-family: Oswald;
     font-size: 14px;
     font-weight: 200;
     line-height: 21px;
@@ -30,7 +29,7 @@
     vertical-align: middle;
     white-space: nowrap;
     text-decoration: none;
-    letter-spacing: .05em;
+    letter-spacing: .02em;
     word-spacing: normal;
     text-transform: uppercase;
 
@@ -38,9 +37,9 @@
     color: #fff;
     border: 0;
     outline: 0;
-    background-color: @button;
+    background-color: @aqua-base;
     box-shadow: 0 2px 1px rgba(0, 0, 0, .3);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, .6);;
 
     &:before,
     &:after {
@@ -64,11 +63,11 @@
       cursor: default;
       pointer-events: none;
 
-      background-color: @button-disabled;
+      background-color: @grey-lighten-2;
     }
 
     &:active {
-      background-color: @button-active;
+      background-color: @aqua-lighten-2;
     }
 
     &--small {
@@ -84,15 +83,15 @@
     &:before {
       right: 100%;
 
-      border-right-color: @button;
+      border-right-color: @aqua-base;
     }
 
     &--disabled:before {
-      border-right-color: @button-disabled;
+      border-right-color: @grey-lighten-2;
     }
 
     &:active:before {
-      border-right-color: @button-active;
+      border-right-color: @aqua-lighten-2;
     }
   }
 
@@ -102,15 +101,15 @@
     &:after {
       left: 100%;
 
-      border-left-color: @button;
+      border-left-color: @aqua-base;
     }
 
     &--disabled:after {
-      border-left-color: @button-disabled;
+      border-left-color: @grey-lighten-2;
     }
 
     &:active:after {
-      border-left-color: @button-active;
+      border-left-color: @aqua-lighten-2;
     }
   }
 
@@ -124,84 +123,5 @@
 
   &__buttons-panel {
     margin-bottom: 10px;
-  }
-
-  &__field {
-    font-weight: normal;
-
-    box-sizing: border-box;
-    width: 100%;
-    height: 30px;
-    padding: 0 0 0 10px;
-
-    color: #fff;
-    border: 1px solid;
-    border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
-    border-radius: 4px;
-    outline: 0;
-    background-color: @gray-dark;
-
-    &[readonly] {
-      cursor: not-allowed;
-
-      border-color: transparent;
-    }
-
-    &[disabled] {
-      cursor: default;
-
-      border-color: transparent;
-    }
-
-    &::placeholder {
-      color: #aaa;
-    }
-
-    &:invalid {
-      // TODO: not sure whether this is intentional or a bug, but shadow doesn't match
-      box-shadow: none;
-    }
-  }
-
-  &__checkbox {
-    display: none;
-
-    margin: 0;
-    padding: 0;
-
-    &-label {
-      cursor: pointer;
-      user-select: none;
-      vertical-align: top;
-    }
-
-    & + &-label:before {
-      font-family: 'ststanley';
-      font-weight: normal;
-      font-style: normal;
-      line-height: 12px;
-
-      display: inline-block;
-
-      width: 14px;
-      height: 14px;
-      margin-right: .3em;
-
-      content: '\00a0';
-      text-decoration: inherit;
-
-      color: #01c8ff;
-      border: 1px solid;
-      border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
-      border-radius: 4px;
-      background-color: @gray-dark;
-    }
-
-    &:checked + &-label:before {
-      content: '\e80a';
-
-      text-shadow: 1px 0 1px #000,
-      1px 1px 1px #000;
-    }
   }
 }

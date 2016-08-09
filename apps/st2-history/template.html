@@ -4,39 +4,38 @@
 
   <div class="st2-panel__view st2-history" cg-busy="busy">
 
-    <div class="st2-panel__scroller" id="st2-panel__scroller">
-
-      <div class="st2-panel__toolbar">
-        <div class="st2-panel__toolbar-title">
-          History
-        </div>
-
-        <div class="st2-panel__toolbar-filters"
-            ng-show="filters">
-          <div class="st2-filter" items="filters['status']" active-items="active_filters['status']"
-               label="Status" on-change="$root.updateFiltersAndGo('status', activeItems)"
-               ng-if="!_.isEmpty(filters['status'])"></div>
-          <div class="st2-filter" items="filters['action']" active-items="active_filters['action']"
-               label="Action" on-change="$root.updateFiltersAndGo('action', activeItems)"
-               ng-if="!_.isEmpty(filters['action'])"></div>
-          <div class="st2-filter" items="filters['trigger_type']" active-items="active_filters['trigger_type']"
-               label="Trigger Type" on-change="$root.updateFiltersAndGo('trigger_type', activeItems)"
-               ng-if="!_.isEmpty(filters['trigger_type'])"></div>
-          <div class="st2-filter" items="filters['rule']" active-items="active_filters['rule']"
-               label="Rule" on-change="$root.updateFiltersAndGo('rule', activeItems)"
-               ng-if="!_.isEmpty(filters['rule'])"></div>
-        </div>
-
-        <div class="st2-panel__toolbar-view">
-          <div class="st2-view" view-settings="view"></div>
-        </div>
-
-        <div class="st2-panel__toolbar-toggle-all"
-            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('history')}"
-            ng-click="toggleFlexTables('history')"></div>
+    <div class="st2-panel__toolbar">
+      <div class="st2-panel__toolbar-title">
+        History
       </div>
 
-      <div class="st2-panel__content">
+      <div class="st2-panel__toolbar-filters"
+          ng-show="filters">
+        <div class="st2-filter" items="filters['status']" active-items="active_filters['status']"
+             label="Status" on-change="$root.updateFiltersAndGo('status', activeItems)"
+             ng-if="!_.isEmpty(filters['status'])"></div>
+        <div class="st2-filter" items="filters['action']" active-items="active_filters['action']"
+             label="Action" on-change="$root.updateFiltersAndGo('action', activeItems)"
+             ng-if="!_.isEmpty(filters['action'])"></div>
+        <div class="st2-filter" items="filters['trigger_type']" active-items="active_filters['trigger_type']"
+             label="Trigger Type" on-change="$root.updateFiltersAndGo('trigger_type', activeItems)"
+             ng-if="!_.isEmpty(filters['trigger_type'])"></div>
+        <div class="st2-filter" items="filters['rule']" active-items="active_filters['rule']"
+             label="Rule" on-change="$root.updateFiltersAndGo('rule', activeItems)"
+             ng-if="!_.isEmpty(filters['rule'])"></div>
+      </div>
+
+      <div class="st2-panel__toolbar-view">
+        <div class="st2-view" view-settings="view"></div>
+      </div>
+
+      <div class="st2-panel__toolbar-toggle-all"
+          ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('history')}"
+          ng-click="toggleFlexTables('history')"></div>
+    </div>
+
+    <div class="st2-panel__content">
+      <div class="st2-panel__scroller" id="st2-panel__scroller">
         <div class="st2-flex-table"
             ng-repeat="group in groups = (history | orderBy:'period':true)"
             ng-if="history && !_.isEmpty(groups)"
@@ -191,6 +190,9 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="st2-panel__navigation">
       <button class="st2-forms__button-left st2-forms__button-prev"
           ng-click="prevPage()"
           ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
@@ -203,24 +205,13 @@
           ng-if="!error && !_.isEmpty(groups)">
         Next
       </button>
-
     </div>
+
   </div>
 
   <div class="st2-panel__details st2-details"
       data-test="details"
       ng-show="record">
-
-    <div class="st2-details__header">
-      <div class="st2-details__header-name" data-test="header_name">
-        <a ui-sref="actions.general({ref:$root.getRef(record.action)})">
-          {{ $root.getRef(record.action) }}
-        </a>
-      </div>
-      <div class="st2-details__header-description" data-test="header_description">
-        {{ record.action.description }}
-      </div>
-    </div>
 
     <div class="st2-details__toolbar">
 
@@ -253,6 +244,17 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="st2-details__header">
+      <div class="st2-details__header-name" data-test="header_name">
+        <a ui-sref="actions.general({ref:$root.getRef(record.action)})">
+          {{ $root.getRef(record.action) }}
+        </a>
+      </div>
+      <div class="st2-details__header-description" data-test="header_description">
+        {{ record.action.description }}
+      </div>
     </div>
 
     <div class="st2-details__body"

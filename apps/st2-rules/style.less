@@ -4,10 +4,6 @@
   // Table columns
 
   .st2-flex-table {
-    padding-bottom: 10px;
-
-    background: #637789;
-
     &__column {
       position: relative;
 
@@ -15,9 +11,6 @@
     }
     &__row {
       padding: 0;
-    }
-    &__caption {
-      border-bottom: 1px solid #8d9ca9;
     }
 
     &--collapsed {
@@ -34,12 +27,12 @@
   }
 
   .st2-flex-rule {
-    margin: 10px 10px 0;
+    margin: 10px;
     padding: 0;
 
     border-radius: 3px;
     background-color: @gray-lightest;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
+    box-shadow: 0 0 0 1px rgba(128, 128, 128, .3);
 
     &__header {
       position: relative;
@@ -56,6 +49,7 @@
 
       padding-right: 5px;
 
+      border-bottom-left-radius: 5px;
       background: #f0f5f6;
 
       &:before,
@@ -88,6 +82,8 @@
 
       padding-left: 25px;
 
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: 5px;
       background: #dee8eb;
     }
   }
@@ -133,8 +129,8 @@
     padding-right: 35px;
   }
   &__label {
-    font-family: Oswald;
     font-size: 22px;
+    line-height: 32px;
 
     float: left;
 

@@ -11,84 +11,8 @@
   box-sizing: border-box;
   padding: 0;
 
-  color: @blue-lightest;
-  border-left: 1px solid @gray-darkest;
-  background-color: @blue-darker;
-  box-shadow: inset 1px 0 0 @gray-dull;
-
-  &__tab {
-    &s {
-      display: flex;
-      flex: 1;
-
-      width: 640px;
-      height: 100%;
-
-      background-color: @gray-dark;
-      box-shadow: inset 7px 0 9px -7px fade(@gray-darkest, 90%);
-
-      flex-wrap: wrap;
-    }
-
-    &-label {
-      font-family: Oswald;
-      font-size: 15px;
-      font-weight: 400;
-
-      z-index: 1;
-
-      flex: 1 0 10%;
-
-      box-sizing: border-box;
-      height: 44px;
-      padding: 10px;
-
-      cursor: pointer;
-      user-select: none;
-      text-align: center;
-      text-transform: uppercase;
-
-      color: #ccc;
-      border-top: 4px solid transparent;
-      box-shadow: inset 0 -1px 0 @gray-dull;
-
-      &--active {
-        color: inherit;
-        border-color: @blue-darkest;
-        background-color: @gray-darker;
-        box-shadow: inset 1px 0 0 0 @gray-dull;
-      }
-
-      &:hover {
-        color: #fff;
-      }
-    }
-
-    &-body {
-      position: absolute;
-      top: 44px;
-      bottom: 0;
-      left: 0;
-
-      display: none;
-      flex: 0 0 100%;
-
-      width: 640px;
-
-      background-color: @gray-darker;
-      box-shadow: inset 1px 0 0 @gray-dull;
-
-      order: 99;
-
-
-      &--active {
-        display: block;
-      }
-    }
-  }
-
   &__panel {
-    margin: 0 0 30px 0;
+    margin: 0 10px 30px 0;
 
     &-heading {
       display: flex;
@@ -97,8 +21,7 @@
     }
 
     &-title {
-      font-family: Oswald;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 400;
 
               flex: 1;
@@ -109,8 +32,6 @@
 
       letter-spacing: .5px;
       text-transform: uppercase;
-
-      color: white;
 
       -webkit-box-flex: 1;
       -webkit-flex: 1;
@@ -179,11 +100,11 @@
 
       text-align: left;
 
-      color: @blue-light;
+      color: @grey-base;
     }
 
     &:last-of-type {
-      margin-bottom: 0;
+      margin-bottom: 10px;
       padding-bottom: 0;
 
       border-bottom-color: transparent;
@@ -193,7 +114,7 @@
   &__header {
     overflow: hidden;
 
-    margin: 20px 20px 10px 20px;
+    margin: 20px 15px 10px 10px;
     padding-top: 20px;
 
     border-radius: 4px;
@@ -285,7 +206,6 @@
       }
 
       &-label {
-        font-family: Oswald;
         font-size: 22px;
 
         width: 1px;
@@ -316,7 +236,10 @@
   &__toolbar {
     display: flex;
 
-    padding: 5px 20px 10px 20px;
+    height: 28px;
+    padding: 15px 15px 15px 10px;
+
+    background-color: @grey-darken-2;
 
     &-button {
       margin: 0 10px 0 0;
@@ -357,6 +280,8 @@
     display: none;
     flex: 1;
 
+    margin: 20px 5px 0 10px;
+
     &--active {
       display: block;
     }
@@ -369,11 +294,7 @@
 
     user-select: none;
 
-    color: #fff;
-    border: 1px solid;
-    border-color: fade(@gray-darkest, 50%) fade(@gray-dull, 30%) fade(@gray, 50%);
-    background: @blue-darkest;
-    box-shadow: 0 2px 1px rgba(0, 0, 0, .3);
+    color: white;
     text-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 
     &-item {
@@ -387,10 +308,6 @@
       text-align: center;
     }
 
-    &:hover {
-      color: white;
-    }
-
     &:before {
       position: absolute;
       left: 0;
@@ -399,17 +316,17 @@
       height: 100%;
 
       content: '';
-      transition: left .3s;
+      transition: transform .3s;
 
-      background-color: @button;
+      border-bottom: 1px solid @yellow-base;
     }
 
     &&--of-two&--first:before {
-      left: 0;
+      transform: translateX(0);
     }
 
     &&--of-two&--second:before {
-      left: 50%;
+      transform: translateX(100%);
     }
   }
 
