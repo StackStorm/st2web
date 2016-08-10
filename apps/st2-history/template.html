@@ -375,17 +375,10 @@
                 {{ record.trigger_instance.occurrence_time | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
               </dd>
             </dl>
-            <dl class="st2-details__panel-body-line">
-              <dt class="st2-details__panel-body-label"
-                  ng-if="record.trigger_instance.payload">
-                Payload
-              </dt>
-              <dd class="st2-details__panel-body-value"
-                  ng-if="record.trigger_instance.payload">
-                <div class="st2-highlight" code="record.trigger_instance.payload | json"
-                    language="json"></div>
-              </dd>
-            </dl>
+          </div>
+          <div class="st2-details__panel-body">
+            <div class="st2-highlight" code="record.trigger_instance.payload | json"
+                language="json"></div>
           </div>
         </div>
 
