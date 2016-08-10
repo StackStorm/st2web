@@ -1,3 +1,5 @@
+@import 'colors';
+
 .st2-label {
   &__label {
     font-size: 12px;
@@ -34,20 +36,20 @@
     background-color: #428bca;
   }
   &--success {
-    background-color: #5cb85c;
+    background-color: @green-base;
   }
   &--info {
     background-color: #5bc0de;
   }
   &--warning {
-    background-color: #f0ad4e;
+    background-color: @yellow-base;
   }
   &--danger {
-    background-color: #d9534f;
+    background-color: @red-base;
   }
 
   &--failed {
-    background-color: #d9534f;
+    background-color: @red-base;
     &:before {
       display: none;
 
@@ -56,7 +58,7 @@
   }
 
   &--succeeded {
-    background-color: #5cb85c;
+    background-color: @green-base;
     &:before {
       display: none;
 
@@ -75,8 +77,8 @@
     overflow: hidden;
 
     box-sizing: border-box;
-    width: 13px;
-    height: 13px;
+    width: 16px;
+    height: 16px;
     padding: 0;
 
     color: transparent;
@@ -93,10 +95,10 @@
 
   @keyframes breathe {
     0% {
-      background-color: #777;
+      background-color: @grey-lighten-1;
     }
     100% {
-      background-color: #bbb;
+      background-color: @grey-lighten-3;
     }
   }
 }
