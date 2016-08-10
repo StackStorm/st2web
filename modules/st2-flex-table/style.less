@@ -40,7 +40,7 @@
 
         position: absolute;
         top: 14px;
-        right: 13px;
+        right: 15px;
 
         display: block;
 
@@ -108,6 +108,7 @@
     content: '\e960';
   }
 
+  &--collapsed .st2-flex-card,
   &--collapsed &__row,
   &--collapsed &__header {
     display: none;
@@ -127,6 +128,8 @@
     font-family: Oswald;
     font-size: 13px;
     font-weight: 400;
+
+    display: flex;
 
     padding: 9px 0;
 
@@ -163,5 +166,141 @@
     flex: 1;
 
     margin: 0;
+  }
+}
+
+.st2-flex-card {
+  margin: 10px;
+  padding: 0;
+
+  border-radius: 3px;
+  background-color: @gray-lightest;
+  box-shadow: 0 0 0 1px rgba(128, 128, 128, .3);
+
+  &__header {
+    position: relative;
+
+    display: flex;
+
+    border-bottom: 1px solid #cacaca;
+    border-radius: 3px 3px 0 0;
+    background: #e6eef0;
+
+    &-primary {
+      font-size: 16px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      color: #56a8db;
+    }
+
+    &-secondary {
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    // increasing specificity for flex to propagate
+    & &-status {
+      display: flex;
+      flex: 0 0 auto;
+
+      order: 99;
+      align-items: center;
+
+      .st2-label__label {
+        overflow: hidden;
+
+        width: 16px;
+        height: 16px;
+        padding: 0;
+
+        text-indent: -100000px;
+
+        border-radius: 8px;
+      }
+    }
+
+    i[ng-click] {
+      cursor: pointer;
+    }
+  }
+
+  &__row {
+    display: flex;
+    overflow: hidden;
+
+    flex-wrap: wrap;
+  }
+
+  &__column {
+    position: relative;
+
+    flex: 1;
+
+    box-sizing: border-box;
+    min-width: 0;
+    max-height: 52px;
+    padding: 10px 15px;
+
+    white-space: nowrap;
+  }
+
+  &__if {
+    overflow: visible;
+
+    padding-right: 5px;
+
+    border-bottom-left-radius: 5px;
+    background: #f0f5f6;
+
+    &:before,
+    &:after {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      right: -22px;
+
+      display: block;
+
+      width: 0;
+      height: 0;
+
+      content: '';
+
+      border-width: 26px 11px 26px 11px;
+      border-style: solid;
+      border-color: transparent transparent transparent #f0f5f6;
+    }
+    &:before {
+      z-index: 1;
+      right: -23px;
+
+      border-color: transparent transparent transparent #cacaca;
+    }
+  }
+  &__then {
+    overflow: visible;
+
+    padding-left: 25px;
+
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background: #dee8eb;
+  }
+
+  &__if&__column,
+  &__then&__column {
+    min-width: initial;
+  }
+}
+.st2-flex-card--active {
+  border-left: 5px solid #fb8000;
+  .st2-flex-card {
+    &__header {
+      background: white;
+    }
   }
 }

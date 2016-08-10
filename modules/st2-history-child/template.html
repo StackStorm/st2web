@@ -1,79 +1,56 @@
 <div class="st2-flex-table">
-  <div class="st2-flex-table__header">
-    <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility">
-    </div>
-    <div class="st2-flex-table__column st2-history__column-meta st2-history-child__column-meta"
-        ng-if="view.meta.value">
-    </div>
-    <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status"
-    ng-if="view.task.value">
-      Task
-    </div>
-    <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action"
-        ng-if="view.action.value">
-      Action
-    </div>
-    <div class="st2-flex-table__column st2-history-child__column-history"
-      ng-if="view.history.value">
-    </div>
-  </div>
 
-  <div class="st2-flex-table__row"
-      ng-class-odd="'st2-flex-table__row--odd'"
-      ng-class-even="'st2-flex-table__row--even'"
-      ng-class="{'st2-flex-table__row--active': record.id == $root.state.params.id}"
+  <div class="st2-flex-card"
+      ng-class="{'st2-flex-card--active': record.id == $root.state.params.id}"
       ng-repeat-start="record in workflow._children | orderBy:'start_timestamp'"
       ng-click="$root.go({id: record.id})">
 
-
-    <div class="st2-flex-table__column st2-history__column-utility st2-history-child__column-utility"
-        ng-click="(record | isExpandable) && expand(record, $event)">
-      <i ng-class="record._expanded && 'st2-icon__down-open' || 'st2-icon__right-open'"
-        ng-if="(record | isExpandable)">
-      </i>
-    </div>
-
-    <div class="st2-flex-table__column st2-history__column-meta st2-history-child__column-time"
-        ng-if="view.meta.value">
-      <div class="st2-history__column-meta-status">
-        <span class="st2-label st2-label--short" status="record.status"
-          ng-if="view.meta.subview.status.value"></span>
+    <div class="st2-flex-card__header">
+      <div class="st2-flex-card__column">
+        <div class="st2-flex-card__header-primary"
+            ng-if="view.meta.subview.time.value">
+          <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron-up'"
+            ng-click="(record | isExpandable) && expand(record, $event)"
+            ng-if="(record | isExpandable)">
+          </i>
+          {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
+        </div>
+      </div>
+      <div class="st2-flex-card__column st2-flex-card__header-status"
+          ng-if="view.meta.value">
         <i class="st2-icon__flow-cascade"
           ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
-      </div>
-      <div class="st2-history__column-meta-time"
-          ng-if="view.meta.subview.time.value">
-        {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
+        <span class="st2-label st2-label--short" status="record.status"
+          ng-if="view.meta.subview.status.value"></span>
       </div>
     </div>
 
-    <div class="st2-flex-table__column st2-history__column-status st2-history-child__column-status"
-        ng-if="view.task.value">
-      {{ getTaskName(record) }}
-    </div>
-    <div class="st2-flex-table__column st2-history__column-action st2-history-child__column-action"
-        ng-if="view.action.value">
-      <span class="st2-history__column-action-name">
-        {{ $root.getRef(record.action) }}
-      </span>
-      <span class="st2-history__column-action-params"
-          ng-if="view.action.subview.params.value"><!--
-    !--><span class="st2-history__column-action-param-name"
-            ng-repeat-start="(name, value) in record.parameters"
-            ng-show><!--
-      !-->{{ name }}=<!--
-    !--></span><!--
-    !--><span class="st2-history__column-action-param-value"><!--
-      !-->{{ value | fmtParam }}<!--
-    !--></span><!--
-    !--><span ng-if="!$last"
-          ng-repeat-end>, </span><!--
-  !--></span>
-    </div>
-    <div class="st2-flex-table__column st2-history-child__column-history"
-        ng-if="view.history.value"
-        ng-click="$root.state.go('history.general', {action: $root.getRef(workflow.action), id: record.id}); $event.stopPropagation()">
-      <i class="st2-icon__history"></i>
+    <div class="st2-flex-card__row">
+      <div class="st2-flex-card__column st2-flex-card__if"
+          ng-if="view.task.value">
+        {{ getTaskName(record) }}
+      </div>
+
+      <div class="st2-flex-card__column st2-flex-card__then"
+          title="{{ $root.getRef(record.action) }}"
+          ng-if="view.action.value">
+        <span class="st2-history__column-action-name">
+          {{ $root.getRef(record.action) }}
+        </span>
+        <span class="st2-history__column-action-params st2-proportional"
+            ng-if="view.action.subview.params.value">
+          <span class="st2-history__column-action-param"
+              ng-repeat="(name, value) in record.parameters"><!--
+         --><span ng-if="!$first">,&nbsp;</span><!--
+         --><span class="st2-history__column-action-param-name"><!--
+           -->{{ name }}=<!--
+         --></span><!--
+         --><span class="st2-history__column-action-param-value"><!--
+           -->{{ value | fmtParam }}<!--
+         --></span><!--
+       --></span>
+        </span>
+      </div>
     </div>
 
   </div>

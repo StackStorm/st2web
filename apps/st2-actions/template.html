@@ -50,52 +50,35 @@
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
-          <div class="st2-flex-table__header">
-            <div class="st2-flex-table__column st2-actions__column-utility"
-                ng-if="view.type.value">
-              <i class="st2-icon__flow-cascade"></i>
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-name"
-                ng-if="view.action.value">
-              Action
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-type"
-                ng-if="view.runner.value">
-              Runner
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-desc"
-                ng-if="view.description.value">
-              Description
-            </div>
-          </div>
-
-          <div class="st2-flex-table__row"
+          <div class="st2-flex-card"
               data-test="action action:{{action.ref}}"
-              ng-class-odd="'st2-flex-table__row--odd'"
-              ng-class-even="'st2-flex-table__row--even'"
-              ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
+              ng-class="{'st2-flex-card--active': action.ref == $parent.action.ref}"
               ng-repeat="action in params.list"
               ng-click="$root.go({ref: action.ref})"
               st2-scroll-into-view="{{ action.ref == $parent.action.ref }}"
               st2-scroll-into-view-container="st2-panel__scroller">
-            <div class="st2-flex-table__column st2-actions__column-utility"
-                ng-if="view.type.value">
-              <i class="st2-icon__flow-cascade"
-                ng-if="{'action': action} | isExpandable"></i>
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-name"
-                title="{{ action.ref }}"
-                ng-if="view.action.value">
-              {{ action.ref }}
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-type"
-                title="{{ action.runner_type }}"
-                ng-if="view.runner.value">
-              {{ action.runner_type }}
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-desc"
-                ng-if="view.description.value">
-              {{ action.description }}
+            <div class="st2-flex-card__header">
+              <div class="st2-flex-card__column">
+                <div class="st2-flex-card__header-primary"
+                    title="{{ action.ref }}"
+                    ng-if="view.action.value">
+                  {{ action.ref }}
+                </div>
+                <div class="st2-flex-card__header-secondary"
+                    ng-if="view.description.value">
+                  {{ action.description }}
+                </div>
+              </div>
+              <div class="st2-flex-card__column st2-flex-card__header-status">
+                <span title="{{ action.runner_type }}"
+                    ng-if="view.runner.value">
+                  {{ action.runner_type }}
+                </span>
+                <span ng-if="view.type.value">
+                  <i class="st2-icon__flow-cascade"
+                    ng-if="{'action': action} | isExpandable"></i>
+                </span>
+              </div>
             </div>
           </div>
         </div>

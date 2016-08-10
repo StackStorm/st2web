@@ -51,30 +51,32 @@
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
-          <div class="st2-flex-rule"
+          <div class="st2-flex-card"
               data-test="rule rule:{{ rule.ref }}"
-              ng-class="{'st2-flex-rule--active': rule.ref == $parent.rule.ref}"
+              ng-class="{'st2-flex-card--active': rule.ref == $parent.rule.ref}"
               ng-repeat="rule in params.list"
               ng-click="$root.go({ref: rule.ref, edit: undefined})"
               st2-scroll-into-view="{{ rule.ref === $parent.rule.ref }}"
               st2-scroll-into-view-container="st2-panel__scroller">
-            <div class="st2-flex-rule__header">
-              <div class="st2-rules__column-enabled"
+            <div class="st2-flex-card__header">
+              <div class="st2-flex-card__header-status st2-flex-card__column"
                   ng-if="view.status.value">
                 <span class="st2-label" status="rule.enabled && 'enabled' || 'disabled'"></span>
               </div>
-              <div class="st2-rules__column-name"
-                  title="{{ rule.ref }}"
-                  ng-if="view.name.value">
-                {{ rule.ref }}
-              </div>
-              <div class="st2-rules__column-desc"
-                  ng-if="view.description.value">
-                {{ rule.description }}
+              <div class="st2-flex-card__column">
+                <div class="st2-flex-card__header-primary"
+                    title="{{ rule.ref }}"
+                    ng-if="view.name.value">
+                  {{ rule.ref }}
+                </div>
+                <div class="st2-flex-card__header-secondary"
+                    ng-if="view.description.value">
+                  {{ rule.description }}
+                </div>
               </div>
             </div>
-            <div class="st2-flex-table__row">
-              <div class="st2-flex-table__column st2-flex-rule__if">
+            <div class="st2-flex-card__row">
+              <div class="st2-flex-card__column st2-flex-card__if">
                 <div class="st2-rules__column-trigger"
                     title="{{ rule.trigger.type }}"
                     ng-if="view.trigger.value">
@@ -93,7 +95,7 @@
                   </span>
                 </div>
               </div>
-              <div class="st2-flex-table__column st2-flex-rule__then">
+              <div class="st2-flex-card__column st2-flex-card__then">
                 <div class="st2-rules__column-action"
                     title="{{ rule.action.ref }}"
                     ng-if="view.action.value">
