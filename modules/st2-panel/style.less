@@ -228,22 +228,19 @@
     color: fade(@blue-light, 40%);
 
     &-empty {
-      padding: 5em;
+      font-size: 18px;
+
+      margin: 60px 30px 30px;
+      padding: 100px 0;
 
       text-align: center;
 
-      &:before {
-        font-family: 'ststanley';
-        font-size: 32px;
-        font-weight: normal;
-        font-style: normal;
-
-        display: block;
-
-        padding-bottom: 10px;
-
-        content: '\e810';
-      }
+      color: black;
+      background-image: url(../img/primary-image.svg);
+      background-repeat: no-repeat;
+      background-position: center 0;
+      background-size: 320px;
+      text-shadow: 0 0 1px #eee;
     }
 
     &-error {
