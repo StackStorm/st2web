@@ -299,6 +299,9 @@ module.exports =
           'status': {
             value: true
           },
+          'time': {
+            value: true
+          },
           'type': {
             value: true
           }
