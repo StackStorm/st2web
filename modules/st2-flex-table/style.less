@@ -184,7 +184,7 @@
 
     border-bottom: 1px solid #cacaca;
     border-radius: 3px 3px 0 0;
-    background: #e6eef0;
+    background: white;
 
     &-primary {
       font-size: 16px;
@@ -193,7 +193,7 @@
 
       text-overflow: ellipsis;
 
-      color: #56a8db;
+      color: @aqua-base;
     }
 
     &-secondary {
@@ -255,7 +255,7 @@
     padding-right: 5px;
 
     border-bottom-left-radius: 5px;
-    background: #f0f5f6;
+    background: white;
 
     &:before,
     &:after {
@@ -273,7 +273,7 @@
 
       border-width: 26px 11px 26px 11px;
       border-style: solid;
-      border-color: transparent transparent transparent #f0f5f6;
+      border-color: transparent transparent transparent white;
     }
     &:before {
       z-index: 1;
@@ -289,7 +289,7 @@
 
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-    background: #dee8eb;
+    background: @aqua-lighten-5;
   }
 
   &__if&__column,
@@ -298,10 +298,10 @@
   }
 }
 .st2-flex-card--active {
-  border-left: 5px solid #fb8000;
+  border-left: 5px solid @yellow-base;
   .st2-flex-card {
     &__header {
-      background: white;
+      background: @yellow-lighten-5;
     }
   }
 }
