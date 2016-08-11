@@ -309,25 +309,37 @@
     box-sizing: border-box;
     width: 100%;
     margin-top: -16px;
-    padding: 3px;
 
     user-select: none;
 
-    border-radius: 0 0 4px 4px;
-    background-color: mix(@blue-darkest, @blue-darker, 60%);
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, .2) 0 8px 18px 0,
+    rgba(0, 0, 0, .2) 0 8px 20px 0;
   }
 
   &__suggestion {
     box-sizing: border-box;
     width: 100%;
-    padding: 7px;
+    padding: 5px 10px;
 
     cursor: pointer;
 
-    border-radius: 4px;
-
     &--active {
-      background-color: @blue-dark;
+      color: @aqua-base;
+    }
+
+    &:hover {
+      background-color: @yellow-lighten-5;
+    }
+
+    &-primary {
+      font-size: 14px;
+    }
+
+    &-secondary {
+      font-size: 10px;
+
+      color: black;
     }
   }
 }

@@ -29,8 +29,8 @@
       ng-repeat="suggestion in sample = (spec.enum | filter:{name:rawResult})"
       ng-class="{'st2-auto-form__suggestion--active': $parent.selected == $index}"
       ng-click="choose($index)">
-    <div class="st2-details__header-name">{{ suggestion.name }}</div>
-    <div class="st2-details__header-description">{{ suggestion.description }}</div>
+    <div class="st2-auto-form__suggestion-primary">{{ suggestion.name }}</div>
+    <div class="st2-auto-form__suggestion-secondary">{{ suggestion.description }}</div>
   </div>
 </div>
 
