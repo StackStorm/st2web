@@ -98,25 +98,32 @@ export default class RerunForm extends React.Component {
         Rerun an execution
       </div>
 
-      <StringField data-test='rerun_form_action' {...stringProps} />
+      <div className="st2-details__panel">
+        <div className="st2-details__panel-body">
 
-      <AutoForm {...autoFormProps} />
+          <StringField data-test='rerun_form_action' {...stringProps} />
 
-      <div className="st2-forms__buttons-panel">
-        <button data-test='rerun_submit' {...submitProps} >Submit</button>
-        <button data-test='rerun_cancel' {...cancelProps} >Cancel</button>
-        <button data-test='rerun_preview' {...previewProps} >Preview</button>
-      </div>
 
-      {
-        this.state.preview && <div className="st2-highlight__well">
-          <pre>
-            <code>
-              { JSON.stringify(this.state.payload, null, 2) }
-            </code>
-          </pre>
+          <AutoForm {...autoFormProps} />
+
+          <div className="st2-forms__buttons-panel">
+            <button data-test='rerun_submit' {...submitProps} >Submit</button>
+            <button data-test='rerun_cancel' {...cancelProps} >Cancel</button>
+            <button data-test='rerun_preview' {...previewProps} >Preview</button>
+          </div>
+
+          {
+            this.state.preview && <div className="st2-highlight__well">
+              <pre>
+                <code>
+                  { JSON.stringify(this.state.payload, null, 2) }
+                </code>
+              </pre>
+            </div>
+          }
+
         </div>
-      }
+      </div>
 
     </form>;
   }

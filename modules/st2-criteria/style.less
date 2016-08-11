@@ -45,13 +45,17 @@
 
     cursor: pointer;
 
-    color: @blue-dark;
+    color: @grey-lighten-5;
+    text-shadow: 0 1px 0 @grey-base,
+    1px 0 0 @grey-base,
+    0 -1px 0 @grey-base,
+    -1px 0 0 @grey-base;
 
     align-self: center;
   }
 
-  &__line:hover &__remove {
-    color: @blue;
+  &__remove:hover {
+    color: white;
   }
 
   &__buttons {
