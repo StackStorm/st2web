@@ -1,5 +1,7 @@
+@import 'colors';
+
 .st2-view {
-  font-size: 18px;
+  font-size: 14px;
   line-height: 35px;
 
   position: relative;
@@ -22,8 +24,6 @@
 
   &:last-of-type&--active &__variants {
     right: 0;
-
-    border-radius: 5px 0 5px 5px;
   }
 
   &__label {
@@ -50,7 +50,7 @@
     }
 
     &--active {
-      color: #01c8ff;
+      color: @aqua-base;
     }
   }
 
@@ -61,10 +61,11 @@
     display: none;
 
     min-width: 100%;
-    padding: 4px 5px 4px 0;
 
-    border-radius: 0 5px 5px 5px;
-    background-color: #222;
+    color: black;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, .2) 0 8px 18px 0,
+    rgba(0, 0, 0, .2) 0 8px 20px 0;
   }
 
   &__list {
@@ -100,11 +101,11 @@
     &:hover {
       cursor: pointer;
 
-      color: #ff8300;
+      background-color: @yellow-lighten-5;
     }
 
     &--active {
-      color: #01c8ff;
+      color: @aqua-base;
     }
 
     &--secondary {
