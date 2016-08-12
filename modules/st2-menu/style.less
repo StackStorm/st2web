@@ -36,20 +36,26 @@
   }
 
   &__logo {
-    padding: 10px;
+    display: flex;
+
+    height: 52px;
+    margin: 10px;
 
     text-decoration: none;
-    // Hides Alt text while svg is still loading
 
     color: transparent;
+    background-image: url(../img/logo-stackstorm.svg);
+    background-repeat: no-repeat;
+    background-size: 153px;
 
-    img {
-      width: 124px;
+    align-items: flex-end;
+
+    &:after {
+      content: 'Event-driven automation';
+      white-space: nowrap;
+
+      color: white;
     }
-  }
-
-  &__product-title {
-    color: white;
   }
 
   // TODO: Remove this ugliness
