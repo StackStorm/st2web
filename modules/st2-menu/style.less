@@ -110,7 +110,7 @@
     }
   }
 
-  &__server {
+  &__user {
     position: relative;
 
     padding: 10px;
@@ -122,10 +122,14 @@
     &-item {
       font-weight: 600;
 
+      position: relative;
+
       height: 40px;
       padding: 0 10px;
 
+      cursor: pointer;
       user-select: text;
+      user-select: none;
       white-space: nowrap;
 
       i {
@@ -133,10 +137,48 @@
         font-weight: normal;
       }
 
-      &[ng-click] {
-        cursor: pointer;
-        user-select: none;
+      input {
+        display: none;
       }
+    }
+
+    &-dropdown {
+      font-size: 14px;
+      font-weight: normal;
+
+      position: absolute;
+      right: 0;
+
+      display: none;
+
+      color: black;
+      background-color: white;
+
+      &-backdrop {
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      &-item {
+        line-height: 2em;
+
+        position: relative;
+        z-index: 11;
+
+        padding: 0 10px;
+
+        &:hover {
+          background-color: @yellow-lighten-5;
+        }
+      }
+    }
+
+    &-item input[type=checkbox]:checked ~ &-dropdown {
+      display: block;
     }
   }
 }
