@@ -13,27 +13,10 @@
   letter-spacing: .04em;
 
   color: white;
+  background: linear-gradient(45deg, rgb(0, 115, 150) 0%, rgb(68, 50, 153) 100%);
   background-color: @blue-darken-3;
 
   align-items: center;
-  // This font also hinted pretty badly for the fnt size we are using.
-  // One of H's stems keep getting into another column of pixels on any letter spacing.
-
-  &--blue {
-    background: linear-gradient(45deg, rgb(0, 115, 150) 0%, rgb(68, 50, 153) 100%);
-  }
-
-  &--green {
-    background: linear-gradient(45deg, rgba(0,115,119,1) 0%, rgba(97,159,66,1) 100%);
-  }
-
-  &--red {
-    background: linear-gradient(45deg, rgb(189, 80, 48) 0%, rgb(165, 24, 144) 100%);
-  }
-
-  &--purple {
-    background: linear-gradient(45deg, rgb(152, 29, 151) 0%, rgb(32, 76, 151) 100%);
-  }
 
   &__logo {
     // We need to specify it here so the logo on login screen would match the menu one
