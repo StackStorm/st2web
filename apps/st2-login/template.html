@@ -2,9 +2,7 @@
   <form class="st2-login__form"
       data-test="login"
       ng-submit="connect(server, username, password, remember)">
-    <a href="#" class="st2-login__logo">
-      <img src="img/logo.svg" alt="StackStorm Stanley">
-    </a>
+    <a href="#" class="st2-menu__logo"></a>
     <div class="st2-login__error" ng-show="error">
       {{ error }}
     </div>
@@ -41,10 +39,10 @@
         value="Connect" />
 
       <label class="st2-login__checkbox-wrapper">
-        <input class="st2-auto-form__checkbox"
+        <input class="st2-login__checkbox"
           type="checkbox"
           ng-model="remember" />
-        <span class="st2-auto-form__checkbox-label">
+        <span class="st2-login__checkbox-label">
           remember
         </span>
       </label>
