@@ -1,13 +1,14 @@
 @font-face {
   font-family: 'brocadeicons';
-  src: url('../font/brocadeicons.eot');
-  src: url('../font/brocadeicons.eot#iefix') format('embedded-opentype'),
-       url('../font/brocadeicons.ttf') format('truetype'),
-       url('../font/brocadeicons.woff') format('woff'),
-       url('../font/brocadeicons.svg#brocadeicons') format('svg');
+  src:  url('../font/brocadeicons.eot?o8eim6');
+  src:  url('../font/brocadeicons.eot?o8eim6#iefix') format('embedded-opentype'),
+    url('../font/brocadeicons.ttf?o8eim6') format('truetype'),
+    url('../font/brocadeicons.woff?o8eim6') format('woff'),
+    url('../font/brocadeicons.svg?o8eim6#brocadeicons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
+
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'brocadeicons' !important;
@@ -17,15 +18,113 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
+
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.icon-time:before {
+  content: "\e979";
+}
+.icon-save:before {
+  content: "\e971";
+}
+.icon-chevron_right:before {
+  content: "\e972";
+}
+.icon-chevron_left:before {
+  content: "\e973";
+}
+.icon-arrange:before {
+  content: "\e974";
+}
+.icon-redirect2:before {
+  content: "\e977";
+}
+.icon-calendar:before {
+  content: "\e978";
+}
+.icon-lan:before {
+  content: "\e932";
+}
+.icon-node:before {
+  content: "\e94c";
+}
+.icon-server:before {
+  content: "\e95a";
+}
+.icon-virtual-server:before {
+  content: "\e95b";
+}
+.icon-move:before {
+  content: "\e970";
+}
 .icon-history:before {
-content: "\e96e";
+  content: "\e96e";
 }
 .icon-repeat:before {
-content: "\e96f";
+  content: "\e96f";
+}
+.icon-paths2:before {
+  content: "\e96d";
+}
+.icon-wand:before {
+  content: "\e96c";
+}
+.icon-redirect:before {
+  content: "\e975";
+}
+.icon-code3:before {
+  content: "\e976";
+}
+.icon-cubes:before {
+  content: "\e96b";
+}
+.icon-datacenter:before {
+  content: "\e969";
+}
+.icon-datacenter2:before {
+  content: "\e96a";
+}
+.icon-pencil:before {
+  content: "\e961";
+}
+.icon-notes_list:before {
+  content: "\e962";
+}
+.icon-wrenches:before {
+  content: "\e963";
+}
+.icon-change:before {
+  content: "\e964";
+}
+.icon-list2:before {
+  content: "\e965";
+}
+.icon-branch:before {
+  content: "\e966";
+}
+.icon-warning:before {
+  content: "\e967";
+}
+.icon-check2:before {
+  content: "\e968";
+}
+.icon-paths:before {
+  content: "\e95d";
+}
+.icon-chevrons:before {
+  content: "\e95e";
+}
+.icon-chevron-down:before {
+  content: "\e95f";
+}
+.icon-chevron-up:before {
+  content: "\e960";
+}
+.icon-server2:before {
+  content: "\e95c";
 }
 .icon-bars:before {
   content: "\e954";
@@ -44,27 +143,6 @@ content: "\e96f";
 }
 .icon-port:before {
   content: "\e959";
-}
-.icon-server:before {
-  content: "\e95a";
-}
-.icon-virtual-server:before {
-  content: "\e95b";
-}
-.icon-server2:before {
-  content: "\e95c";
-}
-.icon-paths:before {
-  content: "\e95d";
-}
-.icon-chevrons:before {
-  content: "\e95e";
-}
-.icon-chevron-down:before {
-  content: "\e95f";
-}
-.icon-chevron-up:before {
-  content: "\e960";
 }
 .icon-health:before {
   content: "\e953";
@@ -231,9 +309,6 @@ content: "\e96f";
 .icon-info:before {
   content: "\e930";
 }
-.icon-node:before {
-  content: "\e932";
-}
 .icon-play:before {
   content: "\e933";
 }
@@ -305,9 +380,6 @@ content: "\e96f";
 }
 .icon-loading:before {
   content: "\e94b";
-}
-.icon-lan:before {
-  content: "\e94c";
 }
 .icon-cube:before {
   content: "\e94d";
