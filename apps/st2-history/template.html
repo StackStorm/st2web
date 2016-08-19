@@ -60,8 +60,14 @@
 
             <div class="st2-flex-card__header"
                 ng-if="view.meta.value">
+              <div class="st2-flex-card__column st2-flex-card__header-expand">
+                <i ng-class="record._expanded && 'icon-chevron-up' || 'icon-chevron-down'"
+                    ng-click="(record | isExpandable) && expand(record, $event)"
+                    ng-if="(record | isExpandable)">
+                </i>
+              </div>
               <div class="st2-flex-card__column st2-flex-card__header-status">
-                <i class="st2-icon__flow-cascade"
+                <i class="icon-branch"
                   ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
                 <span class="st2-label st2-label--short" status="record.status"
                   ng-if="view.meta.subview.status.value"></span>
@@ -69,10 +75,6 @@
               <div class="st2-flex-card__column">
                 <div class="st2-flex-card__header-primary"
                     ng-if="view.meta.subview.time.value">
-                  <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron-up'"
-                      ng-click="(record | isExpandable) && expand(record, $event)"
-                      ng-if="(record | isExpandable)">
-                  </i>
                   {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
                 </div>
               </div>
@@ -157,23 +159,24 @@
             <p>Check developer console of your browser for more info.</p>
           </div>
         </div>
+
+        <div class="st2-panel__navigation">
+          <button class="st2-forms__button st2-forms__button-prev"
+              ng-click="prevPage()"
+              ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
+              ng-if="!error && !_.isEmpty(groups)">
+            Previous
+          </button>
+          <button class="st2-forms__button st2-forms__button-next"
+              ng-click="nextPage()"
+              ng-class="{'st2-forms__button-next--disabled': ($root.page || 1) >= $root.maxPage}"
+              ng-if="!error && !_.isEmpty(groups)">
+            Next
+          </button>
+        </div>
+
       </div>
 
-    </div>
-
-    <div class="st2-panel__navigation">
-      <button class="st2-forms__button-left st2-forms__button-prev"
-          ng-click="prevPage()"
-          ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
-          ng-if="!error && !_.isEmpty(groups)">
-        Previous
-      </button>
-      <button class="st2-forms__button-right st2-forms__button-next"
-          ng-click="nextPage()"
-          ng-class="{'st2-forms__button-next--disabled': ($root.page || 1) >= $root.maxPage}"
-          ng-if="!error && !_.isEmpty(groups)">
-        Next
-      </button>
     </div>
 
   </div>
@@ -181,39 +184,6 @@
   <div class="st2-panel__details st2-details"
       data-test="details"
       ng-show="record">
-
-    <div class="st2-details__toolbar">
-
-      <input type="button"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          data-test="rerun_button"
-          ng-click="rerun.open()"
-          value="Rerun"/>
-
-      <input type="button"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          ng-click="cancel()"
-          ng-disabled="record.status != 'running'"
-          value="Cancel"/>
-
-      <div class="st2-details__toolbar-separator"></div>
-
-      <div class="st2-details__switch st2-details__switch--of-two"
-          ng-class="{
-            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
-            'st2-details__switch--second': $root.isState('^.code')
-          }">
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.general', {id: record.id})">
-          <i class="icon-gear"></i>
-        </div>
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.code', {id: record.id})">
-          <i class="icon-code"></i>
-        </div>
-      </div>
-
-    </div>
 
     <div class="st2-details__header">
       <div class="st2-details__header-name" data-test="header_name">
@@ -223,6 +193,21 @@
       </div>
       <div class="st2-details__header-description" data-test="header_description">
         {{ record.action.description }}
+      </div>
+    </div>
+
+    <div class="st2-details__switch st2-details__switch--of-two"
+        ng-class="{
+          'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+          'st2-details__switch--second': $root.isState('^.code')
+        }">
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.general', {id: record.id})">
+        General
+      </div>
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.code', {id: record.id})">
+        Code
       </div>
     </div>
 
@@ -400,6 +385,22 @@
         </div>
 
       </div>
+    </div>
+
+    <div class="st2-details__toolbar">
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          data-test="rerun_button"
+          ng-click="rerun.open()"
+          value="Rerun"/>
+
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="cancel()"
+          ng-disabled="record.status != 'running'"
+          value="Cancel"/>
+
+      <div class="st2-details__toolbar-separator"></div>
     </div>
 
     <div class="st2-details__body"

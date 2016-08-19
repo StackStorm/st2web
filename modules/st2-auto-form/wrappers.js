@@ -83,7 +83,7 @@ class Button extends React.Component {
 
   render() {
     const props = {
-      className: `st2-auto-form__button st2-icon__${this.props.icon}`,
+      className: `st2-auto-form__button icon-${this.props.icon}`,
       onClick: (e) => this.handleClick(e),
       title: this.props.title
     };
@@ -153,7 +153,7 @@ export class BooleanFieldWrapper extends React.Component {
     };
 
     const buttonProps = {
-      icon: 'cancel',
+      icon: 'cross',
       title: 'reset default',
       onClick: () => this.handleReset()
     };

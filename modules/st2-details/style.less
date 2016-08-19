@@ -12,7 +12,7 @@
   padding: 0;
 
   &__panel {
-    margin: 0 10px 30px 0;
+    padding: 20px 10px 0 20px;
 
     &-heading {
       display: flex;
@@ -53,34 +53,21 @@
         margin: 0;
 
         flex-wrap: wrap;
-
-        &:first-child > * {
-          padding-top: 12px;
-        }
-        &:last-child > * {
-          padding-bottom: 12px;
-        }
       }
 
       &-label {
-        line-height: 20px;
+        font-weight: bold;
+        line-height: 34px;
 
         width: 100px;
-        padding: 7px 12px;
-
-        color: black;
-        background-color: @grey-lighten-4;
       }
 
       &-value {
-        line-height: 20px;
+        line-height: 34px;
 
         flex: 1;
 
         margin: 0;
-        padding: 7px 12px;
-
-        color: @gray-darker;
 
         pre {
           margin: 0;
@@ -112,12 +99,10 @@
   &__header {
     overflow: hidden;
 
-    margin: 20px 15px 10px 10px;
     padding-top: 20px;
 
-    border-radius: 4px;
-    background: white;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+    color: white;
+    background: @grey-darken-1;
 
     a {
       text-decoration: none;
@@ -214,13 +199,9 @@
     display: flex;
 
     height: 28px;
-    padding: 15px 15px 15px 10px;
+    padding: 15px 15px 15px 20px;
 
-    background-color: @grey-darken-2;
-
-    &-button {
-      margin: 0 10px 0 0;
-    }
+    border-top: 1px solid @grey-lighten-2;
 
     &-separator {
       flex: 1;
@@ -257,30 +238,30 @@
     display: none;
     flex: 1;
 
-    margin: 20px 5px 0 10px;
-
     &--active {
       display: block;
     }
   }
 
   &__switch {
-    font-size: 18px;
-
     position: relative;
 
     display: flex;
 
+    padding-bottom: 5px;
+
     user-select: none;
+    text-transform: uppercase;
 
     color: white;
+    background-color: @grey-darken-1;
 
     &-item {
       line-height: 25px;
 
       z-index: 2;
 
-      width: 50px;
+      flex: 1;
 
       cursor: pointer;
       text-align: center;
@@ -290,13 +271,17 @@
       position: absolute;
       left: 0;
 
-      width: 50px;
+      box-sizing: border-box;
       height: 100%;
 
       content: '';
       transition: transform .3s;
 
-      border-bottom: 1px solid @yellow-base;
+      border-bottom: 5px solid @yellow-base;
+    }
+
+    &&--of-two:before {
+      width: 50%;
     }
 
     &&--of-two&--first:before {

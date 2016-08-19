@@ -83,13 +83,13 @@ export default class RerunForm extends React.Component {
 
     const cancelProps = {
       type: 'button',
-      className: 'st2-forms__button st2-details__toolbar-button',
+      className: 'st2-forms__button st2-details__toolbar-button st2-forms__button--flat st2-forms__button--red',
       onClick: (e) => this.handleCancel(e)
     };
 
     const previewProps = {
       type: 'button',
-      className: 'st2-forms__button st2-forms__button-right',
+      className: 'st2-forms__button st2-details__toolbar-button st2-forms__button--flat',
       onClick: () => this.togglePreview()
     };
 
@@ -107,9 +107,9 @@ export default class RerunForm extends React.Component {
           <AutoForm {...autoFormProps} />
 
           <div className="st2-forms__buttons-panel">
-            <button data-test='rerun_submit' {...submitProps} >Submit</button>
-            <button data-test='rerun_cancel' {...cancelProps} >Cancel</button>
             <button data-test='rerun_preview' {...previewProps} >Preview</button>
+            <button data-test='rerun_cancel' {...cancelProps} >Cancel</button>
+            <button data-test='rerun_submit' {...submitProps} >Submit</button>
           </div>
 
           {

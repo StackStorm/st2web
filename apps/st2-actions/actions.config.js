@@ -3,25 +3,28 @@
 var template = require('./template.html');
 
 module.exports = function st2ActionsConfig($stateProvider) {
+  const baseState = {
+    title: 'Actions',
+  };
+
   $stateProvider
-    .state('actions', {
+    .state('actions', Object.assign({}, baseState, {
       abstract: true,
       url: '/actions',
       icon: 'icon-play',
       controller: 'st2ActionsCtrl',
       templateUrl: template,
-      title: 'Actions',
       position: 2
-    })
-    .state('actions.list', {
+    }))
+    .state('actions.list', Object.assign({}, baseState, {
       url: ''
-    })
-    .state('actions.general', {
+    }))
+    .state('actions.general', Object.assign({}, baseState, {
       url: '/{ref:[\\w.-]+}/general'
-    })
-    .state('actions.code', {
+    }))
+    .state('actions.code', Object.assign({}, baseState, {
       url: '/{ref:[\\w.-]+}/code'
-    })
+    }))
 
     ;
 

@@ -6,19 +6,21 @@
       ng-click="$root.go({id: record.id})">
 
     <div class="st2-flex-card__header">
+      <div class="st2-flex-card__column st2-flex-card__header-expand">
+        <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron-up'"
+          ng-click="(record | isExpandable) && expand(record, $event)"
+          ng-if="(record | isExpandable)">
+        </i>
+      </div>
       <div class="st2-flex-card__column">
         <div class="st2-flex-card__header-primary"
             ng-if="view.meta.subview.time.value">
-          <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron-up'"
-            ng-click="(record | isExpandable) && expand(record, $event)"
-            ng-if="(record | isExpandable)">
-          </i>
           {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
         </div>
       </div>
       <div class="st2-flex-card__column st2-flex-card__header-status"
           ng-if="view.meta.value">
-        <i class="st2-icon__flow-cascade"
+        <i class="icon-branch"
           ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
         <span class="st2-label st2-label--short" status="record.status"
           ng-if="view.meta.subview.status.value"></span>

@@ -6,21 +6,26 @@
   width: 100%;
   height: 100%;
 
-  background-color: @grey-lighten-5;
+  background-color: white;
 
   &__details {
     width: 480px;
+
+    background-color: @grey-lighten-5;
   }
 
   &__view {
     // for .st2-panel__back-button to fill the right block
     position: relative;
+    z-index: 1;
 
     display: flex;
     flex: 1;
     flex-direction: column;
 
     box-sizing: border-box;
+
+    box-shadow: 0 0 20px rgba(0,0,0,.4);
   }
 
   &__scroller {
@@ -43,11 +48,10 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
-      background-color: fade(@blue, 30%);
+      background-color: @grey-lighten-4;
 
       &:hover {
-        background-color: fade(@blue, 70%);
+        background-color: @grey-lighten-3;
       }
     }
   }
@@ -62,7 +66,7 @@
     padding: 10px;
 
     color: white;
-    background-color: @grey-darken-2;
+    background-color: @grey-darken-1;
 
     justify-content: space-between;
     flex-flow: row-reverse nowrap;
@@ -81,11 +85,12 @@
       order: -1;
     }
 
-    &-title:first-child {
-      padding-left: 50px;
-    }
-
     &-actions {
+      position: absolute;
+      z-index: 1;
+      right: 10px;
+      bottom: 10px;
+
       display: flex;
       flex: 0 0 40px;
 
@@ -108,9 +113,10 @@
       text-align: center;
       text-decoration: none;
 
-      color: black;
+      color: white;
       border-radius: 50%;
-      background-color: white;
+      background-color: @aqua-base;
+      box-shadow: 0 0 10px @grey-base;
     }
 
     &-filters {
@@ -152,12 +158,12 @@
       flex: 0 0 auto;
 
       width: 15px;
-      margin-right: 13px;
-      padding: 0 7px;
+      margin-right: 15px;
+      padding: 0 10px;
 
       cursor: pointer;
 
-      order: -5;
+      order: 0;
 
       &:after {
         font-family: 'brocadeicons';
@@ -166,12 +172,12 @@
 
         width: 100%;
 
-        content: '\e95f';
+        content: '\e960';
         text-align: center;
       }
 
       &--collapsed:after {
-        content: '\e960';
+        content: '\e95f';
         text-align: right;
       }
     }
@@ -189,7 +195,7 @@
     border: 0;
     border-bottom: 1px solid @grey-lighten-2;
     outline: none;
-    background-color: @grey-darken-2;
+    background-color: transparent;
 
     &::placeholder {
       color: @grey-lighten-2;
@@ -276,7 +282,11 @@
   }
 
   &__navigation {
+    display: flex;
+
     padding: 10px;
+
+    justify-content: space-between;
   }
 
   &__loader:before {

@@ -4,12 +4,13 @@
   position: relative;
 
   color: black;
+  border-bottom: 1px solid @grey-lighten-1;
   background-color: transparent;
 
   &__caption {
     position: relative;
 
-    clear: both;
+    display: flex;
 
     margin: 10px;
     margin-left: 10px;
@@ -37,16 +38,17 @@
         font-size: 15px;
         font-weight: normal;
         font-style: normal;
-
-        position: absolute;
-        top: 14px;
-        right: 15px;
+        line-height: 42px;
 
         display: block;
 
-        content: '\e95f';
+        padding: 0 20px 0 10px;
+
+        content: '\e960';
 
         color: rgba(0, 0, 0, .6);
+
+        order: -1;
       }
     }
 
@@ -60,27 +62,26 @@
 
       display: inline-block;
 
-      padding: 0 12px;
+      padding: 0 5px;
 
       vertical-align: top;
     }
 
     &--pack img {
-      position: absolute;
-      top: 0;
-      left: 0;
-
       width: 32px;
       height: 32px;
+      margin-right: 5px;
+      margin-left: -47px;
       padding: 5px;
 
       vertical-align: top;
 
       border-radius: 5px;
       background: white;
-    }
-    &--pack img:not([src]) {
-      display: none;
+
+      &:not([src]) {
+        display: none;
+      }
     }
 
     &--pack:before {
@@ -90,7 +91,7 @@
       width: 32px;
       height: 32px;
       margin-right: 5px;
-      padding: 8px 4px 2px 6px;
+      padding: 5px;
 
       content: '\e94d';
       text-align: center;
@@ -106,7 +107,7 @@
   }
 
   &--collapsed &__caption[ng-click]:after {
-    content: '\e960';
+    content: '\e95f';
   }
 
   &--collapsed .st2-flex-card,
@@ -170,20 +171,16 @@
 }
 
 .st2-flex-card {
-  margin: 10px;
   padding: 0;
 
-  border-radius: 3px;
-  background-color: @gray-lightest;
-  box-shadow: 0 0 0 1px rgba(128, 128, 128, .3);
+  border-top: 1px solid @grey-lighten-3;
+  background-color: white;
 
   &__header {
     position: relative;
 
     display: flex;
 
-    border-bottom: 1px solid #cacaca;
-    border-radius: 3px 3px 0 0;
     background: white;
 
     &-primary {
@@ -192,8 +189,6 @@
       overflow: hidden;
 
       text-overflow: ellipsis;
-
-      color: @aqua-base;
     }
 
     &-secondary {
@@ -207,6 +202,8 @@
       display: flex;
       flex: 0 0 auto;
 
+      color: @grey-lighten-3;
+
       order: 99;
       align-items: center;
 
@@ -215,12 +212,21 @@
 
         width: 16px;
         height: 16px;
+        margin-left: 5px;
         padding: 0;
 
         text-indent: -100000px;
 
-        border-radius: 8px;
+        border-radius: 50%;
       }
+    }
+
+    & &-expand {
+      font-size: 15px;
+
+      flex: initial;
+
+      padding-left: 20px;
     }
 
     i[ng-click] {
@@ -254,9 +260,6 @@
 
     padding-right: 5px;
 
-    border-bottom-left-radius: 5px;
-    background: white;
-
     &:before,
     &:after {
       position: absolute;
@@ -286,22 +289,24 @@
     overflow: visible;
 
     padding-left: 25px;
-
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    background: @aqua-lighten-5;
   }
 
   &__if&__column,
   &__then&__column {
     min-width: initial;
+
+    border-top: 1px solid @grey-lighten-3;
   }
-}
-.st2-flex-card--active {
-  border-left: 5px solid @yellow-base;
-  .st2-flex-card {
-    &__header {
-      background: @yellow-lighten-5;
-    }
+
+  &--active {
+    border-left: 5px solid @yellow-base;
+  }
+
+  &--active &__header {
+    background: @yellow-lighten-5;
+  }
+
+  &--active &__header-expand {
+    padding-left: 15px;
   }
 }

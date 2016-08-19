@@ -3,11 +3,11 @@
 <main class="st2-panel">
 
   <div class="st2-panel__view st2-actions" cg-busy="busy">
-    <div class="st2-panel__toolbar">
-      <div class="st2-panel__toolbar-actions">
-        <flow-link></flow-link>
-      </div>
+    <div class="st2-panel__toolbar-actions">
+      <flow-link></flow-link>
+    </div>
 
+    <div class="st2-panel__toolbar">
       <div class="st2-panel__toolbar-title">
         Actions
       </div>
@@ -75,7 +75,7 @@
                   {{ action.runner_type }}
                 </span>
                 <span ng-if="view.type.value">
-                  <i class="st2-icon__flow-cascade"
+                  <i class="icon-branch"
                     ng-if="{'action': action} | isExpandable"></i>
                 </span>
               </div>
@@ -114,31 +114,6 @@
       data-test="details"
       ng-show="action">
 
-    <div class="st2-details__toolbar">
-
-      <flow-link action="{{ action.ref }}" data-test="flow_link"
-          ng-if="action.runner_type == 'mistral-v2'">
-      </flow-link>
-
-      <div class="st2-details__toolbar-separator"></div>
-
-      <div class="st2-details__switch st2-details__switch--of-two"
-          ng-class="{
-            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
-            'st2-details__switch--second': $root.isState('^.code')
-          }">
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.general', {ref: action.ref})">
-          <i class="icon-gear"></i>
-        </div>
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.code', {ref: action.ref})">
-          <i class="icon-code"></i>
-        </div>
-      </div>
-
-    </div>
-
     <div class="st2-details__header">
       <div class="st2-details__header-name" data-test="header_name">
         <a ui-sref="actions.general({ref:action.ref})">
@@ -147,6 +122,21 @@
       </div>
       <div class="st2-details__header-description" data-test="header_description">
         {{ action.description }}
+      </div>
+    </div>
+
+    <div class="st2-details__switch st2-details__switch--of-two"
+        ng-class="{
+          'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+          'st2-details__switch--second': $root.isState('^.code')
+        }">
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.general', {ref: action.ref})">
+        General
+      </div>
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.code', {ref: action.ref})">
+        Code
       </div>
     </div>
 
@@ -178,14 +168,14 @@
                 ng-model="trace"></div>
 
               <div class="st2-forms__buttons-panel">
+                <input type="button" class="st2-forms__button st2-forms__button--flat"
+                    ng-click="preview = !preview"
+                    value="Preview" />
                 <button type="submit" class="st2-forms__button"
                     data-test="run_submit"
                     ng-disabled="runForm.$invalid">
                   Run
                 </button>
-                <input type="button" class="st2-forms__button st2-forms__button-right"
-                    ng-click="preview = !preview"
-                    value="Preview" />
               </div>
 
               <div class="st2-highlight"
@@ -224,7 +214,7 @@
                   <div class="st2-actions__details-column-meta-status">
                     <span class="st2-label st2-label--short"
                       status="record.status"></span>
-                    <i class="st2-icon__flow-cascade"
+                    <i class="icon-branch"
                       ng-if="(record | isExpandable)"></i>
                   </div>
                   <!-- <div class="st2-actions__details-column-meta-time">
@@ -270,7 +260,7 @@
               No history records for this action
             </div>
 
-            <a class="st2-forms__button"
+            <a class="st2-forms__button st2-forms__button--flat"
                 ui-sref="history.list({action: action.ref})">
               <i class="icon-history"></i>
               See full action history
@@ -279,6 +269,16 @@
         </div>
 
       </div>
+
+    </div>
+
+    <div class="st2-details__toolbar">
+
+      <flow-link action="{{ action.ref }}" data-test="flow_link"
+          ng-if="action.runner_type == 'mistral-v2'">
+      </flow-link>
+
+      <div class="st2-details__toolbar-separator"></div>
 
     </div>
 

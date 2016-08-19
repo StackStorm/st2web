@@ -79,6 +79,34 @@
       font-size: 120%;
       font-weight: bold;
     }
+
+    & + & {
+      margin-left: 10px;
+    }
+
+    &--flat {
+      padding-right: 0;
+      padding-left: 0;
+
+      color: @aqua-base;
+      background: transparent;
+      box-shadow: none;
+
+      &:active {
+        color: @aqua-lighten-2;
+        background: transparent;
+      }
+    }
+
+    &--flat& {
+      &--red {
+        color: @red-base;
+
+        &:active {
+          color: @red-lighten-2;
+        }
+      }
+    }
   }
 
   &__button-prev {
@@ -126,6 +154,10 @@
   }
 
   &__buttons-panel {
+    display: flex;
+
     margin-bottom: 10px;
+
+    justify-content: flex-end;
   }
 }
