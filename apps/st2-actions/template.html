@@ -3,38 +3,39 @@
 <main class="st2-panel">
 
   <div class="st2-panel__view st2-actions" cg-busy="busy">
-    <div class="st2-panel__scroller" id="st2-panel__scroller">
+    <div class="st2-panel__toolbar-actions">
+      <flow-link></flow-link>
+    </div>
 
-      <div class="st2-panel__toolbar">
-        <div class="st2-panel__toolbar-title">
-          Actions
-        </div>
-
-        <div class="st2-panel__toolbar-actions">
-          <flow-link></flow-link>
-        </div>
-
-        <div class="st2-panel__toolbar-search"
-            ng-show="groups">
-          <form>
-            <input type="search"
-              class="st2-panel__search-bar"
-              data-test="filter"
-              placeholder="Filter"
-              ng-model="filter">
-          </form>
-        </div>
-
-        <div class="st2-panel__toolbar-view">
-          <div class="st2-view" view-settings="view"></div>
-        </div>
-
-        <div class="st2-panel__toolbar-toggle-all"
-            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('actions')}"
-            ng-click="toggleFlexTables('actions')"></div>
+    <div class="st2-panel__toolbar">
+      <div class="st2-panel__toolbar-title">
+        Actions
       </div>
 
-      <div class="st2-panel__content">
+      <div class="st2-panel__toolbar-search"
+          ng-show="groups">
+        <form>
+          <input type="search"
+            class="st2-panel__search-bar"
+            data-test="filter"
+            placeholder="Filter"
+            ng-model="filter">
+          <i class="icon-lens"></i>
+        </form>
+      </div>
+
+      <div class="st2-panel__toolbar-view">
+        <div class="st2-view" view-settings="view"></div>
+      </div>
+
+      <div class="st2-panel__toolbar-toggle-all"
+          ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('actions')}"
+          ng-click="toggleFlexTables('actions')"></div>
+    </div>
+
+    <div class="st2-panel__content">
+
+      <div class="st2-panel__scroller" id="st2-panel__scroller">
 
         <div class="st2-flex-table"
             ng-repeat="(name, params) in groups"
@@ -49,52 +50,35 @@
             <h2 class="st2-flex-table__caption-title">{{ name }}</h2>
           </div>
 
-          <div class="st2-flex-table__header">
-            <div class="st2-flex-table__column st2-actions__column-utility"
-                ng-if="view.type.value">
-              <i class="st2-icon__flow-cascade"></i>
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-name"
-                ng-if="view.action.value">
-              Action
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-type"
-                ng-if="view.runner.value">
-              Runner
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-desc"
-                ng-if="view.description.value">
-              Description
-            </div>
-          </div>
-
-          <div class="st2-flex-table__row"
+          <div class="st2-flex-card"
               data-test="action action:{{action.ref}}"
-              ng-class-odd="'st2-flex-table__row--odd'"
-              ng-class-even="'st2-flex-table__row--even'"
-              ng-class="{'st2-flex-table__row--active': action.ref == $parent.action.ref}"
+              ng-class="{'st2-flex-card--active': action.ref == $parent.action.ref}"
               ng-repeat="action in params.list"
               ng-click="$root.go({ref: action.ref})"
               st2-scroll-into-view="{{ action.ref == $parent.action.ref }}"
               st2-scroll-into-view-container="st2-panel__scroller">
-            <div class="st2-flex-table__column st2-actions__column-utility"
-                ng-if="view.type.value">
-              <i class="st2-icon__flow-cascade"
-                ng-if="{'action': action} | isExpandable"></i>
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-name"
-                title="{{ action.ref }}"
-                ng-if="view.action.value">
-              {{ action.ref }}
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-type"
-                title="{{ action.runner_type }}"
-                ng-if="view.runner.value">
-              {{ action.runner_type }}
-            </div>
-            <div class="st2-flex-table__column st2-actions__column-desc"
-                ng-if="view.description.value">
-              {{ action.description }}
+            <div class="st2-flex-card__header">
+              <div class="st2-flex-card__column">
+                <div class="st2-flex-card__header-primary"
+                    title="{{ action.ref }}"
+                    ng-if="view.action.value">
+                  {{ action.ref }}
+                </div>
+                <div class="st2-flex-card__header-secondary"
+                    ng-if="view.description.value">
+                  {{ action.description }}
+                </div>
+              </div>
+              <div class="st2-flex-card__column st2-flex-card__header-status">
+                <span title="{{ action.runner_type }}"
+                    ng-if="view.runner.value">
+                  {{ action.runner_type }}
+                </span>
+                <span ng-if="view.type.value">
+                  <i class="icon-branch"
+                    ng-if="{'action': action} | isExpandable"></i>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -141,29 +125,19 @@
       </div>
     </div>
 
-    <div class="st2-details__toolbar">
-
-      <flow-link action="{{ action.ref }}" data-test="flow_link"
-          ng-if="action.runner_type == 'mistral-v2'">
-      </flow-link>
-
-      <div class="st2-details__toolbar-separator"></div>
-
-      <div class="st2-details__switch st2-details__switch--of-two"
-          ng-class="{
-            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
-            'st2-details__switch--second': $root.isState('^.code')
-          }">
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.general', {ref: action.ref})">
-          <i class="st2-icon__cogs"></i>
-        </div>
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.code', {ref: action.ref})">
-          <i class="st2-icon__code"></i>
-        </div>
+    <div class="st2-details__switch st2-details__switch--of-two"
+        ng-class="{
+          'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+          'st2-details__switch--second': $root.isState('^.code')
+        }">
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.general', {ref: action.ref})">
+        General
       </div>
-
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.code', {ref: action.ref})">
+        Code
+      </div>
     </div>
 
     <div class="st2-details__body"
@@ -194,14 +168,14 @@
                 ng-model="trace"></div>
 
               <div class="st2-forms__buttons-panel">
+                <input type="button" class="st2-forms__button st2-forms__button--flat"
+                    ng-click="preview = !preview"
+                    value="Preview" />
                 <button type="submit" class="st2-forms__button"
                     data-test="run_submit"
                     ng-disabled="runForm.$invalid">
                   Run
                 </button>
-                <input type="button" class="st2-forms__button st2-forms__button-right"
-                    ng-click="preview = !preview"
-                    value="Preview" />
               </div>
 
               <div class="st2-highlight"
@@ -214,7 +188,7 @@
           </div>
         </div>
 
-        <div class="st2-details__panel">
+        <div class="st2-details__panel st2-actions__executions">
           <div class="st2-details__panel-heading">
             <h2 class="st2-details__panel-title">
               Executions
@@ -232,7 +206,7 @@
                   ng-click="expand(record, $event)">
 
                 <div class="st2-flex-table__column st2-actions__details-column-utility">
-                  <i ng-class="'st2-icon__' + (record._expanded && 'down-open' || 'right-open')">
+                  <i ng-class="'icon-chevron-' + (record._expanded && 'down' || 'up')">
                   </i>
                 </div>
 
@@ -240,7 +214,7 @@
                   <div class="st2-actions__details-column-meta-status">
                     <span class="st2-label st2-label--short"
                       status="record.status"></span>
-                    <i class="st2-icon__flow-cascade"
+                    <i class="icon-branch"
                       ng-if="(record | isExpandable)"></i>
                   </div>
                   <!-- <div class="st2-actions__details-column-meta-time">
@@ -259,7 +233,7 @@
                     title="Jump to History"
                     ui-sref="history.general({action: action.ref, id: record.id})"
                     ng-click="$event.stopPropagation()">
-                  <i class="st2-icon__history"></i>
+                  <i class="icon-history"></i>
                 </a>
 
               </div>
@@ -286,9 +260,9 @@
               No history records for this action
             </div>
 
-            <a class="st2-forms__button"
+            <a class="st2-forms__button st2-forms__button--flat"
                 ui-sref="history.list({action: action.ref})">
-              <i class="st2-icon__history"></i>
+              <i class="icon-history"></i>
               See full action history
             </a>
           </div>
@@ -326,6 +300,16 @@
         </div>
 
       </div>
+    </div>
+
+    <div class="st2-details__toolbar">
+
+      <flow-link action="{{ action.ref }}" data-test="flow_link"
+          ng-if="action.runner_type == 'mistral-v2'">
+      </flow-link>
+
+      <div class="st2-details__toolbar-separator"></div>
+
     </div>
 
   </div>

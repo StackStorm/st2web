@@ -3,29 +3,31 @@
 var template = require('./template.html');
 
 module.exports = function st2RulesConfig($stateProvider) {
+  const baseState = {
+    title: 'Rules',
+  };
 
   $stateProvider
-    .state('rules', {
+    .state('rules', Object.assign({}, baseState, {
       abstract: true,
       url: '/rules',
-      icon: 'st2-icon__rules',
+      icon: 'icon-book-closed',
       controller: 'st2RulesCtrl',
       templateUrl: template,
-      title: 'Rules',
       position: 3
-    })
-    .state('rules.list', {
+    }))
+    .state('rules.list', Object.assign({}, baseState, {
       url: ''
-    })
-    .state('rules.new', {
+    }))
+    .state('rules.new', Object.assign({}, baseState, {
       url: '/new'
-    })
-    .state('rules.general', {
+    }))
+    .state('rules.general', Object.assign({}, baseState, {
       url: '/{ref:[\\w.-]+}/general?edit'
-    })
-    .state('rules.code', {
+    }))
+    .state('rules.code', Object.assign({}, baseState, {
       url: '/{ref:[\\w.-]+}/code?edit'
-    })
+    }))
 
     ;
 

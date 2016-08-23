@@ -5,21 +5,19 @@
     min-height: 20px;
     padding: 4px;
 
-    color: #fff;
+    color: black;
     border-radius: 4px;
-    background-color: @blue-darkest;
+    background-color: @grey-lighten-4;
 
     pre {
-      font-family: Inconsolata;
-      font-size: 14px;
+      font-family: 'Droid Sans Mono', monospace;
+      font-size: 12px;
 
       display: block;
       overflow: scroll;
 
       margin: 0;
       padding: 15px;
-
-      color: rgb(216, 216, 216);
 
       &::-webkit-scrollbar {
         width: 5px;
@@ -62,7 +60,7 @@
     background-color: rgba(0,0,0,.8);
 
     &:after {
-      font-family: 'ststanley';
+      font-family: 'brocadeicons';
       font-size: 18px;
       font-weight: normal;
       font-style: normal;
@@ -75,7 +73,11 @@
 
       padding: 5px;
 
-      content: '\e812';
+      content: '\e940';
+
+      color: black;
+      border-radius: 50%;
+      background-color: white;
     }
   }
 
@@ -115,5 +117,13 @@
 
   & .st2-panel__scroller {
     padding: 30px;
+  }
+
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string {
+    background: none;
   }
 }

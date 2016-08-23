@@ -56,7 +56,7 @@ describe('User visits rules page', function () {
 
     it('should highlight the first row', function () {
       var elements = browser.queryAll(util.name('rule'));
-      expect(elements[0].className).to.have.string('st2-flex-rule--active');
+      expect(elements[0].className).to.have.string('st2-flex-card--active');
     });
 
     it('should filter rules (case insensitive)', function () {
@@ -176,7 +176,7 @@ describe('User visits rules page', function () {
     describe('List view', function () {
       it('should highlight the selected row', function () {
         var element = browser.query(util.name('rule:packs.test' + uniqueId));
-        expect(element.className).to.have.string('st2-flex-rule--active');
+        expect(element.className).to.have.string('st2-flex-card--active');
       });
     });
 

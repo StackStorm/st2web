@@ -4,39 +4,38 @@
 
   <div class="st2-panel__view st2-history" cg-busy="busy">
 
-    <div class="st2-panel__scroller" id="st2-panel__scroller">
-
-      <div class="st2-panel__toolbar">
-        <div class="st2-panel__toolbar-title">
-          History
-        </div>
-
-        <div class="st2-panel__toolbar-filters"
-            ng-show="filters">
-          <div class="st2-filter" items="filters['status']" active-items="active_filters['status']"
-               label="Status" on-change="$root.updateFiltersAndGo('status', activeItems)"
-               ng-if="!_.isEmpty(filters['status'])"></div>
-          <div class="st2-filter" items="filters['action']" active-items="active_filters['action']"
-               label="Action" on-change="$root.updateFiltersAndGo('action', activeItems)"
-               ng-if="!_.isEmpty(filters['action'])"></div>
-          <div class="st2-filter" items="filters['trigger_type']" active-items="active_filters['trigger_type']"
-               label="Trigger Type" on-change="$root.updateFiltersAndGo('trigger_type', activeItems)"
-               ng-if="!_.isEmpty(filters['trigger_type'])"></div>
-          <div class="st2-filter" items="filters['rule']" active-items="active_filters['rule']"
-               label="Rule" on-change="$root.updateFiltersAndGo('rule', activeItems)"
-               ng-if="!_.isEmpty(filters['rule'])"></div>
-        </div>
-
-        <div class="st2-panel__toolbar-view">
-          <div class="st2-view" view-settings="view"></div>
-        </div>
-
-        <div class="st2-panel__toolbar-toggle-all"
-            ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('history')}"
-            ng-click="toggleFlexTables('history')"></div>
+    <div class="st2-panel__toolbar">
+      <div class="st2-panel__toolbar-title">
+        History
       </div>
 
-      <div class="st2-panel__content">
+      <div class="st2-panel__toolbar-filters"
+          ng-show="filters">
+        <div class="st2-filter" items="filters['status']" active-items="active_filters['status']"
+             label="Status" on-change="$root.updateFiltersAndGo('status', activeItems)"
+             ng-if="!_.isEmpty(filters['status'])"></div>
+        <div class="st2-filter" items="filters['action']" active-items="active_filters['action']"
+             label="Action" on-change="$root.updateFiltersAndGo('action', activeItems)"
+             ng-if="!_.isEmpty(filters['action'])"></div>
+        <div class="st2-filter" items="filters['trigger_type']" active-items="active_filters['trigger_type']"
+             label="Trigger Type" on-change="$root.updateFiltersAndGo('trigger_type', activeItems)"
+             ng-if="!_.isEmpty(filters['trigger_type'])"></div>
+        <div class="st2-filter" items="filters['rule']" active-items="active_filters['rule']"
+             label="Rule" on-change="$root.updateFiltersAndGo('rule', activeItems)"
+             ng-if="!_.isEmpty(filters['rule'])"></div>
+      </div>
+
+      <div class="st2-panel__toolbar-view">
+        <div class="st2-view" view-settings="view"></div>
+      </div>
+
+      <div class="st2-panel__toolbar-toggle-all"
+          ng-class="{'st2-panel__toolbar-toggle-all--collapsed': areFlexTablesCollapsed('history')}"
+          ng-click="toggleFlexTables('history')"></div>
+    </div>
+
+    <div class="st2-panel__content">
+      <div class="st2-panel__scroller" id="st2-panel__scroller">
         <div class="st2-flex-table"
             ng-repeat="group in groups = (history | orderBy:'period':true)"
             ng-if="history && !_.isEmpty(groups)"
@@ -51,117 +50,88 @@
             </h2>
           </div>
 
-          <div class="st2-flex-table__header">
-            <div class="st2-flex-table__column st2-history__column-utility"></div>
-            <div class="st2-flex-table__column st2-history__column-meta"
-                ng-if="view.meta.value">
-            </div>
-            <div class="st2-flex-table__column st2-history__column-action"
-                ng-if="view.action.value">
-              Action
-            </div>
-            <div class="st2-flex-table__column st2-history__column-triggered"
-                ng-if="view.trigger.value">
-              Triggered By
-            </div>
-          </div>
-
-          <div class="st2-flex-table__row"
+          <div class="st2-flex-card"
               data-test="record"
-              ng-class-odd="'st2-flex-table__row--odd'"
-              ng-class-even="'st2-flex-table__row--even'"
-              ng-class="{'st2-flex-table__row--active': record.id == $parent.record.id}"
+              ng-class="{'st2-flex-card--active': record.id == $parent.record.id}"
               ng-repeat-start="record in group.records | orderBy:'start_timestamp':true"
               ng-click="$root.go({id: record.id})"
               st2-scroll-into-view="{{ record.id === $parent.record.id }}"
               st2-scroll-into-view-container="st2-panel__scroller">
 
-            <div class="st2-flex-table__column st2-history__column-utility"
-                ng-click="(record | isExpandable) && expand(record, $event)">
-              <i ng-class="record._expanded && 'st2-icon__down-open' || 'st2-icon__right-open'"
-                  ng-if="(record | isExpandable)">
-              </i>
-            </div>
-
-            <div class="st2-flex-table__column st2-history__column-meta"
+            <div class="st2-flex-card__header"
                 ng-if="view.meta.value">
-              <div class="st2-history__column-meta-status">
+              <div class="st2-flex-card__column st2-flex-card__header-expand">
+                <i ng-class="record._expanded && 'icon-chevron-up' || 'icon-chevron-down'"
+                    ng-click="(record | isExpandable) && expand(record, $event)"
+                    ng-if="(record | isExpandable)">
+                </i>
+              </div>
+              <div class="st2-flex-card__column st2-flex-card__header-status">
+                <i class="icon-branch"
+                  ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
                 <span class="st2-label st2-label--short" status="record.status"
                   ng-if="view.meta.subview.status.value"></span>
-                <i class="st2-icon__flow-cascade"
-                  ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
               </div>
-              <div class="st2-history__column-meta-time"
-                  ng-if="view.meta.subview.time.value">
-                {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
+              <div class="st2-flex-card__column">
+                <div class="st2-flex-card__header-primary"
+                    ng-if="view.meta.subview.time.value">
+                  {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
+                </div>
               </div>
             </div>
 
-            <div class="st2-flex-table__column st2-history__column-action"
-                title="{{ $root.getRef(record.action) }}"
-                ng-if="view.action.value">
-              <span class="st2-history__column-action-name">
-                {{ $root.getRef(record.action) }}
-              </span>
-              <span class="st2-history__column-action-params st2-proportional"
-                  ng-if="view.action.subview.params.value">
-                <span class="st2-history__column-action-param"
-                    ng-repeat="(name, value) in record.parameters"><!--
-               --><span ng-if="!$first">,&nbsp;</span><!--
-               --><span class="st2-history__column-action-param-name"><!--
-                 -->{{ name }}=<!--
-               --></span><!--
-               --><span class="st2-history__column-action-param-value"><!--
-                 -->{{ value | fmtParam }}<!--
-               --></span><!--
-             --></span>
-              </span>
-            </div>
+            <div class="st2-flex-card__row">
+              <div class="st2-flex-card__column st2-flex-card__if"
+                  ng-switch="record.rule && record.trigger && true"
+                  ng-if="view.trigger.value">
+                <span ng-switch-when="true"
+                    title="{{ record.rule.ref }} ({{ record.trigger.type }})">
+                  <span class="st2-history__column-rule-name">
+                    {{ record.rule.ref }}
+                  </span>
+                  <span class="st2-history__column-trigger-type">
+                    {{ record.trigger.type }}
+                  </span>
+                </span>
+                <span ng-switch-default>
+                  <span class="st2-history__column-app-name">
+                    Manual
+                  </span>
+                  <span class="st2-history__column-user-name">
+                    {{ record.context.user }}
+                  </span>
+                </span>
+              </div>
 
-            <div class="st2-flex-table__column st2-history__column-triggered"
-                ng-switch="record.rule && record.trigger && true"
-                ng-if="view.trigger.value">
-              <span ng-switch-when="true"
-                  title="{{ record.rule.ref }} ({{ record.trigger.type }})">
-                <span class="st2-history__column-rule-name">
-                  {{ record.rule.ref }}
+              <div class="st2-flex-card__column st2-flex-card__then"
+                  title="{{ $root.getRef(record.action) }}"
+                  ng-if="view.action.value">
+                <span class="st2-history__column-action-name">
+                  {{ $root.getRef(record.action) }}
                 </span>
-                <span class="st2-history__column-trigger-type">
-                  {{ record.trigger.type }}
+                <span class="st2-history__column-action-params st2-proportional"
+                    ng-if="view.action.subview.params.value">
+                  <span class="st2-history__column-action-param"
+                      ng-repeat="(name, value) in record.parameters"><!--
+                 --><span ng-if="!$first">,&nbsp;</span><!--
+                 --><span class="st2-history__column-action-param-name"><!--
+                   -->{{ name }}=<!--
+                 --></span><!--
+                 --><span class="st2-history__column-action-param-value"><!--
+                   -->{{ value | fmtParam }}<!--
+                 --></span><!--
+               --></span>
                 </span>
-              </span>
-              <span ng-switch-default>
-                <span class="st2-history__column-app-name">
-                  Manual
-                </span>
-                <span class="st2-history__column-user-name">
-                  by {{ record.context.user }}
-                </span>
-              </span>
+              </div>
             </div>
 
           </div>
 
           <div class="st2-history-child"
+              ng-repeat-end
               workflow="record"
               view="view"
               ng-if="(record | isExpandable) && record._expanded">
-          </div>
-          <div ng-repeat-end
-              class="st2-flex-table__header"
-              ng-if="(record | isExpandable) && record._expanded && !$last">
-            <div class="st2-flex-table__column st2-history__column-utility"></div>
-            <div class="st2-flex-table__column st2-history__column-meta"
-              ng-if="view.time.value">
-            </div>
-            <div class="st2-flex-table__column st2-history__column-action"
-                ng-if="view.action.value">
-              Action
-            </div>
-            <div class="st2-flex-table__column st2-history__column-triggered"
-                ng-if="view.trigger.value">
-              Triggered By
-            </div>
           </div>
 
         </div>
@@ -189,22 +159,26 @@
             <p>Check developer console of your browser for more info.</p>
           </div>
         </div>
+
+        <div class="st2-panel__navigation">
+          <button class="st2-forms__button st2-forms__button-prev"
+              ng-click="prevPage()"
+              ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
+              ng-if="!error && !_.isEmpty(groups)">
+            Previous
+          </button>
+          <button class="st2-forms__button st2-forms__button-next"
+              ng-click="nextPage()"
+              ng-class="{'st2-forms__button-next--disabled': ($root.page || 1) >= $root.maxPage}"
+              ng-if="!error && !_.isEmpty(groups)">
+            Next
+          </button>
+        </div>
+
       </div>
 
-      <button class="st2-forms__button-left st2-forms__button-prev"
-          ng-click="prevPage()"
-          ng-class="{'st2-forms__button-prev--disabled': ($root.page || 1) < 2}"
-          ng-if="!error && !_.isEmpty(groups)">
-        Previous
-      </button>
-      <button class="st2-forms__button-right st2-forms__button-next"
-          ng-click="nextPage()"
-          ng-class="{'st2-forms__button-next--disabled': ($root.page || 1) >= $root.maxPage}"
-          ng-if="!error && !_.isEmpty(groups)">
-        Next
-      </button>
-
     </div>
+
   </div>
 
   <div class="st2-panel__details st2-details"
@@ -222,37 +196,19 @@
       </div>
     </div>
 
-    <div class="st2-details__toolbar">
-
-      <input type="button"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          data-test="rerun_button"
-          ng-click="rerun.open()"
-          value="Rerun"/>
-
-      <input type="button"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          ng-click="cancel()"
-          ng-disabled="record.status != 'running'"
-          value="Cancel"/>
-
-      <div class="st2-details__toolbar-separator"></div>
-
-      <div class="st2-details__switch st2-details__switch--of-two"
-          ng-class="{
-            'st2-details__switch--first': $root.isState(['^.general', '^.list']),
-            'st2-details__switch--second': $root.isState('^.code')
-          }">
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.general', {id: record.id})">
-          <i class="st2-icon__cogs"></i>
-        </div>
-        <div class="st2-details__switch-item"
-            ng-click="$root.go('^.code', {id: record.id})">
-          <i class="st2-icon__code"></i>
-        </div>
+    <div class="st2-details__switch st2-details__switch--of-two"
+        ng-class="{
+          'st2-details__switch--first': $root.isState(['^.general', '^.list']),
+          'st2-details__switch--second': $root.isState('^.code')
+        }">
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.general', {id: record.id})">
+        General
       </div>
-
+      <div class="st2-details__switch-item"
+          ng-click="$root.go('^.code', {id: record.id})">
+        Code
+      </div>
     </div>
 
     <div class="st2-details__body"
@@ -404,17 +360,10 @@
                 {{ record.trigger_instance.occurrence_time | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
               </dd>
             </dl>
-            <dl class="st2-details__panel-body-line">
-              <dt class="st2-details__panel-body-label"
-                  ng-if="record.trigger_instance.payload">
-                Payload
-              </dt>
-              <dd class="st2-details__panel-body-value"
-                  ng-if="record.trigger_instance.payload">
-                <div class="st2-highlight" code="record.trigger_instance.payload | json"
-                    language="json"></div>
-              </dd>
-            </dl>
+          </div>
+          <div class="st2-details__panel-body">
+            <div class="st2-highlight" code="record.trigger_instance.payload | json"
+                language="json"></div>
           </div>
         </div>
 
@@ -454,6 +403,22 @@
         </div>
 
       </div>
+    </div>
+
+    <div class="st2-details__toolbar">
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          data-test="rerun_button"
+          ng-click="rerun.open()"
+          value="Rerun"/>
+
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="cancel()"
+          ng-disabled="record.status != 'running'"
+          value="Cancel"/>
+
+      <div class="st2-details__toolbar-separator"></div>
     </div>
 
   </div>

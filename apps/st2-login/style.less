@@ -9,8 +9,8 @@
 
   display: flex;
 
-  color: @blue-lightest;
-  background-color: @blue-darker;
+  color: white;
+  background: radial-gradient(ellipse at center,rgb(0, 115, 150) 0,rgb(68, 50, 153) 100%);
 
   align-items: center;
   justify-content: center;
@@ -66,12 +66,17 @@
 
   &__links {
     position: absolute;
+    right: 0;
     bottom: 0;
     left: 0;
+
+    display: flex;
 
     padding: 10px;
 
     text-align: center;
+
+    justify-content: space-between;
   }
 
   a,
@@ -80,5 +85,50 @@
   a:visited,
   a:hover {
     color: @gray-light;
+  }
+
+  &__checkbox {
+    display: none;
+
+    margin: 0;
+    padding: 0;
+
+    &-block {
+      font-size: 15px;
+      line-height: 36px;
+    }
+
+    &-label {
+      font-weight: 100;
+
+      cursor: pointer;
+      user-select: none;
+      vertical-align: top;
+    }
+
+    & + &-label:before {
+      font-family: 'brocadeicons';
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 10px;
+
+      display: inline-block;
+
+      width: 10px;
+      height: 10px;
+      margin-right: .3em;
+
+      content: '\e968';
+      text-decoration: inherit;
+
+      color: white;
+      border: 1px solid white;
+      background-color: transparent;
+    }
+
+    &:not(:checked) + &-label:before {
+      color: transparent;
+    }
   }
 }

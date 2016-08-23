@@ -54,7 +54,7 @@ describe('User visits actions page', function () {
 
     it('should highlight the first row', function () {
       var elements = browser.queryAll(util.name('action'));
-      expect(elements[0].className).to.have.string('st2-flex-table__row--active');
+      expect(elements[0].className).to.have.string('st2-flex-card--active');
     });
 
     it('should filter actions (case insensitive)', function () {
@@ -133,7 +133,7 @@ describe('User visits actions page', function () {
     describe('List view', function () {
       it('should highlight the selected row', function () {
         var element = browser.query(util.name('action:core.announcement'));
-        expect(element.className).to.have.string('st2-flex-table__row--active');
+        expect(element.className).to.have.string('st2-flex-card--active');
       });
 
       it('should expand the pack', function () {

@@ -1,86 +1,106 @@
 @import 'colors';
 
 .st2-menu {
-  font-family: Oswald;
-  font-weight: 200;
+  font-family: Dual,Roboto,sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+
+  position: relative;
+  z-index: 2;
 
   display: flex;
+
+  padding-left: 50px;
 
   user-select: none;
   letter-spacing: .04em;
 
-  color: #eee;
-  border-top: 5px solid #ff8300;
-  background-color: @blue-darkest;
+  color: white;
+  background: linear-gradient(45deg, rgb(0, 115, 150) 0%, rgb(68, 50, 153) 100%);
+  background-color: @blue-darken-3;
 
   align-items: center;
-  // This font also hinted pretty badly for the fnt size we are using.
-  // One of H's stems keep getting into another column of pixels on any letter spacing.
 
   &__logo {
-    padding: 10px 20px;
+    // We need to specify it here so the logo on login screen would match the menu one
+    font-size: 16px;
+
+    display: flex;
+
+    min-width: 200px;
+    height: 52px;
+    margin: 10px;
 
     text-decoration: none;
-    // Hides Alt text while svg is still loading
 
     color: transparent;
+    background-image: url(../img/logo-stackstorm.svg);
+    background-repeat: no-repeat;
+    background-size: 153px;
 
-    img {
-      width: 24px;
+    align-items: flex-end;
+
+    &:after {
+      content: 'Event-driven automation';
+      white-space: nowrap;
+
+      color: white;
     }
+  }
+
+  // TODO: Remove this ugliness
+  &__spacer {
+    flex: 1;
   }
 
   &__nav {
     display: flex;
-    flex: 1;
 
-    margin: 10px 20px;
+    margin: 0;
     padding: 0;
 
     list-style: none;
   }
 
   &__nav-item {
-    margin: 0 5px;
+    font-size: 10px;
 
-    a {
-      font-weight: 400;
+    display: block;
+
+    min-width: 35px;
+    height: 72px;
+    padding: 0 16px;
+
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    color: white;
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: rgba(0,0,0,.1);
+    }
+
+    i {
+      font-size: 20px;
+      line-height: 35px;
 
       display: block;
 
-      min-width: 65px;
-      padding: 0 11px;
+      width: 35px;
+      height: 35px;
+      margin: 8px auto;
 
-      text-align: center;
-      text-decoration: none;
-      text-transform: uppercase;
-
-      color: #737373;
-      border: 1px solid transparent;
+      border-radius: 50%;
     }
 
-    &:hover a {
-      color: #ff8300;
-    }
-
-    &--active a {
-      color: #ff8300;
-      border-color: rgba(255, 131, 0, .4);
-      background-color: @blue-darkest;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,.5);
-      text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+    &--active i {
+      background-color: @yellow-base;
     }
   }
 
-  &__icon {
-    font-size: 14px;
-    line-height: 34px;
-    &:before {
-      margin-right: .2em;
-    }
-  }
-
-  &__server {
+  &__user {
     position: relative;
 
     padding: 10px;
@@ -89,24 +109,67 @@
     white-space: nowrap;
     text-transform: lowercase;
 
-    color: @blue-lightest;
-
     &-item {
+      font-weight: 600;
+
+      position: relative;
+
+      height: 40px;
       padding: 0 10px;
 
+      cursor: pointer;
       user-select: text;
+      user-select: none;
       white-space: nowrap;
 
       i {
-        font-size: 10px;
-
-        margin-right: 3px;
+        font-size: 20px;
+        font-weight: normal;
       }
 
-      &[ng-click] {
-        cursor: pointer;
-        user-select: none;
+      input {
+        display: none;
       }
+    }
+
+    &-dropdown {
+      font-size: 14px;
+      font-weight: normal;
+
+      position: absolute;
+      z-index: 1;
+      right: 0;
+
+      display: none;
+
+      color: black;
+      background-color: white;
+
+      &-backdrop {
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      &-item {
+        line-height: 2em;
+
+        position: relative;
+        z-index: 11;
+
+        padding: 0 10px;
+
+        &:hover {
+          background-color: @yellow-lighten-5;
+        }
+      }
+    }
+
+    &-item input[type=checkbox]:checked ~ &-dropdown {
+      display: block;
     }
   }
 }

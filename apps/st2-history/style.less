@@ -58,22 +58,16 @@
   }
 
   &__column-action-params {
-    font-size: .8em;
+    font-size: 11px;
     font-weight: normal;
-    line-height: 1.2em;
+    line-height: 15px;
 
     display: inline-block;
     overflow: hidden;
 
     max-width: 100%;
-    margin: 2px -4px 0;
-    padding: 1px 3px 0;
 
     text-overflow: ellipsis;
-
-    border: 1px solid rgba(214, 214, 214, .65);
-    border-radius: 3px;
-    background-color: rgba(255, 255, 255, .25);
 
     &:empty {
       display: none;
@@ -92,7 +86,15 @@
     word-spacing: 10px;
   }
 
-  .st2-history-child {
-    background-color: @gray-dark;
+  &__column-user-name {
+    &:before {
+      font-family: 'brocadeicons';
+      font-weight: bold;
+      font-style: normal;
+
+      width: 100%;
+
+      content: '\e94f';
+    }
   }
 }

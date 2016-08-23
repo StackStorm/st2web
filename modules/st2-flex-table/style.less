@@ -3,109 +3,114 @@
 .st2-flex-table {
   position: relative;
 
-  margin-bottom: 20px;
-
-  color: @text;
+  color: black;
+  border-bottom: 1px solid @grey-lighten-1;
   background-color: transparent;
 
   &__caption {
     position: relative;
 
-    clear: both;
+    display: flex;
 
-    background: @blue;
+    margin: 10px;
+    margin-left: 10px;
 
     &-title {
-      font-family: Oswald;
       font-size: 15px;
       font-weight: 400;
+      line-height: 42px;
 
       display: inline-block;
 
       margin: 0;
-      padding: 10px 15px;
 
       letter-spacing: .6px;
       text-transform: uppercase;
 
-      color: #fff;
+      color: black;
     }
 
     &[ng-click] {
       cursor: pointer;
 
       &:after {
-        font-family: 'ststanley';
+        font-family: 'brocadeicons';
+        font-size: 15px;
         font-weight: normal;
         font-style: normal;
-
-        position: absolute;
-        top: 14px;
-        right: 14px;
+        line-height: 42px;
 
         display: block;
 
-        content: '\e804';
+        padding: 0 20px 0 10px;
 
-        color: rgba(255, 255, 255, .6);
+        content: '\e960';
+
+        color: rgba(0, 0, 0, .6);
+
+        order: -1;
       }
     }
 
     &:before {
-      font-family: 'ststanley';
+      // Calendar icon is missing in brocade pack
+      font-family: 'brocadeicons';
+      font-size: 24px;
       font-weight: normal;
       font-style: normal;
+      line-height: 42px;
 
       display: inline-block;
 
-      padding: 14px;
+      padding: 0 5px;
 
       vertical-align: top;
-
-      color: #fff;
-      border-right: 1px solid rgba(255, 255, 255, .18);
     }
 
     &--pack img {
-      position: absolute;
-      top: 0;
-      left: 0;
-
       width: 32px;
       height: 32px;
+      margin-right: 5px;
+      margin-left: -47px;
       padding: 5px;
 
       vertical-align: top;
 
+      border-radius: 5px;
       background: white;
-    }
-    &--pack img:not([src]) {
-      display: none;
+
+      &:not([src]) {
+        display: none;
+      }
     }
 
     &--pack:before {
-      font-size: 24px;
+      font-size: 29px;
+      line-height: 32px;
 
       width: 32px;
       height: 32px;
-      padding: 8px 4px 2px 6px;
+      margin-right: 5px;
+      padding: 5px;
 
-      content: '\e80b';
+      content: '\e94d';
       text-align: center;
 
       color: black;
+      border-radius: 5px;
       background: white;
     }
 
     &--date:before {
-      content: '\e815';
+      content: '\e978';
     }
   }
 
   &--collapsed &__caption[ng-click]:after {
-    content: '\e803';
+    content: '\e95f';
   }
 
+  &--collapsed .st2-flex-card,
   &--collapsed &__row,
   &--collapsed &__header {
     display: none;
@@ -122,9 +127,10 @@
   }
 
   &__header {
-    font-family: Oswald;
     font-size: 13px;
     font-weight: 400;
+
+    display: flex;
 
     padding: 9px 0;
 
@@ -132,7 +138,6 @@
     text-transform: uppercase;
 
     color: #fff;
-    background-color: @blue-dull;
   }
 
   &__column {
@@ -145,39 +150,13 @@
     text-overflow: ellipsis;
   }
 
-  &__row {
-    &--even {
-      background-color: @gray-white;
-    }
-    &--odd {
-      background-color: @blue-pale;
-    }
-
-    &&--active,
-    &&--active:hover {
-      font-weight: 600;
-
-      color: white;
-      // Specificity of 0030
-      background-color: @orange-bright;
-
-      .st2-label--warning {
-        background-color: #ffd54e;
-      }
-    }
-  }
-
   &__row:hover {
     // Specificity of 0020
     cursor: pointer;
-
-    background-color: @orange-pale;
   }
 
   &--passive &__row:hover {
     cursor: default;
-
-    background-color: initial;
   }
 
   &--passive &__row--even:hover {
@@ -188,8 +167,146 @@
     flex: 1;
 
     margin: 0;
-    padding: 10px;
+  }
+}
 
-    background-color: @gray-white;
+.st2-flex-card {
+  padding: 0;
+
+  border-top: 1px solid @grey-lighten-3;
+  background-color: white;
+
+  &__header {
+    position: relative;
+
+    display: flex;
+
+    background: white;
+
+    &-primary {
+      font-size: 16px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    &-secondary {
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    // increasing specificity for flex to propagate
+    & &-status {
+      display: flex;
+      flex: 0 0 auto;
+
+      color: @grey-lighten-3;
+
+      order: 99;
+      align-items: center;
+
+      .st2-label__label {
+        overflow: hidden;
+
+        width: 16px;
+        height: 16px;
+        margin-left: 5px;
+        padding: 0;
+
+        text-indent: -100000px;
+
+        border-radius: 50%;
+      }
+    }
+
+    & &-expand {
+      font-size: 15px;
+
+      flex: initial;
+
+      padding-left: 20px;
+    }
+
+    i[ng-click] {
+      cursor: pointer;
+    }
+  }
+
+  &__row {
+    display: flex;
+    overflow: hidden;
+
+    flex-wrap: wrap;
+  }
+
+  &__column {
+    position: relative;
+
+    flex: 1;
+
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 52px;
+    padding: 10px 15px;
+
+    white-space: nowrap;
+  }
+
+  &__if {
+    overflow: visible;
+
+    padding-right: 5px;
+
+    &:before,
+    &:after {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      right: -22px;
+
+      display: block;
+
+      width: 0;
+      height: 0;
+
+      content: '';
+
+      border-width: 26px 11px 26px 11px;
+      border-style: solid;
+      border-color: transparent transparent transparent white;
+    }
+    &:before {
+      z-index: 1;
+      right: -23px;
+
+      border-color: transparent transparent transparent #cacaca;
+    }
+  }
+  &__then {
+    overflow: visible;
+
+    padding-left: 25px;
+  }
+
+  &__if&__column,
+  &__then&__column {
+    min-width: initial;
+
+    border-top: 1px solid @grey-lighten-3;
+  }
+
+  &--active {
+    border-left: 5px solid @yellow-base;
+  }
+
+  &--active &__header {
+    background: @yellow-lighten-5;
+  }
+
+  &--active &__header-expand {
+    padding-left: 15px;
   }
 }
