@@ -272,16 +272,6 @@
 
     </div>
 
-    <div class="st2-details__toolbar">
-
-      <flow-link action="{{ action.ref }}" data-test="flow_link"
-          ng-if="action.runner_type == 'mistral-v2'">
-      </flow-link>
-
-      <div class="st2-details__toolbar-separator"></div>
-
-    </div>
-
     <div class="st2-details__body"
         ng-class="{'st2-details__body--active': $root.isState('^.code')}">
       <div class="st2-panel__scroller">
@@ -310,6 +300,16 @@
         </div>
 
       </div>
+    </div>
+
+    <div class="st2-details__toolbar">
+
+      <flow-link action="{{ action.ref }}" data-test="flow_link"
+          ng-if="action.runner_type == 'mistral-v2'">
+      </flow-link>
+
+      <div class="st2-details__toolbar-separator"></div>
+
     </div>
 
   </div>

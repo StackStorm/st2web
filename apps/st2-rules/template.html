@@ -312,6 +312,20 @@
       </div>
     </div>
 
+    <div class="st2-details__body"
+        ng-class="{'st2-details__body--active': $root.isState('^.code')}">
+      <div class="st2-panel__scroller">
+
+        <div class="st2-highlight st2-details__panel"
+            data-test="rule_code"
+            code="rule | yaml"
+            lines="20"
+            language="yaml">
+        </div>
+
+      </div>
+    </div>
+
     <div class="st2-details__toolbar">
       <input type="button"
           data-test="edit_button"
@@ -348,20 +362,6 @@
             ng-show="form.saved">
           Saved!
         </span>
-      </div>
-    </div>
-
-    <div class="st2-details__body"
-        ng-class="{'st2-details__body--active': $root.isState('^.code')}">
-      <div class="st2-panel__scroller">
-
-        <div class="st2-highlight st2-details__panel"
-            data-test="rule_code"
-            code="rule | yaml"
-            lines="20"
-            language="yaml">
-        </div>
-
       </div>
     </div>
 

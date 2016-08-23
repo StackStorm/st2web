@@ -387,22 +387,6 @@
       </div>
     </div>
 
-    <div class="st2-details__toolbar">
-      <input type="button"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          data-test="rerun_button"
-          ng-click="rerun.open()"
-          value="Rerun"/>
-
-      <input type="button"
-          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-          ng-click="cancel()"
-          ng-disabled="record.status != 'running'"
-          value="Cancel"/>
-
-      <div class="st2-details__toolbar-separator"></div>
-    </div>
-
     <div class="st2-details__body"
         ng-class="{'st2-details__body--active': $root.isState('^.code')}">
       <div class="st2-panel__scroller">
@@ -419,6 +403,22 @@
         </div>
 
       </div>
+    </div>
+
+    <div class="st2-details__toolbar">
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          data-test="rerun_button"
+          ng-click="rerun.open()"
+          value="Rerun"/>
+
+      <input type="button"
+          class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+          ng-click="cancel()"
+          ng-disabled="record.status != 'running'"
+          value="Cancel"/>
+
+      <div class="st2-details__toolbar-separator"></div>
     </div>
 
   </div>
