@@ -171,16 +171,60 @@
 }
 
 .st2-flex-card {
+  position: relative;
+
   padding: 0;
 
-  border-top: 1px solid @grey-lighten-3;
   background-color: white;
+
+  & &__expand {
+    font-size: 15px;
+    line-height: 32px;
+
+    flex: initial;
+
+    padding-left: 20px;
+
+    border-top: 1px solid @grey-lighten-3;
+  }
+
+  & &__timestamp {
+    line-height: 32px;
+
+    flex: initial;
+
+    border-top: 1px solid @grey-lighten-3;
+  }
+
+  & &__status {
+    line-height: 32px;
+
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    color: @grey-lighten-3;
+
+    .st2-label__label {
+      overflow: hidden;
+
+      width: 16px;
+      height: 16px;
+      margin-left: 5px;
+      padding: 0;
+
+      text-indent: -100000px;
+
+      border-radius: 50%;
+    }
+  }
 
   &__header {
     position: relative;
 
     display: flex;
 
+    border-top: 1px solid @grey-lighten-3;
     background: white;
 
     &-primary {
@@ -288,6 +332,7 @@
   &__then {
     overflow: visible;
 
+    padding-right: 60px;
     padding-left: 25px;
   }
 
@@ -306,7 +351,8 @@
     background: @yellow-lighten-5;
   }
 
-  &--active &__header-expand {
+  &--active &__header-expand,
+  &--active &__expand {
     padding-left: 15px;
   }
 }

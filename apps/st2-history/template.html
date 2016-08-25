@@ -58,29 +58,19 @@
               st2-scroll-into-view="{{ record.id === $parent.record.id }}"
               st2-scroll-into-view-container="st2-panel__scroller">
 
-            <div class="st2-flex-card__header"
-                ng-if="view.meta.value">
-              <div class="st2-flex-card__column st2-flex-card__header-expand">
+            <div class="st2-flex-card__row">
+              <div class="st2-flex-card__column st2-flex-card__expand">
                 <i ng-class="record._expanded && 'icon-chevron-up' || 'icon-chevron-down'"
                     ng-click="(record | isExpandable) && expand(record, $event)"
                     ng-if="(record | isExpandable)">
                 </i>
               </div>
-              <div class="st2-flex-card__column st2-flex-card__header-status">
-                <i class="icon-branch"
-                  ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
-                <span class="st2-label st2-label--short" status="record.status"
-                  ng-if="view.meta.subview.status.value"></span>
-              </div>
-              <div class="st2-flex-card__column">
+              <div class="st2-flex-card__column st2-flex-card__timestamp">
                 <div class="st2-flex-card__header-primary"
-                    ng-if="view.meta.subview.time.value">
+                    ng-if="view.meta.value && view.meta.subview.time.value">
                   {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
                 </div>
               </div>
-            </div>
-
-            <div class="st2-flex-card__row">
               <div class="st2-flex-card__column st2-flex-card__if"
                   ng-switch="record.rule && record.trigger && true"
                   ng-if="view.trigger.value">
@@ -122,6 +112,13 @@
                  --></span><!--
                --></span>
                 </span>
+              </div>
+
+              <div class="st2-flex-card__column st2-flex-card__status">
+                <i class="icon-branch"
+                  ng-if="(record | isExpandable) && view.meta.value && view.meta.subview.type.value"></i>
+                <span class="st2-label st2-label--short" status="record.status"
+                  ng-if="view.meta.value && view.meta.subview.status.value"></span>
               </div>
             </div>
 
