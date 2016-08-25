@@ -12,15 +12,8 @@ module.exports =
       link: function postLink(scope) {
         scope.routes = scope.state.get().map(route => {
           return Object.assign(route, {
-            href: `#${route.url}`
+            href: route.href || `#${route.url}`
           });
-        });
-
-        scope.routes.push({
-          href: 'https://docs.stackstorm.com/',
-          icon: 'icon-book-open',
-          title: 'Docs',
-          target: 'st2-docs'
         });
 
         scope.isMain = function (e) {
