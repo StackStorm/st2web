@@ -34,7 +34,9 @@ module.exports =
           if (record._expanded) {
             st2api.client.executions.list({
               parent: record.id,
-              exclude_attributes: 'result,trigger_instance'
+              exclude_attributes: 'result,trigger_instance',
+              offset: 0,
+              limit: 0
             }).then(function (records) {
               record._children = records;
               this.$apply();
