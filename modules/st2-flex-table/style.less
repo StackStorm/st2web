@@ -42,7 +42,7 @@
 
         display: block;
 
-        padding: 0 20px 0 10px;
+        padding: 0 10px 0 20px;
 
         content: '\e960';
 
@@ -112,7 +112,8 @@
 
   &--collapsed .st2-flex-card,
   &--collapsed &__row,
-  &--collapsed &__header {
+  &--collapsed &__header,
+  &--collapsed .st2-history-child {
     display: none;
   }
 
@@ -183,7 +184,10 @@
 
     flex: initial;
 
-    padding-left: 20px;
+    box-sizing: content-box;
+    min-width: 15px;
+    padding-right: 0;
+    padding-left: 30px;
 
     border-top: 1px solid @grey-lighten-3;
   }
@@ -199,9 +203,9 @@
   & &__status {
     line-height: 32px;
 
-    position: absolute;
-    right: 0;
-    bottom: 0;
+    flex: 0 0 70px;
+
+    text-align: right;
 
     color: @grey-lighten-3;
 
@@ -224,7 +228,6 @@
 
     display: flex;
 
-    border-top: 1px solid @grey-lighten-3;
     background: white;
 
     &-primary {
@@ -297,6 +300,8 @@
     padding: 10px 15px;
 
     white-space: nowrap;
+
+    border-top: 1px solid @grey-lighten-3;
   }
 
   &__if {
@@ -332,15 +337,12 @@
   &__then {
     overflow: visible;
 
-    padding-right: 60px;
     padding-left: 25px;
   }
 
   &__if&__column,
   &__then&__column {
     min-width: initial;
-
-    border-top: 1px solid @grey-lighten-3;
   }
 
   &--active {
@@ -353,6 +355,6 @@
 
   &--active &__header-expand,
   &--active &__expand {
-    padding-left: 15px;
+    padding-left: 25px;
   }
 }

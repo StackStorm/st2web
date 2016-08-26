@@ -71,7 +71,29 @@
                   {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
                 </div>
               </div>
-              <div class="st2-flex-card__column st2-flex-card__if"
+
+              <div class="st2-flex-card__column"
+                  title="{{ $root.getRef(record.action) }}"
+                  ng-if="view.action.value">
+                <span class="st2-history__column-action-name">
+                  {{ $root.getRef(record.action) }}
+                </span>
+                <span class="st2-history__column-action-params st2-proportional"
+                    ng-if="view.action.subview.params.value">
+                  <span class="st2-history__column-action-param"
+                      ng-repeat="(name, value) in record.parameters"><!--
+                 --><span ng-if="!$first">,&nbsp;</span><!--
+                 --><span class="st2-history__column-action-param-name"><!--
+                   -->{{ name }}=<!--
+                 --></span><!--
+                 --><span class="st2-history__column-action-param-value"><!--
+                   -->{{ value | fmtParam }}<!--
+                 --></span><!--
+               --></span>
+                </span>
+              </div>
+
+              <div class="st2-flex-card__column"
                   ng-switch="record.rule && record.trigger && true"
                   ng-if="view.trigger.value">
                 <span ng-switch-when="true"
@@ -90,27 +112,6 @@
                   <span class="st2-history__column-user-name">
                     {{ record.context.user }}
                   </span>
-                </span>
-              </div>
-
-              <div class="st2-flex-card__column st2-flex-card__then"
-                  title="{{ $root.getRef(record.action) }}"
-                  ng-if="view.action.value">
-                <span class="st2-history__column-action-name">
-                  {{ $root.getRef(record.action) }}
-                </span>
-                <span class="st2-history__column-action-params st2-proportional"
-                    ng-if="view.action.subview.params.value">
-                  <span class="st2-history__column-action-param"
-                      ng-repeat="(name, value) in record.parameters"><!--
-                 --><span ng-if="!$first">,&nbsp;</span><!--
-                 --><span class="st2-history__column-action-param-name"><!--
-                   -->{{ name }}=<!--
-                 --></span><!--
-                 --><span class="st2-history__column-action-param-value"><!--
-                   -->{{ value | fmtParam }}<!--
-                 --></span><!--
-               --></span>
                 </span>
               </div>
 

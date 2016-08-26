@@ -20,12 +20,12 @@
         </div>
       </div>
 
-      <div class="st2-flex-card__column st2-flex-card__if"
+      <div class="st2-flex-card__column"
           ng-if="view.task.value">
         {{ getTaskName(record) }}
       </div>
 
-      <div class="st2-flex-card__column st2-flex-card__then"
+      <div class="st2-flex-card__column"
           title="{{ $root.getRef(record.action) }}"
           ng-if="view.action.value">
         <span class="st2-history__column-action-name">
