@@ -178,6 +178,12 @@
 
   background-color: white;
 
+  &:hover {
+    cursor: pointer;
+
+    background: @yellow-lighten-5;
+  }
+
   & &__expand {
     font-size: 15px;
     line-height: 32px;
@@ -227,8 +233,6 @@
     position: relative;
 
     display: flex;
-
-    background: white;
 
     &-primary {
       font-size: 16px;
@@ -309,6 +313,8 @@
 
     padding-right: 5px;
 
+    background: white;
+
     &:before,
     &:after {
       position: absolute;
@@ -338,6 +344,8 @@
     overflow: visible;
 
     padding-left: 25px;
+
+    background: white;
   }
 
   &__if&__column,
@@ -347,10 +355,6 @@
 
   &--active {
     border-left: 5px solid @yellow-base;
-  }
-
-  &--active &__header {
-    background: @yellow-lighten-5;
   }
 
   &--active &__header-expand,
