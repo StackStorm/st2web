@@ -58,30 +58,42 @@
               st2-scroll-into-view="{{ record.id === $parent.record.id }}"
               st2-scroll-into-view-container="st2-panel__scroller">
 
-            <div class="st2-flex-card__header"
-                ng-if="view.meta.value">
-              <div class="st2-flex-card__column st2-flex-card__header-expand">
-                <i ng-class="record._expanded && 'icon-chevron-up' || 'icon-chevron-down'"
+            <div class="st2-flex-card__row">
+              <div class="st2-flex-card__column st2-flex-card__expand">
+                <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron_right'"
                     ng-click="(record | isExpandable) && expand(record, $event)"
                     ng-if="(record | isExpandable)">
                 </i>
               </div>
-              <div class="st2-flex-card__column st2-flex-card__header-status">
-                <i class="icon-branch"
-                  ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
-                <span class="st2-label st2-label--short" status="record.status"
-                  ng-if="view.meta.subview.status.value"></span>
-              </div>
-              <div class="st2-flex-card__column">
+              <div class="st2-flex-card__column st2-flex-card__timestamp">
                 <div class="st2-flex-card__header-primary"
-                    ng-if="view.meta.subview.time.value">
+                    ng-if="view.meta.value && view.meta.subview.time.value">
                   {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
                 </div>
               </div>
-            </div>
 
-            <div class="st2-flex-card__row">
-              <div class="st2-flex-card__column st2-flex-card__if"
+              <div class="st2-flex-card__column"
+                  title="{{ $root.getRef(record.action) }}"
+                  ng-if="view.action.value">
+                <span class="st2-history__column-action-name">
+                  {{ $root.getRef(record.action) }}
+                </span>
+                <span class="st2-history__column-action-params st2-proportional"
+                    ng-if="view.action.subview.params.value">
+                  <span class="st2-history__column-action-param"
+                      ng-repeat="(name, value) in record.parameters"><!--
+                 --><span ng-if="!$first">,&nbsp;</span><!--
+                 --><span class="st2-history__column-action-param-name"><!--
+                   -->{{ name }}=<!--
+                 --></span><!--
+                 --><span class="st2-history__column-action-param-value"><!--
+                   -->{{ value | fmtParam }}<!--
+                 --></span><!--
+               --></span>
+                </span>
+              </div>
+
+              <div class="st2-flex-card__column"
                   ng-switch="record.rule && record.trigger && true"
                   ng-if="view.trigger.value">
                 <span ng-switch-when="true"
@@ -103,25 +115,11 @@
                 </span>
               </div>
 
-              <div class="st2-flex-card__column st2-flex-card__then"
-                  title="{{ $root.getRef(record.action) }}"
-                  ng-if="view.action.value">
-                <span class="st2-history__column-action-name">
-                  {{ $root.getRef(record.action) }}
-                </span>
-                <span class="st2-history__column-action-params st2-proportional"
-                    ng-if="view.action.subview.params.value">
-                  <span class="st2-history__column-action-param"
-                      ng-repeat="(name, value) in record.parameters"><!--
-                 --><span ng-if="!$first">,&nbsp;</span><!--
-                 --><span class="st2-history__column-action-param-name"><!--
-                   -->{{ name }}=<!--
-                 --></span><!--
-                 --><span class="st2-history__column-action-param-value"><!--
-                   -->{{ value | fmtParam }}<!--
-                 --></span><!--
-               --></span>
-                </span>
+              <div class="st2-flex-card__column st2-flex-card__status">
+                <i class="icon-branch"
+                  ng-if="(record | isExpandable) && view.meta.value && view.meta.subview.type.value"></i>
+                <span class="st2-label st2-label--short" status="record.status"
+                  ng-if="view.meta.value && view.meta.subview.status.value"></span>
               </div>
             </div>
 

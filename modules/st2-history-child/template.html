@@ -1,39 +1,31 @@
-<div class="st2-flex-table">
+<div>
 
   <div class="st2-flex-card"
       ng-class="{'st2-flex-card--active': record.id == $root.state.params.id}"
       ng-repeat-start="record in workflow._children | orderBy:'start_timestamp'"
       ng-click="$root.go({id: record.id})">
 
-    <div class="st2-flex-card__header">
-      <div class="st2-flex-card__column st2-flex-card__header-expand">
-        <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron-up'"
+    <div class="st2-flex-card__row">
+      <div class="st2-flex-card__column st2-flex-card__expand">
+        <i ng-class="record._expanded && 'icon-chevron-down' || 'icon-chevron_right'"
           ng-click="(record | isExpandable) && expand(record, $event)"
           ng-if="(record | isExpandable)">
         </i>
       </div>
-      <div class="st2-flex-card__column">
+
+      <div class="st2-flex-card__column st2-flex-card__timestamp">
         <div class="st2-flex-card__header-primary"
             ng-if="view.meta.subview.time.value">
           {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
         </div>
       </div>
-      <div class="st2-flex-card__column st2-flex-card__header-status"
-          ng-if="view.meta.value">
-        <i class="icon-branch"
-          ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
-        <span class="st2-label st2-label--short" status="record.status"
-          ng-if="view.meta.subview.status.value"></span>
-      </div>
-    </div>
 
-    <div class="st2-flex-card__row">
-      <div class="st2-flex-card__column st2-flex-card__if"
+      <div class="st2-flex-card__column"
           ng-if="view.task.value">
         {{ getTaskName(record) }}
       </div>
 
-      <div class="st2-flex-card__column st2-flex-card__then"
+      <div class="st2-flex-card__column"
           title="{{ $root.getRef(record.action) }}"
           ng-if="view.action.value">
         <span class="st2-history__column-action-name">
@@ -52,6 +44,14 @@
          --></span><!--
        --></span>
         </span>
+      </div>
+
+      <div class="st2-flex-card__column st2-flex-card__status"
+          ng-if="view.meta.value">
+        <i class="icon-branch"
+          ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
+        <span class="st2-label st2-label--short" status="record.status"
+          ng-if="view.meta.subview.status.value"></span>
       </div>
     </div>
 

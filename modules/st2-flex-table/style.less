@@ -42,9 +42,9 @@
 
         display: block;
 
-        padding: 0 20px 0 10px;
+        padding: 0 10px 0 20px;
 
-        content: '\e960';
+        content: '\e95f';
 
         color: rgba(0, 0, 0, .6);
 
@@ -107,12 +107,13 @@
   }
 
   &--collapsed &__caption[ng-click]:after {
-    content: '\e95f';
+    content: '\e972';
   }
 
   &--collapsed .st2-flex-card,
   &--collapsed &__row,
-  &--collapsed &__header {
+  &--collapsed &__header,
+  &--collapsed .st2-history-child {
     display: none;
   }
 
@@ -171,17 +172,67 @@
 }
 
 .st2-flex-card {
+  position: relative;
+
   padding: 0;
 
-  border-top: 1px solid @grey-lighten-3;
   background-color: white;
+
+  &:hover {
+    cursor: pointer;
+
+    background: @yellow-lighten-5;
+  }
+
+  & &__expand {
+    font-size: 15px;
+    line-height: 32px;
+
+    flex: initial;
+
+    box-sizing: content-box;
+    min-width: 15px;
+    padding-right: 0;
+    padding-left: 30px;
+
+    border-top: 1px solid @grey-lighten-3;
+  }
+
+  & &__timestamp {
+    line-height: 32px;
+
+    flex: initial;
+
+    border-top: 1px solid @grey-lighten-3;
+  }
+
+  & &__status {
+    line-height: 32px;
+
+    flex: 0 0 70px;
+
+    text-align: right;
+
+    color: @grey-lighten-3;
+
+    .st2-label__label {
+      overflow: hidden;
+
+      width: 16px;
+      height: 16px;
+      margin-left: 5px;
+      padding: 0;
+
+      text-indent: -100000px;
+
+      border-radius: 50%;
+    }
+  }
 
   &__header {
     position: relative;
 
     display: flex;
-
-    background: white;
 
     &-primary {
       font-size: 16px;
@@ -253,12 +304,16 @@
     padding: 10px 15px;
 
     white-space: nowrap;
+
+    border-top: 1px solid @grey-lighten-3;
   }
 
   &__if {
     overflow: visible;
 
     padding-right: 5px;
+
+    background: white;
 
     &:before,
     &:after {
@@ -289,24 +344,21 @@
     overflow: visible;
 
     padding-left: 25px;
+
+    background: white;
   }
 
   &__if&__column,
   &__then&__column {
     min-width: initial;
-
-    border-top: 1px solid @grey-lighten-3;
   }
 
   &--active {
     border-left: 5px solid @yellow-base;
   }
 
-  &--active &__header {
-    background: @yellow-lighten-5;
-  }
-
-  &--active &__header-expand {
-    padding-left: 15px;
+  &--active &__header-expand,
+  &--active &__expand {
+    padding-left: 25px;
   }
 }
