@@ -88,11 +88,12 @@
     background-color: white;
     box-shadow: 0 1px 0 @grey-lighten-2;
 
-    &[disabled] {
+    &&[disabled] {
       cursor: default;
 
-      color: @grey-lighten-3;
+      color: black;
       border-color: transparent;
+      background-color: @grey-lighten-4;
     }
 
     &::placeholder {
@@ -131,8 +132,8 @@
 
     cursor: default;
 
-    color: @grey-lighten-1;
-    background-color: white;
+    color: black;
+    background-color: @grey-lighten-4;
     box-shadow: 0 1px 0 @grey-lighten-2;
   }
 
@@ -140,7 +141,7 @@
   &__link {
     line-height: 36px;
 
-    color: @grey-lighten-3;
+    color: black;
   }
 
   &__text-field &__field {
