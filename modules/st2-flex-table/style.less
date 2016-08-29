@@ -207,9 +207,10 @@
   }
 
   & &__status {
+    font-size: 21px;
     line-height: 32px;
 
-    flex: 0 0 70px;
+    flex: 0 0 80px;
 
     text-align: right;
 
@@ -250,8 +251,10 @@
 
     // increasing specificity for flex to propagate
     & &-status {
+      font-size: 21px;
+
       display: flex;
-      flex: 0 0 auto;
+      flex: 0 0 52px;
 
       color: @grey-lighten-3;
 
@@ -270,6 +273,16 @@
 
         border-radius: 50%;
       }
+    }
+
+    & &-type {
+      line-height: 52px;
+
+      flex: 0 0 auto;
+
+      padding: 0;
+
+      color: @grey-lighten-3;
     }
 
     & &-expand {
