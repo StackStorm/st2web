@@ -69,15 +69,15 @@
                   {{ action.description }}
                 </div>
               </div>
-              <div class="st2-flex-card__column st2-flex-card__header-status">
-                <span title="{{ action.runner_type }}"
-                    ng-if="view.runner.value">
-                  {{ action.runner_type }}
-                </span>
-                <span ng-if="view.type.value">
-                  <i class="icon-branch"
-                    ng-if="{'action': action} | isExpandable"></i>
-                </span>
+              <div class="st2-flex-card__column st2-flex-card__header-type"
+                  title="{{ action.runner_type }}"
+                  ng-if="view.runner.value">
+                {{ action.runner_type }}
+              </div>
+              <div class="st2-flex-card__column st2-flex-card__header-status"
+                  ng-if="view.type.value">
+                <i class="icon-branch"
+                  ng-if="{'action': action} | isExpandable"></i>
               </div>
             </div>
           </div>
