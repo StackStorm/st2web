@@ -211,6 +211,33 @@ describe('User visits actions page', function () {
 
   });
 
+  describe('then selects an action with a specific parameter and fills it', function () {
+    before(function () {
+      return browser
+        .click(util.name('action:core.local'))
+        .then(function () {
+          return browser.fill(util.name('field:cmd'), 'test');
+        })
+        ;
+    });
+
+    it('should have parameter filled', function () {
+      browser.assert.input(util.name('field:cmd'), 'test', 'Field have not been filled');
+    });
+
+    describe('then selects another action with the same parameter', function () {
+      before(function () {
+        return browser
+          .click(util.name('action:core.local_sudo'))
+          ;
+      });
+
+      it('should have empty parameter', function () {
+        browser.assert.input(util.name('field:cmd'), '', 'Field have not been reset');
+      });
+    })
+  })
+
   after(function () {
     browser.tabs.closeAll();
   });
