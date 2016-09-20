@@ -11,6 +11,7 @@ import EnumField from './fields/enum';
 
 export default class AutoForm extends React.Component {
   static propTypes = {
+    key: React.PropTypes.string,
     spec: React.PropTypes.object,
     ngModel: React.PropTypes.object,
     disabled: React.PropTypes.bool,
