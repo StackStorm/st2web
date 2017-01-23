@@ -1,0 +1,5 @@
+platform:
+  npm:
+    isarray:
+      tests:
+        deprecated: skip
