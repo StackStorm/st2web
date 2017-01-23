@@ -20,6 +20,11 @@ module.exports = {
   'remote-shell-script': require('./run-remote.html'),
   'run-python': require('./run-python.html'),
   'python-shell': require('./run-python.html'),
-  // 'http-runner': 'http'
+  'python-script': require('./run-python.html'),
+  // 'http-runner': 'http',
+  // 'http-request': 'http',
+  // 'noop': 'noop',
+  // 'windows-cmd': 'windows'
+  // 'windows-script': 'windows'
   'cloudslang': require('./run-local.html')
 };
