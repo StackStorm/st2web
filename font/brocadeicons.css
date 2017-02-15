@@ -24,6 +24,126 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-chart:before {
+  content: "\e9a6";
+}
+.icon-plus2:before {
+  content: "\e9a7";
+}
+.icon-clear:before {
+  content: "\e9a5";
+}
+.icon-folder:before {
+  content: "\e9a3";
+}
+.icon-cog6:before {
+  content: "\e9a4";
+}
+.icon-lightning:before {
+  content: "\e99f";
+}
+.icon-reset:before {
+  content: "\e9a0";
+}
+.icon-tree:before {
+  content: "\e9a1";
+}
+.icon-monitor:before {
+  content: "\e9a2";
+}
+.icon-cog5:before {
+  content: "\e98a";
+}
+.icon-user2:before {
+  content: "\e98b";
+}
+.icon-check3:before {
+  content: "\e99b";
+}
+.icon-folder_list:before {
+  content: "\e99e";
+}
+.icon-view:before {
+  content: "\e900";
+}
+.icon-view2:before {
+  content: "\e985";
+}
+.icon-update2:before {
+  content: "\e987";
+}
+.icon-update3:before {
+  content: "\e988";
+}
+.icon-update4:before {
+  content: "\e989";
+}
+.icon-pause:before {
+  content: "\e98c";
+}
+.icon-pause2:before {
+  content: "\e98f";
+}
+.icon-play2:before {
+  content: "\e993";
+}
+.icon-stop2:before {
+  content: "\e994";
+}
+.icon-exit2:before {
+  content: "\e995";
+}
+.icon-goto:before {
+  content: "\e996";
+}
+.icon-ruler3:before {
+  content: "\e997";
+}
+.icon-ruler4:before {
+  content: "\e998";
+}
+.icon-connect:before {
+  content: "\e999";
+}
+.icon-server3:before {
+  content: "\e99c";
+}
+.icon-update:before {
+  content: "\e986";
+}
+.icon-list3:before {
+  content: "\e984";
+}
+.icon-token:before {
+  content: "\e983";
+}
+.icon-flag:before {
+  content: "\e982";
+}
+.icon-indent:before {
+  content: "\e97a";
+}
+.icon-cog2:before {
+  content: "\e97b";
+}
+.icon-cog3:before {
+  content: "\e97c";
+}
+.icon-cog4:before {
+  content: "\e97d";
+}
+.icon-wrench:before {
+  content: "\e97e";
+}
+.icon-wrench2:before {
+  content: "\e97f";
+}
+.icon-wrench3:before {
+  content: "\e980";
+}
+.icon-wrench4:before {
+  content: "\e981";
+}
 .icon-time:before {
   content: "\e979";
 }
@@ -170,9 +290,6 @@
 }
 .icon-cluster:before {
   content: "\e950";
-}
-.icon-view:before {
-  content: "\e900";
 }
 .icon-desktop:before {
   content: "\e901";
