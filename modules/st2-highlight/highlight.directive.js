@@ -44,6 +44,8 @@ module.exports =
       scope.$watch('code', function (code) {
 
         scope.hidden = true;
+	scope.wrap = false;
+	scope.showNewLines = false;
 
         if (!code) {
           return;
@@ -73,7 +75,9 @@ module.exports =
           }
 
         })();
-
+	
+	scope.newLineString = string.replace(/\\n/g, '\n');
+        scope.unmodifiedString = string;
         var shortString;
 
         if (!scope.full) {
@@ -100,6 +104,14 @@ module.exports =
         }
 
       });
+      scope.toggleNewLines = function() {
+        scope.showNewLines = !scope.showNewLines;
+        if (scope.showNewLines) {
+          fullElement.innerHTML = scope.newLineString;
+        } else {
+          fullElement.innerHTML = scope.unmodifiedString;
+        }
+      };
     }
 
     return {
