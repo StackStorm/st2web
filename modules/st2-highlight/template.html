@@ -16,13 +16,13 @@
   <div class="st2-highlight__well"
       ng-click="$event.stopPropagation()">
     <input type="button" 
-	ng-click="wrap = !wrap" 
-	value="WRAP LINES"
-	ng-class="{'input--active': wrap}">
+      ng-click="wrap = !wrap" 
+      value="WRAP LINES"
+      ng-class="{'input--active': wrap}">
     <input type="button" 
-	ng-click="toggleNewLines()" 
-	value="SHOW NEWLINES"
-	ng-class="{'input--active': showNewLines}">
+      ng-click="toggleNewLines()" 
+      value="SHOW NEWLINES"
+      ng-class="{'input--active': showNewLines}">
     <pre ng-style="{'white-space': (wrap) ? 'pre-wrap' : 'auto'}">
       <code></code>
     </pre>

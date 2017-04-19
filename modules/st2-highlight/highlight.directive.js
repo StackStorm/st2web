@@ -44,8 +44,8 @@ module.exports =
       scope.$watch('code', function (code) {
 
         scope.hidden = true;
-	scope.wrap = false;
-	scope.showNewLines = false;
+        scope.wrap = false;
+        scope.showNewLines = false;
 
         if (!code) {
           return;
@@ -75,8 +75,8 @@ module.exports =
           }
 
         })();
-	
-	scope.newLineString = string.replace(/\\n/g, '\n');
+  
+      scope.newLineString = string.replace(/\\n/g, '\n');
         scope.unmodifiedString = string;
         var shortString;
 
