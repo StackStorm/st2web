@@ -16,10 +16,12 @@
   <div class="st2-highlight__well"
       ng-click="$event.stopPropagation()">
     <input type="button" 
+      class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
       ng-click="wrap = !wrap" 
       value="WRAP LINES"
       ng-class="{'input--active': wrap}">
     <input type="button" 
+      class="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
       ng-click="toggleNewLines()" 
       value="SHOW NEWLINES"
       ng-class="{'input--active': showNewLines}">
