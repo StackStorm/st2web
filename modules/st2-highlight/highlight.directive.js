@@ -75,9 +75,11 @@ module.exports =
           }
 
         })();
-  
-      scope.newLineString = string.replace(/\\n/g, '\n');
+
+        scope.newLineString = string.replace(/\\n/g, '\n');
+
         scope.unmodifiedString = string;
+
         var shortString;
 
         if (!scope.full) {
