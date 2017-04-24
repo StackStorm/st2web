@@ -28,10 +28,10 @@
 
       &::-webkit-scrollbar-thumb {
         border-radius: 3px;
-        background-color: rgba(200, 200, 200, .3);
+        background-color: rgba(150, 150, 150, .3);
 
         &:hover {
-          background-color: rgba(200, 200, 200, .7);
+          background-color: rgba(150, 150, 150, .7);
         }
       }
 
@@ -104,6 +104,18 @@
     overflow: auto;
   }
 
+  &__fullscreen &__buttons {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+
+    display: none;
+  }
+
+  &__fullscreen:hover &__buttons {
+    display: block;
+  }
+
   &__more {
     cursor: pointer;
     text-decoration: underline;
@@ -126,4 +138,7 @@
   .style .token.string {
     background: none;
   }
+}
+.input--active {
+  background-color: #ff9e1b;
 }
