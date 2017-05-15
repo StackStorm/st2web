@@ -46,6 +46,7 @@ dependencies:
     - sudo apt-get install rpm parallel jq
     - gem install package_cloud
     - sudo pip install docker-compose
+    - npm -g install npm@latest-2
   post:
     - docker-compose -f ~/st2box/docker-compose.yaml pull
     - docker-compose -f ~/st2box/docker-compose.yaml up -d
