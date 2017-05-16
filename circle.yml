@@ -10,7 +10,7 @@ machine:
     DEPLOY_PACKAGES: 1
     DEB: wheezy jessie trusty xenial
     RPM: el6 el7
-    ST2_TEST_ENVIRONEMENT: https://github.com/enykeev/st2box
+    ST2_TEST_ENVIRONMENT: https://github.com/LindsayHill/st2box
     ST2_HOST: localhost
     ST2_USERNAME: admin
     ST2_PASSWORD: 123
@@ -34,7 +34,7 @@ checkout:
         chmod 755 ~/scripts/{packagecloud.sh,save_payload.py}
         echo "export PATH=${HOME}/scripts:${PATH}" >> ~/.circlerc
   post:
-    - git clone --depth 1 ${ST2_TEST_ENVIRONEMENT} ~/st2box
+    - git clone --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2box
     - |
         PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
         PKG_RELEASE=$(packagecloud.sh next-revision wheezy ${PKG_VERSION} st2web)
