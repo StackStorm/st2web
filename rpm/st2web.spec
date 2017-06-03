@@ -38,5 +38,9 @@ Prefix:         /opt/stackstorm/static/webui
 %clean
   rm -rf %{buildroot}
 
+%post
+  # Try to fix the logs permissions during both install/upgrade
+  chmod o-r /var/log/nginx/st2webui.* /var/log/nginx/ssl-st2webui.* > /dev/null 2>&1 || true
+
 %files
   /*
