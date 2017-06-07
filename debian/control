@@ -1,15 +1,17 @@
 Source: st2web
-Section: unknown
+Section: web
 Priority: optional
 Maintainer: StackStorm Engineering <opsadmin@stackstorm.com>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://github.com/stackstorm/st2web.git
-#Vcs-Browser: https://github.com/stackstorm/st2web
+Homepage: https://stackstorm.com/
+Vcs-Git: git://github.com/stackstorm/st2web.git
+Vcs-Browser: https://github.com/stackstorm/st2web
 
 Package: st2web
 Architecture: any
 Pre-Depends: dpkg (>= 1.16.16)
-Description: St2Web - StackStorm Web UI
- <insert long description, indented with spaces>
+Description: St2Web - StackStorm Web UI.
+ Angular-based HTML5 real-time Web UI interface for StackStorm open-source automation platform.
+ Allows to control the whole process of execution, from running an action to seeing the results of the execution.
+ It also helps to explore workflow executions up to the results of individual tasks.

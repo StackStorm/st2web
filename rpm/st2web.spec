@@ -11,7 +11,7 @@ Epoch: %{epoch}
 Release:        %{release}
 Summary:        St2Web - StackStorm Web UI
 
-License:        Apache
+License:        Apache 2.0
 URL:            https://github.com/stackstorm/st2web
 Source0:        st2web
 
@@ -23,7 +23,9 @@ Prefix:         /opt/stackstorm/static/webui
 
 
 %description
-  <insert long description, indented with spaces>
+  Angular-based HTML5 real-time Web UI interface for StackStorm open-source automation platform.
+  Allows to control the whole process of execution, from running an action to seeing the results of the execution.
+  It also helps to explore workflow executions up to the results of individual tasks.
 
 %prep
   rm -rf %{buildroot}
@@ -37,6 +39,10 @@ Prefix:         /opt/stackstorm/static/webui
 
 %clean
   rm -rf %{buildroot}
+
+%post
+  # Try to fix the logs permissions during both install/upgrade
+  chmod o-r /var/log/nginx/st2webui.* /var/log/nginx/ssl-st2webui.* > /dev/null 2>&1 || true
 
 %files
   /*
