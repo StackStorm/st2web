@@ -20,7 +20,6 @@ const typeChecks = (type, v) => {
 export default class ArrayField extends BaseTextField {
   static icon = '[ ]'
   fromStateValue(v) {
-    const { items } = this.props.spec;
     return v !== '' ? JSON.parse(v) : void 0;
   }
 
@@ -29,6 +28,11 @@ export default class ArrayField extends BaseTextField {
   }
 
   validate(v, spec={}) {
+    const invalid = super.validate(v, spec);
+    if (invalid !== void 0) {
+      return invalid;
+    };
+
     try {
       const { items } = this.props.spec;
       const o = v && JSON.parse(v);

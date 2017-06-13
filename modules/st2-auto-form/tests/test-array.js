@@ -30,11 +30,11 @@ describe('AutoForm ArrayField', () => {
 
     const c = new TestComponent(<ArrayField {...props} />);
 
-    c.makeChange('t,e,s,t');
+    c.makeChange('["t","e","s","t"]');
 
     expect(onChange.withArgs(['t','e','s','t'])).to.be.calledOnce;
 
-    expect(c.fieldValue()).to.be.equal('t,e,s,t');
+    expect(c.fieldValue()).to.be.equal('["t","e","s","t"]');
     expect(c.value()).to.be.deep.equal(['t','e','s','t']);
   });
 
@@ -72,7 +72,7 @@ describe('AutoForm ArrayField', () => {
 
     const c = new TestComponent(<ArrayField {...props} />);
 
-    expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
+    expect(c.field().props.placeholder).to.be.equal('[1,2,3]');
   });
 
   it('allows you to put a jinja template in the field', () => {
