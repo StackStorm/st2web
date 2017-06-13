@@ -22,7 +22,9 @@ module.exports =
 
         scope.typeSpec = {
           enum: {
-            'matchregex': 'Matches Regex',
+            'regex': 'Regular expression match',
+            'iregex': 'Case-insensitive regular expression match',
+            'matchwildcard': 'Wildcard match',
             'eq': 'Equals',
             'equals': 'Equals',
             'nequals': 'Not Equals',
