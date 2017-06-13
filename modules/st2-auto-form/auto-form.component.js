@@ -67,7 +67,6 @@ export default class AutoForm extends React.Component {
         }
       )
       .value();
-    console.log(fields)
 
     return <div>
       {
