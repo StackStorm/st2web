@@ -3,4 +3,4 @@ Changelog
 
 in development
 --------------
-* Create a changelog and required machinary
+* Create a changelog and required machinery
