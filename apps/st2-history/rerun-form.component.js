@@ -71,6 +71,7 @@ export default class RerunForm extends React.Component {
     };
 
     const autoFormProps = {
+      disabled: true,
       spec: this.props.spec,
       ngModel: this.props.payload,
       onChange: (...args) => this.handleChange(...args)
