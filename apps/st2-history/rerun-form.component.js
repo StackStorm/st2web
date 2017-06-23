@@ -17,6 +17,8 @@ export default class RerunForm extends React.Component {
 
     var { payload={} } = props;
 
+    this.original_payload = Object.assign({}, payload);
+
     this.state = { payload };
   }
 
@@ -31,9 +33,18 @@ export default class RerunForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
+    const state_payload = this.state.payload;
+    let submit_payload = {};
+
+    for (let key of Object.keys(this.original_payload)){
+      if (this.original_payload[key] !== state_payload[key]){
+        submit_payload[key] = state_payload[key];
+      }
+    }
+
     const { onSubmit } = this.props;
 
-    return onSubmit && onSubmit(this.state.payload);
+    return onSubmit && onSubmit(submit_payload);
   }
 
   handleCancel(e) {
