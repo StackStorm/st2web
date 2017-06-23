@@ -266,8 +266,7 @@ module.exports =
       },
 
       submit: function (parameters) {
-        console.log(parameters);
-        st2api.client.executions.repeat($scope.record.id, { }, {
+        st2api.client.executions.repeat($scope.record.id, { parameters }, {
           no_merge: true
         })
           .then((record) => {
