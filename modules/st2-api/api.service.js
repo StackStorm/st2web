@@ -73,6 +73,8 @@ module.exports =
         };
       }
 
+      opts.noQueryTokens = true;
+
       var client = st2client(opts);
 
       window.name = 'st2web+' + client.index.url;
