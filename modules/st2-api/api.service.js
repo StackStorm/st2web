@@ -49,10 +49,26 @@ module.exports =
             prefix: auth.path
           };
         }
+
+        if (server.stream && _.isString(server.stream)) {
+          var stream = URI.parse(server.stream);
+
+          if (stream.port && !stream.hostname) {
+            stream.hostname = window.location.hostname;
+          }
+
+          opts.stream = {
+            protocol: stream.protocol,
+            host: stream.hostname,
+            port: stream.port,
+            prefix: stream.path
+          };
+        }
       } else {
         opts = {
           api: 'https://' + window.location.hostname + ':443/api',
           auth: 'https://' + window.location.hostname + ':443/auth',
+          stream: 'https://' + window.location.hostname + ':443/stream',
           token: !_.isEmpty(token) ? token : undefined
         };
       }
