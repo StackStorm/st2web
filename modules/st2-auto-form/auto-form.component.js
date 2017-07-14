@@ -59,11 +59,11 @@ export default class AutoForm extends React.Component {
       })
       .reject('immutable')
       .sort(
-        function(a, b){
-          if(a['required'] === b['required']){
-            return a['_name'] < b['_name'] ? -1 : a['_name'] > b['_name'] ? 1 : 0;
+        (a, b) => {
+          if(a.required === b.required){
+            return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
           }
-          return a['required'] === b['required'] ? 0 : a['required'] ? -1 : 1;
+          return a.required === b.required ? 0 : a.required ? -1 : 1;
         }
       )
       .value();
