@@ -61,6 +61,15 @@ export default class AutoForm extends React.Component {
       .sort(
         (a, b) => {
           if(a.required === b.required){
+            if (a.position || b.position){
+              if (a.position === undefined){
+                return 1;
+              }
+              if (b.position === undefined){
+                return -1;
+              }
+              return a.position < b.position ? -1 : a.position > b.position ? 1 : 0;
+            }
             return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
           }
           return a.required === b.required ? 0 : a.required ? -1 : 1;
