@@ -60,14 +60,20 @@
         line-height: 34px;
 
         width: 100px;
+
+        text-transform: capitalize;
       }
 
       &-value {
         line-height: 34px;
 
+        overflow: hidden;
         flex: 1;
 
         margin: 0;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
 
         pre {
           margin: 0;

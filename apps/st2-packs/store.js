@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 
 const initialState = {
   collapsed: false,
@@ -70,9 +70,6 @@ const reducer = (state = initialState, action) => {
 
       switch(action.status) {
         case 'success':
-          const [ firstAction = {} ] = action.payload;
-          const { selected = firstAction.ref } = state;
-
           const { packs } = state;
           const installedPacks = {};
 
@@ -85,10 +82,9 @@ const reducer = (state = initialState, action) => {
 
           return {
             ...state,
-            selected,
             packs: {
-              ...packs,
-              ...installedPacks
+              ...installedPacks,
+              ...packs
             }
           };
         case 'error':
@@ -110,8 +106,8 @@ const reducer = (state = initialState, action) => {
           return {
             ...state,
             packs: {
-              ...packs,
-              ...action.payload
+              ...action.payload,
+              ...packs
             }
           };
         case 'error':
@@ -140,9 +136,36 @@ const reducer = (state = initialState, action) => {
   }
 };
 
+const promiseMiddleware = () => next => action => {
+  if (!action.promise) {
+    return next(action);
+  }
+
+  function actionFactory(status, data) {
+    const { promise, ...newAction } = action;
+    return {
+      ...newAction,
+      status,
+      ...data
+    };
+  }
+
+  next(actionFactory());
+  return action.promise.then(
+    payload => next(actionFactory('success', { payload })),
+    error => next(actionFactory('error', { error }))
+  );
+};
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(
+    applyMiddleware(
+      promiseMiddleware
+    )
+  )
 );
 
 export default store;

@@ -1,10 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-@connect(
-  state => ({ collapsed: state.collapsed }),
-  dispatch => ({ onClick: () => dispatch({ type: 'TOGGLE_ALL' }) })
-)
 export default class ToggleButton extends React.Component {
   static propTypes = {
     collapsed: React.PropTypes.bool,

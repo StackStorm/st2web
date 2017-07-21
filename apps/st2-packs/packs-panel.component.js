@@ -7,64 +7,102 @@ import store from './store';
 import Toolbar from './toolbar.component';
 import ToggleButton from './toggle-button.component';
 import Content from './content.component';
-import PackFlexTable from './pack-flex-table.component';
+import FlexTable from './flex-table.component';
 import PackFlexCard from './pack-flex-card.component';
-import DetailsHeader from './details-header.component';
+import {
+  DetailsHeader,
+  DetailsBody,
+  DetailsPanel,
+  DetailsToolbar,
+  DetailsToolbarSeparator
+} from './details.component';
+import Button from './button.component';
+import Table from './table.component';
 
 
 @connect((state) => {
-  const { packs } = state;
-  return { packs };
+  const { packs, selected, collapsed } = state;
+  return { packs, selected, collapsed };
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
     context: React.PropTypes.object,
-    packs: React.PropTypes.object
+    collapsed: React.PropTypes.bool,
+    packs: React.PropTypes.object,
+    selected: React.PropTypes.string
   }
 
-  handleSelect({ ref }) {
+  handleToggleAll() {
+    return store.dispatch({ type: 'TOGGLE_ALL' });
+  }
+
+  handleSelect(ref) {
     const { state } = this.props.context;
     state.go({ ref });
+  }
+
+  handleInstall(ref) {
+    const { api } = this.props.context;
+    const { packs } = api.client;
+
+    packs.request({
+      method: 'post',
+      path: `${packs.path}/install`
+    }, {
+      packs: [ref]
+    })
+      .then((e) => console.log(e))
+      .catch((e) => console.log(e))
+      ;
+  }
+
+  handleRemove(ref) {
+    const { api } = this.props.context;
+    const { packs } = api.client;
+
+    packs.request({
+      method: 'post',
+      path: `${packs.path}/uninstall`
+    }, {
+      packs: [ref]
+    })
+      .then((e) => console.log(e))
+      .catch((e) => console.log(e))
+      ;
   }
 
   componentDidMount() {
     const { api, state } = this.props.context;
 
-    store.dispatch({ type: 'FETCH_INSTALLED_PACKS' });
-    api.client.packs.list()
-      .then(payload => {
-        store.dispatch({ type: 'FETCH_INSTALLED_PACKS', status: 'success', payload });
-      })
-      .catch(error => {
-        store.dispatch({ type: 'FETCH_INSTALLED_PACKS', status: 'error', error });
+    store.dispatch({
+      type: 'FETCH_INSTALLED_PACKS',
+      promise: api.client.packs.list()
+    })
+      .then(({ payload }) => {
+        const { ref } = _.first(payload) || {};
+        const { selected } = store.getState();
+
+        if (!selected && ref) {
+          store.dispatch({ type: 'SELECT_PACK', ref });
+        }
       })
       ;
 
-    store.dispatch({ type: 'FETCH_PACK_INDEX' });
-    fetch('https://index.stackstorm.org/v1/index.json')
-      .then(response => {
-        response.json()
-          .then(({ packs }) => {
-            // In some cases pack ref might be missing and we better sort it out earlier
-            Object.keys(packs).forEach(ref => {
-              packs[ref].ref = packs[ref].ref || ref;
-            });
-            store.dispatch({ type: 'FETCH_PACK_INDEX', status: 'success', payload: packs });
-          })
-          .catch(error => {
-            store.dispatch({ type: 'FETCH_PACK_INDEX', status: 'error', error });
-          })
-          ;
-      })
-      .catch(error => {
-        store.dispatch({ type: 'FETCH_PACK_INDEX', status: 'error', error });
-      })
-      ;
+    store.dispatch({
+      type: 'FETCH_PACK_INDEX',
+      promise: fetch('https://index.stackstorm.org/v1/index.json')
+        .then(response => response.json())
+        .then(({ packs }) => packs)
+        // In some cases pack ref might be missing and we better sort it out earlier
+        .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
+    });
 
     this._unsubscribeStateOnChange = state.onChange((transition) => {
       const { ref } = transition.params();
       store.dispatch({ type: 'SELECT_PACK', ref });
     });
+
+    store.dispatch({ type: 'SELECT_PACK', ref: state.params.ref });
   }
 
   componentWillUnmount() {
@@ -72,37 +110,61 @@ export default class PacksPanel extends React.Component {
   }
 
   render() {
-    const { packs } = this.props;
+    const { packs, selected, collapsed } = this.props;
+    const {
+      name,
+      description,
+      installed,
+      author,
+      email,
+      keywords,
+      repo_url
+    } = packs[selected] || {};
 
     return <div className="st2-panel">
       <div className="st2-panel__view">
         <Toolbar title="Packs">
-          <ToggleButton />
+          <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
         </Toolbar>
         <Content>
-          <PackFlexTable title="Installed">
+          <FlexTable title="Installed">
             {
               _(packs).filter(pack => pack.installed).sortBy('ref').value().map(pack => {
                 return <PackFlexCard key={pack.ref} pack={pack}
-                  onClick={() => this.handleSelect(pack)} />;
+                  onClick={() => this.handleSelect(pack.ref)} />;
               })
             }
-          </PackFlexTable>
-          <PackFlexTable title="Available">
+          </FlexTable>
+          <FlexTable title="Available">
             {
               _(packs).filter(pack => !pack.installed).sortBy('ref').value().map(pack => {
                 return <PackFlexCard key={pack.ref} pack={pack}
-                  onClick={() => this.handleSelect(pack)}/>;
+                  onClick={() => this.handleSelect(pack.ref)}/>;
               })
             }
-          </PackFlexTable>
+          </FlexTable>
         </Content>
       </div>
       <div className="st2-panel__details st2-details" data-test="details">
-        <DetailsHeader/>
-        <div className="st2-details__toolbar">
-          <div className="st2-details__toolbar-separator"></div>
-        </div>
+        <DetailsHeader title={name} subtitle={description}/>
+        <DetailsBody>
+          <DetailsPanel>
+            <Table content={{
+              author,
+              email: email && <a href={`mailto:${email}`}>{ email }</a>,
+              keywords: keywords && keywords.join(', '),
+              'Repo URL': repo_url && <a href={repo_url} title={repo_url}>{ repo_url }</a>
+            }} />
+          </DetailsPanel>
+        </DetailsBody>
+        <DetailsToolbar>
+          {
+            installed
+              ? <Button small value="Remove" onClick={() => this.handleRemove(selected)} />
+              : <Button small value="Install" onClick={() => this.handleInstall(selected)} />
+          }
+          <DetailsToolbarSeparator />
+        </DetailsToolbar>
       </div>
     </div>;
   }

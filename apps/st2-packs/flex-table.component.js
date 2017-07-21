@@ -13,7 +13,7 @@ import FlexTableTitle from './flex-table-title.component';
 
   return { title, collapsed };
 })
-export default class PackFlexTable extends React.Component {
+export default class FlexTable extends React.Component {
   static propTypes = {
     title: React.PropTypes.string,
     collapsed: React.PropTypes.bool,
