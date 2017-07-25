@@ -200,6 +200,32 @@ export default class PacksPanel extends React.Component {
       repo_url
     } = packs[selected] || {};
 
+    const tableContent = {
+      author
+    };
+
+    if (email) {
+      tableContent.email = <a href={`mailto:${email}`}>{ email }</a>;
+    }
+
+    if (keywords && keywords.length) {
+      tableContent.keywords = <div>
+        {
+          keywords.map(word =>
+            <span key={word} className="st2-details__panel-body-tag">
+              { word }
+            </span>
+          )
+        }
+      </div>;
+    }
+
+    if (repo_url) {
+      tableContent['Repo URL'] = <div className="st2-details__panel-body-pocket">
+        <a href={repo_url} title={repo_url}>{ repo_url }</a>
+      </div>;
+    }
+
     return <div className="st2-panel">
       <div className="st2-panel__view">
         <Toolbar title="Packs">
@@ -228,12 +254,7 @@ export default class PacksPanel extends React.Component {
         <DetailsHeader title={name} subtitle={description}/>
         <DetailsBody>
           <DetailsPanel>
-            <Table content={{
-              author,
-              email: email && <a href={`mailto:${email}`}>{ email }</a>,
-              keywords: keywords && keywords.join(', '),
-              'Repo URL': repo_url && <a href={repo_url} title={repo_url}>{ repo_url }</a>
-            }} />
+            <Table content={tableContent} />
           </DetailsPanel>
           {
             config_schema && <DetailsPanel>
