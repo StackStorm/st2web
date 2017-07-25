@@ -16,3 +16,6 @@ debian/files
 .vagrant
 
 .DS_Store
+
+# VIM Swap
+.*.swp
