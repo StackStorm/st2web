@@ -189,10 +189,11 @@ const reducer = (state = initialState, action) => {
         };
 
     case 'SELECT_PACK':
+      const { ref } = action;
 
       return {
         ...state,
-        selected: action.ref
+        selected: ref || Object.keys(state.packs)[0]
       };
 
     default:

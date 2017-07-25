@@ -107,12 +107,11 @@ export default class PacksPanel extends React.Component {
       type: 'FETCH_INSTALLED_PACKS',
       promise: api.client.packs.list()
     })
-      .then(({ payload }) => {
-        const { ref } = _.first(payload) || {};
+      .then(() => {
         const { selected } = store.getState();
 
-        if (!selected && ref) {
-          store.dispatch({ type: 'SELECT_PACK', ref });
+        if (!selected) {
+          store.dispatch({ type: 'SELECT_PACK' });
         }
       })
       ;
@@ -210,7 +209,7 @@ export default class PacksPanel extends React.Component {
           <FlexTable title="Installed">
             {
               _(packs).filter(pack => pack.installed).sortBy('ref').value().map(pack => {
-                return <PackFlexCard key={pack.ref} pack={pack}
+                return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
                   onClick={() => this.handleSelect(pack.ref)} />;
               })
             }
@@ -218,7 +217,7 @@ export default class PacksPanel extends React.Component {
           <FlexTable title="Available">
             {
               _(packs).filter(pack => !pack.installed).sortBy('ref').value().map(pack => {
-                return <PackFlexCard key={pack.ref} pack={pack}
+                return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
                   onClick={() => this.handleSelect(pack.ref)}/>;
               })
             }
