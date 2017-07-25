@@ -59,11 +59,31 @@ export default class AutoForm extends React.Component {
       })
       .reject('immutable')
       .sort(
-        function(a, b){
-          if(a['required'] === b['required']){
-            return a['_name'] < b['_name'] ? -1 : a['_name'] > b['_name'] ? 1 : 0;
+        (a, b) => {
+          // If required matches for both objects then we need to sort by other
+          // criteria
+          if(a.required === b.required){
+            // If position exists for the items we're comparing then lets
+            // favor sorting by that
+            if (a.position || b.position){
+              // Some items might have position undefined. If it's undefined
+              // it should be sorted behind an item with position defined
+              if (a.position === undefined){
+                return 1;
+              }
+              if (b.position === undefined){
+                return -1;
+              }
+              // If both items have positon then the lower positon should come
+              // first
+              return a.position < b.position ? -1 : a.position > b.position ? 1 : 0;
+            }
+            // If no positon then we need to sort by name
+            return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
           }
-          return a['required'] === b['required'] ? 0 : a['required'] ? -1 : 1;
+          // If required doesn't match we should put all required items first
+          // in the list
+          return a.required === b.required ? 0 : a.required ? -1 : 1;
         }
       )
       .value();
