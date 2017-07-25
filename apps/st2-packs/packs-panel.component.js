@@ -13,12 +13,15 @@ import {
   DetailsHeader,
   DetailsBody,
   DetailsPanel,
+  DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator
 } from './details.component';
 import Button from './button.component';
 import Table from './table.component';
 
+import AutoForm from '../../modules/st2-auto-form/auto-form.component';
+import St2Highlight from '../../modules/st2-highlight/highlight.component';
 
 @connect((state) => {
   const { packs, selected, collapsed } = state;
@@ -30,6 +33,10 @@ export default class PacksPanel extends React.Component {
     collapsed: React.PropTypes.bool,
     packs: React.PropTypes.object,
     selected: React.PropTypes.string
+  }
+
+  state = {
+    configPreview: false
   }
 
   handleToggleAll() {
@@ -45,7 +52,7 @@ export default class PacksPanel extends React.Component {
     const { api } = this.props.context;
     const { packs } = api.client;
 
-    packs.request({
+    return packs.request({
       method: 'post',
       path: `${packs.path}/install`
     }, {
@@ -60,7 +67,7 @@ export default class PacksPanel extends React.Component {
     const { api } = this.props.context;
     const { packs } = api.client;
 
-    packs.request({
+    return packs.request({
       method: 'post',
       path: `${packs.path}/uninstall`
     }, {
@@ -69,6 +76,28 @@ export default class PacksPanel extends React.Component {
       .then((e) => console.log(e))
       .catch((e) => console.log(e))
       ;
+  }
+
+  handleConfigSave(e, ref) {
+    e.preventDefault();
+
+    const { api } = this.props.context;
+
+    return api.client.index.request({
+      method: 'put',
+      path: `/configs/${ref}`
+    }, this.configField.getValue())
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+      ;
+  }
+
+  handleToggleConfigPreview() {
+    let { configPreview } = this.state;
+
+    configPreview = !configPreview;
+
+    this.setState({ configPreview });
   }
 
   componentDidMount() {
@@ -97,6 +126,55 @@ export default class PacksPanel extends React.Component {
         .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
     });
 
+    store.dispatch({
+      type: 'FETCH_PACK_CONFIG_SCHEMAS',
+      promise: api.client.index.request({
+        method: 'get',
+        path: '/config_schemas'
+      })
+        .then(res => res.body)
+        .then(config_schemas => {
+          const packs = {};
+
+          _.forEach(config_schemas, config_schema => {
+            const ref = config_schema.pack;
+            packs[ref] = {
+              ref,
+              config_schema: {
+                properties: config_schema.attributes
+              }
+            };
+          });
+
+          return packs;
+        })
+    });
+
+    store.dispatch({
+      type: 'FETCH_PACK_CONFIGS',
+      promise: api.client.index.request({
+        method: 'get',
+        path: '/configs',
+        query: {
+          show_secrets: true
+        }
+      })
+        .then(res => res.body)
+        .then(configs => {
+          const packs = {};
+
+          _.forEach(configs, config => {
+            const ref = config.pack;
+            packs[ref] = {
+              ref,
+              config: config.values
+            };
+          });
+
+          return packs;
+        })
+    });
+
     this._unsubscribeStateOnChange = state.onChange((transition) => {
       const { ref } = transition.params();
       store.dispatch({ type: 'SELECT_PACK', ref });
@@ -114,6 +192,8 @@ export default class PacksPanel extends React.Component {
     const {
       name,
       description,
+      config_schema,
+      config = {},
       installed,
       author,
       email,
@@ -156,6 +236,24 @@ export default class PacksPanel extends React.Component {
               'Repo URL': repo_url && <a href={repo_url} title={repo_url}>{ repo_url }</a>
             }} />
           </DetailsPanel>
+          {
+            config_schema && <DetailsPanel>
+              <form onSubmit={(e) => this.handleConfigSave(e, name)}>
+                <AutoForm
+                  ref={(component) => { this.configField = component; }}
+                  spec={config_schema}
+                  ngModel={config} />
+                <DetailsButtonsPanel>
+                  <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
+                  <Button type="submit" value="Save" />
+                </DetailsButtonsPanel>
+                {
+                  this.state.configPreview &&
+                    <St2Highlight code={this.configField.getValue()}/>
+                }
+              </form>
+            </DetailsPanel>
+          }
         </DetailsBody>
         <DetailsToolbar>
           {

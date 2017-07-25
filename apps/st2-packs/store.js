@@ -70,22 +70,20 @@ const reducer = (state = initialState, action) => {
 
       switch(action.status) {
         case 'success':
-          const { packs } = state;
-          const installedPacks = {};
+          const packs = { ...state.packs };
 
-          action.payload.forEach(pack => {
-            installedPacks[pack.ref] = {
+          _.forEach(action.payload, pack => {
+            packs[pack.ref] = {
+              ...state.packs[pack.ref],
               ...pack,
+              // calculate content
               installed: true
             };
           });
 
           return {
             ...state,
-            packs: {
-              ...installedPacks,
-              ...packs
-            }
+            packs
           };
         case 'error':
           return {
@@ -101,14 +99,18 @@ const reducer = (state = initialState, action) => {
 
       switch(action.status) {
         case 'success':
-          const { packs } = state;
+          const packs = { ...state.packs };
+
+          _.forEach(action.payload, pack => {
+            packs[pack.ref] = {
+              ...state.packs[pack.ref],
+              ...pack
+            };
+          });
 
           return {
             ...state,
-            packs: {
-              ...action.payload,
-              ...packs
-            }
+            packs
           };
         case 'error':
           return {
@@ -123,6 +125,68 @@ const reducer = (state = initialState, action) => {
       return {
         ...state
       };
+
+      case 'FETCH_PACK_CONFIG_SCHEMAS':
+
+        switch(action.status) {
+          case 'success':
+            const packs = { ...state.packs };
+
+            _.forEach(action.payload, pack => {
+              packs[pack.ref] = {
+                ...state.packs[pack.ref],
+                ...pack
+              };
+            });
+
+            return {
+              ...state,
+              packs
+            };
+          case 'error':
+            return {
+              ...state
+            };
+          default:
+            return {
+              ...state
+            };
+        }
+
+        return {
+          ...state
+        };
+
+      case 'FETCH_PACK_CONFIGS':
+
+        switch(action.status) {
+          case 'success':
+            const packs = { ...state.packs };
+
+            _.forEach(action.payload, pack => {
+              packs[pack.ref] = {
+                ...state.packs[pack.ref],
+                ...pack
+              };
+            });
+
+            return {
+              ...state,
+              packs
+            };
+          case 'error':
+            return {
+              ...state
+            };
+          default:
+            return {
+              ...state
+            };
+        }
+
+        return {
+          ...state
+        };
 
     case 'SELECT_PACK':
 

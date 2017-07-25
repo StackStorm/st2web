@@ -90,6 +90,7 @@ export class BaseTextField extends React.Component {
 
     const inputProps = {
       className: 'st2-auto-form__field',
+      type: spec.secret ? 'password' : 'text',
       placeholder: this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,

@@ -50,6 +50,20 @@ export class DetailsPanel extends React.Component {
   }
 }
 
+export class DetailsButtonsPanel extends React.Component {
+  static propTypes = {
+    children: React.PropTypes.node
+  }
+
+  render() {
+    const { children } = this.props;
+
+    return <div className="st2-forms__buttons-panel">
+      { children }
+    </div>;
+  }
+}
+
 export class DetailsToolbar extends React.Component {
   static propTypes = {
     children: React.PropTypes.node
