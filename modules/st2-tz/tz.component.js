@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default class AutoForm extends React.Component {
+export default class tzComponent extends React.Component {
   render(){
-    return <p>Test</p>;
+    return <div className="st2-tz">Test</div>;
   }
 }
