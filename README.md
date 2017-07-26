@@ -6,13 +6,21 @@ StackStorm Web UI
 Quick start
 -----------
 
-First of all, you need to make sure you have latest stable `node` and `npm` packages installed.
+First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v6.x.x to be our stable.
+
+    $ n 6
+
+    install : node-v6.11.1
+      mkdir : /usr/local/n/versions/node/6.11.1
+      fetch : https://nodejs.org/dist/v6.11.1/node-v6.11.1-darwin-x64.tar.gz
+    ######################################################################## 100.0%
+    installed : v6.11.1
 
     $ node -v
-    v0.10.32
+    v6.11.1
 
     $ npm -v
-    1.4.9
+    3.10.10
 
 then you need to globally install `gulp`
 
