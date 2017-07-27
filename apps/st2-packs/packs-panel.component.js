@@ -22,6 +22,7 @@ import Table from './table.component';
 
 import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
+import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 
 @connect((state) => {
   const { packs, selected, collapsed } = state;
@@ -106,6 +107,25 @@ export default class PacksPanel extends React.Component {
     store.dispatch({
       type: 'FETCH_INSTALLED_PACKS',
       promise: api.client.packs.list()
+        .then(packs => {
+          // Not really precise, but that's not important, it's temporary anyway.
+          _.forEach(packs, pack => {
+            if (!pack.content) {
+              const types = ['actions', 'aliases', 'rules', 'sensors', 'tests', 'triggers'];
+              pack.content = {};
+              pack.files.forEach(file => {
+                const [folder, filename] = file.split('/');
+
+                if (types.indexOf(folder) >= 0 && /.yaml$/.test(filename)) {
+                  pack.content[folder] = pack.content[folder] || { count: 0 };
+                  pack.content[folder].count = pack.content[folder].count + 1;
+                }
+              });
+            }
+          });
+
+          return packs;
+        })
     })
       .then(() => {
         const { selected } = store.getState();
@@ -193,6 +213,7 @@ export default class PacksPanel extends React.Component {
       description,
       config_schema,
       config = {},
+      content,
       installed,
       author,
       email,
@@ -200,16 +221,16 @@ export default class PacksPanel extends React.Component {
       repo_url
     } = packs[selected] || {};
 
-    const tableContent = {
+    const packMeta = {
       author
     };
 
     if (email) {
-      tableContent.email = <a href={`mailto:${email}`}>{ email }</a>;
+      packMeta.email = <a href={`mailto:${email}`}>{ email }</a>;
     }
 
     if (keywords && keywords.length) {
-      tableContent.keywords = <div>
+      packMeta.keywords = <div>
         {
           keywords.map(word =>
             <span key={word} className="st2-details__panel-body-tag">
@@ -221,10 +242,12 @@ export default class PacksPanel extends React.Component {
     }
 
     if (repo_url) {
-      tableContent['Repo URL'] = <div className="st2-details__panel-body-pocket">
+      packMeta['Repo URL'] = <div className="st2-details__panel-body-pocket">
         <a href={repo_url} title={repo_url}>{ repo_url }</a>
       </div>;
     }
+
+    const packContent = _.mapValues(content, 'count');
 
     return <div className="st2-panel">
       <div className="st2-panel__view">
@@ -254,7 +277,10 @@ export default class PacksPanel extends React.Component {
         <DetailsHeader title={name} subtitle={description}/>
         <DetailsBody>
           <DetailsPanel>
-            <Table content={tableContent} />
+            <Table content={packMeta} />
+          </DetailsPanel>
+          <DetailsPanel>
+            <St2PortionBar content={packContent} />
           </DetailsPanel>
           {
             config_schema && <DetailsPanel>

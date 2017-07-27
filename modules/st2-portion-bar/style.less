@@ -1,0 +1,65 @@
+@import 'colors';
+
+.st2-portion-bar {
+  &__bar {
+    display: table;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    &-value {
+      display: table-cell;
+
+      height: 10px;
+
+      &--actions {
+        background-color: #428bca;
+      }
+
+      &--aliases {
+        background-color: @green-base;
+      }
+
+      &--rules {
+        background-color: #5bc0de;
+      }
+
+      &--sensors {
+        background-color: @yellow-base;
+      }
+
+      &--tests {
+        background-color: @red-base;
+      }
+
+      &--triggers {
+        background-color: #ffa500;
+      }
+    }
+  }
+
+  &__info {
+    font-size: 12px;
+
+    display: flex;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    background-color: #ddddde;
+
+    &-value {
+      flex: 1;
+
+      padding: 5px;
+
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+}
