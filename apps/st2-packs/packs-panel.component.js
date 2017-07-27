@@ -50,7 +50,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleInstall(ref) {
-    const { api } = this.props.context;
+    const { api, notification } = this.props.context;
     const { packs } = api.client;
 
     return packs.request({
@@ -59,13 +59,30 @@ export default class PacksPanel extends React.Component {
     }, {
       packs: [ref]
     })
-      .then((e) => console.log(e))
-      .catch((e) => console.log(e))
+      .then(res => {
+        const { body, status } = res;
+
+        if (status !== 202) {
+          throw res;
+        }
+
+        notification.success(
+          `Pack "${ref}" has been scheduled for installation. ` +
+          `See execution "${body.execution_id}" for progress.`
+        );
+      })
+      .catch(res => {
+        notification.error(
+          `Unable to schedule pack "${ref}" for installation. ` +
+          'See details in developer tools console.'
+        );
+        console.error(res);
+      })
       ;
   }
 
   handleRemove(ref) {
-    const { api } = this.props.context;
+    const { api, notification } = this.props.context;
     const { packs } = api.client;
 
     return packs.request({
@@ -74,22 +91,55 @@ export default class PacksPanel extends React.Component {
     }, {
       packs: [ref]
     })
-      .then((e) => console.log(e))
-      .catch((e) => console.log(e))
+      .then(res => {
+        const { body, status } = res;
+
+        if (status !== 202) {
+          throw res;
+        }
+
+        notification.success(
+          `Pack "${ref}" has been scheduled for removal. ` +
+          `See execution "${body.execution_id}" for progress.`
+        );
+      })
+      .catch(res => {
+        notification.error(
+          `Unable to schedule pack "${ref}" for removal. ` +
+          'See details in developer tools console.'
+        );
+        console.error(res);
+      })
       ;
   }
 
   handleConfigSave(e, ref) {
     e.preventDefault();
 
-    const { api } = this.props.context;
+    const { api, notification } = this.props.context;
 
     return api.client.index.request({
       method: 'put',
       path: `/configs/${ref}`
     }, this.configField.getValue())
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err))
+      .then(res => {
+        const { status } = res;
+
+        if (status !== 200) {
+          throw res;
+        }
+
+        notification.success(
+          `Configuration for pack "${ref}" has been saved succesfully`
+        );
+      })
+      .catch(res => {
+        notification.error(
+          `Unable to save the configuration for pack "${ref}". ` +
+          'See details in developer tools console.'
+        );
+        console.error(res);
+      })
       ;
   }
 
@@ -112,11 +162,11 @@ export default class PacksPanel extends React.Component {
           _.forEach(packs, pack => {
             if (!pack.content) {
               const types = ['actions', 'aliases', 'rules', 'sensors', 'tests', 'triggers'];
-              pack.content = {};
               pack.files.forEach(file => {
                 const [folder, filename] = file.split('/');
 
                 if (types.indexOf(folder) >= 0 && /.yaml$/.test(filename)) {
+                  pack.content = pack.content || {};
                   pack.content[folder] = pack.content[folder] || { count: 0 };
                   pack.content[folder].count = pack.content[folder].count + 1;
                 }
@@ -279,9 +329,11 @@ export default class PacksPanel extends React.Component {
           <DetailsPanel>
             <Table content={packMeta} />
           </DetailsPanel>
-          <DetailsPanel>
-            <St2PortionBar content={packContent} />
-          </DetailsPanel>
+          {
+            content && <DetailsPanel>
+              <St2PortionBar content={packContent} />
+            </DetailsPanel>
+          }
           {
             config_schema && <DetailsPanel>
               <form onSubmit={(e) => this.handleConfigSave(e, name)}>
