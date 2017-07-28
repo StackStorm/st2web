@@ -284,10 +284,12 @@ export default class PacksPanel extends React.Component {
       author,
       email,
       keywords,
-      repo_url
+      repo_url,
+      version
     } = packs[selected] || {};
 
     const packMeta = {
+      version,
       author
     };
 
