@@ -196,6 +196,14 @@ const reducer = (state = initialState, action) => {
         selected: ref || Object.keys(state.packs)[0]
       };
 
+    case 'SET_FILTER':
+      const { filter } = action;
+
+      return {
+        ...state,
+        filter
+      };
+
     default:
       return state;
   }

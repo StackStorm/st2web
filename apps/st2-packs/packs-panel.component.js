@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import store from './store';
 
 import Toolbar from './toolbar.component';
+import ToolbarSearch from './toolbar-search.component';
 import ToggleButton from './toggle-button.component';
 import Content from './content.component';
 import FlexTable from './flex-table.component';
@@ -25,15 +26,16 @@ import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 
 @connect((state) => {
-  const { packs, selected, collapsed } = state;
-  return { packs, selected, collapsed };
+  const { packs, selected, collapsed, filter } = state;
+  return { packs, selected, collapsed, filter };
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
     context: React.PropTypes.object,
     collapsed: React.PropTypes.bool,
     packs: React.PropTypes.object,
-    selected: React.PropTypes.string
+    selected: React.PropTypes.string,
+    filter: React.PropTypes.string
   }
 
   state = {
@@ -151,6 +153,20 @@ export default class PacksPanel extends React.Component {
     this.setState({ configPreview });
   }
 
+  handleFilterChange(e) {
+    store.dispatch({
+      type: 'SET_FILTER',
+      filter: e.target.value
+    });
+  }
+
+  handleTagClick(word) {
+    store.dispatch({
+      type: 'SET_FILTER',
+      filter: word
+    });
+  }
+
   componentDidMount() {
     const { api, state } = this.props.context;
 
@@ -257,7 +273,7 @@ export default class PacksPanel extends React.Component {
   }
 
   render() {
-    const { packs, selected, collapsed } = this.props;
+    const { packs, selected, collapsed, filter = '' } = this.props;
     const {
       name,
       description,
@@ -283,7 +299,8 @@ export default class PacksPanel extends React.Component {
       packMeta.keywords = <div>
         {
           keywords.map(word =>
-            <span key={word} className="st2-details__panel-body-tag">
+            <span key={word} className="st2-details__panel-body-tag"
+              onClick={() => this.handleTagClick(word)}>
               { word }
             </span>
           )
@@ -299,15 +316,22 @@ export default class PacksPanel extends React.Component {
 
     const packContent = _.mapValues(content, 'count');
 
+    const filteredPacks = _.filter(packs, pack => {
+      return [pack.name, pack.ref, ...pack.keywords || []].some(str => {
+        return str && str.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+      });
+    });
+
     return <div className="st2-panel">
       <div className="st2-panel__view">
         <Toolbar title="Packs">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
+          <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
         </Toolbar>
         <Content>
           <FlexTable title="Installed">
             {
-              _(packs).filter(pack => pack.installed).sortBy('ref').value().map(pack => {
+              _(filteredPacks).filter(pack => pack.installed).sortBy('ref').value().map(pack => {
                 return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
                   onClick={() => this.handleSelect(pack.ref)} />;
               })
@@ -315,7 +339,7 @@ export default class PacksPanel extends React.Component {
           </FlexTable>
           <FlexTable title="Available">
             {
-              _(packs).filter(pack => !pack.installed).sortBy('ref').value().map(pack => {
+              _(filteredPacks).filter(pack => !pack.installed).sortBy('ref').value().map(pack => {
                 return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
                   onClick={() => this.handleSelect(pack.ref)}/>;
               })
