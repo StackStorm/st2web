@@ -1,9 +1,9 @@
 'use strict';
 
-import component from './tz.component.js';
+import component from './time.component.js';
 
 module.exports =
-  function st2Tz(reactDirective) {
+  function st2Time(reactDirective) {
     var overrides = {
       restrict: 'C',
     };
