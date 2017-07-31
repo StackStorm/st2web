@@ -78,8 +78,8 @@ module.exports =
           $scope.icons = {};
           _(packs).forEach(function(pack) {
             if (pack.files && pack.files.indexOf('icon.png') >= 0) {
-              var icon_path = st2api.client.packFile.route(pack.name+'/icon.png');
-              $scope.icons[pack.name] = icon_path;
+              var icon_path = st2api.client.packFile.route(pack.ref+'/icon.png');
+              $scope.icons[pack.ref] = icon_path;
             }
           });
           $scope.$apply();
