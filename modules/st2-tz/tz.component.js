@@ -1,7 +1,9 @@
 import React from 'react';
+import 'moment-timezone';
+import 'moment';
 
 export default class tzComponent extends React.Component {
   render(){
-    return <div className="st2-tz">Test</div>;
+    return <p>{moment.momentTZData}</p>;
   }
 }
