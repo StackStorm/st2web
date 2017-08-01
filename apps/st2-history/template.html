@@ -2,6 +2,7 @@
 
 <main class="st2-panel" data-test="history_panel">
 
+  <div class="st2-redux"></div>
   <div class="st2-panel__view st2-history" cg-busy="busy">
 
     <div class="st2-panel__toolbar">
@@ -46,7 +47,7 @@
           <div class="st2-flex-table__caption st2-flex-table__caption--date"
               ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">
-              {{ group.period | date:'EEE, dd MMM y'}}
+              {{ group.period | date:'EEE, dd MMM y':'UTC'}}
             </h2>
           </div>
 
@@ -261,11 +262,9 @@
                   Started:
                 </dt>
                 <dd class="st2-details__panel-body-value">
-                  <time class="st2-action-reporter__time"
-                      data-test="start_timestamp"
-                      datetime="{{record.start_timestamp}}">
-                    {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss' }}
-                  </time>
+                  <div class="st2-time"
+                    timestamp="record.start_timestamp"
+                  ></div>
                 </dd>
               </dl>
               <dl class="st2-details__panel-body-line">
@@ -273,11 +272,9 @@
                   Finished:
                 </dt>
                 <dd class="st2-details__panel-body-value">
-                  <time class="st2-action-reporter__time"
-                      data-test="end_timestamp"
-                      datetime="{{record.end_timestamp}}">
-                    {{ record.end_timestamp | date:'EEE, dd MMM y HH:mm:ss' }}
-                  </time>
+                  <div class="st2-time"
+                    timestamp="record.end_timestamp"
+                  ></div>
                 </dd>
               </dl>
               <dl class="st2-details__panel-body-line"
@@ -361,7 +358,9 @@
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.trigger_instance.occurrence_time">
-                {{ record.trigger_instance.occurrence_time | date:'EEE, dd MMM y HH:mm:ss' }}
+                <div class="st2-time"
+                  timestamp="record.trigger_instance.occurrence_time"
+                ></div>
               </dd>
             </dl>
           </div>

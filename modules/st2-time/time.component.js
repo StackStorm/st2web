@@ -1,35 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Time from 'react-time';
 
-export default class TimeComponent extends React.Component {
+export class TimeElement extends React.Component {
   constructor(props){
     super(props);
 
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(e){
-    console.log("Clicky");
+  handleClick(){
+    this.props.dispatch({type: 'TOGGLE_TIME'});
   }
 
   render(){
-    let offset = new Date().getTimezoneOffset();
-    let timeStamp = new Date(this.props.timestamp) - offset;
-
-    let baseFormat = 'ddd, DD MMM YY HH:mm:ss';
-    let dateFormat;
-    if (typeof offset !== 'undefined'){
-      dateFormat = baseFormat;
-    }
-    else{
-      dateFormat = baseFormat + ' UTC';
+    let dateFormat = 'ddd, DD MMM YY HH:mm:ss';
+    let timeStamp = new Date(this.props.timestamp);
+    let { utcDisplay } = this.props.timeState;
+    if (utcDisplay){
+      dateFormat += ' UTC';
     }
 
-    return <Time onClick={this.handleClick} value={timeStamp} format={dateFormat} />;
+    return <Time onClick={this.handleClick} value={timeStamp} format={dateFormat} utc={utcDisplay} />;
   }
 }
 
-TimeComponent.propTypes = {
-  timestamp: PropTypes.string
+const mapStateToProps = state => {
+  return {
+    timeState: state.time
+  };
 };
+
+TimeElement.propTypes = {
+  timestamp: PropTypes.string,
+  dispatch: PropTypes.func,
+  timeState: PropTypes.obj
+};
+
+const TimeComponent = connect(mapStateToProps)(TimeElement);
+
+export default TimeComponent;
