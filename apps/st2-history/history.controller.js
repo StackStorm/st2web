@@ -144,11 +144,11 @@ module.exports =
         // Action tab is not guaranteed.
         const properties = {};
 
-        for (const [ k, v ] of _.pairs(record.runner.runner_parameters)) {
+        for (const [ k, v ] of _.toPairs(record.runner.runner_parameters)) {
           properties[k] = Object.assign({}, properties[k], v);
         }
 
-        for (const [ k, v ] of _.pairs(record.action.parameters)) {
+        for (const [ k, v ] of _.toPairs(record.action.parameters)) {
           properties[k] = Object.assign({}, properties[k], v);
         }
 
