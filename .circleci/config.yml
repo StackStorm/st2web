@@ -1,0 +1,125 @@
+# Setup in CircleCI account the following ENV variables:
+# IS_PRODUCTION (default: 0)
+# IS_ENTERPRISE
+# PACKAGECLOUD_ORGANIZATION (default: stackstorm)
+# PACKAGECLOUD_TOKEN
+
+version: 2
+jobs:
+  build:
+    machine: true
+    node:
+      version: 4.2.2
+    environment:
+      DEPLOY_PACKAGES: 1
+      DEB: trusty xenial
+      RPM: el6 el7
+      ST2_HOST: localhost
+      ST2_USERNAME: admin
+      ST2_PASSWORD: 123
+    steps:
+      - checkout
+      - run:
+          name: Update Docker Compose
+          command: |
+            set -x
+            sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+            sudo chmod +x /usr/local/bin/docker-compose
+      - run:
+          name: Create directories for Artifacts
+          command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
+      - run:
+          name: Download helper scripts (for packagecloud)
+          command: |
+            mkdir ~/scripts
+            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
+            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/save_payload.py > ~/scripts/save_payload.py
+            chmod 755 ~/scripts/{packagecloud.sh,save_payload.py}
+            echo "export PATH=${HOME}/scripts:${PATH}" >> $BASH_ENV
+      - run:
+          name: Export package version
+          command: |
+            PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
+            PKG_RELEASE=$(packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
+            echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
+            echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
+      - run:
+          name: Install system dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install rpm parallel jq devscripts debhelper
+            gem install package_cloud
+            npm -g install npm@latest-2
+      - run:
+          name: Install package dependencies
+          command: npm install
+      - run:
+          name: Clone test containers
+          command: git clone --depth 1 https://github.com/StackStorm/st2-docker ~/st2-docker
+      - run:
+          name: Update env variables for test containers
+          command: |
+            make -C ~/st2-docker env
+            echo -e "ST2_USER=${ST2_USERNAME}\nST2_PASSWORD=${ST2_PASSWORD}" > ~/st2-docker/conf/stackstorm.env
+            cat ~/st2-docker/conf/stackstorm.env
+      - run:
+          name: Start test containers
+          command: |
+            docker-compose -f ~/st2-docker/docker-compose.yml up -d
+            sleep 60
+      - run:
+          name: Check test containers
+          command: |
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
+      - run:
+          name: Run tests
+          command: npm test
+      - run:
+          name: Reset test containers
+          command: |
+            docker-compose -f ~/st2-docker/docker-compose.yml down
+            docker-compose -f ~/st2-docker/docker-compose.yml up -d
+            sleep 60
+      - run:
+          name: Recheck test containers
+          command: |
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
+      - run:
+          name: Run tests on production version
+          command: node_modules/.bin/gulp test-production
+      - run:
+          name: Fetch container logs
+          command: |
+            for container in $(docker ps -a --format "{{.Names}}"); do
+              docker logs ${container} > ~/artifacts/logs/${container}.log 2>&1
+            done
+      - run:
+          name: Make deb packages
+          command: |
+            make deb
+            echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} ~/artifacts/{}
+      - run:
+          name: Make RPM packages
+          command: |
+            make rpm
+            echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm ~/artifacts/{}
+      - store_artifacts:
+          path: ~/artifacts
+          destination: packages
+      - deploy:
+          name: Maybe Deploy
+          command: |
+            if [[ "${CIRCLE_BRANCH}" == "master" || "${CIRCLE_BRANCH}" =~ v[0-9]+(\.[0-9]+)* || "${CIRCLE_BRANCH}" == "feature/circleci" ]]; then
+              for distro in ${RPM} ${DEB}; do
+                packagecloud.sh deploy $distro $CIRCLE_ARTIFACTS/$distro
+              done
+              DISTROS="$DEB $RPM" save_payload.py ${CIRCLE_ARTIFACTS}
+            fi
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+        - /v[0-9]+(\.[0-9]+)*/
