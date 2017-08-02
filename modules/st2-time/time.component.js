@@ -35,7 +35,7 @@ const mapStateToProps = state => {
 TimeElement.propTypes = {
   timestamp: PropTypes.string,
   dispatch: PropTypes.func,
-  timeState: PropTypes.obj
+  timeState: PropTypes.object
 };
 
 const TimeComponent = connect(mapStateToProps)(TimeElement);
