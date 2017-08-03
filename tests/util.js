@@ -67,7 +67,7 @@ module.exports = function (browser) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     formatUTC: function (date) {
-      return new Date(date).toUTCString().replace(' GMT', '');
+      return new Date(date).toUTCString().replace('GMT', 'UTC');
     },
     name: function (name) {
       return new TestMarker(name);
