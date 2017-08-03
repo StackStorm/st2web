@@ -15,14 +15,22 @@ export class TimeElement extends React.Component {
   }
 
   render(){
-    let dateFormat = 'ddd, DD MMM YY HH:mm:ss';
+    let dateFormat = 'ddd, DD MMM YYYY HH:mm:ss';
     let timeStamp = new Date(this.props.timestamp);
     let { utcDisplay } = this.props.timeState;
     if (utcDisplay){
       dateFormat += ' UTC';
     }
 
-    return <Time onClick={this.handleClick} value={timeStamp} format={dateFormat} utc={utcDisplay} />;
+    return (
+      <Time
+        data-test={this.props.datatest ? this.props.datatest : undefined}
+        onClick={this.handleClick}
+        value={timeStamp}
+        format={dateFormat}
+        utc={utcDisplay}
+      />
+    );
   }
 }
 
@@ -34,6 +42,7 @@ const mapStateToProps = state => {
 
 TimeElement.propTypes = {
   timestamp: PropTypes.string,
+  datatest: PropTypes.string,
   dispatch: PropTypes.func,
   timeState: PropTypes.object
 };
