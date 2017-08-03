@@ -8,8 +8,6 @@ version: 2
 jobs:
   build:
     machine: true
-    node:
-      version: 4.2.2
     environment:
       DEPLOY_PACKAGES: 1
       DEB: trusty xenial
@@ -33,8 +31,7 @@ jobs:
           command: |
             mkdir ~/scripts
             wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
-            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/save_payload.py > ~/scripts/save_payload.py
-            chmod 755 ~/scripts/{packagecloud.sh,save_payload.py}
+            chmod 755 ~/scripts/packagecloud.sh
             echo "export PATH=${HOME}/scripts:${PATH}" >> $BASH_ENV
       - run:
           name: Export package version
@@ -47,7 +44,7 @@ jobs:
           name: Install system dependencies
           command: |
             sudo apt-get update
-            sudo apt-get install rpm parallel jq devscripts debhelper
+            sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
             npm -g install npm@latest-2
       - run:
@@ -112,9 +109,8 @@ jobs:
           command: |
             if [[ "${CIRCLE_BRANCH}" == "master" || "${CIRCLE_BRANCH}" =~ v[0-9]+(\.[0-9]+)* || "${CIRCLE_BRANCH}" == "feature/circleci" ]]; then
               for distro in ${RPM} ${DEB}; do
-                packagecloud.sh deploy $distro $CIRCLE_ARTIFACTS/$distro
+                packagecloud.sh deploy $distro ~/artifacts/$distro
               done
-              DISTROS="$DEB $RPM" save_payload.py ${CIRCLE_ARTIFACTS}
             fi
 
 experimental:
