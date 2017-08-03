@@ -15,5 +15,6 @@ export default class timeWrapper extends React.Component {
 
 timeWrapper.propTypes = {
   timestamp: PropTypes.string,
+  format: PropTypes.string,
   datatest: PropTypes.string
 };

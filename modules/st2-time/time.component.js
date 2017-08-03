@@ -15,9 +15,10 @@ export class TimeElement extends React.Component {
   }
 
   render(){
-    let dateFormat = 'ddd, DD MMM YYYY HH:mm:ss';
-    let timeStamp = new Date(this.props.timestamp);
-    let { utcDisplay } = this.props.timeState;
+    let {format, timestamp, timeState} = this.props;
+    let dateFormat = format ? format : 'ddd, DD MMM YYYY HH:mm:ss';
+    let timeStamp = new Date(timestamp);
+    let { utcDisplay } = timeState;
     if (utcDisplay){
       dateFormat += ' UTC';
     }
@@ -42,6 +43,7 @@ const mapStateToProps = state => {
 
 TimeElement.propTypes = {
   timestamp: PropTypes.string,
+  format: PropTypes.string,
   datatest: PropTypes.string,
   dispatch: PropTypes.func,
   timeState: PropTypes.object
