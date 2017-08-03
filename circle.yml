@@ -5,7 +5,7 @@
 # PACKAGECLOUD_TOKEN
 machine:
   node:
-    version: 4.2.2
+    version: 6.11.1
   environment:
     DEPLOY_PACKAGES: 1
     DEB: trusty xenial
