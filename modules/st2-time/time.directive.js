@@ -1,11 +1,11 @@
 'use strict';
 
-import timeWrapper from './time.wrapper.js';
+import timeComponent from './time.component.js';
 
 module.exports =
   function st2Time(reactDirective) {
     var overrides = {
       restrict: 'C',
     };
-    return reactDirective(timeWrapper, null, overrides);
+    return reactDirective(timeComponent, null, overrides);
   };

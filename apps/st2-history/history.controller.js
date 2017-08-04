@@ -6,6 +6,12 @@ var _ = require('lodash')
 module.exports =
   function st2HistoryCtrl($scope, st2api, $rootScope, Notification) {
 
+    $scope.utcDisplay = localStorage.utcDisplay === 'true';
+
+    $scope.toggleUTCDisplay = () => {
+      localStorage.utcDisplay = !(localStorage.utcDisplay === 'true');
+    };
+
     var pHistoryList;
 
     $scope.error = null;
@@ -70,7 +76,12 @@ module.exports =
         .filter({parent: undefined})
         .groupBy(function (record) {
           var time = record.start_timestamp;
-          return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
+          if (localStorage.utcDisplay === 'true'){
+            return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
+          }
+          else {
+            return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
+          }
         })
         .map(function (records, period) {
           return {
@@ -115,6 +126,15 @@ module.exports =
     };
 
     $scope.$watch('[$root.active_filters, $root.page]', listUpdate, true);
+
+    $scope.$watch(
+      () => localStorage.utcDisplay,
+      () => {
+        $scope.utcDisplay = localStorage.utcDisplay === 'true';
+        listUpdate();
+      }
+    );
+
 
     $scope.$watch('$root.state.params.id', function (id) {
       if (!pHistoryList) {

@@ -47,7 +47,12 @@
           <div class="st2-flex-table__caption st2-flex-table__caption--date"
               ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">
-              {{ group.period | date:'EEE, dd MMM y':'UTC'}}
+              <div class="st2-time"
+                timestamp="group.period"
+                format="'ddd, DD MMM YYYY'"
+                utcdisplay="utcDisplay"
+                togglecallback="toggleUTCDisplay"
+              ></div>
             </h2>
           </div>
 
@@ -78,6 +83,8 @@
                   <div class="st2-time"
                     timestamp="record.start_timestamp"
                     format="'HH:mm:ss'"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
                   ></div>
                 </div>
               </div>
@@ -266,6 +273,8 @@
                   <div class="st2-time"
                     timestamp="record.start_timestamp"
                     datatest="'start_timestamp'"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
                   ></div>
                 </dd>
               </dl>
@@ -277,6 +286,8 @@
                   <div class="st2-time"
                     timestamp="record.end_timestamp"
                     datatest="'end_timestamp'"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
                   ></div>
                 </dd>
               </dl>
@@ -363,6 +374,8 @@
                   ng-if="record.trigger_instance.occurrence_time">
                 <div class="st2-time"
                   timestamp="record.trigger_instance.occurrence_time"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
                 ></div>
               </dd>
             </dl>
