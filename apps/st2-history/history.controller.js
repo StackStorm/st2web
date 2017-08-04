@@ -69,19 +69,11 @@ module.exports =
     });
 
     var listFormat = function () {
-      // Group all the records by periods of 24 hour
-      var timeframe = 24 * 60 * 60 * 1000;
-
       $scope.history = $scope.historyList && _($scope.historyList)
         .filter({parent: undefined})
         .groupBy(function (record) {
-          var time = record.start_timestamp;
-          if (localStorage.utcDisplay === 'true'){
-            return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
-          }
-          else {
-            return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
-          }
+          let time = new Date(new Date(record.start_timestamp).toDateString());
+          return time;
         })
         .map(function (records, period) {
           return {
