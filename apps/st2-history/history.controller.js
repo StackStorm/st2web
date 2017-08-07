@@ -72,7 +72,7 @@ module.exports =
       $scope.history = $scope.historyList && _($scope.historyList)
         .filter({parent: undefined})
         .groupBy(function (record) {
-          let time = new Date(new Date(record.start_timestamp).toDateString());
+          let time = new Date(new Date(record.start_timestamp).toDateString()).toISOString();
           return time;
         })
         .map(function (records, period) {
@@ -123,7 +123,6 @@ module.exports =
       () => localStorage.utcDisplay,
       () => {
         $scope.utcDisplay = localStorage.utcDisplay === 'true';
-        listUpdate();
       }
     );
 
