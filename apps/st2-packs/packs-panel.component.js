@@ -176,6 +176,8 @@ export default class PacksPanel extends React.Component {
         .then(packs => {
           // Not really precise, but that's not important, it's temporary anyway.
           _.forEach(packs, pack => {
+            pack.installedVersion = pack.version;
+
             if (!pack.content) {
               const types = ['actions', 'aliases', 'rules', 'sensors', 'tests', 'triggers'];
               pack.files.forEach(file => {
@@ -285,13 +287,19 @@ export default class PacksPanel extends React.Component {
       email,
       keywords,
       repo_url,
+      installedVersion,
       version
     } = packs[selected] || {};
 
     const packMeta = {
-      version,
-      author
+      version
     };
+
+    if (installedVersion && installedVersion !== version) {
+      packMeta.installed = installedVersion;
+    }
+
+    packMeta.author = author;
 
     if (email) {
       packMeta.email = <a href={`mailto:${email}`}>{ email }</a>;

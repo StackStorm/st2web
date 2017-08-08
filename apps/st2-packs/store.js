@@ -76,7 +76,6 @@ const reducer = (state = initialState, action) => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
-              // calculate content
               installed: true
             };
           });
