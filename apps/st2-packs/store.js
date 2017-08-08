@@ -193,7 +193,7 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        selected: ref || Object.keys(state.packs)[0]
+        selected: ref || Object.keys(state.packs).sort()[0]
       };
 
     case 'SET_FILTER':

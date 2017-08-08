@@ -263,7 +263,7 @@ describe('User visits rules page', function () {
           var rule = JSON.parse(resource[0].response.body);
 
           expect(rule).to.have.property('description', 'thing');
-          expect(rule).to.have.deep.property('action.parameters.message')
+          expect(rule).to.have.nested.property('action.parameters.message')
             .that.deep.equal({a: 'b'});
         });
       });

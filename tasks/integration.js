@@ -25,7 +25,7 @@ gulp.task('integration', ['build'], function () {
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
-        js: require('babelify/node_modules/babel-core/register')(settings.babel)
+        js: require('babelify/node_modules/babel-core/register')
       }
     }))
     .on('end', function () {

@@ -12,6 +12,7 @@ export default class PackFlexCard extends React.Component {
 
     const props = {
       className: 'st2-flex-card',
+      'data-test': `pack pack:${pack.ref}`,
       onClick
     };
 

@@ -353,15 +353,15 @@ export default class PacksPanel extends React.Component {
         <DetailsHeader title={name} subtitle={description}/>
         <DetailsBody>
           <DetailsPanel>
-            <Table content={packMeta} />
+            <Table content={packMeta} data-test="pack_info" />
           </DetailsPanel>
           {
             content && <DetailsPanel>
-              <St2PortionBar content={packContent} />
+              <St2PortionBar content={packContent} data-test="pack_content" />
             </DetailsPanel>
           }
           {
-            config_schema && <DetailsPanel>
+            config_schema && <DetailsPanel data-test="pack_config" >
               <form onSubmit={(e) => this.handleConfigSave(e, name)}>
                 <AutoForm
                   ref={(component) => { this.configField = component; }}

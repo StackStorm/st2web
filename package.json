@@ -7,9 +7,9 @@
     "test": "node_modules/.bin/gulp test"
   },
   "repository": "stackstorm/st2web",
-  "engines" : {
+  "engines": {
     "node": "^6.11.1",
-    "npm" : "^3.10.10"
+    "npm": "^3.10.10"
   },
   "dependencies": {
     "angular": "1.5.3",
@@ -39,7 +39,7 @@
     "babelify": "7.2.0",
     "browserify": "13.0.0",
     "browserify-global-shim": "1.0.3",
-    "chai": "3.5.0",
+    "chai": "4.1.0",
     "eslint": "4.2.0",
     "eslint-plugin-react": "4.3.0",
     "event-stream": "3.3.2",
@@ -69,12 +69,12 @@
     "request": "2.69.0",
     "require-dir": "0.3.0",
     "sinon": "1.17.3",
-    "sinon-chai": "2.8.0",
+    "sinon-chai": "2.12.0",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.7.0",
     "yamljs": "0.2.7",
     "yargs": "4.3.2",
-    "zombie": "https://github.com/enykeev/zombie/releases/download/enykeev-1/zombie-4.1.0.tgz"
+    "zombie": "https://github.com/enykeev/zombie/releases/download/enykeev-2/zombie-5.0.7.tgz"
   }
 }
