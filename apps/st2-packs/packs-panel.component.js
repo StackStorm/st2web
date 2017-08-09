@@ -391,23 +391,9 @@ export default class PacksPanel extends React.Component {
       });
     });
 
-    const installedPacks = _(filteredPacks).filter(pack => pack.status === 'installed')
+    const packGroups = _(filteredPacks)
       .sortBy('ref')
-      .value()
-      ;
-
-    const availablePacks = _(filteredPacks).filter(pack => pack.status === 'available')
-      .sortBy('ref')
-      .value()
-      ;
-
-    const installingPacks = _(filteredPacks).filter(pack => pack.status === 'installing')
-      .sortBy('ref')
-      .value()
-      ;
-
-    const uninstallingPacks = _(filteredPacks).filter(pack => pack.status === 'uninstalling')
-      .sortBy('ref')
+      .groupBy('status')
       .value()
       ;
 
@@ -419,48 +405,18 @@ export default class PacksPanel extends React.Component {
         </Toolbar>
         <Content>
           {
-            !!installedPacks.length && <FlexTable title="Installed">
-              {
-                installedPacks
-                  .map(pack => {
-                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
-                      onClick={() => this.handleSelect(pack.ref)} />;
-                  })
-              }
-            </FlexTable>
-          }
-          {
-            !!installingPacks.length && <FlexTable title="Installing">
-              {
-                installingPacks
-                  .map(pack => {
-                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
-                      onClick={() => this.handleSelect(pack.ref)} />;
-                  })
-              }
-            </FlexTable>
-          }
-          {
-            !!uninstallingPacks.length && <FlexTable title="Uninstalling">
-              {
-                uninstallingPacks
-                  .map(pack => {
-                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
-                      onClick={() => this.handleSelect(pack.ref)} />;
-                  })
-              }
-            </FlexTable>
-          }
-          {
-            !!availablePacks && <FlexTable title="Available">
-              {
-                availablePacks
-                  .map(pack => {
-                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
-                      onClick={() => this.handleSelect(pack.ref)}/>;
-                  })
-              }
-            </FlexTable>
+            ['installed', 'installing', 'uninstalling', 'available'].map(key => {
+              return !!packGroups[key] && <FlexTable title={key} key={key} >
+                {
+                  packGroups[key]
+                    .map(pack => {
+                      return <PackFlexCard key={pack.ref} pack={pack}
+                        selected={selected === pack.ref}
+                        onClick={() => this.handleSelect(pack.ref)} />;
+                    })
+                }
+              </FlexTable>;
+            })
           }
         </Content>
       </div>

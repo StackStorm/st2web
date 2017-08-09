@@ -66,12 +66,11 @@ const reducer = (state = initialState, action) => {
       };
     }
 
-    case 'FETCH_INSTALLED_PACKS':
+    case 'FETCH_INSTALLED_PACKS': {
+      const packs = { ...state.packs };
 
       switch(action.status) {
         case 'success':
-          const packs = { ...state.packs };
-
           _.forEach(action.payload, pack => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
@@ -80,26 +79,21 @@ const reducer = (state = initialState, action) => {
             };
           });
 
-          return {
-            ...state,
-            packs
-          };
+          break;
         case 'error':
-          return {
-            ...state
-          };
+          break;
         default:
-          return {
-            ...state
-          };
+          break;
       }
 
-    case 'FETCH_PACK_INDEX':
+      return { ...state, packs };
+    }
+
+    case 'FETCH_PACK_INDEX': {
+      const packs = { ...state.packs };
 
       switch(action.status) {
         case 'success':
-          const packs = { ...state.packs };
-
           _.forEach(action.payload, pack => {
             packs[pack.ref] = {
               status: 'available',
@@ -108,125 +102,75 @@ const reducer = (state = initialState, action) => {
             };
           });
 
-          return {
-            ...state,
-            packs
-          };
+          break;
         case 'error':
-          return {
-            ...state
-          };
+          break;
         default:
-          return {
-            ...state
-          };
+          break;
       }
 
-      return {
-        ...state
-      };
+      return { ...state, packs };
+    }
 
-      case 'FETCH_PACK_CONFIG_SCHEMAS':
+    case 'FETCH_PACK_CONFIG_SCHEMAS': {
+      const packs = { ...state.packs };
 
-        switch(action.status) {
-          case 'success':
-            const packs = { ...state.packs };
-
-            _.forEach(action.payload, pack => {
-              packs[pack.ref] = {
-                ...state.packs[pack.ref],
-                ...pack
-              };
-            });
-
-            return {
-              ...state,
-              packs
+      switch(action.status) {
+        case 'success':
+          _.forEach(action.payload, pack => {
+            packs[pack.ref] = {
+              ...state.packs[pack.ref],
+              ...pack
             };
-          case 'error':
-            return {
-              ...state
+          });
+
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return { ...state, packs };
+    }
+
+    case 'FETCH_PACK_CONFIGS': {
+      const packs = { ...state.packs };
+
+      switch(action.status) {
+        case 'success':
+          _.forEach(action.payload, pack => {
+            packs[pack.ref] = {
+              ...state.packs[pack.ref],
+              ...pack
             };
-          default:
-            return {
-              ...state
-            };
-        }
+          });
 
-        return {
-          ...state
-        };
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
 
-      case 'FETCH_PACK_CONFIGS':
-
-        switch(action.status) {
-          case 'success':
-            const packs = { ...state.packs };
-
-            _.forEach(action.payload, pack => {
-              packs[pack.ref] = {
-                ...state.packs[pack.ref],
-                ...pack
-              };
-            });
-
-            return {
-              ...state,
-              packs
-            };
-          case 'error':
-            return {
-              ...state
-            };
-          default:
-            return {
-              ...state
-            };
-        }
-
-        return {
-          ...state
-        };
+      return { ...state, packs };
+    }
 
     case 'INSTALL_PACK': {
       const packs = { ...state.packs };
 
       switch(action.status) {
         case 'success':
-          packs[action.ref] = {
-            ...packs[action.ref],
-            status: 'installed'
-          };
-
-          return {
-            ...state,
-            packs
-          };
+          packs[action.ref] = { ...packs[action.ref], status: 'installed' };
+          break;
         case 'error':
-          packs[action.ref] = {
-            ...packs[action.ref],
-            status: 'available'
-          };
-
-          return {
-            ...state,
-            packs
-          };
+          packs[action.ref] = { ...packs[action.ref], status: 'available' };
+          break;
         default:
-          packs[action.ref] = {
-            ...packs[action.ref],
-            status: 'installing'
-          };
-
-          return {
-            ...state,
-            packs
-          };
+          packs[action.ref] = { ...packs[action.ref], status: 'installing' };
       }
 
-      return {
-        ...state
-      };
+      return { ...state, packs };
     }
 
     case 'UNINSTALL_PACK': {
@@ -234,40 +178,16 @@ const reducer = (state = initialState, action) => {
 
       switch(action.status) {
         case 'success':
-          packs[action.ref] = {
-            ...packs[action.ref],
-            status: 'available'
-          };
-
-          return {
-            ...state,
-            packs
-          };
+          packs[action.ref] = { ...packs[action.ref], status: 'available' };
+          break;
         case 'error':
-          packs[action.ref] = {
-            ...packs[action.ref],
-            status: 'installed'
-          };
-
-          return {
-            ...state,
-            packs
-          };
+          packs[action.ref] = { ...packs[action.ref], status: 'installed' };
+          break;
         default:
-          packs[action.ref] = {
-            ...packs[action.ref],
-            status: 'uninstalling'
-          };
-
-          return {
-            ...state,
-            packs
-          };
+          packs[action.ref] = { ...packs[action.ref], status: 'uninstalling' };
       }
 
-      return {
-        ...state
-      };
+      return { ...state, packs };
     }
 
     case 'SELECT_PACK':
