@@ -25,6 +25,39 @@ import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 
+function wait(source, execution_id) {
+  let listener;
+
+  return new Promise((resolve, reject) => {
+    listener = event => {
+      const record = JSON.parse(event.data);
+
+      if (record.id !== execution_id) {
+        return;
+      }
+
+      if (record.status === 'succeeded') {
+        resolve();
+      }
+
+      if (record.status === 'failed') {
+        reject();
+      }
+    };
+
+    source.addEventListener('st2.execution__update', listener);
+  }).then(event => {
+    source.removeEventListener('st2.execution__update', listener);
+
+    return event;
+  })
+  .catch(err => {
+    source.removeEventListener('st2.execution__update', listener);
+
+    throw err;
+  });
+}
+
 @connect((state) => {
   const { packs, selected, collapsed, filter } = state;
   return { packs, selected, collapsed, filter };
@@ -55,64 +88,90 @@ export default class PacksPanel extends React.Component {
     const { api, notification } = this.props.context;
     const { packs } = api.client;
 
-    return packs.request({
-      method: 'post',
-      path: `${packs.path}/install`
-    }, {
-      packs: [ref]
-    })
-      .then(res => {
-        const { body, status } = res;
-
-        if (status !== 202) {
-          throw res;
-        }
-
-        notification.success(
-          `Pack "${ref}" has been scheduled for installation. ` +
-          `See execution "${body.execution_id}" for progress.`
-        );
+    return store.dispatch({
+      type: 'INSTALL_PACK',
+      ref,
+      promise: packs.request({
+        method: 'post',
+        path: `${packs.path}/install`
+      }, {
+        packs: [ref]
       })
-      .catch(res => {
-        notification.error(
-          `Unable to schedule pack "${ref}" for installation. ` +
-          'See details in developer tools console.'
-        );
-        console.error(res);
-      })
-      ;
+        .then(res => {
+          const { body, status } = res;
+
+          if (status !== 202) {
+            throw res;
+          }
+
+          notification.success(
+            `Pack "${ref}" has been scheduled for installation. ` +
+            `See execution "${body.execution_id}" for progress.`
+          );
+
+          return api.client.stream.listen()
+            .then(source => wait(source, body.execution_id));
+        })
+        .then(() => {
+          notification.success(
+            `Pack "${ref}" has been successfully installed`
+          );
+        })
+        .catch(err => {
+          notification.error(
+            `Unable to schedule pack "${ref}" for installation. ` +
+            'See details in developer tools console.'
+          );
+          console.error(err);
+
+          throw err;
+        })
+    });
   }
 
   handleRemove(ref) {
     const { api, notification } = this.props.context;
     const { packs } = api.client;
 
-    return packs.request({
-      method: 'post',
-      path: `${packs.path}/uninstall`
-    }, {
-      packs: [ref]
-    })
-      .then(res => {
-        const { body, status } = res;
-
-        if (status !== 202) {
-          throw res;
-        }
-
-        notification.success(
-          `Pack "${ref}" has been scheduled for removal. ` +
-          `See execution "${body.execution_id}" for progress.`
-        );
+    return store.dispatch({
+      type: 'UNINSTALL_PACK',
+      ref,
+      promise: packs.request({
+        method: 'post',
+        path: `${packs.path}/uninstall`
+      }, {
+        packs: [ref]
       })
-      .catch(res => {
-        notification.error(
-          `Unable to schedule pack "${ref}" for removal. ` +
-          'See details in developer tools console.'
-        );
-        console.error(res);
-      })
-      ;
+        .then(res => {
+          const { body, status } = res;
+
+          if (status !== 202) {
+            throw res;
+          }
+
+          notification.success(
+            `Pack "${ref}" has been scheduled for removal. ` +
+            `See execution "${body.execution_id}" for progress.`
+          );
+
+          return api.client.stream.listen()
+            .then(source => wait(source, body.execution_id));
+        })
+        .then(() => {
+          notification.success(
+            `Pack "${ref}" has been successfully removed`
+          );
+        })
+        .catch(err => {
+          notification.error(
+            `Unable to schedule pack "${ref}" for removal. ` +
+            'See details in developer tools console.'
+          );
+          console.error(err);
+
+          throw err;
+        })
+    });
   }
 
   handleConfigSave(e, ref) {
@@ -282,11 +341,11 @@ export default class PacksPanel extends React.Component {
       config_schema,
       config = {},
       content,
-      installed,
       author,
       email,
       keywords,
       repo_url,
+      status,
       installedVersion,
       version
     } = packs[selected] || {};
@@ -332,6 +391,26 @@ export default class PacksPanel extends React.Component {
       });
     });
 
+    const installedPacks = _(filteredPacks).filter(pack => pack.status === 'installed')
+      .sortBy('ref')
+      .value()
+      ;
+
+    const availablePacks = _(filteredPacks).filter(pack => pack.status === 'available')
+      .sortBy('ref')
+      .value()
+      ;
+
+    const installingPacks = _(filteredPacks).filter(pack => pack.status === 'installing')
+      .sortBy('ref')
+      .value()
+      ;
+
+    const uninstallingPacks = _(filteredPacks).filter(pack => pack.status === 'uninstalling')
+      .sortBy('ref')
+      .value()
+      ;
+
     return <div className="st2-panel">
       <div className="st2-panel__view">
         <Toolbar title="Packs">
@@ -339,22 +418,50 @@ export default class PacksPanel extends React.Component {
           <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
         </Toolbar>
         <Content>
-          <FlexTable title="Installed">
-            {
-              _(filteredPacks).filter(pack => pack.installed).sortBy('ref').value().map(pack => {
-                return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
-                  onClick={() => this.handleSelect(pack.ref)} />;
-              })
-            }
-          </FlexTable>
-          <FlexTable title="Available">
-            {
-              _(filteredPacks).filter(pack => !pack.installed).sortBy('ref').value().map(pack => {
-                return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
-                  onClick={() => this.handleSelect(pack.ref)}/>;
-              })
-            }
-          </FlexTable>
+          {
+            !!installedPacks.length && <FlexTable title="Installed">
+              {
+                installedPacks
+                  .map(pack => {
+                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
+                      onClick={() => this.handleSelect(pack.ref)} />;
+                  })
+              }
+            </FlexTable>
+          }
+          {
+            !!installingPacks.length && <FlexTable title="Installing">
+              {
+                installingPacks
+                  .map(pack => {
+                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
+                      onClick={() => this.handleSelect(pack.ref)} />;
+                  })
+              }
+            </FlexTable>
+          }
+          {
+            !!uninstallingPacks.length && <FlexTable title="Uninstalling">
+              {
+                uninstallingPacks
+                  .map(pack => {
+                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
+                      onClick={() => this.handleSelect(pack.ref)} />;
+                  })
+              }
+            </FlexTable>
+          }
+          {
+            !!availablePacks && <FlexTable title="Available">
+              {
+                availablePacks
+                  .map(pack => {
+                    return <PackFlexCard key={pack.ref} pack={pack} selected={selected === pack.ref}
+                      onClick={() => this.handleSelect(pack.ref)}/>;
+                  })
+              }
+            </FlexTable>
+          }
         </Content>
       </div>
       <div className="st2-panel__details st2-details" data-test="details">
@@ -389,9 +496,20 @@ export default class PacksPanel extends React.Component {
         </DetailsBody>
         <DetailsToolbar>
           {
-            installed
-              ? <Button small value="Remove" onClick={() => this.handleRemove(selected)} />
-              : <Button small value="Install" onClick={() => this.handleInstall(selected)} />
+            status === 'installed' &&
+              <Button small value="Remove" onClick={() => this.handleRemove(selected)} />
+          }
+          {
+            status === 'installing' &&
+              <Button small value="Install" disabled />
+          }
+          {
+            status === 'uninstalling' &&
+              <Button small value="Remove" disabled />
+          }
+          {
+            status === 'available' &&
+              <Button small value="Install" onClick={() => this.handleInstall(selected)} />
           }
           <DetailsToolbarSeparator />
         </DetailsToolbar>

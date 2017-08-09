@@ -76,7 +76,7 @@ const reducer = (state = initialState, action) => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
-              installed: true
+              status: 'installed'
             };
           });
 
@@ -102,6 +102,7 @@ const reducer = (state = initialState, action) => {
 
           _.forEach(action.payload, pack => {
             packs[pack.ref] = {
+              status: 'available',
               ...state.packs[pack.ref],
               ...pack
             };
@@ -186,6 +187,88 @@ const reducer = (state = initialState, action) => {
         return {
           ...state
         };
+
+    case 'INSTALL_PACK': {
+      const packs = { ...state.packs };
+
+      switch(action.status) {
+        case 'success':
+          packs[action.ref] = {
+            ...packs[action.ref],
+            status: 'installed'
+          };
+
+          return {
+            ...state,
+            packs
+          };
+        case 'error':
+          packs[action.ref] = {
+            ...packs[action.ref],
+            status: 'available'
+          };
+
+          return {
+            ...state,
+            packs
+          };
+        default:
+          packs[action.ref] = {
+            ...packs[action.ref],
+            status: 'installing'
+          };
+
+          return {
+            ...state,
+            packs
+          };
+      }
+
+      return {
+        ...state
+      };
+    }
+
+    case 'UNINSTALL_PACK': {
+      const packs = { ...state.packs };
+
+      switch(action.status) {
+        case 'success':
+          packs[action.ref] = {
+            ...packs[action.ref],
+            status: 'available'
+          };
+
+          return {
+            ...state,
+            packs
+          };
+        case 'error':
+          packs[action.ref] = {
+            ...packs[action.ref],
+            status: 'installed'
+          };
+
+          return {
+            ...state,
+            packs
+          };
+        default:
+          packs[action.ref] = {
+            ...packs[action.ref],
+            status: 'uninstalling'
+          };
+
+          return {
+            ...state,
+            packs
+          };
+      }
+
+      return {
+        ...state
+      };
+    }
 
     case 'SELECT_PACK':
       const { ref } = action;
