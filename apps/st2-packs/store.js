@@ -190,6 +190,22 @@ const reducer = (state = initialState, action) => {
       return { ...state, packs };
     }
 
+    case 'CONFIGURE_PACK': {
+      const packs = { ...state.packs };
+
+      switch(action.status) {
+        case 'success':
+          packs[action.ref] = { ...packs[action.ref], config: action.payload };
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return { ...state, packs };
+    }
+
     case 'SELECT_PACK':
       const { ref } = action;
 

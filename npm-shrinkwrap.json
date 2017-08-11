@@ -11217,8 +11217,8 @@
       }
     },
     "st2client": {
-      "version": "1.1.0",
-      "resolved": "https://registry.npmjs.org/st2client/-/st2client-1.1.0.tgz"
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/st2client/-/st2client-1.1.1.tgz"
     },
     "string-width": {
       "version": "1.0.2",

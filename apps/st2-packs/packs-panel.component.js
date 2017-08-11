@@ -25,38 +25,19 @@ import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 
-function wait(source, execution_id) {
-  let listener;
+function waitExecution(execution_id, record) {
+  if (record.id !== execution_id) {
+    return;
+  }
 
-  return new Promise((resolve, reject) => {
-    listener = event => {
-      const record = JSON.parse(event.data);
+  if (record.status === 'succeeded') {
+    return true;
+  }
 
-      if (record.id !== execution_id) {
-        return;
-      }
-
-      if (record.status === 'succeeded') {
-        resolve();
-      }
-
-      if (record.status === 'failed') {
-        reject();
-      }
-    };
-
-    source.addEventListener('st2.execution__update', listener);
-  }).then(event => {
-    source.removeEventListener('st2.execution__update', listener);
-
-    return event;
-  })
-  .catch(err => {
-    source.removeEventListener('st2.execution__update', listener);
-
-    throw err;
-  });
-}
+  if (record.status === 'failed') {
+    return false;
+  }
+};
 
 @connect((state) => {
   const { packs, selected, collapsed, filter } = state;
@@ -86,31 +67,21 @@ export default class PacksPanel extends React.Component {
 
   handleInstall(ref) {
     const { api, notification } = this.props.context;
-    const { packs } = api.client;
 
     return store.dispatch({
       type: 'INSTALL_PACK',
       ref,
-      promise: packs.request({
-        method: 'post',
-        path: `${packs.path}/install`
-      }, {
+      promise: api.client.packInstall.schedule({
         packs: [ref]
       })
-        .then(res => {
-          const { body, status } = res;
-
-          if (status !== 202) {
-            throw res;
-          }
-
+        .then(body => {
           notification.success(
             `Pack "${ref}" has been scheduled for installation. ` +
             `See execution "${body.execution_id}" for progress.`
           );
 
-          return api.client.stream.listen()
-            .then(source => wait(source, body.execution_id));
+          return api.client.stream
+            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
         })
         .then(() => {
           notification.success(
@@ -131,31 +102,21 @@ export default class PacksPanel extends React.Component {
 
   handleRemove(ref) {
     const { api, notification } = this.props.context;
-    const { packs } = api.client;
 
     return store.dispatch({
       type: 'UNINSTALL_PACK',
       ref,
-      promise: packs.request({
-        method: 'post',
-        path: `${packs.path}/uninstall`
-      }, {
+      promise: api.client.packUninstall.schedule({
         packs: [ref]
       })
-        .then(res => {
-          const { body, status } = res;
-
-          if (status !== 202) {
-            throw res;
-          }
-
+        .then(body => {
           notification.success(
             `Pack "${ref}" has been scheduled for removal. ` +
             `See execution "${body.execution_id}" for progress.`
           );
 
-          return api.client.stream.listen()
-            .then(source => wait(source, body.execution_id));
+          return api.client.stream
+            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
         })
         .then(() => {
           notification.success(
@@ -179,29 +140,27 @@ export default class PacksPanel extends React.Component {
 
     const { api, notification } = this.props.context;
 
-    return api.client.index.request({
-      method: 'put',
-      path: `/configs/${ref}`
-    }, this.configField.getValue())
-      .then(res => {
-        const { status } = res;
-
-        if (status !== 200) {
-          throw res;
-        }
-
-        notification.success(
-          `Configuration for pack "${ref}" has been saved succesfully`
-        );
+    return store.dispatch({
+      type: 'CONFIGURE_PACK',
+      ref,
+      promise: api.client.configs.edit(ref, this.configField.getValue(), {
+        show_secrets: true
       })
-      .catch(res => {
-        notification.error(
-          `Unable to save the configuration for pack "${ref}". ` +
-          'See details in developer tools console.'
-        );
-        console.error(res);
-      })
-      ;
+        .then(res => {
+          notification.success(
+            `Configuration for pack "${ref}" has been saved succesfully`
+          );
+
+          return res.values;
+        })
+        .catch(res => {
+          notification.error(
+            `Unable to save the configuration for pack "${ref}". ` +
+            'See details in developer tools console.'
+          );
+          console.error(res);
+        })
+    });
   }
 
   handleToggleConfigPreview() {
@@ -274,11 +233,7 @@ export default class PacksPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_PACK_CONFIG_SCHEMAS',
-      promise: api.client.index.request({
-        method: 'get',
-        path: '/config_schemas'
-      })
-        .then(res => res.body)
+      promise: api.client.configSchemas.list()
         .then(config_schemas => {
           const packs = {};
 
@@ -298,27 +253,22 @@ export default class PacksPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_PACK_CONFIGS',
-      promise: api.client.index.request({
-        method: 'get',
-        path: '/configs',
-        query: {
-          show_secrets: true
-        }
+      promise: api.client.configs.list({
+        show_secrets: true
       })
-        .then(res => res.body)
-        .then(configs => {
-          const packs = {};
+      .then(configs => {
+        const packs = {};
 
-          _.forEach(configs, config => {
-            const ref = config.pack;
-            packs[ref] = {
-              ref,
-              config: config.values
-            };
-          });
+        _.forEach(configs, config => {
+          const ref = config.pack;
+          packs[ref] = {
+            ref,
+            config: config.values
+          };
+        });
 
-          return packs;
-        })
+        return packs;
+      })
     });
 
     this._unsubscribeStateOnChange = state.onChange((transition) => {
@@ -336,6 +286,7 @@ export default class PacksPanel extends React.Component {
   render() {
     const { packs, selected, collapsed, filter = '' } = this.props;
     const {
+      ref,
       name,
       description,
       config_schema,
@@ -433,7 +384,7 @@ export default class PacksPanel extends React.Component {
           }
           {
             config_schema && <DetailsPanel data-test="pack_config" >
-              <form onSubmit={(e) => this.handleConfigSave(e, name)}>
+              <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
                 <AutoForm
                   ref={(component) => { this.configField = component; }}
                   spec={config_schema}

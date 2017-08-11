@@ -25,7 +25,7 @@
     "react-redux": "5.0.5",
     "react-textarea-autosize": "3.3.1",
     "redux": "3.7.2",
-    "st2client": "1.1.0",
+    "st2client": "1.1.1",
     "urijs": "1.17.1",
     "validator": "5.2.0"
   },
