@@ -2,7 +2,6 @@
 
 <main class="st2-panel" data-test="history_panel">
 
-  <div class="st2-redux"></div>
   <div class="st2-panel__view st2-history" cg-busy="busy">
 
     <div class="st2-panel__toolbar">
@@ -374,8 +373,8 @@
                   ng-if="record.trigger_instance.occurrence_time">
                 <div class="st2-time"
                   timestamp="record.trigger_instance.occurrence_time"
-                    utcdisplay="utcDisplay"
-                    togglecallback="toggleUTCDisplay"
+                  utcdisplay="utcDisplay"
+                  togglecallback="toggleUTCDisplay"
                 ></div>
               </dd>
             </dl>
