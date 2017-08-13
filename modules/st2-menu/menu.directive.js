@@ -11,7 +11,7 @@ module.exports =
       templateUrl: template,
       link: function postLink(scope) {
         scope.routes = scope.state.get().map(route => {
-         return Object.assign(route, {
+          return Object.assign(route, {
             href: route.href || `#${route.url}`
           });
         });
