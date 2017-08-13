@@ -6,6 +6,19 @@ var _ = require('lodash')
 module.exports =
   function st2ActionsCtrl($scope, st2api, $filter, Notification, st2FlexTableService) {
 
+    $scope.utcDisplay = localStorage.utcDisplay === 'true';
+
+    $scope.toggleUTCDisplay = () => {
+      localStorage.utcDisplay = !(localStorage.utcDisplay === 'true');
+    };
+
+    $scope.$watch(
+      () => localStorage.utcDisplay,
+      () => {
+        $scope.utcDisplay = localStorage.utcDisplay === 'true';
+      }
+    );
+
     $scope.filter = '';
     $scope.error = null;
 

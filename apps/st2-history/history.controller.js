@@ -12,6 +12,13 @@ module.exports =
       localStorage.utcDisplay = !(localStorage.utcDisplay === 'true');
     };
 
+    $scope.$watch(
+      () => localStorage.utcDisplay,
+      () => {
+        $scope.utcDisplay = localStorage.utcDisplay === 'true';
+      }
+    );
+
     var pHistoryList;
 
     $scope.error = null;
@@ -118,14 +125,6 @@ module.exports =
     };
 
     $scope.$watch('[$root.active_filters, $root.page]', listUpdate, true);
-
-    $scope.$watch(
-      () => localStorage.utcDisplay,
-      () => {
-        $scope.utcDisplay = localStorage.utcDisplay === 'true';
-      }
-    );
-
 
     $scope.$watch('$root.state.params.id', function (id) {
       if (!pHistoryList) {
