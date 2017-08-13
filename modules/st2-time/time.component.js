@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import Time from 'react-time';
 
 const timeComponent = (props) => {
-  let {format, timestamp, utcdisplay, togglecallback, datatest} = props;
+  let {format, timestamp, utcdisplay, togglecallback, ...restProps} = props;
   let dateFormat = format ? format : 'ddd, DD MMM YYYY HH:mm:ss';
   let timeStamp = new Date(timestamp);
   if (utcdisplay){
@@ -12,7 +12,7 @@ const timeComponent = (props) => {
 
   return (
     <Time
-      data-test={datatest ? datatest : undefined}
+      {...restProps}
       onClick={togglecallback}
       value={timeStamp}
       format={dateFormat}
@@ -26,7 +26,6 @@ timeComponent.propTypes = {
   format: PropTypes.string,
   utcdisplay: PropTypes.bool,
   togglecallback: PropTypes.func,
-  datatest: PropTypes.string
   };
 
 export default timeComponent;
