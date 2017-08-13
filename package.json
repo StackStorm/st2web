@@ -7,6 +7,10 @@
     "test": "node_modules/.bin/gulp test"
   },
   "repository": "stackstorm/st2web",
+  "engines" : {
+    "node": "^6.11.1",
+    "npm" : "^3.10.10"
+  },
   "dependencies": {
     "angular": "1.5.3",
     "angular-busy": "4.1.3",
