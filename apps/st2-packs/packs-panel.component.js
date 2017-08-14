@@ -224,9 +224,9 @@ export default class PacksPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_PACK_INDEX',
-      promise: fetch('https://index.stackstorm.org/v1/index.json')
-        .then(response => response.json())
-        .then(({ packs }) => packs)
+      // A rather ugly hack that helps us not to update st2client.js just yet
+      promise: api.client.packs.get('index')
+        .then(({ index }) => index)
         // In some cases pack ref might be missing and we better sort it out earlier
         .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
     });
