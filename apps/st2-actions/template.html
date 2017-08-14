@@ -1,7 +1,6 @@
 <header class="st2-menu"></header>
 
 <main class="st2-panel">
-
   <div class="st2-panel__view st2-actions" cg-busy="busy">
     <div class="st2-panel__toolbar-actions">
       <flow-link></flow-link>
@@ -226,9 +225,11 @@
                 <!-- <div class="st2-flex-table__column st2-actions__details-column-status">
                   <div class="st2-label" status="record.status"></div>
                 </div> -->
-                <div class="st2-flex-table__column st2-actions__details-column-time">
-                  {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
-                </div>
+                <div class="st2-time"
+                  timestamp="record.start_timestamp"
+                  utcdisplay="utcDisplay"
+                  togglecallback="toggleUTCDisplay"
+                ></div>
 
                 <a class="st2-flex-table__column st2-actions__details-column-history"
                     title="Jump to History"
