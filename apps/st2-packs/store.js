@@ -1,73 +1,23 @@
-import _ from 'lodash';
+import { createScopedStore } from '../../store.js';
 
-import { createStore, applyMiddleware, compose } from 'redux';
+import flexTableReducer from '../../modules/st2-flex-table/flex-table.reducer';
 
-const initialState = {
-  collapsed: false,
-  tables: {},
-  packs: {},
-  selected: undefined
-};
+const packReducer = (state = {}, action) => {
+  let {
+    packs = {},
+    selected = undefined
+  } = state;
 
-const reducer = (state = initialState, action) => {
+  state = {
+    ...state,
+    packs,
+    selected
+  };
+
   switch (action.type) {
 
-    case 'REGISTER_FLEX_TABLE': {
-      const { tables, collapsed } = state;
-      const { title } = action;
-
-      return {
-        ...state,
-        tables: {
-          ...tables,
-          [title]: {
-            ...tables[title],
-            collapsed
-          }
-        }
-      };
-    }
-
-    case 'TOGGLE_FLEX_TABLE': {
-      const { tables } = state;
-      const { title } = action;
-
-      const newTables = {
-        ...tables,
-        [title]: {
-          ...tables[title],
-          collapsed: !(tables[title] || state).collapsed
-        }
-      };
-
-      let { collapsed } = state;
-
-      if (_.some(newTables, item => item.collapsed === newTables[title].collapsed)) {
-        collapsed = newTables[title].collapsed;
-      }
-
-      return {
-        ...state,
-        collapsed,
-        tables: newTables
-      };
-    }
-
-    case 'TOGGLE_ALL': {
-      let { collapsed, tables } = state;
-
-      collapsed = !collapsed;
-      tables = _.mapValues(tables, v => ({ ...v, collapsed }));
-
-      return {
-        ...state,
-        collapsed,
-        tables
-      };
-    }
-
     case 'FETCH_INSTALLED_PACKS': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -90,7 +40,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'FETCH_PACK_INDEX': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -113,7 +63,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'FETCH_PACK_CONFIG_SCHEMAS': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -135,7 +85,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'FETCH_PACK_CONFIGS': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -157,7 +107,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'INSTALL_PACK': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -174,7 +124,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'UNINSTALL_PACK': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -191,7 +141,7 @@ const reducer = (state = initialState, action) => {
     }
 
     case 'CONFIGURE_PACK': {
-      const packs = { ...state.packs };
+      packs = { ...packs };
 
       switch(action.status) {
         case 'success':
@@ -227,36 +177,13 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const promiseMiddleware = () => next => action => {
-  if (!action.promise) {
-    return next(action);
-  }
+const reducer = (state = {}, action) => {
+  state = flexTableReducer(state, action);
+  state = packReducer(state, action);
 
-  function actionFactory(status, data) {
-    const { promise, ...newAction } = action;
-    return {
-      ...newAction,
-      status,
-      ...data
-    };
-  }
-
-  next(actionFactory());
-  return action.promise.then(
-    payload => next(actionFactory('success', { payload })),
-    error => next(actionFactory('error', { error }))
-  );
+  return state;
 };
 
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  reducer,
-  composeEnhancers(
-    applyMiddleware(
-      promiseMiddleware
-    )
-  )
-);
+const store = createScopedStore('packs', reducer);
 
 export default store;
