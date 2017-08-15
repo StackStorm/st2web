@@ -62,7 +62,7 @@ export default class AutoForm extends React.Component {
         (a, b) => {
           // If position exists for the items we're comparing then lets
           // favor sorting by that
-          if (a.position || b.position){
+          if (a.position !== undefined || b.position !== undefined){
             // Some items might have position undefined. If it's undefined
             // it should be sorted behind an item with position defined
             if (a.position === undefined){
