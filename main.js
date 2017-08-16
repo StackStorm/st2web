@@ -1,113 +1,105 @@
 'use strict';
 
-angular.module('main', ['main.dependencies', 'main.modules', 'main.apps']);
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {
+  HashRouter as Router,
+  Redirect,
+  Route,
+  Switch
+} from 'react-router-dom';
+import NotificationSystem from 'react-notification-system';
 
-angular.module('main')
-  .config(function ($urlRouterProvider) {
+import api from './modules/st2-api/api';
 
-    // Remove tailing slash from url before looking for state
-    $urlRouterProvider.rule(function ($injector, $location) {
-      var path = $location.url();
+import History from './apps/st2-history/history.component';
+import Actions from './apps/st2-actions/actions.component';
+import Rules from './apps/st2-rules/rules.component';
+import Packs from './apps/st2-packs/packs.component';
 
-      // check to see if the path already has a slash where it should be
-      if (path[path.length - 1] === '/') {
-        return path.substr(0, path.length - 1);
-      }
+import Login from './apps/st2-login/login.component';
 
-      if (path.indexOf('/?') > -1) {
-        return path.replace('/?', '?');
-      }
-    });
+const routes = [{
+  title: 'Actions',
+  url: '/actions',
+  icon: 'icon-play',
+  component: Actions,
+  position: 2
+}, {
+  title: 'History',
+  url: '/history',
+  icon: 'icon-history',
+  component: History,
+  position: 1
+}, {
+  title: 'Rules',
+  url: '/rules',
+  icon: 'icon-book-closed',
+  component: Rules,
+  position: 3
+}, {
+  title: 'Packs',
+  url: '/packs',
+  icon: 'icon-platforms',
+  component: Packs,
+  position: 4
+}, {
+  title: 'Docs',
+  icon: 'icon-book-open',
+  position: 5,
+  href: 'https://docs.stackstorm.com/',
+  target: 'st2-docs'
+}];
 
-  });
-
-angular.module('main')
-  .controller('MainCtrl', function ($rootScope, $state, st2FlexTableService) {
-
-    // TODO: use a transclude or bind on $stateChangeSuccess instead.
-    var scrollToTop = function() {
-      document.getElementById('st2-panel__scroller').scrollTop = 0;
+class Container extends React.Component {
+  render() {
+    const notification = {
+      success: (message) => this._notificationSystem.addNotification({
+        message,
+        level: 'success',
+        position: 'bl'
+      }),
+      error: (message) => this._notificationSystem.addNotification({
+        message,
+        level: 'error',
+        position: 'bl'
+      })
     };
 
-    $rootScope.state = $state;
-    $rootScope._ = _;
+    return <div className="wrapper">
+      <Router>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/history" />} />
+          {
+            routes
+              .filter(route => route.url)
+              .map(route => {
+                return <Route
+                  key={route.url}
+                  path={`${route.url}/:ref?`}
+                  render={({ match, location, history }) => {
+                    const props = {
+                      routes,
+                      notification,
+                      match,
+                      location,
+                      history
+                    };
 
-    $rootScope.go = function (state, params, opts) {
-      if (!_.isString(state)) {
-        opts = params;
-        params = state;
-        state = $rootScope.state.includes('^.list') ? '^.general' : '.';
-      }
-      return $rootScope.state.go(state, _.assign({}, $rootScope.state.params, params), opts);
-    };
+                    if (api.isConnected()) {
+                      return <route.component {...props} />;
+                    } else {
+                      return <Login onConnect={() => history.replace()}/>;
+                    }
+                  }}
+                />;
+              })
+          }
+        </Switch>
+      </Router>
+      <NotificationSystem ref={c => this._notificationSystem = c} />
+    </div>;
+  }
+}
 
-    $rootScope.isState = function (states) {
-      return _.some([].concat(states), function (state) {
-        return $rootScope.state.includes(state);
-      });
-    };
-
-    // Pagination
-    $rootScope.$watch('state.params.page', function (page) {
-      $rootScope.page = page && parseInt(page);
-    });
-    $rootScope.$on('$fetchFinish', function (event, fetch) {
-      $rootScope.total_count = fetch.total;
-      $rootScope.limit = fetch.limit;
-      $rootScope.maxPage = Math.ceil($rootScope.total_count / $rootScope.limit);
-    });
-    $rootScope.prevPage = function () {
-      $rootScope.state.go('.', { page: $rootScope.page - 1 }).then(scrollToTop);
-    };
-    $rootScope.nextPage = function () {
-      $rootScope.state.go('.', { page: ($rootScope.page || 1) + 1 }).then(scrollToTop);
-    };
-
-    // Filtering
-    var filters = ['status', 'action', 'trigger_type', 'rule'];
-
-    $rootScope.updateFiltersAndGo = function (type, activeFilters) {
-      var params = _.clone($rootScope.state.params);
-      params.page = void 0;
-      params[type] = activeFilters.concat();
-      $rootScope.state.go('.', params);
-    };
-
-    $rootScope.$watchCollection('state.params', function (params) {
-      $rootScope.active_filters = _.pick(params, filters);
-    });
-
-    $rootScope.toggleFlexTables = st2FlexTableService.toggleType.bind(st2FlexTableService);
-    $rootScope.areFlexTablesCollapsed = st2FlexTableService.isTypeCollapsed.bind(st2FlexTableService);
-  });
-
-angular.module('main')
-  .filter('has', function () {
-    return function (input, name) {
-      return _.filter(input, function (e) {
-        return !!e[name];
-      });
-    };
-  });
-
-angular.module('main')
-  .filter('capitalize', function () {
-    return function (string) {
-      if (string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      }
-    };
-  });
-
-angular.module('main')
-  .filter('yaml', function () {
-    var Dumper = require('yamljs/lib/Dumper');
-
-    return function (input) {
-      if (typeof input !== 'undefined') {
-        var yaml = new Dumper();
-        yaml.indentation = 2;
-        return '---\n' + yaml.dump(input, Infinity, 0, null, null);
-      }
-    };
-  });
+ReactDOM.render(<Container />, document.querySelector('#container'));

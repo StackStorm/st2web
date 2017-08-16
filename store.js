@@ -10,11 +10,17 @@ const rootReducer = (state = {}, originalAction) => {
 
   const { [PATH_NAME]: path, ...action } = originalAction;
 
-  if (path) {
-    const { reducer } = scopedStores.find(({ name }) => name === path);
-    state[path] = reducer(state[path], action);
-  } else {
-    scopedStores.forEach(({ name, reducer }) => state[name] = reducer(state[name], action));
+  switch(action.type) {
+    case 'REGISTER_ROUTE':
+      state.routes = (state.routes || []).concat(action.payload);
+      break;
+    default:
+      if (path) {
+        const { reducer } = scopedStores.find(({ name }) => name === path);
+        state[path] = reducer(state[path], action);
+      } else {
+        scopedStores.forEach(({ name, reducer }) => state[name] = reducer(state[name], action));
+      }
   }
 
   return state;

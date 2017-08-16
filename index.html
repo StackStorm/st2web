@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="main" ng-controller="MainCtrl">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title ng-bind="state.current.title"></title>
@@ -29,12 +29,12 @@
   <script src="js/dependencies.js"></script>
   <script src="js/modules.js"></script>
   <script src="js/apps.js"></script>
-  <script src="js/main.js"></script>
-  <script src="config.js"></script>
 </head>
 
 <body>
-  <div ui-view></div>
+  <div class="wrapper" id="container"></div>
+  <script src="js/main.js"></script>
+  <script src="config.js"></script>
 </body>
 
 </html>

@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import Menu from '../../modules/st2-menu/menu.component';
-import PacksPanel from './packs-panel.component';
+import RulesPanel from './rules-panel.component';
 
-export default class Packs extends React.Component {
+export default class Rules extends React.Component {
   static propTypes = {
     context: React.PropTypes.object,
     routes: React.PropTypes.array
@@ -16,7 +16,7 @@ export default class Packs extends React.Component {
     return <Provider store={store}>
       <div className="wrapper">
         <Menu {...this.props} />
-        <PacksPanel {...this.props} />
+        <RulesPanel {...this.props} />
       </div>
     </Provider>;
   }

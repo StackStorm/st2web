@@ -1,9 +1,9 @@
 'use strict';
 
-import component from './menu.component.js';
+import component from './actions.component.js';
 
 module.exports =
-  function st2Menu(reactDirective) {
+  function st2Actions(reactDirective) {
     var overrides = {
       restrict: 'C'
     };

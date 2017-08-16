@@ -19,6 +19,11 @@ export default class AutoForm extends React.Component {
     onChange: React.PropTypes.func
   }
 
+  constructor() {
+    super();
+    this.fields = {};
+  }
+
   getElementByField(field) {
     if (field.enum) {
       return EnumField;
@@ -45,13 +50,7 @@ export default class AutoForm extends React.Component {
   }
 
   getValue() {
-    return _.mapValues(this.refs, v => {
-      try {
-        return v.getValue();
-      } catch (e) {
-        return undefined;
-      }
-    });
+    return _.mapValues(this.fields, v => v.getValue());
   }
 
   handleChange(name, value) {
@@ -72,7 +71,7 @@ export default class AutoForm extends React.Component {
         (a, b) => {
           // If position exists for the items we're comparing then lets
           // favor sorting by that
-          if (a.position !== undefined || b.position !== undefined){
+          if (a.position || b.position){
             // Some items might have position undefined. If it's undefined
             // it should be sorted behind an item with position defined
             if (a.position === undefined){
@@ -112,7 +111,7 @@ export default class AutoForm extends React.Component {
 
           const FieldElement = this.getElementByField(field);
 
-          return <FieldElement key={name} ref={name} {...props} />;
+          return <FieldElement key={name} ref={(c) => this.fields[name] = c} {...props} />;
         })
       }
     </div>;

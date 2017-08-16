@@ -17,7 +17,6 @@ module.exports = angular.module('main.modules', [
   require('./st2-panel').name,
   require('./st2-proportional').name,
   require('./st2-remote-form').name,
-  require('./st2-report').name,
   require('./st2-scroll-into-view').name,
   require('./st2-select-on-click').name,
   require('./st2-value-format').name,

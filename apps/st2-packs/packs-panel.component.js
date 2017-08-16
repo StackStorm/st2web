@@ -3,37 +3,31 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import store from './store';
+import api from '../../modules/st2-api/api';
 
-import Toolbar from './toolbar.component';
-import ToolbarSearch from './toolbar-search.component';
-import ToggleButton from './toggle-button.component';
-import Content from './content.component';
-import FlexTable from './flex-table.component';
-import PackFlexCard from './pack-flex-card.component';
 import {
+  Panel,
+  PanelView,
+  PanelDetails,
+  Toolbar,
+  ToolbarSearch,
+  Content,
   DetailsHeader,
   DetailsBody,
   DetailsPanel,
   DetailsButtonsPanel,
   DetailsToolbar,
-  DetailsToolbarSeparator
-} from './details.component';
-import Button from './button.component';
+  DetailsToolbarSeparator,
+  ToggleButton
+} from '../../modules/st2-panel/panel.component';
+import FlexTable from '../../modules/st2-flex-table/flex-table.component';
+import PackFlexCard from './pack-flex-card.component';
+import Button from '../../modules/st2-forms/button.component';
 import Table from './table.component';
 
 import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
-
-function sanitize(config, { properties }) {
-  return _.mapValues(config, (v, k) => {
-    if (v && properties[k] && properties[k].secret) {
-      return '*'.repeat(v.length);
-    }
-
-    return v;
-  });
-}
 
 function waitExecution(execution_id, record) {
   if (record.id !== execution_id) {
@@ -49,6 +43,27 @@ function waitExecution(execution_id, record) {
   }
 };
 
+@connect((state, props) => {
+  const { tables } = state;
+  const { title } = props;
+  const { collapsed = state.collapsed } = tables[title] || {};
+
+  return { title, collapsed };
+}, (dispatch, props) => {
+  const { title } = props;
+
+  return {
+    onToggle: () => store.dispatch({ type: 'TOGGLE_FLEX_TABLE', title })
+  };
+})
+class FlexTableWrapper extends FlexTable {
+  componentDidMount() {
+    const { title } = this.props;
+
+    store.dispatch({ type: 'REGISTER_FLEX_TABLE', title });
+  }
+}
+
 @connect((state) => {
   const { packs, selected, collapsed, filter } = state;
   return { packs, selected, collapsed, filter };
@@ -59,12 +74,13 @@ export default class PacksPanel extends React.Component {
     collapsed: React.PropTypes.bool,
     packs: React.PropTypes.object,
     selected: React.PropTypes.string,
-    filter: React.PropTypes.string
+    filter: React.PropTypes.string,
+    history: React.PropTypes.object,
+    match: React.PropTypes.object
   }
 
   state = {
-    configPreview: false,
-    configField: {}
+    configPreview: false
   }
 
   handleToggleAll() {
@@ -72,12 +88,12 @@ export default class PacksPanel extends React.Component {
   }
 
   handleSelect(ref) {
-    const { state } = this.props.context;
-    state.go({ ref });
+    const { history } = this.props;
+    history.push(`/packs/${ ref }`);
   }
 
   handleInstall(ref) {
-    const { api, notification } = this.props.context;
+    const { notification } = this.props.context;
 
     return store.dispatch({
       type: 'INSTALL_PACK',
@@ -93,12 +109,6 @@ export default class PacksPanel extends React.Component {
 
           return api.client.stream
             .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
-        })
-        .then(() => {
-          this.fetchPacks();
-          this.fetchIndex();
-          this.fetchConfigSchemas();
-          this.fetchConfigs();
         })
         .then(() => {
           notification.success(
@@ -118,7 +128,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleRemove(ref) {
-    const { api, notification } = this.props.context;
+    const { notification } = this.props.context;
 
     return store.dispatch({
       type: 'UNINSTALL_PACK',
@@ -152,23 +162,15 @@ export default class PacksPanel extends React.Component {
     });
   }
 
-  handleConfigChange(key, value) {
-    const { configField } = this.state;
-
-    configField[key] = value;
-
-    this.setState({ configField });
-  }
-
   handleConfigSave(e, ref) {
     e.preventDefault();
 
-    const { api, notification } = this.props.context;
+    const { notification } = this.props.context;
 
     return store.dispatch({
       type: 'CONFIGURE_PACK',
       ref,
-      promise: api.client.configs.edit(ref, this.state.configField, {
+      promise: api.client.configs.edit(ref, this.configField.getValue(), {
         show_secrets: true
       })
         .then(res => {
@@ -210,10 +212,8 @@ export default class PacksPanel extends React.Component {
     });
   }
 
-  fetchPacks() {
-    const { api } = this.props.context;
-
-    return store.dispatch({
+  componentDidMount() {
+    store.dispatch({
       type: 'FETCH_INSTALLED_PACKS',
       promise: api.client.packs.list()
         .then(packs => {
@@ -237,13 +237,17 @@ export default class PacksPanel extends React.Component {
 
           return packs;
         })
-    });
-  }
+    })
+      .then(() => {
+        const { selected } = store.getState();
 
-  fetchIndex() {
-    const { api } = this.props.context;
+        if (!selected) {
+          store.dispatch({ type: 'SELECT_PACK' });
+        }
+      })
+      ;
 
-    return store.dispatch({
+    store.dispatch({
       type: 'FETCH_PACK_INDEX',
       // A rather ugly hack that helps us not to update st2client.js just yet
       promise: api.client.packs.get('index')
@@ -251,36 +255,8 @@ export default class PacksPanel extends React.Component {
         // In some cases pack ref might be missing and we better sort it out earlier
         .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
     });
-  }
 
-  fetchConfigs() {
-    const { api } = this.props.context;
-
-    return store.dispatch({
-      type: 'FETCH_PACK_CONFIGS',
-      promise: api.client.configs.list({
-        show_secrets: true
-      })
-      .then(configs => {
-        const packs = {};
-
-        _.forEach(configs, config => {
-          const ref = config.pack;
-          packs[ref] = {
-            ref,
-            config: config.values
-          };
-        });
-
-        return packs;
-      })
-    });
-  }
-
-  fetchConfigSchemas() {
-    const { api } = this.props.context;
-
-    return store.dispatch({
+    store.dispatch({
       type: 'FETCH_PACK_CONFIG_SCHEMAS',
       promise: api.client.configSchemas.list()
         .then(config_schemas => {
@@ -299,44 +275,42 @@ export default class PacksPanel extends React.Component {
           return packs;
         })
     });
-  }
 
-  componentDidMount() {
-    const { state } = this.props.context;
+    store.dispatch({
+      type: 'FETCH_PACK_CONFIGS',
+      promise: api.client.configs.list({
+        show_secrets: true
+      })
+      .then(configs => {
+        const packs = {};
 
-    this.fetchPacks()
-      .then(() => {
-        const { selected } = store.getState();
+        _.forEach(configs, config => {
+          const ref = config.pack;
+          packs[ref] = {
+            ref,
+            config: config.values
+          };
+        });
 
-        if (!selected) {
-          store.dispatch({ type: 'SELECT_PACK' });
-        }
-      });
-
-    this.fetchIndex();
-    this.fetchConfigSchemas();
-    this.fetchConfigs();
-
-    this._unsubscribeStateOnChange = state.onChange((transition) => {
-      const { ref } = transition.params();
-      store.dispatch({ type: 'SELECT_PACK', ref });
+        return packs;
+      })
     });
 
-    store.dispatch({ type: 'SELECT_PACK', ref: state.params.ref });
+    const { ref } = this.props.match.params;
+    store.dispatch({ type: 'SELECT_PACK', ref });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.selected !== nextProps.selected) {
-      this.setState({ configField: {} });
-    }
-  }
+    const { ref } = nextProps.match.params;
 
-  componentWillUnmount() {
-    this._unsubscribeStateOnChange();
+    if (ref !== this.props.match.params.ref) {
+      store.dispatch({ type: 'SELECT_PACK', ref });
+    }
   }
 
   render() {
     const { packs, selected, collapsed, filter = '' } = this.props;
+
     const {
       ref,
       name,
@@ -400,8 +374,8 @@ export default class PacksPanel extends React.Component {
       .value()
       ;
 
-    return <div className="st2-panel">
-      <div className="st2-panel__view">
+    return <Panel>
+      <PanelView>
         <Toolbar title="Packs">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
           <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
@@ -409,7 +383,7 @@ export default class PacksPanel extends React.Component {
         <Content>
           {
             ['installed', 'installing', 'uninstalling', 'available'].map(key => {
-              return !!packGroups[key] && <FlexTable title={key} key={key} >
+              return !!packGroups[key] && <FlexTableWrapper title={key} key={key} >
                 {
                   packGroups[key]
                     .map(pack => {
@@ -418,12 +392,12 @@ export default class PacksPanel extends React.Component {
                         onClick={() => this.handleSelect(pack.ref)} />;
                     })
                 }
-              </FlexTable>;
+              </FlexTableWrapper>;
             })
           }
         </Content>
-      </div>
-      <div className="st2-panel__details st2-details" data-test="details">
+      </PanelView>
+      <PanelDetails data-test="details">
         <DetailsHeader title={name} subtitle={description}/>
         <DetailsBody>
           <DetailsPanel>
@@ -438,8 +412,7 @@ export default class PacksPanel extends React.Component {
             config_schema && <DetailsPanel data-test="pack_config" >
               <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
                 <AutoForm
-                  ref={(component) => { this.configForm = component; }}
-                  onChange={(key, value) => this.handleConfigChange(key, value)}
+                  ref={(component) => { this.configField = component; }}
                   spec={config_schema}
                   ngModel={config} />
                 <DetailsButtonsPanel>
@@ -448,7 +421,7 @@ export default class PacksPanel extends React.Component {
                 </DetailsButtonsPanel>
                 {
                   this.state.configPreview &&
-                    <St2Highlight code={sanitize(this.state.configField, config_schema)}/>
+                    <St2Highlight code={this.configField.getValue()}/>
                 }
               </form>
             </DetailsPanel>
@@ -473,7 +446,7 @@ export default class PacksPanel extends React.Component {
           }
           <DetailsToolbarSeparator />
         </DetailsToolbar>
-      </div>
-    </div>;
+      </PanelDetails>
+    </Panel>;
   }
 }
