@@ -6,6 +6,19 @@ var _ = require('lodash')
 module.exports =
   function st2HistoryCtrl($scope, st2api, $rootScope, Notification) {
 
+    $scope.utcDisplay = localStorage.utcDisplay === 'true';
+
+    $scope.toggleUTCDisplay = () => {
+      localStorage.utcDisplay = !(localStorage.utcDisplay === 'true');
+    };
+
+    $scope.$watch(
+      () => localStorage.utcDisplay,
+      () => {
+        $scope.utcDisplay = localStorage.utcDisplay === 'true';
+      }
+    );
+
     var pHistoryList;
 
     $scope.error = null;
@@ -63,14 +76,11 @@ module.exports =
     });
 
     var listFormat = function () {
-      // Group all the records by periods of 24 hour
-      var timeframe = 24 * 60 * 60 * 1000;
-
       $scope.history = $scope.historyList && _($scope.historyList)
         .filter({parent: undefined})
         .groupBy(function (record) {
-          var time = record.start_timestamp;
-          return new Date(Math.floor(+new Date(time) / timeframe) * timeframe).toISOString();
+          let time = new Date(new Date(record.start_timestamp).toDateString()).toISOString();
+          return time;
         })
         .map(function (records, period) {
           return {

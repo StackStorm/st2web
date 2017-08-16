@@ -9082,6 +9082,10 @@
       "version": "0.5.1",
       "resolved": "https://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz"
     },
+    "moment": {
+      "version": "2.18.1",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.18.1.tgz"
+    },
     "ms": {
       "version": "0.7.1",
       "resolved": "https://registry.npmjs.org/ms/-/ms-0.7.1.tgz"
@@ -9305,8 +9309,8 @@
       }
     },
     "ngreact": {
-      "version": "0.2.0",
-      "resolved": "https://registry.npmjs.org/ngreact/-/ngreact-0.2.0.tgz"
+      "version": "0.4.1",
+      "resolved": "https://registry.npmjs.org/ngreact/-/ngreact-0.4.1.tgz"
     },
     "node-fetch": {
       "version": "1.7.1",
@@ -10739,6 +10743,10 @@
     "react-textarea-autosize": {
       "version": "3.3.1",
       "resolved": "https://registry.npmjs.org/react-textarea-autosize/-/react-textarea-autosize-3.3.1.tgz"
+    },
+    "react-time": {
+      "version": "4.3.0",
+      "resolved": "https://registry.npmjs.org/react-time/-/react-time-4.3.0.tgz"
     },
     "readable-stream": {
       "version": "2.2.2",

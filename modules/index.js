@@ -22,4 +22,5 @@ module.exports = angular.module('main.modules', [
   require('./st2-select-on-click').name,
   require('./st2-value-format').name,
   require('./st2-view').name,
+  require('./st2-time').name,
 ]);

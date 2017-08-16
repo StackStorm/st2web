@@ -46,7 +46,12 @@
           <div class="st2-flex-table__caption st2-flex-table__caption--date"
               ng-click="toggle()">
             <h2 class="st2-flex-table__caption-title">
-              {{ group.period | date:'EEE, dd MMM y':'UTC'}}
+              <div class="st2-time"
+                timestamp="group.period"
+                format="'ddd, DD MMM YYYY'"
+                utcdisplay="utcDisplay"
+                togglecallback="toggleUTCDisplay"
+              ></div>
             </h2>
           </div>
 
@@ -74,7 +79,12 @@
               <div class="st2-flex-card__column st2-flex-card__timestamp">
                 <div class="st2-flex-card__header-primary"
                     ng-if="view.meta.value && view.meta.subview.time.value">
-                  {{ record.start_timestamp | date:'HH:mm:ss UTC':'UTC' }}
+                  <div class="st2-time"
+                    timestamp="record.start_timestamp"
+                    format="'HH:mm:ss'"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
+                  ></div>
                 </div>
               </div>
 
@@ -259,11 +269,12 @@
                   Started:
                 </dt>
                 <dd class="st2-details__panel-body-value">
-                  <time class="st2-action-reporter__time"
-                      data-test="start_timestamp"
-                      datetime="{{record.start_timestamp}}">
-                    {{ record.start_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
-                  </time>
+                  <div class="st2-time"
+                    timestamp="record.start_timestamp"
+                    dataTest="'start_timestamp'"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
+                  ></div>
                 </dd>
               </dl>
               <dl class="st2-details__panel-body-line">
@@ -271,11 +282,12 @@
                   Finished:
                 </dt>
                 <dd class="st2-details__panel-body-value">
-                  <time class="st2-action-reporter__time"
-                      data-test="end_timestamp"
-                      datetime="{{record.end_timestamp}}">
-                    {{ record.end_timestamp | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
-                  </time>
+                  <div class="st2-time"
+                    timestamp="record.end_timestamp"
+                    dataTest="'end_timestamp'"
+                    utcdisplay="utcDisplay"
+                    togglecallback="toggleUTCDisplay"
+                  ></div>
                 </dd>
               </dl>
               <dl class="st2-details__panel-body-line"
@@ -359,7 +371,11 @@
               </dt>
               <dd class="st2-details__panel-body-value"
                   ng-if="record.trigger_instance.occurrence_time">
-                {{ record.trigger_instance.occurrence_time | date:'EEE, dd MMM y HH:mm:ss UTC':'UTC' }}
+                <div class="st2-time"
+                  timestamp="record.trigger_instance.occurrence_time"
+                  utcdisplay="utcDisplay"
+                  togglecallback="toggleUTCDisplay"
+                ></div>
               </dd>
             </dl>
           </div>

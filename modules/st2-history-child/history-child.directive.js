@@ -13,6 +13,19 @@ module.exports =
       },
       template: '<div ng-include="\'' + template + '\'"></div>',
       link: function postLink(scope) {
+        scope.utcDisplay = localStorage.utcDisplay === 'true';
+
+        scope.toggleUTCDisplay = () => {
+          localStorage.utcDisplay = !(localStorage.utcDisplay === 'true');
+        };
+
+        scope.$watch(
+          () => localStorage.utcDisplay,
+          () => {
+            scope.utcDisplay = localStorage.utcDisplay === 'true';
+          }
+        );
+
         scope.getTaskName = function (record) {
           return {
             'action-chain': function () {
