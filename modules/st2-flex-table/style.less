@@ -30,7 +30,8 @@
       color: black;
     }
 
-    &[ng-click] {
+    & {
+      // we're now assuming that every flextable caption is clickable
       cursor: pointer;
 
       &:after {
@@ -106,7 +107,7 @@
     }
   }
 
-  &--collapsed &__caption[ng-click]:after {
+  &--collapsed &__caption:after {
     content: '\e972';
   }
 
@@ -283,6 +284,21 @@
       padding: 0;
 
       color: @grey-lighten-3;
+    }
+
+    & &-version {
+      line-height: 52px;
+
+      flex: 0 0 auto;
+
+      padding-top: 0;
+      padding-bottom: 0;
+
+      color: @grey-lighten-3;
+
+      &--outdated {
+        color: #ff9e1b;
+      }
     }
 
     & &-expand {

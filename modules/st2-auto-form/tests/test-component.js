@@ -32,7 +32,7 @@ describe('AutoForm Component', () => {
     const output = renderer.getRenderOutput();
 
     expect(output.props.children).to.be.an('array').of.length(1)
-      .with.deep.property('[0].type', StringField);
+      .with.nested.property('[0].type', StringField);
   });
 
   it('calls an onChange callback as soon as one on the child element gets called', () => {

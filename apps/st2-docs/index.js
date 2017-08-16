@@ -12,7 +12,7 @@ mod
         abstract: true,
         title: 'Docs',
         icon: 'icon-book-open',
-        position: 4,
+        position: 5,
         href: 'https://docs.stackstorm.com/',
         target: 'st2-docs'
       })

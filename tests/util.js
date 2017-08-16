@@ -48,6 +48,10 @@ module.exports = function (browser) {
       return new zombie.Response('angular.module(\'main\').constant(\'st2Config\', {})');
     }
 
+    if (url.path().indexOf('/reamaze.js') >= 0) {
+      return new zombie.Response('');
+    }
+
     if (url.host() === process.env.ST2_HOST) {
       response._url = url.host('example.com').toString();
       request.url = response.url;

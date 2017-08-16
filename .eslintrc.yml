@@ -56,7 +56,9 @@ rules:
   no-sequences: error
   no-shadow: error
   no-undef: error
-  no-unused-vars: error
+  no-unused-vars:
+    - error
+    - ignoreRestSiblings: true
   no-with: error
   quotes:
     - error
