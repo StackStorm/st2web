@@ -3,7 +3,17 @@ import _ from 'lodash';
 
 import { BaseTextField } from './base';
 
-const typeChecks = (type, v) => {
+const jsonCheck = value => {
+    try {
+        JSON.parse(value);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
+
+const typeChecks = (type, value) => {
+  let v = String(value);
   switch (type) {
     case 'number':
       return !validator.isFloat(v) && `'${v}' is not a number`;
@@ -17,32 +27,82 @@ const typeChecks = (type, v) => {
   }
 };
 
+const typeConversions = (type, v) => {		
+  switch(type) {		
+    case 'number':		
+      return validator.toFloat(v);		
+    case 'integer':		
+      return validator.toInt(v, 10);		
+    case 'string':		
+    default:		
+      return v;		
+  }		
+};		
+		
+function split(value) {		
+  return value		
+    .split(',')		
+    .map(v => v.trim())		
+    .filter(v => v.length)		
+    ;		
+}
+
 export default class ArrayField extends BaseTextField {
   static icon = '[ ]'
-  fromStateValue(v) {
-    return v !== '' ? JSON.parse(v) : void 0;
+  fromStateValue(value) {
+    if (value === ''){
+      return void 0;
+    }
+
+    if (jsonCheck(value)){
+      return JSON.parse(value);
+    }
+
+    const { items } = this.props.spec;		
+    return split(value)		
+      .map(v => typeConversions(items && items.type, v))		
+      ;		
   }
 
-  toStateValue(v) {
-    return JSON.stringify(v);
+  toStateValue(value) {
+    if (jsonCheck(value)){
+      return JSON.stringify(value);
+    }
+
+    return value && value.join(', ');
   }
 
-  validate(v, spec={}) {
-    const invalid = super.validate(v, spec);
+  validate(value, spec={}) {
+    const invalid = super.validate(value, spec);
     if (invalid !== void 0) {
       return invalid;
     };
 
-    try {
-      const { items } = this.props.spec;
-      const o = v && JSON.parse(v);
-      if (o && !_.isArray(o)) {
-        return 'value is not an array';
+    if (jsonCheck(value)){
+      try {
+        const { items } = this.props.spec;
+        const o = value && JSON.parse(value);
+        if (o && !_.isArray(o)) {
+          return 'value is not an array';
+        }
+        const invalidItem = o.find(v => typeChecks(items && items.type, v));
+        return invalidItem && typeChecks(items && items.type, invalidItem);
+      } catch(e) {
+        return e.message;
       }
-      const invalidItem = o.find(value => typeChecks(items && items.type, value));
+    }
+    else{
+      const { required, items } = spec;
+
+      const list = split(value);
+
+      if (!list.length && required) {
+        return 'parameter is required';
+      }
+
+      const invalidItem = list.find(v => typeChecks(items && items.type, v));
+
       return invalidItem && typeChecks(items && items.type, invalidItem);
-    } catch(e) {
-      return e.message;
     }
   }
 }
