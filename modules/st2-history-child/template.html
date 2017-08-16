@@ -13,6 +13,12 @@
         </i>
       </div>
 
+      <div class="st2-flex-card__column st2-flex-card__status"
+          ng-if="view.meta.value">
+        <span class="st2-label st2-label--short" status="record.status"
+          ng-if="view.meta.subview.status.value"></span>
+      </div>
+
       <div class="st2-flex-card__column st2-flex-card__timestamp">
         <div class="st2-flex-card__header-primary"
             ng-if="view.meta.subview.time.value">
@@ -51,12 +57,9 @@
         </span>
       </div>
 
-      <div class="st2-flex-card__column st2-flex-card__status"
-          ng-if="view.meta.value">
+      <div class="st2-flex-card__column st2-flex-card__status">
         <i class="icon-branch"
           ng-if="(record | isExpandable) && view.meta.subview.type.value"></i>
-        <span class="st2-label st2-label--short" status="record.status"
-          ng-if="view.meta.subview.status.value"></span>
       </div>
     </div>
 
