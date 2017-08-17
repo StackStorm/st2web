@@ -27,24 +27,24 @@ const typeChecks = (type, value) => {
   }
 };
 
-const typeConversions = (type, v) => {		
-  switch(type) {		
-    case 'number':		
-      return validator.toFloat(v);		
-    case 'integer':		
-      return validator.toInt(v, 10);		
-    case 'string':		
-    default:		
-      return v;		
-  }		
-};		
-		
-function split(value) {		
-  return value		
-    .split(',')		
-    .map(v => v.trim())		
-    .filter(v => v.length)		
-    ;		
+const typeConversions = (type, v) => {
+  switch(type) {
+    case 'number':
+      return validator.toFloat(v);
+    case 'integer':
+      return validator.toInt(v, 10);
+    case 'string':
+    default:
+      return v;
+  }
+};
+
+function split(value) {
+  return value
+    .split(',')
+    .map(v => v.trim())
+    .filter(v => v.length)
+    ;
 }
 
 export default class ArrayField extends BaseTextField {
@@ -58,10 +58,10 @@ export default class ArrayField extends BaseTextField {
       return JSON.parse(value);
     }
 
-    const { items } = this.props.spec;		
-    return split(value)		
-      .map(v => typeConversions(items && items.type, v))		
-      ;		
+    const { items } = this.props.spec;
+    return split(value)
+      .map(v => typeConversions(items && items.type, v))
+      ;
   }
 
   toStateValue(value) {
@@ -90,8 +90,7 @@ export default class ArrayField extends BaseTextField {
       } catch(e) {
         return e.message;
       }
-    }
-    else{
+    } else {
       const { required, items } = spec;
 
       const list = split(value);
