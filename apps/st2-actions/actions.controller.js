@@ -76,7 +76,7 @@ module.exports =
       pActionList && pActionList.then(function (list) {
         $scope.groups = list && _(list)
           .filter(function (action) {
-            var ref = $scope.$root.getRef(action);
+            var ref = action && action.ref;
             return ref.toLowerCase().indexOf($scope.filter.toLowerCase()) > -1;
           })
           .groupBy('pack')
@@ -145,7 +145,7 @@ module.exports =
         $scope.inProgress = true;
 
         st2api.client.executions.list({
-          'action': $scope.$root.getRef(action),
+          'action': action && action.ref,
           'limit': 5,
           'exclude_attributes': 'trigger_instance',
           'parent': 'null'
@@ -240,7 +240,7 @@ module.exports =
     // Running an action
     $scope.runAction = function (action, payload, trace) {
       st2api.client.executions.create({
-        action: $scope.$root.getRef(action),
+        action: action && action.ref,
         parameters: payload,
         context: {
           trace_context: {

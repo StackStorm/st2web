@@ -101,7 +101,7 @@ module.exports =
       pRulesList && pRulesList.then(function (list) {
         $scope.groups = list && _(list)
           .filter(function (rule) {
-            var ref = $scope.$root.getRef(rule);
+            var ref = rule && rule.ref;
             return ref.toLowerCase().indexOf($scope.filter.toLowerCase()) > -1;
           })
           .groupBy('pack')

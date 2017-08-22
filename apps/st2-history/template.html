@@ -89,10 +89,10 @@
               </div>
 
               <div class="st2-flex-card__column"
-                  title="{{ $root.getRef(record.action) }}"
+                  title="{{ record.action && record.action.ref }}"
                   ng-if="view.action.value">
                 <span class="st2-history__column-action-name">
-                  {{ $root.getRef(record.action) }}
+                  {{ record.action && record.action.ref }}
                 </span>
                 <span class="st2-history__column-action-params st2-proportional"
                     ng-if="view.action.subview.params.value">
@@ -199,8 +199,8 @@
 
     <div class="st2-details__header">
       <div class="st2-details__header-name" data-test="header_name">
-        <a ui-sref="actions.general({ref:$root.getRef(record.action)})">
-          {{ $root.getRef(record.action) }}
+        <a ui-sref="actions.general({ref:record.action.ref})">
+          {{ record.action && record.action.ref }}
         </a>
       </div>
       <div class="st2-details__header-description" data-test="header_description">
