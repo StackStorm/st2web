@@ -35,7 +35,7 @@ export class BaseTextField extends React.Component {
   }
 
   validate(v, spec={}) {
-    if (v === '' && spec.required) {
+    if (v === '' || v === undefined && spec.required) {
       return 'parameter is required';
     }
 
@@ -45,17 +45,19 @@ export class BaseTextField extends React.Component {
   }
 
   getValue() {
-    const invalid = this.validate(this.state.value, this.props.spec);
+    const { value } = this.state;
+    const invalid = this.validate(value, this.props.spec);
 
     if (invalid) {
+      this.setState({ value, invalid });
       throw new Error(invalid);
     }
 
-    if (isJinja(this.state.value)) {
-      return this.state.value;
+    if (isJinja(value)) {
+      return value;
     }
 
-    return this.fromStateValue(this.state.value);
+    return this.fromStateValue(value);
   }
 
   handleChange(value) {
