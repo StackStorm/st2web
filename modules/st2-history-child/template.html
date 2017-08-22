@@ -37,10 +37,10 @@
       </div>
 
       <div class="st2-flex-card__column"
-          title="{{ $root.getRef(record.action) }}"
+          title="{{ record.action && record.action.ref }}"
           ng-if="view.action.value">
         <span class="st2-history__column-action-name">
-          {{ $root.getRef(record.action) }}
+          {{ record.action && record.action.ref }}
         </span>
         <span class="st2-history__column-action-params st2-proportional"
             ng-if="view.action.subview.params.value">

@@ -77,11 +77,6 @@ angular.module('main')
       $rootScope.active_filters = _.pick(params, filters);
     });
 
-    // References
-    $rootScope.getRef = function (entity) {
-      return entity && [entity.pack, entity.name].join('.');
-    };
-
     $rootScope.toggleFlexTables = st2FlexTableService.toggleType.bind(st2FlexTableService);
     $rootScope.areFlexTablesCollapsed = st2FlexTableService.isTypeCollapsed.bind(st2FlexTableService);
   });
