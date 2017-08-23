@@ -53,7 +53,8 @@ export default class PacksPanel extends React.Component {
   }
 
   state = {
-    configPreview: false
+    configPreview: false,
+    configField: {}
   }
 
   handleToggleAll() {
@@ -135,6 +136,14 @@ export default class PacksPanel extends React.Component {
     });
   }
 
+  handleConfigChange(key, value) {
+    const { configField } = this.state;
+
+    configField[key] = value;
+
+    this.setState({ configField });
+  }
+
   handleConfigSave(e, ref) {
     e.preventDefault();
 
@@ -143,7 +152,7 @@ export default class PacksPanel extends React.Component {
     return store.dispatch({
       type: 'CONFIGURE_PACK',
       ref,
-      promise: api.client.configs.edit(ref, this.configField.getValue(), {
+      promise: api.client.configs.edit(ref, this.state.configField, {
         show_secrets: true
       })
         .then(res => {
@@ -279,6 +288,12 @@ export default class PacksPanel extends React.Component {
     store.dispatch({ type: 'SELECT_PACK', ref: state.params.ref });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.selected !== nextProps.selected) {
+      this.setState({ configField: {} });
+    }
+  }
+
   componentWillUnmount() {
     this._unsubscribeStateOnChange();
   }
@@ -386,7 +401,8 @@ export default class PacksPanel extends React.Component {
             config_schema && <DetailsPanel data-test="pack_config" >
               <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
                 <AutoForm
-                  ref={(component) => { this.configField = component; }}
+                  ref={(component) => { this.configForm = component; }}
+                  onChange={(key, value) => this.handleConfigChange(key, value)}
                   spec={config_schema}
                   ngModel={config} />
                 <DetailsButtonsPanel>
@@ -395,7 +411,7 @@ export default class PacksPanel extends React.Component {
                 </DetailsButtonsPanel>
                 {
                   this.state.configPreview &&
-                    <St2Highlight code={this.configField.getValue()}/>
+                    <St2Highlight code={this.state.configField}/>
                 }
               </form>
             </DetailsPanel>

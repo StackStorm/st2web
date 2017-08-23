@@ -45,7 +45,13 @@ export default class AutoForm extends React.Component {
   }
 
   getValue() {
-    return _.mapValues(this.refs, v => v.getValue());
+    return _.mapValues(this.refs, v => {
+      try {
+        return v.getValue();
+      } catch (e) {
+        return undefined;
+      }
+    });
   }
 
   handleChange(name, value) {
