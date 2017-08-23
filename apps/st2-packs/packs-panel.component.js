@@ -25,6 +25,16 @@ import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 
+function sanitize(config, { properties }) {
+  return _.mapValues(config, (v, k) => {
+    if (v && properties[k] && properties[k].secret) {
+      return '*'.repeat(v.length);
+    }
+
+    return v;
+  });
+}
+
 function waitExecution(execution_id, record) {
   if (record.id !== execution_id) {
     return;
@@ -438,7 +448,7 @@ export default class PacksPanel extends React.Component {
                 </DetailsButtonsPanel>
                 {
                   this.state.configPreview &&
-                    <St2Highlight code={this.state.configField}/>
+                    <St2Highlight code={sanitize(this.state.configField, config_schema)}/>
                 }
               </form>
             </DetailsPanel>
