@@ -49,7 +49,6 @@ export class BaseTextField extends React.Component {
     const invalid = this.validate(value, this.props.spec);
 
     if (invalid) {
-      this.setState({ value, invalid });
       throw new Error(invalid);
     }
 
