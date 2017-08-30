@@ -84,6 +84,12 @@ export default class PacksPanel extends React.Component {
             .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
         })
         .then(() => {
+          this.fetchPacks();
+          this.fetchIndex();
+          this.fetchConfigSchemas();
+          this.fetchConfigs();
+        })
+        .then(() => {
           notification.success(
             `Pack "${ref}" has been successfully installed`
           );
@@ -185,10 +191,10 @@ export default class PacksPanel extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const { api, state } = this.props.context;
+  fetchPacks() {
+    const { api } = this.props.context;
 
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_INSTALLED_PACKS',
       promise: api.client.packs.list()
         .then(packs => {
@@ -212,17 +218,13 @@ export default class PacksPanel extends React.Component {
 
           return packs;
         })
-    })
-      .then(() => {
-        const { selected } = store.getState();
+    });
+  }
 
-        if (!selected) {
-          store.dispatch({ type: 'SELECT_PACK' });
-        }
-      })
-      ;
+  fetchIndex() {
+    const { api } = this.props.context;
 
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_PACK_INDEX',
       // A rather ugly hack that helps us not to update st2client.js just yet
       promise: api.client.packs.get('index')
@@ -230,28 +232,12 @@ export default class PacksPanel extends React.Component {
         // In some cases pack ref might be missing and we better sort it out earlier
         .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
     });
+  }
 
-    store.dispatch({
-      type: 'FETCH_PACK_CONFIG_SCHEMAS',
-      promise: api.client.configSchemas.list()
-        .then(config_schemas => {
-          const packs = {};
+  fetchConfigs() {
+    const { api } = this.props.context;
 
-          _.forEach(config_schemas, config_schema => {
-            const ref = config_schema.pack;
-            packs[ref] = {
-              ref,
-              config_schema: {
-                properties: config_schema.attributes
-              }
-            };
-          });
-
-          return packs;
-        })
-    });
-
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_PACK_CONFIGS',
       promise: api.client.configs.list({
         show_secrets: true
@@ -270,6 +256,47 @@ export default class PacksPanel extends React.Component {
         return packs;
       })
     });
+  }
+
+  fetchConfigSchemas() {
+    const { api } = this.props.context;
+
+    return store.dispatch({
+      type: 'FETCH_PACK_CONFIG_SCHEMAS',
+      promise: api.client.configSchemas.list()
+        .then(config_schemas => {
+          const packs = {};
+
+          _.forEach(config_schemas, config_schema => {
+            const ref = config_schema.pack;
+            packs[ref] = {
+              ref,
+              config_schema: {
+                properties: config_schema.attributes
+              }
+            };
+          });
+
+          return packs;
+        })
+    });
+  }
+
+  componentDidMount() {
+    const { state } = this.props.context;
+
+    this.fetchPacks()
+      .then(() => {
+        const { selected } = store.getState();
+
+        if (!selected) {
+          store.dispatch({ type: 'SELECT_PACK' });
+        }
+      });
+
+    this.fetchIndex();
+    this.fetchConfigSchemas();
+    this.fetchConfigs();
 
     this._unsubscribeStateOnChange = state.onChange((transition) => {
       const { ref } = transition.params();
