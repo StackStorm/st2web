@@ -47,7 +47,7 @@ class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { title } = this.props;
 
-    store.dispatch({ type: 'REGISTER_FLEX_TABLE', title });
+    store.dispatch({ type: 'REGISTER_FLEX_TABLE', title, collapsed: true });
   }
 }
 

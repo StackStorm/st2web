@@ -13,7 +13,7 @@ const flexTableReducer = (state = {}, action) => {
   switch (action.type) {
 
     case 'REGISTER_FLEX_TABLE': {
-      const { title } = action;
+      const { title, collapsed: initial = collapsed } = action;
 
       return {
         ...state,
@@ -21,7 +21,7 @@ const flexTableReducer = (state = {}, action) => {
           ...tables,
           [title]: {
             ...tables[title],
-            collapsed
+            collapsed: initial
           }
         }
       };
