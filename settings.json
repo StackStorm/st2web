@@ -7,10 +7,7 @@
     "dest": "css"
   },
   "modules": {
-    "main.js": "main.js",
-    "dependencies.js": "dependencies.js",
-    "apps.js": "apps/index.js",
-    "modules.js": "modules/index.js"
+    "main.js": "main.js"
   },
   "html": "index.html",
   "production": {
@@ -55,7 +52,6 @@
   "globalShim": {
     "lodash": "_",
     "st2client": "st2client",
-    "angular": "angular",
     "react": "React"
   }
 }

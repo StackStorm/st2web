@@ -47,25 +47,6 @@ function bundle(file, name) {
 
   b
     .transform(babelify)
-    .transform(require('ngify'), {
-      moduleTemplate: ';',
-      htmlTemplate: 'module.exports = __dirname + \'/\' + \'{htmlName}\'; angular.module(require(\'.\').name).run([\'$templateCache\', function($templateCache){$templateCache.put(module.exports,\'{html}\')}]); var ignore = { module: {} }; ignore.',
-      jsTemplates: {
-        provider:   'module.exports.$inject = [ {inject} ];',
-        factory:    'module.exports.$inject = [ {inject} ];',
-        service:    'module.exports.$inject = [ {inject} ];',
-        animation:  'module.exports.$inject = [ {inject} ];',
-        filter:     'module.exports.$inject = [ {inject} ];',
-        controller: 'module.exports.$inject = [ {inject} ];',
-        directive:  'module.exports.$inject = [ {inject} ];',
-
-        value:    '',
-        constant: '',
-
-        config: 'module.exports.$inject = [ {inject} ];',
-        run:    'module.exports.$inject = [ {inject} ];'
-      }
-    })
     .transform(globalShim.configure(settings.globalShim), {global: true})
     .on('log', plugins.util.log)
     ;

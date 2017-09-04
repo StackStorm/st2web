@@ -12,6 +12,6 @@ Package: st2web
 Architecture: any
 Pre-Depends: dpkg (>= 1.16.16)
 Description: St2Web - StackStorm Web UI.
- Angular-based HTML5 real-time Web UI interface for StackStorm open-source automation platform.
+ React-based HTML5 real-time Web UI interface for StackStorm open-source automation platform.
  Allows to control the whole process of execution, from running an action to seeing the results of the execution.
  It also helps to explore workflow executions up to the results of individual tasks.

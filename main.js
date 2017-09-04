@@ -11,14 +11,13 @@ import {
 import NotificationSystem from 'react-notification-system';
 
 import api from './modules/st2-api/api';
+import Login from './modules/st2-login';
 
 import History from './apps/st2-history';
 import Actions from './apps/st2-actions';
 import Rules from './apps/st2-rules';
 import Packs from './apps/st2-packs';
 import Docs from './apps/st2-docs';
-
-import Login from './apps/st2-login';
 
 const routes = [
   History,

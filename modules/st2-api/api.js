@@ -2,23 +2,9 @@ import _ from 'lodash';
 import st2client from 'st2client';
 import URI from 'urijs';
 
-const st2Config = {
-
-  hosts: [{
-    name: 'Dev Env',
-    url: 'https://192.168.1.31/api',
-    auth: 'https://192.168.1.31/auth'
-  // }, {
-  //   name: 'Express',
-  //   url: '//172.168.90.50:9101',
-  //   auth: true
-  }]
-
-};
-
 class API {
-  constructor() {
-    this.servers = st2Config.hosts;
+  constructor(servers) {
+    this.servers = servers;
     this.token = {};
 
     try {
@@ -144,6 +130,6 @@ class API {
   }
 }
 
-const st2api = new API();
+const st2api = new API(window.st2constants.st2Config.hosts);
 
 export default st2api;
