@@ -1,15 +1,11 @@
-'use strict';
+import Actions from './actions.component';
 
-var mod = module.exports = angular.module('main.apps.st2Actions', [
+const route = {
+  title: 'Actions',
+  url: '/actions',
+  icon: 'icon-play',
+  component: Actions,
+  position: 2
+};
 
-]);
-
-var controller = require('./actions.controller.js');
-var config = require('./actions.config.js');
-var directive = require('./actions.directive.js');
-
-mod
-  .config(config)
-  .controller(controller.name, controller)
-  .directive(directive.name, directive)
-  ;
+export default route;

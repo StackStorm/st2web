@@ -12,44 +12,21 @@ import NotificationSystem from 'react-notification-system';
 
 import api from './modules/st2-api/api';
 
-import History from './apps/st2-history/history.component';
-import Actions from './apps/st2-actions/actions.component';
-import Rules from './apps/st2-rules/rules.component';
-import Packs from './apps/st2-packs/packs.component';
+import History from './apps/st2-history';
+import Actions from './apps/st2-actions';
+import Rules from './apps/st2-rules';
+import Packs from './apps/st2-packs';
+import Docs from './apps/st2-docs';
 
-import Login from './apps/st2-login/login.component';
+import Login from './apps/st2-login';
 
-const routes = [{
-  title: 'Actions',
-  url: '/actions',
-  icon: 'icon-play',
-  component: Actions,
-  position: 2
-}, {
-  title: 'History',
-  url: '/history',
-  icon: 'icon-history',
-  component: History,
-  position: 1
-}, {
-  title: 'Rules',
-  url: '/rules',
-  icon: 'icon-book-closed',
-  component: Rules,
-  position: 3
-}, {
-  title: 'Packs',
-  url: '/packs',
-  icon: 'icon-platforms',
-  component: Packs,
-  position: 4
-}, {
-  title: 'Docs',
-  icon: 'icon-book-open',
-  position: 5,
-  href: 'https://docs.stackstorm.com/',
-  target: 'st2-docs'
-}];
+const routes = [
+  History,
+  Actions,
+  Rules,
+  Packs,
+  Docs
+];
 
 class Container extends React.Component {
   render() {
