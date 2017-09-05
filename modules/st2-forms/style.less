@@ -107,6 +107,21 @@
         }
       }
     }
+
+    &--skeleton {
+      font-size: 12px;
+
+      padding: 3px 6px;
+
+      color: @gray-white;
+      border: 1px solid currentColor;
+      background: transparent;
+      box-shadow: none;
+
+      &:active {
+        background: fade(@gray-white, 10%);
+      }
+    }
   }
 
   &__button-prev {

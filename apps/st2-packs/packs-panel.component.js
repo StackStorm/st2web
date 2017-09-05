@@ -70,7 +70,7 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
-    context: React.PropTypes.object,
+    notification: React.PropTypes.object,
     collapsed: React.PropTypes.bool,
     packs: React.PropTypes.object,
     selected: React.PropTypes.string,
@@ -93,7 +93,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleInstall(ref) {
-    const { notification } = this.props.context;
+    const { notification, history } = this.props;
 
     return store.dispatch({
       type: 'INSTALL_PACK',
@@ -103,8 +103,13 @@ export default class PacksPanel extends React.Component {
       })
         .then(body => {
           notification.success(
-            `Pack "${ref}" has been scheduled for installation. ` +
-            `See execution "${body.execution_id}" for progress.`
+            `Pack "${ref}" has been scheduled for installation.`,
+            {
+              buttons: [{
+                text: 'Show execution',
+                onClick: () => history.push(`/history/${body.execution_id}`)
+              }]
+            }
           );
 
           return api.client.stream
@@ -128,7 +133,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleRemove(ref) {
-    const { notification } = this.props.context;
+    const { notification, history } = this.props;
 
     return store.dispatch({
       type: 'UNINSTALL_PACK',
@@ -138,8 +143,13 @@ export default class PacksPanel extends React.Component {
       })
         .then(body => {
           notification.success(
-            `Pack "${ref}" has been scheduled for removal. ` +
-            `See execution "${body.execution_id}" for progress.`
+            `Pack "${ref}" has been scheduled for removal.`,
+            {
+              buttons: [{
+                text: 'Show execution',
+                onClick: () => history.push(`/history/${body.execution_id}`)
+              }]
+            }
           );
 
           return api.client.stream
@@ -165,7 +175,7 @@ export default class PacksPanel extends React.Component {
   handleConfigSave(e, ref) {
     e.preventDefault();
 
-    const { notification } = this.props.context;
+    const { notification } = this.props;
 
     return store.dispatch({
       type: 'CONFIGURE_PACK',

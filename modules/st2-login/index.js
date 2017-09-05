@@ -76,6 +76,7 @@ export default class Login extends React.Component {
   connect(e) {
     e.preventDefault();
 
+    // TODO!
     const server = api.servers[this.serverField.value];
     const login = this.loginField.value;
     const password = this.passwordField.value;
@@ -133,7 +134,7 @@ export default class Login extends React.Component {
             <input className="st2-login__checkbox"
               ref={component => this.rememberField = component}
               type="checkbox"
-              checked />
+              defaultChecked />
             <span className="st2-login__checkbox-label">
               remember
             </span>
