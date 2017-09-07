@@ -29,7 +29,7 @@ describe('User visits packs page', function () {
         });
 
         index_resource = browser.resources.filter(function (e) {
-          return new RegExp('^https://example.com/api/v1/packs$').test(e.url);
+          return new RegExp('^https://example.com/api/v1/packs/index$').test(e.url);
         });
 
         config_resource = browser.resources.filter(function (e) {
@@ -75,8 +75,16 @@ describe('User visits packs page', function () {
 
   it('should have all the packs present', function () {
     var packs = JSON.parse(packs_resource[0].response.body);
+    var index = JSON.parse(index_resource[0].response.body);
 
-    browser.assert.elements(util.name('pack'), packs.length, 'Wrong number of actions');
+    var installed_packs = packs.map(function (pack) { return pack.ref; });
+    var index_packs = Object.keys(index.index);
+    var all_packs = [].concat(installed_packs).concat(index_packs)
+      .filter(function (value, index, list) {
+        return list.indexOf(value) === index;
+      });
+
+    browser.assert.elements(util.name('pack'), all_packs.length, 'Wrong number of actions');
   });
 
   it('should highlight the first row', function () {
