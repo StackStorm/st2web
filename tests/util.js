@@ -1,6 +1,7 @@
 /* jshint node:true */
 'use strict';
 var URI = require('urijs');
+var moment = require('moment');
 var zombie = require('zombie');
 
 var ST2client = require('st2client');
@@ -71,7 +72,10 @@ module.exports = function (browser) {
       return str.charAt(0).toUpperCase() + str.slice(1);
     },
     formatUTC: function (date) {
-      return new Date(date).toUTCString().replace(' GMT', '');
+      return moment(date).utc().format('ddd, DD MMM YYYY HH:mm:ss');
+    },
+    formatLocal: function (date) {
+      return moment(date).format('ddd, DD MMM YYYY HH:mm:ss');
     },
     name: function (name) {
       return new TestMarker(name);
