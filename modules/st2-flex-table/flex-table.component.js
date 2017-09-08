@@ -1,6 +1,7 @@
 import React from 'react';
 
 import FlexTableTitle from './flex-table-title.component';
+import { actions } from './flex-table.reducer';
 
 export default class FlexTable extends React.Component {
   static propTypes = {
@@ -10,6 +11,8 @@ export default class FlexTable extends React.Component {
     icon: React.PropTypes.string,
     onToggle: React.PropTypes.func
   }
+
+  static actions = actions
 
   render() {
     const props = {
@@ -24,7 +27,7 @@ export default class FlexTable extends React.Component {
 
     return <div {...props} >
       {
-        title &&
+        !!title &&
           <FlexTableTitle icon={icon} onToggle={(e) => onToggle(e)}>
             { title }
           </FlexTableTitle>

@@ -9,6 +9,7 @@ import {
 import store from './store';
 import api from '../../modules/st2-api/api';
 
+import { actions as flexActions } from '../../modules/st2-flex-table/flex-table.reducer.js';
 import {
   Panel,
   PanelView,
@@ -40,14 +41,14 @@ import StringField from '../../modules/st2-auto-form/fields/string';
   const { title } = props;
 
   return {
-    onToggle: () => store.dispatch({ type: 'TOGGLE_FLEX_TABLE', title })
+    onToggle: () => store.dispatch(flexActions.toggle(title))
   };
 })
 class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { title } = this.props;
 
-    store.dispatch({ type: 'REGISTER_FLEX_TABLE', title, collapsed: true });
+    store.dispatch(flexActions.register(title, true));
   }
 }
 
@@ -71,7 +72,7 @@ export default class ActionsPanel extends React.Component {
   }
 
   handleToggleAll() {
-    return store.dispatch({ type: 'TOGGLE_ALL' });
+    return store.dispatch(flexActions.toggleAll());
   }
 
   handleSelect(ref) {

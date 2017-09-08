@@ -1,3 +1,11 @@
+import _ from 'lodash';
+
+export const actions = {
+  register: (title, collapsed) => ({ type: 'REGISTER_FLEX_TABLE', title, collapsed }),
+  toggle: (title) => ({ type: 'TOGGLE_FLEX_TABLE', title }),
+  toggleAll: () => ({ type: 'TOGGLE_ALL' })
+};
+
 const flexTableReducer = (state = {}, action) => {
   let {
     tables = { ...state.tables },
@@ -50,6 +58,11 @@ const flexTableReducer = (state = {}, action) => {
     }
 
     case 'TOGGLE_ALL': {
+      const uniqueStates = _(tables).map('collapsed').unique().value();
+      if (uniqueStates.length === 1) {
+        collapsed = uniqueStates[0];
+      }
+
       collapsed = !collapsed;
       tables = _.mapValues(tables, v => ({ ...v, collapsed }));
 

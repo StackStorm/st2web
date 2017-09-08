@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import store from './store';
 import api from '../../modules/st2-api/api';
 
+import { actions } from '../../modules/st2-flex-table/flex-table.reducer.js';
 import {
   Panel,
   PanelView,
@@ -28,14 +29,14 @@ import HistoryFlexCard from './history-flex-card.component';
   const { title } = props;
 
   return {
-    onToggle: () => store.dispatch({ type: 'TOGGLE_FLEX_TABLE', title })
+    onToggle: () => store.dispatch(actions.toggle(title))
   };
 })
 class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { title } = this.props;
 
-    store.dispatch({ type: 'REGISTER_FLEX_TABLE', title });
+    store.dispatch(actions.register(title));
   }
 }
 
@@ -53,7 +54,7 @@ export default class HistoryPanel extends React.Component {
   }
 
   handleToggleAll() {
-    return store.dispatch({ type: 'TOGGLE_ALL' });
+    return store.dispatch(actions.toggleAll());
   }
 
   handleSelect(ref) {
