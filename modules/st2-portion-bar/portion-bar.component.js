@@ -1,8 +1,9 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 export default class PortionBar extends React.Component {
   static propTypes = {
-    content: React.PropTypes.objectOf(React.PropTypes.node)
+    content: PropTypes.objectOf(PropTypes.node)
   }
 
   render() {

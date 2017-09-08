@@ -1,10 +1,11 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 export default class ActionFlexCard extends React.Component {
   static propTypes = {
-    action: React.PropTypes.object,
-    selected: React.PropTypes.bool,
-    onClick: React.PropTypes.func
+    action: PropTypes.object,
+    selected: PropTypes.bool,
+    onClick: PropTypes.func
   }
 
   render() {

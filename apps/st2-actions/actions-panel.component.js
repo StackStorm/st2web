@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
@@ -58,13 +59,13 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class ActionsPanel extends React.Component {
   static propTypes = {
-    notification: React.PropTypes.object,
-    collapsed: React.PropTypes.bool,
-    actions: React.PropTypes.object,
-    selected: React.PropTypes.string,
-    filter: React.PropTypes.string,
-    history: React.PropTypes.object,
-    match: React.PropTypes.object
+    notification: PropTypes.object,
+    collapsed: PropTypes.bool,
+    actions: PropTypes.object,
+    selected: PropTypes.string,
+    filter: PropTypes.string,
+    history: PropTypes.object,
+    match: PropTypes.object
   }
 
   state = {

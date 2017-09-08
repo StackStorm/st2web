@@ -1,11 +1,12 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import api from '../../modules/st2-api/api';
 
 class LoginForm extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -25,7 +26,7 @@ class LoginLogo extends React.Component {
 
 class LoginError extends React.Component {
   static propTypes = {
-    message: React.PropTypes.string,
+    message: PropTypes.string,
   }
 
   render() {
@@ -37,8 +38,8 @@ class LoginError extends React.Component {
 
 class LoginRow extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node,
-    className: React.PropTypes.string
+    children: PropTypes.node,
+    className: PropTypes.string
   }
 
   render() {
@@ -52,7 +53,7 @@ class LoginRow extends React.Component {
 
 class LoginBottomRow extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -66,7 +67,7 @@ class LoginBottomRow extends React.Component {
 
 export default class Login extends React.Component {
   static propTypes = {
-    onConnect: React.PropTypes.func
+    onConnect: PropTypes.func
   }
 
   state = {

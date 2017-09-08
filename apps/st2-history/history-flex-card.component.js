@@ -1,10 +1,11 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 export default class HistoryFlexCard extends React.Component {
   static propTypes = {
-    execution: React.PropTypes.object,
-    selected: React.PropTypes.bool,
-    onClick: React.PropTypes.func
+    execution: PropTypes.object,
+    selected: PropTypes.bool,
+    onClick: PropTypes.func
   }
 
   render() {

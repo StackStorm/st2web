@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import store from './store';
@@ -46,11 +47,11 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
-    collapsed: React.PropTypes.bool,
-    executions: React.PropTypes.object,
-    selected: React.PropTypes.string,
-    history: React.PropTypes.object,
-    match: React.PropTypes.object
+    collapsed: PropTypes.bool,
+    executions: PropTypes.object,
+    selected: PropTypes.string,
+    history: PropTypes.object,
+    match: PropTypes.object
   }
 
   handleToggleAll() {

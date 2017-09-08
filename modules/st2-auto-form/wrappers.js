@@ -1,10 +1,11 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 
 class Label extends React.Component {
   static propTypes = {
-    className: React.PropTypes.string,
-    children: React.PropTypes.any.isRequired
+    className: PropTypes.string,
+    children: PropTypes.any.isRequired
   }
 
   render() {
@@ -20,8 +21,8 @@ class Label extends React.Component {
 
 class Title extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
-    spec: React.PropTypes.object
+    name: PropTypes.string,
+    spec: PropTypes.object
   }
 
   render() {
@@ -39,7 +40,7 @@ class Title extends React.Component {
 
 class ErrorMessage extends React.Component {
   static propTypes = {
-    children: React.PropTypes.string
+    children: PropTypes.string
   }
 
   render() {
@@ -55,7 +56,7 @@ class ErrorMessage extends React.Component {
 
 class Icon extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string
+    name: PropTypes.string
   }
 
   render() {
@@ -71,9 +72,9 @@ class Icon extends React.Component {
 
 class Button extends React.Component {
   static propTypes = {
-    icon: React.PropTypes.string,
-    title: React.PropTypes.string,
-    onClick: React.PropTypes.func
+    icon: PropTypes.string,
+    title: PropTypes.string,
+    onClick: PropTypes.func
   }
 
   handleClick(e) {
@@ -94,7 +95,7 @@ class Button extends React.Component {
 
 class Description extends React.Component {
   static propTypes = {
-    spec: React.PropTypes.object
+    spec: PropTypes.object
   }
 
   render() {
@@ -106,14 +107,14 @@ class Description extends React.Component {
 
 export class TextFieldWrapper extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    value: React.PropTypes.any,
-    invalid: React.PropTypes.string,
-    disabled: React.PropTypes.bool,
-    children: React.PropTypes.element.isRequired,
-    icon: React.PropTypes.string,
-    labelClass: React.PropTypes.string
+    name: PropTypes.string,
+    spec: PropTypes.object,
+    value: PropTypes.any,
+    invalid: PropTypes.string,
+    disabled: PropTypes.bool,
+    children: PropTypes.element.isRequired,
+    icon: PropTypes.string,
+    labelClass: PropTypes.string
   }
 
   render() {
@@ -133,12 +134,12 @@ export class TextFieldWrapper extends React.Component {
 
 export class BooleanFieldWrapper extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    value: React.PropTypes.any,
-    disabled: React.PropTypes.bool,
-    children: React.PropTypes.element.isRequired,
-    onReset: React.PropTypes.func
+    name: PropTypes.string,
+    spec: PropTypes.object,
+    value: PropTypes.any,
+    disabled: PropTypes.bool,
+    children: PropTypes.element.isRequired,
+    onReset: PropTypes.func
   }
 
   handleReset() {

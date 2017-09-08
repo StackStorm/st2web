@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import Prism from 'prismjs';
 
 import 'prismjs/components/prism-bash';
@@ -29,8 +30,8 @@ function getType(string) {
 
 export default class st2Highlight extends React.Component {
   static propTypes = {
-    code: React.PropTypes.any,
-    language: React.PropTypes.string
+    code: PropTypes.any,
+    language: PropTypes.string
   };
 
   componentDidMount() {

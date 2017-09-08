@@ -1,9 +1,10 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 export class Panel extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node,
-    className: React.PropTypes.string
+    children: PropTypes.node,
+    className: PropTypes.string
   }
 
   render() {
@@ -17,8 +18,8 @@ export class Panel extends React.Component {
 
 export class PanelView extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node,
-    className: React.PropTypes.string
+    children: PropTypes.node,
+    className: PropTypes.string
   }
 
   render() {
@@ -32,8 +33,8 @@ export class PanelView extends React.Component {
 
 export class PanelDetails extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node,
-    className: React.PropTypes.string
+    children: PropTypes.node,
+    className: PropTypes.string
   }
 
   render() {
@@ -47,8 +48,8 @@ export class PanelDetails extends React.Component {
 
 export class Toolbar extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string,
-    children: React.PropTypes.node
+    title: PropTypes.string,
+    children: PropTypes.node
   }
 
   render() {
@@ -61,9 +62,9 @@ export class Toolbar extends React.Component {
 
 export class ToolbarSearch extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string,
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func
+    title: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func
   }
 
   render() {
@@ -84,7 +85,7 @@ export class ToolbarSearch extends React.Component {
 
 export class Content extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -98,8 +99,8 @@ export class Content extends React.Component {
 
 export class DetailsHeader extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string,
-    subtitle: React.PropTypes.string
+    title: PropTypes.string,
+    subtitle: PropTypes.string
   }
 
   render() {
@@ -118,7 +119,7 @@ export class DetailsHeader extends React.Component {
 
 export class DetailsBody extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -134,7 +135,7 @@ export class DetailsBody extends React.Component {
 
 export class DetailsPanel extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -148,7 +149,7 @@ export class DetailsPanel extends React.Component {
 
 export class DetailsButtonsPanel extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -162,7 +163,7 @@ export class DetailsButtonsPanel extends React.Component {
 
 export class DetailsToolbar extends React.Component {
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   }
 
   render() {
@@ -180,8 +181,8 @@ export class DetailsToolbarSeparator extends React.Component {
 
 export class ToggleButton extends React.Component {
   static propTypes = {
-    collapsed: React.PropTypes.bool,
-    onClick: React.PropTypes.func
+    collapsed: PropTypes.bool,
+    onClick: PropTypes.func
   }
 
   render() {

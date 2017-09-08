@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 import ArrayField from './fields/array';
 import NumberField from './fields/number';
@@ -12,11 +13,11 @@ import EnumField from './fields/enum';
 
 export default class AutoForm extends React.Component {
   static propTypes = {
-    key: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    ngModel: React.PropTypes.object,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func
+    key: PropTypes.string,
+    spec: PropTypes.object,
+    ngModel: PropTypes.object,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func
   }
 
   constructor() {

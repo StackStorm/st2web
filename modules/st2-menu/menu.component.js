@@ -1,11 +1,12 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import api from '../st2-api/api';
 
 class Icon extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string
+    name: PropTypes.string
   }
 
   render() {
@@ -15,8 +16,8 @@ class Icon extends React.Component {
 
 export default class Menu extends React.Component {
   static propTypes = {
-    location: React.PropTypes.object,
-    routes: React.PropTypes.array
+    location: PropTypes.object,
+    routes: PropTypes.array
   }
 
   handleDisconnect() {

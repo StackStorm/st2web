@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import store from './store';
@@ -71,13 +72,13 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
-    notification: React.PropTypes.object,
-    collapsed: React.PropTypes.bool,
-    packs: React.PropTypes.object,
-    selected: React.PropTypes.string,
-    filter: React.PropTypes.string,
-    history: React.PropTypes.object,
-    match: React.PropTypes.object
+    notification: PropTypes.object,
+    collapsed: PropTypes.bool,
+    packs: PropTypes.object,
+    selected: PropTypes.string,
+    filter: PropTypes.string,
+    history: PropTypes.object,
+    match: PropTypes.object
   }
 
   state = {

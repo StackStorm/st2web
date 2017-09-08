@@ -1,15 +1,16 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import StringField from '../../modules/st2-auto-form/fields/string';
 
 export default class RerunForm extends React.Component {
   static propTypes = {
-    action: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    payload: React.PropTypes.object,
-    onSubmit: React.PropTypes.func,
-    onCancel: React.PropTypes.func
+    action: PropTypes.string,
+    spec: PropTypes.object,
+    payload: PropTypes.object,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func
   }
 
   constructor(props) {

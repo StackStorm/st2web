@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 
 import { TextFieldWrapper } from '../wrappers';
@@ -10,12 +11,12 @@ function isJinja(v) {
 
 export class BaseTextField extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    value: React.PropTypes.any,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
-    'data-test': React.PropTypes.string
+    name: PropTypes.string,
+    spec: PropTypes.object,
+    value: PropTypes.any,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+    'data-test': PropTypes.string
   }
 
   constructor(props) {

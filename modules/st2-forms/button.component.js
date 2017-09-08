@@ -1,12 +1,13 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 export default class Button extends React.Component {
   static propTypes = {
-    className: React.PropTypes.string,
-    small: React.PropTypes.bool,
-    flat: React.PropTypes.bool,
-    onClick: React.PropTypes.func,
-    value: React.PropTypes.string
+    className: PropTypes.string,
+    small: PropTypes.bool,
+    flat: PropTypes.bool,
+    onClick: PropTypes.func,
+    value: PropTypes.string
   }
 
   render() {

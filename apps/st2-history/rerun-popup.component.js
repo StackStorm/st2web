@@ -1,14 +1,15 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 import RerunForm from './rerun-form.component';
 
 export default class RerunPopup extends React.Component {
   static propTypes = {
-    action: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    payload: React.PropTypes.object,
-    onSubmit: React.PropTypes.func,
-    onCancel: React.PropTypes.func
+    action: PropTypes.string,
+    spec: PropTypes.object,
+    payload: PropTypes.object,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func
   }
 
   handleCancel() {

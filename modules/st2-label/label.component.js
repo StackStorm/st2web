@@ -1,6 +1,5 @@
-'use strict';
-
-var React = require('react');
+import React from 'react';
+import { PropTypes } from 'prop-types';
 
 var states = {
   'complete': {
@@ -44,7 +43,7 @@ function capitalize(string) {
 
 class Label extends React.Component {
   static propTypes = {
-    status : React.PropTypes.string
+    status : PropTypes.string
   }
   render() {
     var props = {

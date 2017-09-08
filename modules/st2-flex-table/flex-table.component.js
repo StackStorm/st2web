@@ -1,15 +1,16 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 import FlexTableTitle from './flex-table-title.component';
 import { actions } from './flex-table.reducer';
 
 export default class FlexTable extends React.Component {
   static propTypes = {
-    title: React.PropTypes.string,
-    collapsed: React.PropTypes.bool,
-    children: React.PropTypes.node,
-    icon: React.PropTypes.string,
-    onToggle: React.PropTypes.func
+    title: PropTypes.string,
+    collapsed: PropTypes.bool,
+    children: PropTypes.node,
+    icon: PropTypes.string,
+    onToggle: PropTypes.func
   }
 
   static actions = actions
