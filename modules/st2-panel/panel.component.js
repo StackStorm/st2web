@@ -109,7 +109,7 @@ export class DetailsHeader extends React.Component {
       <div className="st2-details__header-name" data-test="header_name">
         <a href="#/actions/core.announcement/general">{ title }</a>
       </div>
-      <div className="st2-details__header-description ng-binding" data-test="header_description">
+      <div className="st2-details__header-description" data-test="header_description">
         { subtitle }
       </div>
     </div>;

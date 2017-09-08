@@ -23,8 +23,8 @@ export default class ActionFlexCard extends React.Component {
     return <div {...props}>
       <div className="st2-flex-card__header">
         <div className="st2-flex-card__column">
-          <div className="st2-flex-card__header-primary" title={action.ref} ng-if="view.action.value">{ action.ref }</div>
-          <div className="st2-flex-card__header-secondary" ng-if="view.description.value">{ action.description }</div>
+          <div className="st2-flex-card__header-primary" title={action.ref}>{ action.ref }</div>
+          <div className="st2-flex-card__header-secondary">{ action.description }</div>
         </div>
       </div>
     </div>;

@@ -1,5 +1,5 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import ShallowRenderer from 'react-test-renderer/shallow';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -9,7 +9,7 @@ chai.use(sinonChai);
 import FlexTable from '../flex-table.component.js';
 
 function render(component) {
-  const renderer = TestUtils.createRenderer();
+  const renderer = new ShallowRenderer();
   renderer.render(component);
   return renderer.getRenderOutput();
 }

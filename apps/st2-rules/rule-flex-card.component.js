@@ -23,8 +23,8 @@ export default class RuleFlexCard extends React.Component {
     return <div {...props}>
       <div className="st2-flex-card__header">
         <div className="st2-flex-card__column">
-          <div className="st2-flex-card__header-primary" title={rule.ref} ng-if="view.rule.value">{ rule.ref }</div>
-          <div className="st2-flex-card__header-secondary" ng-if="view.rule.value">{ rule.description }</div>
+          <div className="st2-flex-card__header-primary" title={rule.ref}>{ rule.ref }</div>
+          <div className="st2-flex-card__header-secondary">{ rule.description }</div>
         </div>
       </div>
     </div>;

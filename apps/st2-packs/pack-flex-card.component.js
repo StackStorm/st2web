@@ -33,10 +33,10 @@ export default class PackFlexCard extends React.Component {
     return <div {...props}>
       <div className="st2-flex-card__header">
         <div className="st2-flex-card__column">
-          <div className="st2-flex-card__header-primary" title={pack.name} ng-if="view.action.value">{ pack.name }</div>
-          <div className="st2-flex-card__header-secondary" ng-if="view.description.value">{ pack.description }</div>
+          <div className="st2-flex-card__header-primary" title={pack.name}>{ pack.name }</div>
+          <div className="st2-flex-card__header-secondary">{ pack.description }</div>
         </div>
-        <div title={installedVersion || version} ng-if="view.runner.value" {...versionProps}>
+        <div title={installedVersion || version} {...versionProps}>
           { installedVersion || version }
         </div>
       </div>

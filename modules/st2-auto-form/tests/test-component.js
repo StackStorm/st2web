@@ -1,5 +1,5 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import ShallowRenderer from 'react-test-renderer/shallow';
 import { expect } from 'chai';
 const sinon = require('sinon');
 
@@ -7,15 +7,19 @@ import Component from '../auto-form.component.js';
 
 import StringField from '../fields/string';
 
+function render(component) {
+  const renderer = new ShallowRenderer();
+  renderer.render(component);
+  return renderer.getRenderOutput();
+}
+
 describe('AutoForm Component', () => {
   it('produces an empty element when provided a spec with no properties', () => {
     const spec = {
       properties: {}
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Component spec={spec} />);
-    const output = renderer.getRenderOutput();
+    const output = render(<Component spec={spec} />);
 
     expect(output.props.children).to.be.an('array').of.length(0);
   });
@@ -27,9 +31,7 @@ describe('AutoForm Component', () => {
       }
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Component spec={spec} />);
-    const output = renderer.getRenderOutput();
+    const output = render(<Component spec={spec} />);
 
     expect(output.props.children).to.be.an('array').of.length(1)
       .with.nested.property('[0].type', StringField);
@@ -43,9 +45,7 @@ describe('AutoForm Component', () => {
     };
     const onChange = sinon.spy();
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Component spec={spec} onChange={onChange}/>);
-    const output = renderer.getRenderOutput();
+    const output = render(<Component spec={spec} onChange={onChange}/>);
 
     const [ field ] = output.props.children;
     field.props.onChange('test');
