@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import store from './store';
 
-import Menu from '../../modules/st2-menu/menu.component';
+import Menu from '@stackstorm/module-menu';
 import HistoryPanel from './history-panel.component';
 
 export default class History extends React.Component {

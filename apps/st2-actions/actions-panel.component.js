@@ -8,9 +8,9 @@ import {
 } from 'react-router-dom';
 
 import store from './store';
-import api from '../../modules/st2-api/api';
+import api from '@stackstorm/module-api';
 
-import { actions as flexActions } from '../../modules/st2-flex-table/flex-table.reducer.js';
+import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import {
   Panel,
   PanelView,

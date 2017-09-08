@@ -4,9 +4,9 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import store from './store';
-import api from '../../modules/st2-api/api';
+import api from '@stackstorm/module-api';
 
-import { actions } from '../../modules/st2-flex-table/flex-table.reducer.js';
+import { actions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import {
   Panel,
   PanelView,

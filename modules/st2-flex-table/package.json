@@ -1,0 +1,26 @@
+{
+  "name": "@stackstorm/module-flex-table",
+  "version": "1.0.0",
+  "description": "",
+  "main": "flex-table.component.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  },
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "dependencies": {
+    "lodash": "2.4.2",
+    "prop-types": "15.5.10",
+    "react": "15.6.1"
+  }
+}

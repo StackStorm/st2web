@@ -11,7 +11,7 @@ import {
 import Noty from 'noty';
 import cx from 'classnames';
 
-import api from './modules/st2-api/api';
+import api from './modules/st2-api';
 import Login from './modules/st2-login';
 
 import History from './apps/st2-history';

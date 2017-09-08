@@ -1,8 +1,9 @@
+import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import api from '../st2-api/api';
+import api from '@stackstorm/module-api';
 
 class Icon extends React.Component {
   static propTypes = {

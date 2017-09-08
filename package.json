@@ -64,6 +64,7 @@
     "gulp-uglify": "1.5.3",
     "gulp-util": "3.0.7",
     "gulp-webserver": "0.9.1",
+    "lerna": "2.1.2",
     "npm-shrinkwrap": "200.5.1",
     "react-test-renderer": "15.6.1",
     "request": "2.69.0",

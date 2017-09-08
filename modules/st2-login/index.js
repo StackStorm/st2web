@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import api from '../../modules/st2-api/api';
+import api from '@stackstorm/module-api';
 
 class LoginForm extends React.Component {
   static propTypes = {
