@@ -40,7 +40,9 @@
   "lint": [
     "*.js",
     "modules/**/*.js",
+    "!modules/**/node_modules/**",
     "apps/**/*.js",
+    "!apps/**/node_modules/**",
     "tasks/**/*.js"
   ],
   "tests": [

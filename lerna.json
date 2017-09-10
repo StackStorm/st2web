@@ -2,7 +2,8 @@
   "lerna": "2.1.2",
   "packages": [
     "apps/*",
-    "modules/*"
+    "modules/*",
+    "."
   ],
   "version": "independent",
   "command": {

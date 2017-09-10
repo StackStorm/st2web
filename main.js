@@ -11,14 +11,14 @@ import {
 import Noty from 'noty';
 import cx from 'classnames';
 
-import api from './modules/st2-api';
-import Login from './modules/st2-login';
+import api from '@stackstorm/module-api';
+import Login from '@stackstorm/module-login';
 
-import History from './apps/st2-history';
-import Actions from './apps/st2-actions';
-import Rules from './apps/st2-rules';
-import Packs from './apps/st2-packs';
-import Docs from './apps/st2-docs';
+import History from '@stackstorm/app-history';
+import Actions from '@stackstorm/app-actions';
+import Rules from '@stackstorm/app-rules';
+import Packs from '@stackstorm/app-packs';
+import Docs from '@stackstorm/app-docs';
 
 const routes = [
   History,
