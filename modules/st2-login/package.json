@@ -18,6 +18,20 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
+  "browserify": {
+    "transform": [
+      "babelify",
+      [
+        "browserify-global-shim",
+        {
+          "global": true,
+          "lodash": "_",
+          "st2client": "st2client",
+          "react": "React"
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "@stackstorm/module-api": "1.0.0",
     "classnames": "2.2.5",

@@ -17,5 +17,23 @@
   "bugs": {
     "url": "https://github.com/stackstorm/st2web/issues"
   },
-  "homepage": "https://github.com/stackstorm/st2web#readme"
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "browserify": {
+    "transform": [
+      "babelify",
+      [
+        "browserify-global-shim",
+        {
+          "global": true,
+          "lodash": "_",
+          "st2client": "st2client",
+          "react": "React"
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babelify": "7.2.0",
+    "browserify-global-shim": "1.0.3"
+  }
 }

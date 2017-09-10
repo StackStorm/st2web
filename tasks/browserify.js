@@ -10,10 +10,8 @@ var gulp = require('gulp')
   , es = require('event-stream')
   , browserify = require('browserify')
   , watchify = require('watchify')
-  , babelify = require('babelify')
   , source = require('vinyl-source-stream')
   , buffer = require('vinyl-buffer')
-  , globalShim = require('browserify-global-shim')
   ;
 
 function buildHeader() {
@@ -28,6 +26,7 @@ function bundle(file, name) {
   var customOpts = {
     fullPaths: true,
     entries: [file],
+    transform: pkg.browserify.transform,
     debug: true
   };
   var opts = _.assign({}, watchify.args, customOpts);
@@ -46,8 +45,6 @@ function bundle(file, name) {
     });
 
   b
-    .transform(babelify)
-    .transform(globalShim.configure(settings.globalShim), {global: true})
     .on('log', plugins.util.log)
     ;
 
