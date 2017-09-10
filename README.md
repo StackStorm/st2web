@@ -1,26 +1,26 @@
 StackStorm Web UI
 =================
 
-![st2web v0.9](https://cloud.githubusercontent.com/assets/1357357/7393040/010f78ac-eea5-11e4-82bf-8253674683e1.png)
+![st2web](https://cloud.githubusercontent.com/assets/1357357/7393040/010f78ac-eea5-11e4-82bf-8253674683e1.png)
 
 Quick start
 -----------
 
-First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v6.x.x to be our stable.
+First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v8.x.x to be our stable.
 
-    $ n 6
+    $ n 8
 
-    install : node-v6.11.1
-      mkdir : /usr/local/n/versions/node/6.11.1
-      fetch : https://nodejs.org/dist/v6.11.1/node-v6.11.1-darwin-x64.tar.gz
+    install : node-v8.4.0
+      mkdir : /usr/local/n/versions/node/8.4.0
+      fetch : https://nodejs.org/dist/v8.4.0/node-v8.4.0-darwin-x64.tar.gz
     ######################################################################## 100.0%
-    installed : v6.11.1
+    installed : v8.4.0
 
     $ node -v
-    v6.11.1
+    v8.4.0
 
     $ npm -v
-    3.10.10
+    5.3.0
 
 then you need to globally install `gulp`
 

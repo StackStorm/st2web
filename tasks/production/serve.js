@@ -7,7 +7,7 @@ var gulp = require('gulp')
 
 var server;
 
-gulp.task('serve-production', ['production'], function () {
+gulp.task('serve-production', gulp.series(['production'], function () {
   server = gulp.src('./build')
     .pipe(plugins.webserver({
       host: '0.0.0.0',
@@ -15,4 +15,4 @@ gulp.task('serve-production', ['production'], function () {
     }));
 
   return server;
-});
+}));

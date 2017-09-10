@@ -3,4 +3,4 @@
 var gulp = require('gulp')
   ;
 
-gulp.task('build', ['lint', 'styles', 'browserify']);
+gulp.task('build', gulp.series(['lint', 'styles', 'browserify']));

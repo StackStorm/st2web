@@ -3,4 +3,4 @@
 var gulp = require('gulp')
   ;
 
-gulp.task('default', ['lint', 'styles', 'watch', 'serve']);
+gulp.task('default', gulp.series(['lint', 'styles', 'watch', 'serve']));

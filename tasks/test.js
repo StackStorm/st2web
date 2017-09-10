@@ -3,4 +3,4 @@
 var gulp = require('gulp')
   ;
 
-gulp.task('test', ['unit', 'integration']);
+gulp.task('test', gulp.series(['unit', 'integration']));

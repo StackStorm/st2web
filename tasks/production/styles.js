@@ -5,7 +5,7 @@ var gulp = require('gulp')
   , plugins = require('gulp-load-plugins')(settings.plugins)
   ;
 
-gulp.task('production-styles', ['styles'], function () {
+gulp.task('production-styles', gulp.series(['styles'], function () {
   return gulp.src(settings.production.styles, { base: __dirname + '/../..' })
     .pipe(gulp.dest(settings.production.dest))
     .pipe(plugins.size({
@@ -15,4 +15,4 @@ gulp.task('production-styles', ['styles'], function () {
       showFiles: true,
       gzip: true
     }));
-});
+}));
