@@ -7,7 +7,7 @@ var gulp = require('gulp')
   , argv = require('yargs').argv
   ;
 
-gulp.task('unit', function () {
+gulp.task('unit', function (done) {
   return gulp.src(argv['test-files'] || settings.units, {read: false})
     .pipe(plugins.plumber())
     .pipe(plugins.mocha({
@@ -16,5 +16,11 @@ gulp.task('unit', function () {
         js: require('babel-core/register')
       }
     }))
+    .on('end', function () {
+      return done();
+    })
+    .on('error', function (err) {
+      return done(err);
+    });
     ;
 });

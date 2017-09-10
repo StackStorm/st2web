@@ -7,7 +7,7 @@ var gulp = require('gulp')
   , argv = require('yargs').argv
   ;
 
-gulp.task('integration', gulp.series(['build'], function integrating() {
+gulp.task('integration', gulp.series(['build'], function integrating(done) {
   var server = gulp.src('.')
     .pipe(plugins.webserver({
       host: '0.0.0.0',
@@ -30,5 +30,9 @@ gulp.task('integration', gulp.series(['build'], function integrating() {
     }))
     .on('end', function () {
       server.emit('kill');
+      return done();
+    })
+    .on('error', function (err) {
+      return done(err);
     });
 }));
