@@ -2,7 +2,12 @@
   "port": 3000,
   "dev": ".",
   "styles": {
-    "src": ["./less/style.less", "./apps/**/*.less", "./modules/**/*.less"],
+    "src": [
+      "./less/style.less",
+      "./apps/**/*.less",
+      "./modules/**/*.less",
+      "!**/node_modules/**"
+    ],
     "includes": "less/",
     "dest": "css"
   },
@@ -13,12 +18,10 @@
   "production": {
     "dest": "build/",
     "libs": [
-      "node_modules/angular/angular.min.js",
       "node_modules/lodash/dist/lodash.min.js",
       "node_modules/st2client/dist/st2client.js",
       "node_modules/react/dist/react.min.js",
-      "node_modules/react-dom/dist/react-dom.min.js",
-      "node_modules/ngreact/ngReact.min.js"
+      "node_modules/react-dom/dist/react-dom.min.js"
     ],
     "scripts": [
       "js/*.js"
@@ -34,21 +37,23 @@
       "css/*.css"
     ],
     "tests": [
-      "tests/**/test-*.js"
+      "tests/**/test-*.js",
+      "!**/node_modules/**"
     ]
   },
   "lint": [
     "*.js",
     "modules/**/*.js",
-    "!modules/**/node_modules/**",
     "apps/**/*.js",
-    "!apps/**/node_modules/**",
-    "tasks/**/*.js"
+    "tasks/**/*.js",
+    "!**/node_modules/**"
   ],
   "tests": [
-    "tests/**/test-*.js"
+    "tests/**/test-*.js",
+    "!**/node_modules/**"
   ],
   "units": [
-    "modules/**/test-*.js"
+    "modules/**/test-*.js",
+    "!**/node_modules/**"
   ]
 }
