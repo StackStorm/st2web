@@ -7,7 +7,7 @@ var gulp = require('gulp')
   , argv = require('yargs').argv
   ;
 
-gulp.task('integration', gulp.series(['build'], function () {
+gulp.task('integration', gulp.series(['build'], function integrating() {
   var server = gulp.src('.')
     .pipe(plugins.webserver({
       host: '0.0.0.0',

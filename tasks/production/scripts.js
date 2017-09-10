@@ -5,7 +5,7 @@ var gulp = require('gulp')
   , plugins = require('gulp-load-plugins')(settings.plugins)
   ;
 
-gulp.task('production-scripts', gulp.series(['browserify'], function () {
+gulp.task('production-scripts', gulp.series(['browserify'], function productionScripting() {
   return gulp.src(settings.production.scripts, { base: __dirname + '/../..' })
     .pipe(plugins.uglify({
       mangle: false,

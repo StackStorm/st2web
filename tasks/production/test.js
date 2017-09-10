@@ -7,7 +7,7 @@ var gulp = require('gulp')
   , argv = require('yargs').argv
   ;
 
-gulp.task('test-production', gulp.series(['production'], function () {
+gulp.task('test-production', gulp.series(['production'], function productionTesting() {
   var server = gulp.src('.')
     .pipe(plugins.webserver({
       host: '0.0.0.0',
