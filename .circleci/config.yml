@@ -24,6 +24,12 @@ jobs:
             sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
             sudo chmod +x /usr/local/bin/docker-compose
       - run:
+          name: Switch to supported version of Node
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install 8.4.0
+      - run:
           name: Create directories for Artifacts
           command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
       - run:
@@ -46,7 +52,6 @@ jobs:
             sudo apt-get update
             sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
-            npm -g install npm@latest-2
       - run:
           name: Install package dependencies
           command: npm install
