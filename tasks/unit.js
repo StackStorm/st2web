@@ -13,7 +13,7 @@ gulp.task('unit', function () {
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
-        js: require('babelify/node_modules/babel-core/register')
+        js: require('babel-core/register')
       }
     }))
     ;
