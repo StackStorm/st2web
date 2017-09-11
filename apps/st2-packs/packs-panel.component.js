@@ -25,6 +25,16 @@ import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 
+function sanitize(config, { properties }) {
+  return _.mapValues(config, (v, k) => {
+    if (v && properties[k] && properties[k].secret) {
+      return '*'.repeat(v.length);
+    }
+
+    return v;
+  });
+}
+
 function waitExecution(execution_id, record) {
   if (record.id !== execution_id) {
     return;
@@ -53,7 +63,8 @@ export default class PacksPanel extends React.Component {
   }
 
   state = {
-    configPreview: false
+    configPreview: false,
+    configField: {}
   }
 
   handleToggleAll() {
@@ -82,6 +93,12 @@ export default class PacksPanel extends React.Component {
 
           return api.client.stream
             .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
+        })
+        .then(() => {
+          this.fetchPacks();
+          this.fetchIndex();
+          this.fetchConfigSchemas();
+          this.fetchConfigs();
         })
         .then(() => {
           notification.success(
@@ -135,6 +152,14 @@ export default class PacksPanel extends React.Component {
     });
   }
 
+  handleConfigChange(key, value) {
+    const { configField } = this.state;
+
+    configField[key] = value;
+
+    this.setState({ configField });
+  }
+
   handleConfigSave(e, ref) {
     e.preventDefault();
 
@@ -143,7 +168,7 @@ export default class PacksPanel extends React.Component {
     return store.dispatch({
       type: 'CONFIGURE_PACK',
       ref,
-      promise: api.client.configs.edit(ref, this.configField.getValue(), {
+      promise: api.client.configs.edit(ref, this.state.configField, {
         show_secrets: true
       })
         .then(res => {
@@ -185,10 +210,10 @@ export default class PacksPanel extends React.Component {
     });
   }
 
-  componentDidMount() {
-    const { api, state } = this.props.context;
+  fetchPacks() {
+    const { api } = this.props.context;
 
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_INSTALLED_PACKS',
       promise: api.client.packs.list()
         .then(packs => {
@@ -212,17 +237,13 @@ export default class PacksPanel extends React.Component {
 
           return packs;
         })
-    })
-      .then(() => {
-        const { selected } = store.getState();
+    });
+  }
 
-        if (!selected) {
-          store.dispatch({ type: 'SELECT_PACK' });
-        }
-      })
-      ;
+  fetchIndex() {
+    const { api } = this.props.context;
 
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_PACK_INDEX',
       // A rather ugly hack that helps us not to update st2client.js just yet
       promise: api.client.packs.get('index')
@@ -230,28 +251,12 @@ export default class PacksPanel extends React.Component {
         // In some cases pack ref might be missing and we better sort it out earlier
         .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
     });
+  }
 
-    store.dispatch({
-      type: 'FETCH_PACK_CONFIG_SCHEMAS',
-      promise: api.client.configSchemas.list()
-        .then(config_schemas => {
-          const packs = {};
+  fetchConfigs() {
+    const { api } = this.props.context;
 
-          _.forEach(config_schemas, config_schema => {
-            const ref = config_schema.pack;
-            packs[ref] = {
-              ref,
-              config_schema: {
-                properties: config_schema.attributes
-              }
-            };
-          });
-
-          return packs;
-        })
-    });
-
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_PACK_CONFIGS',
       promise: api.client.configs.list({
         show_secrets: true
@@ -270,6 +275,47 @@ export default class PacksPanel extends React.Component {
         return packs;
       })
     });
+  }
+
+  fetchConfigSchemas() {
+    const { api } = this.props.context;
+
+    return store.dispatch({
+      type: 'FETCH_PACK_CONFIG_SCHEMAS',
+      promise: api.client.configSchemas.list()
+        .then(config_schemas => {
+          const packs = {};
+
+          _.forEach(config_schemas, config_schema => {
+            const ref = config_schema.pack;
+            packs[ref] = {
+              ref,
+              config_schema: {
+                properties: config_schema.attributes
+              }
+            };
+          });
+
+          return packs;
+        })
+    });
+  }
+
+  componentDidMount() {
+    const { state } = this.props.context;
+
+    this.fetchPacks()
+      .then(() => {
+        const { selected } = store.getState();
+
+        if (!selected) {
+          store.dispatch({ type: 'SELECT_PACK' });
+        }
+      });
+
+    this.fetchIndex();
+    this.fetchConfigSchemas();
+    this.fetchConfigs();
 
     this._unsubscribeStateOnChange = state.onChange((transition) => {
       const { ref } = transition.params();
@@ -277,6 +323,12 @@ export default class PacksPanel extends React.Component {
     });
 
     store.dispatch({ type: 'SELECT_PACK', ref: state.params.ref });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.selected !== nextProps.selected) {
+      this.setState({ configField: {} });
+    }
   }
 
   componentWillUnmount() {
@@ -386,7 +438,8 @@ export default class PacksPanel extends React.Component {
             config_schema && <DetailsPanel data-test="pack_config" >
               <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
                 <AutoForm
-                  ref={(component) => { this.configField = component; }}
+                  ref={(component) => { this.configForm = component; }}
+                  onChange={(key, value) => this.handleConfigChange(key, value)}
                   spec={config_schema}
                   ngModel={config} />
                 <DetailsButtonsPanel>
@@ -395,7 +448,7 @@ export default class PacksPanel extends React.Component {
                 </DetailsButtonsPanel>
                 {
                   this.state.configPreview &&
-                    <St2Highlight code={this.configField.getValue()}/>
+                    <St2Highlight code={sanitize(this.state.configField, config_schema)}/>
                 }
               </form>
             </DetailsPanel>

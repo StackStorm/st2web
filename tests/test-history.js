@@ -86,8 +86,8 @@ describe('User visits history page', function () {
 
       browser.assert.text(util.name('status'), util.capitalize(execution.status), 'Wrong status');
       browser.assert.text(util.name('execution_id'), execution.id, 'Wrong execution id');
-      browser.assert.text(util.name('start_timestamp'), util.formatUTC(execution.start_timestamp), 'Wrong start time');
-      browser.assert.text(util.name('end_timestamp'), util.formatUTC(execution.end_timestamp), 'Wrong end time');
+      browser.assert.text(util.name('start_timestamp'), util.formatLocal(execution.start_timestamp), 'Wrong start time');
+      browser.assert.text(util.name('end_timestamp'), util.formatLocal(execution.end_timestamp), 'Wrong end time');
 
       var execution_time = Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
       browser.assert.text(util.name('execution_time'), execution_time + ' s', 'Wrong execution time');
