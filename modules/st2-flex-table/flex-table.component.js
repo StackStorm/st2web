@@ -4,6 +4,8 @@ import { PropTypes } from 'prop-types';
 import FlexTableTitle from './flex-table-title.component';
 import { actions } from './flex-table.reducer';
 
+import './style.less';
+
 export default class FlexTable extends React.Component {
   static propTypes = {
     title: PropTypes.string,

@@ -18,7 +18,7 @@ import {
   DetailsToolbarSeparator,
   ToggleButton
 } from '../../modules/st2-panel/panel.component';
-import FlexTable from '../../modules/st2-flex-table/flex-table.component';
+import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import HistoryFlexCard from './history-flex-card.component';
 
 

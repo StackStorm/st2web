@@ -6,6 +6,5 @@ var gulp = require('gulp')
 
 gulp.task('watch', gulp.series(['watchify'], function watching(done) {
   gulp.watch(settings.lint, gulp.series(['lint']));
-  gulp.watch(settings.styles.src.concat(settings.styles.includes), gulp.series(['styles']));
   done();
 }));

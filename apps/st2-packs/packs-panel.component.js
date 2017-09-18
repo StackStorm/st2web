@@ -22,7 +22,7 @@ import {
   DetailsToolbarSeparator,
   ToggleButton
 } from '../../modules/st2-panel/panel.component';
-import FlexTable from '../../modules/st2-flex-table/flex-table.component';
+import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import PackFlexCard from './pack-flex-card.component';
 import Button from '../../modules/st2-forms/button.component';
 import Table from './table.component';

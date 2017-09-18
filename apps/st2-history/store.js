@@ -1,6 +1,6 @@
 import { createScopedStore } from '../../store.js';
 
-import flexTableReducer from '../../modules/st2-flex-table/flex-table.reducer';
+import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
 const historyReducer = (state = {}, action) => {
   let {

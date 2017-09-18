@@ -3,6 +3,8 @@
 var gulp = require('gulp')
   , settings = require('../settings.json')
   , plugins = require('gulp-load-plugins')(settings.plugins)
+  , path = require('path')
+  , fs = require('fs')
 
   , _ = require('lodash')
   , git = require('git-rev-sync')
@@ -45,8 +47,11 @@ function bundle(file, name) {
     });
 
   b
+    .plugin('css-extract', { out: path.join(settings.styles.dest, 'style.css')})
     .on('log', plugins.util.log)
     ;
+
+  fs.mkdir(settings.styles.dest, function () { /* noop */ });
 
   return b.bundle()
     .on('error', function (error) {

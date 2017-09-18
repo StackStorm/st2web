@@ -39,6 +39,9 @@
   },
   "devDependencies": {
     "babelify": "7.2.0",
-    "browserify-global-shim": "1.0.3"
+    "browserify-global-shim": "1.0.3",
+    "@stackstorm/browserify-postcss": "0.3.3",
+    "postcss": "6.0.11",
+    "@stackstorm/postcss-less-engine": "0.6.2"
   }
 }

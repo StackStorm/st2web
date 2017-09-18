@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 import api from '@stackstorm/module-api';
 
+import './style.less';
+
 class Icon extends React.Component {
   static propTypes = {
     name: PropTypes.string

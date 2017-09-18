@@ -4,6 +4,8 @@ import cx from 'classnames';
 
 import api from '@stackstorm/module-api';
 
+import './style.less';
+
 class LoginForm extends React.Component {
   static propTypes = {
     children: PropTypes.node

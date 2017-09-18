@@ -22,7 +22,7 @@ import {
   ToggleButton
 } from '../../modules/st2-panel/panel.component';
 import Button from '../../modules/st2-forms/button.component';
-import FlexTable from '../../modules/st2-flex-table/flex-table.component';
+import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import RuleFlexCard from './rule-flex-card.component';
 import AutoForm from '../../modules/st2-auto-form/auto-form.component';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
