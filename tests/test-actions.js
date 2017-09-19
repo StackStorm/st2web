@@ -12,7 +12,7 @@ describe('User visits actions page', function () {
   var browser = new Browser();
   var util = utilFactory(browser);
 
-  this.timeout(10000);
+  this.timeout(20000);
 
   before(function () {
     return browser.visit('/#/actions').then(util.login);
@@ -235,8 +235,8 @@ describe('User visits actions page', function () {
       it('should have empty parameter', function () {
         browser.assert.input(util.name('field:cmd'), '', 'Field have not been reset');
       });
-    })
-  })
+    });
+  });
 
   after(function () {
     browser.tabs.closeAll();
