@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/app-rules",
-  "version": "1.0.0",
+  "version": "1.0.0-pre.1",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -33,11 +33,11 @@
     ]
   },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0",
-    "@stackstorm/module-auto-form": "1.0.0",
-    "@stackstorm/module-flex-table": "1.0.0",
-    "@stackstorm/module-menu": "1.0.0",
-    "@stackstorm/module-panel": "1.0.0"
+    "@stackstorm/module-api": "1.0.0-pre.1",
+    "@stackstorm/module-auto-form": "1.0.0-pre.1",
+    "@stackstorm/module-flex-table": "1.0.0-pre.1",
+    "@stackstorm/module-menu": "1.0.0-pre.1",
+    "@stackstorm/module-panel": "1.0.0-pre.1"
   },
   "devDependencies": {
     "babelify": "7.2.0",
