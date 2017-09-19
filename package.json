@@ -1,6 +1,6 @@
 {
   "name": "st2web",
-  "version": "0.0.0",
+  "version": "0.0.1-0.0.0.0",
   "st2_version": "2.5dev",
   "private": true,
   "scripts": {
@@ -40,14 +40,14 @@
     ]
   },
   "dependencies": {
-    "@stackstorm/app-actions": "1.0.0-pre.1",
-    "@stackstorm/app-docs": "1.0.0-pre.1",
-    "@stackstorm/app-history": "1.0.0-pre.1",
-    "@stackstorm/app-packs": "1.0.0-pre.1",
-    "@stackstorm/app-rules": "1.0.0-pre.1",
-    "@stackstorm/module-api": "1.0.0-pre.1",
-    "@stackstorm/module-login": "1.0.0-pre.1",
-    "@stackstorm/st2-style": "1.0.0-pre.1",
+    "@stackstorm/app-actions": "^1.0.0-pre.1",
+    "@stackstorm/app-docs": "^1.0.0-pre.1",
+    "@stackstorm/app-history": "^1.0.0-pre.1",
+    "@stackstorm/app-packs": "^1.0.0-pre.1",
+    "@stackstorm/app-rules": "^1.0.0-pre.1",
+    "@stackstorm/module-api": "^1.0.0-pre.1",
+    "@stackstorm/module-login": "^1.0.0-pre.1",
+    "@stackstorm/st2-style": "^1.0.0-pre.1",
     "classnames": "2.2.5",
     "lodash": "2.4.2",
     "moment": "2.18.1",

@@ -52,11 +52,11 @@
     "normalize.css": "4.0.0"
   },
   "devDependencies": {
+    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
+    "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
     "browserify-global-shim": "1.0.3",
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
     "postcss": "6.0.11",
-    "postcss-import": "11.0.0",
-    "@stackstorm/postcss-less-engine": "0.6.2"
+    "postcss-import": "11.0.0"
   }
 }
