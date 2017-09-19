@@ -59,6 +59,19 @@ export default class AutoForm extends React.Component {
     return onChange && onChange(name, value);
   }
 
+  componentWillMount(){
+    const { spec } = this.props;
+
+    if (_.has(spec, 'properties')){
+      Object.keys(spec.properties).forEach(function(key) {
+        let value = spec.properties[key];
+        if (value.default !== undefined && value.required === true){
+          this.handleChange(key, value.default);
+        }
+      }, this);
+    }
+  }
+
   render() {
     const { spec, ngModel, disabled } = this.props;
 
