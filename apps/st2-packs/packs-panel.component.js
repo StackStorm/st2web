@@ -27,7 +27,7 @@ import PackFlexCard from './pack-flex-card.component';
 import Button from '../../modules/st2-forms/button.component';
 import Table from './table.component';
 
-import AutoForm from '../../modules/st2-auto-form/auto-form.component';
+import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '../../modules/st2-highlight/highlight.component';
 import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
 

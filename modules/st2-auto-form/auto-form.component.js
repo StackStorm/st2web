@@ -11,6 +11,8 @@ import ObjectField from './fields/object';
 import PasswordField from './fields/password';
 import EnumField from './fields/enum';
 
+import './style.less';
+
 export default class AutoForm extends React.Component {
   static propTypes = {
     key: PropTypes.string,
