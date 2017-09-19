@@ -21,12 +21,12 @@ import {
   DetailsToolbarSeparator,
   ToggleButton
 } from '@stackstorm/module-panel';
-import Button from '../../modules/st2-forms/button.component';
+import Button from '@stackstorm/module-forms/button.component';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import RuleFlexCard from './rule-flex-card.component';
 import AutoForm from '@stackstorm/module-auto-form';
-import St2Highlight from '../../modules/st2-highlight/highlight.component';
-import StringField from '../../modules/st2-auto-form/fields/string';
+import St2Highlight from '@stackstorm/module-highlight';
+import StringField from '@stackstorm/module-auto-form/fields/string';
 
 
 @connect((state, props) => {

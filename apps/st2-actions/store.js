@@ -1,4 +1,4 @@
-import { createScopedStore } from '../../store.js';
+import { createScopedStore } from '@stackstorm/module-store';
 
 import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 

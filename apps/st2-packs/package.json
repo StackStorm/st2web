@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/app-packs",
-  "version": "1.0.0-pre.1",
+  "version": "1.0.0-pre.3",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -32,18 +32,25 @@
       ]
     ]
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0-pre.1",
-    "@stackstorm/module-auto-form": "1.0.0-pre.1",
-    "@stackstorm/module-flex-table": "1.0.0-pre.1",
-    "@stackstorm/module-menu": "1.0.0-pre.1",
-    "@stackstorm/module-panel": "1.0.0-pre.1"
+    "@stackstorm/module-api": "1.0.0-pre.3",
+    "@stackstorm/module-auto-form": "1.0.0-pre.3",
+    "@stackstorm/module-flex-table": "1.0.0-pre.3",
+    "@stackstorm/module-forms": "1.0.0-pre.3",
+    "@stackstorm/module-highlight": "1.0.0-pre.3",
+    "@stackstorm/module-menu": "1.0.0-pre.3",
+    "@stackstorm/module-panel": "1.0.0-pre.3",
+    "@stackstorm/module-portion-bar": "1.0.0-pre.3",
+    "@stackstorm/module-store": "1.0.0-pre.3"
   },
   "devDependencies": {
+    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
+    "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
     "browserify-global-shim": "1.0.3",
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
-    "postcss": "6.0.11",
-    "@stackstorm/postcss-less-engine": "0.6.2"
+    "postcss": "6.0.11"
   }
 }

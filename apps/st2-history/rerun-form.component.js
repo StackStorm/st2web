@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 import AutoForm from '@stackstorm/module-auto-form';
-import StringField from '../../modules/st2-auto-form/fields/string';
+import StringField from '@stackstorm/module-auto-form/fields/string';
 
 export default class RerunForm extends React.Component {
   static propTypes = {

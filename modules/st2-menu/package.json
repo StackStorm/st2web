@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-menu",
-  "version": "1.0.0-pre.1",
+  "version": "1.0.0-pre.3",
   "description": "",
   "main": "menu.component.js",
   "directories": {
@@ -46,9 +46,12 @@
       ]
     ]
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0-pre.1",
-    "@stackstorm/st2-style": "1.0.0-pre.1",
+    "@stackstorm/module-api": "1.0.0-pre.3",
+    "@stackstorm/st2-style": "1.0.0-pre.3",
     "insert-css": "2.0.0",
     "lodash": "2.4.2",
     "prop-types": "15.5.10",
@@ -56,10 +59,10 @@
     "react-router-dom": "4.2.2"
   },
   "devDependencies": {
+    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
+    "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
     "browserify-global-shim": "1.0.3",
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
-    "postcss": "6.0.11",
-    "@stackstorm/postcss-less-engine": "0.6.2"
+    "postcss": "6.0.11"
   }
 }

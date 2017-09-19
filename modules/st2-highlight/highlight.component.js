@@ -8,6 +8,8 @@ import 'prismjs/components/prism-powershell';
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-json';
 
+import './style.less';
+
 function getType(string) {
   try {
     var o = JSON.parse(string);

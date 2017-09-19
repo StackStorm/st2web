@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { uniqueId } from 'lodash';
 
 import reducer, { actions } from '../flex-table.reducer.js';
-import { createScopedStore } from '../../../store.js';
+import { createScopedStore } from '@stackstorm/module-store';
 
 let store;
 

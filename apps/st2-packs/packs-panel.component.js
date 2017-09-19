@@ -24,12 +24,12 @@ import {
 } from '@stackstorm/module-panel';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import PackFlexCard from './pack-flex-card.component';
-import Button from '../../modules/st2-forms/button.component';
+import Button from '@stackstorm/module-forms/button.component';
 import Table from './table.component';
 
 import AutoForm from '@stackstorm/module-auto-form';
-import St2Highlight from '../../modules/st2-highlight/highlight.component';
-import St2PortionBar from '../../modules/st2-portion-bar/portion-bar.component';
+import St2Highlight from '@stackstorm/module-highlight';
+import St2PortionBar from '@stackstorm/module-portion-bar';
 
 function waitExecution(execution_id, record) {
   if (record.id !== execution_id) {
