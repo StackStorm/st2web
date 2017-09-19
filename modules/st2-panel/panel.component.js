@@ -1,6 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+import './style.less';
+
 export class Panel extends React.Component {
   static propTypes = {
     children: PropTypes.node,

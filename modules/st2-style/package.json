@@ -22,6 +22,21 @@
     "transform": [
       "babelify",
       [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".less"
+          ],
+          "inject": "insert-css",
+          "modularize": false,
+          "plugin": [
+            "@stackstorm/postcss-less-engine",
+            "postcss-import"
+          ],
+          "parser": "@stackstorm/postcss-less-engine/parser"
+        }
+      ],
+      [
         "browserify-global-shim",
         {
           "global": true,
@@ -31,5 +46,17 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "insert-css": "2.0.0",
+    "normalize.css": "4.0.0"
+  },
+  "devDependencies": {
+    "babelify": "7.2.0",
+    "browserify-global-shim": "1.0.3",
+    "@stackstorm/browserify-postcss": "0.3.3",
+    "postcss": "6.0.11",
+    "postcss-import": "11.0.0",
+    "@stackstorm/postcss-less-engine": "0.6.2"
   }
 }

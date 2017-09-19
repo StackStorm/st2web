@@ -15,6 +15,20 @@
     "transform": [
       "babelify",
       [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".less"
+          ],
+          "inject": "insert-css",
+          "modularize": false,
+          "plugin": [
+            "@stackstorm/postcss-less-engine"
+          ],
+          "parser": "@stackstorm/postcss-less-engine/parser"
+        }
+      ],
+      [
         "browserify-global-shim",
         {
           "global": true,
@@ -33,10 +47,10 @@
     "@stackstorm/app-rules": "1.0.0",
     "@stackstorm/module-api": "1.0.0",
     "@stackstorm/module-login": "1.0.0",
+    "@stackstorm/st2-style": "1.0.0",
     "classnames": "2.2.5",
     "lodash": "2.4.2",
     "moment": "2.18.1",
-    "normalize.css": "4.0.0",
     "noty": "3.1.2",
     "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",
     "prop-types": "15.5.10",

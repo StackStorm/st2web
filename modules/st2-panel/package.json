@@ -1,8 +1,8 @@
 {
-  "name": "@stackstorm/app-packs",
+  "name": "@stackstorm/module-panel",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "panel.component.js",
   "directories": {
     "test": "tests"
   },
@@ -22,6 +22,20 @@
     "transform": [
       "babelify",
       [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".less"
+          ],
+          "inject": "insert-css",
+          "modularize": false,
+          "plugin": [
+            "@stackstorm/postcss-less-engine"
+          ],
+          "parser": "@stackstorm/postcss-less-engine/parser"
+        }
+      ],
+      [
         "browserify-global-shim",
         {
           "global": true,
@@ -33,10 +47,11 @@
     ]
   },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0",
-    "@stackstorm/module-flex-table": "1.0.0",
-    "@stackstorm/module-menu": "1.0.0",
-    "@stackstorm/module-panel": "1.0.0"
+    "@stackstorm/st2-style": "1.0.0",
+    "insert-css": "2.0.0",
+    "normalize.css": "4.0.0",
+    "prop-types": "15.5.10",
+    "react": "15.6.1"
   },
   "devDependencies": {
     "babelify": "7.2.0",

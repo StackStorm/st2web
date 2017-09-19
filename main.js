@@ -20,6 +20,8 @@ import Rules from '@stackstorm/app-rules';
 import Packs from '@stackstorm/app-packs';
 import Docs from '@stackstorm/app-docs';
 
+import '@stackstorm/st2-style';
+
 const routes = [
   History,
   Actions,
