@@ -60,12 +60,14 @@ export default class AutoForm extends React.Component {
   }
 
   componentWillMount(){
+    // Once everything is inside react we should be able to move this to the
+    // getElementByField portion
     const { spec } = this.props;
 
     if (_.has(spec, 'properties')){
       Object.keys(spec.properties).forEach(function(key) {
         let value = spec.properties[key];
-        if (value.default !== undefined && value.required === true){
+        if (value.default !== undefined && value.enum){
           this.handleChange(key, value.default);
         }
       }, this);
