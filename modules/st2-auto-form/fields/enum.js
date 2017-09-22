@@ -50,7 +50,7 @@ export default class Enum extends BaseTextField {
     return <TextFieldWrapper {...wrapperProps} >
       <select {...selectProps} >
         {
-          !spec.required && <option value='' ></option>
+          !spec.default && <option value='' ></option>
         }
         {
           _.map(spec.enum, (v) => <option key={v} value={v} >{ v }</option>)
