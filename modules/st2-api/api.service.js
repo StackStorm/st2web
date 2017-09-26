@@ -51,8 +51,8 @@ module.exports =
         }
       } else {
         opts = {
-          api: 'https://' + window.location.hostname + ':443/api',
-          auth: 'https://' + window.location.hostname + ':443/auth',
+          api: window.location.protocol + '//' + window.location.host + '/api',
+          auth: window.location.protocol + '//' + window.location.host + '/auth',
           token: !_.isEmpty(token) ? token : undefined
         };
       }
