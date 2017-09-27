@@ -3,6 +3,7 @@
   "packages": [
     "apps/*",
     "modules/*",
+    "tasks",
     "."
   ],
   "version": "independent",

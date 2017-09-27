@@ -1,4 +1,4 @@
 /* jshint node: true */
 'use strict';
 
-require('./tasks');
+require('@stackstorm/st2-build');

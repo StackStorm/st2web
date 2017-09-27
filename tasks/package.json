@@ -1,0 +1,62 @@
+{
+  "name": "@stackstorm/st2-build",
+  "version": "1.0.0-pre.3",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  },
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "babelify": "7.2.0",
+    "css-extract": "1.2.0",
+    "event-stream": "3.3.2",
+    "express": "4.13.4",
+    "fontello-update": "0.6.1",
+    "git-rev-sync": "1.4.0",
+    "gulp-concat": "2.6.0",
+    "gulp-csscomb": "3.0.7",
+    "gulp-env": "0.4.0",
+    "gulp-eslint": "4.0.0",
+    "gulp-header": "1.7.1",
+    "gulp-less": "3.3.2",
+    "gulp-load-plugins": "1.2.0",
+    "gulp-mocha": "2.2.0",
+    "gulp-plumber": "1.1.0",
+    "gulp-rename": "1.2.2",
+    "gulp-size": "2.1.0",
+    "gulp-sourcemaps": "1.6.0",
+    "gulp-uglify": "1.5.3",
+    "gulp-util": "3.0.7",
+    "gulp-webserver": "0.9.1",
+    "npm-shrinkwrap": "200.5.1",
+    "require-dir": "0.3.2",
+    "undertaker-forward-reference": "1.0.1",
+    "vinyl-buffer": "1.0.0",
+    "vinyl-source-stream": "1.1.0",
+    "watchify": "3.7.0",
+    "yargs": "4.3.2"
+  },
+  "peerDependencies": {
+    "gulp": "github:gulpjs/gulp#4.0"
+  }
+}
