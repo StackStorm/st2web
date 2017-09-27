@@ -3,10 +3,11 @@
   "lockfileVersion": 1,
   "dependencies": {
     "@stackstorm/browserify-postcss": {
-      "version": "0.3.3",
-      "resolved": "https://registry.npmjs.org/@stackstorm/browserify-postcss/-/browserify-postcss-0.3.3.tgz",
-      "integrity": "sha512-Pr0hzBd3pOqL9vorHdmsm2+QG5R0qo64nBRSsXTrukVxQebdfV+ovcc9VyDHvkP6JiFUqDzoNs9zhwfCoUlfVQ==",
+      "version": "0.3.4-patch.1",
+      "resolved": "https://registry.npmjs.org/@stackstorm/browserify-postcss/-/browserify-postcss-0.3.4-patch.1.tgz",
+      "integrity": "sha512-7EWGHXFz9GSKfB2aw3VzjfjhC3ri7WKqXP+Ur+4JIxWLJePCfKQGodU6HFfipo/pelSgAm/fvN2ccPpGrgyuig==",
       "requires": {
+        "css-modules-loader-core": "1.1.0",
         "cssify": "1.0.3",
         "postcss": "5.2.17",
         "resolve": "1.4.0",
