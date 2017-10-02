@@ -14,6 +14,7 @@ var gulp = require('gulp')
   , watchify = require('watchify')
   , source = require('vinyl-source-stream')
   , buffer = require('vinyl-buffer')
+  , cssExtract = require('css-extract')
   ;
 
 function buildHeader() {
@@ -47,7 +48,7 @@ function bundle(file, name) {
     });
 
   b
-    .plugin('css-extract', { out: path.join(settings.styles.dest, 'style.css')})
+    .plugin(cssExtract, { out: path.join(settings.styles.dest, 'style.css')})
     .on('log', plugins.util.log)
     ;
 
