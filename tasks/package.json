@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/st2-build",
-  "version": "1.0.0-pre.3",
+  "version": "1.0.0-pre.4",
   "description": "",
   "main": "index.js",
   "directories": {

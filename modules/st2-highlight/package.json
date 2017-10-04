@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-highlight",
-  "version": "1.0.0-pre.3",
+  "version": "1.0.0-pre.4",
   "description": "",
   "main": "highlight.component.js",
   "directories": {
@@ -50,7 +50,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "1.0.0-pre.3",
+    "@stackstorm/st2-style": "1.0.0-pre.4",
     "insert-css": "2.0.0",
     "lodash": "2.4.2",
     "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",

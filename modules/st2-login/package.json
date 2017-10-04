@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-login",
-  "version": "1.0.0-pre.3",
+  "version": "1.0.0-pre.4",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -50,8 +50,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0-pre.3",
-    "@stackstorm/st2-style": "1.0.0-pre.3",
+    "@stackstorm/module-api": "1.0.0-pre.4",
+    "@stackstorm/st2-style": "1.0.0-pre.4",
     "classnames": "2.2.5",
     "insert-css": "2.0.0",
     "prop-types": "15.5.10",

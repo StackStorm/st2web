@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-portion-bar",
-  "version": "1.0.0-pre.3",
+  "version": "1.0.0-pre.4",
   "description": "",
   "main": "portion-bar.component.js",
   "directories": {
@@ -50,7 +50,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "1.0.0-pre.3",
+    "@stackstorm/st2-style": "1.0.0-pre.4",
     "insert-css": "2.0.0",
     "lodash": "2.4.2",
     "prop-types": "15.5.10",
@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.1",
-    "@stackstorm/module-store": "1.0.0-pre.3",
+    "@stackstorm/module-store": "1.0.0-pre.4",
     "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
     "browserify-global-shim": "1.0.3",
