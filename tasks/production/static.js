@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp = require('gulp')
-  , settings = require('../../settings.json')
+  , settings = require('../settings.json')
   ;
 
 gulp.task('production-static', function () {

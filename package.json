@@ -15,20 +15,6 @@
     "transform": [
       "babelify",
       [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".less"
-          ],
-          "inject": "insert-css",
-          "modularize": false,
-          "plugin": [
-            "@stackstorm/postcss-less-engine"
-          ],
-          "parser": "@stackstorm/postcss-less-engine/parser"
-        }
-      ],
-      [
         "browserify-global-shim",
         {
           "global": true,
@@ -59,13 +45,12 @@
     "react-router-dom": "4.2.2",
     "react-textarea-autosize": "5.1.0",
     "react-time": "4.3.0",
+    "redux": "3.7.2",
     "st2client": "1.1.1",
     "urijs": "1.17.1",
     "validator": "5.2.0"
   },
   "devDependencies": {
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
-    "@stackstorm/postcss-less-engine": "0.6.2",
     "@stackstorm/st2-build": "1.0.0-pre.3",
     "babel-eslint": "7.2.2",
     "babel-plugin-transform-class-properties": "6.6.0",

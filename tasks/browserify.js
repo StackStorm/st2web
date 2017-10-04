@@ -1,14 +1,14 @@
 'use strict';
 
 var gulp = require('gulp')
-  , settings = require('../settings.json')
+  , settings = require('./settings.json')
   , plugins = require('gulp-load-plugins')(settings.plugins)
   , path = require('path')
   , fs = require('fs')
 
   , _ = require('lodash')
   , git = require('git-rev-sync')
-  , pkg = require('../package.json')
+  , pkg = require('./package.json')
   , es = require('event-stream')
   , browserify = require('browserify')
   , watchify = require('watchify')
