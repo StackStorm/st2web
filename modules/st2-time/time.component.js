@@ -2,31 +2,31 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import Time from 'react-time';
 
-const timeComponent = (props) => {
-  let {format, timestamp, utcdisplay, togglecallback, dataTest} = props;
-  let dateFormat = format ? format : 'ddd, DD MMM YYYY HH:mm:ss';
-  let timeStamp = new Date(timestamp);
-  if (utcdisplay){
-    dateFormat += ' UTC';
+export default class TimeComponent extends React.Component {
+  static propTypes = {
+    timestamp: PropTypes.string,
+    format: PropTypes.string,
+    utcdisplay: PropTypes.bool,
+    togglecallback: PropTypes.func
   }
 
-  return (
-    <Time
-      data-test={dataTest}
-      onClick={togglecallback}
-      value={timeStamp}
-      format={dateFormat}
-      utc={utcdisplay}
-    />
-  );
-};
+  render() {
+    const { format, timestamp, utcdisplay, togglecallback, ...restProps } = this.props;
+    const timeStamp = new Date(timestamp);
 
-timeComponent.propTypes = {
-  timestamp: PropTypes.string,
-  format: PropTypes.string,
-  utcdisplay: PropTypes.bool,
-  togglecallback: PropTypes.func,
-  dataTest: PropTypes.string
-  };
+    let dateFormat = format ? format : 'ddd, DD MMM YYYY HH:mm:ss';
+    if (utcdisplay){
+      dateFormat += ' UTC';
+    }
 
-export default timeComponent;
+    return (
+      <Time
+        onClick={togglecallback}
+        value={timeStamp}
+        format={dateFormat}
+        utc={utcdisplay}
+        { ...restProps }
+      />
+    );
+  }
+}

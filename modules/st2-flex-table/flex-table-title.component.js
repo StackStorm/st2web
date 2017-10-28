@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 export default class FlexTableTitle extends React.Component {
   static propTypes = {
-    children: PropTypes.string,
+    children: PropTypes.node,
     icon: PropTypes.string,
     onToggle: PropTypes.func.isRequired
   }

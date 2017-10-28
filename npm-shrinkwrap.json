@@ -10884,11 +10884,6 @@
         "prop-types": "15.5.10"
       }
     },
-    "react-time": {
-      "version": "4.3.0",
-      "resolved": "https://registry.npmjs.org/react-time/-/react-time-4.3.0.tgz",
-      "integrity": "sha1-s3UHuLUnjwOo5/K/5wkRgkqJkd0="
-    },
     "read-cmd-shim": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/read-cmd-shim/-/read-cmd-shim-1.0.1.tgz",

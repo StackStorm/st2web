@@ -8,7 +8,7 @@ import './style.less';
 
 export default class FlexTable extends React.Component {
   static propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.node,
     collapsed: PropTypes.bool,
     children: PropTypes.node,
     icon: PropTypes.string,

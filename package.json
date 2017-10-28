@@ -44,7 +44,6 @@
     "react-redux": "5.0.5",
     "react-router-dom": "4.2.2",
     "react-textarea-autosize": "5.1.0",
-    "react-time": "4.3.0",
     "redux": "3.7.2",
     "st2client": "1.1.1",
     "urijs": "1.17.1",

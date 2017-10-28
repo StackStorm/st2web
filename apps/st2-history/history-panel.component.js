@@ -19,25 +19,27 @@ import {
   ToggleButton
 } from '@stackstorm/module-panel';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
+import Time from '@stackstorm/module-time';
 import HistoryFlexCard from './history-flex-card.component';
 
 
 @connect((state, props) => {
-  const { collapsed = state.collapsed } = state.tables[props.title] || {};
+  const { uid, ...restProps } = props;
+  const { collapsed = state.collapsed } = state.tables[uid] || {};
 
-  return { collapsed, ...props };
+  return { collapsed, ...restProps };
 }, (dispatch, props) => {
-  const { title } = props;
+  const { uid } = props;
 
   return {
-    onToggle: () => store.dispatch(actions.toggle(title))
+    onToggle: () => store.dispatch(actions.toggle(uid))
   };
 })
 class FlexTableWrapper extends FlexTable {
   componentDidMount() {
-    const { title } = this.props;
+    const { uid } = this.props;
 
-    store.dispatch(actions.register(title));
+    store.dispatch(actions.register(uid));
   }
 }
 
@@ -101,8 +103,12 @@ export default class HistoryPanel extends React.Component {
     // });
 
     const executionGroups = _(executions)
-      .sortBy('ref')
-      .groupBy('pack')
+      .sortBy('start_timestamp')
+      .groupBy(record => {
+        const date = new Date(record.start_timestamp).toDateString();
+        const time = new Date(date).toISOString();
+        return time;
+      })
       .value()
       ;
 
@@ -114,7 +120,8 @@ export default class HistoryPanel extends React.Component {
         <Content>
           {
             Object.keys(executionGroups).map(key => {
-              return !!executionGroups[key] && <FlexTableWrapper title={key} key={key}>
+              const date = <Time timestamp={key} format="ddd, DD MMM YYYY" />;
+              return !!executionGroups[key] && <FlexTableWrapper uid={key} title={date} key={key}>
                 {
                   executionGroups[key]
                     .map(execution => {

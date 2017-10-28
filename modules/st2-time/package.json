@@ -1,8 +1,8 @@
 {
-  "name": "@stackstorm/app-history",
+  "name": "@stackstorm/module-time",
   "version": "1.0.0-pre.4",
   "description": "",
-  "main": "index.js",
+  "main": "time.component.js",
   "directories": {
     "test": "tests"
   },
@@ -36,20 +36,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0-pre.4",
-    "@stackstorm/module-auto-form": "1.0.0-pre.4",
-    "@stackstorm/module-flex-table": "1.0.0-pre.4",
-    "@stackstorm/module-menu": "1.0.0-pre.4",
-    "@stackstorm/module-panel": "1.0.0-pre.4",
-    "@stackstorm/module-store": "1.0.0-pre.4",
-    "@stackstorm/module-time": "1.0.0-pre.4"
+    "lodash": "2.4.2",
+    "prop-types": "15.5.10",
+    "react": "15.6.1",
+    "react-time": "4.3.0"
   },
   "devDependencies": {
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
-    "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
-    "browserify-global-shim": "1.0.3",
-    "less": "2.7.1",
-    "postcss": "6.0.11"
+    "browserify-global-shim": "1.0.3"
   }
 }
