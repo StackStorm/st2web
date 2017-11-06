@@ -4,7 +4,8 @@
   "st2_version": "2.6dev",
   "private": true,
   "scripts": {
-    "test": "node_modules/.bin/gulp test"
+    "gulp": "gulp",
+    "test": "gulp test"
   },
   "repository": "stackstorm/st2web",
   "engines": {
