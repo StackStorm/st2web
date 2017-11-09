@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import {
   Route,
-  Switch,
+  Switch
 } from 'react-router-dom';
 
 import store from './store';
@@ -19,19 +19,27 @@ import {
   ToolbarSearch,
   Content,
   DetailsHeader,
+  DetailsSwitch,
   DetailsBody,
   DetailsPanel,
+  DetailsPanelHeading,
+  DetailsPanelBody,
   DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
   ToggleButton
 } from '@stackstorm/module-panel';
 import Button from '@stackstorm/module-forms/button.component';
-import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
+import {
+  FlexTable,
+  FlexTableRow
+} from '@stackstorm/module-flex-table/flex-table.component';
 import ActionFlexCard from './action-flex-card.component';
 import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
 import StringField from '@stackstorm/module-auto-form/fields/string';
+import Time from '@stackstorm/module-time';
+import Label from '@stackstorm/module-label';
 
 
 @connect((state, props) => {
@@ -54,14 +62,15 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { actions, selected, collapsed, filter } = state;
-  return { actions, selected, collapsed, filter };
+  const { actions, selected, executions, collapsed, filter } = state;
+  return { actions, selected, executions, collapsed, filter };
 })
 export default class ActionsPanel extends React.Component {
   static propTypes = {
     notification: PropTypes.object,
     collapsed: PropTypes.bool,
     actions: PropTypes.object,
+    executions: PropTypes.array,
     selected: PropTypes.string,
     filter: PropTypes.string,
     history: PropTypes.object,
@@ -79,6 +88,12 @@ export default class ActionsPanel extends React.Component {
   handleSelect(ref) {
     const { history } = this.props;
     history.push(`/actions/${ ref }`);
+  }
+
+  handleSection(section) {
+    const { history, actions={}, selected } = this.props;
+    const { ref } = actions[selected] || {};
+    history.push(`/actions/${ ref }/${ section }`);
   }
 
   handleActionRun(e, ref) {
@@ -138,11 +153,15 @@ export default class ActionsPanel extends React.Component {
       .then(() => {
         const { selected } = store.getState();
 
-        if (!selected) {
-          store.dispatch({ type: 'SELECT_ACTION' });
-        }
+        store.dispatch({
+          type: 'SELECT_ACTION',
+          ref: selected,
+          promise: api.client.executions.list({
+            action: selected,
+          })
+        });
       })
-      ;
+    ;
 
     const { ref } = this.props.match.params;
     store.dispatch({ type: 'SELECT_ACTION', ref });
@@ -152,12 +171,18 @@ export default class ActionsPanel extends React.Component {
     const { ref } = nextProps.match.params;
 
     if (ref !== this.props.match.params.ref) {
-      store.dispatch({ type: 'SELECT_ACTION', ref });
+      store.dispatch({
+        type: 'SELECT_ACTION',
+        ref,
+        promise: api.client.executions.list({
+          action: ref,
+        })
+      });
     }
   }
 
   render() {
-    const { actions={}, selected, collapsed, filter = '' } = this.props;
+    const { actions={}, executions=[], selected, collapsed, filter = '' } = this.props;
 
     const {
       ref,
@@ -202,33 +227,83 @@ export default class ActionsPanel extends React.Component {
       </PanelView>
       <PanelDetails data-test="details">
         <DetailsHeader title={ref} subtitle={description}/>
+        <Route path="/actions/:ref?/:section?" children={({ match: { params: { section } } }) => {
+          return <DetailsSwitch
+            sections={[
+              { label: 'General', path: 'general' },
+              { label: 'Code', path: 'code' }
+            ]}
+            current={ section }
+            onChange={ ({ path }) => this.handleSection(path) }/>;
+        }} />
         <DetailsBody>
           <Switch>
             <Route exact path="/actions/:ref?/(general)?" render={() => {
-              return <DetailsPanel data-test="action_parameters" >
-                <form onSubmit={(e) => this.handleActionRun(e, ref)}>
-                  <AutoForm
-                    ref={(component) => { this.runField = component; }}
-                    spec={{
-                      type: 'object',
-                      properties: parameters
-                    }}
-                    ngModel={{}} />
-                  <StringField
-                    ref={(component) => { this.traceField = component; }}
-                    name="trace"
-                    spec={{}}
-                    value="" />
-                  <DetailsButtonsPanel>
-                    <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
-                    <Button type="submit" value="Run" />
-                  </DetailsButtonsPanel>
-                  {
-                    this.state.runPreview &&
-                      <St2Highlight code={this.runField.getValue()}/>
-                  }
-                </form>
-              </DetailsPanel>;
+              return <div>
+                <DetailsPanel data-test="action_parameters">
+                  <DetailsPanelHeading title="Parameters" />
+                  <DetailsPanelBody>
+                    <form onSubmit={(e) => this.handleActionRun(e, ref)}>
+                      <AutoForm
+                        ref={(component) => { this.runField = component; }}
+                        spec={{
+                          type: 'object',
+                          properties: parameters
+                        }}
+                        ngModel={{}} />
+                      <StringField
+                        ref={(component) => { this.traceField = component; }}
+                        name="trace"
+                        spec={{}}
+                        value="" />
+                      <DetailsButtonsPanel>
+                        <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
+                        <Button type="submit" value="Run" />
+                      </DetailsButtonsPanel>
+                      {
+                        this.state.runPreview &&
+                          <St2Highlight code={this.runField.getValue()}/>
+                      }
+                    </form>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+                <DetailsPanel data-test="action_executions">
+                  <DetailsPanelHeading title="Executions" />
+                  <DetailsPanelBody>
+                    {
+                      executions.length === 0
+                        ? <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
+                        : <FlexTable>
+                          {
+                            executions.map(execution => {
+                              return <FlexTableRow onToggle={ () => console.log(1) } key={execution.id} columns={[
+                                {
+                                  className: 'st2-actions__details-column-utility',
+                                  children: <i className="icon-chevron_right"></i>
+                                },
+                                {
+                                  className: 'st2-actions__details-column-meta',
+                                  children: <Label status="failed" short={true} />
+                                },
+                                {
+                                  className: 'st2-actions__details-column-time',
+                                  children: <Time timestamp={new Date().toString()} format="ddd, DD MMM YYYY" />
+                                },
+                                {
+                                  className: 'st2-actions__details-column-history',
+                                  children: <i className="icon-history"></i>, title: 'Jump to History'
+                                },
+                              ]}/>;
+                            })
+                          }
+                        </FlexTable>
+                    }
+                    <a className="st2-forms__button st2-forms__button--flat" href="#/history?action=chatops.match">
+                      <i className="icon-history"></i> See full action history
+                    </a>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+              </div>;
             }} />
             <Route path="/actions/:ref/code" render={() => {
               return <DetailsPanel data-test="action_parameters" >

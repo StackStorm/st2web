@@ -12,7 +12,7 @@ export class Panel extends React.Component {
   render() {
     const { children, className, ...restProps } = this.props;
 
-    return <main className="st2-panel ${className}" {...restProps}>
+    return <main className={`st2-panel ${className}`} {...restProps}>
       { children }
     </main>;
   }
@@ -27,7 +27,7 @@ export class PanelView extends React.Component {
   render() {
     const { children, className, ...restProps } = this.props;
 
-    return <div className="st2-panel__view ${className}" {...restProps}>
+    return <div className={`st2-panel__view ${className}`} {...restProps}>
       { children }
     </div>;
   }
@@ -42,7 +42,7 @@ export class PanelDetails extends React.Component {
   render() {
     const { children, className, ...restProps } = this.props;
 
-    return <div className="st2-panel__details st2-details ${className}" {...restProps}>
+    return <div className={`st2-panel__details st2-details ${className}`} {...restProps}>
       { children }
     </div>;
   }
@@ -119,6 +119,33 @@ export class DetailsHeader extends React.Component {
   }
 }
 
+const SWITCH_COUNT = [ 'first', 'second' ];
+export class DetailsSwitch extends React.Component {
+  static propTypes = {
+    sections: PropTypes.arrayOf(PropTypes.shape({
+      path: PropTypes.string,
+      label: PropTypes.string
+    })),
+    current: PropTypes.string,
+    onChange: PropTypes.func
+  }
+
+  render() {
+    const { sections, current, onChange } = this.props;
+    const active = sections.findIndex(({ path }) => path === current);
+
+    return <div className={`st2-details__switch st2-details__switch--of-two st2-details__switch--${ SWITCH_COUNT[active < 0 ? 0 : active] }`}>
+      {
+        sections.map((section) => {
+          return <div key={ section.path } className="st2-details__switch-item"
+            onClick={ () => onChange(section) }
+          >{ section.label }</div>;
+        })
+      }
+    </div>;
+  }
+}
+
 export class DetailsBody extends React.Component {
   static propTypes = {
     children: PropTypes.node
@@ -144,6 +171,34 @@ export class DetailsPanel extends React.Component {
     const { children } = this.props;
 
     return <div className="st2-details__panel">
+      { children }
+    </div>;
+  }
+}
+
+export class DetailsPanelHeading extends React.Component {
+  static propTypes = {
+    title: PropTypes.string
+  }
+
+  render() {
+    const { title } = this.props;
+
+    return <div className="st2-details__panel-heading">
+      <h2 className="st2-details__panel-title">{ title }</h2>
+    </div>;
+  }
+}
+
+export class DetailsPanelBody extends React.Component {
+  static propTypes = {
+    children: PropTypes.node
+  }
+
+  render() {
+    const { children } = this.props;
+
+    return <div className="st2-details__panel-body">
       { children }
     </div>;
   }

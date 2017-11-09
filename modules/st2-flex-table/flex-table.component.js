@@ -6,7 +6,7 @@ import { actions } from './flex-table.reducer';
 
 import './style.less';
 
-export default class FlexTable extends React.Component {
+export class FlexTable extends React.Component {
   static propTypes = {
     title: PropTypes.node,
     collapsed: PropTypes.bool,
@@ -39,3 +39,30 @@ export default class FlexTable extends React.Component {
     </div>;
   }
 }
+
+export class FlexTableRow extends React.Component {
+  static propTypes = {
+    columns: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.string,
+      children: PropTypes.node
+    }))
+  }
+
+  static actions = actions
+
+  render() {
+    const { columns, ...props } = this.props;
+
+    return <div className="st2-flex-table__row" {...props}>
+      {
+        columns.map(({ className, children, ...props }, key) => {
+          return <div key={key} className={`st2-flex-table__column ${ className }`} {...props}>
+            { children }
+          </div>;
+        })
+      }
+    </div>;
+  }
+}
+
+export default FlexTable;

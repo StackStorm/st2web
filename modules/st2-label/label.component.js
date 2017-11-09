@@ -1,6 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+import './style.less';
+
 var states = {
   'complete': {
     class: 'st2-label--success'
@@ -41,10 +43,12 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-class Label extends React.Component {
+export default class Label extends React.Component {
   static propTypes = {
-    status : PropTypes.string
+    status: PropTypes.string,
+    short: PropTypes.bool
   }
+
   render() {
     var props = {
       className: 'st2-label__label'
@@ -56,10 +60,16 @@ class Label extends React.Component {
       props.className += ' ' + states[this.props.status].class;
     }
 
+    if (this.props.short) {
+      return <span className="st2-label st2-label--short">
+        <span {...props}>
+          { capitalize(state && state.title || this.props.status) }
+        </span>
+      </span>;
+    }
+
     return <span {...props}>
       { capitalize(state && state.title || this.props.status) }
     </span>;
   }
 }
-
-module.exports = Label;

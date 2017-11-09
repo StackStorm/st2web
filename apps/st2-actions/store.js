@@ -5,12 +5,14 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const actionReducer = (state = {}, action) => {
   let {
     actions = {},
+    executions = [],
     selected = undefined
   } = state;
 
   state = {
     ...state,
     actions,
+    executions,
     selected
   };
 
@@ -31,15 +33,32 @@ const actionReducer = (state = {}, action) => {
           break;
       }
 
-      return { ...state, actions };
+      return {
+        ...state,
+        actions,
+        selected: state.selected || Object.keys(actions).sort()[0]
+      };
     }
 
     case 'SELECT_ACTION':
+      executions = [];
       const { ref } = action;
+
+      switch(action.status) {
+        case 'success':
+          executions = action.payload;
+
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
 
       return {
         ...state,
-        selected: ref || Object.keys(state.actions).sort()[0]
+        selected: ref,
+        executions
       };
 
     case 'SET_FILTER':
