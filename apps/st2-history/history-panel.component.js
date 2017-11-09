@@ -22,6 +22,8 @@ import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import Time from '@stackstorm/module-time';
 import HistoryFlexCard from './history-flex-card.component';
 
+import './style.less';
+
 
 @connect((state, props) => {
   const { uid, ...restProps } = props;
@@ -112,7 +114,7 @@ export default class HistoryPanel extends React.Component {
       .value()
       ;
 
-    return <Panel>
+    return <Panel className="st2-history">
       <PanelView>
         <Toolbar title="History">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>

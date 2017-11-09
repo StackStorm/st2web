@@ -31,6 +31,9 @@ import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
 import St2PortionBar from '@stackstorm/module-portion-bar';
 
+import './style.less';
+
+
 function waitExecution(execution_id, record) {
   if (record.id !== execution_id) {
     return;
@@ -386,7 +389,7 @@ export default class PacksPanel extends React.Component {
       .value()
       ;
 
-    return <Panel>
+    return <Panel className="st2-packs">
       <PanelView>
         <Toolbar title="Packs">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>

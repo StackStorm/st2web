@@ -28,6 +28,8 @@ import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
 import StringField from '@stackstorm/module-auto-form/fields/string';
 
+import './style.less';
+
 
 @connect((state, props) => {
   const { collapsed = state.collapsed } = state.tables[props.title] || {};
@@ -162,7 +164,7 @@ export default class RulesPanel extends React.Component {
       .value()
       ;
 
-    return <Panel>
+    return <Panel className="st2-rules">
       <PanelView>
         <Toolbar title="Rules">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>

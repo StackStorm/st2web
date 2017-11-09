@@ -41,6 +41,8 @@ import StringField from '@stackstorm/module-auto-form/fields/string';
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
 
+import './style.less';
+
 
 @connect((state, props) => {
   const { collapsed = state.collapsed } = state.tables[props.title] || {};
@@ -200,7 +202,7 @@ export default class ActionsPanel extends React.Component {
       .value()
       ;
 
-    return <Panel>
+    return <Panel className="st2-actions">
       <PanelView>
         <Toolbar title="Actions">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
