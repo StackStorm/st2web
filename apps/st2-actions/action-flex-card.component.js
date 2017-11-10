@@ -24,7 +24,7 @@ export default class ActionFlexCard extends React.Component {
     return <div {...props}>
       <div className="st2-flex-card__header">
         <div className="st2-flex-card__column">
-          <div className="st2-flex-card__header-primary" title={action.ref}>{ action.ref }</div>
+          <div className="st2-flex-card__header-primary" title={action.ref}>{ action.name }</div>
           <div className="st2-flex-card__header-secondary">{ action.description }</div>
         </div>
       </div>

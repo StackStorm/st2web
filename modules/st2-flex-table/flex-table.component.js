@@ -55,12 +55,39 @@ export class FlexTableRow extends React.Component {
 
     return <div className="st2-flex-table__row" {...props}>
       {
-        columns.map(({ className, children, ...props }, key) => {
-          return <div key={key} className={`st2-flex-table__column ${ className }`} {...props}>
+        columns.map(({ Component = 'div', className, children, ...props }, key) => {
+          return <Component key={key} className={`st2-flex-table__column ${ className }`} {...props}>
             { children }
-          </div>;
+          </Component>;
         })
       }
+    </div>;
+  }
+}
+
+export class FlexTableInsert extends React.Component {
+  static propTypes = {
+    visible: PropTypes.bool,
+    children: PropTypes.node
+  }
+
+  static defaultProps = {
+    visible: true
+  }
+
+  static actions = actions
+
+  render() {
+    const { visible, children } = this.props;
+
+    if (!visible) {
+      return null;
+    }
+
+    return <div className="st2-flex-table__insert">
+      <div className="st2-details__panel-body">
+        { children }
+      </div>
     </div>;
   }
 }

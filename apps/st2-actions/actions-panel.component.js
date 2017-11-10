@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 
 import {
   Route,
-  Switch
+  Switch,
+  Link
 } from 'react-router-dom';
 
 import store from './store';
@@ -32,7 +33,8 @@ import {
 import Button from '@stackstorm/module-forms/button.component';
 import {
   FlexTable,
-  FlexTableRow
+  FlexTableRow,
+  FlexTableInsert
 } from '@stackstorm/module-flex-table/flex-table.component';
 import ActionFlexCard from './action-flex-card.component';
 import AutoForm from '@stackstorm/module-auto-form';
@@ -40,6 +42,7 @@ import St2Highlight from '@stackstorm/module-highlight';
 import StringField from '@stackstorm/module-auto-form/fields/string';
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
+import ActionReporter from '@stackstorm/module-action-reporter';
 
 import './style.less';
 
@@ -80,7 +83,8 @@ export default class ActionsPanel extends React.Component {
   }
 
   state = {
-    runPreview: false
+    runPreview: false,
+    executionsVisible: {}
   }
 
   handleToggleAll() {
@@ -147,6 +151,15 @@ export default class ActionsPanel extends React.Component {
     });
   }
 
+  handleToggleExecution(id) {
+    this.setState({
+      executionsVisible: {
+        ...this.state.executionsVisible,
+        [id]: !this.state.executionsVisible[id]
+      },
+    });
+  }
+
   componentDidMount() {
     store.dispatch({
       type: 'FETCH_ACTIONS',
@@ -184,7 +197,13 @@ export default class ActionsPanel extends React.Component {
   }
 
   render() {
-    const { actions={}, executions=[], selected, collapsed, filter = '' } = this.props;
+    const {
+      actions={},
+      executions=[],
+      selected,
+      collapsed,
+      filter = ''
+    } = this.props;
 
     const {
       ref,
@@ -278,31 +297,42 @@ export default class ActionsPanel extends React.Component {
                         : <FlexTable>
                           {
                             executions.map(execution => {
-                              return <FlexTableRow onToggle={ () => console.log(1) } key={execution.id} columns={[
-                                {
-                                  className: 'st2-actions__details-column-utility',
-                                  children: <i className="icon-chevron_right"></i>
-                                },
-                                {
-                                  className: 'st2-actions__details-column-meta',
-                                  children: <Label status="failed" short={true} />
-                                },
-                                {
-                                  className: 'st2-actions__details-column-time',
-                                  children: <Time timestamp={new Date().toString()} format="ddd, DD MMM YYYY" />
-                                },
-                                {
-                                  className: 'st2-actions__details-column-history',
-                                  children: <i className="icon-history"></i>, title: 'Jump to History'
-                                },
-                              ]}/>;
+                              return [
+                                <FlexTableRow
+                                  onClick={ () => this.handleToggleExecution(execution.id) }
+                                  columns={[
+                                    {
+                                      className: 'st2-actions__details-column-utility',
+                                      children: <i className={`icon-chevron${ this.state.executionsVisible[execution.id] ? '-down': '_right' }`}></i>
+                                    },
+                                    {
+                                      className: 'st2-actions__details-column-meta',
+                                      children: <Label status="failed" short={true} />
+                                    },
+                                    {
+                                      className: 'st2-actions__details-column-time',
+                                      children: <Time timestamp={new Date().toString()} format="ddd, DD MMM YYYY" />
+                                    },
+                                    {
+                                      Component: Link,
+                                      to: `/history/${execution.id}/general?action=${ref}`,
+                                      className: 'st2-actions__details-column-history',
+                                      title: 'Jump to History',
+                                      children: <i className="icon-history"></i>
+                                    },
+                                  ]}
+                                />,
+                                <FlexTableInsert visible={ this.state.executionsVisible[execution.id] || false }>
+                                  <ActionReporter runner={ execution.runner.name } execution={ execution } />
+                                </FlexTableInsert>
+                              ];
                             })
                           }
                         </FlexTable>
                     }
-                    <a className="st2-forms__button st2-forms__button--flat" href="#/history?action=chatops.match">
+                    <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${ref}`}>
                       <i className="icon-history"></i> See full action history
-                    </a>
+                    </Link>
                   </DetailsPanelBody>
                 </DetailsPanel>
               </div>;
