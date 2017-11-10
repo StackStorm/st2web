@@ -6,4 +6,4 @@ var directive = require('./history-child.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

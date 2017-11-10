@@ -11,5 +11,5 @@ gulp.task('production-libs', function () {
       path.basename = path.basename.split('.')[0];
     }))
     .pipe(gulp.dest(settings.production.dest))
-    ;
+  ;
 });

@@ -6,4 +6,4 @@ var directive = require('./value-format.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

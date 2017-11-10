@@ -6,4 +6,4 @@ var directive = require('./form-checkbox.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

@@ -131,7 +131,7 @@ export default class RulesPanel extends React.Component {
           store.dispatch({ type: 'SELECT_RULE' });
         }
       })
-      ;
+    ;
 
     const { ref } = this.props.match.params;
     store.dispatch({ type: 'SELECT_RULE', ref });

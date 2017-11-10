@@ -57,7 +57,7 @@ export default class AutoForm extends React.Component {
       .pick(Boolean)
       .mapValues(v => v.getValue())
       .value()
-      ;
+    ;
   }
 
   handleChange(name, value) {

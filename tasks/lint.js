@@ -10,5 +10,5 @@ gulp.task('lint', function () {
     .pipe(plugins.plumber())
     .pipe(plugins.eslint())
     .pipe(plugins.eslint.format())
-    ;
+  ;
 });

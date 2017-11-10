@@ -15,4 +15,4 @@ var directive = require('./auto-form.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

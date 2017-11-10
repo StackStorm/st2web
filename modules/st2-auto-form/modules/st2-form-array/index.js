@@ -6,4 +6,4 @@ var directive = require('./form-array.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

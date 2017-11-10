@@ -79,7 +79,7 @@ export default class HistoryPanel extends React.Component {
           store.dispatch({ type: 'SELECT_EXECUTION' });
         }
       })
-      ;
+    ;
 
     const { ref } = this.props.match.params;
     store.dispatch({ type: 'SELECT_EXECUTION', ref });

@@ -83,7 +83,7 @@ export default class Menu extends React.Component {
           <div className="st2-menu__user-dropdown">
             <div className="st2-menu__user-dropdown-backdrop"></div>
             <div className="st2-menu__user-dropdown-item"
-                onClick={() => this.handleDisconnect()}>
+              onClick={() => this.handleDisconnect()}>
               Sign out
             </div>
           </div>

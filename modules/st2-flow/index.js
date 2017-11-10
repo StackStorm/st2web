@@ -6,4 +6,4 @@ var directive = require('./flow.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

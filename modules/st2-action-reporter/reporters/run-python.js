@@ -3,7 +3,7 @@ import React from 'react';
 import St2Highlight from '@stackstorm/module-highlight';
 
 export default function debug(execution) {
-	return [
+  return [
     execution.result.result ? [
       <div className="st2-action-reporter__source">Result</div>,
       <St2Highlight code={execution.result.result} />
@@ -26,6 +26,6 @@ export default function debug(execution) {
 
     !execution.result.result && !execution.result.stderr && !execution.result.stdout && !execution.result.traceback ?
       <div className="st2-highlight st2-action-reporter__message" code="'// Action produced no data'"></div>
-    : null,
+      : null,
   ];
 }

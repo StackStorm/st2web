@@ -6,4 +6,4 @@ var directive = require('./proportional.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

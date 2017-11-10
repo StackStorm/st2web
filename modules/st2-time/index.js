@@ -6,4 +6,4 @@ var directive = require('./time.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

@@ -6,4 +6,4 @@ var directive = require('./scroll-into-view.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

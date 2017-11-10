@@ -260,7 +260,7 @@ export default class PacksPanel extends React.Component {
           store.dispatch({ type: 'SELECT_PACK' });
         }
       })
-      ;
+    ;
 
     store.dispatch({
       type: 'FETCH_PACK_INDEX',
@@ -296,19 +296,19 @@ export default class PacksPanel extends React.Component {
       promise: api.client.configs.list({
         show_secrets: true
       })
-      .then(configs => {
-        const packs = {};
+        .then(configs => {
+          const packs = {};
 
-        _.forEach(configs, config => {
-          const ref = config.pack;
-          packs[ref] = {
-            ref,
-            config: config.values
-          };
-        });
+          _.forEach(configs, config => {
+            const ref = config.pack;
+            packs[ref] = {
+              ref,
+              config: config.values
+            };
+          });
 
-        return packs;
-      })
+          return packs;
+        })
     });
 
     const { ref } = this.props.match.params;

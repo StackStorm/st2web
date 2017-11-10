@@ -44,13 +44,13 @@ function bundle(file, name) {
           showFiles: true,
           gzip: true
         }))
-        ;
+      ;
     });
 
   b
     .plugin(cssExtract, { out: path.join(settings.styles.dest, 'style.css')})
     .on('log', plugins.util.log)
-    ;
+  ;
 
   fs.mkdir(settings.styles.dest, function () { /* noop */ });
 
@@ -68,7 +68,7 @@ function bundle(file, name) {
     .pipe(plugins.header('/* ' + buildHeader() + ' */'))
     .pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest('js/'))
-    ;
+  ;
 }
 
 gulp.task('browserify', function () {
@@ -82,7 +82,7 @@ gulp.task('browserify', function () {
       showFiles: true,
       gzip: true
     }))
-    ;
+  ;
 });
 
 gulp.task('watchify', function () {
@@ -98,5 +98,5 @@ gulp.task('watchify', function () {
       showFiles: true,
       gzip: true
     }))
-    ;
+  ;
 });

@@ -6,4 +6,4 @@ var directive = require('./form-text-field.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

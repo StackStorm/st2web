@@ -100,7 +100,7 @@ export default class Login extends React.Component {
         {
           !!api.servers && <LoginRow className="st2-auto-form__select">
             <select className="st2-auto-form__field st2-login__field"
-                ref={component => this.serverField = component}
+              ref={component => this.serverField = component}
             >
               {
                 api.servers.map((server, i) => {

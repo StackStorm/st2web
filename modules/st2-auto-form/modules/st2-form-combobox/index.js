@@ -8,4 +8,4 @@ var suggestions = require('./suggestions.directive.js');
 mod
   .directive(directive.name, directive)
   .directive(suggestions.name, suggestions)
-  ;
+;

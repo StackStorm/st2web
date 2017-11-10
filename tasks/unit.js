@@ -22,5 +22,5 @@ gulp.task('unit', function (done) {
     .on('error', function (err) {
       return done(err);
     });
-    ;
+  ;
 });

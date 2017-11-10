@@ -6,4 +6,4 @@ var directive = require('./remote-form.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

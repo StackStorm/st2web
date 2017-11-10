@@ -6,4 +6,4 @@ var directive = require('./filter.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

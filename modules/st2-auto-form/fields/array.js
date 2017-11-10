@@ -4,12 +4,12 @@ import _ from 'lodash';
 import { BaseTextField } from './base';
 
 const jsonCheck = value => {
-    try {
-        JSON.parse(value);
-    } catch (e) {
-        return false;
-    }
-    return true;
+  try {
+    JSON.parse(value);
+  } catch (e) {
+    return false;
+  }
+  return true;
 };
 
 const typeChecks = (type, value) => {
@@ -44,7 +44,7 @@ function split(value) {
     .split(',')
     .map(v => v.trim())
     .filter(v => v.length)
-    ;
+  ;
 }
 
 export default class ArrayField extends BaseTextField {
@@ -61,7 +61,7 @@ export default class ArrayField extends BaseTextField {
     const { items } = this.props.spec;
     return split(value)
       .map(v => typeConversions(items && items.type, v))
-      ;
+    ;
   }
 
   toStateValue(value) {

@@ -6,4 +6,4 @@ var directive = require('./select-on-click.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;

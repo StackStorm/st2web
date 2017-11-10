@@ -6,4 +6,4 @@ var config = require('./notification.config.js');
 
 mod
   .config(config)
-  ;
+;

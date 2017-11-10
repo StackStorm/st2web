@@ -6,4 +6,4 @@ var directive = require('./form-select.directive.js');
 
 mod
   .directive(directive.name, directive)
-  ;
+;
