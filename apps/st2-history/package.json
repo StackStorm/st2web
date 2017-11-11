@@ -50,9 +50,13 @@
     "access": "public"
   },
   "dependencies": {
+    "@stackstorm/module-action-reporter": "1.0.0-pre.4",
     "@stackstorm/module-api": "1.0.0-pre.4",
     "@stackstorm/module-auto-form": "1.0.0-pre.4",
     "@stackstorm/module-flex-table": "1.0.0-pre.4",
+    "@stackstorm/module-forms": "1.0.0-pre.4",
+    "@stackstorm/module-highlight": "1.0.0-pre.4",
+    "@stackstorm/module-label": "1.0.0-pre.4",
     "@stackstorm/module-menu": "1.0.0-pre.4",
     "@stackstorm/module-panel": "1.0.0-pre.4",
     "@stackstorm/module-store": "1.0.0-pre.4",

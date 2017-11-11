@@ -35,7 +35,7 @@ import {
   FlexTable,
   FlexTableRow,
   FlexTableInsert
-} from '@stackstorm/module-flex-table/flex-table.component';
+} from '@stackstorm/module-flex-table';
 import ActionFlexCard from './action-flex-card.component';
 import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
@@ -219,7 +219,7 @@ export default class ActionsPanel extends React.Component {
       .sortBy('ref')
       .groupBy('pack')
       .value()
-      ;
+    ;
 
     return <Panel className="st2-actions">
       <PanelView>
@@ -307,11 +307,11 @@ export default class ActionsPanel extends React.Component {
                                     },
                                     {
                                       className: 'st2-actions__details-column-meta',
-                                      children: <Label status="failed" short={true} />
+                                      children: <Label status={execution.status} short={true} />
                                     },
                                     {
                                       className: 'st2-actions__details-column-time',
-                                      children: <Time timestamp={new Date().toString()} format="ddd, DD MMM YYYY" />
+                                      children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />
                                     },
                                     {
                                       Component: Link,

@@ -20,7 +20,9 @@ const historyReducer = (state = {}, action) => {
 
       switch(action.status) {
         case 'success':
-          executions = action.payload;
+          _.forEach(action.payload, item => {
+            executions[item.id] = item;
+          });
 
           break;
         case 'error':
@@ -29,7 +31,11 @@ const historyReducer = (state = {}, action) => {
           break;
       }
 
-      return { ...state, executions };
+      return {
+        ...state,
+        executions,
+        selected: state.selected || Object.keys(executions).sort()[0]
+      };
     }
 
     case 'SELECT_EXECUTION':

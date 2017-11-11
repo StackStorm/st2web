@@ -204,6 +204,22 @@ export class DetailsPanelBody extends React.Component {
   }
 }
 
+export class DetailsPanelBodyLine extends React.Component {
+  static propTypes = {
+    label: PropTypes.string,
+    children: PropTypes.node
+  }
+
+  render() {
+    const { label, children } = this.props;
+
+    return <dl className="st2-details__panel-body-line">
+      <dt className="st2-details__panel-body-label">{ label }:</dt>
+      <dd className="st2-details__panel-body-value">{ children }</dd>
+    </dl>;
+  }
+}
+
 export class DetailsButtonsPanel extends React.Component {
   static propTypes = {
     children: PropTypes.node

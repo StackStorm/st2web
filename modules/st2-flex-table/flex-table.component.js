@@ -1,7 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-import FlexTableTitle from './flex-table-title.component';
 import { actions } from './flex-table.reducer';
 
 import './style.less';
@@ -9,6 +8,7 @@ import './style.less';
 export class FlexTable extends React.Component {
   static propTypes = {
     title: PropTypes.node,
+    titleType: PropTypes.string,
     collapsed: PropTypes.bool,
     children: PropTypes.node,
     icon: PropTypes.string,
@@ -22,7 +22,7 @@ export class FlexTable extends React.Component {
       className: 'st2-flex-table'
     };
 
-    const { title, collapsed, children, icon, onToggle } = this.props;
+    const { title, titleType, collapsed, children, icon, onToggle } = this.props;
 
     if (collapsed) {
       props.className += ' st2-flex-table--collapsed';
@@ -31,11 +31,42 @@ export class FlexTable extends React.Component {
     return <div {...props} >
       {
         !!title &&
-          <FlexTableTitle icon={icon} onToggle={(e) => onToggle(e)}>
+          <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
             { title }
           </FlexTableTitle>
       }
       { !collapsed && children }
+    </div>;
+  }
+}
+
+export class FlexTableTitle extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    type: PropTypes.string,
+    icon: PropTypes.string,
+    onToggle: PropTypes.func.isRequired
+  }
+
+  render() {
+    const { children, type, icon, onToggle } = this.props;
+
+    const props = {
+      className: 'st2-flex-table__caption',
+      onClick: (e) => onToggle(e)
+    };
+
+    if (icon) {
+      props.className += ' st2-flex-table__caption--pack';
+    }
+
+    if (type) {
+      props.className += ' st2-flex-table__caption--' + type;
+    }
+
+    return <div {...props}>
+      { !!icon && <img src={icon} /> }
+      <h2 className="st2-flex-table__caption-title">{ children }</h2>
     </div>;
   }
 }

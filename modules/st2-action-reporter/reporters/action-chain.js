@@ -1,5 +1,12 @@
 import React from 'react';
 
+import {
+  FlexTable,
+  FlexTableRow,
+  FlexTableInsert
+} from '@stackstorm/module-flex-table';
+import Label from '@stackstorm/module-label';
+
 export default function debug(execution) {
   return <dl>
     {
@@ -7,7 +14,7 @@ export default function debug(execution) {
         const result = execution.result[task];
 
         return [
-          <dt>{{ task }}</dt>,
+          <dt>{ task }</dt>,
           <dd className="st2-flex-table">
             <div className="st2-flex-table__header">
               <div className="st2-flex-table__column st2-action-reporter__column-host">Host</div>
@@ -23,7 +30,7 @@ export default function debug(execution) {
                   <div className="st2-flex-table__row">
                     <div className="st2-flex-table__column st2-action-reporter__column-host">{ host }</div>
                     <div className="st2-flex-table__column st2-action-reporter__column-status">
-                      <span className="st2-label" status={ res.succeeded ? 'succeeded' : res.failed ? 'failed' : 'indeterminate' } />
+                      <Label status={ res.succeeded ? 'succeeded' : res.failed ? 'failed' : 'indeterminate' } />
                     </div>
                     <div className="st2-flex-table__column st2-action-reporter__column-code">{ res.return_code }</div>
                   </div>,

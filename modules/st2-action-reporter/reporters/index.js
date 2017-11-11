@@ -2,7 +2,7 @@ import debug from './debug';
 import runLocal from './run-local';
 import runRemote from './run-remote';
 import runPython from './run-python';
-import actionChain from './action-chain';
+// import actionChain from './action-chain';
 import http from './http';
 import noop from './noop';
 // import windows from './windows';
@@ -13,10 +13,10 @@ export default {
   'local-shell-cmd': runLocal,
   'run-remote': runRemote,
   'remote-shell-cmd': runRemote,
-  'action-chain': actionChain,
-  'workflow': actionChain,
-  'mistral-v1': actionChain,
-  'mistral-v2': actionChain,
+  // 'action-chain': actionChain,
+  // 'workflow': actionChain,
+  // 'mistral-v1': actionChain,
+  // 'mistral-v2': actionChain,
   'run-local-script': runLocal,
   'local-shell-script': runLocal,
   'run-remote-script': runRemote,

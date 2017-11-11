@@ -51,7 +51,9 @@
   },
   "dependencies": {
     "@stackstorm/st2-style": "1.0.0-pre.4",
+    "@stackstorm/module-flex-table": "1.0.0-pre.4",
     "@stackstorm/module-highlight": "1.0.0-pre.4",
+    "@stackstorm/module-label": "1.0.0-pre.4",
     "insert-css": "2.0.0",
     "lodash": "2.4.2",
     "prop-types": "15.5.10",

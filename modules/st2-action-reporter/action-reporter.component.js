@@ -15,6 +15,10 @@ export default class ActionReporter extends React.Component {
     const { runner, execution } = this.props;
     const reporter = reporters[runner] || reporters.debug;
 
+    if (!execution) {
+      return null;
+    }
+
     return <div className="st2-action-reporter">
       { reporter(execution) }
     </div>;

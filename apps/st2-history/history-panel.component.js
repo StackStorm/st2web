@@ -2,10 +2,16 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
+import {
+  Route,
+  Switch,
+  // Link
+} from 'react-router-dom';
+
 import store from './store';
 import api from '@stackstorm/module-api';
 
-import { actions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
+import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import {
   Panel,
   PanelView,
@@ -13,14 +19,26 @@ import {
   Toolbar,
   Content,
   DetailsHeader,
+  DetailsSwitch,
   DetailsBody,
+  DetailsPanel,
+  DetailsPanelHeading,
+  DetailsPanelBody,
+  DetailsPanelBodyLine,
+  // DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
   ToggleButton
 } from '@stackstorm/module-panel';
-import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
+// import Button from '@stackstorm/module-forms/button.component';
+import {
+  FlexTable
+} from '@stackstorm/module-flex-table';
+import St2Highlight from '@stackstorm/module-highlight';
 import Time from '@stackstorm/module-time';
+import Label from '@stackstorm/module-label';
 import HistoryFlexCard from './history-flex-card.component';
+import ActionReporter from '@stackstorm/module-action-reporter';
 
 import './style.less';
 
@@ -34,14 +52,14 @@ import './style.less';
   const { uid } = props;
 
   return {
-    onToggle: () => store.dispatch(actions.toggle(uid))
+    onToggle: () => store.dispatch(flexActions.toggle(uid))
   };
 })
 class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
-    store.dispatch(actions.register(uid));
+    store.dispatch(flexActions.register(uid));
   }
 }
 
@@ -59,25 +77,34 @@ export default class HistoryPanel extends React.Component {
   }
 
   handleToggleAll() {
-    return store.dispatch(actions.toggleAll());
+    return store.dispatch(flexActions.toggleAll());
   }
 
-  handleSelect(ref) {
+  handleSelect(id) {
     const { history } = this.props;
-    history.push(`/history/${ ref }`);
+    history.push(`/history/${ id }`);
+  }
+
+  handleSection(section) {
+    const { history, executions={}, selected } = this.props;
+    const { id } = executions[selected] || {};
+    history.push(`/history/${ id }/${ section }`);
   }
 
   componentDidMount() {
     store.dispatch({
       type: 'FETCH_EXECUTIONS',
-      promise: api.client.executions.list()
+      promise: api.client.executions.list({
+        parent: 'null'
+      })
     })
       .then(() => {
         const { selected } = store.getState();
 
-        if (!selected) {
-          store.dispatch({ type: 'SELECT_EXECUTION' });
-        }
+        store.dispatch({
+          type: 'SELECT_EXECUTION',
+          ref: selected
+        });
       })
     ;
 
@@ -94,25 +121,37 @@ export default class HistoryPanel extends React.Component {
   }
 
   render() {
-    const { executions={}, selected, collapsed } = this.props;
+    const {
+      executions={},
+      selected,
+      collapsed
+    } = this.props;
 
     const {
-      action = {}
+      action = {},
+      runner = {},
+      status,
+      start_timestamp,
+      end_timestamp,
+      context: {
+        trace_context: {
+          trace_tag
+        } = {}
+      } = {}
     } = executions[selected] || {};
 
-    // const filteredRules = _.filter(rules, rule => {
-    //   return rule.ref.toLowerCase().indexOf(filter.toLowerCase()) > -1;
-    // });
+    const execution_time = Math.ceil((new Date(end_timestamp).getTime() - new Date(start_timestamp).getTime()) / 1000);
 
     const executionGroups = _(executions)
       .sortBy('start_timestamp')
+      .reverse()
       .groupBy(record => {
         const date = new Date(record.start_timestamp).toDateString();
         const time = new Date(date).toISOString();
         return time;
       })
       .value()
-      ;
+    ;
 
     return <Panel className="st2-history">
       <PanelView>
@@ -123,13 +162,16 @@ export default class HistoryPanel extends React.Component {
           {
             Object.keys(executionGroups).map(key => {
               const date = <Time timestamp={key} format="ddd, DD MMM YYYY" />;
-              return !!executionGroups[key] && <FlexTableWrapper uid={key} title={date} key={key}>
+              return !!executionGroups[key] && <FlexTableWrapper uid={key} title={date} titleType="date" key={key}>
                 {
                   executionGroups[key]
                     .map(execution => {
-                      return <HistoryFlexCard key={execution.id} execution={execution}
+                      return <HistoryFlexCard
+                        key={execution.id}
+                        execution={execution}
                         selected={selected === execution.id}
-                        onClick={() => this.handleSelect(execution.id)} />;
+                        onClick={() => this.handleSelect(execution.id)}
+                      />;
                     })
                 }
               </FlexTableWrapper>;
@@ -139,8 +181,81 @@ export default class HistoryPanel extends React.Component {
       </PanelView>
       <PanelDetails data-test="details">
         <DetailsHeader title={action.ref} subtitle={action.description}/>
+        <Route path="/history/:ref?/:section?" children={({ match: { params: { section } } }) => {
+          return <DetailsSwitch
+            sections={[
+              { label: 'General', path: 'general' },
+              { label: 'Code', path: 'code' }
+            ]}
+            current={ section }
+            onChange={ ({ path }) => this.handleSection(path) }/>;
+        }} />
         <DetailsBody>
-          123
+          <Switch>
+            <Route exact path="/history/:ref?/(general)?" render={() => {
+              return <div>
+                <DetailsPanel>
+                  <div className="st2-action-reporter__header">
+                    <DetailsPanelBody>
+                      <DetailsPanelBodyLine label="Status">
+                        <Label status={status} />
+                      </DetailsPanelBodyLine>
+                      <DetailsPanelBodyLine label="Execution ID">
+                        <div className="st2-action-reporter__uuid">
+                          { selected }
+                        </div>
+                      </DetailsPanelBodyLine>
+                      { trace_tag ?
+                        <DetailsPanelBodyLine label="Trace Tag">
+                          <div className="st2-action-reporter__uuid">
+                            { trace_tag }
+                          </div>
+                        </DetailsPanelBodyLine>
+                        : null
+                      }
+                      <DetailsPanelBodyLine label="Started">
+                        <Time timestamp={start_timestamp} format="ddd, DD MMM YYYY" />
+                      </DetailsPanelBodyLine>
+                      <DetailsPanelBodyLine label="Finished">
+                        <Time timestamp={end_timestamp} format="ddd, DD MMM YYYY" />
+                      </DetailsPanelBodyLine>
+                      <DetailsPanelBodyLine label="Execution Time">
+                        {execution_time}s
+                      </DetailsPanelBodyLine>
+                    </DetailsPanelBody>
+                  </div>
+                  <DetailsPanelHeading title="Action Output" />
+                  <DetailsPanelBody>
+                    <ActionReporter runner={ runner.name } execution={ executions[selected] } />
+                  </DetailsPanelBody>
+                </DetailsPanel>
+                <DetailsPanel>
+                  <DetailsPanelHeading title="Rule Details" />
+                  <DetailsPanelBody>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+                <DetailsPanel>
+                  <DetailsPanelHeading title="Trigger Details" />
+                  <DetailsPanelBody>
+                  </DetailsPanelBody>
+                  <DetailsPanelBody>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+                <DetailsPanel>
+                  <DetailsPanelHeading title="Action Input" />
+                  <DetailsPanelBody>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+              </div>;
+            }} />
+            <Route path="/history/:ref/code" render={() => {
+              return <DetailsPanel data-test="action_parameters" >
+                {
+                  !!executions[selected] && <St2Highlight code={executions[selected]} />
+                }
+              </DetailsPanel>;
+            }} />
+          </Switch>
         </DetailsBody>
         <DetailsToolbar>
           <DetailsToolbarSeparator />
