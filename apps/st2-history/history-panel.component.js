@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {
   Route,
   Switch,
-  // Link
+  Link
 } from 'react-router-dom';
 
 import store from './store';
@@ -30,10 +30,11 @@ import {
   DetailsToolbarSeparator,
   ToggleButton
 } from '@stackstorm/module-panel';
-// import Button from '@stackstorm/module-forms/button.component';
+import Button from '@stackstorm/module-forms/button.component';
 import {
   FlexTable
 } from '@stackstorm/module-flex-table';
+import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
@@ -128,11 +129,15 @@ export default class HistoryPanel extends React.Component {
     } = this.props;
 
     const {
-      action = {},
-      runner = {},
       status,
       start_timestamp,
       end_timestamp,
+      action = {},
+      runner = {},
+      rule,
+      trigger,
+      trigger_instance,
+      parameters,
       context: {
         trace_context: {
           trace_tag
@@ -166,12 +171,15 @@ export default class HistoryPanel extends React.Component {
                 {
                   executionGroups[key]
                     .map(execution => {
-                      return <HistoryFlexCard
-                        key={execution.id}
-                        execution={execution}
-                        selected={selected === execution.id}
-                        onClick={() => this.handleSelect(execution.id)}
-                      />;
+                      return [
+                        <HistoryFlexCard
+                          key={execution.id}
+                          execution={execution}
+                          selected={selected === execution.id}
+                          onClick={() => this.handleSelect(execution.id)}
+                        />,
+                        null, // TODO: children
+                      ];
                     })
                 }
               </FlexTableWrapper>;
@@ -214,10 +222,10 @@ export default class HistoryPanel extends React.Component {
                         : null
                       }
                       <DetailsPanelBodyLine label="Started">
-                        <Time timestamp={start_timestamp} format="ddd, DD MMM YYYY" />
+                        <Time timestamp={start_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Finished">
-                        <Time timestamp={end_timestamp} format="ddd, DD MMM YYYY" />
+                        <Time timestamp={end_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Execution Time">
                         {execution_time}s
@@ -229,21 +237,58 @@ export default class HistoryPanel extends React.Component {
                     <ActionReporter runner={ runner.name } execution={ executions[selected] } />
                   </DetailsPanelBody>
                 </DetailsPanel>
-                <DetailsPanel>
-                  <DetailsPanelHeading title="Rule Details" />
-                  <DetailsPanelBody>
-                  </DetailsPanelBody>
-                </DetailsPanel>
-                <DetailsPanel>
-                  <DetailsPanelHeading title="Trigger Details" />
-                  <DetailsPanelBody>
-                  </DetailsPanelBody>
-                  <DetailsPanelBody>
-                  </DetailsPanelBody>
-                </DetailsPanel>
+                { rule ?
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Rule Details" />
+                    <DetailsPanelBody>
+                      <DetailsPanelBodyLine label="Rule">
+                        <Link to={`/rules/${rule.ref}/general`}>{ rule.ref }</Link>
+                      </DetailsPanelBodyLine>
+                      { rule.description ?
+                        <DetailsPanelBodyLine label="Description">
+                          { rule.description }
+                        </DetailsPanelBodyLine>
+                        : null }
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                  : null }
+                { trigger ?
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Trigger Details" />
+                    <DetailsPanelBody>
+                      { trigger.type ?
+                        <DetailsPanelBodyLine label="Trigger">
+                          { trigger.type }
+                        </DetailsPanelBodyLine>
+                        : null }
+                      { trigger_instance && trigger_instance.occurrence_time ?
+                        <DetailsPanelBodyLine label="Occurrence">
+                          <Time timestamp={trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        </DetailsPanelBodyLine>
+                        : null }
+                    </DetailsPanelBody>
+                    { trigger_instance && trigger_instance.occurrence_time ?
+                      <DetailsPanelBody>
+                        <St2Highlight code={trigger_instance.payload} />
+                      </DetailsPanelBody>
+                      :null }
+                  </DetailsPanel>
+                  : null }
                 <DetailsPanel>
                   <DetailsPanelHeading title="Action Input" />
                   <DetailsPanelBody>
+                    <form className="st2-details__form">
+                      <AutoForm
+                        spec={{
+                          type: 'object',
+                          properties: {
+                            ...runner.runner_parameters,
+                            ...action.parameters,
+                          }
+                        }}
+                        disabled={true}
+                        ngModel={parameters} />
+                    </form>
                   </DetailsPanelBody>
                 </DetailsPanel>
               </div>;
@@ -258,6 +303,9 @@ export default class HistoryPanel extends React.Component {
           </Switch>
         </DetailsBody>
         <DetailsToolbar>
+          <Button small value="Rerun" onClick={() => this.handleRerun()} />
+          <Button small value="Cancel" onClick={() => this.handleCancel()} disabled={status !== 'running'} />
+
           <DetailsToolbarSeparator />
         </DetailsToolbar>
       </PanelDetails>

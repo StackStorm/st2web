@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {
-  FlexTable,
-  FlexTableRow,
-  FlexTableInsert
+// FlexTable,
+// FlexTableRow,
+// FlexTableInsert
 } from '@stackstorm/module-flex-table';
 import Label from '@stackstorm/module-label';
 
