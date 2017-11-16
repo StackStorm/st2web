@@ -122,7 +122,7 @@ export default class RulesPanel extends React.Component {
   componentDidMount() {
     store.dispatch({
       type: 'FETCH_RULES',
-      promise: api.client.rules.list()
+      promise: api.client.ruleOverview.list()
     })
       .then(() => {
         const { selected } = store.getState();
