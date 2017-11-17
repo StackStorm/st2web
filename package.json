@@ -1,7 +1,7 @@
 {
   "name": "st2web",
   "version": "0.0.0",
-  "st2_version": "2.5.0",
+  "st2_version": "2.5.1",
   "private": true,
   "scripts": {
     "test": "node_modules/.bin/gulp test"
