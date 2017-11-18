@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-// import StringField from '@stackstorm/module-auto-form/fields/string';
+import AutoForm from '@stackstorm/module-auto-form';
 
 import './style.less';
 
@@ -36,12 +36,10 @@ export default class RemoteForm extends React.Component {
             onChange={(ref) => console.log('changed', ref)}
           />
       }
-      <div className="st2-auto-form"
-        key={value}
+      <AutoForm
+        spec={childSpec}
+        ngModel={data.parameters}
         disabled={disabled}
-        data-spec={childSpec}
-        data-watch-depth="reference"
-        data={data.parameters}
         onChange={onChange}
       />
     </div>;
