@@ -1,6 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+import Label from '@stackstorm/module-label';
+
 import './style.less';
 
 export class Panel extends React.Component {
@@ -101,20 +103,26 @@ export class Content extends React.Component {
 
 export class DetailsHeader extends React.Component {
   static propTypes = {
+    status: PropTypes.string,
     title: PropTypes.string,
-    subtitle: PropTypes.string
+    subtitle: PropTypes.string,
+    children: PropTypes.node
   }
 
   render() {
-    const { title, subtitle } = this.props;
+    const { status, title, subtitle, children } = this.props;
 
     return <div className="st2-details__header">
       <div className="st2-details__header-name" data-test="header_name">
+        { status ?
+          <Label status={status} short={true} />
+          : null }
         <a href="#/actions/core.announcement/general">{ title }</a>
       </div>
       <div className="st2-details__header-description" data-test="header_description">
         { subtitle }
       </div>
+      { children }
     </div>;
   }
 }
