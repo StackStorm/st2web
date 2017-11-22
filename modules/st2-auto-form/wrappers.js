@@ -2,105 +2,126 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 
-class Label extends React.Component {
+export class Label extends React.Component {
   static propTypes = {
+    spec: PropTypes.shape({
+      required: PropTypes.bool
+    }),
     className: PropTypes.string,
-    children: PropTypes.any.isRequired
+    children: PropTypes.node.isRequired
   }
 
   render() {
-    const props = {
-      className: 'st2-auto-form__label ' + (this.props.className || 'st2-auto-form__text-field')
-    };
+    const { spec, className, children } = this.props;
 
-    return <label {...props}>
-      { this.props.children }
+    return <label className={`st2-auto-form__label ${ className || '' } ${ spec && spec.required ? ' st2-auto-form--required' : '' }`}>
+      { children }
     </label>;
   }
 }
 
-class Title extends React.Component {
+export class Title extends React.Component {
   static propTypes = {
     name: PropTypes.string,
-    spec: PropTypes.object
+    spec: PropTypes.shape({
+      required: PropTypes.bool
+    }),
+    className: PropTypes.string
   }
 
   render() {
-    let name = this.props.spec.name || this.props.name;
+    const { name, spec, className } = this.props;
 
-    if (this.props.spec.required) {
-      name += ' *';
-    }
-
-    return <div className='st2-auto-form__title'>
-      { name }
+    return <div className={`st2-auto-form__title ${ className || '' }`}>
+      { spec && spec.name || name }{ spec && spec.required ? ' *' : '' }
     </div>;
   }
 }
 
-class ErrorMessage extends React.Component {
+export class ErrorMessage extends React.Component {
   static propTypes = {
-    children: PropTypes.string
+    className: PropTypes.string,
+    children: PropTypes.node
   }
 
   render() {
-    const props = {
-      className: 'st2-auto-form__error'
-    };
+    const { className, children } = this.props;
 
-    return <span {...props} >
-      { this.props.children }
+    if (!children) {
+      return null;
+    }
+
+    return <span className={`st2-auto-form__error ${ className || '' }`}>
+      { children }
     </span>;
   }
 }
 
-class Icon extends React.Component {
+export class Icon extends React.Component {
   static propTypes = {
-    name: PropTypes.string
-  }
-
-  render() {
-    const { name } = this.props;
-
-    const props = {
-      className: 'st2-auto-form__type'
-    };
-
-    return <span {...props}>{ name }</span>;
-  }
-}
-
-class Button extends React.Component {
-  static propTypes = {
-    icon: PropTypes.string,
+    name: PropTypes.string,
     title: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    className: PropTypes.string
   }
 
-  handleClick(e) {
+  onClick(e) {
     e.preventDefault();
     return this.props.onClick && this.props.onClick(e);
   }
 
   render() {
-    const props = {
-      className: `st2-auto-form__button icon-${this.props.icon}`,
-      onClick: (e) => this.handleClick(e),
-      title: this.props.title
-    };
+    const { name, title, className } = this.props;
 
-    return <span {...props} />;
+    return <span
+      className={`st2-auto-form__type ${ className || '' } icon-${ name }`}
+      title={ title }
+      onClick={ (e) => this.onClick(e) }
+    />;
   }
 }
 
-class Description extends React.Component {
+export class Button extends React.Component {
   static propTypes = {
-    spec: PropTypes.object
+    icon: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    onClick: PropTypes.func,
+    className: PropTypes.string
+  }
+
+  onClick(e) {
+    e.preventDefault();
+    return this.props.onClick && this.props.onClick(e);
   }
 
   render() {
-    return <p className='st2-auto-form__description'>
-      { this.props.spec.description }
+    const { icon, title, className } = this.props;
+
+    return <span
+      className={`st2-auto-form__button ${ className || '' } icon-${ icon }`}
+      title={ title }
+      onClick={ (e) => this.onClick(e) }
+    />;
+  }
+}
+
+export class Description extends React.Component {
+  static propTypes = {
+    spec: PropTypes.shape({
+      description: PropTypes.string
+    }),
+    className: PropTypes.string
+  }
+
+  render() {
+    const { spec, className } = this.props;
+
+    if (!spec || !spec.description) {
+      return null;
+    }
+
+    return <p className={`st2-auto-form__description ${ className || '' }`}>
+      { spec.description }
     </p>;
   }
 }
@@ -119,11 +140,11 @@ export class TextFieldWrapper extends React.Component {
 
   render() {
     const line = <div className='st2-auto-form__line'>
-      <Label className={this.props.labelClass} >
-        <Title {...this.props} />
-        <ErrorMessage>{ this.props.invalid }</ErrorMessage>
+      <Label className={this.props.labelClass || 'st2-auto-form__text-field'} >
         <Icon name={ this.props.icon } />
+        <Title {...this.props} />
         { this.props.children }
+        <ErrorMessage>{ this.props.invalid }</ErrorMessage>
       </Label>
       <Description {...this.props} />
     </div>;

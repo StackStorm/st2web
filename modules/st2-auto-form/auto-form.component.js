@@ -122,18 +122,19 @@ export default class AutoForm extends React.Component {
       {
         fields.map(field => {
           const name = field._name;
-          const props = {
-            name: name,
-            spec: field,
-            value: ngModel && ngModel[name],
-            disabled: disabled,
-            onChange: (value) => this.handleChange(name, value),
-            'data-test': `field:${name}`
-          };
 
           const FieldElement = this.getElementByField(field);
 
-          return <FieldElement key={name} ref={(c) => this.fields[name] = c} {...props} />;
+          return <FieldElement
+            key={name}
+            ref={(c) => this.fields[name] = c}
+            name={name}
+            spec={field}
+            value={ngModel && ngModel[name]}
+            disabled={disabled}
+            onChange={(value) => this.handleChange(name, value)}
+            data-test={`field:${name}`}
+          />;
         })
       }
     </div>;

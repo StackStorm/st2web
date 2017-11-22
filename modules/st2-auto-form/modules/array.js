@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 import AutoFormInput from './input';
 
-export default class AutoFormArray extends React.Component {
+export default class ArrayModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,

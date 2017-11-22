@@ -1,13 +1,23 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class AutoFormCheckbox extends React.Component {
+import {
+  Label,
+  ErrorMessage,
+  Description,
+} from '../wrappers';
+
+export default class CheckboxModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
     data: PropTypes.bool,
     onChange: PropTypes.func,
+  }
+
+  state = {
+    error: null,
   }
 
   onChange(value) {
@@ -18,26 +28,24 @@ export default class AutoFormCheckbox extends React.Component {
     const { name, disabled, spec, data } = this.props;
 
     return <div className="st2-form-checkbox">
-      <label className={`st2-auto-form__label ${ spec.required ? 'st2-auto-form--required' : '' }`}>
-        <input
-          type="checkbox"
-          className="st2-auto-form__checkbox"
-          placeholder={ spec.default }
-          disabled={ disabled }
-          checked={ data }
-          onChange={ ({ target: { checked } }) => this.onChange(checked) }
-        />
-
+      <Label spec={spec}>
         <div className="st2-auto-form__title">
-          { spec.name || name }
-        </div>
-      </label>
+          <input
+            type="checkbox"
+            className="st2-auto-form__checkbox"
+            placeholder={ spec.default }
+            disabled={ disabled }
+            checked={ data }
+            onChange={ ({ target: { checked } }) => this.onChange(checked) }
+          />
 
-      { spec.description
-        ? <p className="st2-auto-form__description">
-          { spec.description }
-        </p>
-        : null }
+          <span className="st2-auto-form__checkbox-label">{ spec.name || name }</span>
+        </div>
+
+        <ErrorMessage>{ this.state.error }</ErrorMessage>
+      </Label>
+
+      <Description spec={ spec } />
     </div>;
   }
 }

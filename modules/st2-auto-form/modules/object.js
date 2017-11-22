@@ -1,9 +1,9 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-import AutoFormTextField from './text-field';
+import TextFieldModule from './text-field';
 
-export default class AutoFormObject extends React.Component {
+export default class ObjectModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,
@@ -29,7 +29,7 @@ export default class AutoFormObject extends React.Component {
   render() {
     const { name, disabled, spec, data } = this.props;
 
-    return <AutoFormTextField
+    return <TextFieldModule
       name={ name }
       disabled={ disabled }
       spec={ spec }

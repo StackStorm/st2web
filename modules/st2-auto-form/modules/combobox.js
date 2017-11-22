@@ -1,7 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class AutoFormCombobox extends React.Component {
+import {
+  Label,
+  Title,
+  ErrorMessage,
+  Description,
+} from '../wrappers';
+
+export default class ComboboxModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,
@@ -12,6 +19,7 @@ export default class AutoFormCombobox extends React.Component {
 
   state = {
     value: null,
+    error: null,
   }
 
   onFocus() {
@@ -31,7 +39,7 @@ export default class AutoFormCombobox extends React.Component {
   }
 
   onChoose(value) {
-    this.setState({ value: null });
+    this.setState({ value: null, error: null });
     this.props.onChange(value);
   }
 
@@ -42,10 +50,8 @@ export default class AutoFormCombobox extends React.Component {
     const suggestions = value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
 
     return <div className="st2-auto-form-combobox">
-      <label className={`st2-auto-form__label ${ spec.required ? 'st2-auto-form--required' : '' }`}>
-        <div className="st2-auto-form__title">
-          { spec.name || name }
-        </div>
+      <Label spec={spec}>
+        <Title name={ name } spec={spec} />
 
         <input
           type="text"
@@ -58,7 +64,9 @@ export default class AutoFormCombobox extends React.Component {
           onBlur={ () => this.onBlur() }
           onChange={ ({ target: { value } }) => this.onInput(value) }
         />
-      </label>
+
+        <ErrorMessage>{ this.state.error }</ErrorMessage>
+      </Label>
 
       { suggestions
         ? <div className="st2-auto-form__suggestions">
@@ -75,11 +83,7 @@ export default class AutoFormCombobox extends React.Component {
         </div>
         : null }
 
-      { spec.description
-        ? <p className="st2-auto-form__description">
-          { spec.description }
-        </p>
-        : null }
+      <Description spec={ spec } />
     </div>;
   }
 }

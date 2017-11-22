@@ -1,7 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class AutoFormInput extends React.Component {
+import {
+  Label,
+  Title,
+  ErrorMessage,
+  Description,
+} from '../wrappers';
+
+export default class InputModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,
@@ -10,16 +17,21 @@ export default class AutoFormInput extends React.Component {
     onChange: PropTypes.func,
   }
 
+  state = {
+    error: null,
+  }
+
   onChange(value) {
     const { spec } = this.props;
 
     if (spec.pattern) {
-      if (!value.match(new RegExp(`/${spec.pattern}/`))) {
-        // TODO: error
+      if (!value.match(new RegExp(`/${ spec.pattern }/`))) {
+        this.setState({ error: `The value must match "${ spec.pattern }".` });
         return;
       }
     }
 
+    this.state.error && this.setState({ error: null });
     this.props.onChange(value);
   }
 
@@ -27,10 +39,8 @@ export default class AutoFormInput extends React.Component {
     const { name, disabled, spec, data } = this.props;
 
     return <div className="st2-form-input">
-      <label className={`st2-auto-form__label ${ spec.required ? 'st2-auto-form--required' : '' }`}>
-        <div className="st2-auto-form__title">
-          { spec.name || name }
-        </div>
+      <Label spec={spec}>
+        <Title name={ name } spec={spec} />
 
         <input
           type="text"
@@ -41,13 +51,11 @@ export default class AutoFormInput extends React.Component {
           value={ data }
           onChange={ ({ target: { value } }) => this.onChange(value) }
         />
-      </label>
 
-      { spec.description
-        ? <p className="st2-auto-form__description">
-          { spec.description }
-        </p>
-        : null }
+        <ErrorMessage>{ this.state.error }</ErrorMessage>
+      </Label>
+
+      <Description spec={ spec } />
     </div>;
   }
 }

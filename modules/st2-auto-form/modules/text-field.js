@@ -1,13 +1,24 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class AutoFormTextField extends React.Component {
+import {
+  Label,
+  Title,
+  ErrorMessage,
+  Description,
+} from '../wrappers';
+
+export default class TextFieldModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
     data: PropTypes.string,
     onChange: PropTypes.func,
+  }
+
+  state = {
+    error: null,
   }
 
   onRef(textarea) {
@@ -46,8 +57,8 @@ export default class AutoFormTextField extends React.Component {
     const { spec } = this.props;
 
     if (spec.pattern) {
-      if (!value.match(new RegExp(`/${spec.pattern}/`))) {
-        // TODO: error
+      if (!value.match(new RegExp(`/${ spec.pattern }/`))) {
+        this.setState({ error: `The value must match "${ spec.pattern }".` });
         return;
       }
     }
@@ -56,6 +67,7 @@ export default class AutoFormTextField extends React.Component {
       // TODO: use @@stackstorm/module-value-format
     }
 
+    this.state.error && this.setState({ error: null });
     this.props.onChange(value);
   }
 
@@ -63,10 +75,8 @@ export default class AutoFormTextField extends React.Component {
     const { name, disabled, spec, data } = this.props;
 
     return <div className="st2-form-text-field">
-      <label className={`st2-auto-form__label ${ spec.required ? 'st2-auto-form--required' : '' }`}>
-        <div className="st2-auto-form__title">
-          { spec.name || name }
-        </div>
+      <Label spec={spec} className="st2-auto-form__text-field">
+        <Title name={ name } spec={spec} />
 
         <textarea
           className="st2-auto-form__field"
@@ -78,13 +88,11 @@ export default class AutoFormTextField extends React.Component {
           onChange={ ({ target: { value } }) => this.onChange(value) }
           ref={ (ref) => this.onRef(ref) }
         >{ data }</textarea>
-      </label>
 
-      { spec.description
-        ? <p className="st2-auto-form__description">
-          { spec.description }
-        </p>
-        : null }
+        <ErrorMessage>{ this.state.error }</ErrorMessage>
+      </Label>
+
+      <Description spec={ spec } />
     </div>;
   }
 }

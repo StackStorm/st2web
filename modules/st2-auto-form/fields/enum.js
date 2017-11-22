@@ -4,7 +4,7 @@ import { BaseTextField } from './base';
 
 import { TextFieldWrapper } from '../wrappers';
 
-export default class Enum extends BaseTextField {
+export default class EnumField extends BaseTextField {
   static icon = 'V'
 
   fromStateValue(v) {

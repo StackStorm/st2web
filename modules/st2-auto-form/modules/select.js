@@ -1,7 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class AutoFormSelect extends React.Component {
+import {
+  Label,
+  Title,
+  ErrorMessage,
+  Description,
+} from '../wrappers';
+
+export default class SelectModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     disabled: PropTypes.bool,
@@ -10,7 +17,12 @@ export default class AutoFormSelect extends React.Component {
     onChange: PropTypes.func,
   }
 
+  state = {
+    error: null,
+  }
+
   onChange(value) {
+    this.state.error && this.setState({ error: null });
     this.props.onChange(value);
   }
 
@@ -22,10 +34,8 @@ export default class AutoFormSelect extends React.Component {
     ;
 
     return <div className="st2-auto-form-select">
-      <label className={`st2-auto-form__label ${ spec.required ? 'st2-auto-form--required' : '' }`}>
-        <div className="st2-auto-form__title">
-          { spec.name || name }
-        </div>
+      <Label spec={spec}>
+        <Title name={ name } spec={spec} />
 
         <select
           className="st2-auto-form__field"
@@ -42,13 +52,11 @@ export default class AutoFormSelect extends React.Component {
             >{ label }</option>;
           }) }
         </select>
-      </label>
 
-      { spec.description
-        ? <p className="st2-auto-form__description">
-          { spec.description }
-        </p>
-        : null }
+        <ErrorMessage>{ this.state.error }</ErrorMessage>
+      </Label>
+
+      <Description spec={ spec } />
     </div>;
   }
 }

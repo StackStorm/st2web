@@ -1,7 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class AutoFormText extends React.Component {
+import {
+  Title,
+} from '../wrappers';
+
+export default class TextModule extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     spec: PropTypes.object,
@@ -17,9 +21,7 @@ export default class AutoFormText extends React.Component {
     }
 
     return <div className="st2-auto-form-text">
-      <div className="st2-auto-form__title">
-        { spec.name || name }
-      </div>
+      <Title name={ name } spec={spec} />
 
       <div className="st2-auto-form__value">
         { link
