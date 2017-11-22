@@ -2,6 +2,8 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 import AutoForm from '@stackstorm/module-auto-form';
+import AutoFormText from '@stackstorm/module-auto-form/modules/text';
+import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 
 import './style.less';
 
@@ -14,33 +16,50 @@ export default class RemoteForm extends React.Component {
     onChange: PropTypes.func,
   }
 
-  render() {
-    const { name, disabled, spec, data, onChange } = this.props;
-    const value = name === 'trigger' ? data.type : data.ref;
+  onChangeValue(value) {
+    const key = name === 'trigger' ? 'type' : 'ref';
 
-    const child = spec.enum.find(({ name }) => name === value);
+    this.props.onChange({
+      ...this.props.data,
+      [key]: value,
+      parameters: {},
+    });
+  }
+
+  onChangeParameters(parameters) {
+    this.props.onChange({
+      ...this.props.data,
+      parameters,
+    });
+  }
+
+  render() {
+    const { name, disabled, spec, data } = this.props;
+    const key = name === 'trigger' ? 'type' : 'ref';
+
+    const child = spec.enum.find(({ name }) => name === data[key]);
     const childSpec = child ? child.spec : {};
 
     return <div className="st2-remote-form">
       {
         disabled
-          ? <div className="st2-form-text"
+          ? <AutoFormText
             name={name}
-            data-spec={spec}
-            data={value}
+            spec={spec}
+            data={data[key]}
           />
-          : <div className="st2-manual-form st2-form-combobox"
+          : <AutoFormCombobox
             name={name}
-            data-spec={spec}
-            data={value}
-            onChange={(ref) => console.log('changed', ref)}
+            spec={spec}
+            data={data[key]}
+            onChange={(ref) => this.onChangeValue(ref)}
           />
       }
       <AutoForm
         spec={childSpec}
         ngModel={data.parameters}
         disabled={disabled}
-        onChange={onChange}
+        onChange={(parameters) => this.onChangeParameters(parameters)}
       />
     </div>;
   }
