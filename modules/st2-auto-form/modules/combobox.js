@@ -41,21 +41,23 @@ export default class AutoFormCombobox extends React.Component {
 
     const suggestions = value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
 
-    return <div className="st2-form-combobox">
+    return <div className="st2-auto-form-combobox">
       <label className={`st2-auto-form__label ${ spec.required ? 'st2-auto-form--required' : '' }`}>
         <div className="st2-auto-form__title">
           { spec.name || name }
         </div>
 
-        <input type="text"
+        <input
+          type="text"
           className="st2-auto-form__field st2-auto-form__field--combo"
           placeholder={ spec.default }
           required={ spec.required }
+          disabled={ disabled }
           value={ value === null ? data : value }
           onFocus={ () => this.onFocus() }
           onBlur={ () => this.onBlur() }
           onChange={ ({ target: { value } }) => this.onInput(value) }
-          disabled={ disabled } />
+        />
       </label>
 
       { suggestions

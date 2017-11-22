@@ -16,7 +16,7 @@ export default class AutoFormText extends React.Component {
       link = `/actions/${data}`;
     }
 
-    return <div className="st2-form-text">
+    return <div className="st2-auto-form-text">
       <div className="st2-auto-form__title">
         { spec.name || name }
       </div>
