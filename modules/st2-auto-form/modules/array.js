@@ -5,6 +5,7 @@ import AutoFormInput from './input';
 
 export default class ArrayModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -19,9 +20,10 @@ export default class ArrayModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
 
     return <AutoFormInput
+      className={`st2-form-array ${className}`}
       name={ name }
       disabled={ disabled }
       spec={ spec }

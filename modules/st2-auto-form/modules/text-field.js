@@ -10,6 +10,7 @@ import {
 
 export default class TextFieldModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -72,9 +73,9 @@ export default class TextFieldModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
 
-    return <div className="st2-form-text-field">
+    return <div className={`st2-form-text-field ${className}`}>
       <Label spec={spec} className="st2-auto-form__text-field">
         <Title name={ name } spec={spec} />
 

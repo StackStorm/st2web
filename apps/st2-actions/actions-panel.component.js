@@ -221,8 +221,8 @@ export default class ActionsPanel extends React.Component {
       .value()
     ;
 
-    return <Panel className="st2-actions">
-      <PanelView>
+    return <Panel>
+      <PanelView className="st2-actions">
         <Toolbar title="Actions">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
           <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />

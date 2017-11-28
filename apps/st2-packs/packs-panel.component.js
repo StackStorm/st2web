@@ -389,8 +389,8 @@ export default class PacksPanel extends React.Component {
       .value()
       ;
 
-    return <Panel className="st2-packs">
-      <PanelView>
+    return <Panel>
+      <PanelView className="st2-packs">
         <Toolbar title="Packs">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
           <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />

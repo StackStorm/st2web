@@ -7,20 +7,21 @@ import {
 
 export default class TextModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     spec: PropTypes.object,
     data: PropTypes.string,
   }
 
   render() {
-    const { name, spec, data } = this.props;
+    const { className = '', name, spec, data } = this.props;
 
     let link = null;
     if (name === 'action') {
       link = `/actions/${data}`;
     }
 
-    return <div className="st2-auto-form-text">
+    return <div className={`st2-auto-form-text ${className}`}>
       <Title name={ name } spec={spec} />
 
       <div className="st2-auto-form__value">

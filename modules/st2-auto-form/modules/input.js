@@ -10,6 +10,7 @@ import {
 
 export default class InputModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -36,9 +37,9 @@ export default class InputModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
 
-    return <div className="st2-form-input">
+    return <div className={`st2-form-input ${className}`}>
       <Label spec={spec}>
         <Title name={ name } spec={spec} />
 

@@ -10,6 +10,7 @@ import {
 
 export default class SelectModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -27,13 +28,13 @@ export default class SelectModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
     const options = Array.isArray(spec.enum)
       ? spec.enum
-      : Object.keys(spec.enum).map((key) => `${spec.enum[key]} (${key})`)
+      : Object.keys(spec.enum).map((value) => ({ value, label: `${spec.enum[value]} (${value})` }))
     ;
 
-    return <div className="st2-auto-form-select">
+    return <div className={`st2-auto-form-select ${className}`}>
       <Label spec={spec}>
         <Title name={ name } spec={spec} />
 
@@ -42,13 +43,13 @@ export default class SelectModule extends React.Component {
           required={ spec.required }
           disabled={ disabled }
           onChange={ ({ target: { value } }) => this.onChange(value) }
+          value={ data }
         >
           { options.map(({ value, label }) => {
             return <option
               key={ value }
               value={ value }
               label={ label }
-              selected={ value === data }
             >{ label }</option>;
           }) }
         </select>

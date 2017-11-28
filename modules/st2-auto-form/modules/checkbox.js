@@ -9,6 +9,7 @@ import {
 
 export default class CheckboxModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -25,9 +26,9 @@ export default class CheckboxModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
 
-    return <div className="st2-form-checkbox">
+    return <div className={`st2-form-checkbox ${className}`}>
       <Label spec={spec}>
         <div className="st2-auto-form__title">
           <input

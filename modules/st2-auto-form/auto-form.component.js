@@ -61,8 +61,11 @@ export default class AutoForm extends React.Component {
   }
 
   handleChange(name, value) {
-    const { onChange } = this.props;
-    return onChange && onChange(name, value);
+    const { ngModel, onChange } = this.props;
+    return onChange({
+      ...ngModel,
+      [name]: value,
+    });
   }
 
   componentWillMount(){

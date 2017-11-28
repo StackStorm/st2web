@@ -17,6 +17,7 @@ export default class RemoteForm extends React.Component {
   }
 
   onChangeValue(value) {
+    const { name } = this.props;
     const key = name === 'trigger' ? 'type' : 'ref';
 
     this.props.onChange({

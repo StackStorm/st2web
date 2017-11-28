@@ -5,6 +5,7 @@ import TextFieldModule from './text-field';
 
 export default class ObjectModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -27,9 +28,10 @@ export default class ObjectModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
 
     return <TextFieldModule
+      className={`st2-form-object ${className}`}
       name={ name }
       disabled={ disabled }
       spec={ spec }

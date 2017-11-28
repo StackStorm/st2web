@@ -10,6 +10,7 @@ import {
 
 export default class ComboboxModule extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string,
     disabled: PropTypes.bool,
     spec: PropTypes.object,
@@ -30,6 +31,10 @@ export default class ComboboxModule extends React.Component {
     // HACK: When clicking an item, onBlur is run before the click target is found,
     // so the onClick is not run because the item is removed first.
     setTimeout(() => {
+      if (!this.ref) {
+        return;
+      }
+
       this.setState({ value: null });
     }, 100);
   }
@@ -44,12 +49,12 @@ export default class ComboboxModule extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data } = this.props;
     const { value } = this.state;
 
     const suggestions = value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
 
-    return <div className="st2-auto-form-combobox">
+    return <div className={`st2-auto-form-combobox ${className}`} ref={ (ref) => this.ref = ref }>
       <Label spec={spec}>
         <Title name={ name } spec={spec} />
 

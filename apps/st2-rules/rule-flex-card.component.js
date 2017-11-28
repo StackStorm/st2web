@@ -2,8 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 import Label from '@stackstorm/module-label';
-
-const icons = {};
+import PackIcon from '@stackstorm/module-pack-icon';
 
 export default class RuleFlexCard extends React.Component {
   static propTypes = {
@@ -43,11 +42,8 @@ export default class RuleFlexCard extends React.Component {
         <div className="st2-flex-card__column st2-flex-card__if">
           <div className="st2-rules__column-trigger" title={ rule.trigger.type }>
             <span className="st2-rules__label">If</span>
-            <span className="st2-pack-icon">
-              { icons[rule.trigger.type.split('.')[0]] ?
-                <img className="st2-pack-icon__image" ng-src={ icons[rule.trigger.type.split('.')[0]] } />
-                :null }
-            </span>
+            <PackIcon name={ rule && rule.trigger.type.split('.')[0] } />
+
             <span className="st2-rules__name">
               { rule.trigger.type }
             </span>
@@ -61,11 +57,7 @@ export default class RuleFlexCard extends React.Component {
         <div className="st2-flex-card__column st2-flex-card__then">
           <div className="st2-rules__column-action" title={ rule.action.ref }>
             <span className="st2-rules__label">Then</span>
-            <span className="st2-pack-icon">
-              { icons[rule.action.ref.split('.')[0]] ?
-                <img className="st2-pack-icon__image" ng-src={ icons[rule.action.ref.split('.')[0]] } />
-                :null }
-            </span>
+            <PackIcon name={ rule && rule.action.ref.split('.')[0] } />
 
             <span className="st2-rules__name">
               { rule.action.ref }

@@ -158,8 +158,8 @@ export default class HistoryPanel extends React.Component {
       .value()
     ;
 
-    return <Panel className="st2-history">
-      <PanelView>
+    return <Panel>
+      <PanelView className="st2-history">
         <Toolbar title="History">
           <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
         </Toolbar>

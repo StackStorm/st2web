@@ -31,9 +31,14 @@ export class Title extends React.Component {
 
   render() {
     const { name, spec, className } = this.props;
+    const displayName = spec && spec.name || name;
+
+    if (!displayName) {
+      return null;
+    }
 
     return <div className={`st2-auto-form__title ${ className || '' }`}>
-      { spec && spec.name || name }{ spec && spec.required ? ' *' : '' }
+      { displayName }{ spec && spec.required ? ' *' : '' }
     </div>;
   }
 }
