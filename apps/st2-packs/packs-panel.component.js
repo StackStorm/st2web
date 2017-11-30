@@ -317,7 +317,7 @@ export default class PacksPanel extends React.Component {
   }
 
   render() {
-    const { packs, selected, collapsed, filter = '' } = this.props;
+    const { packs, selected, collapsed, filter } = this.props;
 
     const {
       ref,
@@ -388,7 +388,7 @@ export default class PacksPanel extends React.Component {
       .sortBy('ref')
       .groupBy('status')
       .value()
-      ;
+    ;
 
     return (
       <Panel>

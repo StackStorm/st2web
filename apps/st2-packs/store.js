@@ -5,12 +5,14 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const packReducer = (state = {}, input) => {
   let {
     packs = {},
+    filter = '',
     selected = undefined,
   } = state;
 
   state = {
     ...state,
     packs,
+    filter,
     selected,
   };
 
@@ -165,7 +167,7 @@ const packReducer = (state = {}, input) => {
       };
 
     case 'SET_FILTER':
-      const { filter } = input;
+      filter = input.filter;
 
       return {
         ...state,
