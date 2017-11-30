@@ -2,7 +2,7 @@ import { createScopedStore } from '@stackstorm/module-store';
 
 import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
-const historyReducer = (state = {}, action) => {
+const historyReducer = (state = {}, input) => {
   let {
     executions = [],
     groups = [],
@@ -18,11 +18,11 @@ const historyReducer = (state = {}, action) => {
     execution,
   };
 
-  switch (action.type) {
+  switch (input.type) {
     case 'FETCH_GROUPS':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          executions = action.payload;
+          executions = input.payload;
 
           groups = _(executions)
             .sortBy('start_timestamp')
@@ -58,9 +58,9 @@ const historyReducer = (state = {}, action) => {
       };
 
     case 'FETCH_EXECUTION':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          execution = action.payload;
+          execution = input.payload;
           ref = execution.id;
           break;
         case 'error':

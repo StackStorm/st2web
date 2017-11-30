@@ -49,9 +49,8 @@ function waitExecution(execution_id, record) {
 };
 
 @connect((state, props) => {
-  const { tables } = state;
   const { title } = props;
-  const { collapsed = state.collapsed } = tables[title] || {};
+  const { collapsed = state.collapsed } = state.tables[title] || {};
 
   return { title, collapsed };
 }, (dispatch, props) => {
@@ -76,12 +75,17 @@ class FlexTableWrapper extends FlexTable {
 export default class PacksPanel extends React.Component {
   static propTypes = {
     notification: PropTypes.object,
-    collapsed: PropTypes.bool,
+    history: PropTypes.object,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        ref: PropTypes.string,
+      }),
+    }),
+
     packs: PropTypes.object,
     selected: PropTypes.string,
+    collapsed: PropTypes.bool,
     filter: PropTypes.string,
-    history: PropTypes.object,
-    match: PropTypes.object
   }
 
   state = {

@@ -4,7 +4,7 @@ const route = {
   title: 'Actions',
   url: '/actions',
   icon: 'icon-play',
-  component: Actions,
+  Component: Actions,
   position: 2
 };
 

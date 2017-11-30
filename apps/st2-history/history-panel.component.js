@@ -72,6 +72,7 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
+    notification: PropTypes.object,
     history: PropTypes.object,
     match: PropTypes.shape({
       params: PropTypes.shape({

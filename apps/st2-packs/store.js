@@ -2,7 +2,7 @@ import { createScopedStore } from '@stackstorm/module-store';
 
 import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
-const packReducer = (state = {}, action) => {
+const packReducer = (state = {}, input) => {
   let {
     packs = {},
     selected = undefined
@@ -14,14 +14,14 @@ const packReducer = (state = {}, action) => {
     selected
   };
 
-  switch (action.type) {
+  switch (input.type) {
 
     case 'FETCH_INSTALLED_PACKS': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          _.forEach(action.payload, pack => {
+          _.forEach(input.payload, pack => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
@@ -42,9 +42,9 @@ const packReducer = (state = {}, action) => {
     case 'FETCH_PACK_INDEX': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          _.forEach(action.payload, pack => {
+          _.forEach(input.payload, pack => {
             packs[pack.ref] = {
               status: 'available',
               ...state.packs[pack.ref],
@@ -65,9 +65,9 @@ const packReducer = (state = {}, action) => {
     case 'FETCH_PACK_CONFIG_SCHEMAS': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          _.forEach(action.payload, pack => {
+          _.forEach(input.payload, pack => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack
@@ -87,9 +87,9 @@ const packReducer = (state = {}, action) => {
     case 'FETCH_PACK_CONFIGS': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          _.forEach(action.payload, pack => {
+          _.forEach(input.payload, pack => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack
@@ -109,15 +109,15 @@ const packReducer = (state = {}, action) => {
     case 'INSTALL_PACK': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          packs[action.ref] = { ...packs[action.ref], status: 'installed' };
+          packs[input.ref] = { ...packs[input.ref], status: 'installed' };
           break;
         case 'error':
-          packs[action.ref] = { ...packs[action.ref], status: 'available' };
+          packs[input.ref] = { ...packs[input.ref], status: 'available' };
           break;
         default:
-          packs[action.ref] = { ...packs[action.ref], status: 'installing' };
+          packs[input.ref] = { ...packs[input.ref], status: 'installing' };
       }
 
       return { ...state, packs };
@@ -126,15 +126,15 @@ const packReducer = (state = {}, action) => {
     case 'UNINSTALL_PACK': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          packs[action.ref] = { ...packs[action.ref], status: 'available' };
+          packs[input.ref] = { ...packs[input.ref], status: 'available' };
           break;
         case 'error':
-          packs[action.ref] = { ...packs[action.ref], status: 'installed' };
+          packs[input.ref] = { ...packs[input.ref], status: 'installed' };
           break;
         default:
-          packs[action.ref] = { ...packs[action.ref], status: 'uninstalling' };
+          packs[input.ref] = { ...packs[input.ref], status: 'uninstalling' };
       }
 
       return { ...state, packs };
@@ -143,9 +143,9 @@ const packReducer = (state = {}, action) => {
     case 'CONFIGURE_PACK': {
       packs = { ...packs };
 
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          packs[action.ref] = { ...packs[action.ref], config: action.payload };
+          packs[input.ref] = { ...packs[input.ref], config: input.payload };
           break;
         case 'error':
           break;
@@ -157,7 +157,7 @@ const packReducer = (state = {}, action) => {
     }
 
     case 'SELECT_PACK':
-      const { ref } = action;
+      const { ref } = input;
 
       return {
         ...state,
@@ -165,7 +165,7 @@ const packReducer = (state = {}, action) => {
       };
 
     case 'SET_FILTER':
-      const { filter } = action;
+      const { filter } = input;
 
       return {
         ...state,

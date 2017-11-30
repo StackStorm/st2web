@@ -2,30 +2,45 @@ import { createScopedStore } from '@stackstorm/module-store';
 
 import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
-const actionReducer = (state = {}, action) => {
+const actionReducer = (state = {}, input) => {
   let {
-    actions = {},
+    actions = [],
+    groups = [],
+    filter = '',
+    ref = undefined,
+    action = undefined,
     executions = [],
-    selected = undefined
   } = state;
 
   state = {
     ...state,
     actions,
+    groups,
+    filter,
+    ref,
+    action,
     executions,
-    selected
   };
 
-  switch (action.type) {
-    case 'FETCH_ACTIONS': {
-      actions = { ...actions };
-
-      switch(action.status) {
+  switch (input.type) {
+    case 'FETCH_GROUPS':
+      switch(input.status) {
         case 'success':
-          _.forEach(action.payload, item => {
-            actions[item.ref] = item;
-          });
+          actions = input.payload;
 
+          groups = _(actions)
+            .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+            .sortBy('ref')
+            .groupBy('pack')
+            .value()
+          ;
+          groups = Object.keys(groups).map(pack => ({ pack, actions: groups[pack] }));
+
+          ref = state.ref;
+          if (!ref) {
+            ref = groups[0].actions[0].ref;
+            action = undefined;
+          }
           break;
         case 'error':
           break;
@@ -36,18 +51,16 @@ const actionReducer = (state = {}, action) => {
       return {
         ...state,
         actions,
-        selected: state.selected || Object.keys(actions).sort()[0]
+        groups,
+        ref,
+        action,
       };
-    }
 
-    case 'SELECT_ACTION':
-      executions = [];
-      const { ref } = action;
-
-      switch(action.status) {
+    case 'FETCH_ACTION':
+      switch(input.status) {
         case 'success':
-          executions = action.payload;
-
+          action = input.payload;
+          ref = action.ref;
           break;
         case 'error':
           break;
@@ -57,16 +70,41 @@ const actionReducer = (state = {}, action) => {
 
       return {
         ...state,
-        selected: ref,
-        executions
+        ref,
+        action,
       };
 
-    case 'SET_FILTER':
-      const { filter } = action;
+    case 'FETCH_EXECUTIONS':
+      switch(input.status) {
+        case 'success':
+          executions = input.payload;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
 
       return {
         ...state,
-        filter
+        executions,
+      };
+
+    case 'SET_FILTER':
+      filter = input.filter;
+
+      groups = _(actions)
+        .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+        .sortBy('ref')
+        .groupBy('pack')
+        .value()
+      ;
+      groups = Object.keys(groups).map(pack => ({ pack, actions: groups[pack] }));
+
+      return {
+        ...state,
+        groups,
+        filter,
       };
 
     default:

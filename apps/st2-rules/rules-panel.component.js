@@ -70,6 +70,7 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class RulesPanel extends React.Component {
   static propTypes = {
+    notification: PropTypes.object,
     history: PropTypes.object,
     match: PropTypes.shape({
       params: PropTypes.shape({

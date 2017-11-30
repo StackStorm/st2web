@@ -48,7 +48,8 @@ import './style.less';
 
 
 @connect((state, props) => {
-  const { collapsed = state.collapsed } = state.tables[props.title] || {};
+  const { title } = props;
+  const { collapsed = state.collapsed } = state.tables[title] || {};
 
   return { collapsed, ...props };
 }, (dispatch, props) => {
@@ -67,19 +68,24 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { actions, selected, executions, collapsed, filter } = state;
-  return { actions, selected, executions, collapsed, filter };
+  const { groups, filter, action, executions, collapsed } = state;
+  return { groups, filter, action, executions, collapsed };
 })
 export default class ActionsPanel extends React.Component {
   static propTypes = {
     notification: PropTypes.object,
-    collapsed: PropTypes.bool,
-    actions: PropTypes.object,
-    executions: PropTypes.array,
-    selected: PropTypes.string,
-    filter: PropTypes.string,
     history: PropTypes.object,
-    match: PropTypes.object
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        ref: PropTypes.string,
+      }),
+    }),
+
+    groups: PropTypes.array,
+    filter: PropTypes.string,
+    action: PropTypes.object,
+    executions: PropTypes.array,
+    collapsed: PropTypes.bool,
   }
 
   state = {
@@ -97,8 +103,7 @@ export default class ActionsPanel extends React.Component {
   }
 
   handleSection(section) {
-    const { history, actions={}, selected } = this.props;
-    const { ref } = actions[selected] || {};
+    const { history, action: { ref } } = this.props;
     history.push(`/actions/${ ref }/${ section }`);
   }
 
@@ -162,24 +167,29 @@ export default class ActionsPanel extends React.Component {
 
   componentDidMount() {
     store.dispatch({
-      type: 'FETCH_ACTIONS',
+      type: 'FETCH_GROUPS',
       promise: api.client.actions.list()
     })
       .then(() => {
-        const { selected } = store.getState();
+        let { ref, action } = store.getState();
 
-        store.dispatch({
-          type: 'SELECT_ACTION',
-          ref: selected,
-          promise: api.client.executions.list({
-            action: selected,
-          })
-        });
+        if (!action) {
+          ref = this.props.match.params.ref || ref;
+
+          store.dispatch({
+            type: 'FETCH_ACTION',
+            promise: api.client.actionOverview.get(ref),
+          });
+
+          store.dispatch({
+            type: 'FETCH_EXECUTIONS',
+            promise: api.client.executions.list({
+              action: ref,
+            }),
+          });
+        }
       })
     ;
-
-    const { ref } = this.props.match.params;
-    store.dispatch({ type: 'SELECT_ACTION', ref });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -187,39 +197,21 @@ export default class ActionsPanel extends React.Component {
 
     if (ref !== this.props.match.params.ref) {
       store.dispatch({
-        type: 'SELECT_ACTION',
-        ref,
+        type: 'FETCH_ACTION',
+        promise: api.client.actionOverview.get(ref),
+      });
+
+      store.dispatch({
+        type: 'FETCH_EXECUTIONS',
         promise: api.client.executions.list({
           action: ref,
-        })
+        }),
       });
     }
   }
 
   render() {
-    const {
-      actions={},
-      executions=[],
-      selected,
-      collapsed,
-      filter = ''
-    } = this.props;
-
-    const {
-      ref,
-      description,
-      parameters
-    } = actions[selected] || {};
-
-    const filteredActions = _.filter(actions, action => {
-      return action.ref.toLowerCase().indexOf(filter.toLowerCase()) > -1;
-    });
-
-    const actionGroups = _(filteredActions)
-      .sortBy('ref')
-      .groupBy('pack')
-      .value()
-    ;
+    const { groups, filter, action, executions, collapsed } = this.props;
 
     return <Panel>
       <PanelView className="st2-actions">
@@ -229,15 +221,16 @@ export default class ActionsPanel extends React.Component {
         </Toolbar>
         <Content>
           {
-            Object.keys(actionGroups).map(key => {
-              const icon = api.client.packFile.route(key+'/icon.png');
+            groups.map(({ pack, actions }) => {
+              const icon = api.client.packFile.route(pack + '/icon.png');
+              const ref = action && action.ref;
 
-              return !!actionGroups[key] && <FlexTableWrapper title={key} key={key} icon={icon}>
+              return <FlexTableWrapper title={pack} key={pack} icon={icon}>
                 {
-                  actionGroups[key]
+                  actions
                     .map(action => {
                       return <ActionFlexCard key={action.ref} action={action}
-                        selected={selected === action.ref}
+                        selected={ref === action.ref}
                         onClick={() => this.handleSelect(action.ref)} />;
                     })
                 }
@@ -247,7 +240,7 @@ export default class ActionsPanel extends React.Component {
         </Content>
       </PanelView>
       <PanelDetails data-test="details">
-        <DetailsHeader title={ref} subtitle={description}/>
+        <DetailsHeader title={action && action.ref} subtitle={action && action.description}/>
         <Route path="/actions/:ref?/:section?" children={({ match: { params: { section } } }) => {
           return <DetailsSwitch
             sections={[
@@ -260,16 +253,20 @@ export default class ActionsPanel extends React.Component {
         <DetailsBody>
           <Switch>
             <Route exact path="/actions/:ref?/(general)?" render={() => {
+              if (!action) {
+                return null;
+              }
+
               return <div>
                 <DetailsPanel data-test="action_parameters">
                   <DetailsPanelHeading title="Parameters" />
                   <DetailsPanelBody>
-                    <form onSubmit={(e) => this.handleActionRun(e, ref)}>
+                    <form onSubmit={(e) => this.handleActionRun(e, action.ref)}>
                       <AutoForm
                         ref={(component) => { this.runField = component; }}
                         spec={{
                           type: 'object',
-                          properties: parameters
+                          properties: action.parameters
                         }}
                         ngModel={{}} />
                       <StringField
@@ -315,7 +312,7 @@ export default class ActionsPanel extends React.Component {
                                     },
                                     {
                                       Component: Link,
-                                      to: `/history/${execution.id}/general?action=${ref}`,
+                                      to: `/history/${execution.id}/general?action=${action.ref}`,
                                       className: 'st2-actions__details-column-history',
                                       title: 'Jump to History',
                                       children: <i className="icon-history"></i>
@@ -330,7 +327,7 @@ export default class ActionsPanel extends React.Component {
                           }
                         </FlexTable>
                     }
-                    <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${ref}`}>
+                    <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
                       <i className="icon-history"></i> See full action history
                     </Link>
                   </DetailsPanelBody>
@@ -339,9 +336,7 @@ export default class ActionsPanel extends React.Component {
             }} />
             <Route path="/actions/:ref/code" render={() => {
               return <DetailsPanel data-test="action_parameters" >
-                {
-                  !!actions[selected] && <St2Highlight code={actions[selected]} />
-                }
+                { action ? <St2Highlight code={action} /> : null }
               </DetailsPanel>;
             }} />
           </Switch>

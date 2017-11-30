@@ -70,17 +70,17 @@ class Container extends React.Component {
                 return <Route
                   key={route.url}
                   path={`${route.url}/:ref?`}
-                  render={({ match, location, history }) => {
+                  render={({ history, match, location }) => {
                     const props = {
-                      routes,
                       notification,
+                      history,
                       match,
                       location,
-                      history
+                      routes,
                     };
 
                     if (api.isConnected()) {
-                      return <route.component {...props} />;
+                      return <route.Component {...props} />;
                     } else {
                       return <Login onConnect={() => history.replace()}/>;
                     }

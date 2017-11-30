@@ -4,7 +4,7 @@ const route = {
   title: 'History',
   url: '/history',
   icon: 'icon-history',
-  component: History,
+  Component: History,
   position: 1
 };
 

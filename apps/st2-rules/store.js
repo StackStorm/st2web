@@ -2,7 +2,7 @@ import { createScopedStore } from '@stackstorm/module-store';
 
 import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
-const ruleReducer = (state = {}, action) => {
+const ruleReducer = (state = {}, input) => {
   let {
     rules = [],
     groups = [],
@@ -28,11 +28,11 @@ const ruleReducer = (state = {}, action) => {
     packSpec,
   };
 
-  switch (action.type) {
+  switch (input.type) {
     case 'FETCH_GROUPS':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          rules = action.payload;
+          rules = input.payload;
 
           groups = _(rules)
             .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
@@ -63,9 +63,9 @@ const ruleReducer = (state = {}, action) => {
       };
 
     case 'FETCH_RULE':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          rule = action.payload;
+          rule = input.payload;
           ref = rule.ref;
           break;
         case 'error':
@@ -81,14 +81,14 @@ const ruleReducer = (state = {}, action) => {
       };
 
     case 'FETCH_TRIGGER_SPEC':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
           criteriaSpecs = {};
 
           triggerSpec = {
             name: 'name',
             required: true,
-            enum: _.map(action.payload, (trigger) => {
+            enum: _.map(input.payload, (trigger) => {
               criteriaSpecs[trigger.ref] = {
                 required: true,
                 enum: _.map(trigger.payload_schema.properties, (spec, name) => {
@@ -120,12 +120,12 @@ const ruleReducer = (state = {}, action) => {
       };
 
     case 'FETCH_ACTION_SPEC':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
           actionSpec = {
             name: 'name',
             required: true,
-            enum: _.map(action.payload, (action) => ({
+            enum: _.map(input.payload, (action) => ({
               name: action.ref,
               description: action.description,
               spec: {
@@ -147,13 +147,13 @@ const ruleReducer = (state = {}, action) => {
       };
 
     case 'FETCH_PACK_SPEC':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
           packSpec = {
             name: 'pack',
             required: true,
             default: 'default',
-            enum: _.map(action.payload, (action) => ({
+            enum: _.map(input.payload, (action) => ({
               name: action.name,
               description: action.description,
               spec: {
@@ -184,9 +184,9 @@ const ruleReducer = (state = {}, action) => {
       };
 
     case 'EDIT_RULE':
-      switch(action.status) {
+      switch(input.status) {
         case 'success':
-          rule = action.payload;
+          rule = input.payload;
           ref = rule.ref;
           break;
         case 'error':
@@ -202,7 +202,7 @@ const ruleReducer = (state = {}, action) => {
       };
 
     case 'SET_FILTER':
-      filter = action.filter;
+      filter = input.filter;
 
       groups = _(rules)
         .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)

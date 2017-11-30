@@ -4,7 +4,7 @@ const route = {
   title: 'Rules',
   url: '/rules',
   icon: 'icon-book-closed',
-  component: Rules,
+  Component: Rules,
   position: 3
 };
 
