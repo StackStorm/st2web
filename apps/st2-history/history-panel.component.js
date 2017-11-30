@@ -88,7 +88,9 @@ export default class HistoryPanel extends React.Component {
   componentDidMount() {
     store.dispatch({
       type: 'FETCH_GROUPS',
-      promise: api.client.executions.list(),
+      promise: api.client.executions.list({
+        parent: 'null',
+      }),
     })
       .then(() => {
         let { ref, execution } = store.getState();
@@ -126,6 +128,17 @@ export default class HistoryPanel extends React.Component {
   handleSelect(id) {
     const { history } = this.props;
     history.push(`/history/${ id }`);
+  }
+
+  handleExpand(id, expanded) {
+    return store.dispatch({
+      type: 'FETCH_EXECUTION_CHILDREN',
+      id,
+      expanded,
+      promise: expanded ? api.client.executions.list({
+        parent: id,
+      }) : null,
+    });
   }
 
   handleSection(section) {
@@ -175,8 +188,26 @@ export default class HistoryPanel extends React.Component {
                               execution={execution}
                               selected={id === execution.id}
                               onClick={() => this.handleSelect(execution.id)}
+                              onToggleExpand={() => this.handleExpand(execution.id, !execution.fetchedChildren)}
                             />,
-                            null, // TODO: children
+                            execution.fetchedChildren ? (
+                              <div
+                                className="st2-history-child"
+                                key={`${execution.id}-children`}
+                              >
+                                { execution.fetchedChildren.map(execution => {
+                                  return (
+                                    <HistoryFlexCard
+                                      key={execution.id}
+                                      isChild
+                                      execution={execution}
+                                      selected={id === execution.id}
+                                      onClick={() => this.handleSelect(execution.id)}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            ) : null,
                           ];
                         })
                     }

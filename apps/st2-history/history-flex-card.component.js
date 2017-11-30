@@ -7,37 +7,22 @@ import isExpandable from '@stackstorm/module-filter-expandable';
 
 export default class HistoryFlexCard extends React.Component {
   static propTypes = {
+    isChild: PropTypes.bool,
     execution: PropTypes.object,
     selected: PropTypes.bool,
     onClick: PropTypes.func,
+    onToggleExpand: PropTypes.func,
   }
 
-  state = {
-    expanded: false,
-  }
+  handleToggleExpand(e) {
+    e && e.preventDefault();
+    e && e.stopPropagation();
 
-  handleToggleExpanded() {
-    this.setState({
-      expanded: !this.state.expanded,
-    });
+    this.props.onToggleExpand();
   }
 
   render() {
-    const {
-      execution,
-      selected,
-      onClick,
-    } = this.props;
-
-    const {
-      action,
-      rule,
-      trigger,
-      context,
-      status,
-      start_timestamp,
-      parameters,
-    } = execution;
+    const { isChild, execution, selected, onClick } = this.props;
 
     const props = {
       className: 'st2-flex-card',
@@ -56,30 +41,37 @@ export default class HistoryFlexCard extends React.Component {
             { isExpandable(execution) ?
               (
                 <i
-                  className={this.state.expanded ? 'icon-chevron-down' : 'icon-chevron_right'}
-                  onClick={() => this.handleToggleExpanded()}
+                  className={execution.fetchedChildren ? 'icon-chevron-down' : 'icon-chevron_right'}
+                  onClick={(e) => this.handleToggleExpand(e)}
                 />
               )
               : null }
           </div>
 
           <div className="st2-flex-card__column st2-flex-card__status">
-            <Label status={status} short={true} />
+            <Label status={execution.status} short={true} />
           </div>
 
           <div className="st2-flex-card__column st2-flex-card__timestamp">
             <div className="st2-flex-card__header-primary">
-              <Time timestamp={start_timestamp} format="HH:mm:ss" />
+              <Time timestamp={execution.start_timestamp} format="HH:mm:ss" />
             </div>
           </div>
 
-          <div className="st2-flex-card__column" title={action.ref}>
+          { isChild ? (
+            <div className="st2-flex-card__column">
+              { execution.context.chain ? execution.context.chain.name : null }
+              { execution.context.mistral ? execution.context.mistral.task_name : null }
+            </div>
+          ) : null }
+
+          <div className="st2-flex-card__column" title={execution.action.ref}>
             <span className="st2-history__column-action-name">
-              { action.ref }
+              { execution.action.ref }
             </span>
             <span className="st2-history__column-action-params st2-proportional">
-              { Object.keys(parameters).map((name) => {
-                const value = parameters[name];
+              { Object.keys(execution.parameters).map((name) => {
+                const value = execution.parameters[name];
                 return (
                   <span key={name} className="st2-history__column-action-param">
                     <span className="st2-history__column-action-param-name">
@@ -94,34 +86,36 @@ export default class HistoryFlexCard extends React.Component {
             </span>
           </div>
 
-          <div className="st2-flex-card__column">
-            { rule && trigger
-              ? (
-                <span title={`${ rule.ref } (${ trigger.type })`}>
-                  <span className="st2-history__column-rule-name">
-                    { rule.ref }
+          { isChild ? null : (
+            <div className="st2-flex-card__column">
+              { execution.rule && execution.trigger
+                ? (
+                  <span title={`${ execution.rule.ref } (${ execution.trigger.type })`}>
+                    <span className="st2-history__column-rule-name">
+                      { execution.rule.ref }
+                    </span>
+                    <span className="st2-history__column-trigger-type">
+                      { execution.trigger.type }
+                    </span>
                   </span>
-                  <span className="st2-history__column-trigger-type">
-                    { trigger.type }
+                )
+                : (
+                  <span title={`Manual (${ execution.context.user })`}>
+                    <span className="st2-history__column-app-name">
+                      Manual
+                    </span>
+                    <span className="st2-history__column-user-name">
+                      { execution.context.user }
+                    </span>
                   </span>
-                </span>
-              )
-              : (
-                <span title={`Manual (${ context.user })`}>
-                  <span className="st2-history__column-app-name">
-                Manual
-                  </span>
-                  <span className="st2-history__column-user-name">
-                    { context.user }
-                  </span>
-                </span>
-              )
-            }
-          </div>
+                )
+              }
+            </div>
+          ) }
 
           <div className="st2-flex-card__column st2-flex-card__status">
             { isExpandable(execution) ?
-              <i className="icon-branch" onClick={() => this.handleToggleExpanded()} />
+              <i className="icon-branch" onClick={(e) => this.handleToggleExpand(e)} />
               : null }
           </div>
         </div>

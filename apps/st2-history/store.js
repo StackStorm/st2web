@@ -75,6 +75,65 @@ const historyReducer = (state = {}, input) => {
         execution,
       };
 
+    case 'FETCH_EXECUTION_CHILDREN':
+      if (input.expanded) {
+        switch(input.status) {
+          case 'success':
+            executions = [ ...executions ];
+            for (let index in executions) {
+              if (executions[index].id !== input.id) {
+                continue;
+              }
+
+              executions[index] = {
+                ...executions[index],
+                fetchedChildren: _(input.payload)
+                  .sortBy('start_timestamp')
+                  .reverse()
+                  .value()
+                ,
+              };
+            }
+            break;
+          case 'error':
+            break;
+          default:
+            break;
+        }
+      }
+      else {
+        executions = [ ...executions ];
+        for (let index in executions) {
+          if (executions[index].id !== input.id) {
+            continue;
+          }
+
+          executions[index] = {
+            ...executions[index],
+            fetchedChildren: undefined,
+          };
+        }
+      }
+
+      groups = _(executions)
+        .sortBy('start_timestamp')
+        .reverse()
+        .groupBy(execution => {
+          const date = new Date(execution.start_timestamp).toDateString();
+          const time = new Date(date).toISOString();
+
+          return time;
+        })
+        .value()
+      ;
+      groups = Object.keys(groups).map(date => ({ date, executions: groups[date] }));
+
+      return {
+        ...state,
+        executions,
+        groups,
+      };
+
     default:
       return state;
   }
