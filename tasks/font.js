@@ -9,6 +9,6 @@ gulp.task('font', function () {
   return fontelloUpdate({
     config: 'fontello.json',
     fonts: 'font',
-    css: 'font'
+    css: 'font',
   });
 });

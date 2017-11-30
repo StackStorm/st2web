@@ -8,59 +8,67 @@ import './style.less';
 export class Panel extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   render() {
     const { children, className, ...restProps } = this.props;
 
-    return <main className={`st2-panel ${className}`} {...restProps}>
-      { children }
-    </main>;
+    return (
+      <main className={`st2-panel ${className}`} {...restProps}>
+        { children }
+      </main>
+    );
   }
 }
 
 export class PanelView extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   render() {
     const { children, className, ...restProps } = this.props;
 
-    return <div className={`st2-panel__view ${className}`} {...restProps}>
-      { children }
-    </div>;
+    return (
+      <div className={`st2-panel__view ${className}`} {...restProps}>
+        { children }
+      </div>
+    );
   }
 }
 
 export class PanelDetails extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   render() {
     const { children, className, ...restProps } = this.props;
 
-    return <div className={`st2-panel__details st2-details ${className}`} {...restProps}>
-      { children }
-    </div>;
+    return (
+      <div className={`st2-panel__details st2-details ${className}`} {...restProps}>
+        { children }
+      </div>
+    );
   }
 }
 
 export class Toolbar extends React.Component {
   static propTypes = {
     title: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
-    return <div className="st2-panel__toolbar">
-      <div className="st2-panel__toolbar-title"> { this.props.title } </div>
-      { this.props.children }
-    </div>;
+    return (
+      <div className="st2-panel__toolbar">
+        <div className="st2-panel__toolbar-title"> { this.props.title } </div>
+        { this.props.children }
+      </div>
+    );
   }
 }
 
@@ -68,36 +76,41 @@ export class ToolbarSearch extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }
 
   render() {
-    return <div className="st2-panel__toolbar-search">
-      <form>
-        <input type="search"
-          className="st2-panel__search-bar"
-          data-test="filter"
-          placeholder={this.props.title}
-          value={this.props.value}
-          onChange={e => this.props.onChange(e)}
-        />
-        <i className="icon-lens"></i>
-      </form>
-    </div>;
+    return (
+      <div className="st2-panel__toolbar-search">
+        <form>
+          <input
+            type="search"
+            className="st2-panel__search-bar"
+            data-test="filter"
+            placeholder={this.props.title}
+            value={this.props.value}
+            onChange={e => this.props.onChange(e)}
+          />
+          <i className="icon-lens" />
+        </form>
+      </div>
+    );
   }
 }
 
 export class Content extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
-    return <div className='st2-panel__content'>
-      <div className="st2-panel__scroller">
-        { this.props.children }
+    return (
+      <div className='st2-panel__content'>
+        <div className="st2-panel__scroller">
+          { this.props.children }
+        </div>
       </div>
-    </div>;
+    );
   }
 }
 
@@ -106,24 +119,26 @@ export class DetailsHeader extends React.Component {
     status: PropTypes.string,
     title: PropTypes.string,
     subtitle: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
     const { status, title, subtitle, children } = this.props;
 
-    return <div className="st2-details__header">
-      <div className="st2-details__header-name" data-test="header_name">
-        { status ?
-          <Label status={status} short={true} />
-          : null }
-        <a href="#/actions/core.announcement/general">{ title }</a>
+    return (
+      <div className="st2-details__header">
+        <div className="st2-details__header-name" data-test="header_name">
+          { status ?
+            <Label status={status} short={true} />
+            : null }
+          <a href="#/actions/core.announcement/general">{ title }</a>
+        </div>
+        <div className="st2-details__header-description" data-test="header_description">
+          { subtitle }
+        </div>
+        { children }
       </div>
-      <div className="st2-details__header-description" data-test="header_description">
-        { subtitle }
-      </div>
-      { children }
-    </div>;
+    );
   }
 }
 
@@ -132,144 +147,164 @@ export class DetailsSwitch extends React.Component {
   static propTypes = {
     sections: PropTypes.arrayOf(PropTypes.shape({
       path: PropTypes.string,
-      label: PropTypes.string
+      label: PropTypes.string,
     })),
     current: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }
 
   render() {
     const { sections, current, onChange } = this.props;
     const active = sections.findIndex(({ path }) => path === current);
 
-    return <div className={`st2-details__switch st2-details__switch--of-two st2-details__switch--${ SWITCH_COUNT[active < 0 ? 0 : active] }`}>
-      {
-        sections.map((section) => {
-          return <div key={ section.path } className="st2-details__switch-item"
-            onClick={ () => onChange(section) }
-          >{ section.label }</div>;
-        })
-      }
-    </div>;
+    return (
+      <div className={`st2-details__switch st2-details__switch--of-two st2-details__switch--${ SWITCH_COUNT[active < 0 ? 0 : active] }`}>
+        {
+          sections.map((section) => {
+            return (
+              <div
+                key={section.path} className="st2-details__switch-item"
+                onClick={() => onChange(section)}
+              >{ section.label }
+              </div>
+            );
+          })
+        }
+      </div>
+    );
   }
 }
 
 export class DetailsBody extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
     const { children } = this.props;
 
-    return <div className="st2-details__body st2-details__body--active">
-      <div className="st2-panel__scroller">
-        { children }
+    return (
+      <div className="st2-details__body st2-details__body--active">
+        <div className="st2-panel__scroller">
+          { children }
+        </div>
       </div>
-    </div>;
+    );
   }
 }
 
 export class DetailsPanel extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
     const { children } = this.props;
 
-    return <div className="st2-details__panel">
-      { children }
-    </div>;
+    return (
+      <div className="st2-details__panel">
+        { children }
+      </div>
+    );
   }
 }
 
 export class DetailsPanelHeading extends React.Component {
   static propTypes = {
-    title: PropTypes.string
+    title: PropTypes.string,
   }
 
   render() {
     const { title } = this.props;
 
-    return <div className="st2-details__panel-heading">
-      <h2 className="st2-details__panel-title">{ title }</h2>
-    </div>;
+    return (
+      <div className="st2-details__panel-heading">
+        <h2 className="st2-details__panel-title">{ title }</h2>
+      </div>
+    );
   }
 }
 
 export class DetailsPanelBody extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
     const { children } = this.props;
 
-    return <div className="st2-details__panel-body">
-      { children }
-    </div>;
+    return (
+      <div className="st2-details__panel-body">
+        { children }
+      </div>
+    );
   }
 }
 
 export class DetailsPanelBodyLine extends React.Component {
   static propTypes = {
     label: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
     const { label, children } = this.props;
 
-    return <dl className="st2-details__panel-body-line">
-      <dt className="st2-details__panel-body-label">{ label }:</dt>
-      <dd className="st2-details__panel-body-value">{ children }</dd>
-    </dl>;
+    return (
+      <dl className="st2-details__panel-body-line">
+        <dt className="st2-details__panel-body-label">{ label }:</dt>
+        <dd className="st2-details__panel-body-value">{ children }</dd>
+      </dl>
+    );
   }
 }
 
 export class DetailsButtonsPanel extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
     const { children } = this.props;
 
-    return <div className="st2-forms__buttons-panel">
-      { children }
-    </div>;
+    return (
+      <div className="st2-forms__buttons-panel">
+        { children }
+      </div>
+    );
   }
 }
 
 export class DetailsToolbar extends React.Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
-    return <div className="st2-details__toolbar">
-      { this.props.children }
-    </div>;
+    return (
+      <div className="st2-details__toolbar">
+        { this.props.children }
+      </div>
+    );
   }
 }
 
 export class DetailsToolbarSeparator extends React.Component {
   render() {
-    return <div className="st2-details__toolbar-separator"></div>;
+    return <div className="st2-details__toolbar-separator" />;
   }
 }
 
 export class ToggleButton extends React.Component {
   static propTypes = {
     collapsed: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
   }
 
   render() {
     const props = {
       className: 'st2-panel__toolbar-toggle-all',
-      onClick: (e) => this.props.onClick(e)
+      onClick: (e) => this.props.onClick(e),
     };
 
     if (this.props.collapsed) {

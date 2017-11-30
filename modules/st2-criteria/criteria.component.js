@@ -42,7 +42,7 @@ export default class Criteria extends React.Component {
     spec: PropTypes.object,
     data: PropTypes.object,
     disabled: PropTypes.bool,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }
 
   handleChangeKey(oldKey, key) {
@@ -65,7 +65,7 @@ export default class Criteria extends React.Component {
       [key]: {
         ...data[key],
         type,
-      }
+      },
     });
   }
 
@@ -77,7 +77,7 @@ export default class Criteria extends React.Component {
       [key]: {
         ...data[key],
         pattern,
-      }
+      },
     });
   }
 
@@ -105,51 +105,58 @@ export default class Criteria extends React.Component {
   render() {
     const { spec, data, disabled } = this.props;
 
-    return <div className="st2-criteria">
-      <div>
-        { _.map(data, ({ type, pattern }, key) => {
-          return <div className="st2-criteria__line" key={key}>
-            <AutoFormCombobox
-              className="st2-criteria__entity"
-              disabled={disabled}
-              data={key}
-              spec={spec}
-              onChange={ (value) => this.handleChangeKey(key, value) }
-            />
-            <AutoFormSelect
-              className="st2-criteria__entity"
-              disabled={disabled}
-              data={type}
-              spec={{
-                required: true,
-                enum: types
-              }}
-              onChange={ (value) => this.handleChangeType(key, value) }
-            />
-            <AutoFormInput
-              className="st2-criteria__entity"
-              disabled={disabled}
-              data={pattern}
-              spec={{
-                required: true
-              }}
-              onChange={ (value) => this.handleChangePattern(key, value) }
-            />
-            { disabled ? null :
-              <i className="icon-cross st2-criteria__remove" onClick={ () => this.handleRemove(key) } />
-            }
-          </div>;
-        }) }
-      </div>
-      { disabled ? null :
-        <div className="st2-criteria__buttons">
-          <input type="button"
-            className="st2-forms__button st2-forms__button--small"
-            onClick={ () => this.handleAdd() }
-            value="Add criteria"
-          />
+    return (
+      <div className="st2-criteria">
+        <div>
+          { _.map(data, ({ type, pattern }, key) => {
+            return (
+              <div className="st2-criteria__line" key={key}>
+                <AutoFormCombobox
+                  className="st2-criteria__entity"
+                  disabled={disabled}
+                  data={key}
+                  spec={spec}
+                  onChange={(value) => this.handleChangeKey(key, value)}
+                />
+                <AutoFormSelect
+                  className="st2-criteria__entity"
+                  disabled={disabled}
+                  data={type}
+                  spec={{
+                    required: true,
+                    enum: types,
+                  }}
+                  onChange={(value) => this.handleChangeType(key, value)}
+                />
+                <AutoFormInput
+                  className="st2-criteria__entity"
+                  disabled={disabled}
+                  data={pattern}
+                  spec={{
+                    required: true,
+                  }}
+                  onChange={(value) => this.handleChangePattern(key, value)}
+                />
+                { disabled ? null :
+                  <i className="icon-cross st2-criteria__remove" onClick={() => this.handleRemove(key)} />
+                }
+              </div>
+            );
+          }) }
         </div>
-      }
-    </div>;
+        { disabled ? null :
+          (
+            <div className="st2-criteria__buttons">
+              <input
+                type="button"
+                className="st2-forms__button st2-forms__button--small"
+                onClick={() => this.handleAdd()}
+                value="Add criteria"
+              />
+            </div>
+          )
+        }
+      </div>
+    );
   }
 }

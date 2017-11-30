@@ -33,7 +33,7 @@ function getType(string) {
 export default class st2Highlight extends React.Component {
   static propTypes = {
     code: PropTypes.any,
-    language: PropTypes.string
+    language: PropTypes.string,
   };
 
   componentDidMount() {

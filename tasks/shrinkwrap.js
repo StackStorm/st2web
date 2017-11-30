@@ -8,6 +8,6 @@ var gulp = require('gulp')
 gulp.task('shrinkwrap', function (cb) {
   npmShrinkwrap({
     dev: true,
-    dirname: __dirname + '/..'
+    dirname: __dirname + '/..',
   }, cb);
 });

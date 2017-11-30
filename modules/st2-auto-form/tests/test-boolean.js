@@ -12,7 +12,7 @@ describe('AutoForm BooleanField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -25,7 +25,7 @@ describe('AutoForm BooleanField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -43,7 +43,7 @@ describe('AutoForm BooleanField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -61,9 +61,9 @@ describe('AutoForm BooleanField', () => {
     const props = {
       name: 'test',
       spec: {
-        default: true
+        default: true,
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);

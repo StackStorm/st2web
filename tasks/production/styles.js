@@ -9,10 +9,10 @@ gulp.task('production-styles', function productionStyling() {
   return gulp.src(settings.production.styles, { base: __dirname + '/../..' })
     .pipe(gulp.dest(settings.production.dest))
     .pipe(plugins.size({
-      showFiles: true
+      showFiles: true,
     }))
     .pipe(plugins.size({
       showFiles: true,
-      gzip: true
+      gzip: true,
     }));
 });

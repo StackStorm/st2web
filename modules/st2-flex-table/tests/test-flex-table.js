@@ -20,7 +20,7 @@ describe('FlexTable component', () => {
       title: 'Some title',
       collapsed: false,
       icon: 'icon.png',
-      onToggle: sinon.spy()
+      onToggle: sinon.spy(),
     };
 
     const c = render(<FlexTable {...props}>some child node</FlexTable>);
@@ -42,7 +42,7 @@ describe('FlexTable component', () => {
     const props = {
       title: 'Some title',
       collapsed: false,
-      onToggle: sinon.spy()
+      onToggle: sinon.spy(),
     };
 
     const c = render(<FlexTable {...props}>some child node</FlexTable>);
@@ -64,7 +64,7 @@ describe('FlexTable component', () => {
     const props = {
       collapsed: false,
       icon: 'icon.png',
-      onToggle: sinon.spy()
+      onToggle: sinon.spy(),
     };
 
     const c = render(<FlexTable {...props}>some child node</FlexTable>);
@@ -83,7 +83,7 @@ describe('FlexTable component', () => {
       title: 'Some title',
       collapsed: true,
       icon: 'icon.png',
-      onToggle: sinon.spy()
+      onToggle: sinon.spy(),
     };
 
     const c = render(<FlexTable {...props}>some child node</FlexTable>);

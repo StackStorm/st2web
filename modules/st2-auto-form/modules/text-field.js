@@ -22,6 +22,17 @@ export default class TextFieldModule extends React.Component {
     error: null,
   }
 
+  componentWillUpdate() {
+    setTimeout(() => {
+      if (!this._textarea) {
+        return;
+      }
+
+      this._textarea.style.height = 0;
+      this._textarea.style.height = this._textarea.scrollHeight + 'px';
+    }, 0);
+  }
+
   onRef(textarea) {
     this._textarea = textarea;
     if (!this._textarea) {
@@ -41,17 +52,6 @@ export default class TextFieldModule extends React.Component {
     this._textarea.style.maxHeight = maxHeight + 'px';
     this._textarea.style.height = 0;
     this._textarea.style.height = this._textarea.scrollHeight + 'px';
-  }
-
-  componentWillUpdate() {
-    setTimeout(() => {
-      if (!this._textarea) {
-        return;
-      }
-
-      this._textarea.style.height = 0;
-      this._textarea.style.height = this._textarea.scrollHeight + 'px';
-    }, 0);
   }
 
   onChange(value) {
@@ -75,26 +75,28 @@ export default class TextFieldModule extends React.Component {
   render() {
     const { className = '', name, disabled, spec, data = '' } = this.props;
 
-    return <div className={`st2-form-text-field ${className}`}>
-      <Label spec={spec} className="st2-auto-form__text-field">
-        <Title name={ name } spec={spec} />
+    return (
+      <div className={`st2-form-text-field ${className}`}>
+        <Label spec={spec} className="st2-auto-form__text-field">
+          <Title name={name} spec={spec} />
 
-        <textarea
-          className="st2-auto-form__field"
-          placeholder={ spec.default }
-          required={ spec.required }
-          disabled={ disabled }
-          minLength={ spec.minLength }
-          maxLength={ spec.maxLength }
-          onChange={ ({ target: { value } }) => this.onChange(value) }
-          ref={ (ref) => this.onRef(ref) }
-          value={ data }
-        />
+          <textarea
+            className="st2-auto-form__field"
+            placeholder={spec.default}
+            required={spec.required}
+            disabled={disabled}
+            minLength={spec.minLength}
+            maxLength={spec.maxLength}
+            onChange={({ target: { value } }) => this.onChange(value)}
+            ref={(ref) => this.onRef(ref)}
+            value={data}
+          />
 
-        <ErrorMessage>{ this.state.error }</ErrorMessage>
-      </Label>
+          <ErrorMessage>{ this.state.error }</ErrorMessage>
+        </Label>
 
-      <Description spec={ spec } />
-    </div>;
+        <Description spec={spec} />
+      </div>
+    );
   }
 }

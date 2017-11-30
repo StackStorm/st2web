@@ -12,7 +12,7 @@ describe('AutoForm ArrayField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -25,7 +25,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -51,10 +51,10 @@ describe('AutoForm ArrayField', () => {
       name: 'test',
       spec: {
         items: {
-          type: 'number'
-        }
+          type: 'number',
+        },
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -73,8 +73,8 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {
-        default: [1,2,3]
-      }
+        default: [1,2,3],
+      },
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -96,7 +96,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -121,7 +121,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -139,7 +139,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);

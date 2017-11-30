@@ -6,7 +6,7 @@ module.exports =
       restrict: 'A',
       scope: {
         enabled: '@st2ScrollIntoView',
-        container: '@st2ScrollIntoViewContainer'
+        container: '@st2ScrollIntoViewContainer',
       },
       link: function (scope, element) {
         var container = document.getElementById(scope.container);
@@ -30,6 +30,6 @@ module.exports =
             }
           });
         });
-      }
+      },
     };
   };

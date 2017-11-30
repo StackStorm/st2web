@@ -20,7 +20,7 @@ import {
   DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
-  ToggleButton
+  ToggleButton,
 } from '@stackstorm/module-panel';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import PackFlexCard from './pack-flex-card.component';
@@ -57,7 +57,7 @@ function waitExecution(execution_id, record) {
   const { title } = props;
 
   return {
-    onToggle: () => store.dispatch(actions.toggle(title))
+    onToggle: () => store.dispatch(actions.toggle(title)),
   };
 })
 class FlexTableWrapper extends FlexTable {
@@ -89,146 +89,7 @@ export default class PacksPanel extends React.Component {
   }
 
   state = {
-    configPreview: false
-  }
-
-  handleToggleAll() {
-    return store.dispatch(actions.toggleAll());
-  }
-
-  handleSelect(ref) {
-    const { history } = this.props;
-    history.push(`/packs/${ ref }`);
-  }
-
-  handleInstall(ref) {
-    const { notification, history } = this.props;
-
-    return store.dispatch({
-      type: 'INSTALL_PACK',
-      ref,
-      promise: api.client.packInstall.schedule({
-        packs: [ref]
-      })
-        .then(body => {
-          notification.success(
-            `Pack "${ref}" has been scheduled for installation.`,
-            {
-              buttons: [{
-                text: 'Show execution',
-                onClick: () => history.push(`/history/${body.execution_id}`)
-              }]
-            }
-          );
-
-          return api.client.stream
-            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
-        })
-        .then(() => {
-          notification.success(
-            `Pack "${ref}" has been successfully installed`
-          );
-        })
-        .catch(err => {
-          notification.error(
-            `Unable to schedule pack "${ref}" for installation. ` +
-            'See details in developer tools console.'
-          );
-          console.error(err);
-
-          throw err;
-        })
-    });
-  }
-
-  handleRemove(ref) {
-    const { notification, history } = this.props;
-
-    return store.dispatch({
-      type: 'UNINSTALL_PACK',
-      ref,
-      promise: api.client.packUninstall.schedule({
-        packs: [ref]
-      })
-        .then(body => {
-          notification.success(
-            `Pack "${ref}" has been scheduled for removal.`,
-            {
-              buttons: [{
-                text: 'Show execution',
-                onClick: () => history.push(`/history/${body.execution_id}`)
-              }]
-            }
-          );
-
-          return api.client.stream
-            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
-        })
-        .then(() => {
-          notification.success(
-            `Pack "${ref}" has been successfully removed`
-          );
-        })
-        .catch(err => {
-          notification.error(
-            `Unable to schedule pack "${ref}" for removal. ` +
-            'See details in developer tools console.'
-          );
-          console.error(err);
-
-          throw err;
-        })
-    });
-  }
-
-  handleConfigSave(e, ref) {
-    e.preventDefault();
-
-    const { notification } = this.props;
-
-    return store.dispatch({
-      type: 'CONFIGURE_PACK',
-      ref,
-      promise: api.client.configs.edit(ref, this.configField.getValue(), {
-        show_secrets: true
-      })
-        .then(res => {
-          notification.success(
-            `Configuration for pack "${ref}" has been saved succesfully`
-          );
-
-          return res.values;
-        })
-        .catch(res => {
-          notification.error(
-            `Unable to save the configuration for pack "${ref}". ` +
-            'See details in developer tools console.'
-          );
-          console.error(res);
-        })
-    });
-  }
-
-  handleToggleConfigPreview() {
-    let { configPreview } = this.state;
-
-    configPreview = !configPreview;
-
-    this.setState({ configPreview });
-  }
-
-  handleFilterChange(e) {
-    store.dispatch({
-      type: 'SET_FILTER',
-      filter: e.target.value
-    });
-  }
-
-  handleTagClick(word) {
-    store.dispatch({
-      type: 'SET_FILTER',
-      filter: word
-    });
+    configPreview: false,
   }
 
   componentDidMount() {
@@ -255,7 +116,7 @@ export default class PacksPanel extends React.Component {
           });
 
           return packs;
-        })
+        }),
     })
       .then(() => {
         const { selected } = store.getState();
@@ -272,7 +133,7 @@ export default class PacksPanel extends React.Component {
       promise: api.client.packs.get('index')
         .then(({ index }) => index)
         // In some cases pack ref might be missing and we better sort it out earlier
-        .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref })))
+        .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref }))),
     });
 
     store.dispatch({
@@ -286,19 +147,19 @@ export default class PacksPanel extends React.Component {
             packs[ref] = {
               ref,
               config_schema: {
-                properties: config_schema.attributes
-              }
+                properties: config_schema.attributes,
+              },
             };
           });
 
           return packs;
-        })
+        }),
     });
 
     store.dispatch({
       type: 'FETCH_PACK_CONFIGS',
       promise: api.client.configs.list({
-        show_secrets: true
+        show_secrets: true,
       })
         .then(configs => {
           const packs = {};
@@ -307,12 +168,12 @@ export default class PacksPanel extends React.Component {
             const ref = config.pack;
             packs[ref] = {
               ref,
-              config: config.values
+              config: config.values,
             };
           });
 
           return packs;
-        })
+        }),
     });
 
     const { ref } = this.props.match.params;
@@ -325,6 +186,145 @@ export default class PacksPanel extends React.Component {
     if (ref !== this.props.match.params.ref) {
       store.dispatch({ type: 'SELECT_PACK', ref });
     }
+  }
+
+  handleToggleAll() {
+    return store.dispatch(actions.toggleAll());
+  }
+
+  handleSelect(ref) {
+    const { history } = this.props;
+    history.push(`/packs/${ ref }`);
+  }
+
+  handleInstall(ref) {
+    const { notification, history } = this.props;
+
+    return store.dispatch({
+      type: 'INSTALL_PACK',
+      ref,
+      promise: api.client.packInstall.schedule({
+        packs: [ref],
+      })
+        .then(body => {
+          notification.success(
+            `Pack "${ref}" has been scheduled for installation.`,
+            {
+              buttons: [{
+                text: 'Show execution',
+                onClick: () => history.push(`/history/${body.execution_id}`),
+              }],
+            }
+          );
+
+          return api.client.stream
+            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
+        })
+        .then(() => {
+          notification.success(
+            `Pack "${ref}" has been successfully installed`
+          );
+        })
+        .catch(err => {
+          notification.error(
+            `Unable to schedule pack "${ref}" for installation. ` +
+            'See details in developer tools console.'
+          );
+          console.error(err);
+
+          throw err;
+        }),
+    });
+  }
+
+  handleRemove(ref) {
+    const { notification, history } = this.props;
+
+    return store.dispatch({
+      type: 'UNINSTALL_PACK',
+      ref,
+      promise: api.client.packUninstall.schedule({
+        packs: [ref],
+      })
+        .then(body => {
+          notification.success(
+            `Pack "${ref}" has been scheduled for removal.`,
+            {
+              buttons: [{
+                text: 'Show execution',
+                onClick: () => history.push(`/history/${body.execution_id}`),
+              }],
+            }
+          );
+
+          return api.client.stream
+            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
+        })
+        .then(() => {
+          notification.success(
+            `Pack "${ref}" has been successfully removed`
+          );
+        })
+        .catch(err => {
+          notification.error(
+            `Unable to schedule pack "${ref}" for removal. ` +
+            'See details in developer tools console.'
+          );
+          console.error(err);
+
+          throw err;
+        }),
+    });
+  }
+
+  handleConfigSave(e, ref) {
+    e.preventDefault();
+
+    const { notification } = this.props;
+
+    return store.dispatch({
+      type: 'CONFIGURE_PACK',
+      ref,
+      promise: api.client.configs.edit(ref, this.configField.getValue(), {
+        show_secrets: true,
+      })
+        .then(res => {
+          notification.success(
+            `Configuration for pack "${ref}" has been saved succesfully`
+          );
+
+          return res.values;
+        })
+        .catch(res => {
+          notification.error(
+            `Unable to save the configuration for pack "${ref}". ` +
+            'See details in developer tools console.'
+          );
+          console.error(res);
+        }),
+    });
+  }
+
+  handleToggleConfigPreview() {
+    let { configPreview } = this.state;
+
+    configPreview = !configPreview;
+
+    this.setState({ configPreview });
+  }
+
+  handleFilterChange(e) {
+    store.dispatch({
+      type: 'SET_FILTER',
+      filter: e.target.value,
+    });
+  }
+
+  handleTagClick(word) {
+    store.dispatch({
+      type: 'SET_FILTER',
+      filter: word,
+    });
   }
 
   render() {
@@ -343,11 +343,11 @@ export default class PacksPanel extends React.Component {
       repo_url,
       status,
       installedVersion,
-      version
+      version,
     } = packs[selected] || {};
 
     const packMeta = {
-      version
+      version,
     };
 
     if (installedVersion && installedVersion !== version) {
@@ -361,22 +361,30 @@ export default class PacksPanel extends React.Component {
     }
 
     if (keywords && keywords.length) {
-      packMeta.keywords = <div>
-        {
-          keywords.map(word =>
-            <span key={word} className="st2-details__panel-body-tag"
-              onClick={() => this.handleTagClick(word)}>
-              { word }
-            </span>
-          )
-        }
-      </div>;
+      packMeta.keywords = (
+        <div>
+          {
+            keywords.map(word =>
+              (
+                <span
+                  key={word} className="st2-details__panel-body-tag"
+                  onClick={() => this.handleTagClick(word)}
+                >
+                  { word }
+                </span>
+              )
+            )
+          }
+        </div>
+      );
     }
 
     if (repo_url) {
-      packMeta['Repo URL'] = <div className="st2-details__panel-body-pocket">
-        <a href={repo_url} title={repo_url}>{ repo_url }</a>
-      </div>;
+      packMeta['Repo URL'] = (
+        <div className="st2-details__panel-body-pocket">
+          <a href={repo_url} title={repo_url}>{ repo_url }</a>
+        </div>
+      );
     }
 
     const packContent = _.mapValues(content, 'count');
@@ -393,79 +401,92 @@ export default class PacksPanel extends React.Component {
       .value()
       ;
 
-    return <Panel>
-      <PanelView className="st2-packs">
-        <Toolbar title="Packs">
-          <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll() }/>
-          <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
-        </Toolbar>
-        <Content>
-          {
-            ['installed', 'installing', 'uninstalling', 'available'].map(key => {
-              return !!packGroups[key] && <FlexTableWrapper title={key} key={key} >
-                {
-                  packGroups[key]
-                    .map(pack => {
-                      return <PackFlexCard key={pack.ref} pack={pack}
-                        selected={selected === pack.ref}
-                        onClick={() => this.handleSelect(pack.ref)} />;
-                    })
-                }
-              </FlexTableWrapper>;
-            })
-          }
-        </Content>
-      </PanelView>
-      <PanelDetails data-test="details">
-        <DetailsHeader title={name} subtitle={description}/>
-        <DetailsBody>
-          <DetailsPanel>
-            <Table content={packMeta} data-test="pack_info" />
-          </DetailsPanel>
-          {
-            content && <DetailsPanel>
-              <St2PortionBar content={packContent} data-test="pack_content" />
+    return (
+      <Panel>
+        <PanelView className="st2-packs">
+          <Toolbar title="Packs">
+            <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
+            <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
+          </Toolbar>
+          <Content>
+            {
+              ['installed', 'installing', 'uninstalling', 'available'].map(key => {
+                return !!packGroups[key] && (
+                  <FlexTableWrapper title={key} key={key} >
+                    {
+                      packGroups[key]
+                        .map(pack => {
+                          return (
+                            <PackFlexCard
+                              key={pack.ref} pack={pack}
+                              selected={selected === pack.ref}
+                              onClick={() => this.handleSelect(pack.ref)}
+                            />
+                          );
+                        })
+                    }
+                  </FlexTableWrapper>
+                );
+              })
+            }
+          </Content>
+        </PanelView>
+        <PanelDetails data-test="details">
+          <DetailsHeader title={name} subtitle={description} />
+          <DetailsBody>
+            <DetailsPanel>
+              <Table content={packMeta} data-test="pack_info" />
             </DetailsPanel>
-          }
-          {
-            config_schema && <DetailsPanel data-test="pack_config" >
-              <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
-                <AutoForm
-                  ref={(component) => { this.configField = component; }}
-                  spec={config_schema}
-                  ngModel={config} />
-                <DetailsButtonsPanel>
-                  <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
-                  <Button type="submit" value="Save" />
-                </DetailsButtonsPanel>
-                {
-                  this.state.configPreview &&
-                    <St2Highlight code={this.configField.getValue()}/>
-                }
-              </form>
-            </DetailsPanel>
-          }
-        </DetailsBody>
-        <DetailsToolbar>
-          {
-            status === 'installed' &&
+            {
+              content && (
+                <DetailsPanel>
+                  <St2PortionBar content={packContent} data-test="pack_content" />
+                </DetailsPanel>
+              )
+            }
+            {
+              config_schema && (
+                <DetailsPanel data-test="pack_config" >
+                  <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
+                    <AutoForm
+                      ref={(component) => { this.configField = component; }}
+                      spec={config_schema}
+                      ngModel={config}
+                    />
+                    <DetailsButtonsPanel>
+                      <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
+                      <Button type="submit" value="Save" />
+                    </DetailsButtonsPanel>
+                    {
+                      this.state.configPreview &&
+                    <St2Highlight code={this.configField.getValue()} />
+                    }
+                  </form>
+                </DetailsPanel>
+              )
+            }
+          </DetailsBody>
+          <DetailsToolbar>
+            {
+              status === 'installed' &&
               <Button small value="Remove" onClick={() => this.handleRemove(selected)} />
-          }
-          {
-            status === 'installing' &&
+            }
+            {
+              status === 'installing' &&
               <Button small value="Install" disabled />
-          }
-          {
-            status === 'uninstalling' &&
+            }
+            {
+              status === 'uninstalling' &&
               <Button small value="Remove" disabled />
-          }
-          {
-            status === 'available' &&
+            }
+            {
+              status === 'available' &&
               <Button small value="Install" onClick={() => this.handleInstall(selected)} />
-          }
-          <DetailsToolbarSeparator />
-        </DetailsToolbar>
-      </PanelDetails>
-    </Panel>;
+            }
+            <DetailsToolbarSeparator />
+          </DetailsToolbar>
+        </PanelDetails>
+      </Panel>
+    );
   }
 }

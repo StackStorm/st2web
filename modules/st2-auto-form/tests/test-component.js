@@ -16,7 +16,7 @@ function render(component) {
 describe('AutoForm Component', () => {
   it('produces an empty element when provided a spec with no properties', () => {
     const spec = {
-      properties: {}
+      properties: {},
     };
 
     const output = render(<Component spec={spec} />);
@@ -27,8 +27,8 @@ describe('AutoForm Component', () => {
   it('produces a form of single string field for spec of one empty property', () => {
     const spec = {
       properties: {
-        test: {}
-      }
+        test: {},
+      },
     };
 
     const output = render(<Component spec={spec} />);
@@ -40,12 +40,12 @@ describe('AutoForm Component', () => {
   it('calls an onChange callback as soon as one on the child element gets called', () => {
     const spec = {
       properties: {
-        test: {}
-      }
+        test: {},
+      },
     };
     const onChange = sinon.spy();
 
-    const output = render(<Component spec={spec} onChange={onChange}/>);
+    const output = render(<Component spec={spec} onChange={onChange} />);
 
     const [ field ] = output.props.children;
     field.props.onChange('test');

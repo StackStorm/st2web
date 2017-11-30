@@ -11,7 +11,7 @@ module.exports =
         label: '@label',
         multiple: '@',
         items: '=',
-        activeItemsSrc: '=activeItems'
+        activeItemsSrc: '=activeItems',
       },
       templateUrl: template,
       link: function postLink(scope, element, attrs) {
@@ -77,7 +77,7 @@ module.exports =
         });
 
         scope.$watch('search', scope.refreshItemsToShow);
-      }
+      },
     };
 
   };

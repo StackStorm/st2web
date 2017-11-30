@@ -12,7 +12,7 @@ describe('AutoForm NumberField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<NumberField {...props} />);
@@ -25,7 +25,7 @@ describe('AutoForm NumberField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<NumberField {...props} />);
@@ -43,7 +43,7 @@ describe('AutoForm NumberField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<NumberField {...props} />);

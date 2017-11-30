@@ -22,13 +22,15 @@ export default class ArrayModule extends React.Component {
   render() {
     const { className = '', name, disabled, spec, data = [] } = this.props;
 
-    return <AutoFormInput
-      className={`st2-form-array ${className}`}
-      name={ name }
-      disabled={ disabled }
-      spec={ spec }
-      data={ data.join(', ') }
-      onChange={ (value) => this.onChange(value) }
-    />;
+    return (
+      <AutoFormInput
+        className={`st2-form-array ${className}`}
+        name={name}
+        disabled={disabled}
+        spec={spec}
+        data={data.join(', ')}
+        onChange={(value) => this.onChange(value)}
+      />
+    );
   }
 }

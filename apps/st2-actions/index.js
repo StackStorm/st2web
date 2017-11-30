@@ -5,7 +5,7 @@ const route = {
   url: '/actions',
   icon: 'icon-play',
   Component: Actions,
-  position: 2
+  position: 2,
 };
 
 export default route;

@@ -11,7 +11,7 @@ module.exports =
     return {
       restrict: 'C',
       scope: {
-        viewSettings: '='
+        viewSettings: '=',
       },
       templateUrl: template,
       link: function postLink(scope, element) {
@@ -32,7 +32,7 @@ module.exports =
         scope.pick = function (setting) {
           setting.value = !setting.value;
         };
-      }
+      },
     };
 
   };

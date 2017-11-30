@@ -91,8 +91,8 @@ module.exports = function (browser) {
             protocol: 'https',
             host: process.env.ST2_HOST.split(':')[0],
             port: process.env.ST2_HOST.split(':')[1] || 443,
-            prefix: '/auth'
-          }
+            prefix: '/auth',
+          },
         });
 
         client = cli.authenticate(process.env.ST2_USERNAME, process.env.ST2_PASSWORD)
@@ -106,6 +106,6 @@ module.exports = function (browser) {
       }
 
       return client;
-    }
+    },
   };
 };

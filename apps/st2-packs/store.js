@@ -5,13 +5,13 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const packReducer = (state = {}, input) => {
   let {
     packs = {},
-    selected = undefined
+    selected = undefined,
   } = state;
 
   state = {
     ...state,
     packs,
-    selected
+    selected,
   };
 
   switch (input.type) {
@@ -25,7 +25,7 @@ const packReducer = (state = {}, input) => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
-              status: 'installed'
+              status: 'installed',
             };
           });
 
@@ -48,7 +48,7 @@ const packReducer = (state = {}, input) => {
             packs[pack.ref] = {
               status: 'available',
               ...state.packs[pack.ref],
-              ...pack
+              ...pack,
             };
           });
 
@@ -70,7 +70,7 @@ const packReducer = (state = {}, input) => {
           _.forEach(input.payload, pack => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
-              ...pack
+              ...pack,
             };
           });
 
@@ -92,7 +92,7 @@ const packReducer = (state = {}, input) => {
           _.forEach(input.payload, pack => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
-              ...pack
+              ...pack,
             };
           });
 
@@ -161,7 +161,7 @@ const packReducer = (state = {}, input) => {
 
       return {
         ...state,
-        selected: ref || Object.keys(state.packs).sort()[0]
+        selected: ref || Object.keys(state.packs).sort()[0],
       };
 
     case 'SET_FILTER':
@@ -169,7 +169,7 @@ const packReducer = (state = {}, input) => {
 
       return {
         ...state,
-        filter
+        filter,
       };
 
     default:

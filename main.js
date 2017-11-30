@@ -6,7 +6,7 @@ import {
   HashRouter as Router,
   Redirect,
   Route,
-  Switch
+  Switch,
 } from 'react-router-dom';
 import Noty from 'noty';
 import cx from 'classnames';
@@ -27,13 +27,13 @@ const routes = [
   Actions,
   Rules,
   Packs,
-  Docs
+  Docs,
 ];
 
 Noty.overrideDefaults({
   layout: 'bottomLeft',
   closeWith: ['click'],
-  timeout: 3000
+  timeout: 3000,
 });
 
 function makeNotification(type) {
@@ -47,7 +47,7 @@ function makeNotification(type) {
         const defaultClass = 'st2-forms__button st2-forms__button--skeleton';
         return Noty.button(t, cx(defaultClass, cls), cb, attrs);
       }),
-      ...restOpts
+      ...restOpts,
     }).show();
   };
 }
@@ -56,41 +56,45 @@ class Container extends React.Component {
   render() {
     const notification = {
       success: makeNotification('success'),
-      error: makeNotification('error')
+      error: makeNotification('error'),
     };
 
-    return <div className="wrapper">
-      <Router>
-        <Switch>
-          <Route exact path="/" render={() => <Redirect to="/history" />} />
-          {
-            routes
-              .filter(route => route.url)
-              .map(route => {
-                return <Route
-                  key={route.url}
-                  path={`${route.url}/:ref?`}
-                  render={({ history, match, location }) => {
-                    const props = {
-                      notification,
-                      history,
-                      match,
-                      location,
-                      routes,
-                    };
+    return (
+      <div className="wrapper">
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/history" />} />
+            {
+              routes
+                .filter(route => route.url)
+                .map(route => {
+                  return (
+                    <Route
+                      key={route.url}
+                      path={`${route.url}/:ref?`}
+                      render={({ history, match, location }) => {
+                        const props = {
+                          notification,
+                          history,
+                          match,
+                          location,
+                          routes,
+                        };
 
-                    if (api.isConnected()) {
-                      return <route.Component {...props} />;
-                    } else {
-                      return <Login onConnect={() => history.replace()}/>;
-                    }
-                  }}
-                />;
-              })
-          }
-        </Switch>
-      </Router>
-    </div>;
+                        if (api.isConnected()) {
+                          return <route.Component {...props} />;
+                        } else {
+                          return <Login onConnect={() => history.replace()} />;
+                        }
+                      }}
+                    />
+                  );
+                })
+            }
+          </Switch>
+        </Router>
+      </div>
+    );
   }
 }
 

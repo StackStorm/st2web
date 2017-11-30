@@ -30,7 +30,7 @@ function bundle(file, name) {
     fullPaths: true,
     entries: [file],
     transform: pkg.browserify.transform,
-    debug: true
+    debug: true,
   };
   var opts = _.assign({}, watchify.args, customOpts);
 
@@ -38,11 +38,11 @@ function bundle(file, name) {
     .on('update', function () {
       bundle(file, name)
         .pipe(plugins.size({
-          showFiles: true
+          showFiles: true,
         }))
         .pipe(plugins.size({
           showFiles: true,
-          gzip: true
+          gzip: true,
         }))
       ;
     });
@@ -76,11 +76,11 @@ gulp.task('browserify', function () {
 
   return es.merge.apply(null, tasks)
     .pipe(plugins.size({
-      showFiles: true
+      showFiles: true,
     }))
     .pipe(plugins.size({
       showFiles: true,
-      gzip: true
+      gzip: true,
     }))
   ;
 });
@@ -92,11 +92,11 @@ gulp.task('watchify', function () {
 
   return es.merge.apply(null, tasks)
     .pipe(plugins.size({
-      showFiles: true
+      showFiles: true,
     }))
     .pipe(plugins.size({
       showFiles: true,
-      gzip: true
+      gzip: true,
     }))
   ;
 });

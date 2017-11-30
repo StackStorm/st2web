@@ -150,7 +150,7 @@ describe('User visits rules page', function () {
               return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/rules$').test(e.url);
             });
           })
-          ;
+        ;
       });
 
       it('should make a call to rules endpoint once', function () {
@@ -251,7 +251,7 @@ describe('User visits rules page', function () {
                 return rule.ref === 'packs.test' + uniqueId;
               });
             })
-            ;
+          ;
         });
 
         it('should make a call to rules endpoint once', function () {

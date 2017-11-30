@@ -34,30 +34,35 @@ export default class SelectModule extends React.Component {
       : Object.keys(spec.enum).map((value) => ({ value, label: `${spec.enum[value]} (${value})` }))
     ;
 
-    return <div className={`st2-auto-form-select ${className}`}>
-      <Label spec={spec} className="st2-auto-form__select">
-        <Title name={ name } spec={spec} />
+    return (
+      <div className={`st2-auto-form-select ${className}`}>
+        <Label spec={spec} className="st2-auto-form__select">
+          <Title name={name} spec={spec} />
 
-        <select
-          className="st2-auto-form__field"
-          required={ spec.required }
-          disabled={ disabled }
-          onChange={ ({ target: { value } }) => this.onChange(value) }
-          value={ data }
-        >
-          { options.map(({ value, label }) => {
-            return <option
-              key={ value }
-              value={ value }
-              label={ label }
-            >{ label }</option>;
-          }) }
-        </select>
+          <select
+            className="st2-auto-form__field"
+            required={spec.required}
+            disabled={disabled}
+            onChange={({ target: { value } }) => this.onChange(value)}
+            value={data}
+          >
+            { options.map(({ value, label }) => {
+              return (
+                <option
+                  key={value}
+                  value={value}
+                  label={label}
+                >{ label }
+                </option>
+              );
+            }) }
+          </select>
 
-        <ErrorMessage>{ this.state.error }</ErrorMessage>
-      </Label>
+          <ErrorMessage>{ this.state.error }</ErrorMessage>
+        </Label>
 
-      <Description spec={ spec } />
-    </div>;
+        <Description spec={spec} />
+      </div>
+    );
   }
 }

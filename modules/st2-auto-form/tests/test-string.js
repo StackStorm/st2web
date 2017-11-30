@@ -13,7 +13,7 @@ describe('AutoForm StringField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<StringField {...props} />);
@@ -26,7 +26,7 @@ describe('AutoForm StringField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<StringField {...props} />);

@@ -16,7 +16,7 @@ module.exports =
         }, debouncedMakeProportional);
 
         angular.element($window).on('resize', debouncedMakeProportional);
-      }
+      },
     };
 
     function makeProportional(container) {
@@ -34,7 +34,7 @@ module.exports =
         childrenWidth += childWidth;
         return {
           element: child,
-          width: childWidth
+          width: childWidth,
         };
       });
       var containerWidth = container[0].clientWidth -

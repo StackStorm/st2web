@@ -12,6 +12,6 @@ module.exports =
           sel.removeAllRanges();
           sel.addRange(range);
         });
-      }
+      },
     };
   };

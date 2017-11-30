@@ -39,24 +39,26 @@ export default class InputModule extends React.Component {
   render() {
     const { className = '', name, disabled, spec, data = '' } = this.props;
 
-    return <div className={`st2-form-input ${className}`}>
-      <Label spec={spec}>
-        <Title name={ name } spec={spec} />
+    return (
+      <div className={`st2-form-input ${className}`}>
+        <Label spec={spec}>
+          <Title name={name} spec={spec} />
 
-        <input
-          type="text"
-          className="st2-auto-form__field"
-          placeholder={ spec.default }
-          required={ spec.required }
-          disabled={ disabled }
-          value={ data }
-          onChange={ ({ target: { value } }) => this.onChange(value) }
-        />
+          <input
+            type="text"
+            className="st2-auto-form__field"
+            placeholder={spec.default}
+            required={spec.required}
+            disabled={disabled}
+            value={data}
+            onChange={({ target: { value } }) => this.onChange(value)}
+          />
 
-        <ErrorMessage>{ this.state.error }</ErrorMessage>
-      </Label>
+          <ErrorMessage>{ this.state.error }</ErrorMessage>
+        </Label>
 
-      <Description spec={ spec } />
-    </div>;
+        <Description spec={spec} />
+      </div>
+    );
   }
 }

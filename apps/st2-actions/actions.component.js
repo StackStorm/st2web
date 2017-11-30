@@ -10,15 +10,17 @@ import ActionsPanel from './actions-panel.component';
 export default class Actions extends React.Component {
   static propTypes = {
     context: PropTypes.object,
-    routes: PropTypes.array
+    routes: PropTypes.array,
   }
 
   render() {
-    return <Provider store={store}>
-      <div className="wrapper">
-        <Menu {...this.props} />
-        <ActionsPanel {...this.props} />
-      </div>
-    </Provider>;
+    return (
+      <Provider store={store}>
+        <div className="wrapper">
+          <Menu {...this.props} />
+          <ActionsPanel {...this.props} />
+        </div>
+      </Provider>
+    );
   }
 }

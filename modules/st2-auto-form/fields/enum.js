@@ -29,7 +29,7 @@ export default class EnumField extends BaseTextField {
     const { invalid } = this.state;
 
     const wrapperProps = Object.assign({}, this.props, {
-      labelClass: 'st2-auto-form__select'
+      labelClass: 'st2-auto-form__select',
     });
 
     if (invalid) {
@@ -40,22 +40,24 @@ export default class EnumField extends BaseTextField {
       className: 'st2-auto-form__field',
       disabled: this.props.disabled,
       value: this.state.value,
-      onChange: (e) => this.handleChange(e.target.value)
+      onChange: (e) => this.handleChange(e.target.value),
     };
 
     if (this.state.invalid) {
       selectProps.className += ' ' + 'st2-auto-form__field--invalid';
     }
 
-    return <TextFieldWrapper {...wrapperProps} >
-      <select {...selectProps} >
-        {
-          !spec.default && <option value='' ></option>
-        }
-        {
-          _.map(spec.enum, (v) => <option key={v} value={v} >{ v }</option>)
-        }
-      </select>
-    </TextFieldWrapper>;
+    return (
+      <TextFieldWrapper {...wrapperProps} >
+        <select {...selectProps} >
+          {
+            !spec.default && <option value=''  />
+          }
+          {
+            _.map(spec.enum, (v) => <option key={v} value={v} >{ v }</option>)
+          }
+        </select>
+      </TextFieldWrapper>
+    );
   }
 }

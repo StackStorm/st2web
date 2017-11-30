@@ -26,7 +26,7 @@ describe('AutoForm BaseTextField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<BaseTextFieldStub {...props} />);
@@ -39,7 +39,7 @@ describe('AutoForm BaseTextField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BaseTextFieldStub {...props} />);
@@ -55,7 +55,7 @@ describe('AutoForm BaseTextField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BaseTextFieldStub {...props} />);

@@ -9,5 +9,5 @@ gulp.task('production', gulp.series([
   'production-scripts',
   'production-styles',
   'production-libs',
-  'production-static'
+  'production-static',
 ]));

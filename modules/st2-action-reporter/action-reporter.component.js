@@ -8,7 +8,7 @@ import './style.less';
 export default class ActionReporter extends React.Component {
   static propTypes = {
     runner: PropTypes.string,
-    execution: PropTypes.object
+    execution: PropTypes.object,
   }
 
   render() {
@@ -19,8 +19,10 @@ export default class ActionReporter extends React.Component {
       return null;
     }
 
-    return <div className="st2-action-reporter">
-      { reporter(execution) }
-    </div>;
+    return (
+      <div className="st2-action-reporter">
+        { reporter(execution) }
+      </div>
+    );
   }
 }

@@ -200,7 +200,7 @@ describe('User visits actions page', function () {
               return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions$').test(e.url);
             });
           })
-          ;
+        ;
       });
 
       it('should make a call to executions endpoint once', function () {
@@ -218,7 +218,7 @@ describe('User visits actions page', function () {
         .then(function () {
           return browser.fill(util.name('field:cmd'), 'test');
         })
-        ;
+      ;
     });
 
     it('should have parameter filled', function () {
@@ -229,7 +229,7 @@ describe('User visits actions page', function () {
       before(function () {
         return browser
           .click(util.name('action:core.local_sudo'))
-          ;
+        ;
       });
 
       it('should have empty parameter', function () {

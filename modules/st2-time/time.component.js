@@ -7,7 +7,7 @@ export default class TimeComponent extends React.Component {
     timestamp: PropTypes.string,
     format: PropTypes.string,
     utcdisplay: PropTypes.bool,
-    togglecallback: PropTypes.func
+    togglecallback: PropTypes.func,
   }
 
   render() {
@@ -25,7 +25,7 @@ export default class TimeComponent extends React.Component {
         value={timeStamp}
         format={dateFormat}
         utc={utcdisplay}
-        { ...restProps }
+        {...restProps}
       />
     );
   }

@@ -5,7 +5,7 @@ angular.module('main')
     hosts: [{
       name: 'Dev Env',
       url: 'https://192.168.16.20/api',
-      auth: 'https://192.168.16.20/auth'
-    }]
+      auth: 'https://192.168.16.20/auth',
+    }],
 
   });

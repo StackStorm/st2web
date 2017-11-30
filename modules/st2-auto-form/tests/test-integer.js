@@ -12,7 +12,7 @@ describe('AutoForm IntegerField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<IntegerField {...props} />);
@@ -25,7 +25,7 @@ describe('AutoForm IntegerField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<IntegerField {...props} />);
@@ -43,7 +43,7 @@ describe('AutoForm IntegerField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<IntegerField {...props} />);

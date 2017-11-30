@@ -12,7 +12,7 @@ describe('AutoForm EnumField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<EnumField {...props} />);
@@ -25,9 +25,9 @@ describe('AutoForm EnumField', () => {
     const props = {
       name: 'test',
       spec: {
-        enum: ['test']
+        enum: ['test'],
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<EnumField {...props} />);
@@ -44,9 +44,9 @@ describe('AutoForm EnumField', () => {
     const props = {
       name: 'test',
       spec: {
-        enum: ['test']
+        enum: ['test'],
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<EnumField {...props} />);

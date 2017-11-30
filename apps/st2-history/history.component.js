@@ -10,15 +10,17 @@ import HistoryPanel from './history-panel.component';
 export default class History extends React.Component {
   static propTypes = {
     context: PropTypes.object,
-    routes: PropTypes.array
+    routes: PropTypes.array,
   }
 
   render() {
-    return <Provider store={store}>
-      <div className="wrapper">
-        <Menu {...this.props} />
-        <HistoryPanel {...this.props} />
-      </div>
-    </Provider>;
+    return (
+      <Provider store={store}>
+        <div className="wrapper">
+          <Menu {...this.props} />
+          <HistoryPanel {...this.props} />
+        </div>
+      </Provider>
+    );
   }
 }

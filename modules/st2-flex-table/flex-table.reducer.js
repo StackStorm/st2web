@@ -3,19 +3,19 @@ import _ from 'lodash';
 export const actions = {
   register: (title, collapsed) => ({ type: 'REGISTER_FLEX_TABLE', title, collapsed }),
   toggle: (title) => ({ type: 'TOGGLE_FLEX_TABLE', title }),
-  toggleAll: () => ({ type: 'TOGGLE_ALL' })
+  toggleAll: () => ({ type: 'TOGGLE_ALL' }),
 };
 
 const flexTableReducer = (state = {}, action) => {
   let {
     tables = { ...state.tables },
-    collapsed = false
+    collapsed = false,
   } = state;
 
   state = {
     ...state,
     tables,
-    collapsed
+    collapsed,
   };
 
   switch (action.type) {
@@ -29,9 +29,9 @@ const flexTableReducer = (state = {}, action) => {
           ...tables,
           [title]: {
             ...tables[title],
-            collapsed: initial
-          }
-        }
+            collapsed: initial,
+          },
+        },
       };
     }
 
@@ -42,8 +42,8 @@ const flexTableReducer = (state = {}, action) => {
         ...tables,
         [title]: {
           ...tables[title],
-          collapsed: !(tables[title] || state).collapsed
-        }
+          collapsed: !(tables[title] || state).collapsed,
+        },
       };
 
       if (_.some(newTables, item => item.collapsed === newTables[title].collapsed)) {
@@ -53,7 +53,7 @@ const flexTableReducer = (state = {}, action) => {
       return {
         ...state,
         collapsed,
-        tables: newTables
+        tables: newTables,
       };
     }
 
@@ -69,7 +69,7 @@ const flexTableReducer = (state = {}, action) => {
       return {
         ...state,
         collapsed,
-        tables
+        tables,
       };
     }
 

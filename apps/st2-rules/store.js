@@ -131,7 +131,7 @@ const ruleReducer = (state = {}, input) => {
               spec: {
                 type: 'object',
                 properties: action.parameters,
-              }
+              },
             })),
           };
           break;
@@ -167,8 +167,8 @@ const ruleReducer = (state = {}, input) => {
                   description: {
                     type: 'string',
                   },
-                }
-              }
+                },
+              },
             })),
           };
           break;

@@ -9,7 +9,7 @@ module.exports =
       restrict: 'C',
       scope: {
         'workflow': '=',
-        'view': '='
+        'view': '=',
       },
       template: '<div ng-include="\'' + template + '\'"></div>',
       link: function postLink(scope) {
@@ -35,7 +35,7 @@ module.exports =
             'mistral-v2': function () {
               var context = record.context.mistral;
               return context && context.task_name;
-            }
+            },
           }[scope.workflow.action.runner_type]();
         };
 
@@ -49,14 +49,14 @@ module.exports =
               parent: record.id,
               exclude_attributes: 'result,trigger_instance',
               offset: 0,
-              limit: 0
+              limit: 0,
             }).then(function (records) {
               record._children = records;
               this.$apply();
             }.bind(this));
           }
         };
-      }
+      },
     };
 
   };

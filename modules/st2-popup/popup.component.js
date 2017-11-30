@@ -6,14 +6,16 @@ import './style.less';
 export default class Panel extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   render() {
     const { children, className, ...props } = this.props;
 
-    return <div className={`st2-popup ${className}`} {...props}>
-      { children }
-    </div>;
+    return (
+      <div className={`st2-popup ${className}`} {...props}>
+        { children }
+      </div>
+    );
   }
 }

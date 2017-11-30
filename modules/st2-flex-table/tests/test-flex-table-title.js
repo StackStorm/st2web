@@ -18,7 +18,7 @@ describe('FlexTableTitle component', () => {
   it('renders an element', () => {
     const props = {
       icon: 'icon.png',
-      onToggle: sinon.spy()
+      onToggle: sinon.spy(),
     };
 
     const c = render(<FlexTableTitle {...props}>some child node</FlexTableTitle>);
@@ -37,7 +37,7 @@ describe('FlexTableTitle component', () => {
 
   it('renders an element without icon', () => {
     const props = {
-      onToggle: sinon.spy()
+      onToggle: sinon.spy(),
     };
 
     const c = render(<FlexTableTitle {...props}>some child node</FlexTableTitle>);

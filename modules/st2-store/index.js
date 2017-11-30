@@ -36,7 +36,7 @@ const promiseMiddleware = () => next => action => {
     return {
       ...newAction,
       status,
-      ...data
+      ...data,
     };
   }
 
@@ -78,6 +78,6 @@ export function createScopedStore(name, reducer) {
   return {
     dispatch,
     subscribe: store.subscribe,
-    getState
+    getState,
   };
 }

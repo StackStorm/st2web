@@ -15,16 +15,30 @@ import './style.less';
 
 export default class AutoForm extends React.Component {
   static propTypes = {
-    key: PropTypes.string,
     spec: PropTypes.object,
     ngModel: PropTypes.object,
     disabled: PropTypes.bool,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
   }
 
   constructor() {
     super();
     this.fields = {};
+  }
+
+  componentWillMount(){
+    // Once everything is inside react we should be able to move this to the
+    // getElementByField portion
+    const { spec } = this.props;
+
+    if (spec && spec.properties){
+      Object.keys(spec.properties).forEach(function(key) {
+        let value = spec.properties[key];
+        if (value.default !== undefined && value.enum){
+          this.handleChange(key, value.default);
+        }
+      }, this);
+    }
   }
 
   getElementByField(field) {
@@ -68,21 +82,6 @@ export default class AutoForm extends React.Component {
     });
   }
 
-  componentWillMount(){
-    // Once everything is inside react we should be able to move this to the
-    // getElementByField portion
-    const { spec } = this.props;
-
-    if (spec && spec.properties){
-      Object.keys(spec.properties).forEach(function(key) {
-        let value = spec.properties[key];
-        if (value.default !== undefined && value.enum){
-          this.handleChange(key, value.default);
-        }
-      }, this);
-    }
-  }
-
   render() {
     const { spec, ngModel, disabled } = this.props;
 
@@ -121,25 +120,29 @@ export default class AutoForm extends React.Component {
       )
       .value();
 
-    return <div>
-      {
-        fields.map(field => {
-          const name = field._name;
+    return (
+      <div>
+        {
+          fields.map(field => {
+            const name = field._name;
 
-          const FieldElement = this.getElementByField(field);
+            const FieldElement = this.getElementByField(field);
 
-          return <FieldElement
-            key={name}
-            ref={(c) => this.fields[name] = c}
-            name={name}
-            spec={field}
-            value={ngModel && ngModel[name]}
-            disabled={disabled}
-            onChange={(value) => this.handleChange(name, value)}
-            data-test={`field:${name}`}
-          />;
-        })
-      }
-    </div>;
+            return (
+              <FieldElement
+                key={name}
+                ref={(c) => this.fields[name] = c}
+                name={name}
+                spec={field}
+                value={ngModel && ngModel[name]}
+                disabled={disabled}
+                onChange={(value) => this.handleChange(name, value)}
+                data-test={`field:${name}`}
+              />
+            );
+          })
+        }
+      </div>
+    );
   }
 }

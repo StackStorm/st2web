@@ -5,7 +5,7 @@ const route = {
   url: '/history',
   icon: 'icon-history',
   Component: History,
-  position: 1
+  position: 1,
 };
 
 export default route;

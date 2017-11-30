@@ -43,7 +43,7 @@ class API {
         host: api.hostname,
         port: api.port,
         prefix: api.path,
-        token: !_.isEmpty(token) ? token : undefined
+        token: !_.isEmpty(token) ? token : undefined,
       };
 
       if (server.auth && _.isString(server.auth)) {
@@ -57,14 +57,14 @@ class API {
           protocol: auth.protocol,
           host: auth.hostname,
           port: auth.port,
-          prefix: auth.path
+          prefix: auth.path,
         };
       }
     } else {
       opts = {
         api: 'https://' + window.location.hostname + ':443/api',
         auth: 'https://' + window.location.hostname + ':443/auth',
-        token: !_.isEmpty(token) ? token : undefined
+        token: !_.isEmpty(token) ? token : undefined,
       };
     }
 
@@ -87,7 +87,7 @@ class API {
           if (err.status === 0) {
             throw {
               name: 'RequestError',
-              message: 'Unable to reach auth service. [auth:' + server.auth + ']'
+              message: 'Unable to reach auth service. [auth:' + server.auth + ']',
             };
           }
 
@@ -104,7 +104,7 @@ class API {
       if (remember) {
         localStorage.setItem('st2Session', JSON.stringify({
           server: server,
-          token: this.token
+          token: this.token,
         }));
       }
     });

@@ -8,7 +8,7 @@ module.exports =
     var parameters = {
       'api': st2api.server.url,
       'auth': st2api.server.auth,
-      'token': st2api.token
+      'token': st2api.token,
     };
 
     var token = btoa(JSON.stringify(parameters)).replace(/=/g, '');
@@ -16,7 +16,7 @@ module.exports =
     return {
       restrict: 'E',
       scope: {
-        action: '@'
+        action: '@',
       },
       link: function (scope, element) {
         if (st2api.server.flow || st2Config.flow) {
@@ -32,7 +32,7 @@ module.exports =
           element.remove();
         }
       },
-      templateUrl: template
+      templateUrl: template,
     };
 
   };

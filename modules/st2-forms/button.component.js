@@ -11,7 +11,7 @@ export default class Button extends React.Component {
     red: PropTypes.bool,
     submit: PropTypes.bool,
     onClick: PropTypes.func,
-    value: PropTypes.string
+    value: PropTypes.string,
   }
 
   render() {
@@ -19,7 +19,7 @@ export default class Button extends React.Component {
 
     const props = {
       className: 'st2-forms__button',
-      ...rest
+      ...rest,
     };
 
     if (className) {
@@ -38,6 +38,6 @@ export default class Button extends React.Component {
       props.className += ' st2-forms__button--red';
     }
 
-    return <input type={ submit ? 'submit' : 'button' } data-test="rerun_button" {...props} />;
+    return <input type={submit ? 'submit' : 'button'} data-test="rerun_button" {...props} />;
   }
 }

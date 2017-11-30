@@ -28,25 +28,27 @@ export default class CheckboxModule extends React.Component {
   render() {
     const { className = '', name, disabled, spec, data = false } = this.props;
 
-    return <div className={`st2-form-checkbox ${className}`}>
-      <Label spec={spec}>
-        <div className="st2-auto-form__title">
-          <input
-            type="checkbox"
-            className="st2-auto-form__checkbox"
-            placeholder={ spec.default }
-            disabled={ disabled }
-            checked={ data }
-            onChange={ ({ target: { checked } }) => this.onChange(checked) }
-          />
+    return (
+      <div className={`st2-form-checkbox ${className}`}>
+        <Label spec={spec}>
+          <div className="st2-auto-form__title">
+            <input
+              type="checkbox"
+              className="st2-auto-form__checkbox"
+              placeholder={spec.default}
+              disabled={disabled}
+              checked={data}
+              onChange={({ target: { checked } }) => this.onChange(checked)}
+            />
 
-          <span className="st2-auto-form__checkbox-label">{ spec.name || name }</span>
-        </div>
+            <span className="st2-auto-form__checkbox-label">{ spec.name || name }</span>
+          </div>
 
-        <ErrorMessage>{ this.state.error }</ErrorMessage>
-      </Label>
+          <ErrorMessage>{ this.state.error }</ErrorMessage>
+        </Label>
 
-      <Description spec={ spec } />
-    </div>;
+        <Description spec={spec} />
+      </div>
+    );
   }
 }

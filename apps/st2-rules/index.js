@@ -5,7 +5,7 @@ const route = {
   url: '/rules',
   icon: 'icon-book-closed',
   Component: Rules,
-  position: 3
+  position: 3,
 };
 
 export default route;

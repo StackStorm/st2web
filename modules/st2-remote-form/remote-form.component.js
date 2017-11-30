@@ -41,27 +41,33 @@ export default class RemoteForm extends React.Component {
     const child = spec.enum.find(({ name }) => name === data[key]);
     const childSpec = child ? child.spec : {};
 
-    return <div className="st2-remote-form">
-      {
-        disabled
-          ? <AutoFormText
-            name={name}
-            spec={spec}
-            data={data[key]}
-          />
-          : <AutoFormCombobox
-            name={name}
-            spec={spec}
-            data={data[key]}
-            onChange={(ref) => this.onChangeValue(ref)}
-          />
-      }
-      <AutoForm
-        spec={childSpec}
-        ngModel={data.parameters}
-        disabled={disabled}
-        onChange={(parameters) => this.onChangeParameters(parameters)}
-      />
-    </div>;
+    return (
+      <div className="st2-remote-form">
+        {
+          disabled
+            ? (
+              <AutoFormText
+                name={name}
+                spec={spec}
+                data={data[key]}
+              />
+            )
+            : (
+              <AutoFormCombobox
+                name={name}
+                spec={spec}
+                data={data[key]}
+                onChange={(ref) => this.onChangeValue(ref)}
+              />
+            )
+        }
+        <AutoForm
+          spec={childSpec}
+          ngModel={data.parameters}
+          disabled={disabled}
+          onChange={(parameters) => this.onChangeParameters(parameters)}
+        />
+      </div>
+    );
   }
 }

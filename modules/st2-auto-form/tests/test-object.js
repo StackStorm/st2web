@@ -13,7 +13,7 @@ describe('AutoForm ObjectField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<ObjectField {...props} />);
@@ -26,7 +26,7 @@ describe('AutoForm ObjectField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ObjectField {...props} />);
@@ -44,7 +44,7 @@ describe('AutoForm ObjectField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ObjectField {...props} />);
@@ -63,8 +63,8 @@ describe('AutoForm ObjectField', () => {
     const props = {
       name: 'test',
       spec: {
-        default: {}
-      }
+        default: {},
+      },
     };
 
     const c = new TestComponent(<ObjectField {...props} />);

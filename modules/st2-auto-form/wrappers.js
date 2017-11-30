@@ -5,18 +5,20 @@ import { PropTypes } from 'prop-types';
 export class Label extends React.Component {
   static propTypes = {
     spec: PropTypes.shape({
-      required: PropTypes.bool
+      required: PropTypes.bool,
     }),
     className: PropTypes.string,
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
   }
 
   render() {
     const { spec, className, children } = this.props;
 
-    return <label className={`st2-auto-form__label ${ className || '' } ${ spec && spec.required ? ' st2-auto-form--required' : '' }`}>
-      { children }
-    </label>;
+    return (
+      <label className={`st2-auto-form__label ${ className || '' } ${ spec && spec.required ? ' st2-auto-form--required' : '' }`}>
+        { children }
+      </label>
+    );
   }
 }
 
@@ -24,9 +26,9 @@ export class Title extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     spec: PropTypes.shape({
-      required: PropTypes.bool
+      required: PropTypes.bool,
     }),
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   render() {
@@ -37,16 +39,18 @@ export class Title extends React.Component {
       return null;
     }
 
-    return <div className={`st2-auto-form__title ${ className || '' }`}>
-      { displayName }{ spec && spec.required ? ' *' : '' }
-    </div>;
+    return (
+      <div className={`st2-auto-form__title ${ className || '' }`}>
+        { displayName }{ spec && spec.required ? ' *' : '' }
+      </div>
+    );
   }
 }
 
 export class ErrorMessage extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   render() {
@@ -56,9 +60,11 @@ export class ErrorMessage extends React.Component {
       return null;
     }
 
-    return <span className={`st2-auto-form__error ${ className || '' }`}>
-      { children }
-    </span>;
+    return (
+      <span className={`st2-auto-form__error ${ className || '' }`}>
+        { children }
+      </span>
+    );
   }
 }
 
@@ -67,7 +73,7 @@ export class Icon extends React.Component {
     name: PropTypes.string,
     title: PropTypes.string,
     onClick: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   onClick(e) {
@@ -78,11 +84,13 @@ export class Icon extends React.Component {
   render() {
     const { name, title, className } = this.props;
 
-    return <span
-      className={`st2-auto-form__type ${ className || '' } icon-${ name }`}
-      title={ title }
-      onClick={ (e) => this.onClick(e) }
-    />;
+    return (
+      <span
+        className={`st2-auto-form__type ${ className || '' } icon-${ name }`}
+        title={title}
+        onClick={(e) => this.onClick(e)}
+      />
+    );
   }
 }
 
@@ -91,7 +99,7 @@ export class Button extends React.Component {
     icon: PropTypes.string.isRequired,
     title: PropTypes.string,
     onClick: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   onClick(e) {
@@ -102,20 +110,22 @@ export class Button extends React.Component {
   render() {
     const { icon, title, className } = this.props;
 
-    return <span
-      className={`st2-auto-form__button ${ className || '' } icon-${ icon }`}
-      title={ title }
-      onClick={ (e) => this.onClick(e) }
-    />;
+    return (
+      <span
+        className={`st2-auto-form__button ${ className || '' } icon-${ icon }`}
+        title={title}
+        onClick={(e) => this.onClick(e)}
+      />
+    );
   }
 }
 
 export class Description extends React.Component {
   static propTypes = {
     spec: PropTypes.shape({
-      description: PropTypes.string
+      description: PropTypes.string,
     }),
-    className: PropTypes.string
+    className: PropTypes.string,
   }
 
   render() {
@@ -125,9 +135,11 @@ export class Description extends React.Component {
       return null;
     }
 
-    return <p className={`st2-auto-form__description ${ className || '' }`}>
-      { spec.description }
-    </p>;
+    return (
+      <p className={`st2-auto-form__description ${ className || '' }`}>
+        { spec.description }
+      </p>
+    );
   }
 }
 
@@ -140,19 +152,21 @@ export class TextFieldWrapper extends React.Component {
     disabled: PropTypes.bool,
     children: PropTypes.element.isRequired,
     icon: PropTypes.string,
-    labelClass: PropTypes.string
+    labelClass: PropTypes.string,
   }
 
   render() {
-    const line = <div className='st2-auto-form__line'>
-      <Label className={this.props.labelClass || 'st2-auto-form__text-field'} >
-        <Icon name={ this.props.icon } />
-        <Title {...this.props} />
-        { this.props.children }
-        <ErrorMessage>{ this.props.invalid }</ErrorMessage>
-      </Label>
-      <Description {...this.props} />
-    </div>;
+    const line = (
+      <div className='st2-auto-form__line'>
+        <Label className={this.props.labelClass || 'st2-auto-form__text-field'} >
+          <Icon name={this.props.icon} />
+          <Title {...this.props} />
+          { this.props.children }
+          <ErrorMessage>{ this.props.invalid }</ErrorMessage>
+        </Label>
+        <Description {...this.props} />
+      </div>
+    );
 
     return line;
   }
@@ -165,7 +179,7 @@ export class BooleanFieldWrapper extends React.Component {
     value: PropTypes.any,
     disabled: PropTypes.bool,
     children: PropTypes.element.isRequired,
-    onReset: PropTypes.func
+    onReset: PropTypes.func,
   }
 
   handleReset() {
@@ -182,23 +196,25 @@ export class BooleanFieldWrapper extends React.Component {
     const buttonProps = {
       icon: 'cross',
       title: 'reset default',
-      onClick: () => this.handleReset()
+      onClick: () => this.handleReset(),
     };
 
     const labelProps = {
       className: 'st2-auto-form__checkbox-label',
     };
 
-    const line = <div className='st2-auto-form__line'>
-      <Label>
-        <div {...blockProps} >
-          { !this.props.disabled && <Button {...buttonProps} /> }
-          { this.props.children }
-          <span {...labelProps} >{ spec.name || name }</span>
-        </div>
-      </Label>
-      <Description {...this.props} />
-    </div>;
+    const line = (
+      <div className='st2-auto-form__line'>
+        <Label>
+          <div {...blockProps} >
+            { !this.props.disabled && <Button {...buttonProps} /> }
+            { this.props.children }
+            <span {...labelProps} >{ spec.name || name }</span>
+          </div>
+        </Label>
+        <Description {...this.props} />
+      </div>
+    );
 
     return line;
   }

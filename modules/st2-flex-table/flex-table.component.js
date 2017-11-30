@@ -12,14 +12,14 @@ export class FlexTable extends React.Component {
     collapsed: PropTypes.bool,
     children: PropTypes.node,
     icon: PropTypes.string,
-    onToggle: PropTypes.func
+    onToggle: PropTypes.func,
   }
 
   static actions = actions
 
   render() {
     const props = {
-      className: 'st2-flex-table'
+      className: 'st2-flex-table',
     };
 
     const { title, titleType, collapsed, children, icon, onToggle } = this.props;
@@ -28,15 +28,19 @@ export class FlexTable extends React.Component {
       props.className += ' st2-flex-table--collapsed';
     }
 
-    return <div {...props} >
-      {
-        !!title &&
-          <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
-            { title }
-          </FlexTableTitle>
-      }
-      { !collapsed && children }
-    </div>;
+    return (
+      <div {...props} >
+        {
+          !!title &&
+          (
+            <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
+              { title }
+            </FlexTableTitle>
+          )
+        }
+        { !collapsed && children }
+      </div>
+    );
   }
 }
 
@@ -45,7 +49,7 @@ export class FlexTableTitle extends React.Component {
     children: PropTypes.node,
     type: PropTypes.string,
     icon: PropTypes.string,
-    onToggle: PropTypes.func.isRequired
+    onToggle: PropTypes.func.isRequired,
   }
 
   render() {
@@ -53,7 +57,7 @@ export class FlexTableTitle extends React.Component {
 
     const props = {
       className: 'st2-flex-table__caption',
-      onClick: (e) => onToggle(e)
+      onClick: (e) => onToggle(e),
     };
 
     if (icon) {
@@ -64,10 +68,12 @@ export class FlexTableTitle extends React.Component {
       props.className += ' st2-flex-table__caption--' + type;
     }
 
-    return <div {...props}>
-      { !!icon && <img src={icon} /> }
-      <h2 className="st2-flex-table__caption-title">{ children }</h2>
-    </div>;
+    return (
+      <div {...props}>
+        { !!icon && <img src={icon} /> }
+        <h2 className="st2-flex-table__caption-title">{ children }</h2>
+      </div>
+    );
   }
 }
 
@@ -75,8 +81,8 @@ export class FlexTableRow extends React.Component {
   static propTypes = {
     columns: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.string,
-      children: PropTypes.node
-    }))
+      children: PropTypes.node,
+    })),
   }
 
   static actions = actions
@@ -84,26 +90,30 @@ export class FlexTableRow extends React.Component {
   render() {
     const { columns, ...props } = this.props;
 
-    return <div className="st2-flex-table__row" {...props}>
-      {
-        columns.map(({ Component = 'div', className, children, ...props }, key) => {
-          return <Component key={key} className={`st2-flex-table__column ${ className }`} {...props}>
-            { children }
-          </Component>;
-        })
-      }
-    </div>;
+    return (
+      <div className="st2-flex-table__row" {...props}>
+        {
+          columns.map(({ Component = 'div', className, children, ...props }, key) => {
+            return (
+              <Component key={key} className={`st2-flex-table__column ${ className }`} {...props}>
+                { children }
+              </Component>
+            );
+          })
+        }
+      </div>
+    );
   }
 }
 
 export class FlexTableInsert extends React.Component {
   static propTypes = {
     visible: PropTypes.bool,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   static defaultProps = {
-    visible: true
+    visible: true,
   }
 
   static actions = actions
@@ -115,11 +125,13 @@ export class FlexTableInsert extends React.Component {
       return null;
     }
 
-    return <div className="st2-flex-table__insert">
-      <div className="st2-details__panel-body">
-        { children }
+    return (
+      <div className="st2-flex-table__insert">
+        <div className="st2-details__panel-body">
+          { children }
+        </div>
       </div>
-    </div>;
+    );
   }
 }
 

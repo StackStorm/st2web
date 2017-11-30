@@ -5,7 +5,7 @@ const route = {
   url: '/packs',
   icon: 'icon-platforms',
   Component: Packs,
-  position: 4
+  position: 4,
 };
 
 export default route;

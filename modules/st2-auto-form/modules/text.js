@@ -21,19 +21,25 @@ export default class TextModule extends React.Component {
       link = `/actions/${data}`;
     }
 
-    return <div className={`st2-auto-form-text ${className}`}>
-      <Title name={ name } spec={spec} />
+    return (
+      <div className={`st2-auto-form-text ${className}`}>
+        <Title name={name} spec={spec} />
 
-      <div className="st2-auto-form__value">
-        { link
-          ? <a className="st2-auto-form__link" href={ link }>
-            { data }
-          </a>
-          : <div className="st2-auto-form__text">
-            { data }
-          </div>
-        }
+        <div className="st2-auto-form__value">
+          { link
+            ? (
+              <a className="st2-auto-form__link" href={link}>
+                { data }
+              </a>
+            )
+            : (
+              <div className="st2-auto-form__text">
+                { data }
+              </div>
+            )
+          }
+        </div>
       </div>
-    </div>;
+    );
   }
 }

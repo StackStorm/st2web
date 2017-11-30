@@ -12,7 +12,7 @@ module.exports =
       horizontalSpacing: 20,
       positionX: 'left',
       positionY: 'bottom',
-      templateUrl: template
+      templateUrl: template,
     });
 
     $provide.decorator('Notification', function ($delegate) {
@@ -20,7 +20,7 @@ module.exports =
         console.error(error);
         return this.error({
           title: title,
-          message: error.message
+          message: error.message,
         });
       };
 

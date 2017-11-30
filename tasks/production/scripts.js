@@ -10,15 +10,15 @@ gulp.task('production-scripts', gulp.series(['browserify'], function productionS
     .pipe(plugins.uglify({
       mangle: false,
       compress: {
-        keep_fnames: true
-      }
+        keep_fnames: true,
+      },
     }))
     .pipe(gulp.dest(settings.production.dest))
     .pipe(plugins.size({
-      showFiles: true
+      showFiles: true,
     }))
     .pipe(plugins.size({
       showFiles: true,
-      gzip: true
+      gzip: true,
     }));
 }));

@@ -5,35 +5,35 @@ import './style.less';
 
 var states = {
   'complete': {
-    class: 'st2-label--success'
+    class: 'st2-label--success',
   },
   'error': {
-    class: 'st2-label--danger'
+    class: 'st2-label--danger',
   },
   'enabled': {
-    class: 'st2-label--success'
+    class: 'st2-label--success',
   },
   'disabled': {
-    class: 'st2-label--danger'
+    class: 'st2-label--danger',
   },
   'succeeded': {
-    class: 'st2-label--succeeded'
+    class: 'st2-label--succeeded',
   },
   'failed': {
-    class: 'st2-label--failed'
+    class: 'st2-label--failed',
   },
   'running': {
-    class: 'st2-label--progress'
+    class: 'st2-label--progress',
   },
   'scheduled': {
-    class: 'st2-label--progress'
+    class: 'st2-label--progress',
   },
   'canceling': {
-    class: 'st2-label--warning'
+    class: 'st2-label--warning',
   },
   'canceled': {
-    class: 'st2-label--warning'
-  }
+    class: 'st2-label--warning',
+  },
 };
 
 function capitalize(string) {
@@ -46,12 +46,12 @@ function capitalize(string) {
 export default class Label extends React.Component {
   static propTypes = {
     status: PropTypes.string,
-    short: PropTypes.bool
+    short: PropTypes.bool,
   }
 
   render() {
     var props = {
-      className: 'st2-label__label'
+      className: 'st2-label__label',
     };
 
     var state = states[this.props.status];
@@ -61,15 +61,19 @@ export default class Label extends React.Component {
     }
 
     if (this.props.short) {
-      return <span className="st2-label st2-label--short">
-        <span {...props}>
-          { capitalize(state && state.title || this.props.status) }
+      return (
+        <span className="st2-label st2-label--short">
+          <span {...props}>
+            { capitalize(state && state.title || this.props.status) }
+          </span>
         </span>
-      </span>;
+      );
     }
 
-    return <span {...props}>
-      { capitalize(state && state.title || this.props.status) }
-    </span>;
+    return (
+      <span {...props}>
+        { capitalize(state && state.title || this.props.status) }
+      </span>
+    );
   }
 }
