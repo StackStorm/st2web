@@ -170,17 +170,12 @@ export default class ActionsPanel extends React.Component {
         },
       })
         .then(res => {
-          notification.success(
-            `Action "${ref}" has been scheduled successfully`
-          );
+          notification.success(`Action "${ref}" has been scheduled successfully`);
 
           return res.values;
         })
         .catch(res => {
-          notification.error(
-            `Unable to schedule action "${ref}". ` +
-            'See details in developer tools console.'
-          );
+          notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
           console.error(res);
         }),
     });

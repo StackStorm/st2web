@@ -210,10 +210,12 @@ export default class PacksPanel extends React.Component {
           notification.success(
             `Pack "${ref}" has been scheduled for installation.`,
             {
-              buttons: [{
-                text: 'Show execution',
-                onClick: () => history.push(`/history/${body.execution_id}`),
-              }],
+              buttons: [
+                {
+                  text: 'Show execution',
+                  onClick: () => history.push(`/history/${body.execution_id}`),
+                },
+              ],
             }
           );
 
@@ -221,15 +223,10 @@ export default class PacksPanel extends React.Component {
             .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
         })
         .then(() => {
-          notification.success(
-            `Pack "${ref}" has been successfully installed`
-          );
+          notification.success(`Pack "${ref}" has been successfully installed`);
         })
         .catch(err => {
-          notification.error(
-            `Unable to schedule pack "${ref}" for installation. ` +
-            'See details in developer tools console.'
-          );
+          notification.error(`Unable to schedule pack "${ref}" for installation. See details in developer tools console.`);
           console.error(err);
 
           throw err;
@@ -250,10 +247,12 @@ export default class PacksPanel extends React.Component {
           notification.success(
             `Pack "${ref}" has been scheduled for removal.`,
             {
-              buttons: [{
-                text: 'Show execution',
-                onClick: () => history.push(`/history/${body.execution_id}`),
-              }],
+              buttons: [
+                {
+                  text: 'Show execution',
+                  onClick: () => history.push(`/history/${body.execution_id}`),
+                },
+              ],
             }
           );
 
@@ -261,15 +260,10 @@ export default class PacksPanel extends React.Component {
             .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
         })
         .then(() => {
-          notification.success(
-            `Pack "${ref}" has been successfully removed`
-          );
+          notification.success(`Pack "${ref}" has been successfully removed`);
         })
         .catch(err => {
-          notification.error(
-            `Unable to schedule pack "${ref}" for removal. ` +
-            'See details in developer tools console.'
-          );
+          notification.error(`Unable to schedule pack "${ref}" for removal. See details in developer tools console.`);
           console.error(err);
 
           throw err;
@@ -289,17 +283,12 @@ export default class PacksPanel extends React.Component {
         show_secrets: true,
       })
         .then(res => {
-          notification.success(
-            `Configuration for pack "${ref}" has been saved succesfully`
-          );
+          notification.success(`Configuration for pack "${ref}" has been saved succesfully`);
 
           return res.values;
         })
         .catch(res => {
-          notification.error(
-            `Unable to save the configuration for pack "${ref}". ` +
-            'See details in developer tools console.'
-          );
+          notification.error(`Unable to save the configuration for pack "${ref}". See details in developer tools console.`);
           console.error(res);
         }),
     });
