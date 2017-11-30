@@ -12,7 +12,7 @@ export default class EnumField extends BaseTextField {
   }
 
   toStateValue(v) {
-    return v;
+    return v || '';
   }
 
   validate(v, spec={}) {

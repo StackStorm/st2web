@@ -28,7 +28,7 @@ export default class ObjectModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = {} } = this.props;
 
     return <TextFieldModule
       className={`st2-form-object ${className}`}

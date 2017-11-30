@@ -49,7 +49,7 @@ export default class ComboboxModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = '' } = this.props;
     const { value } = this.state;
 
     const suggestions = value === null ? null : spec.enum.filter(({ name }) => name.includes(value));

@@ -37,7 +37,7 @@ export default class InputModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = '' } = this.props;
 
     return <div className={`st2-form-input ${className}`}>
       <Label spec={spec}>

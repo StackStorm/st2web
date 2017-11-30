@@ -4,26 +4,44 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
 const historyReducer = (state = {}, action) => {
   let {
-    executions = {},
-    selected = undefined
+    executions = [],
+    groups = [],
+    ref = undefined,
+    execution = undefined,
   } = state;
 
   state = {
     ...state,
     executions,
-    selected
+    groups,
+    ref,
+    execution,
   };
 
   switch (action.type) {
-    case 'FETCH_EXECUTIONS': {
-      executions = { ...executions };
-
+    case 'FETCH_GROUPS':
       switch(action.status) {
         case 'success':
-          _.forEach(action.payload, item => {
-            executions[item.id] = item;
-          });
+          executions = action.payload;
 
+          groups = _(executions)
+            .sortBy('start_timestamp')
+            .reverse()
+            .groupBy(execution => {
+              const date = new Date(execution.start_timestamp).toDateString();
+              const time = new Date(date).toISOString();
+
+              return time;
+            })
+            .value()
+          ;
+          groups = Object.keys(groups).map(date => ({ date, executions: groups[date] }));
+
+          ref = state.ref;
+          if (!ref) {
+            ref = groups[0].executions[0].id;
+            execution = undefined;
+          }
           break;
         case 'error':
           break;
@@ -34,16 +52,27 @@ const historyReducer = (state = {}, action) => {
       return {
         ...state,
         executions,
-        selected: state.selected || Object.keys(executions).sort()[0]
+        groups,
+        ref,
+        execution,
       };
-    }
 
-    case 'SELECT_EXECUTION':
-      const { ref } = action;
+    case 'FETCH_EXECUTION':
+      switch(action.status) {
+        case 'success':
+          execution = action.payload;
+          ref = execution.id;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
 
       return {
         ...state,
-        selected: ref || Object.keys(state.executions).sort()[0]
+        ref,
+        execution,
       };
 
     default:

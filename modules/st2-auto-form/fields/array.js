@@ -69,7 +69,7 @@ export default class ArrayField extends BaseTextField {
       return JSON.stringify(value);
     }
 
-    return value && value.join(', ');
+    return value ? value.join(', ') : '';
   }
 
   validate(value, spec={}) {

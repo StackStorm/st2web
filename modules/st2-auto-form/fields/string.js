@@ -8,6 +8,6 @@ export default class StringField extends BaseTextareaField {
   }
 
   toStateValue(v) {
-    return v;
+    return v || '';
   }
 }

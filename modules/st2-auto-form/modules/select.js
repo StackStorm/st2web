@@ -28,14 +28,14 @@ export default class SelectModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = '' } = this.props;
     const options = Array.isArray(spec.enum)
       ? spec.enum
       : Object.keys(spec.enum).map((value) => ({ value, label: `${spec.enum[value]} (${value})` }))
     ;
 
     return <div className={`st2-auto-form-select ${className}`}>
-      <Label spec={spec}>
+      <Label spec={spec} className="st2-auto-form__select">
         <Title name={ name } spec={spec} />
 
         <select

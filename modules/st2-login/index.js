@@ -67,6 +67,7 @@ class LoginBottomRow extends React.Component {
   }
 }
 
+// TODO: refactor using onChange props
 export default class Login extends React.Component {
   static propTypes = {
     onConnect: PropTypes.func
@@ -98,7 +99,7 @@ export default class Login extends React.Component {
           !!this.state.error && <LoginError message={this.state.error} />
         }
         {
-          !!api.servers && <LoginRow className="st2-auto-form__select">
+          !!api.servers && <LoginRow className="st2-auto-form__select" style={{ display: api.servers.length > 1 ? null : 'none' }}>
             <select className="st2-auto-form__field st2-login__field"
               ref={component => this.serverField = component}
             >

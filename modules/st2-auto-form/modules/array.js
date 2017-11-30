@@ -20,7 +20,7 @@ export default class ArrayModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = [] } = this.props;
 
     return <AutoFormInput
       className={`st2-form-array ${className}`}

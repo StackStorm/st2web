@@ -26,7 +26,7 @@ export default class CheckboxModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = false } = this.props;
 
     return <div className={`st2-form-checkbox ${className}`}>
       <Label spec={spec}>

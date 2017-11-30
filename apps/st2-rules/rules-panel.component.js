@@ -45,7 +45,8 @@ import './style.less';
 
 
 @connect((state, props) => {
-  const { collapsed = state.collapsed } = state.tables[props.title] || {};
+  const { title } = props;
+  const { collapsed = state.collapsed } = state.tables[title] || {};
 
   return { collapsed, ...props };
 }, (dispatch, props) => {
@@ -69,7 +70,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class RulesPanel extends React.Component {
   static propTypes = {
-    context: PropTypes.object,
     history: PropTypes.object,
     match: PropTypes.shape({
       params: PropTypes.shape({

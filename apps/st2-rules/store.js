@@ -29,7 +29,7 @@ const ruleReducer = (state = {}, action) => {
   };
 
   switch (action.type) {
-    case 'FETCH_GROUPS': {
+    case 'FETCH_GROUPS':
       switch(action.status) {
         case 'success':
           rules = action.payload;
@@ -61,7 +61,6 @@ const ruleReducer = (state = {}, action) => {
         ref,
         rule,
       };
-    }
 
     case 'FETCH_RULE':
       switch(action.status) {

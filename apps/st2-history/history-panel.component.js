@@ -38,17 +38,19 @@ import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
-import HistoryFlexCard from './history-flex-card.component';
 import ActionReporter from '@stackstorm/module-action-reporter';
+
+import HistoryFlexCard from './history-flex-card.component';
+import HistoryPopup from './history-popup.component';
 
 import './style.less';
 
 
 @connect((state, props) => {
-  const { uid, ...restProps } = props;
+  const { uid } = props;
   const { collapsed = state.collapsed } = state.tables[uid] || {};
 
-  return { collapsed, ...restProps };
+  return { collapsed, ...props };
 }, (dispatch, props) => {
   const { uid } = props;
 
@@ -65,16 +67,21 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { executions, selected, collapsed } = state;
-  return { executions, selected, collapsed };
+  const { groups, execution, collapsed } = state;
+  return { groups, execution, collapsed };
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
-    collapsed: PropTypes.bool,
-    executions: PropTypes.object,
-    selected: PropTypes.string,
     history: PropTypes.object,
-    match: PropTypes.object
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        ref: PropTypes.string,
+      }),
+    }),
+
+    groups: PropTypes.array,
+    execution: PropTypes.object,
+    collapsed: PropTypes.bool,
   }
 
   handleToggleAll() {
@@ -87,25 +94,40 @@ export default class HistoryPanel extends React.Component {
   }
 
   handleSection(section) {
-    const { history, executions={}, selected } = this.props;
-    const { id } = executions[selected] || {};
+    const { history, execution: { id } } = this.props;
     history.push(`/history/${ id }/${ section }`);
+  }
+
+  handleRerun(parameters) {
+    const { execution: { id } } = this.props;
+
+    return store.dispatch({
+      type: 'DELETE_RULE',
+      promise: api.client.executions.repeat(id, { parameters }, {
+        no_merge: true
+      })
+    })
+      .then(() => {
+        this.handleSection('general');
+      });
   }
 
   componentDidMount() {
     store.dispatch({
-      type: 'FETCH_EXECUTIONS',
-      promise: api.client.executions.list({
-        parent: 'null'
-      })
+      type: 'FETCH_GROUPS',
+      promise: api.client.executions.list()
     })
       .then(() => {
-        const { selected } = store.getState();
+        let { ref, execution } = store.getState();
 
-        store.dispatch({
-          type: 'SELECT_EXECUTION',
-          ref: selected
-        });
+        if (!execution) {
+          ref = this.props.match.params.ref || ref;
+
+          store.dispatch({
+            type: 'FETCH_EXECUTION',
+            promise: api.client.executions.get(ref),
+          });
+        }
       })
     ;
 
@@ -117,46 +139,17 @@ export default class HistoryPanel extends React.Component {
     const { ref } = nextProps.match.params;
 
     if (ref !== this.props.match.params.ref) {
-      store.dispatch({ type: 'SELECT_EXECUTION', ref });
+      store.dispatch({
+        type: 'FETCH_EXECUTION',
+        promise: api.client.executions.get(ref),
+      });
     }
   }
 
   render() {
-    const {
-      executions={},
-      selected,
-      collapsed
-    } = this.props;
+    const { groups, execution, collapsed } = this.props;
 
-    const {
-      status,
-      start_timestamp,
-      end_timestamp,
-      action = {},
-      runner = {},
-      rule,
-      trigger,
-      trigger_instance,
-      parameters,
-      context: {
-        trace_context: {
-          trace_tag
-        } = {}
-      } = {}
-    } = executions[selected] || {};
-
-    const execution_time = Math.ceil((new Date(end_timestamp).getTime() - new Date(start_timestamp).getTime()) / 1000);
-
-    const executionGroups = _(executions)
-      .sortBy('start_timestamp')
-      .reverse()
-      .groupBy(record => {
-        const date = new Date(record.start_timestamp).toDateString();
-        const time = new Date(date).toISOString();
-        return time;
-      })
-      .value()
-    ;
+    const execution_time = execution && Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
 
     return <Panel>
       <PanelView className="st2-history">
@@ -165,17 +158,19 @@ export default class HistoryPanel extends React.Component {
         </Toolbar>
         <Content>
           {
-            Object.keys(executionGroups).map(key => {
-              const date = <Time timestamp={key} format="ddd, DD MMM YYYY" />;
-              return !!executionGroups[key] && <FlexTableWrapper uid={key} title={date} titleType="date" key={key}>
+            groups.map(({ date, executions }) => {
+              const title = <Time timestamp={date} format="ddd, DD MMM YYYY" />;
+              const id = execution && execution.id;
+
+              return <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
                 {
-                  executionGroups[key]
+                  executions
                     .map(execution => {
                       return [
                         <HistoryFlexCard
                           key={execution.id}
                           execution={execution}
-                          selected={selected === execution.id}
+                          selected={id === execution.id}
                           onClick={() => this.handleSelect(execution.id)}
                         />,
                         null, // TODO: children
@@ -188,7 +183,7 @@ export default class HistoryPanel extends React.Component {
         </Content>
       </PanelView>
       <PanelDetails data-test="details">
-        <DetailsHeader title={action.ref} subtitle={action.description}/>
+        <DetailsHeader title={execution && execution.action.ref} subtitle={execution && execution.action.description} />
         <Route path="/history/:ref?/:section?" children={({ match: { params: { section } } }) => {
           return <DetailsSwitch
             sections={[
@@ -201,31 +196,35 @@ export default class HistoryPanel extends React.Component {
         <DetailsBody>
           <Switch>
             <Route exact path="/history/:ref?/(general)?" render={() => {
+              if (!execution) {
+                return null;
+              }
+
               return <div>
                 <DetailsPanel>
                   <div className="st2-action-reporter__header">
                     <DetailsPanelBody>
                       <DetailsPanelBodyLine label="Status">
-                        <Label status={status} />
+                        <Label status={execution.status} />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Execution ID">
                         <div className="st2-action-reporter__uuid">
-                          { selected }
+                          { execution && execution.id }
                         </div>
                       </DetailsPanelBodyLine>
-                      { trace_tag ?
+                      { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ?
                         <DetailsPanelBodyLine label="Trace Tag">
                           <div className="st2-action-reporter__uuid">
-                            { trace_tag }
+                            { execution.context.trace_context.trace_tag }
                           </div>
                         </DetailsPanelBodyLine>
                         : null
                       }
                       <DetailsPanelBodyLine label="Started">
-                        <Time timestamp={start_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Finished">
-                        <Time timestamp={end_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        <Time timestamp={execution.end_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Execution Time">
                         {execution_time}s
@@ -234,42 +233,42 @@ export default class HistoryPanel extends React.Component {
                   </div>
                   <DetailsPanelHeading title="Action Output" />
                   <DetailsPanelBody>
-                    <ActionReporter runner={ runner.name } execution={ executions[selected] } />
+                    <ActionReporter runner={ execution.runner.name } execution={ execution } />
                   </DetailsPanelBody>
                 </DetailsPanel>
-                { rule ?
+                { execution.rule ?
                   <DetailsPanel>
                     <DetailsPanelHeading title="Rule Details" />
                     <DetailsPanelBody>
                       <DetailsPanelBodyLine label="Rule">
-                        <Link to={`/rules/${rule.ref}/general`}>{ rule.ref }</Link>
+                        <Link to={`/rules/${execution.rule.ref}/general`}>{ execution.rule.ref }</Link>
                       </DetailsPanelBodyLine>
-                      { rule.description ?
+                      { execution.rule.description ?
                         <DetailsPanelBodyLine label="Description">
-                          { rule.description }
+                          { execution.rule.description }
                         </DetailsPanelBodyLine>
                         : null }
                     </DetailsPanelBody>
                   </DetailsPanel>
                   : null }
-                { trigger ?
+                { execution.trigger ?
                   <DetailsPanel>
                     <DetailsPanelHeading title="Trigger Details" />
                     <DetailsPanelBody>
-                      { trigger.type ?
+                      { execution.trigger.type ?
                         <DetailsPanelBodyLine label="Trigger">
-                          { trigger.type }
+                          { execution.trigger.type }
                         </DetailsPanelBodyLine>
                         : null }
-                      { trigger_instance && trigger_instance.occurrence_time ?
+                      { execution.trigger_instance && execution.trigger_instance.occurrence_time ?
                         <DetailsPanelBodyLine label="Occurrence">
-                          <Time timestamp={trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
+                          <Time timestamp={execution.trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
                         </DetailsPanelBodyLine>
                         : null }
                     </DetailsPanelBody>
-                    { trigger_instance && trigger_instance.occurrence_time ?
+                    { execution.trigger_instance && execution.trigger_instance.occurrence_time ?
                       <DetailsPanelBody>
-                        <St2Highlight code={trigger_instance.payload} />
+                        <St2Highlight code={execution.trigger_instance.payload} />
                       </DetailsPanelBody>
                       :null }
                   </DetailsPanel>
@@ -282,33 +281,53 @@ export default class HistoryPanel extends React.Component {
                         spec={{
                           type: 'object',
                           properties: {
-                            ...runner.runner_parameters,
-                            ...action.parameters,
+                            ...execution.runner.runner_parameters,
+                            ...execution.action.parameters,
                           }
                         }}
                         disabled={true}
-                        ngModel={parameters} />
+                        ngModel={execution.parameters} />
                     </form>
                   </DetailsPanelBody>
                 </DetailsPanel>
               </div>;
             }} />
             <Route path="/history/:ref/code" render={() => {
-              return <DetailsPanel data-test="action_parameters" >
+              return <DetailsPanel data-test="action_parameters">
                 {
-                  !!executions[selected] && <St2Highlight code={executions[selected]} />
+                  !!execution && <St2Highlight code={execution} />
                 }
               </DetailsPanel>;
             }} />
           </Switch>
         </DetailsBody>
         <DetailsToolbar>
-          <Button small value="Rerun" onClick={() => this.handleRerun()} />
+          <Button small value="Rerun" onClick={() => this.handleSection('rerun')} />
           <Button small value="Cancel" onClick={() => this.handleCancel()} disabled={status !== 'running'} />
 
           <DetailsToolbarSeparator />
         </DetailsToolbar>
       </PanelDetails>
+
+      { execution
+        ? <Route path="/history/:ref/rerun" render={() => {
+          return <HistoryPopup
+            action={execution.action.ref}
+            payload={execution.parameters}
+            spec={{
+              type: 'object',
+              properties: {
+                ...execution.runner.runner_parameters,
+                ...execution.action.parameters,
+              }
+            }}
+
+            onSubmit={(data) => this.handleRerun(data)}
+            onCancel={() => this.handleSection('general')}
+          />;
+        }} />
+        : null
+      }
     </Panel>;
   }
 }

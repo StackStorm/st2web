@@ -10,7 +10,7 @@ export default class IntegerField extends BaseTextField {
   }
 
   toStateValue(v) {
-    return v && v.toString(10);
+    return v ? v.toString(10) : '';
   }
 
   validate(v, spec={}) {

@@ -9,7 +9,7 @@ export default class ObjectField extends BaseTextareaField {
   }
 
   toStateValue(v) {
-    return JSON.stringify(v);
+    return JSON.stringify(v || {});
   }
 
   validate(v, spec) {

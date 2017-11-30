@@ -73,7 +73,7 @@ export default class TextFieldModule extends React.Component {
   }
 
   render() {
-    const { className = '', name, disabled, spec, data } = this.props;
+    const { className = '', name, disabled, spec, data = '' } = this.props;
 
     return <div className={`st2-form-text-field ${className}`}>
       <Label spec={spec} className="st2-auto-form__text-field">
@@ -88,7 +88,8 @@ export default class TextFieldModule extends React.Component {
           maxLength={ spec.maxLength }
           onChange={ ({ target: { value } }) => this.onChange(value) }
           ref={ (ref) => this.onRef(ref) }
-        >{ data }</textarea>
+          value={ data }
+        />
 
         <ErrorMessage>{ this.state.error }</ErrorMessage>
       </Label>
