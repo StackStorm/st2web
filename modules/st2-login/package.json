@@ -2,7 +2,7 @@
   "name": "@stackstorm/module-login",
   "version": "1.0.0-pre.4",
   "description": "",
-  "main": "index.js",
+  "main": "login.component.js",
   "directories": {
     "test": "tests"
   },

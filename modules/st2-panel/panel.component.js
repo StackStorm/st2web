@@ -56,6 +56,8 @@ export class PanelDetails extends React.Component {
   }
 }
 
+// TODO: PanelNavigation
+
 export class Toolbar extends React.Component {
   static propTypes = {
     title: PropTypes.string,
@@ -71,6 +73,8 @@ export class Toolbar extends React.Component {
     );
   }
 }
+
+// TODO: ToolbarTitle
 
 export class ToolbarSearch extends React.Component {
   static propTypes = {
@@ -97,6 +101,10 @@ export class ToolbarSearch extends React.Component {
     );
   }
 }
+
+// TODO: ToolbarFilters
+
+// TODO: ToolbarView
 
 export class Content extends React.Component {
   static propTypes = {

@@ -2,7 +2,7 @@
   "name": "@stackstorm/st2-style",
   "version": "1.0.0-pre.4",
   "description": "",
-  "main": "index.js",
+  "main": "style.js",
   "directories": {
     "test": "tests"
   },

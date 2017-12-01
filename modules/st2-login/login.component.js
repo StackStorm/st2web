@@ -81,6 +81,10 @@ export default class Login extends React.Component {
     onConnect: PropTypes.func,
   }
 
+  state = {
+    error: null,
+  }
+
   connect(e) {
     e.preventDefault();
 
