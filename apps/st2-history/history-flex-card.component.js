@@ -5,6 +5,9 @@ import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
 import isExpandable from '@stackstorm/module-filter-expandable';
 
+import proportional from '@stackstorm/module-proportional';
+const makeProportional = proportional();
+
 export default class HistoryFlexCard extends React.Component {
   static propTypes = {
     isChild: PropTypes.bool,
@@ -73,7 +76,7 @@ export default class HistoryFlexCard extends React.Component {
             <span className="st2-history__column-action-name">
               { execution.action.ref }
             </span>
-            <span className="st2-history__column-action-params st2-proportional">
+            <span className="st2-history__column-action-params" ref={makeProportional}>
               { Object.keys(execution.parameters).map((name) => {
                 const value = execution.parameters[name];
                 return (

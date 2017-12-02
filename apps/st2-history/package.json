@@ -61,6 +61,7 @@
     "@stackstorm/module-menu": "1.0.0-pre.4",
     "@stackstorm/module-panel": "1.0.0-pre.4",
     "@stackstorm/module-popup": "1.0.0-pre.4",
+    "@stackstorm/module-proportional": "1.0.0-pre.4",
     "@stackstorm/module-select-on-click": "1.0.0-pre.4",
     "@stackstorm/module-store": "1.0.0-pre.4",
     "@stackstorm/module-time": "1.0.0-pre.4",
