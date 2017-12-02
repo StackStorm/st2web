@@ -303,7 +303,7 @@ describe('User visits rules page', function () {
   after(function () {
     util.client().then(function (client) {
       return client.rules.delete('packs.test' + uniqueId).then(function () {
-        console.warn('Warning: Rule "packs.test' + uniqueId + '" has not been properly deleted');
+        console.warn('Warning: Rule "packs.test' + uniqueId + '" has not been properly deleted'); // eslint-disable-line no-console
       });
     });
     browser.tabs.closeAll();

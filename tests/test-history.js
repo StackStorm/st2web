@@ -129,8 +129,6 @@ describe('User visits history page', function () {
           expect(resource).to.have.length(1, 'Rerun should make a single request');
 
           browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
-
-          // TODO: check stream event
         });
     });
 

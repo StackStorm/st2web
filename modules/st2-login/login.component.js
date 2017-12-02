@@ -88,7 +88,6 @@ export default class Login extends React.Component {
   connect(e) {
     e.preventDefault();
 
-    // TODO!
     const server = api.servers[this.serverField.value];
     const login = this.loginField.value;
     const password = this.passwordField.value;

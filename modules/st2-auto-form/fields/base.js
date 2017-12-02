@@ -9,9 +9,6 @@ function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
 }
 
-// FIXME: these store/change internal value and send external value.
-// Things can become out of sync if the onChange call does not result in a re-render with the correct value
-
 export class BaseTextField extends React.Component {
   static propTypes = {
     name: PropTypes.string,

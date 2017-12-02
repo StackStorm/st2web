@@ -33,6 +33,8 @@ const promiseMiddleware = () => next => action => {
 
   function actionFactory(status, data) {
     const { promise, ...newAction } = action;
+    promise;
+
     return {
       ...newAction,
       status,

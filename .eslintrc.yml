@@ -60,7 +60,7 @@ rules:
   no-undef: error
   no-unused-vars:
     - error
-    - ignoreRestSiblings: true
+    - args: none
   no-with: error
   indent:
     - error
@@ -77,6 +77,9 @@ rules:
   wrap-iife:
     - error
     - inside
+
+  no-warning-comments: warn
+  no-console: warn
 
   react/no-typos: error
   react/no-string-refs: error

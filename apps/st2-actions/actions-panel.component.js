@@ -184,7 +184,7 @@ export default class ActionsPanel extends React.Component {
         })
         .catch(res => {
           notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
-          console.error(res);
+          console.error(res); // eslint-disable-line no-console
         }),
     });
   }

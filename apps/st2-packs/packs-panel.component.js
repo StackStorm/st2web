@@ -235,7 +235,7 @@ export default class PacksPanel extends React.Component {
         })
         .catch(err => {
           notification.error(`Unable to schedule pack "${ref}" for installation. See details in developer tools console.`);
-          console.error(err);
+          console.error(err); // eslint-disable-line no-console
 
           throw err;
         }),
@@ -272,7 +272,7 @@ export default class PacksPanel extends React.Component {
         })
         .catch(err => {
           notification.error(`Unable to schedule pack "${ref}" for removal. See details in developer tools console.`);
-          console.error(err);
+          console.error(err); // eslint-disable-line no-console
 
           throw err;
         }),
@@ -297,7 +297,7 @@ export default class PacksPanel extends React.Component {
         })
         .catch(res => {
           notification.error(`Unable to save the configuration for pack "${ref}". See details in developer tools console.`);
-          console.error(res);
+          console.error(res); // eslint-disable-line no-console
         }),
     });
   }

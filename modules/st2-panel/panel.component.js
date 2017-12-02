@@ -127,7 +127,19 @@ export class ToolbarFilters extends React.Component {
   }
 }
 
-// TODO: ToolbarView
+export class ToolbarView extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return (
+      <div className="st2-panel__toolbar-view">
+        { this.props.children }
+      </div>
+    );
+  }
+}
 
 export class Content extends React.Component {
   static propTypes = {

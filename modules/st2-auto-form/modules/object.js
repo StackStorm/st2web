@@ -18,7 +18,7 @@ export default class ObjectModule extends React.Component {
       value = JSON.parse(value);
     }
     catch (e) {
-      // TODO: error
+      // error?
       value = null;
     }
 

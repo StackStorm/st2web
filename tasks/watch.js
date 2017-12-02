@@ -5,6 +5,6 @@ var gulp = require('gulp')
   ;
 
 gulp.task('watch', gulp.series(['watchify'], function watching(done) {
-  gulp.watch(settings.lint, gulp.series(['lint']));
+  gulp.watch(settings.lint);
   done();
 }));

@@ -4,6 +4,7 @@
   "st2_version": "2.6dev",
   "private": true,
   "scripts": {
+    "eslint": "eslint .",
     "gulp": "gulp",
     "test": "gulp test"
   },
