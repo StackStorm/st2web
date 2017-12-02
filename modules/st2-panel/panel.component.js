@@ -57,7 +57,22 @@ export class PanelDetails extends React.Component {
   }
 }
 
-// TODO: PanelNavigation
+export class PanelNavigation extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+  }
+
+  render() {
+    const { children, className, ...props } = this.props;
+
+    return (
+      <div className={`st2-panel__navigation ${className}`} {...props}>
+        { children }
+      </div>
+    );
+  }
+}
 
 export class Toolbar extends React.Component {
   static propTypes = {

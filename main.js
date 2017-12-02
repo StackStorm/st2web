@@ -45,7 +45,7 @@ class Container extends React.Component {
                   return (
                     <Route
                       key={route.url}
-                      path={`${route.url}/:ref?`}
+                      path={`${route.url}/:ref?/:section?`}
                       render={({ history, match, location }) => {
                         const props = {
                           notification,
