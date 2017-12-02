@@ -10,6 +10,10 @@ export default class ActionFlexCard extends React.Component {
     onClick: PropTypes.func,
   }
 
+  static contextTypes = {
+    scrollIntoView: PropTypes.func,
+  }
+
   render() {
     const { action, selected, onClick } = this.props;
 
@@ -24,7 +28,7 @@ export default class ActionFlexCard extends React.Component {
     }
 
     return (
-      <div {...props}>
+      <div {...props} ref={selected ? this.context.scrollIntoView : null}>
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__column">
             <div className="st2-flex-card__header-primary" title={action.ref}>

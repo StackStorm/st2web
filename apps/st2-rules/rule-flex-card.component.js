@@ -11,6 +11,10 @@ export default class RuleFlexCard extends React.Component {
     onClick: PropTypes.func,
   }
 
+  static contextTypes = {
+    scrollIntoView: PropTypes.func,
+  }
+
   render() {
     const { rule, selected, onClick } = this.props;
 
@@ -25,7 +29,7 @@ export default class RuleFlexCard extends React.Component {
     }
 
     return (
-      <div {...props}>
+      <div {...props} ref={selected ? this.context.scrollIntoView : null}>
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__header-status st2-flex-card__column">
             <Label status={rule.enabled ? 'enabled' : 'disabled'} />

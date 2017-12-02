@@ -127,15 +127,23 @@ export default class ActionsPanel extends React.Component {
       store.dispatch({
         type: 'FETCH_ACTION',
         promise: api.client.actionOverview.get(ref),
-      });
-
-      store.dispatch({
-        type: 'FETCH_EXECUTIONS',
-        promise: api.client.executions.list({
-          action: ref,
-        }),
+      }).then(() => {
+        store.dispatch({
+          type: 'FETCH_EXECUTIONS',
+          promise: api.client.executions.list({
+            action: ref,
+          }),
+        });
       });
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.match.params.ref !== this.props.match.params.ref) {
+      return false;
+    }
+
+    return true;
   }
 
   handleToggleAll() {

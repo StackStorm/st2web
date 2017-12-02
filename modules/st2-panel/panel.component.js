@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 import Label from '@stackstorm/module-label';
+import scrollIntoView from '@stackstorm/module-scroll-into-view';
 
 import './style.less';
 
@@ -111,10 +112,24 @@ export class Content extends React.Component {
     children: PropTypes.node,
   }
 
+  static childContextTypes = {
+    scrollIntoView: PropTypes.func,
+  }
+
+  getChildContext() {
+    return {
+      scrollIntoView: (ref) => {
+        setTimeout(() => {
+          scrollIntoView(this._scroller, ref);
+        });
+      },
+    };
+  }
+
   render() {
     return (
       <div className='st2-panel__content'>
-        <div className="st2-panel__scroller">
+        <div className="st2-panel__scroller" ref={(ref) => this._scroller = ref}>
           { this.props.children }
         </div>
       </div>

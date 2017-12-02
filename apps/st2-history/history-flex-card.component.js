@@ -14,6 +14,10 @@ export default class HistoryFlexCard extends React.Component {
     onToggleExpand: PropTypes.func,
   }
 
+  static contextTypes = {
+    scrollIntoView: PropTypes.func,
+  }
+
   handleToggleExpand(e) {
     e && e.preventDefault();
     e && e.stopPropagation();
@@ -35,7 +39,7 @@ export default class HistoryFlexCard extends React.Component {
     }
 
     return (
-      <div {...props}>
+      <div {...props} ref={selected ? this.context.scrollIntoView : null}>
         <div className="st2-flex-card__row">
           <div className="st2-flex-card__column st2-flex-card__expand">
             { isExpandable(execution) ?

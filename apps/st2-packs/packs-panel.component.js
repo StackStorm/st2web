@@ -188,6 +188,14 @@ export default class PacksPanel extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.match.params.ref !== this.props.match.params.ref) {
+      return false;
+    }
+
+    return true;
+  }
+
   handleToggleAll() {
     return store.dispatch(actions.toggleAll());
   }

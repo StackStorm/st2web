@@ -139,6 +139,14 @@ export default class RulesPanel extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.match.params.ref !== this.props.match.params.ref) {
+      return false;
+    }
+
+    return true;
+  }
+
   handleChange(path, value) {
     if (!path) {
       return this.setState({ editing: {
