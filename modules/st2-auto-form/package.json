@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@stackstorm/st2-style": "1.0.0-pre.4",
+    "@stackstorm/module-value-format": "1.0.0-pre.4",
     "insert-css": "2.0.0",
     "normalize.css": "4.0.0",
     "prop-types": "15.5.10",

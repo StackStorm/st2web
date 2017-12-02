@@ -8,6 +8,8 @@ import {
   Description,
 } from '../wrappers';
 
+import st2ValueFormat from '@stackstorm/module-value-format';
+
 export default class TextFieldModule extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -65,7 +67,10 @@ export default class TextFieldModule extends React.Component {
     }
 
     if (spec.format) {
-      // TODO: use @@stackstorm/module-value-format
+      if (!st2ValueFormat(spec.format, value)) {
+        this.setState({ error: `The value must be of type "${ spec.format }".` });
+        return;
+      }
     }
 
     this.state.error && this.setState({ error: null });
