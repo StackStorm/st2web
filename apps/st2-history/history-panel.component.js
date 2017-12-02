@@ -39,6 +39,7 @@ import St2Highlight from '@stackstorm/module-highlight';
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
 import ActionReporter from '@stackstorm/module-action-reporter';
+import selectOnClick from '@stackstorm/module-select-on-click';
 
 import HistoryFlexCard from './history-flex-card.component';
 import HistoryPopup from './history-popup.component';
@@ -260,14 +261,14 @@ export default class HistoryPanel extends React.Component {
                               <Label status={execution.status} />
                             </DetailsPanelBodyLine>
                             <DetailsPanelBodyLine label="Execution ID">
-                              <div className="st2-action-reporter__uuid">
+                              <div className="st2-action-reporter__uuid" ref={selectOnClick}>
                                 { execution && execution.id }
                               </div>
                             </DetailsPanelBodyLine>
                             { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ?
                               (
                                 <DetailsPanelBodyLine label="Trace Tag">
-                                  <div className="st2-action-reporter__uuid">
+                                  <div className="st2-action-reporter__uuid" ref={selectOnClick}>
                                     { execution.context.trace_context.trace_tag }
                                   </div>
                                 </DetailsPanelBodyLine>
