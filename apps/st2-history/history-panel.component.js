@@ -17,6 +17,7 @@ import {
   PanelView,
   PanelDetails,
   Toolbar,
+  ToolbarFilters,
   Content,
   DetailsHeader,
   DetailsSwitch,
@@ -40,6 +41,7 @@ import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
 import ActionReporter from '@stackstorm/module-action-reporter';
 import selectOnClick from '@stackstorm/module-select-on-click';
+import Filter from '@stackstorm/module-filter';
 
 import HistoryFlexCard from './history-flex-card.component';
 import HistoryPopup from './history-popup.component';
@@ -68,8 +70,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { groups, execution, collapsed } = state;
-  return { groups, execution, collapsed };
+  const { filters, activeFilters, groups, execution, collapsed } = state;
+  return { filters, activeFilters, groups, execution, collapsed };
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
@@ -81,6 +83,8 @@ export default class HistoryPanel extends React.Component {
       }),
     }),
 
+    filters: PropTypes.object,
+    activeFilters: PropTypes.object,
     groups: PropTypes.array,
     execution: PropTypes.object,
     collapsed: PropTypes.bool,
@@ -88,7 +92,23 @@ export default class HistoryPanel extends React.Component {
 
   componentDidMount() {
     store.dispatch({
+      type: 'FETCH_FILTERS',
+      promise: api.client.executionsFilters.list(),
+    });
+
+    let activeFilters = this.props.activeFilters;
+    store.dispatch({
       type: 'FETCH_GROUPS',
+      activeFilters,
+      promise: api.client.executions.list({
+        parent: 'null',
+        ...activeFilters,
+      }),
+    });
+
+    store.dispatch({
+      type: 'FETCH_GROUPS',
+      activeFilters,
       promise: api.client.executions.list({
         parent: 'null',
       }),
@@ -169,8 +189,24 @@ export default class HistoryPanel extends React.Component {
       });
   }
 
+  handleFilterChange(key, value) {
+    let activeFilters = {
+      ...this.props.activeFilters,
+      [key]: value,
+    };
+
+    store.dispatch({
+      type: 'FETCH_GROUPS',
+      activeFilters,
+      promise: api.client.executions.list({
+        parent: 'null',
+        ...activeFilters,
+      }),
+    });
+  }
+
   render() {
-    const { groups, execution, collapsed } = this.props;
+    const { filters, activeFilters, groups, execution, collapsed } = this.props;
 
     const execution_time = execution && Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
 
@@ -178,6 +214,21 @@ export default class HistoryPanel extends React.Component {
       <Panel>
         <PanelView className="st2-history">
           <Toolbar title="History">
+            { filters
+              ? (
+                <ToolbarFilters>
+                  { filters.map(({ key, label, items }) => (
+                    <Filter
+                      key={key}
+                      label={label}
+                      items={items}
+                      activeItems={activeFilters[key] || []}
+                      onChange={(value) => this.handleFilterChange(key, value)}
+                    />
+                  )) }
+                </ToolbarFilters>
+              )
+              : null }
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>

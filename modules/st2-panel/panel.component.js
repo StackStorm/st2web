@@ -68,14 +68,24 @@ export class Toolbar extends React.Component {
   render() {
     return (
       <div className="st2-panel__toolbar">
-        <div className="st2-panel__toolbar-title"> { this.props.title } </div>
+        <ToolbarTitle>{ this.props.title }</ToolbarTitle>
         { this.props.children }
       </div>
     );
   }
 }
 
-// TODO: ToolbarTitle
+export class ToolbarTitle extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return (
+      <div className="st2-panel__toolbar-title">{ this.props.children }</div>
+    );
+  }
+}
 
 export class ToolbarSearch extends React.Component {
   static propTypes = {
@@ -103,7 +113,19 @@ export class ToolbarSearch extends React.Component {
   }
 }
 
-// TODO: ToolbarFilters
+export class ToolbarFilters extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return (
+      <div className="st2-panel__toolbar-filters">
+        { this.props.children }
+      </div>
+    );
+  }
+}
 
 // TODO: ToolbarView
 

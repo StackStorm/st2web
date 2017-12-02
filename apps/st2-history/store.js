@@ -4,6 +4,8 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
 const historyReducer = (state = {}, input) => {
   let {
+    filters = undefined,
+    activeFilters = {},
     executions = [],
     groups = [],
     ref = undefined,
@@ -12,6 +14,8 @@ const historyReducer = (state = {}, input) => {
 
   state = {
     ...state,
+    activeFilters,
+    filters,
     executions,
     groups,
     ref,
@@ -19,10 +23,37 @@ const historyReducer = (state = {}, input) => {
   };
 
   switch (input.type) {
+    case 'FETCH_FILTERS':
+      switch(input.status) {
+        case 'success':
+          filters = Object.keys(input.payload)
+            .filter(key => Array.isArray(input.payload[key]) && input.payload[key].length > 1)
+            .map(key => ({
+              key,
+              label: key
+                .replace(/_/g, ' ')
+                .replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
+              ,
+              items: input.payload[key],
+            }))
+          ;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        filters,
+      };
+
     case 'FETCH_GROUPS':
       switch(input.status) {
         case 'success':
           executions = input.payload;
+          activeFilters = input.activeFilters || activeFilters;
 
           groups = _(executions)
             .sortBy('start_timestamp')
@@ -51,6 +82,7 @@ const historyReducer = (state = {}, input) => {
 
       return {
         ...state,
+        activeFilters,
         executions,
         groups,
         ref,
