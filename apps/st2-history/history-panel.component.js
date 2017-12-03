@@ -538,7 +538,7 @@ export default class HistoryPanel extends React.Component {
               </div>
             ) : null }
             { section === 'code' && execution ? (
-              <DetailsPanel data-test="action_parameters">
+              <DetailsPanel data-test="execution_parameters">
                 <St2Highlight code={execution} />
               </DetailsPanel>
             ) : null }

@@ -2,14 +2,11 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-  Route,
-  Switch,
-  Link,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import store from './store';
 import api from '@stackstorm/module-api';
+import qs from 'querystring';
 
 import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import {
@@ -77,9 +74,13 @@ export default class ActionsPanel extends React.Component {
   static propTypes = {
     notification: PropTypes.object,
     history: PropTypes.object,
+    location: PropTypes.shape({
+      search: PropTypes.string,
+    }),
     match: PropTypes.shape({
       params: PropTypes.shape({
         ref: PropTypes.string,
+        section: PropTypes.string,
       }),
     }),
 
@@ -146,6 +147,17 @@ export default class ActionsPanel extends React.Component {
     }
 
     return true;
+  }
+
+  get urlParams() {
+    const { ref, section } = this.props.match.params;
+    const { ...params } = qs.parse(this.props.location.search.slice(1));
+
+    return {
+      ref,
+      section: section || 'general',
+      params,
+    };
   }
 
   handleToggleAll() {
@@ -217,6 +229,7 @@ export default class ActionsPanel extends React.Component {
 
   render() {
     const { groups, filter, action, executions, collapsed } = this.props;
+    let { section } = this.urlParams;
     const view = this._view ? this._view.value : {};
 
     return (
@@ -261,112 +274,96 @@ export default class ActionsPanel extends React.Component {
         </PanelView>
         <PanelDetails data-test="details">
           <DetailsHeader title={action && action.ref} subtitle={action && action.description} />
-          <Route path="/actions/:ref?/:section?">
-            { ({ match: { params: { section } } }) => (
-              <DetailsSwitch
-                sections={[
-                  { label: 'General', path: 'general' },
-                  { label: 'Code', path: 'code' },
-                ]}
-                current={section}
-                onChange={({ path }) => this.handleSection(path)}
-              />
-            ) }
-          </Route>
+          <DetailsSwitch
+            sections={[
+              { label: 'General', path: 'general' },
+              { label: 'Code', path: 'code' },
+            ]}
+            current={section}
+            onChange={({ path }) => this.handleSection(path)}
+          />
           <DetailsBody>
-            <Switch>
-              <Route
-                exact path="/actions/:ref?/(general)?" render={() => {
-                  if (!action) {
-                    return null;
-                  }
-
-                  return (
-                    <div>
-                      <DetailsPanel data-test="action_parameters">
-                        <DetailsPanelHeading title="Parameters" />
-                        <DetailsPanelBody>
-                          <form onSubmit={(e) => this.handleActionRun(e, action.ref)}>
-                            <AutoForm
-                              ref={(component) => { this.runField = component; }}
-                              spec={{
-                                type: 'object',
-                                properties: action.parameters,
-                              }}
-                              ngModel={{}}
-                            />
-                            <StringField
-                              ref={(component) => { this.traceField = component; }}
-                              name="trace"
-                              spec={{}}
-                              value=""
-                            />
-                            <DetailsButtonsPanel>
-                              <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
-                              <Button type="submit" value="Run" />
-                            </DetailsButtonsPanel>
-                            { this.state.runPreview ? (
-                              <St2Highlight code={this.runField.getValue()} />
-                            ) : null }
-                          </form>
-                        </DetailsPanelBody>
-                      </DetailsPanel>
-                      <DetailsPanel data-test="action_executions">
-                        <DetailsPanelHeading title="Executions" />
-                        <DetailsPanelBody>
-                          { executions.length === 0 ? (
-                            <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
-                          ) : (
-                            <FlexTable>
-                              { executions.map(execution => [
-                                <FlexTableRow
-                                  key={execution.id}
-                                  onClick={() => this.handleToggleExecution(execution.id)}
-                                  columns={[
-                                    {
-                                      className: 'st2-actions__details-column-utility',
-                                      children: <i className={`icon-chevron${ this.state.executionsVisible[execution.id] ? '-down': '_right' }`} />,
-                                    },
-                                    {
-                                      className: 'st2-actions__details-column-meta',
-                                      children: <Label status={execution.status} short={true} />,
-                                    },
-                                    {
-                                      className: 'st2-actions__details-column-time',
-                                      children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />,
-                                    },
-                                    {
-                                      Component: Link,
-                                      to: `/history/${execution.id}/general?action=${action.ref}`,
-                                      className: 'st2-actions__details-column-history',
-                                      title: 'Jump to History',
-                                      children: <i className="icon-history" />,
-                                    },
-                                  ]}
-                                />,
-                                <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
-                                  <ActionReporter runner={execution.runner.name} execution={execution} />
-                                </FlexTableInsert>,
-                              ]) }
-                            </FlexTable>
-                          ) }
-                          <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
-                            <i className="icon-history" /> See full action history
-                          </Link>
-                        </DetailsPanelBody>
-                      </DetailsPanel>
-                    </div>
-                  );
-                }}
-              />
-              <Route
-                path="/actions/:ref/code" render={() => (
-                  <DetailsPanel data-test="action_parameters" >
-                    { action ? <St2Highlight code={action} /> : null }
-                  </DetailsPanel>
-                )}
-              />
-            </Switch>
+            { section === 'general' && action ? (
+              <div>
+                <DetailsPanel data-test="action_parameters">
+                  <DetailsPanelHeading title="Parameters" />
+                  <DetailsPanelBody>
+                    <form onSubmit={(e) => this.handleActionRun(e, action.ref)}>
+                      <AutoForm
+                        ref={(component) => { this.runField = component; }}
+                        spec={{
+                          type: 'object',
+                          properties: action.parameters,
+                        }}
+                        ngModel={{}}
+                      />
+                      <StringField
+                        ref={(component) => { this.traceField = component; }}
+                        name="trace"
+                        spec={{}}
+                        value=""
+                      />
+                      <DetailsButtonsPanel>
+                        <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
+                        <Button type="submit" value="Run" />
+                      </DetailsButtonsPanel>
+                      { this.state.runPreview ? (
+                        <St2Highlight code={this.runField.getValue()} />
+                      ) : null }
+                    </form>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+                <DetailsPanel data-test="action_executions">
+                  <DetailsPanelHeading title="Executions" />
+                  <DetailsPanelBody>
+                    { executions.length === 0 ? (
+                      <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
+                    ) : (
+                      <FlexTable>
+                        { executions.map(execution => [
+                          <FlexTableRow
+                            key={execution.id}
+                            onClick={() => this.handleToggleExecution(execution.id)}
+                            columns={[
+                              {
+                                className: 'st2-actions__details-column-utility',
+                                children: <i className={`icon-chevron${ this.state.executionsVisible[execution.id] ? '-down': '_right' }`} />,
+                              },
+                              {
+                                className: 'st2-actions__details-column-meta',
+                                children: <Label status={execution.status} short={true} />,
+                              },
+                              {
+                                className: 'st2-actions__details-column-time',
+                                children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />,
+                              },
+                              {
+                                Component: Link,
+                                to: `/history/${execution.id}/general?action=${action.ref}`,
+                                className: 'st2-actions__details-column-history',
+                                title: 'Jump to History',
+                                children: <i className="icon-history" />,
+                              },
+                            ]}
+                          />,
+                          <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
+                            <ActionReporter runner={execution.runner.name} execution={execution} />
+                          </FlexTableInsert>,
+                        ]) }
+                      </FlexTable>
+                    ) }
+                    <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
+                      <i className="icon-history" /> See full action history
+                    </Link>
+                  </DetailsPanelBody>
+                </DetailsPanel>
+              </div>
+            ) : null }
+            { section === 'code' && action ? (
+              <DetailsPanel data-test="action_parameters">
+                <St2Highlight code={action} />
+              </DetailsPanel>
+            ) : null }
           </DetailsBody>
           <DetailsToolbar>
             <DetailsToolbarSeparator />

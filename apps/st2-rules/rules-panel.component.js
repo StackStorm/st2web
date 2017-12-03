@@ -2,14 +2,11 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-  Route,
-  Switch,
-  Link,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import store from './store';
 import api from '@stackstorm/module-api';
+import qs from 'querystring';
 
 import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import {
@@ -72,9 +69,13 @@ export default class RulesPanel extends React.Component {
   static propTypes = {
     // notification: PropTypes.object,
     history: PropTypes.object,
+    location: PropTypes.shape({
+      search: PropTypes.string,
+    }),
     match: PropTypes.shape({
       params: PropTypes.shape({
         ref: PropTypes.string,
+        section: PropTypes.string,
       }),
     }),
 
@@ -145,6 +146,17 @@ export default class RulesPanel extends React.Component {
     }
 
     return true;
+  }
+
+  get urlParams() {
+    const { ref, section } = this.props.match.params;
+    const { ...params } = qs.parse(this.props.location.search.slice(1));
+
+    return {
+      ref,
+      section: section || 'general',
+      params,
+    };
   }
 
   handleChange(path, value) {
@@ -240,6 +252,7 @@ export default class RulesPanel extends React.Component {
 
   render() {
     const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
+    let { section } = this.urlParams;
     const rule = this.state.editing || this.props.rule;
 
     return (
@@ -297,111 +310,95 @@ export default class RulesPanel extends React.Component {
               </div>
             </div>
           </DetailsHeader>
-          <Route path="/rules/:ref?/:section?">
-            { ({ match: { params: { section } } }) => (
-              <DetailsSwitch
-                sections={[
-                  { label: 'General', path: 'general' },
-                  { label: 'Code', path: 'code' },
-                ]}
-                current={section}
-                onChange={({ path }) => this.handleSection(path)}
-              />
-            ) }
-          </Route>
+          <DetailsSwitch
+            sections={[
+              { label: 'General', path: 'general' },
+              { label: 'Code', path: 'code' },
+            ]}
+            current={section}
+            onChange={({ path }) => this.handleSection(path)}
+          />
           <DetailsBody>
-            <Switch>
-              <Route
-                exact path="/rules/:ref?/(general)?" render={() => {
-                  if (!rule) {
-                    return null;
-                  }
-
-                  return (
-                    <form name="form">
-                      <DetailsPanel>
-                        <AutoFormCheckbox
-                          spec={{
-                            name: 'enabled',
-                            type: 'boolean',
-                            default: true,
-                          }}
-                          disabled={!this.state.editing}
-                          data={rule.enabled}
-                          onChange={(value) => this.handleChange('enabled', value)}
-                        />
-                      </DetailsPanel>
-                      { triggerSpec ? (
-                        <DetailsPanel>
-                          <DetailsPanelHeading title="Trigger" />
-                          <DetailsPanelBody>
-                            <RemoteForm
-                              name="trigger"
-                              disabled={!this.state.editing}
-                              spec={triggerSpec}
-                              data={rule.trigger}
-                              onChange={(trigger) => this.handleChange('trigger', trigger)}
-                            />
-                          </DetailsPanelBody>
-                        </DetailsPanel>
-                      ) : null }
-                      { rule && criteriaSpecs ? (
-                        <DetailsPanel>
-                          <DetailsPanelHeading title="Criteria" />
-                          <DetailsPanelBody>
-                            <Criteria
-                              disabled={!this.state.editing}
-                              data={rule.criteria}
-                              spec={criteriaSpecs[rule.trigger.type]}
-                              onChange={(criteria) => this.handleChange('criteria', criteria)}
-                            />
-                          </DetailsPanelBody>
-                        </DetailsPanel>
-                      ) : null }
-                      { actionSpec ? (
-                        <DetailsPanel>
-                          <DetailsPanelHeading title="Action" />
-                          <DetailsPanelBody>
-                            <RemoteForm
-                              name="action"
-                              disabled={!this.state.editing}
-                              spec={actionSpec}
-                              data={rule.action}
-                              onChange={(action) => this.handleChange('action', action)}
-                            />
-                          </DetailsPanelBody>
-                        </DetailsPanel>
-                      ) : null }
-                      { packSpec ? (
-                        <DetailsPanel>
-                          <DetailsPanelHeading title="Rule" />
-                          <DetailsPanelBody>
-                            <RemoteForm
-                              name="pack"
-                              disabled={!this.state.editing}
-                              spec={packSpec}
-                              data={{ ref: rule.pack, parameters: rule }}
-                              onChange={({ ref: pack, parameters: rule }) =>
-                                pack === rule.pack
-                                  ? this.handleChange(null, rule)
-                                  : this.handleChange('pack', pack)
-                              }
-                            />
-                          </DetailsPanelBody>
-                        </DetailsPanel>
-                      ) : null }
-                    </form>
-                  );
-                }}
-              />
-              <Route
-                path="/rules/:ref/code" render={() => (
+            { section === 'general' && rule ? (
+              <form name="form">
+                <DetailsPanel>
+                  <AutoFormCheckbox
+                    spec={{
+                      name: 'enabled',
+                      type: 'boolean',
+                      default: true,
+                    }}
+                    disabled={!this.state.editing}
+                    data={rule.enabled}
+                    onChange={(value) => this.handleChange('enabled', value)}
+                  />
+                </DetailsPanel>
+                { triggerSpec ? (
                   <DetailsPanel>
-                    { this.props.rule ? <St2Highlight code={rule} /> : null }
+                    <DetailsPanelHeading title="Trigger" />
+                    <DetailsPanelBody>
+                      <RemoteForm
+                        name="trigger"
+                        disabled={!this.state.editing}
+                        spec={triggerSpec}
+                        data={rule.trigger}
+                        onChange={(trigger) => this.handleChange('trigger', trigger)}
+                      />
+                    </DetailsPanelBody>
                   </DetailsPanel>
-                )}
-              />
-            </Switch>
+                ) : null }
+                { rule && criteriaSpecs ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Criteria" />
+                    <DetailsPanelBody>
+                      <Criteria
+                        disabled={!this.state.editing}
+                        data={rule.criteria}
+                        spec={criteriaSpecs[rule.trigger.type]}
+                        onChange={(criteria) => this.handleChange('criteria', criteria)}
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+                { actionSpec ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Action" />
+                    <DetailsPanelBody>
+                      <RemoteForm
+                        name="action"
+                        disabled={!this.state.editing}
+                        spec={actionSpec}
+                        data={rule.action}
+                        onChange={(action) => this.handleChange('action', action)}
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+                { packSpec ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Rule" />
+                    <DetailsPanelBody>
+                      <RemoteForm
+                        name="pack"
+                        disabled={!this.state.editing}
+                        spec={packSpec}
+                        data={{ ref: rule.pack, parameters: rule }}
+                        onChange={({ ref: pack, parameters: rule }) =>
+                          pack === rule.pack
+                            ? this.handleChange(null, rule)
+                            : this.handleChange('pack', pack)
+                        }
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+              </form>
+            ) : null }
+            { section === 'code' && rule ? (
+              <DetailsPanel data-test="rule_parameters">
+                <St2Highlight code={rule} />
+              </DetailsPanel>
+            ) : null }
           </DetailsBody>
           <DetailsToolbar>
             { this.state.editing ? [
