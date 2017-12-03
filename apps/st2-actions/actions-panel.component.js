@@ -240,49 +240,38 @@ export default class ActionsPanel extends React.Component {
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>
-            {
-              groups.map(({ pack, actions }) => {
-                const icon = api.client.packFile.route(pack + '/icon.png');
-                const ref = action && action.ref;
+            { groups.map(({ pack, actions }) => {
+              const icon = api.client.packFile.route(pack + '/icon.png');
+              const ref = action && action.ref;
 
-                return (
-                  <FlexTableWrapper title={pack} key={pack} icon={icon}>
-                    {
-                      actions
-                        .map(action => {
-                          return (
-                            <ActionFlexCard
-                              key={action.ref} action={action}
-                              selected={ref === action.ref}
-                              view={view}
-                              onClick={() => this.handleSelect(action.ref)}
-                            />
-                          );
-                        })
-                    }
-                  </FlexTableWrapper>
-                );
-              })
-            }
+              return (
+                <FlexTableWrapper title={pack} key={pack} icon={icon}>
+                  { actions.map(action => (
+                    <ActionFlexCard
+                      key={action.ref} action={action}
+                      selected={ref === action.ref}
+                      view={view}
+                      onClick={() => this.handleSelect(action.ref)}
+                    />
+                  )) }
+                </FlexTableWrapper>
+              );
+            }) }
           </Content>
         </PanelView>
         <PanelDetails data-test="details">
           <DetailsHeader title={action && action.ref} subtitle={action && action.description} />
           <Route path="/actions/:ref?/:section?">
-            {
-              ({ match: { params: { section } } }) => {
-                return (
-                  <DetailsSwitch
-                    sections={[
-                      { label: 'General', path: 'general' },
-                      { label: 'Code', path: 'code' },
-                    ]}
-                    current={section}
-                    onChange={({ path }) => this.handleSection(path)}
-                  />
-                );
-              }
-            }
+            { ({ match: { params: { section } } }) => (
+              <DetailsSwitch
+                sections={[
+                  { label: 'General', path: 'general' },
+                  { label: 'Code', path: 'code' },
+                ]}
+                current={section}
+                onChange={({ path }) => this.handleSection(path)}
+              />
+            ) }
           </Route>
           <DetailsBody>
             <Switch>
@@ -325,48 +314,42 @@ export default class ActionsPanel extends React.Component {
                       <DetailsPanel data-test="action_executions">
                         <DetailsPanelHeading title="Executions" />
                         <DetailsPanelBody>
-                          {
-                            executions.length === 0
-                              ? <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
-                              : (
-                                <FlexTable>
-                                  {
-                                    executions.map(execution => {
-                                      return [
-                                        <FlexTableRow
-                                          key={execution.id}
-                                          onClick={() => this.handleToggleExecution(execution.id)}
-                                          columns={[
-                                            {
-                                              className: 'st2-actions__details-column-utility',
-                                              children: <i className={`icon-chevron${ this.state.executionsVisible[execution.id] ? '-down': '_right' }`} />,
-                                            },
-                                            {
-                                              className: 'st2-actions__details-column-meta',
-                                              children: <Label status={execution.status} short={true} />,
-                                            },
-                                            {
-                                              className: 'st2-actions__details-column-time',
-                                              children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />,
-                                            },
-                                            {
-                                              Component: Link,
-                                              to: `/history/${execution.id}/general?action=${action.ref}`,
-                                              className: 'st2-actions__details-column-history',
-                                              title: 'Jump to History',
-                                              children: <i className="icon-history" />,
-                                            },
-                                          ]}
-                                        />,
-                                        <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
-                                          <ActionReporter runner={execution.runner.name} execution={execution} />
-                                        </FlexTableInsert>,
-                                      ];
-                                    })
-                                  }
-                                </FlexTable>
-                              )
-                          }
+                          { executions.length === 0 ? (
+                            <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
+                          ) : (
+                            <FlexTable>
+                              { executions.map(execution => [
+                                <FlexTableRow
+                                  key={execution.id}
+                                  onClick={() => this.handleToggleExecution(execution.id)}
+                                  columns={[
+                                    {
+                                      className: 'st2-actions__details-column-utility',
+                                      children: <i className={`icon-chevron${ this.state.executionsVisible[execution.id] ? '-down': '_right' }`} />,
+                                    },
+                                    {
+                                      className: 'st2-actions__details-column-meta',
+                                      children: <Label status={execution.status} short={true} />,
+                                    },
+                                    {
+                                      className: 'st2-actions__details-column-time',
+                                      children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />,
+                                    },
+                                    {
+                                      Component: Link,
+                                      to: `/history/${execution.id}/general?action=${action.ref}`,
+                                      className: 'st2-actions__details-column-history',
+                                      title: 'Jump to History',
+                                      children: <i className="icon-history" />,
+                                    },
+                                  ]}
+                                />,
+                                <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
+                                  <ActionReporter runner={execution.runner.name} execution={execution} />
+                                </FlexTableInsert>,
+                              ]) }
+                            </FlexTable>
+                          ) }
                           <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
                             <i className="icon-history" /> See full action history
                           </Link>
@@ -377,13 +360,11 @@ export default class ActionsPanel extends React.Component {
                 }}
               />
               <Route
-                path="/actions/:ref/code" render={() => {
-                  return (
-                    <DetailsPanel data-test="action_parameters" >
-                      { action ? <St2Highlight code={action} /> : null }
-                    </DetailsPanel>
-                  );
-                }}
+                path="/actions/:ref/code" render={() => (
+                  <DetailsPanel data-test="action_parameters" >
+                    { action ? <St2Highlight code={action} /> : null }
+                  </DetailsPanel>
+                )}
               />
             </Switch>
           </DetailsBody>

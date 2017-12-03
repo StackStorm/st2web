@@ -30,15 +30,12 @@ export class FlexTable extends React.Component {
 
     return (
       <div {...props} >
-        {
-          !!title &&
-          (
-            <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
-              { title }
-            </FlexTableTitle>
-          )
-        }
-        { !collapsed && children }
+        { title ? (
+          <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
+            { title }
+          </FlexTableTitle>
+        ) : null  }
+        { collapsed ? null : children }
       </div>
     );
   }
@@ -70,7 +67,9 @@ export class FlexTableTitle extends React.Component {
 
     return (
       <div {...props}>
-        { !!icon && <img src={icon} /> }
+        { icon ? (
+          <img src={icon} />
+        ) : null }
         <h2 className="st2-flex-table__caption-title">{ children }</h2>
       </div>
     );
@@ -92,15 +91,11 @@ export class FlexTableRow extends React.Component {
 
     return (
       <div className="st2-flex-table__row" {...props}>
-        {
-          columns.map(({ Component = 'div', className, children, ...props }, key) => {
-            return (
-              <Component key={key} className={`st2-flex-table__column ${ className }`} {...props}>
-                { children }
-              </Component>
-            );
-          })
-        }
+        { columns.map(({ Component = 'div', className, children, ...props }, key) => (
+          <Component key={key} className={`st2-flex-table__column ${ className }`} {...props}>
+            { children }
+          </Component>
+        )) }
       </div>
     );
   }

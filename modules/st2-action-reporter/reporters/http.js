@@ -6,11 +6,9 @@ export default function debug(execution) {
       <strong>{ (execution.parameters.method || 'get').toUpperCase() }</strong> { execution.parameters.url }
 
     &gt; { execution.result.status_code }
-      {
-        Object.keys(execution.result.headers).map((key) =>
-          <span key={key}>&gt; { key.toUpperCase() }: { execution.result.headers[key] }</span>
-        )
-      }
+      { Object.keys(execution.result.headers).map((key) => (
+        <span key={key}>&gt; { key.toUpperCase() }: { execution.result.headers[key] }</span>
+      )) }
 
       { execution.result.body }
     </pre>

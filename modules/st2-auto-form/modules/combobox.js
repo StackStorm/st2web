@@ -74,24 +74,20 @@ export default class ComboboxModule extends React.Component {
           <ErrorMessage>{ this.state.error }</ErrorMessage>
         </Label>
 
-        { suggestions
-          ? (
-            <div className="st2-auto-form__suggestions">
-              { suggestions.map(({ name, description }) => {
-                return (
-                  <div
-                    key={name}
-                    className={`st2-auto-form__suggestion ${ false ? 'st2-auto-form__suggestion--active' : '' }`}
-                    onClick={() => this.onChoose(name)}
-                  >
-                    <div className="st2-auto-form__suggestion-primary">{ name }</div>
-                    <div className="st2-auto-form__suggestion-secondary">{ description }</div>
-                  </div>
-                );
-              }) }
-            </div>
-          )
-          : null }
+        { suggestions ? (
+          <div className="st2-auto-form__suggestions">
+            { suggestions.map(({ name, description }) => (
+              <div
+                key={name}
+                className={`st2-auto-form__suggestion ${ false ? 'st2-auto-form__suggestion--active' : '' }`}
+                onClick={() => this.onChoose(name)}
+              >
+                <div className="st2-auto-form__suggestion-primary">{ name }</div>
+                <div className="st2-auto-form__suggestion-secondary">{ description }</div>
+              </div>
+            )) }
+          </div>
+        ) : null }
 
         <Description spec={spec} />
       </div>

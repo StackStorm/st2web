@@ -19,8 +19,8 @@ export default function debug(execution) {
       <St2Highlight key="traceback-code" code={[ execution.result.error, execution.result.traceback ].join('\n')} />,
     ] : null,
 
-    !execution.result.stderr && !execution.result.stdout && !execution.result.traceback ?
+    !execution.result.stderr && !execution.result.stdout && !execution.result.traceback ? (
       <div className="st2-highlight st2-action-reporter__message" code="'// Action produced no data'" />
-      : null,
+    ) : null,
   ];
 }

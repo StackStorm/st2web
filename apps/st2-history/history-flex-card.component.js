@@ -46,14 +46,12 @@ export default class HistoryFlexCard extends React.Component {
       <div {...props} ref={selected ? this.context.scrollIntoView : null}>
         <div className="st2-flex-card__row">
           <div className="st2-flex-card__column st2-flex-card__expand">
-            { isExpandable(execution) ?
-              (
-                <i
-                  className={execution.fetchedChildren ? 'icon-chevron-down' : 'icon-chevron_right'}
-                  onClick={(e) => this.handleToggleExpand(e)}
-                />
-              )
-              : null }
+            { isExpandable(execution) ? (
+              <i
+                className={execution.fetchedChildren ? 'icon-chevron-down' : 'icon-chevron_right'}
+                onClick={(e) => this.handleToggleExpand(e)}
+              />
+            ) : null }
           </div>
 
           <div className="st2-flex-card__column st2-flex-card__status">
@@ -105,36 +103,33 @@ export default class HistoryFlexCard extends React.Component {
           { isChild ? null : (
             view.trigger ? (
               <div className="st2-flex-card__column">
-                { execution.rule && execution.trigger
-                  ? (
-                    <span title={`${ execution.rule.ref } (${ execution.trigger.type })`}>
-                      <span className="st2-history__column-rule-name">
-                        { execution.rule.ref }
-                      </span>
-                      <span className="st2-history__column-trigger-type">
-                        { execution.trigger.type }
-                      </span>
+                { execution.rule && execution.trigger ? (
+                  <span title={`${ execution.rule.ref } (${ execution.trigger.type })`}>
+                    <span className="st2-history__column-rule-name">
+                      { execution.rule.ref }
                     </span>
-                  )
-                  : (
-                    <span title={`Manual (${ execution.context.user })`}>
-                      <span className="st2-history__column-app-name">
-                        Manual
-                      </span>
-                      <span className="st2-history__column-user-name">
-                        { execution.context.user }
-                      </span>
+                    <span className="st2-history__column-trigger-type">
+                      { execution.trigger.type }
                     </span>
-                  )
-                }
+                  </span>
+                ) : (
+                  <span title={`Manual (${ execution.context.user })`}>
+                    <span className="st2-history__column-app-name">
+                      Manual
+                    </span>
+                    <span className="st2-history__column-user-name">
+                      { execution.context.user }
+                    </span>
+                  </span>
+                ) }
               </div>
             ) : null
           ) }
 
           <div className="st2-flex-card__column st2-flex-card__status">
-            { isExpandable(execution) && view.meta.type ?
+            { isExpandable(execution) && view.meta && view.meta.type ? (
               <i className="icon-branch" onClick={(e) => this.handleToggleExpand(e)} />
-              : null }
+            ) : null }
           </div>
         </div>
       </div>

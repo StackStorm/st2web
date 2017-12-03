@@ -11,7 +11,7 @@ export default class TimeComponent extends React.Component {
   }
 
   render() {
-    const { format, timestamp, utcdisplay, togglecallback, ...restProps } = this.props;
+    const { format, timestamp, utcdisplay, togglecallback, ...props } = this.props;
     const timeStamp = new Date(timestamp);
 
     let dateFormat = format ? format : 'ddd, DD MMM YYYY HH:mm:ss';
@@ -25,7 +25,7 @@ export default class TimeComponent extends React.Component {
         value={timeStamp}
         format={dateFormat}
         utc={utcdisplay}
-        {...restProps}
+        {...props}
       />
     );
   }

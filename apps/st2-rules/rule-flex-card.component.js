@@ -52,13 +52,11 @@ export default class RuleFlexCard extends React.Component {
               <span className="st2-rules__name">
                 { rule.trigger.type }
               </span>
-              { rule.trigger.description ?
-                (
-                  <span className="st2-rules__description">
-                    { rule.trigger.description }
-                  </span>
-                )
-                : null }
+              { rule.trigger.description ? (
+                <span className="st2-rules__description">
+                  { rule.trigger.description }
+                </span>
+              ) : null }
             </div>
           </div>
           <div className="st2-flex-card__column st2-flex-card__then">

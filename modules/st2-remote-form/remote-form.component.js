@@ -43,24 +43,20 @@ export default class RemoteForm extends React.Component {
 
     return (
       <div className="st2-remote-form">
-        {
-          disabled
-            ? (
-              <AutoFormText
-                name={name}
-                spec={spec}
-                data={data[key]}
-              />
-            )
-            : (
-              <AutoFormCombobox
-                name={name}
-                spec={spec}
-                data={data[key]}
-                onChange={(ref) => this.onChangeValue(ref)}
-              />
-            )
-        }
+        { disabled ? (
+          <AutoFormText
+            name={name}
+            spec={spec}
+            data={data[key]}
+          />
+        ) : (
+          <AutoFormCombobox
+            name={name}
+            spec={spec}
+            data={data[key]}
+            onChange={(ref) => this.onChangeValue(ref)}
+          />
+        ) }
         <AutoForm
           spec={childSpec}
           ngModel={data.parameters}

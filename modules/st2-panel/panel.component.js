@@ -231,17 +231,15 @@ export class DetailsSwitch extends React.Component {
 
     return (
       <div className={`st2-details__switch st2-details__switch--of-two st2-details__switch--${ SWITCH_COUNT[active < 0 ? 0 : active] }`}>
-        {
-          sections.map((section) => {
-            return (
-              <div
-                key={section.path} className="st2-details__switch-item"
-                onClick={() => onChange(section)}
-              >{ section.label }
-              </div>
-            );
-          })
-        }
+        { sections.map((section) => {
+          return (
+            <div
+              key={section.path} className="st2-details__switch-item"
+              onClick={() => onChange(section)}
+            >{ section.label }
+            </div>
+          );
+        }) }
       </div>
     );
   }

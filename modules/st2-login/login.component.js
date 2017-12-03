@@ -24,7 +24,9 @@ class LoginForm extends React.Component {
 
 class LoginLogo extends React.Component {
   render() {
-    return <a href="#" className="st2-menu__logo" />;
+    return (
+      <a href="#" className="st2-menu__logo" />
+    );
   }
 }
 
@@ -103,29 +105,23 @@ export default class Login extends React.Component {
       <div className="st2-login">
         <LoginForm data-test="login" onSubmit={e => this.connect(e)}>
           <LoginLogo />
-          {
-            !!this.state.error && <LoginError message={this.state.error} />
-          }
-          {
-            !!api.servers && (
-              <LoginRow className="st2-auto-form__select" style={{ display: api.servers.length > 1 ? null : 'none' }}>
-                <select
-                  className="st2-auto-form__field st2-login__field"
-                  ref={component => this.serverField = component}
-                >
-                  {
-                    api.servers.map((server, i) => {
-                      return (
-                        <option key={i} value={i}>
-                          { server.auth ? `* ${server.name}` : server.name }
-                        </option>
-                      );
-                    })
-                  }
-                </select>
-              </LoginRow>
-            )
-          }
+          { this.state.error ? (
+            <LoginError message={this.state.error} />
+          ) : null }
+          { api.servers ? (
+            <LoginRow className="st2-auto-form__select" style={{ display: api.servers.length > 1 ? null : 'none' }}>
+              <select
+                className="st2-auto-form__field st2-login__field"
+                ref={component => this.serverField = component}
+              >
+                { api.servers.map((server, i) => (
+                  <option key={i} value={i}>
+                    { server.auth ? `* ${server.name}` : server.name }
+                  </option>
+                )) }
+              </select>
+            </LoginRow>
+          ) : null }
           <LoginRow>
             <input
               className="st2-auto-form__field st2-login__field"
@@ -161,16 +157,16 @@ export default class Login extends React.Component {
                 defaultChecked
               />
               <span className="st2-login__checkbox-label">
-              remember
+                remember
               </span>
             </label>
           </LoginRow>
           <LoginBottomRow>
             <a target="_blank" rel="noopener noreferrer" href="http://docs.stackstorm.com">
-            Documentation
+              Documentation
             </a>
             <a href="mailto:support@stackstorm.com" data-reamaze-lightbox="contact">
-            Contact Us
+              Contact Us
             </a>
           </LoginBottomRow>
         </LoginForm>

@@ -46,16 +46,14 @@ export default class SelectModule extends React.Component {
             onChange={({ target: { value } }) => this.onChange(value)}
             value={data}
           >
-            { options.map(({ value, label }) => {
-              return (
-                <option
-                  key={value}
-                  value={value}
-                  label={label}
-                >{ label }
-                </option>
-              );
-            }) }
+            { options.map(({ value, label }) => (
+              <option
+                key={value}
+                value={value}
+                label={label}
+              >{ label }
+              </option>
+            )) }
           </select>
 
           <ErrorMessage>{ this.state.error }</ErrorMessage>

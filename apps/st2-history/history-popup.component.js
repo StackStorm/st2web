@@ -87,11 +87,9 @@ export default class HistoryPopup extends React.Component {
                   />
                 </div>
 
-                {
-                  this.state.preview
-                    ? <St2Highlight code={this.state.payload} />
-                    : null
-                }
+                { this.state.preview ? (
+                  <St2Highlight code={this.state.payload} />
+                ) : null }
               </div>
             </div>
           </form>

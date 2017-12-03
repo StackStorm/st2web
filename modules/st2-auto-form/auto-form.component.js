@@ -91,57 +91,54 @@ export default class AutoForm extends React.Component {
         return field;
       })
       .reject('immutable')
-      .sort(
-        (a, b) => {
-          // If position exists for the items we're comparing then lets
-          // favor sorting by that
-          if (a.position || b.position){
-            // Some items might have position undefined. If it's undefined
-            // it should be sorted behind an item with position defined
-            if (a.position === undefined){
-              return 1;
-            }
-            if (b.position === undefined){
-              return -1;
-            }
-            // If both items have positon then the lower positon should come
-            // first
-            return a.position < b.position ? -1 : a.position > b.position ? 1 : 0;
+      .sort((a, b) => {
+        // If position exists for the items we're comparing then lets
+        // favor sorting by that
+        if (a.position || b.position){
+          // Some items might have position undefined. If it's undefined
+          // it should be sorted behind an item with position defined
+          if (a.position === undefined){
+            return 1;
           }
-          // If required matches for both objects then we need to sort by other
-          // criteria
-          if(a.required === b.required){
-            // Sort items in alphabetical order
-            return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
+          if (b.position === undefined){
+            return -1;
           }
-          // Sort all required items first
-          return a.required === b.required ? 0 : a.required ? -1 : 1;
+          // If both items have positon then the lower positon should come
+          // first
+          return a.position < b.position ? -1 : a.position > b.position ? 1 : 0;
         }
-      )
-      .value();
+        // If required matches for both objects then we need to sort by other
+        // criteria
+        if(a.required === b.required){
+          // Sort items in alphabetical order
+          return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
+        }
+        // Sort all required items first
+        return a.required === b.required ? 0 : a.required ? -1 : 1;
+      })
+      .value()
+    ;
 
     return (
       <div>
-        {
-          fields.map(field => {
-            const name = field._name;
+        { fields.map(field => {
+          const name = field._name;
 
-            const FieldElement = this.getElementByField(field);
+          const FieldElement = this.getElementByField(field);
 
-            return (
-              <FieldElement
-                key={name}
-                ref={(c) => this.fields[name] = c}
-                name={name}
-                spec={field}
-                value={ngModel && ngModel[name]}
-                disabled={disabled}
-                onChange={(value) => this.handleChange(name, value)}
-                data-test={`field:${name}`}
-              />
-            );
-          })
-        }
+          return (
+            <FieldElement
+              key={name}
+              ref={(c) => this.fields[name] = c}
+              name={name}
+              spec={field}
+              value={ngModel && ngModel[name]}
+              disabled={disabled}
+              onChange={(value) => this.handleChange(name, value)}
+              data-test={`field:${name}`}
+            />
+          );
+        }) }
       </div>
     );
   }

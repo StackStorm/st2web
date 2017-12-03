@@ -1,9 +1,8 @@
 'use strict';
 
-var gulp = require('gulp')
-  , settings = require('../settings.json')
-  , plugins = require('gulp-load-plugins')(settings.plugins)
-  ;
+var gulp = require('gulp');
+var settings = require('../settings.json');
+var plugins = require('gulp-load-plugins')(settings.plugins);
 
 gulp.task('production-scripts', gulp.series(['browserify'], function productionScripting() {
   return gulp.src(settings.production.scripts, { base: __dirname + '/../..' })

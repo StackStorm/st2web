@@ -20,31 +20,27 @@ export default class PortionBar extends React.Component {
     return (
       <div className="st2-portion-bar" {...restProps} >
         <ul className="st2-portion-bar__bar">
-          {
-            _.map(portions, (value, key) => {
-              const props = {
-                key,
-                className: `st2-portion-bar__bar-value st2-portion-bar__bar-value--${key}`,
-                style: {
-                  width: `${(value / total * 100).toFixed(2)}%`,
-                },
-              };
+          { _.map(portions, (value, key) => {
+            const props = {
+              key,
+              className: `st2-portion-bar__bar-value st2-portion-bar__bar-value--${key}`,
+              style: {
+                width: `${(value / total * 100).toFixed(2)}%`,
+              },
+            };
 
-              return <li {...props} />;
-            })
-          }
+            return <li {...props} />;
+          }) }
         </ul>
         <ul className="st2-portion-bar__info">
-          {
-            _.map(portions, (value, key) => {
-              const props = {
-                key,
-                className: 'st2-portion-bar__info-value',
-              };
+          { _.map(portions, (value, key) => {
+            const props = {
+              key,
+              className: 'st2-portion-bar__info-value',
+            };
 
-              return <li {...props} >{key}: {value}</li>;
-            })
-          }
+            return <li {...props} >{key}: {value}</li>;
+          }) }
         </ul>
       </div>
     );

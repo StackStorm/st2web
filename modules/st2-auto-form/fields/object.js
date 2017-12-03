@@ -23,6 +23,7 @@ export default class ObjectField extends BaseTextareaField {
       if (o && !_.isPlainObject(o)) {
         return 'value is not an object';
       }
+
       return false;
     } catch(e) {
       return e.message;

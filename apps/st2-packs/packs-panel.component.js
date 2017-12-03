@@ -406,26 +406,25 @@ export default class PacksPanel extends React.Component {
             <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
           </Toolbar>
           <Content>
-            {
-              ['installed', 'installing', 'uninstalling', 'available'].map(key => {
-                return !!packGroups[key] && (
-                  <FlexTableWrapper title={key} key={key} >
-                    {
-                      packGroups[key]
-                        .map(pack => {
-                          return (
-                            <PackFlexCard
-                              key={pack.ref} pack={pack}
-                              selected={selected === pack.ref}
-                              onClick={() => this.handleSelect(pack.ref)}
-                            />
-                          );
-                        })
-                    }
-                  </FlexTableWrapper>
-                );
-              })
-            }
+            { ['installed', 'installing', 'uninstalling', 'available'].map(key => {
+              if (!packGroups[key]) {
+                return null;
+              }
+
+              return (
+                <FlexTableWrapper title={key} key={key} >
+                  { packGroups[key] .map(pack => {
+                    return (
+                      <PackFlexCard
+                        key={pack.ref} pack={pack}
+                        selected={selected === pack.ref}
+                        onClick={() => this.handleSelect(pack.ref)}
+                      />
+                    );
+                  }) }
+                </FlexTableWrapper>
+              );
+            }) }
           </Content>
         </PanelView>
         <PanelDetails data-test="details">
@@ -434,52 +433,44 @@ export default class PacksPanel extends React.Component {
             <DetailsPanel>
               <Table content={packMeta} data-test="pack_info" />
             </DetailsPanel>
-            {
-              content && (
-                <DetailsPanel>
-                  <St2PortionBar content={packContent} data-test="pack_content" />
-                </DetailsPanel>
-              )
-            }
-            {
-              config_schema && (
-                <DetailsPanel data-test="pack_config" >
-                  <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
-                    <AutoForm
-                      ref={(component) => { this.configField = component; }}
-                      spec={config_schema}
-                      ngModel={config}
-                    />
-                    <DetailsButtonsPanel>
-                      <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
-                      <Button type="submit" value="Save" />
-                    </DetailsButtonsPanel>
-                    {
-                      this.state.configPreview &&
-                    <St2Highlight code={this.configField.getValue()} />
-                    }
-                  </form>
-                </DetailsPanel>
-              )
-            }
+            { content ? (
+              <DetailsPanel>
+                <St2PortionBar content={packContent} data-test="pack_content" />
+              </DetailsPanel>
+            ) : null }
+            { config_schema ? (
+              <DetailsPanel data-test="pack_config" >
+                <form onSubmit={(e) => this.handleConfigSave(e, ref)}>
+                  <AutoForm
+                    ref={(component) => { this.configField = component; }}
+                    spec={config_schema}
+                    ngModel={config}
+                  />
+                  <DetailsButtonsPanel>
+                    <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
+                    <Button type="submit" value="Save" />
+                  </DetailsButtonsPanel>
+                  {
+                    this.state.configPreview &&
+                  <St2Highlight code={this.configField.getValue()} />
+                  }
+                </form>
+              </DetailsPanel>
+            ) : null }
           </DetailsBody>
           <DetailsToolbar>
-            {
-              status === 'installed' &&
+            { status === 'installed' ? (
               <Button small value="Remove" onClick={() => this.handleRemove(selected)} />
-            }
-            {
-              status === 'installing' &&
+            ) : null }
+            { status === 'installing' ? (
               <Button small value="Install" disabled />
-            }
-            {
-              status === 'uninstalling' &&
+            ) : null }
+            { status === 'uninstalling' ? (
               <Button small value="Remove" disabled />
-            }
-            {
-              status === 'available' &&
+            ) : null }
+            { status === 'available' ? (
               <Button small value="Install" onClick={() => this.handleInstall(selected)} />
-            }
+            ) : null }
             <DetailsToolbarSeparator />
           </DetailsToolbar>
         </PanelDetails>

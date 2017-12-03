@@ -69,13 +69,11 @@ export default class Filter extends React.Component {
           onClick={() => this.toggleVisible()}
         >
           { label }
-          { activeItems.length > 0
-            ? (
-              <span className="st2-filter__label-active-items">
-              : { activeItems.join(', ') }
-              </span>
-            )
-            : null }
+          { activeItems.length > 0 ? (
+            <span className="st2-filter__label-active-items">
+            : { activeItems.join(', ') }
+            </span>
+          ) : null }
         </div>
         <div className="st2-filter__variants">
           { items.length > 4 ? (

@@ -1,9 +1,7 @@
 'use strict';
 
-var gulp = require('gulp')
-
-  , npmShrinkwrap = require('npm-shrinkwrap')
-  ;
+var gulp = require('gulp');
+var npmShrinkwrap = require('npm-shrinkwrap');
 
 gulp.task('shrinkwrap', function (cb) {
   npmShrinkwrap({

@@ -119,9 +119,8 @@ class API {
 
   isConnected() {
     if (this.server && this.server.auth) {
-      var expiry = this.token.expiry && new Date(this.token.expiry)
-        , now = new Date()
-      ;
+      var expiry = this.token.expiry && new Date(this.token.expiry);
+      var now = new Date();
 
       return now < expiry;
     } else {

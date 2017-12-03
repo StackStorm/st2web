@@ -2,7 +2,7 @@
   "name": "@stackstorm/module-notification",
   "version": "1.0.0-pre.4",
   "description": "",
-  "main": "notification.js",
+  "main": "notification.component.js",
   "directories": {
     "test": "tests"
   },

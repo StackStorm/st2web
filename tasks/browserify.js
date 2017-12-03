@@ -1,26 +1,24 @@
 'use strict';
 
-var gulp = require('gulp')
-  , settings = require('./settings.json')
-  , plugins = require('gulp-load-plugins')(settings.plugins)
-  , path = require('path')
-  , fs = require('fs')
+var gulp = require('gulp');
+var settings = require('./settings.json');
+var plugins = require('gulp-load-plugins')(settings.plugins);
+var path = require('path');
+var fs = require('fs');
 
-  , _ = require('lodash')
-  , git = require('git-rev-sync')
-  , pkg = require('./package.json')
-  , es = require('event-stream')
-  , browserify = require('browserify')
-  , watchify = require('watchify')
-  , source = require('vinyl-source-stream')
-  , buffer = require('vinyl-buffer')
-  , cssExtract = require('css-extract')
-  ;
+var _ = require('lodash');
+var git = require('git-rev-sync');
+var pkg = require('./package.json');
+var es = require('event-stream');
+var browserify = require('browserify');
+var watchify = require('watchify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var cssExtract = require('css-extract');
 
 function buildHeader() {
-  var host = 'https://github.com/'
-    , commitURL = host + pkg.repository + '/commit/' + git.long()
-    ;
+  var host = 'https://github.com/';
+  var commitURL = host + pkg.repository + '/commit/' + git.long();
 
   return 'Built ' + new Date().toISOString() + ' from ' + commitURL;
 }

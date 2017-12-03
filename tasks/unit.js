@@ -1,11 +1,10 @@
 'use strict';
 
-var gulp = require('gulp')
-  , settings = require('./settings.json')
-  , plugins = require('gulp-load-plugins')(settings.plugins)
+var gulp = require('gulp');
+var settings = require('./settings.json');
+var plugins = require('gulp-load-plugins')(settings.plugins);
 
-  , argv = require('yargs').argv
-  ;
+var argv = require('yargs').argv;
 
 gulp.task('unit', function (done) {
   return gulp.src(argv['test-files'] || settings.units, {read: false})

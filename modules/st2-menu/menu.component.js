@@ -13,7 +13,9 @@ class Icon extends React.Component {
   }
 
   render() {
-    return <i className={`st2-menu__icon ${this.props.name}`} />;
+    return (
+      <i className={`st2-menu__icon ${this.props.name}`} />
+    );
   }
 }
 
@@ -35,7 +37,7 @@ export default class Menu extends React.Component {
       .filter(e => !!e.icon)
       .sortBy(e => e.position)
       .value()
-      ;
+    ;
 
     const user = api.token.user;
     const server = api.server;
@@ -47,35 +49,33 @@ export default class Menu extends React.Component {
         <div className="st2-menu__spacer" />
 
         <div className="st2-menu__nav">
-          {
-            _.map(routes, route => {
-              const props = {
-                key: route.title,
-                className: 'st2-menu__nav-item',
-                target: route.target,
-              };
+          { _.map(routes, route => {
+            const props = {
+              key: route.title,
+              className: 'st2-menu__nav-item',
+              target: route.target,
+            };
 
-              if (route.href) {
-                return (
-                  <a href={route.href} {...props}>
-                    <Icon name={route.icon} />
-                    { route.title }
-                  </a>
-                );
-              }
-
-              if (location.pathname.indexOf(route.url) === 0) {
-                props.className += ' st2-menu__nav-item--active';
-              }
-
+            if (route.href) {
               return (
-                <Link to={route.url} {...props}>
+                <a href={route.href} {...props}>
                   <Icon name={route.icon} />
                   { route.title }
-                </Link>
+                </a>
               );
-            })
-          }
+            }
+
+            if (location.pathname.indexOf(route.url) === 0) {
+              props.className += ' st2-menu__nav-item--active';
+            }
+
+            return (
+              <Link to={route.url} {...props}>
+                <Icon name={route.icon} />
+                { route.title }
+              </Link>
+            );
+          }) }
         </div>
 
         <div className="st2-menu__spacer" />
@@ -91,7 +91,7 @@ export default class Menu extends React.Component {
                 className="st2-menu__user-dropdown-item"
                 onClick={() => this.handleDisconnect()}
               >
-              Sign out
+                Sign out
               </div>
             </div>
           </label>
@@ -99,7 +99,7 @@ export default class Menu extends React.Component {
 
         <a href="mailto:support@stackstorm.com" className="st2-menu__nav-item" data-reamaze-lightbox="contact">
           <i className="st2-menu__icon icon-question" />
-        Contact us
+          Contact us
         </a>
       </header>
     );

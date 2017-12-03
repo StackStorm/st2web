@@ -38,6 +38,8 @@ export default class Button extends React.Component {
       props.className += ' st2-forms__button--red';
     }
 
-    return <input type={submit ? 'submit' : 'button'} data-test="rerun_button" {...props} />;
+    return (
+      <input type={submit ? 'submit' : 'button'} data-test="rerun_button" {...props} />
+    );
   }
 }

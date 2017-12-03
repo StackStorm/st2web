@@ -337,21 +337,19 @@ export default class HistoryPanel extends React.Component {
       <Panel>
         <PanelView className="st2-history">
           <Toolbar title="History">
-            { filters
-              ? (
-                <ToolbarFilters>
-                  { filters.map(({ key, label, items }) => (
-                    <Filter
-                      key={key}
-                      label={label}
-                      items={items}
-                      activeItems={activeFilters[key] || []}
-                      onChange={(value) => this.handleFilterChange(key, value)}
-                    />
-                  )) }
-                </ToolbarFilters>
-              )
-              : null }
+            { filters ? (
+              <ToolbarFilters>
+                { filters.map(({ key, label, items }) => (
+                  <Filter
+                    key={key}
+                    label={label}
+                    items={items}
+                    activeItems={activeFilters[key] || []}
+                    onChange={(value) => this.handleFilterChange(key, value)}
+                  />
+                )) }
+              </ToolbarFilters>
+            ) : null }
             <ToolbarView>
               <View
                 name="st2HistoryView"
@@ -383,40 +381,35 @@ export default class HistoryPanel extends React.Component {
 
               return (
                 <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
-                  {
-                    executions
-                      .map(execution => {
-                        return [
-                          <HistoryFlexCard
-                            key={execution.id}
-                            execution={execution}
-                            selected={id === execution.id}
-                            view={view}
-                            onClick={() => this.handleSelect(execution.id)}
-                            onToggleExpand={() => this.handleExpand(execution.id, !execution.fetchedChildren)}
-                          />,
-                          execution.fetchedChildren ? (
-                            <div
-                              className="st2-history-child"
-                              key={`${execution.id}-children`}
-                            >
-                              { execution.fetchedChildren.map(execution => {
-                                return (
-                                  <HistoryFlexCard
-                                    key={execution.id}
-                                    isChild
-                                    execution={execution}
-                                    selected={id === execution.id}
-                                    view={view}
-                                    onClick={() => this.handleSelect(execution.id)}
-                                  />
-                                );
-                              })}
-                            </div>
-                          ) : null,
-                        ];
-                      })
-                  }
+                  { executions .map(execution => [
+                    <HistoryFlexCard
+                      key={execution.id}
+                      execution={execution}
+                      selected={id === execution.id}
+                      view={view}
+                      onClick={() => this.handleSelect(execution.id)}
+                      onToggleExpand={() => this.handleExpand(execution.id, !execution.fetchedChildren)}
+                    />,
+                    execution.fetchedChildren ? (
+                      <div
+                        className="st2-history-child"
+                        key={`${execution.id}-children`}
+                      >
+                        { execution.fetchedChildren.map(execution => {
+                          return (
+                            <HistoryFlexCard
+                              key={execution.id}
+                              isChild
+                              execution={execution}
+                              selected={id === execution.id}
+                              view={view}
+                              onClick={() => this.handleSelect(execution.id)}
+                            />
+                          );
+                        })}
+                      </div>
+                    ) : null,
+                  ]) }
                 </FlexTableWrapper>
               );
             }) }
@@ -461,15 +454,13 @@ export default class HistoryPanel extends React.Component {
                           { execution && execution.id }
                         </div>
                       </DetailsPanelBodyLine>
-                      { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ?
-                        (
-                          <DetailsPanelBodyLine label="Trace Tag">
-                            <div className="st2-action-reporter__uuid" ref={selectOnClick}>
-                              { execution.context.trace_context.trace_tag }
-                            </div>
-                          </DetailsPanelBodyLine>
-                        )
-                        : null
+                      { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ? (
+                        <DetailsPanelBodyLine label="Trace Tag">
+                          <div className="st2-action-reporter__uuid" ref={selectOnClick}>
+                            { execution.context.trace_context.trace_tag }
+                          </div>
+                        </DetailsPanelBodyLine>
+                      ) : null
                       }
                       <DetailsPanelBodyLine label="Started">
                         <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
@@ -487,55 +478,45 @@ export default class HistoryPanel extends React.Component {
                     <ActionReporter runner={execution.runner.name} execution={execution} />
                   </DetailsPanelBody>
                 </DetailsPanel>
-                { execution.rule ?
-                  (
-                    <DetailsPanel>
-                      <DetailsPanelHeading title="Rule Details" />
-                      <DetailsPanelBody>
-                        <DetailsPanelBodyLine label="Rule">
-                          <Link to={`/rules/${execution.rule.ref}/general`}>{ execution.rule.ref }</Link>
-                        </DetailsPanelBodyLine>
-                        { execution.rule.description ?
-                          (
-                            <DetailsPanelBodyLine label="Description">
-                              { execution.rule.description }
-                            </DetailsPanelBodyLine>
-                          )
-                          : null }
-                      </DetailsPanelBody>
-                    </DetailsPanel>
-                  )
-                  : null }
-                { execution.trigger ?
-                  (
-                    <DetailsPanel>
-                      <DetailsPanelHeading title="Trigger Details" />
-                      <DetailsPanelBody>
-                        { execution.trigger.type ?
-                          (
-                            <DetailsPanelBodyLine label="Trigger">
-                              { execution.trigger.type }
-                            </DetailsPanelBodyLine>
-                          )
-                          : null }
-                        { execution.trigger_instance && execution.trigger_instance.occurrence_time ?
-                          (
-                            <DetailsPanelBodyLine label="Occurrence">
-                              <Time timestamp={execution.trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
-                            </DetailsPanelBodyLine>
-                          )
-                          : null }
-                      </DetailsPanelBody>
-                      { execution.trigger_instance && execution.trigger_instance.occurrence_time ?
+                { execution.rule ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Rule Details" />
+                    <DetailsPanelBody>
+                      <DetailsPanelBodyLine label="Rule">
+                        <Link to={`/rules/${execution.rule.ref}/general`}>{ execution.rule.ref }</Link>
+                      </DetailsPanelBodyLine>
+                      { execution.rule.description ?
                         (
-                          <DetailsPanelBody>
-                            <St2Highlight code={execution.trigger_instance.payload} />
-                          </DetailsPanelBody>
+                          <DetailsPanelBodyLine label="Description">
+                            { execution.rule.description }
+                          </DetailsPanelBodyLine>
                         )
-                        :null }
-                    </DetailsPanel>
-                  )
-                  : null }
+                        : null }
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+                { execution.trigger ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Trigger Details" />
+                    <DetailsPanelBody>
+                      { execution.trigger.type ? (
+                        <DetailsPanelBodyLine label="Trigger">
+                          { execution.trigger.type }
+                        </DetailsPanelBodyLine>
+                      ) : null }
+                      { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
+                        <DetailsPanelBodyLine label="Occurrence">
+                          <Time timestamp={execution.trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        </DetailsPanelBodyLine>
+                      ) : null }
+                    </DetailsPanelBody>
+                    { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
+                      <DetailsPanelBody>
+                        <St2Highlight code={execution.trigger_instance.payload} />
+                      </DetailsPanelBody>
+                    ) : null }
+                  </DetailsPanel>
+                ) : null }
                 <DetailsPanel>
                   <DetailsPanelHeading title="Action Input" />
                   <DetailsPanelBody>

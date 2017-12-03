@@ -17,9 +17,9 @@ export default class Criteria extends React.Component {
 
     return (
       <span className={`st2-pack-icon ${ small ? 'st2-pack-icon-small' : '' }`} {...props}>
-        { src ?
+        { src ? (
           <img className={`st2-pack-icon__image ${ small ? 'st2-pack-icon__image-small' : '' }`} src={src} />
-          :null }
+        ) : null }
       </span>
     );
   }
