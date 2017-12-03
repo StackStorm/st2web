@@ -18,6 +18,7 @@ import {
   PanelDetails,
   Toolbar,
   ToolbarSearch,
+  ToolbarView,
   Content,
   DetailsHeader,
   DetailsSwitch,
@@ -42,6 +43,7 @@ import St2Highlight from '@stackstorm/module-highlight';
 import StringField from '@stackstorm/module-auto-form/fields/string';
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
+import View from '@stackstorm/module-view';
 import ActionReporter from '@stackstorm/module-action-reporter';
 
 import './style.less';
@@ -215,13 +217,27 @@ export default class ActionsPanel extends React.Component {
 
   render() {
     const { groups, filter, action, executions, collapsed } = this.props;
+    const view = this._view ? this._view.value : {};
 
     return (
       <Panel>
         <PanelView className="st2-actions">
           <Toolbar title="Actions">
-            <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
             <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
+            <ToolbarView>
+              <View
+                name="st2ActionView"
+                spec={{
+                  'type': { title: 'Type', default: true },
+                  'action': { title: 'Action', default: true },
+                  'runner': { title: 'Runner', default: true },
+                  'description': { title: 'Description', default: true },
+                }}
+                ref={(ref) => this._view = ref}
+                onChange={() => this.forceUpdate()}
+              />
+            </ToolbarView>
+            <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>
             {
@@ -238,6 +254,7 @@ export default class ActionsPanel extends React.Component {
                             <ActionFlexCard
                               key={action.ref} action={action}
                               selected={ref === action.ref}
+                              view={view}
                               onClick={() => this.handleSelect(action.ref)}
                             />
                           );
@@ -299,10 +316,9 @@ export default class ActionsPanel extends React.Component {
                               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
                               <Button type="submit" value="Run" />
                             </DetailsButtonsPanel>
-                            {
-                              this.state.runPreview &&
-                          <St2Highlight code={this.runField.getValue()} />
-                            }
+                            { this.state.runPreview ? (
+                              <St2Highlight code={this.runField.getValue()} />
+                            ) : null }
                           </form>
                         </DetailsPanelBody>
                       </DetailsPanel>

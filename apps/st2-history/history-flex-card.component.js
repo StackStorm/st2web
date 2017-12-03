@@ -13,6 +13,7 @@ export default class HistoryFlexCard extends React.Component {
     isChild: PropTypes.bool,
     execution: PropTypes.object,
     selected: PropTypes.bool,
+    view: PropTypes.object,
     onClick: PropTypes.func,
     onToggleExpand: PropTypes.func,
   }
@@ -29,7 +30,7 @@ export default class HistoryFlexCard extends React.Component {
   }
 
   render() {
-    const { isChild, execution, selected, onClick } = this.props;
+    const { isChild, execution, selected, view, onClick } = this.props;
 
     const props = {
       className: 'st2-flex-card',
@@ -56,13 +57,17 @@ export default class HistoryFlexCard extends React.Component {
           </div>
 
           <div className="st2-flex-card__column st2-flex-card__status">
-            <Label status={execution.status} short={true} />
+            { view.meta && view.meta.status ? (
+              <Label status={execution.status} short={true} />
+            ) : null }
           </div>
 
           <div className="st2-flex-card__column st2-flex-card__timestamp">
-            <div className="st2-flex-card__header-primary">
-              <Time timestamp={execution.start_timestamp} format="HH:mm:ss" />
-            </div>
+            { view.meta && view.meta.time ? (
+              <div className="st2-flex-card__header-primary">
+                <Time timestamp={execution.start_timestamp} format="HH:mm:ss" />
+              </div>
+            ) : null }
           </div>
 
           { isChild ? (
@@ -72,56 +77,62 @@ export default class HistoryFlexCard extends React.Component {
             </div>
           ) : null }
 
-          <div className="st2-flex-card__column" title={execution.action.ref}>
-            <span className="st2-history__column-action-name">
-              { execution.action.ref }
-            </span>
-            <span className="st2-history__column-action-params" ref={makeProportional}>
-              { Object.keys(execution.parameters).map((name) => {
-                const value = execution.parameters[name];
-                return (
-                  <span key={name} className="st2-history__column-action-param">
-                    <span className="st2-history__column-action-param-name">
-                      { name }=
-                    </span>
-                    <span className="st2-history__column-action-param-value">
-                      { JSON.stringify(value) }
-                    </span>
-                  </span>
-                );
-              }) }
-            </span>
-          </div>
+          { view.action ? (
+            <div className="st2-flex-card__column" title={execution.action.ref}>
+              <span className="st2-history__column-action-name">
+                { execution.action.ref }
+              </span>
+              { view.action.params ? (
+                <span className="st2-history__column-action-params" ref={makeProportional}>
+                  { Object.keys(execution.parameters).map((name) => {
+                    const value = execution.parameters[name];
+                    return (
+                      <span key={name} className="st2-history__column-action-param">
+                        <span className="st2-history__column-action-param-name">
+                          { name }=
+                        </span>
+                        <span className="st2-history__column-action-param-value">
+                          { JSON.stringify(value) }
+                        </span>
+                      </span>
+                    );
+                  }) }
+                </span>
+              ) : null }
+            </div>
+          ) : null }
 
           { isChild ? null : (
-            <div className="st2-flex-card__column">
-              { execution.rule && execution.trigger
-                ? (
-                  <span title={`${ execution.rule.ref } (${ execution.trigger.type })`}>
-                    <span className="st2-history__column-rule-name">
-                      { execution.rule.ref }
+            view.trigger ? (
+              <div className="st2-flex-card__column">
+                { execution.rule && execution.trigger
+                  ? (
+                    <span title={`${ execution.rule.ref } (${ execution.trigger.type })`}>
+                      <span className="st2-history__column-rule-name">
+                        { execution.rule.ref }
+                      </span>
+                      <span className="st2-history__column-trigger-type">
+                        { execution.trigger.type }
+                      </span>
                     </span>
-                    <span className="st2-history__column-trigger-type">
-                      { execution.trigger.type }
+                  )
+                  : (
+                    <span title={`Manual (${ execution.context.user })`}>
+                      <span className="st2-history__column-app-name">
+                        Manual
+                      </span>
+                      <span className="st2-history__column-user-name">
+                        { execution.context.user }
+                      </span>
                     </span>
-                  </span>
-                )
-                : (
-                  <span title={`Manual (${ execution.context.user })`}>
-                    <span className="st2-history__column-app-name">
-                      Manual
-                    </span>
-                    <span className="st2-history__column-user-name">
-                      { execution.context.user }
-                    </span>
-                  </span>
-                )
-              }
-            </div>
+                  )
+                }
+              </div>
+            ) : null
           ) }
 
           <div className="st2-flex-card__column st2-flex-card__status">
-            { isExpandable(execution) ?
+            { isExpandable(execution) && view.meta.type ?
               <i className="icon-branch" onClick={(e) => this.handleToggleExpand(e)} />
               : null }
           </div>

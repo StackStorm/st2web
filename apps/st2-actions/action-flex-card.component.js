@@ -7,6 +7,7 @@ export default class ActionFlexCard extends React.Component {
   static propTypes = {
     action: PropTypes.object,
     selected: PropTypes.bool,
+    view: PropTypes.object,
     onClick: PropTypes.func,
   }
 
@@ -15,7 +16,7 @@ export default class ActionFlexCard extends React.Component {
   }
 
   render() {
-    const { action, selected, onClick } = this.props;
+    const { action, selected, view, onClick } = this.props;
 
     const props = {
       className: 'st2-flex-card',
@@ -31,21 +32,29 @@ export default class ActionFlexCard extends React.Component {
       <div {...props} ref={selected ? this.context.scrollIntoView : null}>
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__column">
-            <div className="st2-flex-card__header-primary" title={action.ref}>
-              { action.name }
+            { view.action ? (
+              <div className="st2-flex-card__header-primary" title={action.ref}>
+                { action.name }
+              </div>
+            ) : null }
+            { view.description ? (
+              <div className="st2-flex-card__header-secondary">
+                { action.description }
+              </div>
+            ) : null }
+          </div>
+          { view.runner ? (
+            <div className="st2-flex-card__column st2-flex-card__header-type" title={action.runner_type}>
+              { action.runner_type }
             </div>
-            <div className="st2-flex-card__header-secondary">
-              { action.description }
+          ) : null }
+          { view.type ? (
+            <div className="st2-flex-card__column st2-flex-card__header-status">
+              { isExpandable({ action }) ?
+                <i className="icon-branch" />
+                : null }
             </div>
-          </div>
-          <div className="st2-flex-card__column st2-flex-card__header-type" title={action.runner_type}>
-            { action.runner_type }
-          </div>
-          <div className="st2-flex-card__column st2-flex-card__header-status">
-            { isExpandable({ action }) ?
-              <i className="icon-branch" />
-              : null }
-          </div>
+          ) : null }
         </div>
       </div>
     );

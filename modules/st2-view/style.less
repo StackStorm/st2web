@@ -1,0 +1,124 @@
+@import 'node_modules/@stackstorm/st2-style/colors.less';
+
+.st2-view {
+  font-size: 14px;
+  line-height: 35px;
+
+  position: relative;
+
+  flex: 0 0 auto;
+
+  user-select: none;
+
+  &--active &__label:before {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    content: '';
+  }
+
+  &:last-of-type&--active &__variants {
+    right: 0;
+  }
+
+  &__label {
+    position: relative;
+
+    padding: 0 10px;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:after {
+      font-family: 'brocadeicons';
+      font-size: 14px;
+      font-weight: normal;
+      font-style: normal;
+
+      display: inline-block;
+
+      padding: 0 5px;
+      // may always broke if we won't pay enough attention to keeping the same codes
+
+      content: '\e900';
+      vertical-align: middle;
+    }
+
+    &--active {
+      color: @aqua-base;
+    }
+  }
+
+  &__variants {
+    position: absolute;
+    z-index: 3;
+
+    display: none;
+
+    min-width: 100%;
+
+    color: black;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, .2) 0 8px 18px 0,
+    rgba(0, 0, 0, .2) 0 8px 20px 0;
+  }
+
+  &__list {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    max-height: 150px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: rgba(117, 117, 117, .3); // #757575
+
+      &:hover {
+        background-color: rgba(117, 117, 117, .7); // #757575
+      }
+    }
+  }
+
+  &__item {
+    line-height: 2em;
+
+    padding: 0 20px 0 10px;
+
+    white-space: nowrap;
+
+    &:hover {
+      cursor: pointer;
+
+      background-color: @yellow-lighten-5;
+    }
+
+    &--active {
+      color: @aqua-base;
+    }
+
+    &--secondary {
+      padding-left: 20px;
+    }
+  }
+
+  &--active &__variants {
+    display: block;
+  }
+
+  &--active &__label {
+    border-radius: 5px 5px 0 0;
+    background-color: #222;
+  }
+}

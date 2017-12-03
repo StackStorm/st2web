@@ -16,6 +16,7 @@ import {
   PanelNavigation,
   Toolbar,
   ToolbarFilters,
+  ToolbarView,
   Content,
   DetailsHeader,
   DetailsSwitch,
@@ -38,13 +39,14 @@ import Label from '@stackstorm/module-label';
 import ActionReporter from '@stackstorm/module-action-reporter';
 import selectOnClick from '@stackstorm/module-select-on-click';
 import Filter from '@stackstorm/module-filter';
+import View from '@stackstorm/module-view';
 
 import HistoryFlexCard from './history-flex-card.component';
 import HistoryPopup from './history-popup.component';
 
 import './style.less';
 
-const PER_PAGE = 10;
+const PER_PAGE = 50;
 
 
 @connect((state, props) => {
@@ -327,6 +329,7 @@ export default class HistoryPanel extends React.Component {
     const { filters, activeFilters, groups, execution, collapsed } = this.props;
     let { section, page } = this.urlParams;
 
+    const view = this._view ? this._view.value : {};
     const maxPages = this.state.maxPages;
     const execution_time = execution && Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
 
@@ -349,6 +352,28 @@ export default class HistoryPanel extends React.Component {
                 </ToolbarFilters>
               )
               : null }
+            <ToolbarView>
+              <View
+                name="st2HistoryView"
+                spec={{
+                  'meta': { title: 'Meta', default: true,
+                    subview: {
+                      'status': { title: 'Status', default: true },
+                      'type': { title: 'Type', default: true },
+                      'time': { title: 'Time', default: true },
+                    },
+                  },
+                  'action': { title: 'Action', default: true,
+                    subview: {
+                      'params': { title: 'Parameters', default: true },
+                    },
+                  },
+                  'trigger': { title: 'Triggered by', default: true },
+                }}
+                ref={(ref) => this._view = ref}
+                onChange={() => this.forceUpdate()}
+              />
+            </ToolbarView>
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>
@@ -366,6 +391,7 @@ export default class HistoryPanel extends React.Component {
                             key={execution.id}
                             execution={execution}
                             selected={id === execution.id}
+                            view={view}
                             onClick={() => this.handleSelect(execution.id)}
                             onToggleExpand={() => this.handleExpand(execution.id, !execution.fetchedChildren)}
                           />,
@@ -381,6 +407,7 @@ export default class HistoryPanel extends React.Component {
                                     isChild
                                     execution={execution}
                                     selected={id === execution.id}
+                                    view={view}
                                     onClick={() => this.handleSelect(execution.id)}
                                   />
                                 );
