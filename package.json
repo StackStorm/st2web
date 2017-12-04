@@ -7,7 +7,8 @@
     "eslint": "eslint .",
     "develop": "gulp",
     "build": "gulp production",
-    "test": "gulp test"
+    "test": "gulp test",
+    "test-production": "gulp test-production"
   },
   "repository": "stackstorm/st2web",
   "engines": {
@@ -73,6 +74,6 @@
     "sinon": "1.17.3",
     "sinon-chai": "2.12.0",
     "yamljs": "0.2.7",
-    "zombie": "https://github.com/enykeev/zombie/releases/download/enykeev-2/zombie-5.0.7.tgz"
+    "zombie": "github:enykeev/zombie#enykeev-2"
   }
 }

@@ -76,7 +76,7 @@ jobs:
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
       - run:
           name: Run tests
-          command: npm test
+          command: npm run test
       - run:
           name: Reset test containers
           command: |
@@ -90,7 +90,7 @@ jobs:
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
       - run:
           name: Run tests on production version
-          command: node_modules/.bin/gulp test-production
+          command: npm run test-production
       - run:
           name: Fetch container logs
           command: |

@@ -53,7 +53,7 @@
     "@stackstorm/st2-style": "1.0.0-pre.4",
     "insert-css": "2.0.0",
     "lodash": "2.4.2",
-    "prismjs": "https://github.com/enykeev/prism/releases/download/v0.0.1/prismjs-0.0.1.tgz",
+    "prismjs": "github:enykeev/prism#v0.0.1",
     "prop-types": "15.5.10",
     "react": "15.6.1"
   },
