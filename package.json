@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "eslint": "eslint .",
-    "gulp": "gulp",
+    "develop": "gulp",
+    "serve": "gulp serve",
     "test": "gulp test"
   },
   "repository": "stackstorm/st2web",
