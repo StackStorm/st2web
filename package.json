@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "eslint .",
     "develop": "gulp",
-    "serve": "gulp serve",
+    "build": "gulp production",
     "test": "gulp test"
   },
   "repository": "stackstorm/st2web",
