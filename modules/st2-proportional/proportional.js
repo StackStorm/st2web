@@ -14,8 +14,8 @@ export default function() {
 }
 
 function makeProportional(container) {
-  let children = Array.prototype.slice.call(container.children);
-  let childrenByWidth = children.map((child) => {
+  const children = Array.prototype.slice.call(container.children);
+  const childrenByWidth = children.map((child) => {
     if (child.style.width) {
       child.style.width = null;
     }
@@ -28,8 +28,8 @@ function makeProportional(container) {
   childrenByWidth.sort(({ width: a }, { width: b }) => b - a);
   let childrenWidth = childrenByWidth.reduce((width, child) => width + child.width, 0);
 
-  let containerStyle = getComputedStyle(container);
-  let containerWidth = container.clientWidth
+  const containerStyle = getComputedStyle(container);
+  const containerWidth = container.clientWidth
     - parseInt(containerStyle.getPropertyValue('padding-left'), 10)
     - parseInt(containerStyle.getPropertyValue('padding-right'), 10);
 
@@ -37,19 +37,19 @@ function makeProportional(container) {
     return;
   }
 
-  let childrenToShrink = [];
+  const childrenToShrink = [];
   while (childrenToShrink.length < children.length && childrenWidth > containerWidth) {
     childrenToShrink.push(childrenByWidth[childrenToShrink.length]);
 
-    let nextChild = childrenByWidth[childrenToShrink.length];
-    let newWidth = nextChild ? nextChild.width : containerWidth / children.length;
+    const nextChild = childrenByWidth[childrenToShrink.length];
+    const newWidth = nextChild ? nextChild.width : containerWidth / children.length;
 
     childrenToShrink.forEach((child) => child.width = newWidth);
     childrenWidth = childrenByWidth.reduce((width, child) => width + child.width, 0);
   }
 
-  let extraSpace = (containerWidth - childrenWidth) / childrenToShrink.length;
-  childrenToShrink.forEach(function(child) {
+  const extraSpace = (containerWidth - childrenWidth) / childrenToShrink.length;
+  childrenToShrink.forEach((child) => {
     // Note: Currently only works with box-sizing: border-box
     child.element.style.width = `${child.width + extraSpace}px`;
   });

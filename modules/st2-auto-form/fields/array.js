@@ -13,7 +13,7 @@ const jsonCheck = (value) => {
 };
 
 const typeChecks = (type, value) => {
-  let v = String(value);
+  const v = String(value);
   switch (type) {
     case 'number':
       return !validator.isFloat(v) && `'${v}' is not a number`;
@@ -42,8 +42,8 @@ const typeConversions = (type, v) => {
 function split(value) {
   return value
     .split(',')
-    .map(v => v.trim())
-    .filter(v => v.length)
+    .map((v) => v.trim())
+    .filter((v) => v.length)
   ;
 }
 
@@ -65,7 +65,7 @@ export default class ArrayField extends BaseTextField {
 
     const { items } = this.props.spec || {};
     return split(v)
-      .map(v => typeConversions(items && items.type, v))
+      .map((v) => typeConversions(items && items.type, v))
     ;
   }
 
@@ -94,7 +94,7 @@ export default class ArrayField extends BaseTextField {
         if (o && !_.isArray(o)) {
           return 'value is not an array';
         }
-        const invalidItem = o.find(v => typeChecks(items && items.type, v));
+        const invalidItem = o.find((v) => typeChecks(items && items.type, v));
         return invalidItem && typeChecks(items && items.type, invalidItem);
       } catch(e) {
         return e.message;
@@ -108,7 +108,7 @@ export default class ArrayField extends BaseTextField {
         return 'parameter is required';
       }
 
-      const invalidItem = list.find(v => typeChecks(items && items.type, v));
+      const invalidItem = list.find((v) => typeChecks(items && items.type, v));
 
       return invalidItem && typeChecks(items && items.type, invalidItem);
     }

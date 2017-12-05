@@ -28,7 +28,7 @@ export default class AutoForm extends React.Component {
 
     if (spec && spec.properties){
       Object.keys(spec.properties).forEach(function(key) {
-        let value = spec.properties[key];
+        const value = spec.properties[key];
         if (value.default !== undefined && value.enum){
           this.handleChange(key, value.default);
         }
@@ -109,7 +109,7 @@ export default class AutoForm extends React.Component {
 
     return (
       <div {...props}>
-        { fields.map(field => {
+        { fields.map((field) => {
           const name = field._name;
 
           const FieldElement = this.getElementByField(field);

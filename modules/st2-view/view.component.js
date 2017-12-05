@@ -29,7 +29,7 @@ export default class Filter extends React.Component {
     const last = keys.pop();
 
     let current = view || {};
-    for (let key of keys) {
+    for (const key of keys) {
       current[key] = current[key] || {};
       current = current[key];
     }
@@ -58,7 +58,7 @@ export default class Filter extends React.Component {
             { options.map(({ key, title, value }) => (
               <div
                 key={key}
-                className={`st2-view__item ${ value ? 'st2-view__item--active' : '' } ${ key.includes('.') ? 'st2-view__item--secondary' : '' }`}
+                className={`st2-view__item ${value ? 'st2-view__item--active' : ''} ${key.includes('.') ? 'st2-view__item--secondary' : ''}`}
                 onClick={() => this.handleChange(key, !value)}
               >
                 { title }
@@ -72,9 +72,9 @@ export default class Filter extends React.Component {
 }
 
 function getOptions(spec, value, prefix = []) {
-  let options = [];
+  const options = [];
 
-  for (let key in spec) {
+  for (const key in spec) {
     options.push({
       key: prefix.concat(key).join('.'),
       title: spec[key].title,
@@ -91,9 +91,9 @@ function getOptions(spec, value, prefix = []) {
 }
 
 function getValues(spec, saved) {
-  let value = {};
+  const value = {};
 
-  for (let key in spec) {
+  for (const key in spec) {
     if (spec[key].subview) {
       if (saved[key] === false) {
         value[key] = false;

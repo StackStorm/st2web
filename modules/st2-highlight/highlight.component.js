@@ -12,9 +12,9 @@ import './style.less';
 
 function getType(string) {
   try {
-    var o = JSON.parse(string);
+    const data = JSON.parse(string);
 
-    if (!o || typeof o !== 'object') {
+    if (!data || typeof data !== 'object') {
       throw new Error();
     }
 
@@ -52,16 +52,14 @@ export default class st2Highlight extends React.Component {
         return Prism.highlight(code, Prism.languages[language]);
       }
 
-      var type = getType(code);
+      const type = getType(code);
 
       if (type === 'json') {
         return Prism.highlight(code, Prism.languages.json);
       }
 
       if (type === 'string') {
-        return code.replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
-          return '&#'+i.charCodeAt(0)+';';
-        });
+        return code.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
       }
 
       if (type === 'object') {
@@ -77,7 +75,7 @@ export default class st2Highlight extends React.Component {
       <div className="st2-highlight">
         <div className="st2-highlight__well">
           <pre>
-            <code ref={domNode => {this._domNode = domNode;}} />
+            <code ref={(domNode) => {this._domNode = domNode;}} />
           </pre>
         </div>
       </div>

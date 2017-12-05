@@ -8,7 +8,7 @@ class API {
     this.token = {};
 
     try {
-      var session = JSON.parse(localStorage.getItem('st2Session'));
+      const session = JSON.parse(localStorage.getItem('st2Session'));
       this.token = session.token || {};
       this.server = session.server;
     } catch (e) {
@@ -32,7 +32,7 @@ class API {
         }
       })();
 
-      var api = URI.parse(url);
+      const api = URI.parse(url);
 
       if (api.port && !api.hostname) {
         api.hostname = window.location.hostname;
@@ -47,7 +47,7 @@ class API {
       };
 
       if (server.auth && _.isString(server.auth)) {
-        var auth = URI.parse(server.auth);
+        const auth = URI.parse(server.auth);
 
         if (auth.port && !auth.hostname) {
           auth.hostname = window.location.hostname;
@@ -62,15 +62,15 @@ class API {
       }
     } else {
       opts = {
-        api: 'https://' + window.location.hostname + ':443/api',
-        auth: 'https://' + window.location.hostname + ':443/auth',
+        api: `https://${window.location.hostname}:443/api`,
+        auth: `https://${window.location.hostname}:443/auth`,
         token: !_.isEmpty(token) ? token : undefined,
       };
     }
 
-    var client = st2client(opts);
+    const client = st2client(opts);
 
-    window.name = 'st2web+' + client.index.url;
+    window.name = `st2web+${client.index.url}`;
 
     return client;
   }
@@ -83,19 +83,19 @@ class API {
 
     if (server.auth && user && password) {
       promise = this.client.authenticate(user, password)
-        .catch(function (err) {
+        .catch((err) => {
           if (err.status === 0) {
             throw {
               name: 'RequestError',
-              message: 'Unable to reach auth service. [auth:' + server.auth + ']',
+              message: `Unable to reach auth service. [auth:${server.auth}]`,
             };
           }
 
           throw err;
         })
-        .then(function (token) {
+        .then((token) => {
           this.token = token;
-        }.bind(this));
+        });
     } else {
       promise = Promise.resolve(this.client);
     }
@@ -119,8 +119,8 @@ class API {
 
   isConnected() {
     if (this.server && this.server.auth) {
-      var expiry = this.token.expiry && new Date(this.token.expiry);
-      var now = new Date();
+      const expiry = this.token.expiry && new Date(this.token.expiry);
+      const now = new Date();
 
       return now < expiry;
     } else {

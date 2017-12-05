@@ -55,7 +55,7 @@ describe('AutoForm BooleanField', () => {
     expect(c.fieldValue('checked')).to.be.equal('invalid');
   });
 
-  it('resets the value when reset button is pressed', function () {
+  it('resets the value when reset button is pressed', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',

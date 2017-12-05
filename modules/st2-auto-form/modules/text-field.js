@@ -31,7 +31,7 @@ export default class TextFieldModule extends React.Component {
       }
 
       this._textarea.style.height = 0;
-      this._textarea.style.height = this._textarea.scrollHeight + 'px';
+      this._textarea.style.height = `${this._textarea.scrollHeight}px`;
     }, 0);
   }
 
@@ -44,31 +44,31 @@ export default class TextFieldModule extends React.Component {
     const minRows = 1;
     const maxRows = 3;
 
-    let computed = window.getComputedStyle(this._textarea);
-    let lineHeight = parseInt(computed.lineHeight);
-    let paddings = parseInt(computed.paddingTop) + parseInt(computed.paddingBottom);
-    let minHeight = paddings + minRows * lineHeight;
-    let maxHeight = paddings + maxRows * lineHeight;
+    const computed = window.getComputedStyle(this._textarea);
+    const lineHeight = parseInt(computed.lineHeight);
+    const paddings = parseInt(computed.paddingTop) + parseInt(computed.paddingBottom);
+    const minHeight = paddings + minRows * lineHeight;
+    const maxHeight = paddings + maxRows * lineHeight;
 
-    this._textarea.style.minHeight = minHeight + 'px';
-    this._textarea.style.maxHeight = maxHeight + 'px';
+    this._textarea.style.minHeight = `${minHeight}px`;
+    this._textarea.style.maxHeight = `${maxHeight}px`;
     this._textarea.style.height = 0;
-    this._textarea.style.height = this._textarea.scrollHeight + 'px';
+    this._textarea.style.height = `${this._textarea.scrollHeight}px`;
   }
 
   onChange(value) {
     const { spec } = this.props;
 
     if (spec.pattern) {
-      if (!value.match(new RegExp(`/${ spec.pattern }/`))) {
-        this.setState({ error: `The value must match "${ spec.pattern }".` });
+      if (!value.match(new RegExp(`/${spec.pattern}/`))) {
+        this.setState({ error: `The value must match "${spec.pattern}".` });
         return;
       }
     }
 
     if (spec.format) {
       if (!st2ValueFormat(spec.format, value)) {
-        this.setState({ error: `The value must be of type "${ spec.format }".` });
+        this.setState({ error: `The value must be of type "${spec.format}".` });
         return;
       }
     }

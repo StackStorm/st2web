@@ -40,7 +40,7 @@ const ruleReducer = (state = {}, input) => {
             .groupBy('pack')
             .value()
           ;
-          groups = Object.keys(groups).map(pack => ({ pack, rules: groups[pack] }));
+          groups = Object.keys(groups).map((pack) => ({ pack, rules: groups[pack] }));
 
           ref = state.ref;
           if (!ref) {
@@ -91,12 +91,10 @@ const ruleReducer = (state = {}, input) => {
             enum: _.map(input.payload, (trigger) => {
               criteriaSpecs[trigger.ref] = {
                 required: true,
-                enum: _.map(trigger.payload_schema.properties, (spec, name) => {
-                  return {
-                    name: 'trigger.' + name,
-                    description: spec.description,
-                  };
-                }),
+                enum: _.map(trigger.payload_schema.properties, (spec, name) => ({
+                  name: `trigger.${name}`,
+                  description: spec.description,
+                })),
               };
 
               return {
@@ -210,7 +208,7 @@ const ruleReducer = (state = {}, input) => {
         .groupBy('pack')
         .value()
       ;
-      groups = Object.keys(groups).map(pack => ({ pack, rules: groups[pack] }));
+      groups = Object.keys(groups).map((pack) => ({ pack, rules: groups[pack] }));
 
       return {
         ...state,

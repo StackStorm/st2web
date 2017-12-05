@@ -27,8 +27,8 @@ const historyReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           filters = Object.keys(input.payload)
-            .filter(key => Array.isArray(input.payload[key]) && input.payload[key].length > 1)
-            .map(key => ({
+            .filter((key) => Array.isArray(input.payload[key]) && input.payload[key].length > 1)
+            .map((key) => ({
               key,
               label: key
                 .replace(/_/g, ' ')
@@ -58,7 +58,7 @@ const historyReducer = (state = {}, input) => {
           groups = _(executions)
             .sortBy('start_timestamp')
             .reverse()
-            .groupBy(execution => {
+            .groupBy((execution) => {
               const date = new Date(execution.start_timestamp).toDateString();
               const time = new Date(date).toISOString();
 
@@ -66,7 +66,7 @@ const historyReducer = (state = {}, input) => {
             })
             .value()
           ;
-          groups = Object.keys(groups).map(date => ({ date, executions: groups[date] }));
+          groups = Object.keys(groups).map((date) => ({ date, executions: groups[date] }));
 
           ref = state.ref;
           if (!ref) {
@@ -112,7 +112,7 @@ const historyReducer = (state = {}, input) => {
         switch(input.status) {
           case 'success':
             executions = [ ...executions ];
-            for (let index in executions) {
+            for (const index in executions) {
               if (executions[index].id !== input.id) {
                 continue;
               }
@@ -135,7 +135,7 @@ const historyReducer = (state = {}, input) => {
       }
       else {
         executions = [ ...executions ];
-        for (let index in executions) {
+        for (const index in executions) {
           if (executions[index].id !== input.id) {
             continue;
           }
@@ -150,7 +150,7 @@ const historyReducer = (state = {}, input) => {
       groups = _(executions)
         .sortBy('start_timestamp')
         .reverse()
-        .groupBy(execution => {
+        .groupBy((execution) => {
           const date = new Date(execution.start_timestamp).toDateString();
           const time = new Date(date).toISOString();
 
@@ -158,7 +158,7 @@ const historyReducer = (state = {}, input) => {
         })
         .value()
       ;
-      groups = Object.keys(groups).map(date => ({ date, executions: groups[date] }));
+      groups = Object.keys(groups).map((date) => ({ date, executions: groups[date] }));
 
       return {
         ...state,

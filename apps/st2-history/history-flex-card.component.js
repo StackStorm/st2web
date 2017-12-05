@@ -104,7 +104,7 @@ export default class HistoryFlexCard extends React.Component {
             view.trigger ? (
               <div className="st2-flex-card__column">
                 { execution.rule && execution.trigger ? (
-                  <span title={`${ execution.rule.ref } (${ execution.trigger.type })`}>
+                  <span title={`${execution.rule.ref} (${execution.trigger.type})`}>
                     <span className="st2-history__column-rule-name">
                       { execution.rule.ref }
                     </span>
@@ -113,7 +113,7 @@ export default class HistoryFlexCard extends React.Component {
                     </span>
                   </span>
                 ) : (
-                  <span title={`Manual (${ execution.context.user })`}>
+                  <span title={`Manual (${execution.context.user})`}>
                     <span className="st2-history__column-app-name">
                       Manual
                     </span>

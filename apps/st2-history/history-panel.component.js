@@ -125,7 +125,8 @@ export default class HistoryPanel extends React.Component {
         }),
     })
       .then(() => {
-        let { ref, execution } = store.getState();
+        const { execution } = store.getState();
+        let { ref } = store.getState();
 
         if (!execution) {
           ref = this.urlParams.ref || ref;
@@ -166,7 +167,7 @@ export default class HistoryPanel extends React.Component {
       })
         .then(() => {
           const { groups } = store.getState();
-          let ref = groups.length > 0 && groups[0].executions.length > 0 && groups[0].executions[0].id;
+          const ref = groups.length > 0 && groups[0].executions.length > 0 && groups[0].executions[0].id;
 
           if (ref) {
             store.dispatch({
@@ -242,7 +243,7 @@ export default class HistoryPanel extends React.Component {
       ...params,
       page,
     };
-    for (let key in query) {
+    for (const key in query) {
       if (!query[key]) {
         delete query[key];
       }
@@ -255,15 +256,15 @@ export default class HistoryPanel extends React.Component {
     }
 
     const { location } = this.props;
-    const pathname = `/history/${ ref }${ section ? `/${ section }` : '' }`;
-    const search = `${ query ? `?${ query }` : '' }`;
+    const pathname = `/history/${ref}${section ? `/${section}` : ''}`;
+    const search = `${query ? `?${query}` : ''}`;
 
     if (location.pathname === pathname && location.search === search) {
       return;
     }
 
     const { history } = this.props;
-    history.push(`${ pathname }${ search }`);
+    history.push(`${pathname}${search}`);
   }
 
   handleToggleAll() {
@@ -335,7 +336,7 @@ export default class HistoryPanel extends React.Component {
 
   render() {
     const { filters, activeFilters, groups, execution, collapsed } = this.props;
-    let { section, page } = this.urlParams;
+    const { section, page } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
     const maxPages = this.state.maxPages;
@@ -389,7 +390,7 @@ export default class HistoryPanel extends React.Component {
 
               return (
                 <FlexTableWrapper key={date} title={title} titleType="date">
-                  { executions .map(execution => [
+                  { executions .map((execution) => [
                     <HistoryFlexCard
                       key={execution.id}
                       execution={execution}
@@ -403,18 +404,16 @@ export default class HistoryPanel extends React.Component {
                         className="st2-history-child"
                         key={`${execution.id}-children`}
                       >
-                        { execution.fetchedChildren.map(execution => {
-                          return (
-                            <HistoryFlexCard
-                              key={execution.id}
-                              isChild
-                              execution={execution}
-                              selected={id === execution.id}
-                              view={view}
-                              onClick={() => this.handleSelect(execution.id)}
-                            />
-                          );
-                        })}
+                        { execution.fetchedChildren.map((execution) => (
+                          <HistoryFlexCard
+                            key={execution.id}
+                            isChild
+                            execution={execution}
+                            selected={id === execution.id}
+                            view={view}
+                            onClick={() => this.handleSelect(execution.id)}
+                          />
+                        ))}
                       </div>
                     ) : null,
                   ]) }

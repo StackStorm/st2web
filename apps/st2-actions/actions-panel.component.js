@@ -104,7 +104,8 @@ export default class ActionsPanel extends React.Component {
       promise: api.client.actions.list(),
     })
       .then(() => {
-        let { ref, action } = store.getState();
+        const { action } = store.getState();
+        let { ref } = store.getState();
 
         if (!action) {
           ref = this.props.match.params.ref || ref;
@@ -181,12 +182,12 @@ export default class ActionsPanel extends React.Component {
 
   handleSelect(ref) {
     const { history } = this.props;
-    history.push(`/actions/${ ref }`);
+    history.push(`/actions/${ref}`);
   }
 
   handleSection(section) {
     const { history, action: { ref } } = this.props;
-    history.push(`/actions/${ ref }/${ section }`);
+    history.push(`/actions/${ref}/${section}`);
   }
 
   handleRunAction(e, ref) {
@@ -206,12 +207,12 @@ export default class ActionsPanel extends React.Component {
           },
         },
       })
-        .then(res => {
+        .then((res) => {
           notification.success(`Action "${ref}" has been scheduled successfully`);
 
           return res.values;
         })
-        .catch(res => {
+        .catch((res) => {
           notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
           console.error(res); // eslint-disable-line no-console
         }),
@@ -244,14 +245,14 @@ export default class ActionsPanel extends React.Component {
 
   render() {
     const { groups, filter, action, executions, collapsed } = this.props;
-    let { section } = this.urlParams;
+    const { section } = this.urlParams;
     const view = this._view ? this._view.value : {};
 
     return (
       <Panel data-test="actions_panel">
         <PanelView className="st2-actions">
           <Toolbar title="Actions">
-            <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
+            <ToolbarSearch title="Filter" value={filter} onChange={(e) => this.handleFilterChange(e)} />
             <ToolbarView>
               <View
                 name="st2ActionView"
@@ -269,12 +270,12 @@ export default class ActionsPanel extends React.Component {
           </Toolbar>
           <Content>
             { groups.map(({ pack, actions }) => {
-              const icon = api.client.packFile.route(pack + '/icon.png');
+              const icon = api.client.packFile.route(`${pack}/icon.png`);
               const ref = action && action.ref;
 
               return (
                 <FlexTableWrapper title={pack} key={pack} icon={icon} data-test={`pack pack:${pack}`}>
-                  { actions.map(action => (
+                  { actions.map((action) => (
                     <ActionFlexCard
                       key={action.ref} action={action}
                       selected={ref === action.ref}
@@ -335,14 +336,14 @@ export default class ActionsPanel extends React.Component {
                       <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
                     ) : (
                       <FlexTable>
-                        { executions.map(execution => [
+                        { executions.map((execution) => [
                           <FlexTableRow
                             key={execution.id}
                             onClick={() => this.handleToggleExecution(execution.id)}
                             columns={[
                               {
                                 className: 'st2-actions__details-column-utility',
-                                children: <i className={`icon-chevron${ this.state.executionsVisible[execution.id] ? '-down': '_right' }`} />,
+                                children: <i className={`icon-chevron${this.state.executionsVisible[execution.id] ? '-down': '_right'}`} />,
                               },
                               {
                                 className: 'st2-actions__details-column-meta',

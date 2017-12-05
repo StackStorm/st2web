@@ -119,7 +119,7 @@ export class ToolbarSearch extends React.Component {
             data-test="filter"
             placeholder={this.props.title}
             value={this.props.value}
-            onChange={e => this.props.onChange(e)}
+            onChange={(e) => this.props.onChange(e)}
           />
           <i className="icon-lens" />
         </form>
@@ -232,17 +232,15 @@ export class DetailsSwitch extends React.Component {
     const active = sections.findIndex(({ path }) => path === current);
 
     return (
-      <div className={`st2-details__switch st2-details__switch--of-two st2-details__switch--${ SWITCH_COUNT[active < 0 ? 0 : active] }`}>
-        { sections.map((section) => {
-          return (
-            <div
-              data-test={`switch:${section.path}`}
-              key={section.path} className="st2-details__switch-item"
-              onClick={() => onChange(section)}
-            >{ section.label }
-            </div>
-          );
-        }) }
+      <div className={`st2-details__switch st2-details__switch--of-two st2-details__switch--${SWITCH_COUNT[active < 0 ? 0 : active]}`}>
+        { sections.map((section) => (
+          <div
+            data-test={`switch:${section.path}`}
+            key={section.path} className="st2-details__switch-item"
+            onClick={() => onChange(section)}
+          >{ section.label }
+          </div>
+        )) }
       </div>
     );
   }

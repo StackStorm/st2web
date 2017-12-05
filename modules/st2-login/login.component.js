@@ -95,15 +95,13 @@ export default class Login extends React.Component {
     const password = this.passwordField.value;
     const remember = this.rememberField.checked;
 
-    return api.connect(server, login, password, remember).then(() => {
-      return this.props.onConnect();
-    });
+    return api.connect(server, login, password, remember).then(() => this.props.onConnect());
   }
 
   render() {
     return (
       <div className="st2-login">
-        <LoginForm data-test="login" onSubmit={e => this.connect(e)}>
+        <LoginForm data-test="login" onSubmit={(e) => this.connect(e)}>
           <LoginLogo />
           { this.state.error ? (
             <LoginError message={this.state.error} />
@@ -112,7 +110,7 @@ export default class Login extends React.Component {
             <LoginRow className="st2-auto-form__select" style={{ display: api.servers.length > 1 ? null : 'none' }}>
               <select
                 className="st2-auto-form__field st2-login__field"
-                ref={component => this.serverField = component}
+                ref={(component) => this.serverField = component}
               >
                 { api.servers.map((server, i) => (
                   <option key={i} value={i}>
@@ -125,7 +123,7 @@ export default class Login extends React.Component {
           <LoginRow>
             <input
               className="st2-auto-form__field st2-login__field"
-              ref={component => this.loginField = component}
+              ref={(component) => this.loginField = component}
               type="text"
               name="username"
               placeholder="Username"
@@ -135,7 +133,7 @@ export default class Login extends React.Component {
           <LoginRow>
             <input
               className="st2-auto-form__field st2-login__field"
-              ref={component => this.passwordField = component}
+              ref={(component) => this.passwordField = component}
               type="password"
               name="password"
               placeholder="Password"
@@ -152,7 +150,7 @@ export default class Login extends React.Component {
             <label className="st2-login__checkbox-wrapper">
               <input
                 className="st2-login__checkbox"
-                ref={component => this.rememberField = component}
+                ref={(component) => this.rememberField = component}
                 type="checkbox"
                 defaultChecked
               />

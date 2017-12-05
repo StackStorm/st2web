@@ -40,30 +40,28 @@ class Container extends React.Component {
             <Route exact path="/" render={() => <Redirect to="/history" />} />
             {
               routes
-                .filter(route => route.url)
-                .map(route => {
-                  return (
-                    <Route
-                      key={route.url}
-                      path={`${route.url}/:ref?/:section?`}
-                      render={({ history, match, location }) => {
-                        const props = {
-                          notification,
-                          history,
-                          match,
-                          location,
-                          routes,
-                        };
+                .filter((route) => route.url)
+                .map((route) => (
+                  <Route
+                    key={route.url}
+                    path={`${route.url}/:ref?/:section?`}
+                    render={({ history, match, location }) => {
+                      const props = {
+                        notification,
+                        history,
+                        match,
+                        location,
+                        routes,
+                      };
 
-                        if (api.isConnected()) {
-                          return <route.Component {...props} />;
-                        } else {
-                          return <Login onConnect={() => history.replace()} />;
-                        }
-                      }}
-                    />
-                  );
-                })
+                      if (api.isConnected()) {
+                        return <route.Component {...props} />;
+                      } else {
+                        return <Login onConnect={() => history.replace()} />;
+                      }
+                    }}
+                  />
+                ))
             }
           </Switch>
         </Router>

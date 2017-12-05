@@ -79,7 +79,7 @@ export default class ComboboxModule extends React.Component {
             { suggestions.map(({ name, description }) => (
               <div
                 key={name}
-                className={`st2-auto-form__suggestion ${ false ? 'st2-auto-form__suggestion--active' : '' }`}
+                className={`st2-auto-form__suggestion ${value === name ? 'st2-auto-form__suggestion--active' : ''}`}
                 onClick={() => this.onChoose(name)}
               >
                 <div className="st2-auto-form__suggestion-primary">{ name }</div>

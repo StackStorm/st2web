@@ -19,7 +19,7 @@ export default class EnumField extends BaseTextField {
     const invalid = super.validate(v, spec);
     if (invalid !== void 0) {
       return invalid;
-    };
+    }
 
     return v && !_.includes(spec.enum, v) && `'${v}' not in enum`;
   }

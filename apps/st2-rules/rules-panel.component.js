@@ -99,7 +99,8 @@ export default class RulesPanel extends React.Component {
       promise: api.client.ruleOverview.list(),
     })
       .then(() => {
-        let { ref, rule } = store.getState();
+        const { rule } = store.getState();
+        let { ref } = store.getState();
 
         if (!rule) {
           ref = this.props.match.params.ref || ref;
@@ -116,7 +117,6 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_PACK_SPEC',
       promise: api.client.packs.list(),
     });
-    ;
 
     store.dispatch({
       type: 'FETCH_TRIGGER_SPEC',
@@ -167,13 +167,13 @@ export default class RulesPanel extends React.Component {
       } });
     }
 
+    const target = { ...source };
     let source = this.state.editing;
-    let target = { ...source };
     let current = target;
 
-    let keys = path.split('.');
-    let final = keys.pop();
-    for (let key of keys) {
+    const keys = path.split('.');
+    const final = keys.pop();
+    for (const key of keys) {
       if (source[key] && Array.isArray(source[key])) {
         current[key] = [ ...source[key] ];
       }
@@ -199,12 +199,12 @@ export default class RulesPanel extends React.Component {
 
   handleSelect(selected) {
     const { history } = this.props;
-    history.push(`/rules/${ selected }`);
+    history.push(`/rules/${selected}`);
   }
 
   handleSection(section) {
     const { history, rule: { ref } } = this.props;
-    history.push(`/rules/${ ref }/${ section }`);
+    history.push(`/rules/${ref}/${section}`);
   }
 
   handleFilterChange(e) {
@@ -252,7 +252,7 @@ export default class RulesPanel extends React.Component {
 
   render() {
     const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
-    let { section } = this.urlParams;
+    const { section } = this.urlParams;
     const rule = this.state.editing || this.props.rule;
 
     return (
@@ -260,16 +260,16 @@ export default class RulesPanel extends React.Component {
         <PanelView className="st2-rules">
           <Toolbar title="Rules">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
-            <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
+            <ToolbarSearch title="Filter" value={filter} onChange={(e) => this.handleFilterChange(e)} />
           </Toolbar>
           <Content>
             { groups.map(({ pack, rules }) => {
-              const icon = api.client.packFile.route(pack + '/icon.png');
+              const icon = api.client.packFile.route(`${pack}/icon.png`);
               const ref = rule && rule.ref;
 
               return (
                 <FlexTableWrapper title={pack} key={pack} icon={icon}>
-                  { rules .map(rule => (
+                  { rules .map((rule) => (
                     <RuleFlexCard
                       key={rule.ref} rule={rule}
                       selected={ref === rule.ref}

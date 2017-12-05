@@ -15,7 +15,7 @@ export class Label extends React.Component {
     const { spec, className, children } = this.props;
 
     return (
-      <label className={`st2-auto-form__label ${ className || '' } ${ spec && spec.required ? ' st2-auto-form--required' : '' }`}>
+      <label className={`st2-auto-form__label ${className || ''} ${spec && spec.required ? ' st2-auto-form--required' : ''}`}>
         { children }
       </label>
     );
@@ -40,7 +40,7 @@ export class Title extends React.Component {
     }
 
     return (
-      <div className={`st2-auto-form__title ${ className || '' }`}>
+      <div className={`st2-auto-form__title ${className || ''}`}>
         { displayName }{ spec && spec.required ? ' *' : '' }
       </div>
     );
@@ -61,7 +61,7 @@ export class ErrorMessage extends React.Component {
     }
 
     return (
-      <span className={`st2-auto-form__error ${ className || '' }`}>
+      <span className={`st2-auto-form__error ${className || ''}`}>
         { children }
       </span>
     );
@@ -86,7 +86,7 @@ export class Icon extends React.Component {
 
     return (
       <span
-        className={`st2-auto-form__type ${ className || '' } icon-${ name }`}
+        className={`st2-auto-form__type ${className || ''} icon-${name}`}
         title={title}
         onClick={(e) => this.onClick(e)}
       />
@@ -112,7 +112,7 @@ export class Button extends React.Component {
 
     return (
       <span
-        className={`st2-auto-form__button ${ className || '' } icon-${ icon }`}
+        className={`st2-auto-form__button ${className || ''} icon-${icon}`}
         title={title}
         onClick={(e) => this.onClick(e)}
       />
@@ -136,7 +136,7 @@ export class Description extends React.Component {
     }
 
     return (
-      <p className={`st2-auto-form__description ${ className || '' }`}>
+      <p className={`st2-auto-form__description ${className || ''}`}>
         { spec.description }
       </p>
     );

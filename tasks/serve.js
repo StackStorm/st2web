@@ -1,12 +1,12 @@
 'use strict';
 
-var gulp = require('gulp');
-var settings = require('./settings.json');
-var plugins = require('gulp-load-plugins')(settings.plugins);
+const gulp = require('gulp');
+const settings = require('./settings.json');
+const plugins = require('gulp-load-plugins')(settings.plugins);
 
-var server;
+let server;
 
-gulp.task('serve', function () {
+gulp.task('serve', () => {
   server = gulp.src('.')
     .pipe(plugins.webserver({
       host: '0.0.0.0',

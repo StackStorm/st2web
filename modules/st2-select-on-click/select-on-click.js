@@ -4,9 +4,10 @@ export default function(element) {
   }
 
   element.addEventListener('click', () => {
-    var range = document.createRange();
+    const range = document.createRange();
     range.selectNodeContents(element);
-    var sel = window.getSelection();
+
+    const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
   }, true);

@@ -26,14 +26,12 @@ export default class Notification {
       layout: 'bottomLeft',
       closeWith: [ 'click' ],
       timeout: 3000,
-      buttons: buttons.map(({ text, className, onClick, ...attributes }) => {
-        return Noty.button(
-          text,
-          `st2-forms__button st2-forms__button--skeleton ${className || ''}`,
-          onClick,
-          attributes,
-        );
-      }),
+      buttons: buttons.map(({ text, className, onClick, ...attributes }) => Noty.button(
+        text,
+        `st2-forms__button st2-forms__button--skeleton ${className || ''}`,
+        onClick,
+        attributes,
+      )),
       ...options,
     }).show();
   }

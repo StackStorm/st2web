@@ -28,7 +28,7 @@ export default class Filter extends React.Component {
     }
 
     if (activeItems.includes(item)) {
-      return onChange(activeItems.filter(v => v !== item));
+      return onChange(activeItems.filter((v) => v !== item));
     }
 
     if (multiple) {
@@ -50,11 +50,11 @@ export default class Filter extends React.Component {
 
     return [
       ...activeItems
-        .filter(item => !search || item.includes(search))
+        .filter((item) => !search || item.includes(search))
       ,
       ...items
-        .filter(item => !activeItems.includes(item))
-        .filter(item => !search || item.includes(search))
+        .filter((item) => !activeItems.includes(item))
+        .filter((item) => !search || item.includes(search))
       ,
     ];
   }

@@ -63,7 +63,7 @@ export class FlexTableTitle extends React.Component {
     }
 
     if (type) {
-      props.className += ' st2-flex-table__caption--' + type;
+      props.className += ` st2-flex-table__caption--${type}`;
     }
 
     return (
@@ -93,7 +93,7 @@ export class FlexTableRow extends React.Component {
     return (
       <div className="st2-flex-table__row" {...props}>
         { columns.map(({ Component = 'div', className, children, ...props }, key) => (
-          <Component key={key} className={`st2-flex-table__column ${ className }`} {...props}>
+          <Component key={key} className={`st2-flex-table__column ${className}`} {...props}>
             { children }
           </Component>
         )) }

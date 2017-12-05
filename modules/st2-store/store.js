@@ -26,7 +26,7 @@ const rootReducer = (state = {}, originalAction) => {
   return state;
 };
 
-const promiseMiddleware = () => next => action => {
+const promiseMiddleware = () => (next) => (action) => {
   if (!action.promise) {
     return next(action);
   }
@@ -44,8 +44,8 @@ const promiseMiddleware = () => next => action => {
 
   next(actionFactory());
   return action.promise.then(
-    payload => next(actionFactory('success', { payload })),
-    error => next(actionFactory('error', { error }))
+    (payload) => next(actionFactory('success', { payload })),
+    (error) => next(actionFactory('error', { error }))
   );
 };
 

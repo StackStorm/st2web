@@ -46,7 +46,7 @@ const flexTableReducer = (state = {}, action) => {
         },
       };
 
-      if (_.some(newTables, item => item.collapsed === newTables[title].collapsed)) {
+      if (_.some(newTables, (item) => item.collapsed === newTables[title].collapsed)) {
         collapsed = newTables[title].collapsed;
       }
 
@@ -64,7 +64,7 @@ const flexTableReducer = (state = {}, action) => {
       }
 
       collapsed = !collapsed;
-      tables = _.mapValues(tables, v => ({ ...v, collapsed }));
+      tables = _.mapValues(tables, (v) => ({ ...v, collapsed }));
 
       return {
         ...state,

@@ -46,7 +46,7 @@ function waitExecution(execution_id, record) {
   if (record.status === 'failed') {
     return false;
   }
-};
+}
 
 @connect((state, props) => {
   const { title } = props;
@@ -96,15 +96,15 @@ export default class PacksPanel extends React.Component {
     store.dispatch({
       type: 'FETCH_INSTALLED_PACKS',
       promise: api.client.packs.list()
-        .then(packs => {
+        .then((packs) => {
           // Not really precise, but that's not important, it's temporary anyway.
-          _.forEach(packs, pack => {
+          _.forEach(packs, (pack) => {
             pack.installedVersion = pack.version;
 
             if (!pack.content) {
-              const types = ['actions', 'aliases', 'rules', 'sensors', 'tests', 'triggers'];
-              pack.files.forEach(file => {
-                const [folder, filename] = file.split('/');
+              const types = [ 'actions', 'aliases', 'rules', 'sensors', 'tests', 'triggers' ];
+              pack.files.forEach((file) => {
+                const [ folder, filename ] = file.split('/');
 
                 if (types.indexOf(folder) >= 0 && /.yaml$/.test(filename)) {
                   pack.content = pack.content || {};
@@ -133,16 +133,16 @@ export default class PacksPanel extends React.Component {
       promise: api.client.packs.get('index')
         .then(({ index }) => index)
         // In some cases pack ref might be missing and we better sort it out earlier
-        .then(packs => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref }))),
+        .then((packs) => _.mapValues(packs, (pack, ref) => ({ ...pack, ref: pack.ref || ref }))),
     });
 
     store.dispatch({
       type: 'FETCH_PACK_CONFIG_SCHEMAS',
       promise: api.client.configSchemas.list()
-        .then(config_schemas => {
+        .then((config_schemas) => {
           const packs = {};
 
-          _.forEach(config_schemas, config_schema => {
+          _.forEach(config_schemas, (config_schema) => {
             const ref = config_schema.pack;
             packs[ref] = {
               ref,
@@ -161,10 +161,10 @@ export default class PacksPanel extends React.Component {
       promise: api.client.configs.list({
         show_secrets: true,
       })
-        .then(configs => {
+        .then((configs) => {
           const packs = {};
 
-          _.forEach(configs, config => {
+          _.forEach(configs, (config) => {
             const ref = config.pack;
             packs[ref] = {
               ref,
@@ -202,7 +202,7 @@ export default class PacksPanel extends React.Component {
 
   handleSelect(ref) {
     const { history } = this.props;
-    history.push(`/packs/${ ref }`);
+    history.push(`/packs/${ref}`);
   }
 
   handleInstall(ref) {
@@ -212,9 +212,9 @@ export default class PacksPanel extends React.Component {
       type: 'INSTALL_PACK',
       ref,
       promise: api.client.packInstall.schedule({
-        packs: [ref],
+        packs: [ ref ],
       })
-        .then(body => {
+        .then((body) => {
           notification.success(
             `Pack "${ref}" has been scheduled for installation.`,
             {
@@ -228,12 +228,12 @@ export default class PacksPanel extends React.Component {
           );
 
           return api.client.stream
-            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
+            .wait('st2.execution__update', (record) => waitExecution(body.execution_id, record));
         })
         .then(() => {
           notification.success(`Pack "${ref}" has been successfully installed`);
         })
-        .catch(err => {
+        .catch((err) => {
           notification.error(`Unable to schedule pack "${ref}" for installation. See details in developer tools console.`);
           console.error(err); // eslint-disable-line no-console
 
@@ -249,9 +249,9 @@ export default class PacksPanel extends React.Component {
       type: 'UNINSTALL_PACK',
       ref,
       promise: api.client.packUninstall.schedule({
-        packs: [ref],
+        packs: [ ref ],
       })
-        .then(body => {
+        .then((body) => {
           notification.success(
             `Pack "${ref}" has been scheduled for removal.`,
             {
@@ -265,12 +265,12 @@ export default class PacksPanel extends React.Component {
           );
 
           return api.client.stream
-            .wait('st2.execution__update', record => waitExecution(body.execution_id, record));
+            .wait('st2.execution__update', (record) => waitExecution(body.execution_id, record));
         })
         .then(() => {
           notification.success(`Pack "${ref}" has been successfully removed`);
         })
-        .catch(err => {
+        .catch((err) => {
           notification.error(`Unable to schedule pack "${ref}" for removal. See details in developer tools console.`);
           console.error(err); // eslint-disable-line no-console
 
@@ -290,12 +290,12 @@ export default class PacksPanel extends React.Component {
       promise: api.client.configs.edit(ref, this.configField.getValue(), {
         show_secrets: true,
       })
-        .then(res => {
+        .then((res) => {
           notification.success(`Configuration for pack "${ref}" has been saved succesfully`);
 
           return res.values;
         })
-        .catch(res => {
+        .catch((res) => {
           notification.error(`Unable to save the configuration for pack "${ref}". See details in developer tools console.`);
           console.error(res); // eslint-disable-line no-console
         }),
@@ -361,7 +361,7 @@ export default class PacksPanel extends React.Component {
       packMeta.keywords = (
         <div>
           {
-            keywords.map(word =>
+            keywords.map((word) =>
               (
                 <span
                   key={word} className="st2-details__panel-body-tag"
@@ -386,11 +386,7 @@ export default class PacksPanel extends React.Component {
 
     const packContent = _.mapValues(content, 'count');
 
-    const filteredPacks = _.filter(packs, pack => {
-      return [pack.name, pack.ref, ...pack.keywords || []].some(str => {
-        return str && str.toLowerCase().indexOf(filter.toLowerCase()) > -1;
-      });
-    });
+    const filteredPacks = _.filter(packs, (pack) => [ pack.name, pack.ref, ...pack.keywords || [] ].some((str) => str && str.toLowerCase().indexOf(filter.toLowerCase()) > -1));
 
     const packGroups = _(filteredPacks)
       .sortBy('ref')
@@ -403,25 +399,23 @@ export default class PacksPanel extends React.Component {
         <PanelView className="st2-packs">
           <Toolbar title="Packs">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
-            <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
+            <ToolbarSearch title="Filter" value={filter} onChange={(e) => this.handleFilterChange(e)} />
           </Toolbar>
           <Content>
-            { ['installed', 'installing', 'uninstalling', 'available'].map(key => {
+            { [ 'installed', 'installing', 'uninstalling', 'available' ].map((key) => {
               if (!packGroups[key]) {
                 return null;
               }
 
               return (
                 <FlexTableWrapper title={key} key={key} >
-                  { packGroups[key] .map(pack => {
-                    return (
-                      <PackFlexCard
-                        key={pack.ref} pack={pack}
-                        selected={selected === pack.ref}
-                        onClick={() => this.handleSelect(pack.ref)}
-                      />
-                    );
-                  }) }
+                  { packGroups[key] .map((pack) => (
+                    <PackFlexCard
+                      key={pack.ref} pack={pack}
+                      selected={selected === pack.ref}
+                      onClick={() => this.handleSelect(pack.ref)}
+                    />
+                  )) }
                 </FlexTableWrapper>
               );
             }) }

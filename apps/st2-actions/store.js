@@ -34,7 +34,7 @@ const actionReducer = (state = {}, input) => {
             .groupBy('pack')
             .value()
           ;
-          groups = Object.keys(groups).map(pack => ({ pack, actions: groups[pack] }));
+          groups = Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
 
           ref = state.ref;
           if (!ref) {
@@ -99,7 +99,7 @@ const actionReducer = (state = {}, input) => {
         .groupBy('pack')
         .value()
       ;
-      groups = Object.keys(groups).map(pack => ({ pack, actions: groups[pack] }));
+      groups = Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
 
       return {
         ...state,

@@ -1,6 +1,5 @@
 'use strict';
 
-var gulp = require('gulp')
-  ;
+const gulp = require('gulp');
 
-gulp.task('build', gulp.series(['lint', 'browserify']));
+gulp.task('build', gulp.series([ 'lint', 'browserify' ]));

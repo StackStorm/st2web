@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 import './style.less';
 
-var states = {
+const states = {
   'complete': {
     class: 'st2-label--success',
   },
@@ -52,15 +52,15 @@ export default class Label extends React.Component {
   render() {
     const { status, short, ...otherProps } = this.props;
 
-    var props = {
+    const props = {
       ...otherProps,
       className: 'st2-label__label',
     };
 
-    var state = states[status];
+    const state = states[status];
 
     if (state) {
-      props.className += ' ' + states[status].class;
+      props.className += ` ${states[status].class}`;
     }
 
     if (short) {

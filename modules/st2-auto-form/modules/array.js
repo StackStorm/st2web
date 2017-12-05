@@ -14,7 +14,7 @@ export default class ArrayModule extends React.Component {
   }
 
   onChange(value) {
-    value = value.split(',').map(v => v.trim()).filter(v => v);
+    value = value.split(',').map((v) => v.trim()).filter((v) => v);
 
     this.props.onChange(value);
   }

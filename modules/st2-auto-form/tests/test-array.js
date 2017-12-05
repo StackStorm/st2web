@@ -32,17 +32,17 @@ describe('AutoForm ArrayField', () => {
 
     c.makeChange('["t","e","s","t"]');
 
-    expect(onChange.withArgs(['t','e','s','t'])).to.be.calledOnce;
+    expect(onChange.withArgs([ 't','e','s','t' ])).to.be.calledOnce;
 
     expect(c.fieldValue()).to.be.equal('["t","e","s","t"]');
-    expect(c.value()).to.be.deep.equal(['t','e','s','t']);
+    expect(c.value()).to.be.deep.equal([ 't','e','s','t' ]);
 
     c.makeChange('t,e,s,t');
 
-    expect(onChange.withArgs(['t','e','s','t'])).to.be.calledTwice;
+    expect(onChange.withArgs([ 't','e','s','t' ])).to.be.calledTwice;
 
     expect(c.fieldValue()).to.be.equal('t,e,s,t');
-    expect(c.value()).to.be.deep.equal(['t','e','s','t']);
+    expect(c.value()).to.be.deep.equal([ 't','e','s','t' ]);
   });
 
   it('does not change the value or calls the callback if value is invalid', () => {
@@ -72,7 +72,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {
-        default: [1,2,3],
+        default: [ 1,2,3 ],
       },
     };
 
@@ -102,17 +102,17 @@ describe('AutoForm ArrayField', () => {
 
     c.makeChange('["t"]');
 
-    expect(onChange.withArgs(['t'])).to.be.calledOnce;
+    expect(onChange.withArgs([ 't' ])).to.be.calledOnce;
 
     expect(c.fieldValue()).to.be.equal('["t"]');
-    expect(c.value()).to.be.deep.equal(['t']);
+    expect(c.value()).to.be.deep.equal([ 't' ]);
 
     c.makeChange('t');
 
-    expect(onChange.withArgs(['t'])).to.be.calledTwice;
+    expect(onChange.withArgs([ 't' ])).to.be.calledTwice;
 
     expect(c.fieldValue()).to.be.equal('t');
-    expect(c.value()).to.be.deep.equal(['t']);
+    expect(c.value()).to.be.deep.equal([ 't' ]);
   });
 
   it('handles an array of objects', () => {

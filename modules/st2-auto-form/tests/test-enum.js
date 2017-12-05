@@ -25,7 +25,7 @@ describe('AutoForm EnumField', () => {
     const props = {
       name: 'test',
       spec: {
-        enum: ['test'],
+        enum: [ 'test' ],
       },
       onChange,
     };
@@ -44,7 +44,7 @@ describe('AutoForm EnumField', () => {
     const props = {
       name: 'test',
       spec: {
-        enum: ['test'],
+        enum: [ 'test' ],
       },
       onChange,
     };

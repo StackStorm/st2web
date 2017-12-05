@@ -11,11 +11,9 @@ export default class PortionBar extends React.Component {
   render() {
     const { content, ...restProps } = this.props;
 
-    const portions = _.pick(content, v => !!v);
+    const portions = _.pick(content, (v) => !!v);
 
-    const total = _.reduce(portions, (sum, num) => {
-      return sum + num;
-    });
+    const total = _.reduce(portions, (sum, num) => sum + num);
 
     return (
       <div className="st2-portion-bar" {...restProps} >

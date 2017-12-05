@@ -23,7 +23,7 @@ const packReducer = (state = {}, input) => {
 
       switch(input.status) {
         case 'success':
-          _.forEach(input.payload, pack => {
+          _.forEach(input.payload, (pack) => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
@@ -46,7 +46,7 @@ const packReducer = (state = {}, input) => {
 
       switch(input.status) {
         case 'success':
-          _.forEach(input.payload, pack => {
+          _.forEach(input.payload, (pack) => {
             packs[pack.ref] = {
               status: 'available',
               ...state.packs[pack.ref],
@@ -69,7 +69,7 @@ const packReducer = (state = {}, input) => {
 
       switch(input.status) {
         case 'success':
-          _.forEach(input.payload, pack => {
+          _.forEach(input.payload, (pack) => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
@@ -91,7 +91,7 @@ const packReducer = (state = {}, input) => {
 
       switch(input.status) {
         case 'success':
-          _.forEach(input.payload, pack => {
+          _.forEach(input.payload, (pack) => {
             packs[pack.ref] = {
               ...state.packs[pack.ref],
               ...pack,
@@ -160,10 +160,11 @@ const packReducer = (state = {}, input) => {
 
     case 'SELECT_PACK':
       const { ref } = input;
+      selected = ref || Object.keys(state.packs).sort()[0];
 
       return {
         ...state,
-        selected: ref || Object.keys(state.packs).sort()[0],
+        selected,
       };
 
     case 'SET_FILTER':

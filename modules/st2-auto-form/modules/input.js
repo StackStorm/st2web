@@ -26,8 +26,8 @@ export default class InputModule extends React.Component {
     const { spec } = this.props;
 
     if (spec.pattern) {
-      if (!value.match(new RegExp(`/${ spec.pattern }/`))) {
-        this.setState({ error: `The value must match "${ spec.pattern }".` });
+      if (!value.match(new RegExp(`/${spec.pattern}/`))) {
+        this.setState({ error: `The value must match "${spec.pattern}".` });
         return;
       }
     }

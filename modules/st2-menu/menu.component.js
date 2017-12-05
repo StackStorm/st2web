@@ -34,8 +34,8 @@ export default class Menu extends React.Component {
     const { location } = this.props;
 
     const routes = _(this.props.routes)
-      .filter(e => !!e.icon)
-      .sortBy(e => e.position)
+      .filter((e) => !!e.icon)
+      .sortBy((e) => e.position)
       .value()
     ;
 
@@ -49,7 +49,7 @@ export default class Menu extends React.Component {
         <div className="st2-menu__spacer" />
 
         <div className="st2-menu__nav">
-          { _.map(routes, route => {
+          { _.map(routes, (route) => {
             const props = {
               key: route.title,
               className: 'st2-menu__nav-item',

@@ -1,39 +1,39 @@
 'use strict';
 
-var gulp = require('gulp');
-var settings = require('./settings.json');
-var plugins = require('gulp-load-plugins')(settings.plugins);
-var path = require('path');
-var fs = require('fs');
+const gulp = require('gulp');
+const settings = require('./settings.json');
+const plugins = require('gulp-load-plugins')(settings.plugins);
+const path = require('path');
+const fs = require('fs');
 
-var _ = require('lodash');
-var git = require('git-rev-sync');
-var pkg = require('./package.json');
-var es = require('event-stream');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var cssExtract = require('css-extract');
+const _ = require('lodash');
+const git = require('git-rev-sync');
+const pkg = require('./package.json');
+const es = require('event-stream');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const cssExtract = require('css-extract');
 
 function buildHeader() {
-  var host = 'https://github.com/';
-  var commitURL = host + pkg.repository + '/commit/' + git.long();
+  const host = 'https://github.com/';
+  const commitURL = `${host + pkg.repository}/commit/${git.long()}`;
 
-  return 'Built ' + new Date().toISOString() + ' from ' + commitURL;
+  return `Built ${new Date().toISOString()} from ${commitURL}`;
 }
 
 function bundle(file, name) {
-  var customOpts = {
+  const customOpts = {
     fullPaths: true,
-    entries: [file],
+    entries: [ file ],
     transform: pkg.browserify.transform,
     debug: true,
   };
-  var opts = _.assign({}, watchify.args, customOpts);
+  const opts = _.assign({}, watchify.args, customOpts);
 
-  var b = !global.watch ? browserify(opts) : watchify(browserify(opts), { poll: 100 })
-    .on('update', function () {
+  const b = !global.watch ? browserify(opts) : watchify(browserify(opts), { poll: 100 })
+    .on('update', () => {
       bundle(file, name)
         .pipe(plugins.size({
           showFiles: true,
@@ -50,7 +50,7 @@ function bundle(file, name) {
     .on('log', plugins.util.log)
   ;
 
-  fs.mkdir(settings.styles.dest, function () { /* noop */ });
+  fs.mkdir(settings.styles.dest, () => { /* noop */ });
 
   return b.bundle()
     .on('error', function (error) {
@@ -63,14 +63,14 @@ function bundle(file, name) {
     .pipe(source(name))
     .pipe(buffer())
     .pipe(plugins.sourcemaps.init({ loadMaps: true }))
-    .pipe(plugins.header('/* ' + buildHeader() + ' */'))
+    .pipe(plugins.header(`/* ${buildHeader()} */`))
     .pipe(plugins.sourcemaps.write('./'))
     .pipe(gulp.dest('js/'))
   ;
 }
 
-gulp.task('browserify', function () {
-  var tasks = _.map(settings.modules, bundle);
+gulp.task('browserify', () => {
+  const tasks = _.map(settings.modules, bundle);
 
   return es.merge.apply(null, tasks)
     .pipe(plugins.size({
@@ -83,10 +83,10 @@ gulp.task('browserify', function () {
   ;
 });
 
-gulp.task('watchify', function () {
+gulp.task('watchify', () => {
   global.watch = true;
 
-  var tasks = _.map(settings.modules, bundle);
+  const tasks = _.map(settings.modules, bundle);
 
   return es.merge.apply(null, tasks)
     .pipe(plugins.size({

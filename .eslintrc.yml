@@ -3,6 +3,7 @@ root: true
 plugins:
   - react
 extends:
+  - eslint:recommended
   - plugin:react/recommended
 parser: babel-eslint
 parserOptions:
@@ -37,6 +38,7 @@ rules:
   new-cap: error
   no-bitwise: error
   no-caller: error
+  no-case-declarations: off
   no-cond-assign:
     - error
     - except-parens
@@ -76,9 +78,30 @@ rules:
   wrap-iife:
     - error
     - inside
+  array-bracket-spacing:
+    - error
+    - always
+    -
+      objectsInArrays: false
+      arraysInArrays: false
 
   no-warning-comments: warn
   no-console: warn
+
+  arrow-body-style:
+    - error
+    - as-needed
+  no-var: error
+  arrow-spacing: error
+  arrow-parens: error
+  prefer-arrow-callback: error
+  prefer-const: error
+  prefer-rest-params: error
+  prefer-spread: error
+  prefer-template: error
+  rest-spread-spacing: error
+  template-curly-spacing: error
+
 
   react/no-typos: error
   react/no-string-refs: error

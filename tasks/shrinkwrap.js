@@ -1,11 +1,11 @@
 'use strict';
 
-var gulp = require('gulp');
-var npmShrinkwrap = require('npm-shrinkwrap');
+const gulp = require('gulp');
+const npmShrinkwrap = require('npm-shrinkwrap');
 
-gulp.task('shrinkwrap', function (cb) {
+gulp.task('shrinkwrap', (cb) => {
   npmShrinkwrap({
     dev: true,
-    dirname: __dirname + '/..',
+    dirname: `${__dirname}/..`,
   }, cb);
 });

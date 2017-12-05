@@ -1,13 +1,13 @@
 'use strict';
 
-var gulp = require('gulp');
-var settings = require('./settings.json');
-var plugins = require('gulp-load-plugins')(settings.plugins);
+const gulp = require('gulp');
+const settings = require('./settings.json');
+const plugins = require('gulp-load-plugins')(settings.plugins);
 
-var argv = require('yargs').argv;
+const argv = require('yargs').argv;
 
-gulp.task('functional', gulp.series(['build'], function integrating(done) {
-  var server = gulp.src('.')
+gulp.task('functional', gulp.series([ 'build' ], (done) => {
+  const server = gulp.src('.')
     .pipe(plugins.webserver({
       host: '0.0.0.0',
       port: 3001,
@@ -27,12 +27,10 @@ gulp.task('functional', gulp.series(['build'], function integrating(done) {
         js: require('babel-core/register'),
       },
     }))
-    .on('end', function () {
+    .on('end', () => {
       server.emit('kill');
       return done();
     })
-    .on('error', function (err) {
-      return done(err);
-    })
+    .on('error', (err) => done(err))
   ;
 }));

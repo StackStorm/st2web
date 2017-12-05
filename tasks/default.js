@@ -1,6 +1,5 @@
 'use strict';
 
-var gulp = require('gulp')
-  ;
+const gulp = require('gulp');
 
-gulp.task('default', gulp.series(['lint', 'watch', 'serve']));
+gulp.task('default', gulp.series([ 'lint', 'watch', 'serve' ]));
