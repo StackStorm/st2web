@@ -36,7 +36,6 @@
     "access": "public"
   },
   "dependencies": {
-    "lodash": "2.4.2",
     "prop-types": "15.5.10",
     "react": "15.6.1",
     "react-time": "4.3.0"

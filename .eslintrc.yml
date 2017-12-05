@@ -16,8 +16,6 @@ env:
   mocha: true
   browser: true
   es6: true
-globals:
-  _: true
 rules:
   block-scoped-var: error
   camelcase: off

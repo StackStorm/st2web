@@ -1,5 +1,5 @@
-import validator from 'validator';
 import _ from 'lodash';
+import validator from 'validator';
 
 import { BaseTextField, isJinja } from './base';
 

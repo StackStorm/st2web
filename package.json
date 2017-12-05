@@ -7,6 +7,7 @@
     "eslint": "eslint .",
     "develop": "gulp",
     "build": "gulp production",
+    "clean": "rm -rf js css build",
     "test": "gulp test",
     "test-production": "gulp test-production"
   },
@@ -40,17 +41,13 @@
     "@stackstorm/module-notification": "1.0.0-pre.4",
     "@stackstorm/st2-style": "1.0.0-pre.4",
     "lodash": "2.4.2",
-    "moment": "2.18.1",
     "prop-types": "15.5.10",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
     "react-router-dom": "4.2.2",
-    "react-textarea-autosize": "5.1.0",
     "redux": "3.7.2",
-    "st2client": "1.1.1",
-    "urijs": "1.17.1",
-    "validator": "5.2.0"
+    "st2client": "1.1.1"
   },
   "devDependencies": {
     "@stackstorm/st2-build": "1.0.0-pre.4",
@@ -69,12 +66,13 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "ignore-styles": "^5.0.1",
     "lerna": "2.5.1",
+    "moment": "2.18.1",
     "postcss": "6.0.11",
     "react-test-renderer": "15.6.1",
     "request": "2.69.0",
     "sinon": "1.17.3",
     "sinon-chai": "2.12.0",
-    "yamljs": "0.2.7",
-    "zombie": "github:enykeev/zombie#enykeev-2"
+    "urijs": "1.17.1",
+    "zombie": "5.0.7"
   }
 }
