@@ -53,6 +53,7 @@
     "!**/node_modules/**"
   ],
   "units": [
+    "apps/**/test-*.js",
     "modules/**/test-*.js",
     "!**/node_modules/**"
   ]

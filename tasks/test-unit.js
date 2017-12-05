@@ -10,10 +10,10 @@ gulp.task('unit', (done) => gulp.src(argv['test-files'] || settings.units, {read
   .pipe(plugins.plumber())
   .pipe(plugins.mocha({
     reporter: 'dot',
-    compilers: {
-      js: require('babel-core/register'),
-      less: require('ignore-styles'),
-    },
+    require: [
+      'babel-core/register',
+      'ignore-styles',
+    ],
   }))
   .on('end', () => done())
   .on('error', (err) => done(err))

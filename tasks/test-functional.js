@@ -23,9 +23,10 @@ gulp.task('functional', gulp.series([ 'build' ], (done) => {
     .pipe(plugins.plumber())
     .pipe(plugins.mocha({
       reporter: 'dot',
-      compilers: {
-        js: require('babel-core/register'),
-      },
+      require: [
+        'babel-core/register',
+        'ignore-styles',
+      ],
     }))
     .on('end', () => {
       server.emit('kill');
