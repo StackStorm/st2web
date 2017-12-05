@@ -15,7 +15,19 @@ describe('User visits history page', function () {
   this.timeout(10000);
 
   before(function () {
-    return browser.visit('/#/history').then(util.login);
+    return browser.visit('/#/history')
+      .then(util.login)
+      .then(() => {
+        var element = browser.query(util.name('toggle-all'));
+        if (element.classList.contains('st2-panel__toolbar-toggle-all--collapsed')) {
+          return browser.click(util.name('toggle-all'));
+        }
+
+        return browser.click(util.name('toggle-all')).then(() => {
+          return browser.click(util.name('toggle-all'));
+        });
+      })
+    ;
   });
 
   it('should be successful', function () {
@@ -47,10 +59,10 @@ describe('User visits history page', function () {
       expect(executions).to.have.length.of.at.most(50, 'Too many executions');
     });
 
-    it('should have all the records present', function () {
+    it('should have all the executions present', function () {
       var executions = JSON.parse(resource[0].response.body);
 
-      browser.assert.elements(util.name('record'), executions.length, 'Wrong number of records');
+      browser.assert.elements(util.name('execution'), executions.length, 'Wrong number of executions');
     });
   });
 
@@ -90,11 +102,24 @@ describe('User visits history page', function () {
       browser.assert.text(util.name('end_timestamp'), util.formatLocal(execution.end_timestamp), 'Wrong end time');
 
       var execution_time = Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
-      browser.assert.text(util.name('execution_time'), execution_time + ' s', 'Wrong execution time');
+      browser.assert.text(util.name('execution_time'), execution_time + 's', 'Wrong execution time');
 
       browser.assert.element(util.name('action_output'), 'Action output is missing');
       browser.assert.element(util.name('action_input'), 'Action input is missing');
-      browser.assert.element(util.name('record_code'), 'Record code is missing');
+    });
+
+    describe('then chooses code', function () {
+      before(function () {
+        return browser.click(util.name('switch:code'));
+      });
+
+      it('should have execution code present', function () {
+        try {
+          browser.assert.element(util.name('execution_code'));
+        } catch (e) {
+          browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+        }
+      });
     });
   });
 
@@ -104,6 +129,7 @@ describe('User visits history page', function () {
     });
 
     it('should open on button click', function () {
+      browser.assert.element(util.name('rerun_button'), 'Rerun button is not in DOM');
       browser.pressButton(util.name('rerun_button'))
         .then(function () {
           browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
@@ -114,8 +140,9 @@ describe('User visits history page', function () {
       return browser.pressButton(util.name('rerun_button'))
         .then(function () {
           browser.assert.element(util.name('rerun_form_action'), 'Action input is missing');
-          browser.assert.element(util.name('rerun_submit'), 'Submit button is missing');
+          browser.assert.element(util.name('rerun_preview'), 'Preview button is missing');
           browser.assert.element(util.name('rerun_cancel'), 'Cancel button is missing');
+          browser.assert.element(util.name('rerun_submit'), 'Submit button is missing');
         });
     });
 

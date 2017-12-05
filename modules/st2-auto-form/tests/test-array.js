@@ -20,7 +20,7 @@ describe('AutoForm ArrayField', () => {
     expect(c.fieldType()).to.be.equal('input');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
@@ -64,7 +64,6 @@ describe('AutoForm ArrayField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
@@ -149,7 +148,6 @@ describe('AutoForm ArrayField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('{"a": "b", "c": "d"}');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });

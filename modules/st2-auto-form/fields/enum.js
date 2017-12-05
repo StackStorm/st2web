@@ -21,7 +21,7 @@ export default class EnumField extends BaseTextField {
       return invalid;
     };
 
-    return v && !_.contains(spec.enum, v) && `'${v}' not in enum`;
+    return v && !_.includes(spec.enum, v) && `'${v}' not in enum`;
   }
 
   render() {

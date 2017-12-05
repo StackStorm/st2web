@@ -50,6 +50,6 @@ describe('AutoForm Component', () => {
     const [ field ] = output.props.children;
     field.props.onChange('test');
 
-    expect(onChange.withArgs('test').calledOnce).to.be.true;
+    expect(onChange.withArgs({ test: 'test' }).calledOnce).to.be.true;
   });
 });

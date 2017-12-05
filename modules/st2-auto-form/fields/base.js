@@ -5,7 +5,7 @@ import Textarea from 'react-textarea-autosize';
 
 import { TextFieldWrapper } from '../wrappers';
 
-function isJinja(v) {
+export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
 }
 
@@ -55,21 +55,6 @@ export class BaseTextField extends React.Component {
     }
   }
 
-  getValue() {
-    const { value } = this.state;
-    const invalid = this.validate(value, this.props.spec);
-
-    if (invalid) {
-      throw new Error(invalid);
-    }
-
-    if (isJinja(value)) {
-      return value;
-    }
-
-    return this.fromStateValue(value);
-  }
-
   handleChange(value) {
     const invalid = this.validate(value, this.props.spec);
 
@@ -77,7 +62,7 @@ export class BaseTextField extends React.Component {
   }
 
   emitChange() {
-    return this.props.onChange(this.getValue());
+    return this.props.onChange(this.fromStateValue(this.state.value));
   }
 
   render() {

@@ -15,11 +15,12 @@ export default class Button extends React.Component {
   }
 
   render() {
-    const { small, flat, red, submit, className, ...rest } = this.props;
+    const { small, flat, red, submit, className, ...otherProps } = this.props;
 
     const props = {
+      ...otherProps,
       className: 'st2-forms__button',
-      ...rest,
+      type: submit ? 'submit' : 'button',
     };
 
     if (className) {
@@ -39,7 +40,7 @@ export default class Button extends React.Component {
     }
 
     return (
-      <input type={submit ? 'submit' : 'button'} data-test="rerun_button" {...props} />
+      <input {...props} />
     );
   }
 }

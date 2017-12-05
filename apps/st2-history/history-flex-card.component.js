@@ -82,7 +82,7 @@ export default class HistoryFlexCard extends React.Component {
               </span>
               { view.action.params ? (
                 <span className="st2-history__column-action-params" ref={makeProportional}>
-                  { Object.keys(execution.parameters).map((name) => {
+                  { Object.keys(execution.parameters || {}).map((name) => {
                     const value = execution.parameters[name];
                     return (
                       <span key={name} className="st2-history__column-action-param">

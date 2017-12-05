@@ -256,7 +256,7 @@ export default class RulesPanel extends React.Component {
     const rule = this.state.editing || this.props.rule;
 
     return (
-      <Panel>
+      <Panel data-test="rules_panel">
         <PanelView className="st2-rules">
           <Toolbar title="Rules">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
@@ -343,11 +343,12 @@ export default class RulesPanel extends React.Component {
                         spec={triggerSpec}
                         data={rule.trigger}
                         onChange={(trigger) => this.handleChange('trigger', trigger)}
+                        data-test="rule_trigger_form"
                       />
                     </DetailsPanelBody>
                   </DetailsPanel>
                 ) : null }
-                { rule && criteriaSpecs ? (
+                { criteriaSpecs ? (
                   <DetailsPanel>
                     <DetailsPanelHeading title="Criteria" />
                     <DetailsPanelBody>
@@ -356,6 +357,7 @@ export default class RulesPanel extends React.Component {
                         data={rule.criteria}
                         spec={criteriaSpecs[rule.trigger.type]}
                         onChange={(criteria) => this.handleChange('criteria', criteria)}
+                        data-test="rule_criteria_form"
                       />
                     </DetailsPanelBody>
                   </DetailsPanel>
@@ -370,6 +372,7 @@ export default class RulesPanel extends React.Component {
                         spec={actionSpec}
                         data={rule.action}
                         onChange={(action) => this.handleChange('action', action)}
+                        data-test="rule_action_form"
                       />
                     </DetailsPanelBody>
                   </DetailsPanel>
@@ -388,6 +391,7 @@ export default class RulesPanel extends React.Component {
                             ? this.handleChange(null, rule)
                             : this.handleChange('pack', pack)
                         }
+                        data-test="rule_pack_form"
                       />
                     </DetailsPanelBody>
                   </DetailsPanel>
@@ -395,18 +399,18 @@ export default class RulesPanel extends React.Component {
               </form>
             ) : null }
             { section === 'code' && rule ? (
-              <DetailsPanel data-test="rule_parameters">
+              <DetailsPanel data-test="rule_code">
                 <St2Highlight code={rule} />
               </DetailsPanel>
             ) : null }
           </DetailsBody>
           <DetailsToolbar>
             { this.state.editing ? [
-              <Button key="save" small value="Save" onClick={() => this.handleSave()} />,
-              <Button key="cancel" small value="Cancel" onClick={() => this.handleCancel()} />,
+              <Button key="save" small value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
+              <Button key="cancel" small value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
             ] : [
-              <Button key="edit" small value="Edit" onClick={() => this.handleEdit()} />,
-              <Button key="delete" small value="Delete" onClick={() => this.handleDelete()} />,
+              <Button key="edit" small value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
+              <Button key="delete" small value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
             ] }
             <DetailsToolbarSeparator />
           </DetailsToolbar>

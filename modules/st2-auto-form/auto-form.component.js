@@ -21,11 +21,6 @@ export default class AutoForm extends React.Component {
     onChange: PropTypes.func,
   }
 
-  constructor() {
-    super();
-    this.fields = {};
-  }
-
   componentWillMount(){
     // Once everything is inside react we should be able to move this to the
     // getElementByField portion
@@ -66,14 +61,6 @@ export default class AutoForm extends React.Component {
     }
   }
 
-  getValue() {
-    return _(this.fields)
-      .pick(Boolean)
-      .mapValues(v => v.getValue())
-      .value()
-    ;
-  }
-
   handleChange(name, value) {
     const { ngModel, onChange } = this.props;
     return onChange({
@@ -83,7 +70,8 @@ export default class AutoForm extends React.Component {
   }
 
   render() {
-    const { spec, ngModel, disabled } = this.props;
+    const { spec, ngModel, disabled, onChange, ...props } = this.props;
+    onChange;
 
     const fields = _(spec && spec.properties)
       .map((field, name) => {
@@ -120,7 +108,7 @@ export default class AutoForm extends React.Component {
     ;
 
     return (
-      <div>
+      <div {...props}>
         { fields.map(field => {
           const name = field._name;
 
@@ -129,7 +117,6 @@ export default class AutoForm extends React.Component {
           return (
             <FieldElement
               key={name}
-              ref={(c) => this.fields[name] = c}
               name={name}
               spec={field}
               value={ngModel && ngModel[name]}

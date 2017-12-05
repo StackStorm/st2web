@@ -15,7 +15,19 @@ describe('User visits actions page', function () {
   this.timeout(20000);
 
   before(function () {
-    return browser.visit('/#/actions').then(util.login);
+    return browser.visit('/#/actions')
+      .then(util.login)
+      .then(() => {
+        var element = browser.query(util.name('toggle-all'));
+        if (element.classList.contains('st2-panel__toolbar-toggle-all--collapsed')) {
+          return browser.click(util.name('toggle-all'));
+        }
+
+        return browser.click(util.name('toggle-all')).then(() => {
+          return browser.click(util.name('toggle-all'));
+        });
+      })
+    ;
   });
 
   it('should be successful', function () {
@@ -31,7 +43,7 @@ describe('User visits actions page', function () {
 
     before(function () {
       resource = browser.resources.filter(function (e) {
-        return new RegExp('^https://example.com/api/v1/actions[?]').test(e.url);
+        return new RegExp('^https://example.com/api/v1/actions(\\?|$)').test(e.url);
       });
     });
 
@@ -104,16 +116,24 @@ describe('User visits actions page', function () {
       browser.assert.element(util.name('action_parameters'), 'Action parameters are missing');
 
       try {
-        browser.assert.element(util.name('action_code'));
-      } catch (e) {
-        browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
-      }
-
-      try {
         browser.assert.element(util.name('action_executions'));
       } catch (e) {
         browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
       }
+    });
+
+    describe('then chooses code', function () {
+      before(function () {
+        return browser.click(util.name('switch:code'));
+      });
+
+      it('should have action code present', function () {
+        try {
+          browser.assert.element(util.name('action_code'));
+        } catch (e) {
+          browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+        }
+      });
     });
   });
 
@@ -127,7 +147,7 @@ describe('User visits actions page', function () {
     });
 
     it('should have correct url', function () {
-      browser.assert.url('http://example.com/#/actions/core.announcement/general');
+      browser.assert.url('http://example.com/#/actions/core.announcement');
     });
 
     describe('List view', function () {
@@ -174,16 +194,24 @@ describe('User visits actions page', function () {
         browser.assert.element(util.name('action_parameters'), 'Action parameters are missing');
 
         try {
-          browser.assert.element(util.name('action_code'));
-        } catch (e) {
-          browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
-        }
-
-        try {
           browser.assert.element(util.name('action_executions'));
         } catch (e) {
           browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
         }
+      });
+
+      describe('then chooses code', function () {
+        before(function () {
+          return browser.click(util.name('switch:code'));
+        });
+
+        it('should have action code present', function () {
+          try {
+            browser.assert.element(util.name('action_code'));
+          } catch (e) {
+            browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+          }
+        });
       });
     });
 
@@ -191,16 +219,18 @@ describe('User visits actions page', function () {
       var resource;
 
       before(function () {
-        return browser
-          .fill(util.name('field:route'), 'test')
-          .fill(util.name('field:message'), '{ "passed": true }')
-          .pressButton(util.name('run_submit'))
-          .then(function () {
-            resource = browser.resources.filter(function (e) {
-              return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions$').test(e.url);
-            });
-          })
-        ;
+        return browser.click(util.name('switch:general')).then(() => {
+          return browser
+            .fill(util.name('field:route'), 'test')
+            .fill(util.name('field:message'), '{ "passed": true }')
+            .pressButton(util.name('run_submit'))
+            .then(function () {
+              resource = browser.resources.filter(function (e) {
+                return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions$').test(e.url);
+              });
+            })
+          ;
+        });
       });
 
       it('should make a call to executions endpoint once', function () {
@@ -227,9 +257,7 @@ describe('User visits actions page', function () {
 
     describe('then selects another action with the same parameter', function () {
       before(function () {
-        return browser
-          .click(util.name('action:core.local_sudo'))
-        ;
+        return browser.click(util.name('action:core.local_sudo'));
       });
 
       it('should have empty parameter', function () {

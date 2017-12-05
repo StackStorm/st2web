@@ -13,7 +13,7 @@ describe('User visits login', function () {
   before(function () {
     this.timeout(10000);
 
-    return browser.visit('/');
+    return browser.visit('/#/');
   });
 
   it('should be successful', function () {

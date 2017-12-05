@@ -1,9 +1,9 @@
 import validator from 'validator';
 import _ from 'lodash';
 
-import { BaseTextField } from './base';
+import { BaseTextField, isJinja } from './base';
 
-const jsonCheck = value => {
+const jsonCheck = (value) => {
   try {
     JSON.parse(value);
   } catch (e) {
@@ -49,34 +49,43 @@ function split(value) {
 
 export default class ArrayField extends BaseTextField {
   static icon = '[ ]'
-  fromStateValue(value) {
-    if (value === ''){
+
+  fromStateValue(v) {
+    if (v === ''){
       return void 0;
     }
 
-    if (jsonCheck(value)){
-      return JSON.parse(value);
+    if (jsonCheck(v)){
+      return JSON.parse(v);
     }
 
-    const { items } = this.props.spec;
-    return split(value)
+    if (isJinja(v)) {
+      return v;
+    }
+
+    const { items } = this.props.spec || {};
+    return split(v)
       .map(v => typeConversions(items && items.type, v))
     ;
   }
 
-  toStateValue(value) {
-    if (jsonCheck(value)){
-      return JSON.stringify(value);
+  toStateValue(v) {
+    if (jsonCheck(v)){
+      return JSON.stringify(v);
     }
 
-    return value ? value.join(', ') : '';
+    if (isJinja(v)) {
+      return v;
+    }
+
+    return v ? v.join(', ') : '';
   }
 
   validate(value, spec={}) {
     const invalid = super.validate(value, spec);
     if (invalid !== void 0) {
       return invalid;
-    };
+    }
 
     if (jsonCheck(value)){
       try {

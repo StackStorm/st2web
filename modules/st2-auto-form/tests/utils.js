@@ -19,6 +19,7 @@ export class TestComponent {
     if (name) {
       event.target[name] = value;
     }
+
     const field = this.field();
     field.props.onChange(event);
   }
@@ -36,6 +37,7 @@ export class TestComponent {
   }
 
   value() {
-    return this._renderer._instance._instance.getValue();
+    const instance = this._renderer._instance._instance;
+    return instance.fromStateValue(instance.state.value);
   }
 }

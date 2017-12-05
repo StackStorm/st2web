@@ -399,7 +399,7 @@ export default class PacksPanel extends React.Component {
     ;
 
     return (
-      <Panel>
+      <Panel data-test="packs_panel">
         <PanelView className="st2-packs">
           <Toolbar title="Packs">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />

@@ -12,7 +12,7 @@ export default class ActionReporter extends React.Component {
   }
 
   render() {
-    const { runner, execution } = this.props;
+    const { runner, execution, ...props } = this.props;
     const reporter = reporters[runner] || reporters.debug;
 
     if (!execution) {
@@ -20,7 +20,7 @@ export default class ActionReporter extends React.Component {
     }
 
     return (
-      <div className="st2-action-reporter">
+      <div {...props} className="st2-action-reporter">
         { reporter(execution) }
       </div>
     );

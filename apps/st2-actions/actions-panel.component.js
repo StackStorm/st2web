@@ -93,6 +93,8 @@ export default class ActionsPanel extends React.Component {
 
   state = {
     runPreview: false,
+    runValue: null,
+    runTrace: null,
     executionsVisible: {},
   }
 
@@ -110,7 +112,12 @@ export default class ActionsPanel extends React.Component {
           store.dispatch({
             type: 'FETCH_ACTION',
             promise: api.client.actionOverview.get(ref),
-          });
+          })
+            .then(() => {
+              this.setState({ runValue: {}, runTrace: '' });
+              store.dispatch(flexActions.toggle(this.props.action.pack, false));
+            })
+          ;
 
           store.dispatch({
             type: 'FETCH_EXECUTIONS',
@@ -127,17 +134,25 @@ export default class ActionsPanel extends React.Component {
     const { ref } = nextProps.match.params;
 
     if (ref !== this.props.match.params.ref) {
+      store.dispatch(flexActions.toggle(ref.split('.')[0], false));
+
       store.dispatch({
         type: 'FETCH_ACTION',
         promise: api.client.actionOverview.get(ref),
-      }).then(() => {
-        store.dispatch({
-          type: 'FETCH_EXECUTIONS',
-          promise: api.client.executions.list({
-            action: ref,
-          }),
-        });
-      });
+      })
+        .then(() => {
+          this.setState({ runValue: {}, runTrace: '' });
+          store.dispatch(flexActions.toggle(this.props.action.pack, false));
+        })
+        .then(() => {
+          store.dispatch({
+            type: 'FETCH_EXECUTIONS',
+            promise: api.client.executions.list({
+              action: ref,
+            }),
+          });
+        })
+      ;
     }
   }
 
@@ -174,7 +189,7 @@ export default class ActionsPanel extends React.Component {
     history.push(`/actions/${ ref }/${ section }`);
   }
 
-  handleActionRun(e, ref) {
+  handleRunAction(e, ref) {
     e.preventDefault();
 
     const { notification } = this.props;
@@ -184,10 +199,10 @@ export default class ActionsPanel extends React.Component {
       ref,
       promise: api.client.executions.create({
         action: ref,
-        parameters: this.runField.getValue(),
+        parameters: this.state.runValue,
         context: {
           trace_context: {
-            trace_tag: this.traceField.getValue(),
+            trace_tag: this.state.runTrace || undefined,
           },
         },
       })
@@ -233,7 +248,7 @@ export default class ActionsPanel extends React.Component {
     const view = this._view ? this._view.value : {};
 
     return (
-      <Panel>
+      <Panel data-test="actions_panel">
         <PanelView className="st2-actions">
           <Toolbar title="Actions">
             <ToolbarSearch title="Filter" value={filter} onChange={e => this.handleFilterChange(e)} />
@@ -258,7 +273,7 @@ export default class ActionsPanel extends React.Component {
               const ref = action && action.ref;
 
               return (
-                <FlexTableWrapper title={pack} key={pack} icon={icon}>
+                <FlexTableWrapper title={pack} key={pack} icon={icon} data-test={`pack pack:${pack}`}>
                   { actions.map(action => (
                     <ActionFlexCard
                       key={action.ref} action={action}
@@ -288,27 +303,27 @@ export default class ActionsPanel extends React.Component {
                 <DetailsPanel data-test="action_parameters">
                   <DetailsPanelHeading title="Parameters" />
                   <DetailsPanelBody>
-                    <form onSubmit={(e) => this.handleActionRun(e, action.ref)}>
+                    <form onSubmit={(e) => this.handleRunAction(e, action.ref)}>
                       <AutoForm
-                        ref={(component) => { this.runField = component; }}
                         spec={{
                           type: 'object',
                           properties: action.parameters,
                         }}
-                        ngModel={{}}
+                        ngModel={this.state.runValue}
+                        onChange={(runValue) => this.setState({ runValue })}
                       />
                       <StringField
-                        ref={(component) => { this.traceField = component; }}
                         name="trace"
                         spec={{}}
-                        value=""
+                        value={this.state.runTrace}
+                        onChange={({ target: { value } }) => this.setState({ runTrace: value })}
                       />
                       <DetailsButtonsPanel>
                         <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
-                        <Button type="submit" value="Run" />
+                        <Button submit value="Run" data-test="run_submit" />
                       </DetailsButtonsPanel>
                       { this.state.runPreview ? (
-                        <St2Highlight code={this.runField.getValue()} />
+                        <St2Highlight data-test="action_code" code={this.state.runValue} />
                       ) : null }
                     </form>
                   </DetailsPanelBody>
@@ -360,7 +375,7 @@ export default class ActionsPanel extends React.Component {
               </div>
             ) : null }
             { section === 'code' && action ? (
-              <DetailsPanel data-test="action_parameters">
+              <DetailsPanel data-test="action_code">
                 <St2Highlight code={action} />
               </DetailsPanel>
             ) : null }

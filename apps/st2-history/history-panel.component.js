@@ -25,7 +25,6 @@ import {
   DetailsPanelHeading,
   DetailsPanelBody,
   DetailsPanelBodyLine,
-  // DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
   ToggleButton,
@@ -104,7 +103,7 @@ export default class HistoryPanel extends React.Component {
       promise: api.client.executionsFilters.list(),
     });
 
-    const { ref, page } = this.urlParams;
+    const { page } = this.urlParams;
     const activeFilters = this.props.activeFilters;
 
     store.dispatch({
@@ -115,14 +114,15 @@ export default class HistoryPanel extends React.Component {
         limit: PER_PAGE,
         page,
         ...activeFilters,
-      }).then((list) => {
-        const { total, limit } = api.client.executions;
-        this.setState({
-          maxPages: Math.ceil(total / limit),
-        });
+      })
+        .then((list) => {
+          const { total, limit } = api.client.executions;
+          this.setState({
+            maxPages: Math.ceil(total / limit),
+          });
 
-        return list;
-      }),
+          return list;
+        }),
     })
       .then(() => {
         let { ref, execution } = store.getState();
@@ -133,19 +133,14 @@ export default class HistoryPanel extends React.Component {
           store.dispatch({
             type: 'FETCH_EXECUTION',
             promise: api.client.executions.get(ref),
-          }).then(() => {
-            this.navigate();
           });
         }
       })
     ;
-
-    store.dispatch({ type: 'SELECT_EXECUTION', ref });
   }
 
   componentWillReceiveProps(nextProps) {
-    const { groups } = store.getState();
-    const { ref = groups[0].executions[0].id } = nextProps.match.params;
+    const { ref } = nextProps.match.params;
     const { page } = qs.parse(nextProps.location.search.slice(1));
 
     if (page !== qs.parse(this.props.location.search.slice(1)).page) {
@@ -159,33 +154,46 @@ export default class HistoryPanel extends React.Component {
           parent: 'null',
           limit: PER_PAGE,
           page,
-        }).then((list) => {
-          const { total, limit } = api.client.executions;
-          this.setState({
-            maxPages: Math.ceil(total / limit),
-          });
+        })
+          .then((list) => {
+            const { total, limit } = api.client.executions;
+            this.setState({
+              maxPages: Math.ceil(total / limit),
+            });
 
-          return list;
-        }),
-      }).then(() => {
-        const { groups } = store.getState();
-        let ref = groups[0].executions[0].id;
+            return list;
+          }),
+      })
+        .then(() => {
+          const { groups } = store.getState();
+          let ref = groups.length > 0 && groups[0].executions.length > 0 && groups[0].executions[0].id;
 
-        store.dispatch({
-          type: 'FETCH_EXECUTION',
-          promise: api.client.executions.get(ref),
-        }).then(() => {
-          this.navigate();
-        });
-      });
+          if (ref) {
+            store.dispatch({
+              type: 'FETCH_EXECUTION',
+              promise: api.client.executions.get(ref),
+            })
+              .then(() => {
+                if (this.props.match.params.ref) {
+                  this.navigate();
+                }
+              })
+            ;
+          }
+        })
+      ;
     }
-    else if (ref !== this.props.match.params.ref) {
+    else if (ref && ref !== this.props.match.params.ref) {
       store.dispatch({
         type: 'FETCH_EXECUTION',
         promise: api.client.executions.get(ref),
-      }).then(() => {
-        this.navigate();
-      });
+      })
+        .then(() => {
+          if (this.props.match.params.ref) {
+            this.navigate();
+          }
+        })
+      ;
     }
   }
 
@@ -334,7 +342,7 @@ export default class HistoryPanel extends React.Component {
     const execution_time = execution && Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
 
     return (
-      <Panel>
+      <Panel data-test="history_panel">
         <PanelView className="st2-history">
           <Toolbar title="History">
             { filters ? (
@@ -380,7 +388,7 @@ export default class HistoryPanel extends React.Component {
               const id = execution && execution.id;
 
               return (
-                <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
+                <FlexTableWrapper key={date} title={title} titleType="date">
                   { executions .map(execution => [
                     <HistoryFlexCard
                       key={execution.id}
@@ -447,10 +455,10 @@ export default class HistoryPanel extends React.Component {
                   <div className="st2-action-reporter__header">
                     <DetailsPanelBody>
                       <DetailsPanelBodyLine label="Status">
-                        <Label status={execution.status} />
+                        <Label status={execution.status} data-test="status" />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Execution ID">
-                        <div className="st2-action-reporter__uuid" ref={selectOnClick}>
+                        <div className="st2-action-reporter__uuid" ref={selectOnClick} data-test="execution_id">
                           { execution && execution.id }
                         </div>
                       </DetailsPanelBodyLine>
@@ -463,19 +471,29 @@ export default class HistoryPanel extends React.Component {
                       ) : null
                       }
                       <DetailsPanelBodyLine label="Started">
-                        <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        <Time
+                          timestamp={execution.start_timestamp}
+                          format="ddd, DD MMM YYYY HH:mm:ss"
+                          data-test="start_timestamp"
+                        />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Finished">
-                        <Time timestamp={execution.end_timestamp} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        <Time
+                          timestamp={execution.end_timestamp}
+                          format="ddd, DD MMM YYYY HH:mm:ss"
+                          data-test="end_timestamp"
+                        />
                       </DetailsPanelBodyLine>
                       <DetailsPanelBodyLine label="Execution Time">
-                        {execution_time}s
+                        <span data-test="execution_time">
+                          {execution_time}s
+                        </span>
                       </DetailsPanelBodyLine>
                     </DetailsPanelBody>
                   </div>
                   <DetailsPanelHeading title="Action Output" />
                   <DetailsPanelBody>
-                    <ActionReporter runner={execution.runner.name} execution={execution} />
+                    <ActionReporter runner={execution.runner.name} execution={execution} data-test="action_output" />
                   </DetailsPanelBody>
                 </DetailsPanel>
                 { execution.rule ? (
@@ -531,6 +549,7 @@ export default class HistoryPanel extends React.Component {
                         }}
                         disabled={true}
                         ngModel={execution.parameters}
+                        data-test="action_input"
                       />
                     </form>
                   </DetailsPanelBody>
@@ -538,14 +557,14 @@ export default class HistoryPanel extends React.Component {
               </div>
             ) : null }
             { section === 'code' && execution ? (
-              <DetailsPanel data-test="execution_parameters">
+              <DetailsPanel data-test="execution_code">
                 <St2Highlight code={execution} />
               </DetailsPanel>
             ) : null }
           </DetailsBody>
           <DetailsToolbar>
-            <Button small value="Rerun" onClick={() => this.handleSection('rerun')} />
-            <Button small value="Cancel" onClick={() => this.handleCancel()} disabled={status !== 'running'} />
+            <Button small value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
+            <Button small value="Cancel" onClick={() => this.handleCancel()} disabled={!execution || execution.status !== 'running'} />
 
             <DetailsToolbarSeparator />
           </DetailsToolbar>

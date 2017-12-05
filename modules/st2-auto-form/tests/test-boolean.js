@@ -20,7 +20,7 @@ describe('AutoForm BooleanField', () => {
     expect(c.fieldType()).to.be.equal('input');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
@@ -53,7 +53,6 @@ describe('AutoForm BooleanField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue('checked')).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
   });
 
   it('resets the value when reset button is pressed', function () {

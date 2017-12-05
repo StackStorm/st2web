@@ -70,7 +70,7 @@ const historyReducer = (state = {}, input) => {
 
           ref = state.ref;
           if (!ref) {
-            ref = groups[0].executions[0].id;
+            ref = groups.length > 0 && groups[0].executions.length > 0 && groups[0].executions[0].id || undefined;
             execution = undefined;
           }
           break;

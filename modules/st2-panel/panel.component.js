@@ -13,10 +13,10 @@ export class Panel extends React.Component {
   }
 
   render() {
-    const { children, className, ...restProps } = this.props;
+    const { children, className, ...props } = this.props;
 
     return (
-      <main className={`st2-panel ${className}`} {...restProps}>
+      <main className={`st2-panel ${className}`} {...props}>
         { children }
       </main>
     );
@@ -199,11 +199,13 @@ export class DetailsHeader extends React.Component {
 
     return (
       <div className="st2-details__header">
-        <div className="st2-details__header-name" data-test="header_name">
+        <div className="st2-details__header-name">
           { status ?
-            <Label status={status} short={true} />
+            <Label status={status} short={true} data-test="status" />
             : null }
-          <a href="#/actions/core.announcement/general">{ title }</a>
+          <a href="#/actions/core.announcement/general" data-test="header_name">
+            { title }
+          </a>
         </div>
         <div className="st2-details__header-description" data-test="header_description">
           { subtitle }
@@ -234,6 +236,7 @@ export class DetailsSwitch extends React.Component {
         { sections.map((section) => {
           return (
             <div
+              data-test={`switch:${section.path}`}
               key={section.path} className="st2-details__switch-item"
               onClick={() => onChange(section)}
             >{ section.label }
@@ -269,10 +272,10 @@ export class DetailsPanel extends React.Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, ...props } = this.props;
 
     return (
-      <div className="st2-details__panel">
+      <div {...props} className="st2-details__panel">
         { children }
       </div>
     );
@@ -318,10 +321,10 @@ export class DetailsPanelBodyLine extends React.Component {
   }
 
   render() {
-    const { label, children } = this.props;
+    const { label, children, ...props } = this.props;
 
     return (
-      <dl className="st2-details__panel-body-line">
+      <dl {...props} className="st2-details__panel-body-line">
         <dt className="st2-details__panel-body-label">{ label }:</dt>
         <dd className="st2-details__panel-body-value">{ children }</dd>
       </dl>
@@ -374,6 +377,7 @@ export class ToggleButton extends React.Component {
   render() {
     const props = {
       className: 'st2-panel__toolbar-toggle-all',
+      'data-test': 'toggle-all',
       onClick: (e) => this.props.onClick(e),
     };
 

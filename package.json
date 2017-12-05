@@ -67,6 +67,7 @@
     "eslint": "4.12.1",
     "eslint-plugin-react": "7.5.1",
     "gulp": "github:gulpjs/gulp#4.0",
+    "ignore-styles": "^5.0.1",
     "lerna": "2.5.1",
     "postcss": "6.0.11",
     "react-test-renderer": "15.6.1",

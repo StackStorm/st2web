@@ -103,10 +103,11 @@ export default class Criteria extends React.Component {
   }
 
   render() {
-    const { spec, data, disabled } = this.props;
+    const { spec, data, disabled, onChange, ...props } = this.props;
+    onChange;
 
     return (
-      <div className="st2-criteria">
+      <div {...props} className="st2-criteria">
         <div>
           { _.map(data, ({ type, pattern }, key) => (
             <div className="st2-criteria__line" key={key}>

@@ -10,6 +10,10 @@ var client;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at:', p);
+});
+
 class TestMarker {
   constructor(name) {
     this.names = [name];
@@ -32,21 +36,17 @@ module.exports = function (browser) {
     win.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};
   });
 
-  browser.pipeline.addHandler(function(b, request) {
-    var url = new URI(request.url);
-
-    if (url.directory().match(/^\/auth/) || url.directory().match(/^\/api/)) {
-      request.url = url.host(process.env.ST2_HOST).toString();
-    }
-
-    return null;
-  });
-
   browser.pipeline.addHandler(function(b, request, response) {
     var url = new URI(response.url);
 
     if (url.path() === '/config.js') {
-      return new zombie.Response('angular.module(\'main\').constant(\'st2Config\', {})');
+      return new zombie.Response(`angular.module('main').constant('st2Config', {
+  hosts: [{
+    name: 'Test',
+    url: 'https://${process.env.ST2_HOST}/api',
+    auth: 'https://${process.env.ST2_HOST}/auth',
+  }],
+});`);
     }
 
     if (url.path().indexOf('/reamaze.js') >= 0) {

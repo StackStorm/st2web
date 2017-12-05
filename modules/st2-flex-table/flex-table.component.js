@@ -18,11 +18,12 @@ export class FlexTable extends React.Component {
   static actions = actions
 
   render() {
+    const { title, titleType, collapsed, children, icon, onToggle, ...otherProps } = this.props;
+
     const props = {
+      ...otherProps,
       className: 'st2-flex-table',
     };
-
-    const { title, titleType, collapsed, children, icon, onToggle } = this.props;
 
     if (collapsed) {
       props.className += ' st2-flex-table--collapsed';

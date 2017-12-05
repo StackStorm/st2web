@@ -1,4 +1,6 @@
 'use strict';
+
+/* global angular */
 angular.module('main')
   .constant('st2Config', {
 

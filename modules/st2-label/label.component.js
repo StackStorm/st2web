@@ -50,21 +50,24 @@ export default class Label extends React.Component {
   }
 
   render() {
+    const { status, short, ...otherProps } = this.props;
+
     var props = {
+      ...otherProps,
       className: 'st2-label__label',
     };
 
-    var state = states[this.props.status];
+    var state = states[status];
 
     if (state) {
-      props.className += ' ' + states[this.props.status].class;
+      props.className += ' ' + states[status].class;
     }
 
-    if (this.props.short) {
+    if (short) {
       return (
         <span className="st2-label st2-label--short">
           <span {...props}>
-            { capitalize(state && state.title || this.props.status) }
+            { capitalize(state && state.title || status) }
           </span>
         </span>
       );

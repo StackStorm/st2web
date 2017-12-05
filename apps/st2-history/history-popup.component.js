@@ -51,7 +51,7 @@ export default class HistoryPopup extends React.Component {
 
     return (
       <div className="st2-rerun">
-        <Popup title="Rerun an execution" onCancel={onCancel}>
+        <Popup title="Rerun an execution" onCancel={onCancel} data-test="rerun_popup">
           <form onSubmit={(e) => this.handleSubmit(e)}>
             <div className="st2-details__panel">
               <div className="st2-details__panel-body">
@@ -59,6 +59,7 @@ export default class HistoryPopup extends React.Component {
                   name="Action"
                   value={action}
                   disabled={true}
+                  data-test="rerun_form_action"
                 />
 
                 <AutoForm
@@ -73,17 +74,20 @@ export default class HistoryPopup extends React.Component {
                     className="st2-details__toolbar-button"
                     onClick={() => this.togglePreview()}
                     value="Preview"
+                    data-test="rerun_preview"
                   />
                   <Button
                     flat red
                     className="st2-details__toolbar-button"
                     onClick={onCancel}
                     value="Cancel"
+                    data-test="rerun_cancel"
                   />
                   <Button
                     submit
                     className="st2-details__toolbar-button"
                     value="Submit"
+                    data-test="rerun_submit"
                   />
                 </div>
 

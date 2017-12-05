@@ -33,7 +33,7 @@ describe('User visits packs page', function () {
         });
 
         config_resource = browser.resources.filter(function (e) {
-          return new RegExp('^https://example.com/api/v1/configs[?]').test(e.url);
+          return new RegExp('^https://example.com/api/v1/configs(\\?|$)').test(e.url);
         });
 
         config_schema_resource = browser.resources.filter(function (e) {
@@ -133,7 +133,7 @@ describe('User visits packs page', function () {
     });
 
     it('should have correct url', function () {
-      browser.assert.url('http://example.com/#/packs/core/general');
+      browser.assert.url('http://example.com/#/packs/core');
     });
 
     it('should highlight the selected row', function () {

@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export const actions = {
   register: (title, collapsed) => ({ type: 'REGISTER_FLEX_TABLE', title, collapsed }),
-  toggle: (title) => ({ type: 'TOGGLE_FLEX_TABLE', title }),
+  toggle: (title, collapsed) => ({ type: 'TOGGLE_FLEX_TABLE', title, collapsed }),
   toggleAll: () => ({ type: 'TOGGLE_ALL' }),
 };
 
@@ -42,7 +42,7 @@ const flexTableReducer = (state = {}, action) => {
         ...tables,
         [title]: {
           ...tables[title],
-          collapsed: !(tables[title] || state).collapsed,
+          collapsed: typeof action.collapsed === 'boolean' ? action.collapsed : !(tables[title] || state).collapsed,
         },
       };
 

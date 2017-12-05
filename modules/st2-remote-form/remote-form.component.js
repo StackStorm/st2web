@@ -35,14 +35,14 @@ export default class RemoteForm extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data } = this.props;
+    const { name, disabled, spec, data, ...props } = this.props;
     const key = name === 'trigger' ? 'type' : 'ref';
 
     const child = spec.enum.find(({ name }) => name === data[key]);
     const childSpec = child ? child.spec : {};
 
     return (
-      <div className="st2-remote-form">
+      <div {...props} className="st2-remote-form">
         { disabled ? (
           <AutoFormText
             name={name}
