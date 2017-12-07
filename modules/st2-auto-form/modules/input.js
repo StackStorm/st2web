@@ -52,6 +52,7 @@ export default class InputModule extends React.Component {
             disabled={disabled}
             value={data}
             onChange={({ target: { value } }) => this.onChange(value)}
+            data-test={`field:${name}`}
           />
 
           <ErrorMessage>{ this.state.error }</ErrorMessage>

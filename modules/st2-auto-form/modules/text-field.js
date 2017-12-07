@@ -95,6 +95,7 @@ export default class TextFieldModule extends React.Component {
             onChange={({ target: { value } }) => this.onChange(value)}
             ref={(ref) => this.onRef(ref)}
             value={data}
+            data-test={`field:${name}`}
           />
 
           <ErrorMessage>{ this.state.error }</ErrorMessage>

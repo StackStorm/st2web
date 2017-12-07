@@ -114,6 +114,7 @@ describe('User visits actions page', function () {
 
     describe('then chooses code', () => {
       before(() => browser.click(util.name('switch:code')));
+      after(() => browser.click(util.name('switch:general')));
 
       it('should have action code present', () => {
         try {
@@ -186,6 +187,7 @@ describe('User visits actions page', function () {
 
       describe('then chooses code', () => {
         before(() => browser.click(util.name('switch:code')));
+        after(() => browser.click(util.name('switch:general')));
 
         it('should have action code present', () => {
           try {
@@ -200,14 +202,14 @@ describe('User visits actions page', function () {
     describe('and runs it', () => {
       let resource;
 
-      before(() => browser.click(util.name('switch:general')).then(() => browser
+      before(() => browser
         .fill(util.name('field:route'), 'test')
         .fill(util.name('field:message'), '{ "passed": true }')
         .pressButton(util.name('run_submit'))
         .then(() => {
           resource = browser.resources.filter((e) => e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions$').test(e.url));
         })
-      ));
+      );
 
       it('should make a call to executions endpoint once', () => {
         expect(resource).to.have.length.at.least(1, 'Executions endpoint has not been called');

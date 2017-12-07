@@ -3,6 +3,6 @@
 const gulp = require('gulp');
 
 gulp.task('test', gulp.series([
-  'unit',
-  'functional',
+  'test-unit',
+  'test-functional',
 ]));

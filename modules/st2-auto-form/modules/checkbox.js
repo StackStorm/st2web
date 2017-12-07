@@ -39,6 +39,7 @@ export default class CheckboxModule extends React.Component {
               disabled={disabled}
               checked={data}
               onChange={({ target: { checked } }) => this.onChange(checked)}
+              data-test={`field:${name}`}
             />
 
             <span className="st2-auto-form__checkbox-label">{ spec.name || name }</span>

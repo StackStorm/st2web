@@ -45,6 +45,7 @@ export default class SelectModule extends React.Component {
             disabled={disabled}
             onChange={({ target: { value } }) => this.onChange(value)}
             value={data}
+            data-test={`field:${name}`}
           >
             { options.map(({ value, label }) => (
               <option

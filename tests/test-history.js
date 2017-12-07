@@ -104,6 +104,7 @@ describe('User visits history page', function () {
 
     describe('then chooses code', () => {
       before(() => browser.click(util.name('switch:code')));
+      after(() => browser.click(util.name('switch:general')));
 
       it('should have execution code present', () => {
         try {

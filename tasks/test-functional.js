@@ -6,7 +6,7 @@ const plugins = require('gulp-load-plugins')(settings.plugins);
 
 const argv = require('yargs').argv;
 
-gulp.task('functional', gulp.series([ 'build' ], (done) => {
+gulp.task('test-functional', gulp.series([ 'build' ], (done) => {
   const server = gulp.src('.')
     .pipe(plugins.webserver({
       host: '0.0.0.0',

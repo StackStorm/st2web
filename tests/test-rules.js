@@ -110,6 +110,7 @@ describe('User visits rules page', function () {
 
     describe('then chooses code', () => {
       before(() => browser.click(util.name('switch:code')));
+      after(() => browser.click(util.name('switch:general')));
 
       it('should have rule code present', () => {
         try {
@@ -121,7 +122,7 @@ describe('User visits rules page', function () {
     });
   });
 
-  describe.skip('then opens a new rule popup', () => {
+  describe('then opens a new rule popup', () => {
     before(() => browser.click(util.name('rule_create_button')));
 
     it('should have correct url', () => {
@@ -157,15 +158,20 @@ describe('User visits rules page', function () {
     });
   });
 
-  describe.skip('then selects the rule', () => {
-    before(() => browser.click(util.name(`rule:packs.test${uniqueId}`)));
+  describe('then selects the rule', () => {
+    before(() =>
+      browser.reload().then(() =>
+        // TODO: remove reload
+        browser.click(util.name(`rule:packs.test${uniqueId}`))
+      )
+    );
 
     it('should be successful', () => {
       browser.assert.success();
     });
 
     it('should have correct url', () => {
-      browser.assert.url(`http://example.com/#/rules/packs.test${uniqueId}/general`);
+      browser.assert.url(`http://example.com/#/rules/packs.test${uniqueId}`);
     });
 
     describe('List view', () => {
@@ -198,23 +204,30 @@ describe('User visits rules page', function () {
         browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
         browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
         browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
-        browser.assert.text(util.name('header_if'), `If ${rule.trigger.type}`, 'Wrong if in header');
-        browser.assert.text(util.name('header_then'), `Then ${rule.action.ref}`, 'Wrong then in header');
+        browser.assert.text(util.name('header_if'), `If${rule.trigger.type}`, 'Wrong if in header');
+        browser.assert.text(util.name('header_then'), `Then${rule.action.ref}`, 'Wrong then in header');
 
         browser.assert.element(util.name('rule_trigger_form'), 'Rule trigger form is missing');
         browser.assert.element(util.name('rule_criteria_form'), 'Rule trigger form is missing');
         browser.assert.element(util.name('rule_action_form'), 'Rule action form is missing');
+      });
 
-        browser.assert.element(util.name('rule_code'), 'Rule code is missing');
+      describe('then chooses code', () => {
+        before(() => browser.click(util.name('switch:code')));
+        after(() => browser.click(util.name('switch:general')));
+
+        it('should have rule code present', () => {
+          try {
+            browser.assert.element(util.name('rule_code'));
+          } catch (e) {
+            browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+          }
+        });
       });
     });
 
     describe('clicks Edit button', () => {
       before(() => browser.click(util.name('edit_button')));
-
-      it('should have correct url', () => {
-        browser.assert.url(`http://example.com/#/rules/packs.test${uniqueId}/general?edit=true`);
-      });
 
       describe('changes the rule', () => {
         let resource;
@@ -267,7 +280,17 @@ describe('User visits rules page', function () {
         let resource;
 
         before(() => {
-          resource = browser.resources.filter((e) => e.request.method === 'DELETE' && new RegExp(`^https://example.com/api/v1/rules/packs.test${uniqueId}$`).test(e.url));
+          resource = browser.resources.filter((e) => {
+            if (e.request.method !== 'DELETE') {
+              return false;
+            }
+
+            if (!new RegExp(`^https://example.com/api/v1/rules/packs.test${uniqueId}$`).test(e.url)) {
+              return false;
+            }
+
+            return true;
+          });
         });
 
         it('should make a call to rules endpoint once', () => {
@@ -276,20 +299,23 @@ describe('User visits rules page', function () {
         });
 
         it('should not have the deleted rule present', () => {
-          const element = browser.queryAll(util.name(`rule:packs.test${uniqueId}`));
-          expect(element).to.be.empty;
+          return browser.reload().then(() => {
+            // TODO: remove reload
+            const element = browser.queryAll(util.name(`rule:packs.test${uniqueId}`));
+            expect(element).to.be.empty;
+          });
         });
       });
     });
   });
 
   after(() => {
-    // TODO: Uncomment when `.skip`s are fixed
-    // util.client().then(function (client) {
-    //   return client.rules.delete('packs.test' + uniqueId).then(function () {
-    //     console.warn('Warning: Rule "packs.test' + uniqueId + '" has not been properly deleted'); // eslint-disable-line no-console
-    //   });
-    // });
+    util.client().then((client) => {
+      return client.rules.delete(`packs.test${uniqueId}`)
+        .then(() => console.warn(`Warning: Rule "packs.test${uniqueId}" has not been properly deleted`)) // eslint-disable-line no-console
+        .catch(() => {})
+      ;
+    });
     browser.tabs.closeAll();
   });
 });

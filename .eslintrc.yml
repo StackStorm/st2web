@@ -86,9 +86,6 @@ rules:
   no-warning-comments: warn
   no-console: warn
 
-  arrow-body-style:
-    - error
-    - as-needed
   no-var: error
   arrow-spacing: error
   arrow-parens: error

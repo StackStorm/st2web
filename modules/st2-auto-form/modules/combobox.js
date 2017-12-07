@@ -34,7 +34,13 @@ export default class ComboboxModule extends React.Component {
   }
 
   onInput(value) {
-    this.setState({ value });
+    const { spec } = this.props;
+    if (spec.enum.some(({ name }) => name === value)) {
+      this.onChoose(value);
+    }
+    else {
+      this.setState({ value });
+    }
   }
 
   onChoose(value) {
@@ -63,6 +69,7 @@ export default class ComboboxModule extends React.Component {
             onFocus={() => this.onFocus()}
             onBlur={(e) => this.onBlur(e)}
             onChange={({ target: { value } }) => this.onInput(value)}
+            data-test={`field:${spec.name || name}`}
           />
 
           <ErrorMessage>{ this.state.error }</ErrorMessage>

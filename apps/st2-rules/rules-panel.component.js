@@ -106,10 +106,12 @@ export default class RulesPanel extends React.Component {
         if (!rule) {
           ref = this.props.match.params.ref || ref;
 
-          store.dispatch({
-            type: 'FETCH_RULE',
-            promise: api.client.rules.get(ref),
-          });
+          if (ref !== 'new') {
+            store.dispatch({
+              type: 'FETCH_RULE',
+              promise: api.client.rules.get(ref),
+            });
+          }
         }
       })
     ;
@@ -133,7 +135,7 @@ export default class RulesPanel extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { ref } = nextProps.match.params;
 
-    if (ref !== this.props.match.params.ref) {
+    if (ref !== this.props.match.params.ref && ref !== 'new') {
       store.dispatch({
         type: 'FETCH_RULE',
         promise: api.client.rules.get(ref),
@@ -142,6 +144,10 @@ export default class RulesPanel extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.match.params.ref === 'new') {
+      return true;
+    }
+
     if (nextProps.match.params.ref !== this.props.match.params.ref) {
       return false;
     }
@@ -241,14 +247,19 @@ export default class RulesPanel extends React.Component {
   handleDelete(e) {
     e && e.preventDefault();
 
-    const { rule: { id } } = this.props;
+    const { rule: { ref } } = this.props;
 
     return store.dispatch({
       type: 'DELETE_RULE',
-      promise: api.client.rules.delete(id, this.state.editing),
+      promise: api.client.rules.delete(ref, this.state.editing),
     }).then(() => {
       this.setState({ editing: null });
     });
+  }
+
+  handleCreatePopup() {
+    const { history } = this.props;
+    history.push('/rules/new');
   }
 
   handleCreate(rule) {
@@ -262,7 +273,7 @@ export default class RulesPanel extends React.Component {
 
   render() {
     const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
-    const { section } = this.urlParams;
+    const { ref, section } = this.urlParams;
     const rule = this.state.editing || this.props.rule;
 
     return (
@@ -270,7 +281,11 @@ export default class RulesPanel extends React.Component {
         <PanelView className="st2-rules">
           <ToolbarActions>
             <ToolbarButton>
-              <i className="icon-plus" onClick={() => this.handleSection('new')} />
+              <i
+                className="icon-plus"
+                onClick={() => this.handleCreatePopup()}
+                data-test="rule_create_button"
+              />
             </ToolbarButton>
           </ToolbarActions>
           <Toolbar title="Rules">
@@ -431,7 +446,7 @@ export default class RulesPanel extends React.Component {
           </DetailsToolbar>
         </PanelDetails>
 
-        { section === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+        { ref === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
           <RulePopup
             triggerSpec={triggerSpec}
             criteriaSpecs={criteriaSpecs}
