@@ -547,7 +547,7 @@ export default class HistoryPanel extends React.Component {
                           },
                         }}
                         disabled={true}
-                        ngModel={execution.parameters}
+                        data={execution.parameters}
                         data-test="action_input"
                       />
                     </form>

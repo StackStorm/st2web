@@ -118,7 +118,7 @@ export default class RulePopup extends React.Component {
                       },
                     },
                   }}
-                  ngModel={payload}
+                  data={payload}
                   onChange={(meta) => this.handleChange(null, meta)}
                 />
 

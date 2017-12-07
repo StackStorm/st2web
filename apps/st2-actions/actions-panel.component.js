@@ -310,7 +310,7 @@ export default class ActionsPanel extends React.Component {
                           type: 'object',
                           properties: action.parameters,
                         }}
-                        ngModel={this.state.runValue}
+                        data={this.state.runValue}
                         onChange={(runValue) => this.setState({ runValue })}
                       />
                       <StringField

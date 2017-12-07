@@ -438,7 +438,7 @@ export default class PacksPanel extends React.Component {
                   <AutoForm
                     ref={(component) => { this.configField = component; }}
                     spec={config_schema}
-                    ngModel={config}
+                    data={config}
                   />
                   <DetailsButtonsPanel>
                     <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />

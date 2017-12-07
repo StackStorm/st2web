@@ -61,7 +61,7 @@ export default class RemoteForm extends React.Component {
         ) }
         <AutoForm
           spec={childSpec}
-          ngModel={data.parameters}
+          data={data.parameters}
           disabled={disabled}
           onChange={(parameters) => this.onChangeParameters(parameters)}
         />

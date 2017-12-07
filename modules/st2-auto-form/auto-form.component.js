@@ -16,7 +16,7 @@ import './style.less';
 export default class AutoForm extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
-    ngModel: PropTypes.object,
+    data: PropTypes.object,
     disabled: PropTypes.bool,
     onChange: PropTypes.func,
   }
@@ -64,15 +64,15 @@ export default class AutoForm extends React.Component {
   }
 
   handleChange(name, value) {
-    const { ngModel, onChange } = this.props;
+    const { data, onChange } = this.props;
     return onChange({
-      ...ngModel,
+      ...data,
       [name]: value,
     });
   }
 
   render() {
-    const { spec, ngModel, disabled, onChange, ...props } = this.props;
+    const { spec, data, disabled, onChange, ...props } = this.props;
     onChange;
 
     const fields = _(spec && spec.properties)
@@ -121,7 +121,7 @@ export default class AutoForm extends React.Component {
               key={name}
               name={name}
               spec={field}
-              value={ngModel && ngModel[name]}
+              value={data && data[name]}
               disabled={disabled}
               onChange={(value) => this.handleChange(name, value)}
               data-test={`field:${name}`}

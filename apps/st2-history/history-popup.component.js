@@ -69,7 +69,7 @@ export default class HistoryPopup extends React.Component {
 
                 <AutoForm
                   spec={spec}
-                  ngModel={this.state.payload}
+                  data={this.state.payload}
                   onChange={(payload) => this.handleChange(payload)}
                 />
 
