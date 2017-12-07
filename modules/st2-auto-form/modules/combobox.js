@@ -27,16 +27,10 @@ export default class ComboboxModule extends React.Component {
     this.setState({ value: this.props.data });
   }
 
-  onBlur() {
-    // HACK: When clicking an item, onBlur is run before the click target is found,
-    // so the onClick is not run because the item is removed first.
-    setTimeout(() => {
-      if (!this.ref) {
-        return;
-      }
-
+  onBlur(e) {
+    if (this.state.value !== 'null') {
       this.setState({ value: null });
-    }, 100);
+    }
   }
 
   onInput(value) {
@@ -67,7 +61,7 @@ export default class ComboboxModule extends React.Component {
             disabled={disabled}
             value={value === null ? data : value}
             onFocus={() => this.onFocus()}
-            onBlur={() => this.onBlur()}
+            onBlur={(e) => this.onBlur(e)}
             onChange={({ target: { value } }) => this.onInput(value)}
           />
 
@@ -80,7 +74,7 @@ export default class ComboboxModule extends React.Component {
               <div
                 key={name}
                 className={`st2-auto-form__suggestion ${value === name ? 'st2-auto-form__suggestion--active' : ''}`}
-                onClick={() => this.onChoose(name)}
+                onMouseDown={() => this.onChoose(name)}
               >
                 <div className="st2-auto-form__suggestion-primary">{ name }</div>
                 <div className="st2-auto-form__suggestion-secondary">{ description }</div>

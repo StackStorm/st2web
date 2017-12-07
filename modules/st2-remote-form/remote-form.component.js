@@ -35,7 +35,9 @@ export default class RemoteForm extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data, ...props } = this.props;
+    const { name, disabled, spec, data, onChange, ...props } = this.props;
+    onChange;
+
     const key = name === 'trigger' ? 'type' : 'ref';
 
     const child = spec.enum.find(({ name }) => name === data[key]);

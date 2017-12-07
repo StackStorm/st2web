@@ -90,6 +90,30 @@ export class Toolbar extends React.Component {
   }
 }
 
+export class ToolbarActions extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return (
+      <div className="st2-panel__toolbar-actions">{ this.props.children }</div>
+    );
+  }
+}
+
+export class ToolbarButton extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+  }
+
+  render() {
+    const { className, ...props } = this.props;
+
+    return <div {...props} className={`st2-panel__toolbar-button ${className || ''}`} />;
+  }
+}
+
 export class ToolbarTitle extends React.Component {
   static propTypes = {
     children: PropTypes.node,
@@ -266,14 +290,18 @@ export class DetailsBody extends React.Component {
 
 export class DetailsPanel extends React.Component {
   static propTypes = {
+    title: PropTypes.string,
     children: PropTypes.node,
   }
 
   render() {
-    const { children, ...props } = this.props;
+    const { title, children, ...props } = this.props;
 
     return (
       <div {...props} className="st2-details__panel">
+        { title ? (
+          <DetailsPanelHeading title={title} />
+        ) : null }
         { children }
       </div>
     );

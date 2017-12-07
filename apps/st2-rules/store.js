@@ -200,6 +200,24 @@ const ruleReducer = (state = {}, input) => {
         rule,
       };
 
+    case 'CREATE_RULE':
+      switch(input.status) {
+        case 'success':
+          rule = input.payload;
+          ref = rule.ref;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        ref,
+        rule,
+      };
+
     case 'SET_FILTER':
       filter = input.filter;
 

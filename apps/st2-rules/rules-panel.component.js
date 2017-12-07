@@ -14,6 +14,8 @@ import {
   PanelView,
   PanelDetails,
   Toolbar,
+  ToolbarButton,
+  ToolbarActions,
   ToolbarSearch,
   Content,
   DetailsHeader,
@@ -22,15 +24,14 @@ import {
   DetailsPanel,
   DetailsPanelHeading,
   DetailsPanelBody,
-  // DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
   ToggleButton,
 } from '@stackstorm/module-panel';
-// import Button from '@stackstorm/module-forms/button.component';
 import Button from '@stackstorm/module-forms/button.component';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import RuleFlexCard from './rule-flex-card.component';
+import RulePopup from './rule-popup.component';
 import Criteria from '@stackstorm/module-criteria';
 import RemoteForm from '@stackstorm/module-remote-form';
 import St2Highlight from '@stackstorm/module-highlight';
@@ -167,8 +168,8 @@ export default class RulesPanel extends React.Component {
       } });
     }
 
-    const target = { ...source };
     let source = this.state.editing;
+    const target = { ...source };
     let current = target;
 
     const keys = path.split('.');
@@ -250,6 +251,15 @@ export default class RulesPanel extends React.Component {
     });
   }
 
+  handleCreate(rule) {
+    return store.dispatch({
+      type: 'CREATE_RULE',
+      promise: api.client.rules.create(rule),
+    })
+      .then((...args) => this.handleSection('general'))
+    ;
+  }
+
   render() {
     const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
     const { section } = this.urlParams;
@@ -258,6 +268,11 @@ export default class RulesPanel extends React.Component {
     return (
       <Panel data-test="rules_panel">
         <PanelView className="st2-rules">
+          <ToolbarActions>
+            <ToolbarButton>
+              <i className="icon-plus" onClick={() => this.handleSection('new')} />
+            </ToolbarButton>
+          </ToolbarActions>
           <Toolbar title="Rules">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
             <ToolbarSearch title="Filter" value={filter} onChange={(e) => this.handleFilterChange(e)} />
@@ -415,6 +430,17 @@ export default class RulesPanel extends React.Component {
             <DetailsToolbarSeparator />
           </DetailsToolbar>
         </PanelDetails>
+
+        { section === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+          <RulePopup
+            triggerSpec={triggerSpec}
+            criteriaSpecs={criteriaSpecs}
+            actionSpec={actionSpec}
+            packSpec={packSpec}
+            onSubmit={(data) => this.handleCreate(data)}
+            onCancel={() => this.handleSection('general')}
+          />
+        ) : null }
       </Panel>
     );
   }

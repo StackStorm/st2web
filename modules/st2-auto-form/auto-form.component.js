@@ -40,6 +40,7 @@ export default class AutoForm extends React.Component {
     if (field.enum) {
       return EnumField;
     }
+
     switch (field.type) {
       case 'array':
         return ArrayField;
@@ -53,6 +54,7 @@ export default class AutoForm extends React.Component {
         if (field.secret) {
           return PasswordField;
         }
+
         return StringField;
       case 'object':
         return ObjectField;

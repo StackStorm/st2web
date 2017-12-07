@@ -333,7 +333,7 @@ export default class ActionsPanel extends React.Component {
                   <DetailsPanelHeading title="Executions" />
                   <DetailsPanelBody>
                     { executions.length === 0 ? (
-                      <div className="st2-details__panel-empty ng-scope">No history records for this action</div>
+                      <div className="st2-details__panel-empty">No history records for this action</div>
                     ) : (
                       <FlexTable>
                         { executions.map((execution) => [

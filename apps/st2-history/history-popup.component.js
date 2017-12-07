@@ -5,6 +5,11 @@ import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
 import StringField from '@stackstorm/module-auto-form/fields/string';
 import St2Highlight from '@stackstorm/module-highlight';
+import {
+  DetailsPanel,
+  DetailsPanelBody,
+  DetailsButtonsPanel,
+} from '@stackstorm/module-panel';
 
 import Popup from '@stackstorm/module-popup';
 
@@ -53,8 +58,8 @@ export default class HistoryPopup extends React.Component {
       <div className="st2-rerun">
         <Popup title="Rerun an execution" onCancel={onCancel} data-test="rerun_popup">
           <form onSubmit={(e) => this.handleSubmit(e)}>
-            <div className="st2-details__panel">
-              <div className="st2-details__panel-body">
+            <DetailsPanel>
+              <DetailsPanelBody>
                 <StringField
                   name="Action"
                   value={action}
@@ -68,7 +73,7 @@ export default class HistoryPopup extends React.Component {
                   onChange={(payload) => this.handleChange(payload)}
                 />
 
-                <div className="st2-forms__buttons-panel">
+                <DetailsButtonsPanel>
                   <Button
                     flat
                     className="st2-details__toolbar-button"
@@ -89,13 +94,13 @@ export default class HistoryPopup extends React.Component {
                     value="Submit"
                     data-test="rerun_submit"
                   />
-                </div>
+                </DetailsButtonsPanel>
 
                 { this.state.preview ? (
                   <St2Highlight code={this.state.payload} />
                 ) : null }
-              </div>
-            </div>
+              </DetailsPanelBody>
+            </DetailsPanel>
           </form>
         </Popup>
       </div>
