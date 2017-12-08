@@ -25,7 +25,7 @@ class API {
 
     if (this.servers) {
       const url = (() => {
-        if (_.find(this.servers, {url: server.url})) {
+        if (_.find(this.servers, { url: server.url })) {
           return server.url;
         } else {
           return _.first(this.servers).url;
@@ -75,14 +75,14 @@ class API {
     return client;
   }
 
-  connect(server, user, password, remember) {
+  connect(server, username, password, remember) {
     this.client = this.initClient(server, this.token);
     this.server = server;
 
     let promise;
 
-    if (server.auth && user && password) {
-      promise = this.client.authenticate(user, password)
+    if (server.auth && username && password) {
+      promise = this.client.authenticate(username, password)
         .catch((err) => {
           if (err.status === 0) {
             throw {

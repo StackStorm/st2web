@@ -51,10 +51,10 @@ class LoginRow extends React.Component {
   }
 
   render() {
-    const { children, className, ...restProps } = this.props;
+    const { children, className, ...props } = this.props;
 
     return (
-      <div className={cx('st2-login__row', className)} {...restProps}>
+      <div {...props} className={cx('st2-login__row', className)}>
         { children }
       </div>
     );
@@ -77,7 +77,6 @@ class LoginBottomRow extends React.Component {
   }
 }
 
-// TODO: refactor using onChange props
 export default class Login extends React.Component {
   static propTypes = {
     onConnect: PropTypes.func,
@@ -85,17 +84,31 @@ export default class Login extends React.Component {
 
   state = {
     error: null,
+    username: '',
+    password: '',
+    remember: true,
+
+    server: null,
+  }
+
+  componentWillMount() {
+    let server = { auth: true };
+    if (api.servers && api.servers.length > 0) {
+      server = api.servers[0];
+    }
+
+    this.setState({
+      server,
+    });
   }
 
   connect(e) {
     e.preventDefault();
 
-    const server = api.servers[this.serverField.value];
-    const login = this.loginField.value;
-    const password = this.passwordField.value;
-    const remember = this.rememberField.checked;
-
-    return api.connect(server, login, password, remember).then(() => this.props.onConnect());
+    const { server, username, password, remember } = this.state;
+    return api.connect(server, username, password, remember)
+      .then(() => this.props.onConnect())
+    ;
   }
 
   render() {
@@ -103,41 +116,51 @@ export default class Login extends React.Component {
       <div className="st2-login">
         <LoginForm data-test="login" onSubmit={(e) => this.connect(e)}>
           <LoginLogo />
+
           { this.state.error ? (
             <LoginError message={this.state.error} />
           ) : null }
-          { api.servers ? (
-            <LoginRow className="st2-auto-form__select" style={{ display: api.servers.length > 1 ? null : 'none' }}>
+
+          { api.servers && api.servers.length > 1 ? (
+            <LoginRow className="st2-auto-form__select">
               <select
                 className="st2-auto-form__field st2-login__field"
-                ref={(component) => this.serverField = component}
+                value={JSON.stringify(this.state.server)}
+                onChange={({ target: { value } }) => this.setState({ server: JSON.parse(value) })}
               >
-                { api.servers.map((server, i) => (
-                  <option key={i} value={i}>
-                    { server.auth ? `* ${server.name}` : server.name }
-                  </option>
-                )) }
+                { api.servers.map((server) => {
+                  const stringified = JSON.stringify(server);
+
+                  return (
+                    <option key={stringified} value={stringified}>
+                      { server.auth ? `* ${server.name}` : server.name }
+                    </option>
+                  );
+                }) }
               </select>
             </LoginRow>
           ) : null }
+
           <LoginRow>
             <input
               className="st2-auto-form__field st2-login__field"
-              ref={(component) => this.loginField = component}
               type="text"
               name="username"
               placeholder="Username"
               required
+              value={this.state.username}
+              onChange={({ target: { value: username } }) => this.setState({ username })}
             />
           </LoginRow>
           <LoginRow>
             <input
               className="st2-auto-form__field st2-login__field"
-              ref={(component) => this.passwordField = component}
               type="password"
               name="password"
               placeholder="Password"
               required
+              value={this.state.password}
+              onChange={({ target: { value: password } }) => this.setState({ password })}
             />
           </LoginRow>
           <LoginRow>
@@ -150,15 +173,16 @@ export default class Login extends React.Component {
             <label className="st2-login__checkbox-wrapper">
               <input
                 className="st2-login__checkbox"
-                ref={(component) => this.rememberField = component}
                 type="checkbox"
-                defaultChecked
+                checked={this.state.remember}
+                onChange={({ target: { checked: remember } }) => this.setState({ remember })}
               />
               <span className="st2-login__checkbox-label">
                 remember
               </span>
             </label>
           </LoginRow>
+
           <LoginBottomRow>
             <a target="_blank" rel="noopener noreferrer" href="http://docs.stackstorm.com">
               Documentation

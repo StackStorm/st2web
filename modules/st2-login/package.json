@@ -50,7 +50,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "1.0.0-pre.4",
     "@stackstorm/st2-style": "1.0.0-pre.4",
     "classnames": "2.2.5",
     "insert-css": "2.0.0",
