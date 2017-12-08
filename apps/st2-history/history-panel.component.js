@@ -1,8 +1,7 @@
+import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-
-import { Link } from 'react-router-dom';
 
 import store from './store';
 import api from '@stackstorm/module-api';
@@ -12,41 +11,26 @@ import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table
 import {
   Panel,
   PanelView,
-  PanelDetails,
   PanelNavigation,
   Toolbar,
   ToolbarFilters,
   ToolbarView,
   Content,
-  DetailsHeader,
-  DetailsSwitch,
-  DetailsBody,
-  DetailsPanel,
-  DetailsPanelHeading,
-  DetailsPanelBody,
-  DetailsPanelBodyLine,
-  DetailsToolbar,
-  DetailsToolbarSeparator,
+  ContentEmpty,
   ToggleButton,
 } from '@stackstorm/module-panel';
 import Button from '@stackstorm/module-forms/button.component';
 import FlexTable from '@stackstorm/module-flex-table';
-import AutoForm from '@stackstorm/module-auto-form';
-import St2Highlight from '@stackstorm/module-highlight';
 import Time from '@stackstorm/module-time';
-import Label from '@stackstorm/module-label';
-import ActionReporter from '@stackstorm/module-action-reporter';
-import selectOnClick from '@stackstorm/module-select-on-click';
 import Filter from '@stackstorm/module-filter';
 import View from '@stackstorm/module-view';
 
+import HistoryDetails from './history-details.component';
 import HistoryFlexCard from './history-flex-card.component';
-import HistoryPopup from './history-popup.component';
 
 import './style.less';
 
 const PER_PAGE = 50;
-
 
 @connect((state, props) => {
   const { uid } = props;
@@ -69,8 +53,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { filters, activeFilters, groups, execution, collapsed } = state;
-  return { filters, activeFilters, groups, execution, collapsed };
+  const { filters, groups, collapsed } = state;
+  return { filters, groups, collapsed };
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
@@ -87,33 +71,60 @@ export default class HistoryPanel extends React.Component {
     }),
 
     filters: PropTypes.object,
-    activeFilters: PropTypes.object,
     groups: PropTypes.array,
-    execution: PropTypes.object,
     collapsed: PropTypes.bool,
   }
 
   state = {
     maxPages: 0,
+    id: undefined,
   }
 
   componentDidMount() {
+    let { ref: id } = this.props.match.params;
+    if (!id) {
+      const { groups } = this.props;
+      id = groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
+    }
+    if (id !== this.state.id) {
+      this.setState({ id });
+    }
+
     store.dispatch({
       type: 'FETCH_FILTERS',
       promise: api.client.executionsFilters.list(),
     });
 
-    const { page } = this.urlParams;
-    const activeFilters = this.props.activeFilters;
+    const { page, activeFilters } = this.urlParams;
+    this.fetchGroups({ page, activeFilters });
+  }
 
+  componentWillReceiveProps(nextProps) {
+    const next = parseSearch(nextProps.location.search);
+    const current = parseSearch(this.props.location.search);
+
+    let { ref: id } = nextProps.match.params;
+    if (!id) {
+      const { groups } = nextProps;
+      id = groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
+    }
+    if (id !== this.state.id) {
+      this.setState({ id });
+    }
+
+    if (next.page !== current.page || !_.isEqual(next.activeFilters, current.activeFilters)) {
+      this.fetchGroups(next);
+    }
+  }
+
+  fetchGroups({ page, activeFilters }) {
     store.dispatch({
       type: 'FETCH_GROUPS',
-      activeFilters,
       promise: api.client.executions.list({
+        ...activeFilters,
         parent: 'null',
         limit: PER_PAGE,
         page,
-        ...activeFilters,
       })
         .then((list) => {
           const { total, limit } = api.client.executions;
@@ -125,140 +136,65 @@ export default class HistoryPanel extends React.Component {
         }),
     })
       .then(() => {
-        const { execution } = store.getState();
-        let { ref } = store.getState();
+        const { id: ref } = this.urlParams;
+        const { groups } = this.props;
 
-        if (!execution) {
-          ref = this.urlParams.ref || ref;
-
-          store.dispatch({
-            type: 'FETCH_EXECUTION',
-            promise: api.client.executions.get(ref),
-          });
+        if (ref && !groups.some(({ executions }) => executions.some(({ id }) => id === ref))) {
+          this.navigate({ id: false });
         }
       })
     ;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { ref } = nextProps.match.params;
-    const { page } = qs.parse(nextProps.location.search.slice(1));
-
-    if (page !== qs.parse(this.props.location.search.slice(1)).page) {
-      const activeFilters = this.props.activeFilters;
-
-      store.dispatch({
-        type: 'FETCH_GROUPS',
-        activeFilters,
-        promise: api.client.executions.list({
-          ...activeFilters,
-          parent: 'null',
-          limit: PER_PAGE,
-          page,
-        })
-          .then((list) => {
-            const { total, limit } = api.client.executions;
-            this.setState({
-              maxPages: Math.ceil(total / limit),
-            });
-
-            return list;
-          }),
-      })
-        .then(() => {
-          const { groups } = store.getState();
-          const ref = groups.length > 0 && groups[0].executions.length > 0 && groups[0].executions[0].id;
-
-          if (ref) {
-            store.dispatch({
-              type: 'FETCH_EXECUTION',
-              promise: api.client.executions.get(ref),
-            })
-              .then(() => {
-                if (this.props.match.params.ref) {
-                  this.navigate();
-                }
-              })
-            ;
-          }
-        })
-      ;
-    }
-    else if (ref && ref !== this.props.match.params.ref) {
-      store.dispatch({
-        type: 'FETCH_EXECUTION',
-        promise: api.client.executions.get(ref),
-      })
-        .then(() => {
-          if (this.props.match.params.ref) {
-            this.navigate();
-          }
-        })
-      ;
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    if (nextProps.match.params.ref !== this.urlParams.ref) {
-      return false;
-    }
-
-    return true;
-  }
-
   get urlParams() {
-    const { ref, section } = this.props.match.params;
-    const { page, ...params } = qs.parse(this.props.location.search.slice(1));
+    const { id } = this.state;
+    const { section } = this.props.match.params;
+    const { page, activeFilters } = parseSearch(this.props.location.search);
 
     return {
-      ref,
+      id,
       section: section || 'general',
-      page: +page || 1,
-      params,
+      page,
+      activeFilters,
     };
   }
 
-  navigate({ ref, section, page, params } = {}) {
+  navigate({ id, section, page, activeFilters } = {}) {
     const current = this.urlParams;
 
-    if (!ref) {
-      ref = this.props.execution.id || undefined;
+    if (typeof id === 'undefined') {
+      if (this.props.match.params.ref) {
+        id = current.id;
+      }
+    }
+    if (!id) {
+      id = undefined;
     }
 
-    if (!section) {
+    if (typeof section === 'undefined') {
       section = current.section;
     }
     if (section === 'general') {
       section = undefined;
     }
 
-    if (!page) {
+    if (typeof page === 'undefined') {
       page = current.page;
     }
     if (page === 1) {
       page = undefined;
     }
 
-    let query = {
-      ...params,
-      page,
-    };
-    for (const key in query) {
-      if (!query[key]) {
-        delete query[key];
-      }
-    }
-    if (Object.keys(query).length > 0) {
-      query = qs.stringify(query);
-    }
-    else {
-      query = undefined;
+    if (typeof activeFilters === 'undefined') {
+      activeFilters = current.activeFilters;
     }
 
-    const { location } = this.props;
-    const pathname = `/history/${ref}${section ? `/${section}` : ''}`;
+    const query = stringifySearch(page, activeFilters);
+
+    const pathname = `/history${id ? `/${id}${section ? `/${section}` : ''}` : ''}`;
     const search = `${query ? `?${query}` : ''}`;
 
+    const { location } = this.props;
     if (location.pathname === pathname && location.search === search) {
       return;
     }
@@ -267,19 +203,23 @@ export default class HistoryPanel extends React.Component {
     history.push(`${pathname}${search}`);
   }
 
+  handleSelect(id) {
+    return this.navigate({ id });
+  }
+
+  handlePage(page) {
+    return this.navigate({ page });
+  }
+
+  handleSection(section) {
+    return this.navigate({ section });
+  }
+
   handleToggleAll() {
     return store.dispatch(flexActions.toggleAll());
   }
 
-  handleSelect(ref) {
-    return this.navigate({ ref });
-  }
-
-  handleSetPage(page) {
-    return this.navigate({ page });
-  }
-
-  handleExpand(id, expanded) {
+  handleExpandChildren(id, expanded) {
     return store.dispatch({
       type: 'FETCH_EXECUTION_CHILDREN',
       id,
@@ -290,57 +230,41 @@ export default class HistoryPanel extends React.Component {
     });
   }
 
-  handleSection(section) {
-    return this.navigate({ section });
-  }
-
   handleRerun(parameters) {
-    const { execution: { id } } = this.props;
+    const { id } = this.urlParams;
 
     return store.dispatch({
-      type: 'DELETE_RULE',
+      type: 'RERUN_RULE',
       promise: api.client.executions.repeat(id, { parameters }, {
         no_merge: true,
       }),
     })
-      .then(() => {
-        this.handleSection('general');
+      .then(({ payload }) => {
+        this.navigate({
+          id: payload.id,
+          section: 'general',
+        });
       });
   }
 
   handleFilterChange(key, value) {
-    const { page } = this.urlParams;
-    const activeFilters = {
-      ...this.props.activeFilters,
-      [key]: value,
-    };
+    const { activeFilters } = this.urlParams;
 
-    store.dispatch({
-      type: 'FETCH_GROUPS',
-      activeFilters,
-      promise: api.client.executions.list({
-        parent: 'null',
-        limit: PER_PAGE,
-        offset: page * PER_PAGE,
+    this.navigate({
+      page: 1,
+      activeFilters: {
         ...activeFilters,
-      }).then((list) => {
-        const { total, limit } = api.client.executions;
-        this.setState({
-          maxPages: Math.ceil(total / limit),
-        });
-
-        return list;
-      }),
+        [key]: value,
+      },
     });
   }
 
   render() {
-    const { filters, activeFilters, groups, execution, collapsed } = this.props;
-    const { section, page } = this.urlParams;
+    const { filters, groups, collapsed } = this.props;
+    const { id, section, page, activeFilters } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
     const maxPages = this.state.maxPages;
-    const execution_time = execution && Math.ceil((new Date(execution.end_timestamp).getTime() - new Date(execution.start_timestamp).getTime()) / 1000);
 
     return (
       <Panel data-test="history_panel">
@@ -386,10 +310,9 @@ export default class HistoryPanel extends React.Component {
           <Content>
             { groups.map(({ date, executions }) => {
               const title = <Time timestamp={date} format="ddd, DD MMM YYYY" />;
-              const id = execution && execution.id;
 
               return (
-                <FlexTableWrapper key={date} title={title} titleType="date">
+                <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
                   { executions .map((execution) => [
                     <HistoryFlexCard
                       key={execution.id}
@@ -397,7 +320,7 @@ export default class HistoryPanel extends React.Component {
                       selected={id === execution.id}
                       view={view}
                       onClick={() => this.handleSelect(execution.id)}
-                      onToggleExpand={() => this.handleExpand(execution.id, !execution.fetchedChildren)}
+                      onToggleExpand={() => this.handleExpandChildren(execution.id, !execution.fetchedChildren)}
                     />,
                     execution.fetchedChildren ? (
                       <div
@@ -426,166 +349,65 @@ export default class HistoryPanel extends React.Component {
                 <Button
                   className={`st2-forms__button-prev ${page > 1 ? '' : 'st2-forms__button-prev--disabled'}`}
                   value="Previous"
-                  onClick={() => this.handleSetPage(page - 1)}
+                  onClick={() => this.handlePage(page - 1)}
                 />
                 <Button
                   className={`st2-forms__button-next ${page < maxPages ? '' : 'st2-forms__button-next--disabled'}`}
                   value="Next"
-                  onClick={() => this.handleSetPage(page + 1)}
+                  onClick={() => this.handlePage(page + 1)}
                 />
               </PanelNavigation>
-            ) : null }
+            ) : (
+              <ContentEmpty />
+            ) }
           </Content>
         </PanelView>
-        <PanelDetails data-test="details">
-          <DetailsHeader title={execution && execution.action.ref} subtitle={execution && execution.action.description} />
-          <DetailsSwitch
-            sections={[
-              { label: 'General', path: 'general' },
-              { label: 'Code', path: 'code' },
-            ]}
-            current={section}
-            onChange={({ path }) => this.handleSection(path)}
-          />
-          <DetailsBody>
-            { section === 'general' && execution ? (
-              <div>
-                <DetailsPanel>
-                  <div className="st2-action-reporter__header">
-                    <DetailsPanelBody>
-                      <DetailsPanelBodyLine label="Status">
-                        <Label status={execution.status} data-test="status" />
-                      </DetailsPanelBodyLine>
-                      <DetailsPanelBodyLine label="Execution ID">
-                        <div className="st2-action-reporter__uuid" ref={selectOnClick} data-test="execution_id">
-                          { execution && execution.id }
-                        </div>
-                      </DetailsPanelBodyLine>
-                      { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ? (
-                        <DetailsPanelBodyLine label="Trace Tag">
-                          <div className="st2-action-reporter__uuid" ref={selectOnClick}>
-                            { execution.context.trace_context.trace_tag }
-                          </div>
-                        </DetailsPanelBodyLine>
-                      ) : null
-                      }
-                      <DetailsPanelBodyLine label="Started">
-                        <Time
-                          timestamp={execution.start_timestamp}
-                          format="ddd, DD MMM YYYY HH:mm:ss"
-                          data-test="start_timestamp"
-                        />
-                      </DetailsPanelBodyLine>
-                      <DetailsPanelBodyLine label="Finished">
-                        <Time
-                          timestamp={execution.end_timestamp}
-                          format="ddd, DD MMM YYYY HH:mm:ss"
-                          data-test="end_timestamp"
-                        />
-                      </DetailsPanelBodyLine>
-                      <DetailsPanelBodyLine label="Execution Time">
-                        <span data-test="execution_time">
-                          {execution_time}s
-                        </span>
-                      </DetailsPanelBodyLine>
-                    </DetailsPanelBody>
-                  </div>
-                  <DetailsPanelHeading title="Action Output" />
-                  <DetailsPanelBody>
-                    <ActionReporter runner={execution.runner.name} execution={execution} data-test="action_output" />
-                  </DetailsPanelBody>
-                </DetailsPanel>
-                { execution.rule ? (
-                  <DetailsPanel>
-                    <DetailsPanelHeading title="Rule Details" />
-                    <DetailsPanelBody>
-                      <DetailsPanelBodyLine label="Rule">
-                        <Link to={`/rules/${execution.rule.ref}/general`}>{ execution.rule.ref }</Link>
-                      </DetailsPanelBodyLine>
-                      { execution.rule.description ?
-                        (
-                          <DetailsPanelBodyLine label="Description">
-                            { execution.rule.description }
-                          </DetailsPanelBodyLine>
-                        )
-                        : null }
-                    </DetailsPanelBody>
-                  </DetailsPanel>
-                ) : null }
-                { execution.trigger ? (
-                  <DetailsPanel>
-                    <DetailsPanelHeading title="Trigger Details" />
-                    <DetailsPanelBody>
-                      { execution.trigger.type ? (
-                        <DetailsPanelBodyLine label="Trigger">
-                          { execution.trigger.type }
-                        </DetailsPanelBodyLine>
-                      ) : null }
-                      { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
-                        <DetailsPanelBodyLine label="Occurrence">
-                          <Time timestamp={execution.trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
-                        </DetailsPanelBodyLine>
-                      ) : null }
-                    </DetailsPanelBody>
-                    { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
-                      <DetailsPanelBody>
-                        <St2Highlight code={execution.trigger_instance.payload} />
-                      </DetailsPanelBody>
-                    ) : null }
-                  </DetailsPanel>
-                ) : null }
-                <DetailsPanel>
-                  <DetailsPanelHeading title="Action Input" />
-                  <DetailsPanelBody>
-                    <form className="st2-details__form">
-                      <AutoForm
-                        spec={{
-                          type: 'object',
-                          properties: {
-                            ...execution.runner.runner_parameters,
-                            ...execution.action.parameters,
-                          },
-                        }}
-                        disabled={true}
-                        data={execution.parameters}
-                        data-test="action_input"
-                      />
-                    </form>
-                  </DetailsPanelBody>
-                </DetailsPanel>
-              </div>
-            ) : null }
-            { section === 'code' && execution ? (
-              <DetailsPanel data-test="execution_code">
-                <St2Highlight code={execution} />
-              </DetailsPanel>
-            ) : null }
-          </DetailsBody>
-          <DetailsToolbar>
-            <Button small value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
-            <Button small value="Cancel" onClick={() => this.handleCancel()} disabled={!execution || execution.status !== 'running'} />
 
-            <DetailsToolbarSeparator />
-          </DetailsToolbar>
-        </PanelDetails>
-
-        { section === 'rerun' && execution ? (
-          <HistoryPopup
-            action={execution.action.ref}
-            payload={execution.parameters}
-            spec={{
-              type: 'object',
-              properties: {
-                ...execution.runner.runner_parameters,
-                ...execution.action.parameters,
-              },
-            }}
-
-            onSubmit={(data) => this.handleRerun(data)}
-            onCancel={() => this.handleSection('general')}
-          />
-        ) : null }
+        <HistoryDetails
+          handleNavigate={(...args) => this.navigate(...args)}
+          handleRerun={(...args) => this.handleRerun(...args)}
+          id={id}
+          section={section}
+        />
       </Panel>
     );
   }
+}
+
+function parseSearch(search) {
+  const { page, ...activeFilters } = qs.parse(search.slice(1));
+
+  for (const key in activeFilters) {
+    activeFilters[key] = activeFilters[key].split(',').map(v => v.trim()).filter(v => v);
+
+    if (activeFilters[key].length === 0) {
+      delete activeFilters[key];
+    }
+  }
+
+  return {
+    page: +page || 1,
+    activeFilters,
+  };
+}
+
+function stringifySearch(page, activeFilters) {
+  const query = {};
+
+  if (page) {
+    query.page = page;
+  }
+
+  for (const key in activeFilters) {
+    const value = activeFilters[key].join(',');
+    if (value) {
+      query[key] = value;
+    }
+  }
+
+  if (Object.keys(query).length === 0) {
+    return undefined;
+  }
+
+  return qs.stringify(query);
 }

@@ -201,11 +201,19 @@ export class Content extends React.Component {
 
   render() {
     return (
-      <div className='st2-panel__content'>
+      <div className="st2-panel__content">
         <div className="st2-panel__scroller" ref={(ref) => this._scroller = ref}>
           { this.props.children }
         </div>
       </div>
+    );
+  }
+}
+
+export class ContentEmpty extends React.Component {
+  render() {
+    return (
+      <div className="st2-panel__content-empty">No results were found for your current filter</div>
     );
   }
 }

@@ -45,6 +45,10 @@ export default class st2Highlight extends React.Component {
   }
 
   _hightlight() {
+    if (!this._domNode) {
+      return;
+    }
+
     const { language, code } = this.props;
 
     const string = (function () {
@@ -65,12 +69,18 @@ export default class st2Highlight extends React.Component {
       if (type === 'object') {
         return Prism.highlight(JSON.stringify(code, null, 2), Prism.languages.json);
       }
+
+      return '';
     })();
 
     this._domNode.innerHTML = string;
   }
 
   render() {
+    if (!this.props.code) {
+      return null;
+    }
+
     return (
       <div className="st2-highlight">
         <div className="st2-highlight__well">

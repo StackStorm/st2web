@@ -6,7 +6,6 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const historyReducer = (state = {}, input) => {
   let {
     filters = undefined,
-    activeFilters = {},
     executions = [],
     groups = [],
     ref = undefined,
@@ -15,7 +14,6 @@ const historyReducer = (state = {}, input) => {
 
   state = {
     ...state,
-    activeFilters,
     filters,
     executions,
     groups,
@@ -54,7 +52,6 @@ const historyReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           executions = input.payload;
-          activeFilters = input.activeFilters || activeFilters;
 
           groups = _(executions)
             .sortBy('start_timestamp')
@@ -83,7 +80,6 @@ const historyReducer = (state = {}, input) => {
 
       return {
         ...state,
-        activeFilters,
         executions,
         groups,
         ref,
