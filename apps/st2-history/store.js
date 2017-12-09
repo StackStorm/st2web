@@ -128,45 +128,68 @@ const historyReducer = (state = {}, input) => {
         groups,
       };
 
-    case 'PROCESS_EXECUTION':
-      const { record } = input;
+    case 'UPDATE_EXECUTION':
+      const { action, record } = input;
 
       executions = [ ...executions ];
 
-      if (record.parent) {
-        let found = false;
-        for (const index in executions) {
-          if (executions[index].id !== record.parent) {
-            continue;
-          }
+      if (action.endsWith('__delete')) {
+        if (record.parent) {
+          for (const index in executions) {
+            if (executions[index].id !== record.parent) {
+              continue;
+            }
 
-          found = true;
-          executions[index] = { ...executions[index] };
-          if (executions[index].fetchedChildren) {
-            executions[index].fetchedChildren = [ ...executions[index].fetchedChildren ];
+            const parent = executions[index] = { ...executions[index] };
+            if (parent.fetchedChildren) {
+              parent.fetchedChildren = [ ...parent.fetchedChildren ]
+                .filter(execution => execution.id !== record.id)
+              ;
+            }
           }
-          else {
-            executions[index].fetchedChildren = [];
-          }
-
-          executions[index].fetchedChildren.unshift(record);
         }
-        if (!found) {
-          executions.push(record);
+        else {
+          executions = executions
+            .filter(execution => execution.id !== record.id)
+          ;
         }
       }
       else {
-        let found = false;
-        for (const index in executions) {
-          if (executions[index].id !== record.id) {
-            continue;
-          }
+        if (record.parent) {
+          let found = false;
+          for (const index in executions) {
+            if (executions[index].id !== record.parent) {
+              continue;
+            }
 
-          found = true;
-          executions[index] = record;
+            found = true;
+            executions[index] = { ...executions[index] };
+            if (executions[index].fetchedChildren) {
+              executions[index].fetchedChildren = [ ...executions[index].fetchedChildren ];
+            }
+            else {
+              executions[index].fetchedChildren = [];
+            }
+
+            executions[index].fetchedChildren.unshift(record);
+          }
+          if (!found) {
+            executions.push(record);
+          }
         }
-        if (!found) {
-          executions.push(record);
+        else {
+          let found = false;
+          for (const index in executions) {
+            if (executions[index].id !== record.id) {
+              continue;
+            }
+
+            found = true;
+            executions[index] = record;
+          }
+          if (!found) {
+            executions.push(record);
+          }
         }
       }
 

@@ -2,14 +2,19 @@ import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import cx from 'classnames';
-
 import store from './store';
-import api from '@stackstorm/module-api';
+
+import cx from 'classnames';
 import qs from 'querystring';
+import api from '@stackstorm/module-api';
+import {
+  actions as flexActions,
+} from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import setTitle from '@stackstorm/module-title';
 
-import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
+import Filter from '@stackstorm/module-filter';
+import FlexTable from '@stackstorm/module-flex-table';
+import Button from '@stackstorm/module-forms/button.component';
 import {
   Panel,
   PanelView,
@@ -21,12 +26,8 @@ import {
   ContentEmpty,
   ToggleButton,
 } from '@stackstorm/module-panel';
-import Button from '@stackstorm/module-forms/button.component';
-import FlexTable from '@stackstorm/module-flex-table';
 import Time from '@stackstorm/module-time';
-import Filter from '@stackstorm/module-filter';
 import View from '@stackstorm/module-view';
-
 import HistoryDetails from './history-details.component';
 import HistoryFlexCard from './history-flex-card.component';
 
@@ -96,13 +97,15 @@ export default class HistoryPanel extends React.Component {
         }
 
         store.dispatch({
-          type: 'PROCESS_EXECUTION',
+          type: 'UPDATE_EXECUTION',
+          action: e.type,
           record,
         });
       };
 
       this._source.addEventListener('st2.execution__create', this._streamListener);
       this._source.addEventListener('st2.execution__update', this._streamListener);
+      this._source.addEventListener('st2.execution__delete', this._streamListener);
     });
 
     let { ref: id } = this.props.match.params;

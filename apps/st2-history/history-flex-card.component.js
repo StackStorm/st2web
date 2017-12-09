@@ -1,13 +1,13 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+
 import cx from 'classnames';
-
-import Time from '@stackstorm/module-time';
-import Label from '@stackstorm/module-label';
 import isExpandable from '@stackstorm/module-filter-expandable';
-
 import proportional from '@stackstorm/module-proportional';
 const makeProportional = proportional();
+
+import Label from '@stackstorm/module-label';
+import Time from '@stackstorm/module-time';
 
 export default class HistoryFlexCard extends React.Component {
   static propTypes = {

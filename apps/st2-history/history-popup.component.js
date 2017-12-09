@@ -4,15 +4,14 @@ import { PropTypes } from 'prop-types';
 import setTitle from '@stackstorm/module-title';
 
 import AutoForm from '@stackstorm/module-auto-form';
-import Button from '@stackstorm/module-forms/button.component';
 import StringField from '@stackstorm/module-auto-form/fields/string';
+import Button from '@stackstorm/module-forms/button.component';
 import St2Highlight from '@stackstorm/module-highlight';
 import {
   DetailsPanel,
   DetailsPanelBody,
   DetailsButtonsPanel,
 } from '@stackstorm/module-panel';
-
 import Popup from '@stackstorm/module-popup';
 
 export default class HistoryPopup extends React.Component {

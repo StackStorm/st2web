@@ -1,13 +1,17 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-
 import store from './store';
+
 import api from '@stackstorm/module-api';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
-
+import ActionReporter from '@stackstorm/module-action-reporter';
+import AutoForm from '@stackstorm/module-auto-form';
+import Button from '@stackstorm/module-forms/button.component';
+import St2Highlight from '@stackstorm/module-highlight';
+import Label from '@stackstorm/module-label';
 import {
   PanelDetails,
   DetailsHeader,
@@ -20,14 +24,8 @@ import {
   DetailsToolbar,
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
-import Button from '@stackstorm/module-forms/button.component';
-import AutoForm from '@stackstorm/module-auto-form';
-import St2Highlight from '@stackstorm/module-highlight';
-import Time from '@stackstorm/module-time';
-import Label from '@stackstorm/module-label';
-import ActionReporter from '@stackstorm/module-action-reporter';
 import selectOnClick from '@stackstorm/module-select-on-click';
-
+import Time from '@stackstorm/module-time';
 import HistoryPopup from './history-popup.component';
 
 @connect((state) => {
