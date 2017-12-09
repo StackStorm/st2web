@@ -1,6 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+import setTitle from '@stackstorm/module-title';
+
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
 import StringField from '@stackstorm/module-auto-form/fields/string';
@@ -53,6 +55,8 @@ export default class HistoryPopup extends React.Component {
 
   render() {
     const { action, spec, onCancel } = this.props;
+
+    setTitle([ 'Rerun', action, 'History' ]);
 
     return (
       <div className="st2-rerun">

@@ -1,7 +1,6 @@
-'use strict';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import {
   HashRouter as Router,
   Redirect,
@@ -38,31 +37,33 @@ class Container extends React.Component {
         <Router>
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/history" />} />
-            {
-              routes
-                .filter((route) => route.url)
-                .map((route) => (
-                  <Route
-                    key={route.url}
-                    path={`${route.url}/:ref?/:section?`}
-                    render={({ history, match, location }) => {
-                      const props = {
-                        notification,
-                        history,
-                        match,
-                        location,
-                        routes,
-                      };
+            { routes.map(({ url, Component }) => {
+              if (!url) {
+                return null;
+              }
 
-                      if (api.isConnected()) {
-                        return <route.Component {...props} />;
-                      } else {
-                        return <Login onConnect={() => history.replace()} />;
-                      }
-                    }}
-                  />
-                ))
-            }
+              return (
+                <Route
+                  key={url}
+                  path={`${url}/:ref?/:section?`}
+                  render={({ history, match, location }) => {
+                    if (!api.isConnected()) {
+                      return <Login onConnect={() => history.replace()} />;
+                    }
+
+                    return (
+                      <Component
+                        notification={notification}
+                        history={history}
+                        match={match}
+                        location={location}
+                        routes={routes}
+                      />
+                    );
+                  }}
+                />
+              );
+            }) }
           </Switch>
         </Router>
       </div>

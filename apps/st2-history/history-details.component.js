@@ -2,10 +2,11 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Link } from 'react-router-dom';
-
 import store from './store';
 import api from '@stackstorm/module-api';
+import setTitle from '@stackstorm/module-title';
+
+import { Link } from 'react-router-dom';
 
 import {
   PanelDetails,
@@ -88,7 +89,8 @@ export default class HistoryDetails extends React.Component {
   }
 
   handleSection(section) {
-    return this.props.handleNavigate({ section });
+    const { id } = this.props;
+    return this.props.handleNavigate({ id, section });
   }
 
   render() {
@@ -97,6 +99,8 @@ export default class HistoryDetails extends React.Component {
     if (!execution) {
       return null;
     }
+
+    setTitle([ execution.action.ref, 'History' ]);
 
     return (
       <PanelDetails data-test="details">

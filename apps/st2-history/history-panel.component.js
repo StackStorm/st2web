@@ -7,6 +7,7 @@ import cx from 'classnames';
 import store from './store';
 import api from '@stackstorm/module-api';
 import qs from 'querystring';
+import setTitle from '@stackstorm/module-title';
 
 import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
 import {
@@ -314,6 +315,8 @@ export default class HistoryPanel extends React.Component {
 
     const view = this._view ? this._view.value : {};
     const maxPages = this.state.maxPages;
+
+    setTitle([ 'History' ]);
 
     return (
       <Panel data-test="history_panel">

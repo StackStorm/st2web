@@ -66,6 +66,7 @@
     "@stackstorm/module-select-on-click": "1.0.0-pre.4",
     "@stackstorm/module-store": "1.0.0-pre.4",
     "@stackstorm/module-time": "1.0.0-pre.4",
+    "@stackstorm/module-title": "1.0.0-pre.4",
     "@stackstorm/module-view": "1.0.0-pre.4",
     "insert-css": "2.0.0"
   },
