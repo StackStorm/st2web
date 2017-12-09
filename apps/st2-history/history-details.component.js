@@ -37,6 +37,7 @@ export default class HistoryDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRerun: PropTypes.func,
+    provideRefresh: PropTypes.func,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -44,7 +45,11 @@ export default class HistoryDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { id } = this.props;
+    const { id, provideRefresh } = this.props;
+
+    if (provideRefresh) {
+      provideRefresh(() => this.refresh());
+    }
 
     if (id) {
       store.dispatch({
@@ -71,6 +76,15 @@ export default class HistoryDetails extends React.Component {
     }
 
     return true;
+  }
+
+  refresh() {
+    const { id } = this.props;
+
+    store.dispatch({
+      type: 'FETCH_EXECUTION',
+      promise: api.client.executions.get(id),
+    });
   }
 
   handleSection(section) {

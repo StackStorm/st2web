@@ -53,6 +53,8 @@ export class BaseTextField extends React.Component {
     if (isJinja(v)) {
       return false;
     }
+
+    return undefined;
   }
 
   handleChange(value) {

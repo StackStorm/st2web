@@ -85,7 +85,7 @@ export default class RulePopup extends React.Component {
 
     current[final] = value;
 
-    this.setState({ payload: target });
+    return this.setState({ payload: target });
   }
 
   handleSubmit(e) {

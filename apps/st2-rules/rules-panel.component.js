@@ -197,7 +197,7 @@ export default class RulesPanel extends React.Component {
 
     current[final] = value;
 
-    this.setState({ editing: target });
+    return this.setState({ editing: target });
   }
 
   handleToggleAll() {

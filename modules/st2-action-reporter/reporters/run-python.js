@@ -2,30 +2,30 @@ import React from 'react';
 
 import St2Highlight from '@stackstorm/module-highlight';
 
-export default function debug(execution) {
+export default function runPython({ result: { result, stdout, stderr, traceback, error } = {} }) {
   return [
-    execution.result.result ? [
+    result ? [
       <div key="result" className="st2-action-reporter__source">Result</div>,
-      <St2Highlight key="result-code" code={execution.result.result} />,
+      <St2Highlight key="result-code" code={result} />,
     ] : null,
 
-    execution.result.stdout ? [
+    stdout ? [
       <div key="output" className="st2-action-reporter__source">Output</div>,
-      <St2Highlight key="output-code" code={execution.result.stdout} />,
+      <St2Highlight key="output-code" code={stdout} />,
     ] : null,
 
-    execution.result.stderr ? [
+    stderr ? [
       <div key="error" className="st2-action-reporter__source">Error</div>,
-      <St2Highlight key="error-code" code={execution.result.stderr} />,
+      <St2Highlight key="error-code" code={stderr} />,
     ] : null,
 
-    execution.result.traceback ? [
+    traceback ? [
       <div key="traceback" className="st2-action-reporter__source">Traceback</div>,
-      <St2Highlight key="traceback-code" code={[ execution.result.error, execution.result.traceback ].join('\n')} />,
+      <St2Highlight key="traceback-code" code={[ error, traceback ].join('\n')} />,
     ] : null,
 
-    !execution.result.result && !execution.result.stderr && !execution.result.stdout && !execution.result.traceback ? (
-      <div className="st2-highlight st2-action-reporter__message" code="'// Action produced no data'" />
+    !result && !stdout && !stderr && !traceback ? (
+      <St2Highlight key="none" code="'// Action produced no data'" />
     ) : null,
-  ];
+  ].filter(v => v);
 }

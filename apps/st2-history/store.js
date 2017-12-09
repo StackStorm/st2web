@@ -8,7 +8,6 @@ const historyReducer = (state = {}, input) => {
     filters = undefined,
     executions = [],
     groups = [],
-    ref = undefined,
     execution = undefined,
   } = state;
 
@@ -17,7 +16,6 @@ const historyReducer = (state = {}, input) => {
     filters,
     executions,
     groups,
-    ref,
     execution,
   };
 
@@ -52,25 +50,7 @@ const historyReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           executions = input.payload;
-
-          groups = _(executions)
-            .sortBy('start_timestamp')
-            .reverse()
-            .groupBy((execution) => {
-              const date = new Date(execution.start_timestamp).toDateString();
-              const time = new Date(date).toISOString();
-
-              return time;
-            })
-            .value()
-          ;
-          groups = Object.keys(groups).map((date) => ({ date, executions: groups[date] }));
-
-          ref = state.ref;
-          if (!ref) {
-            ref = groups.length > 0 && groups[0].executions.length > 0 && groups[0].executions[0].id || undefined;
-            execution = undefined;
-          }
+          groups = makeGroups(executions);
           break;
         case 'error':
           break;
@@ -82,15 +62,12 @@ const historyReducer = (state = {}, input) => {
         ...state,
         executions,
         groups,
-        ref,
-        execution,
       };
 
     case 'FETCH_EXECUTION':
       switch(input.status) {
         case 'success':
           execution = input.payload;
-          ref = execution.id;
           break;
         case 'error':
           break;
@@ -100,7 +77,6 @@ const historyReducer = (state = {}, input) => {
 
       return {
         ...state,
-        ref,
         execution,
       };
 
@@ -144,18 +120,57 @@ const historyReducer = (state = {}, input) => {
         }
       }
 
-      groups = _(executions)
-        .sortBy('start_timestamp')
-        .reverse()
-        .groupBy((execution) => {
-          const date = new Date(execution.start_timestamp).toDateString();
-          const time = new Date(date).toISOString();
+      groups = makeGroups(executions);
 
-          return time;
-        })
-        .value()
-      ;
-      groups = Object.keys(groups).map((date) => ({ date, executions: groups[date] }));
+      return {
+        ...state,
+        executions,
+        groups,
+      };
+
+    case 'PROCESS_EXECUTION':
+      const { record } = input;
+
+      executions = [ ...executions ];
+
+      if (record.parent) {
+        let found = false;
+        for (const index in executions) {
+          if (executions[index].id !== record.parent) {
+            continue;
+          }
+
+          found = true;
+          executions[index] = { ...executions[index] };
+          if (executions[index].fetchedChildren) {
+            executions[index].fetchedChildren = [ ...executions[index].fetchedChildren ];
+          }
+          else {
+            executions[index].fetchedChildren = [];
+          }
+
+          executions[index].fetchedChildren.unshift(record);
+        }
+        if (!found) {
+          executions.push(record);
+        }
+      }
+      else {
+        let found = false;
+        for (const index in executions) {
+          if (executions[index].id !== record.id) {
+            continue;
+          }
+
+          found = true;
+          executions[index] = record;
+        }
+        if (!found) {
+          executions.push(record);
+        }
+      }
+
+      groups = makeGroups(executions);
 
       return {
         ...state,
@@ -178,3 +193,19 @@ const reducer = (state = {}, action) => {
 const store = createScopedStore('history', reducer);
 
 export default store;
+
+function makeGroups(executions) {
+  const groups = _(executions)
+    .sortBy('start_timestamp')
+    .reverse()
+    .groupBy((execution) => {
+      const date = new Date(execution.start_timestamp).toDateString();
+      const time = new Date(date).toISOString();
+
+      return time;
+    })
+    .value()
+  ;
+
+  return  Object.keys(groups).map((date) => ({ date, executions: groups[date] }));
+}

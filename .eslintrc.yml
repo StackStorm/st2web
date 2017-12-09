@@ -19,6 +19,7 @@ env:
 rules:
   block-scoped-var: error
   camelcase: off
+  consistent-return: error
   curly:
     - error
     - all
@@ -88,7 +89,6 @@ rules:
 
   no-var: error
   arrow-spacing: error
-  arrow-parens: error
   prefer-arrow-callback: error
   prefer-const: error
   prefer-rest-params: error

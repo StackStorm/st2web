@@ -35,17 +35,17 @@ import './style.less';
 
 
 function waitExecution(execution_id, record) {
-  if (record.id !== execution_id) {
-    return;
+  if (record.id === execution_id) {
+    if (record.status === 'succeeded') {
+      return true;
+    }
+
+    if (record.status === 'failed') {
+      return false;
+    }
   }
 
-  if (record.status === 'succeeded') {
-    return true;
-  }
-
-  if (record.status === 'failed') {
-    return false;
-  }
+  return undefined;
 }
 
 @connect((state, props) => {

@@ -81,6 +81,26 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentDidMount() {
+    api.client.stream.listen().then((source) => {
+      this._source = source;
+
+      this._streamListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        if (record.id === this.urlParams.id) {
+          this._refreshDetails && this._refreshDetails();
+        }
+
+        store.dispatch({
+          type: 'PROCESS_EXECUTION',
+          record,
+        });
+      };
+
+      this._source.addEventListener('st2.execution__create', this._streamListener);
+      this._source.addEventListener('st2.execution__update', this._streamListener);
+    });
+
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
@@ -115,6 +135,11 @@ export default class HistoryPanel extends React.Component {
     if (next.page !== current.page || !_.isEqual(next.activeFilters, current.activeFilters)) {
       this.fetchGroups(next);
     }
+  }
+
+  componentWillUnmount() {
+    this._source.removeEventListener('st2.execution__create', this._streamListener);
+    this._source.removeEventListener('st2.execution__update', this._streamListener);
   }
 
   fetchGroups({ page, activeFilters }) {
@@ -364,8 +389,10 @@ export default class HistoryPanel extends React.Component {
         </PanelView>
 
         <HistoryDetails
+          ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
+          provideRefresh={(fn) => this._refreshDetails = fn}
           id={id}
           section={section}
         />
