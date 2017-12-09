@@ -8,7 +8,6 @@ const ruleReducer = (state = {}, input) => {
     rules = [],
     groups = [],
     filter = '',
-    ref = undefined,
     rule = undefined,
     triggerSpec = undefined,
     criteriaSpecs = undefined,
@@ -21,7 +20,6 @@ const ruleReducer = (state = {}, input) => {
     rules,
     groups,
     filter,
-    ref,
     rule,
     triggerSpec,
     criteriaSpecs,
@@ -34,20 +32,7 @@ const ruleReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           rules = input.payload;
-
-          groups = _(rules)
-            .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-            .sortBy('ref')
-            .groupBy('pack')
-            .value()
-          ;
-          groups = Object.keys(groups).map((pack) => ({ pack, rules: groups[pack] }));
-
-          ref = state.ref;
-          if (!ref) {
-            ref = groups[0].rules[0].ref;
-            rule = undefined;
-          }
+          groups = makeGroups(rules, filter);
           break;
         case 'error':
           break;
@@ -59,7 +44,6 @@ const ruleReducer = (state = {}, input) => {
         ...state,
         rules,
         groups,
-        ref,
         rule,
       };
 
@@ -67,7 +51,6 @@ const ruleReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           rule = input.payload;
-          ref = rule.ref;
           break;
         case 'error':
           break;
@@ -77,7 +60,6 @@ const ruleReducer = (state = {}, input) => {
 
       return {
         ...state,
-        ref,
         rule,
       };
 
@@ -186,7 +168,6 @@ const ruleReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           rule = input.payload;
-          ref = rule.ref;
           break;
         case 'error':
           break;
@@ -196,7 +177,6 @@ const ruleReducer = (state = {}, input) => {
 
       return {
         ...state,
-        ref,
         rule,
       };
 
@@ -204,7 +184,6 @@ const ruleReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           rule = input.payload;
-          ref = rule.ref;
           break;
         case 'error':
           break;
@@ -214,20 +193,12 @@ const ruleReducer = (state = {}, input) => {
 
       return {
         ...state,
-        ref,
         rule,
       };
 
     case 'SET_FILTER':
       filter = input.filter;
-
-      groups = _(rules)
-        .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-        .sortBy('ref')
-        .groupBy('pack')
-        .value()
-      ;
-      groups = Object.keys(groups).map((pack) => ({ pack, rules: groups[pack] }));
+      groups = makeGroups(rules, filter);
 
       return {
         ...state,
@@ -250,3 +221,13 @@ const reducer = (state = {}, action) => {
 const store = createScopedStore('rules', reducer);
 
 export default store;
+
+function makeGroups(rules, filter) {
+  const groups = _(rules)
+    .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+    .sortBy('ref')
+    .groupBy('pack')
+    .value()
+  ;
+  return Object.keys(groups).map((pack) => ({ pack, rules: groups[pack] }));
+}

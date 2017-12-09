@@ -37,7 +37,7 @@ import Time from '@stackstorm/module-time';
   const { action, executions } = state;
   return { action, executions };
 })
-export default class ActionsPanel extends React.Component {
+export default class ActionsDetails extends React.Component {
   static propTypes = {
     notification: PropTypes.object.isRequired,
     handleNavigate: PropTypes.func.isRequired,

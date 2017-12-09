@@ -8,7 +8,9 @@ import store from './store';
 import api from '@stackstorm/module-api';
 import qs from 'querystring';
 
-import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer';
+import {
+  actions as flexActions,
+} from '@stackstorm/module-flex-table/flex-table.reducer';
 import {
   Panel,
   PanelView,

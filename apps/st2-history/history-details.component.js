@@ -238,7 +238,7 @@ export default class HistoryDetails extends React.Component {
           <DetailsToolbarSeparator />
         </DetailsToolbar>
 
-        { section === 'rerun' && this.props.handleRerun ? (
+        { section === 'rerun' ? (
           <HistoryPopup
             action={execution.action.ref}
             payload={execution.parameters}

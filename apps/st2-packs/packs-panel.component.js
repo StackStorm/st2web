@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import store from './store';
 import api from '@stackstorm/module-api';
 
-import { actions } from '@stackstorm/module-flex-table/flex-table.reducer';
+import {
+  actions as flexActions,
+} from '@stackstorm/module-flex-table/flex-table.reducer';
 import {
   Panel,
   PanelView,
@@ -56,14 +58,14 @@ function waitExecution(execution_id, record) {
   const { title } = props;
 
   return {
-    onToggle: () => store.dispatch(actions.toggle(title)),
+    onToggle: () => store.dispatch(flexActions.toggle(title)),
   };
 })
 class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { title } = this.props;
 
-    store.dispatch(actions.register(title));
+    store.dispatch(flexActions.register(title));
   }
 }
 
@@ -196,7 +198,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleToggleAll() {
-    return store.dispatch(actions.toggleAll());
+    return store.dispatch(flexActions.toggleAll());
   }
 
   handleSelect(ref) {
