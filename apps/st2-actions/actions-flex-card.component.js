@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 import isExpandable from '@stackstorm/module-filter-expandable';
 
-export default class ActionFlexCard extends React.Component {
+export default class ActionsFlexCard extends React.Component {
   static propTypes = {
     action: PropTypes.object,
     selected: PropTypes.bool,

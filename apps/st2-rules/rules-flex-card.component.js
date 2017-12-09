@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import Label from '@stackstorm/module-label';
 import PackIcon from '@stackstorm/module-pack-icon';
 
-export default class RuleFlexCard extends React.Component {
+export default class RulesFlexCard extends React.Component {
   static propTypes = {
     rule: PropTypes.object,
     selected: PropTypes.bool,

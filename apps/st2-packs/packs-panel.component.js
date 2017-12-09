@@ -23,7 +23,7 @@ import {
   ToggleButton,
 } from '@stackstorm/module-panel';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
-import PackFlexCard from './pack-flex-card.component';
+import PacksFlexCard from './packs-flex-card.component';
 import Button from '@stackstorm/module-forms/button.component';
 import Table from './table.component';
 
@@ -32,7 +32,6 @@ import St2Highlight from '@stackstorm/module-highlight';
 import St2PortionBar from '@stackstorm/module-portion-bar';
 
 import './style.less';
-
 
 function waitExecution(execution_id, record) {
   if (record.id === execution_id) {
@@ -410,7 +409,7 @@ export default class PacksPanel extends React.Component {
               return (
                 <FlexTableWrapper title={key} key={key} >
                   { packGroups[key] .map((pack) => (
-                    <PackFlexCard
+                    <PacksFlexCard
                       key={pack.ref} pack={pack}
                       selected={selected === pack.ref}
                       onClick={() => this.handleSelect(pack.ref)}

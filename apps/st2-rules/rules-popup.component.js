@@ -17,7 +17,7 @@ import {
 
 import Popup from '@stackstorm/module-popup';
 
-export default class RulePopup extends React.Component {
+export default class RulesPopup extends React.Component {
   static propTypes = {
     triggerSpec: PropTypes.object.isRequired,
     criteriaSpecs: PropTypes.object.isRequired,

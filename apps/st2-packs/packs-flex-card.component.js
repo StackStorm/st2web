@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-export default class PackFlexCard extends React.Component {
+export default class PacksFlexCard extends React.Component {
   static propTypes = {
     pack: PropTypes.object,
     selected: PropTypes.bool,

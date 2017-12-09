@@ -30,8 +30,8 @@ import {
 } from '@stackstorm/module-panel';
 import Button from '@stackstorm/module-forms/button.component';
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
-import RuleFlexCard from './rule-flex-card.component';
-import RulePopup from './rule-popup.component';
+import RulesFlexCard from './rules-flex-card.component';
+import RulesPopup from './rules-popup.component';
 import Criteria from '@stackstorm/module-criteria';
 import RemoteForm from '@stackstorm/module-remote-form';
 import St2Highlight from '@stackstorm/module-highlight';
@@ -40,7 +40,6 @@ import PackIcon from '@stackstorm/module-pack-icon';
 import AutoFormCheckbox from '@stackstorm/module-auto-form/modules/checkbox';
 
 import './style.less';
-
 
 @connect((state, props) => {
   const { title } = props;
@@ -300,7 +299,7 @@ export default class RulesPanel extends React.Component {
               return (
                 <FlexTableWrapper title={pack} key={pack} icon={icon}>
                   { rules .map((rule) => (
-                    <RuleFlexCard
+                    <RulesFlexCard
                       key={rule.ref} rule={rule}
                       selected={ref === rule.ref}
                       onClick={() => this.handleSelect(rule.ref)}
@@ -447,7 +446,7 @@ export default class RulesPanel extends React.Component {
         </PanelDetails>
 
         { ref === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
-          <RulePopup
+          <RulesPopup
             triggerSpec={triggerSpec}
             criteriaSpecs={criteriaSpecs}
             actionSpec={actionSpec}

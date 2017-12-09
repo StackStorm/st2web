@@ -34,7 +34,7 @@ import {
   FlexTableRow,
   FlexTableInsert,
 } from '@stackstorm/module-flex-table';
-import ActionFlexCard from './action-flex-card.component';
+import ActionsFlexCard from './actions-flex-card.component';
 import AutoForm from '@stackstorm/module-auto-form';
 import St2Highlight from '@stackstorm/module-highlight';
 import StringField from '@stackstorm/module-auto-form/fields/string';
@@ -44,7 +44,6 @@ import View from '@stackstorm/module-view';
 import ActionReporter from '@stackstorm/module-action-reporter';
 
 import './style.less';
-
 
 @connect((state, props) => {
   const { title } = props;
@@ -276,7 +275,7 @@ export default class ActionsPanel extends React.Component {
               return (
                 <FlexTableWrapper title={pack} key={pack} icon={icon} data-test={`pack pack:${pack}`}>
                   { actions.map((action) => (
-                    <ActionFlexCard
+                    <ActionsFlexCard
                       key={action.ref} action={action}
                       selected={ref === action.ref}
                       view={view}
