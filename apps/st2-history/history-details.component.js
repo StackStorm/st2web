@@ -34,6 +34,7 @@ import HistoryPopup from './history-popup.component';
 })
 export default class HistoryDetails extends React.Component {
   static propTypes = {
+    notification: PropTypes.object.isRequired,
     handleNavigate: PropTypes.func.isRequired,
     handleRerun: PropTypes.func.isRequired,
     provideRefresh: PropTypes.func.isRequired,
@@ -51,10 +52,7 @@ export default class HistoryDetails extends React.Component {
     }
 
     if (id) {
-      store.dispatch({
-        type: 'FETCH_EXECUTION',
-        promise: api.client.executions.get(id),
-      });
+      this.fetchExecution(id);
     }
   }
 
@@ -62,10 +60,7 @@ export default class HistoryDetails extends React.Component {
     const { id } = nextProps;
 
     if (id && id !== this.props.id) {
-      store.dispatch({
-        type: 'FETCH_EXECUTION',
-        promise: api.client.executions.get(id),
-      });
+      this.fetchExecution(id);
     }
   }
 
@@ -80,10 +75,21 @@ export default class HistoryDetails extends React.Component {
   refresh() {
     const { id } = this.props;
 
+    this.fetchExecution(id);
+  }
+
+  fetchExecution(id) {
+    const { notification } = this.props;
+
     store.dispatch({
       type: 'FETCH_EXECUTION',
       promise: api.client.executions.get(id),
-    });
+    })
+      .catch((res) => {
+        notification.error(`Unable to retrieve execution "${id}". See details in developer tools console.`);
+        console.error(res); // eslint-disable-line no-console
+      })
+    ;
   }
 
   handleSection(section) {

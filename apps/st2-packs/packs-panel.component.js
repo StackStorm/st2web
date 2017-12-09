@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import store from './store';
 import api from '@stackstorm/module-api';
 
-import { actions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
+import { actions } from '@stackstorm/module-flex-table/flex-table.reducer';
 import {
   Panel,
   PanelView,
@@ -128,7 +128,7 @@ export default class PacksPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_PACK_INDEX',
-      // A rather ugly hack that helps us not to update st2client.js just yet
+      // A rather ugly hack that helps us not to update st2client just yet
       promise: api.client.packs.get('index')
         .then(({ index }) => index)
         // In some cases pack ref might be missing and we better sort it out earlier

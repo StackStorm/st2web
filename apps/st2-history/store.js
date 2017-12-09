@@ -129,11 +129,11 @@ const historyReducer = (state = {}, input) => {
       };
 
     case 'UPDATE_EXECUTION':
-      const { action, record } = input;
+      const { event, record } = input;
 
       executions = [ ...executions ];
 
-      if (action.endsWith('__delete')) {
+      if (event.endsWith('__delete')) {
         if (record.parent) {
           for (const index in executions) {
             if (executions[index].id !== record.parent) {

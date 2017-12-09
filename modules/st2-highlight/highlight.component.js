@@ -51,17 +51,17 @@ export default class st2Highlight extends React.Component {
   }
 
   componentWillMount() {
-    this._update();
-  }
-
-  componentWillReceiveProps() {
-    this._update();
-  }
-
-  get fullString() {
     const { language, code } = this.props;
+    this._update(language, code);
+  }
 
-    let string = (function () {
+  componentWillReceiveProps(nextProps) {
+    const { language, code } = nextProps;
+    this._update(language, code);
+  }
+
+  _update(language, code) {
+    let outputFull = (function () {
       if (language && Prism.languages[language]) {
         return Prism.highlight(code, Prism.languages[language]);
       }
@@ -84,17 +84,13 @@ export default class st2Highlight extends React.Component {
     })();
 
     if (this.state.newlines) {
-      string = string
+      outputFull = outputFull
         .replace(/\r/g, '\\r\r')
         .replace(/\n/g, '\\n\n')
       ;
     }
 
-    return string;
-  }
-
-  _update() {
-    let outputFull = this.fullString.split('\n');
+    outputFull = outputFull.split('\n');
     while (outputFull[0] === '') {
       outputFull.shift();
     }
@@ -111,8 +107,11 @@ export default class st2Highlight extends React.Component {
     outputFull = outputFull.join('\n');
     outputShort = outputShort.join('\n');
 
-    if (this._ref) {
-      this._ref.innerHTML = outputFull;
+    if (this._refFull) {
+      this._refFull.innerHTML = outputFull;
+    }
+    if (this._refShort) {
+      this._refShort.innerHTML = outputShort;
     }
 
     this.setState({

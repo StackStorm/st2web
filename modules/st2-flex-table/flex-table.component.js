@@ -7,7 +7,7 @@ import './style.less';
 
 export class FlexTable extends React.Component {
   static propTypes = {
-    uid: PropTypes.string.isRequired,
+    uid: PropTypes.string,
     title: PropTypes.node,
     titleType: PropTypes.string,
     collapsed: PropTypes.bool,

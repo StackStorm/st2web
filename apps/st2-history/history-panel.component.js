@@ -9,7 +9,7 @@ import qs from 'querystring';
 import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
-} from '@stackstorm/module-flex-table/flex-table.reducer.js';
+} from '@stackstorm/module-flex-table/flex-table.reducer';
 import setTitle from '@stackstorm/module-title';
 
 import Filter from '@stackstorm/module-filter';
@@ -64,6 +64,7 @@ export default class HistoryPanel extends React.Component {
     notification: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.shape({
+      pathname: PropTypes.string,
       search: PropTypes.string,
     }).isRequired,
     match: PropTypes.shape({
@@ -98,7 +99,7 @@ export default class HistoryPanel extends React.Component {
 
         store.dispatch({
           type: 'UPDATE_EXECUTION',
-          action: e.type,
+          event: e.type,
           record,
         });
       };
@@ -151,12 +152,13 @@ export default class HistoryPanel extends React.Component {
   componentWillUnmount() {
     this._source.removeEventListener('st2.execution__create', this._streamListener);
     this._source.removeEventListener('st2.execution__update', this._streamListener);
+    this._source.removeEventListener('st2.execution__delete', this._streamListener);
   }
 
   fetchGroups({ page, activeFilters }) {
     const { notification } = this.props;
 
-    store.dispatch({
+    return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.executions.list({
         ...activeFilters,
@@ -253,10 +255,6 @@ export default class HistoryPanel extends React.Component {
     return this.navigate({ page });
   }
 
-  handleSection(section) {
-    return this.navigate({ section });
-  }
-
   handleToggleAll() {
     return store.dispatch(flexActions.toggleAll());
   }
@@ -313,7 +311,7 @@ export default class HistoryPanel extends React.Component {
   }
 
   render() {
-    const { filters, groups, collapsed } = this.props;
+    const { notification, filters, groups, collapsed } = this.props;
     const { id, section, page, activeFilters } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
@@ -425,6 +423,7 @@ export default class HistoryPanel extends React.Component {
         </PanelView>
 
         <HistoryDetails
+          notification={notification}
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
