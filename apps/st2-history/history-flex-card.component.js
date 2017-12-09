@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import Time from '@stackstorm/module-time';
 import Label from '@stackstorm/module-label';
@@ -10,16 +11,20 @@ const makeProportional = proportional();
 
 export default class HistoryFlexCard extends React.Component {
   static propTypes = {
-    isChild: PropTypes.bool,
-    execution: PropTypes.object,
-    selected: PropTypes.bool,
-    view: PropTypes.object,
-    onClick: PropTypes.func,
+    isChild: PropTypes.bool.isRequired,
+    execution: PropTypes.object.isRequired,
+    selected: PropTypes.bool.isRequired,
+    view: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
     onToggleExpand: PropTypes.func,
   }
 
+  static defaultProps = {
+    isChild: false,
+  }
+
   static contextTypes = {
-    scrollIntoView: PropTypes.func,
+    scrollIntoView: PropTypes.func.isRequired,
   }
 
   handleToggleExpand(e) {
@@ -32,23 +37,24 @@ export default class HistoryFlexCard extends React.Component {
   render() {
     const { isChild, execution, selected, view, onClick } = this.props;
 
-    const props = {
-      className: 'st2-flex-card',
-      'data-test': `execution execution:${execution.id}`,
-      onClick,
-    };
-
-    if (selected) {
-      props.className += ' st2-flex-card--active';
-    }
-
     return (
-      <div {...props} ref={selected ? this.context.scrollIntoView : null}>
+      <div
+        className={cx({
+          'st2-flex-card': true,
+          'st2-flex-card--active': selected,
+        })}
+        onClick={onClick}
+        data-test={`execution execution:${execution.id}`}
+        ref={selected ? this.context.scrollIntoView : null}
+      >
         <div className="st2-flex-card__row">
           <div className="st2-flex-card__column st2-flex-card__expand">
             { isExpandable(execution) ? (
               <i
-                className={execution.fetchedChildren ? 'icon-chevron-down' : 'icon-chevron_right'}
+                className={cx({
+                  'icon-chevron-down': execution.fetchedChildren,
+                  'icon-chevron_right': !execution.fetchedChildren,
+                })}
                 onClick={(e) => this.handleToggleExpand(e)}
               />
             ) : null }

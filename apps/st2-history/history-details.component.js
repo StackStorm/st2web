@@ -36,8 +36,8 @@ import HistoryPopup from './history-popup.component';
 export default class HistoryDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
-    handleRerun: PropTypes.func,
-    provideRefresh: PropTypes.func,
+    handleRerun: PropTypes.func.isRequired,
+    provideRefresh: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,

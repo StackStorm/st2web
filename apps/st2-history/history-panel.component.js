@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import cx from 'classnames';
 
 import store from './store';
 import api from '@stackstorm/module-api';
@@ -58,17 +59,17 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
-    // notification: PropTypes.object,
-    history: PropTypes.object,
+    notification: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     location: PropTypes.shape({
       search: PropTypes.string,
-    }),
+    }).isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
         ref: PropTypes.string,
         section: PropTypes.string,
-      }),
-    }),
+      }).isRequired,
+    }).isRequired,
 
     filters: PropTypes.object,
     groups: PropTypes.array,
@@ -81,6 +82,8 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentDidMount() {
+    const { notification } = this.props;
+
     api.client.stream.listen().then((source) => {
       this._source = source;
 
@@ -112,7 +115,11 @@ export default class HistoryPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_FILTERS',
-      promise: api.client.executionsFilters.list(),
+      promise: api.client.executionsFilters.list()
+        .catch((res) => {
+          notification.error('Unable to retrieve history. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
+        }),
     });
 
     const { page, activeFilters } = this.urlParams;
@@ -143,6 +150,8 @@ export default class HistoryPanel extends React.Component {
   }
 
   fetchGroups({ page, activeFilters }) {
+    const { notification } = this.props;
+
     store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.executions.list({
@@ -158,6 +167,10 @@ export default class HistoryPanel extends React.Component {
           });
 
           return list;
+        })
+        .catch((res) => {
+          notification.error('Unable to retrieve history. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
         }),
     })
       .then(() => {
@@ -245,17 +258,24 @@ export default class HistoryPanel extends React.Component {
   }
 
   handleExpandChildren(id, expanded) {
+    const { notification } = this.props;
+
     return store.dispatch({
       type: 'FETCH_EXECUTION_CHILDREN',
       id,
       expanded,
       promise: expanded ? api.client.executions.list({
         parent: id,
-      }) : null,
+      })
+        .catch((res) => {
+          notification.error('Unable to retrieve children. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
+        }) : null,
     });
   }
 
   handleRerun(parameters) {
+    const { notification } = this.props;
     const { id } = this.urlParams;
 
     return store.dispatch({
@@ -269,6 +289,10 @@ export default class HistoryPanel extends React.Component {
           id: payload.id,
           section: 'general',
         });
+      })
+      .catch((res) => {
+        notification.error('Unable to rerun execution. See details in developer tools console.');
+        console.error(res); // eslint-disable-line no-console
       });
   }
 
@@ -372,12 +396,18 @@ export default class HistoryPanel extends React.Component {
             { groups.length > 0 ? (
               <PanelNavigation>
                 <Button
-                  className={`st2-forms__button-prev ${page > 1 ? '' : 'st2-forms__button-prev--disabled'}`}
+                  className={cx({
+                    'st2-forms__button-prev': true,
+                    'st2-forms__button-prev--disabled': page <= 1,
+                  })}
                   value="Previous"
                   onClick={() => this.handlePage(page - 1)}
                 />
                 <Button
-                  className={`st2-forms__button-next ${page < maxPages ? '' : 'st2-forms__button-next--disabled'}`}
+                  className={cx({
+                    'st2-forms__button-next': true,
+                    'st2-forms__button-next--disabled': page >= maxPages,
+                  })}
                   value="Next"
                   onClick={() => this.handlePage(page + 1)}
                 />
