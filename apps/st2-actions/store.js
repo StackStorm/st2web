@@ -8,7 +8,6 @@ const actionReducer = (state = {}, input) => {
     actions = [],
     groups = [],
     filter = '',
-    ref = undefined,
     action = undefined,
     executions = [],
   } = state;
@@ -18,7 +17,6 @@ const actionReducer = (state = {}, input) => {
     actions,
     groups,
     filter,
-    ref,
     action,
     executions,
   };
@@ -28,20 +26,7 @@ const actionReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           actions = input.payload;
-
-          groups = _(actions)
-            .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-            .sortBy('ref')
-            .groupBy('pack')
-            .value()
-          ;
-          groups = Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
-
-          ref = state.ref;
-          if (!ref) {
-            ref = groups[0].actions[0].ref;
-            action = undefined;
-          }
+          groups = makeGroups(actions, filter);
           break;
         case 'error':
           break;
@@ -53,15 +38,12 @@ const actionReducer = (state = {}, input) => {
         ...state,
         actions,
         groups,
-        ref,
-        action,
       };
 
     case 'FETCH_ACTION':
       switch(input.status) {
         case 'success':
           action = input.payload;
-          ref = action.ref;
           break;
         case 'error':
           break;
@@ -71,7 +53,6 @@ const actionReducer = (state = {}, input) => {
 
       return {
         ...state,
-        ref,
         action,
       };
 
@@ -91,16 +72,42 @@ const actionReducer = (state = {}, input) => {
         executions,
       };
 
+    case 'UPDATE_ACTION':
+      const { event, record } = input;
+
+      actions = [ ...actions ];
+
+      if (event.endsWith('__delete')) {
+        actions = actions
+          .filter(action => action.id !== record.id)
+        ;
+      }
+      else {
+        let found = false;
+        for (const index in actions) {
+          if (actions[index].id !== record.id) {
+            continue;
+          }
+
+          found = true;
+          actions[index] = record;
+        }
+        if (!found) {
+          actions.push(record);
+        }
+      }
+
+      groups = makeGroups(actions, filter);
+
+      return {
+        ...state,
+        actions,
+        groups,
+      };
+
     case 'SET_FILTER':
       filter = input.filter;
-
-      groups = _(actions)
-        .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
-        .sortBy('ref')
-        .groupBy('pack')
-        .value()
-      ;
-      groups = Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
+      groups = makeGroups(actions, filter);
 
       return {
         ...state,
@@ -123,3 +130,13 @@ const reducer = (state = {}, action) => {
 const store = createScopedStore('actions', reducer);
 
 export default store;
+
+function makeGroups(actions, filter) {
+  const groups = _(actions)
+    .filter(({ ref }) => ref.toLowerCase().indexOf(filter.toLowerCase()) > -1)
+    .sortBy('ref')
+    .groupBy('pack')
+    .value()
+  ;
+  return Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
+}

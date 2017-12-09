@@ -1,81 +1,61 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-
-import { Link } from 'react-router-dom';
-
 import store from './store';
-import api from '@stackstorm/module-api';
-import qs from 'querystring';
 
-import { actions as flexActions } from '@stackstorm/module-flex-table/flex-table.reducer.js';
+import api from '@stackstorm/module-api';
+import {
+  actions as flexActions,
+} from '@stackstorm/module-flex-table/flex-table.reducer';
+import setTitle from '@stackstorm/module-title';
+
+import FlexTable from '@stackstorm/module-flex-table';
 import {
   Panel,
   PanelView,
-  PanelDetails,
   Toolbar,
   ToolbarSearch,
   ToolbarView,
   Content,
-  DetailsHeader,
-  DetailsSwitch,
-  DetailsBody,
-  DetailsPanel,
-  DetailsPanelHeading,
-  DetailsPanelBody,
-  DetailsButtonsPanel,
-  DetailsToolbar,
-  DetailsToolbarSeparator,
   ToggleButton,
 } from '@stackstorm/module-panel';
-import Button from '@stackstorm/module-forms/button.component';
-import {
-  FlexTable,
-  FlexTableRow,
-  FlexTableInsert,
-} from '@stackstorm/module-flex-table';
-import ActionsFlexCard from './actions-flex-card.component';
-import AutoForm from '@stackstorm/module-auto-form';
-import St2Highlight from '@stackstorm/module-highlight';
-import StringField from '@stackstorm/module-auto-form/fields/string';
-import Time from '@stackstorm/module-time';
-import Label from '@stackstorm/module-label';
 import View from '@stackstorm/module-view';
-import ActionReporter from '@stackstorm/module-action-reporter';
+import ActionsDetails from './actions-details.component';
+import ActionsFlexCard from './actions-flex-card.component';
 
 import './style.less';
 
 @connect((state, props) => {
-  const { title } = props;
-  const { collapsed = state.collapsed } = state.tables[title] || {};
+  const { uid } = props;
+  const { collapsed = state.collapsed } = state.tables[uid] || {};
 
   return { collapsed, ...props };
 }, (dispatch, props) => {
-  const { title } = props;
+  const { uid } = props;
 
   return {
-    onToggle: () => store.dispatch(flexActions.toggle(title)),
+    onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
 })
 class FlexTableWrapper extends FlexTable {
   componentDidMount() {
-    const { title } = this.props;
+    const { uid } = this.props;
 
-    store.dispatch(flexActions.register(title, true));
+    store.dispatch(flexActions.register(uid, true));
   }
 }
 
 @connect((state) => {
-  const { groups, filter, action, executions, collapsed } = state;
-  return { groups, filter, action, executions, collapsed };
+  const { groups, filter, collapsed } = state;
+  return { groups, filter, collapsed };
 })
 export default class ActionsPanel extends React.Component {
   static propTypes = {
     notification: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.shape({
-      search: PropTypes.string,
-    }),
+      pathname: PropTypes.string,
+    }).isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
         ref: PropTypes.string,
@@ -85,145 +65,164 @@ export default class ActionsPanel extends React.Component {
 
     groups: PropTypes.array,
     filter: PropTypes.string,
-    action: PropTypes.object,
-    executions: PropTypes.array,
     collapsed: PropTypes.bool,
   }
 
   state = {
-    runPreview: false,
-    runValue: null,
-    runTrace: null,
-    executionsVisible: {},
+    id: undefined,
   }
 
   componentDidMount() {
-    store.dispatch({
+    api.client.stream.listen().then((source) => {
+      this._source = source;
+
+      this._streamListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        if (record.id === this.urlParams.id) {
+          this._refreshDetails && this._refreshDetails();
+        }
+
+        store.dispatch({
+          type: 'UPDATE_ACTION',
+          event: e.type,
+          record,
+        });
+      };
+
+      this._source.addEventListener('st2.action__create', this._streamListener);
+      this._source.addEventListener('st2.action__update', this._streamListener);
+      this._source.addEventListener('st2.action__delete', this._streamListener);
+    });
+
+    let { ref: id } = this.props.match.params;
+    if (!id) {
+      const { groups } = this.props;
+      id = groups.length > 0 && groups[0].actions.length > 0 ? groups[0].actions[0].ref : undefined;
+    }
+    if (id !== this.state.id) {
+      this.setState({ id });
+    }
+
+    this.fetchGroups().then(() => {
+      const { id } = this.urlParams;
+      store.dispatch(flexActions.toggle(id.split('.')[0], false));
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let { ref: id } = nextProps.match.params;
+    if (!id) {
+      const { groups } = nextProps;
+      id = groups.length > 0 && groups[0].actions.length > 0 ? groups[0].actions[0].ref : undefined;
+    }
+    if (id !== this.state.id) {
+      this.setState({ id }, () => {
+        store.dispatch(flexActions.toggle(id.split('.')[0], false));
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this._source.removeEventListener('st2.action__create', this._streamListener);
+    this._source.removeEventListener('st2.action__update', this._streamListener);
+    this._source.removeEventListener('st2.action__delete', this._streamListener);
+  }
+
+  fetchGroups() {
+    const { notification } = this.props;
+
+    return store.dispatch({
       type: 'FETCH_GROUPS',
-      promise: api.client.actions.list(),
+      promise: api.client.actions.list()
+        .catch((res) => {
+          notification.error('Unable to retrieve actions. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
+        }),
     })
       .then(() => {
-        const { action } = store.getState();
-        let { ref } = store.getState();
+        const { id } = this.urlParams;
+        const { groups } = this.props;
 
-        if (!action) {
-          ref = this.props.match.params.ref || ref;
-
-          store.dispatch({
-            type: 'FETCH_ACTION',
-            promise: api.client.actionOverview.get(ref),
-          })
-            .then(() => {
-              this.setState({ runValue: {}, runTrace: '' });
-              store.dispatch(flexActions.toggle(this.props.action.pack, false));
-            })
-          ;
-
-          store.dispatch({
-            type: 'FETCH_EXECUTIONS',
-            promise: api.client.executions.list({
-              action: ref,
-            }),
-          });
+        if (id && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
+          this.navigate({ id: false });
         }
       })
     ;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { ref } = nextProps.match.params;
-
-    if (ref !== this.props.match.params.ref) {
-      store.dispatch(flexActions.toggle(ref.split('.')[0], false));
-
-      store.dispatch({
-        type: 'FETCH_ACTION',
-        promise: api.client.actionOverview.get(ref),
-      })
-        .then(() => {
-          this.setState({ runValue: {}, runTrace: '' });
-          store.dispatch(flexActions.toggle(this.props.action.pack, false));
-        })
-        .then(() => {
-          store.dispatch({
-            type: 'FETCH_EXECUTIONS',
-            promise: api.client.executions.list({
-              action: ref,
-            }),
-          });
-        })
-      ;
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-    if (nextProps.match.params.ref !== this.props.match.params.ref) {
-      return false;
-    }
-
-    return true;
-  }
-
   get urlParams() {
-    const { ref, section } = this.props.match.params;
-    const { ...params } = qs.parse(this.props.location.search.slice(1));
+    const { id } = this.state;
+    const { section } = this.props.match.params;
 
     return {
-      ref,
+      id,
       section: section || 'general',
-      params,
     };
+  }
+
+  navigate({ id, section } = {}) {
+    const current = this.urlParams;
+
+    if (typeof id === 'undefined') {
+      if (this.props.match.params.ref) {
+        id = current.id;
+      }
+    }
+    if (!id) {
+      id = undefined;
+    }
+
+    if (typeof section === 'undefined') {
+      section = current.section;
+    }
+    if (section === 'general') {
+      section = undefined;
+    }
+
+    const pathname = `/actions${id ? `/${id}${section ? `/${section}` : ''}` : ''}`;
+
+    const { location } = this.props;
+    if (location.pathname === pathname) {
+      return;
+    }
+
+    const { history } = this.props;
+    history.push(pathname);
+  }
+
+  handleSelect(id) {
+    return this.navigate({ id });
   }
 
   handleToggleAll() {
     return store.dispatch(flexActions.toggleAll());
   }
 
-  handleSelect(ref) {
-    const { history } = this.props;
-    history.push(`/actions/${ref}`);
-  }
-
-  handleSection(section) {
-    const { history, action: { ref } } = this.props;
-    history.push(`/actions/${ref}/${section}`);
-  }
-
-  handleRunAction(e, ref) {
-    e.preventDefault();
-
+  handleRun(id, parameters, trace_tag) {
     const { notification } = this.props;
 
     return store.dispatch({
       type: 'RUN_ACTION',
-      ref,
       promise: api.client.executions.create({
-        action: ref,
-        parameters: this.state.runValue,
+        action: id,
+        parameters,
         context: {
           trace_context: {
-            trace_tag: this.state.runTrace || undefined,
+            trace_tag,
           },
         },
       })
         .then((res) => {
-          notification.success(`Action "${ref}" has been scheduled successfully`);
+          notification.success(`Action "${id}" has been scheduled successfully`);
 
           return res.values;
         })
         .catch((res) => {
-          notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
+          notification.error(`Unable to schedule action "${id}". See details in developer tools console.`);
           console.error(res); // eslint-disable-line no-console
         }),
     });
-  }
-
-  handleToggleRunPreview() {
-    let { runPreview } = this.state;
-
-    runPreview = !runPreview;
-
-    this.setState({ runPreview });
   }
 
   handleFilterChange(e) {
@@ -233,19 +232,13 @@ export default class ActionsPanel extends React.Component {
     });
   }
 
-  handleToggleExecution(id) {
-    this.setState({
-      executionsVisible: {
-        ...this.state.executionsVisible,
-        [id]: !this.state.executionsVisible[id],
-      },
-    });
-  }
-
   render() {
-    const { groups, filter, action, executions, collapsed } = this.props;
-    const { section } = this.urlParams;
+    const { notification, groups, filter, collapsed } = this.props;
+    const { id, section } = this.urlParams;
+
     const view = this._view ? this._view.value : {};
+
+    setTitle([ 'Actions' ]);
 
     return (
       <Panel data-test="actions_panel">
@@ -270,14 +263,14 @@ export default class ActionsPanel extends React.Component {
           <Content>
             { groups.map(({ pack, actions }) => {
               const icon = api.client.packFile.route(`${pack}/icon.png`);
-              const ref = action && action.ref;
 
               return (
-                <FlexTableWrapper title={pack} key={pack} icon={icon} data-test={`pack pack:${pack}`}>
+                <FlexTableWrapper key={pack} uid={pack} title={pack} icon={icon} data-test={`pack pack:${pack}`}>
                   { actions.map((action) => (
                     <ActionsFlexCard
-                      key={action.ref} action={action}
-                      selected={ref === action.ref}
+                      key={action.ref}
+                      action={action}
+                      selected={id === action.ref}
                       view={view}
                       onClick={() => this.handleSelect(action.ref)}
                     />
@@ -287,103 +280,16 @@ export default class ActionsPanel extends React.Component {
             }) }
           </Content>
         </PanelView>
-        <PanelDetails data-test="details">
-          <DetailsHeader title={action && action.ref} subtitle={action && action.description} />
-          <DetailsSwitch
-            sections={[
-              { label: 'General', path: 'general' },
-              { label: 'Code', path: 'code' },
-            ]}
-            current={section}
-            onChange={({ path }) => this.handleSection(path)}
-          />
-          <DetailsBody>
-            { section === 'general' && action ? (
-              <div>
-                <DetailsPanel data-test="action_parameters">
-                  <DetailsPanelHeading title="Parameters" />
-                  <DetailsPanelBody>
-                    <form onSubmit={(e) => this.handleRunAction(e, action.ref)}>
-                      <AutoForm
-                        spec={{
-                          type: 'object',
-                          properties: action.parameters,
-                        }}
-                        data={this.state.runValue}
-                        onChange={(runValue) => this.setState({ runValue })}
-                      />
-                      <StringField
-                        name="trace"
-                        spec={{}}
-                        value={this.state.runTrace}
-                        onChange={({ target: { value } }) => this.setState({ runTrace: value })}
-                      />
-                      <DetailsButtonsPanel>
-                        <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
-                        <Button submit value="Run" data-test="run_submit" />
-                      </DetailsButtonsPanel>
-                      { this.state.runPreview ? (
-                        <St2Highlight data-test="action_code" code={this.state.runValue} />
-                      ) : null }
-                    </form>
-                  </DetailsPanelBody>
-                </DetailsPanel>
-                <DetailsPanel data-test="action_executions">
-                  <DetailsPanelHeading title="Executions" />
-                  <DetailsPanelBody>
-                    { executions.length === 0 ? (
-                      <div className="st2-details__panel-empty">No history records for this action</div>
-                    ) : (
-                      <FlexTable>
-                        { executions.map((execution) => [
-                          <FlexTableRow
-                            key={execution.id}
-                            onClick={() => this.handleToggleExecution(execution.id)}
-                            columns={[
-                              {
-                                className: 'st2-actions__details-column-utility',
-                                children: <i className={`icon-chevron${this.state.executionsVisible[execution.id] ? '-down': '_right'}`} />,
-                              },
-                              {
-                                className: 'st2-actions__details-column-meta',
-                                children: <Label status={execution.status} short={true} />,
-                              },
-                              {
-                                className: 'st2-actions__details-column-time',
-                                children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />,
-                              },
-                              {
-                                Component: Link,
-                                to: `/history/${execution.id}/general?action=${action.ref}`,
-                                className: 'st2-actions__details-column-history',
-                                title: 'Jump to History',
-                                children: <i className="icon-history" />,
-                              },
-                            ]}
-                          />,
-                          <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
-                            <ActionReporter runner={execution.runner.name} execution={execution} />
-                          </FlexTableInsert>,
-                        ]) }
-                      </FlexTable>
-                    ) }
-                    <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
-                      <i className="icon-history" /> See full action history
-                    </Link>
-                  </DetailsPanelBody>
-                </DetailsPanel>
-              </div>
-            ) : null }
-            { section === 'code' && action ? (
-              <DetailsPanel data-test="action_code">
-                <St2Highlight code={action} />
-              </DetailsPanel>
-            ) : null }
-          </DetailsBody>
-          <DetailsToolbar>
-            <DetailsToolbarSeparator />
-          </DetailsToolbar>
-        </PanelDetails>
+
+        <ActionsDetails
+          notification={notification}
+          ref={(ref) => this._details = ref}
+          handleNavigate={(...args) => this.navigate(...args)}
+          handleRun={(...args) => this.handleRun(...args)}
+          provideRefresh={(fn) => this._refreshDetails = fn}
+          id={id}
+          section={section}
+        />
       </Panel>
     );
   }
