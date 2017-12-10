@@ -1,6 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+import setTitle from '@stackstorm/module-title';
+
 import AutoForm from '@stackstorm/module-auto-form';
 import RemoteForm from '@stackstorm/module-remote-form';
 import Button from '@stackstorm/module-forms/button.component';
@@ -97,6 +99,8 @@ export default class RulesPopup extends React.Component {
   render() {
     const { triggerSpec, criteriaSpecs, actionSpec, packSpec, onCancel } = this.props;
     const payload = this.state.payload;
+
+    setTitle([ 'Create', 'Rules' ]);
 
     return (
       <div className="st2-rerun">

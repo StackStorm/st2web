@@ -284,18 +284,22 @@ export default class HistoryPanel extends React.Component {
       type: 'RERUN_RULE',
       promise: api.client.executions.repeat(id, { parameters }, {
         no_merge: true,
-      }),
-    })
-      .then(({ payload }) => {
-        this.navigate({
-          id: payload.id,
-          section: 'general',
-        });
       })
-      .catch((res) => {
-        notification.error('Unable to rerun execution. See details in developer tools console.');
-        console.error(res); // eslint-disable-line no-console
-      });
+        .then((execution) => {
+          notification.success(`Execution "${execution.id}" has been run successfully.`);
+
+          this.navigate({
+            id: execution.id,
+            section: 'general',
+          });
+
+          return execution;
+        })
+        .catch((res) => {
+          notification.error(`Unable to rerun execution "${id}". See details in developer tools console.`);
+          console.error(res); // eslint-disable-line no-console
+        }),
+    });
   }
 
   handleFilterChange(key, value) {
@@ -428,6 +432,7 @@ export default class HistoryPanel extends React.Component {
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
           provideRefresh={(fn) => this._refreshDetails = fn}
+
           id={id}
           section={section}
         />

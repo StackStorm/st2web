@@ -17,6 +17,7 @@ import {
   ToolbarSearch,
   ToolbarView,
   Content,
+  ContentEmpty,
   ToggleButton,
 } from '@stackstorm/module-panel';
 import View from '@stackstorm/module-view';
@@ -79,7 +80,7 @@ export default class ActionsPanel extends React.Component {
       this._streamListener = (e) => {
         const record = JSON.parse(e.data);
 
-        if (record.id === this.urlParams.id) {
+        if (record.ref === this.urlParams.id) {
           this._refreshDetails && this._refreshDetails();
         }
 
@@ -199,37 +200,41 @@ export default class ActionsPanel extends React.Component {
     return store.dispatch(flexActions.toggleAll());
   }
 
-  handleRun(id, parameters, trace_tag) {
+  handleFilterChange(filter) {
+    store.dispatch({
+      type: 'SET_FILTER',
+      filter,
+    });
+  }
+
+  handleRun(ref, parameters, trace_tag) {
     const { notification } = this.props;
 
     return store.dispatch({
       type: 'RUN_ACTION',
       promise: api.client.executions.create({
-        action: id,
+        action: ref,
         parameters,
         context: {
           trace_context: {
             trace_tag,
           },
         },
+      }),
+    })
+      .then(({ payload }) => {
+        notification.success(`Action "${ref}" has been scheduled successfully.`);
+
+        this.navigate({
+          id: payload.ref,
+          section: 'general',
+        });
       })
-        .then((res) => {
-          notification.success(`Action "${id}" has been scheduled successfully`);
-
-          return res.values;
-        })
-        .catch((res) => {
-          notification.error(`Unable to schedule action "${id}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-        }),
-    });
-  }
-
-  handleFilterChange(e) {
-    store.dispatch({
-      type: 'SET_FILTER',
-      filter: e.target.value,
-    });
+      .catch((res) => {
+        notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
+        console.error(res); // eslint-disable-line no-console
+      })
+    ;
   }
 
   render() {
@@ -244,7 +249,11 @@ export default class ActionsPanel extends React.Component {
       <Panel data-test="actions_panel">
         <PanelView className="st2-actions">
           <Toolbar title="Actions">
-            <ToolbarSearch title="Filter" value={filter} onChange={(e) => this.handleFilterChange(e)} />
+            <ToolbarSearch
+              title="Filter"
+              value={filter}
+              onChange={({ target: { value }}) => this.handleFilterChange(value)}
+            />
             <ToolbarView>
               <View
                 name="st2ActionView"
@@ -278,6 +287,10 @@ export default class ActionsPanel extends React.Component {
                 </FlexTableWrapper>
               );
             }) }
+
+            { groups.length > 0 ? null : (
+              <ContentEmpty />
+            ) }
           </Content>
         </PanelView>
 
@@ -287,6 +300,7 @@ export default class ActionsPanel extends React.Component {
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
           provideRefresh={(fn) => this._refreshDetails = fn}
+
           id={id}
           section={section}
         />

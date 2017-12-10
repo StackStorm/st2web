@@ -138,5 +138,6 @@ function makeGroups(actions, filter) {
     .groupBy('pack')
     .value()
   ;
+
   return Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
 }

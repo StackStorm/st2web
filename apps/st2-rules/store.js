@@ -164,6 +164,39 @@ const ruleReducer = (state = {}, input) => {
         packSpec,
       };
 
+    case 'UPDATE_RULE':
+      const { event, record } = input;
+
+      rules = [ ...rules ];
+
+      if (event.endsWith('__delete')) {
+        rules = rules
+          .filter(action => action.id !== record.id)
+        ;
+      }
+      else {
+        let found = false;
+        for (const index in rules) {
+          if (rules[index].id !== record.id) {
+            continue;
+          }
+
+          found = true;
+          rules[index] = record;
+        }
+        if (!found) {
+          rules.push(record);
+        }
+      }
+
+      groups = makeGroups(rules, filter);
+
+      return {
+        ...state,
+        rules,
+        groups,
+      };
+
     case 'EDIT_RULE':
       switch(input.status) {
         case 'success':
@@ -229,5 +262,6 @@ function makeGroups(rules, filter) {
     .groupBy('pack')
     .value()
   ;
+
   return Object.keys(groups).map((pack) => ({ pack, rules: groups[pack] }));
 }
