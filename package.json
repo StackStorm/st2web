@@ -9,6 +9,8 @@
     "build": "gulp production",
     "clean": "rm -rf js css build",
     "test": "gulp test",
+    "test-unit": "gulp test-unit",
+    "test-functional": "gulp test-functional",
     "test-production": "gulp test-production"
   },
   "repository": "stackstorm/st2web",

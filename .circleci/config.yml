@@ -18,11 +18,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Update Docker Compose
+          name: Download helper scripts (for packagecloud)
           command: |
-            set -x
-            sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
-            sudo chmod +x /usr/local/bin/docker-compose
+            mkdir ~/scripts
+            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
+            chmod 755 ~/scripts/packagecloud.sh
+            echo "export PATH=${HOME}/scripts:${PATH}" >> $BASH_ENV
       - run:
           name: Switch to supported version of Node
           command: |
@@ -35,19 +36,6 @@ jobs:
             # Each step uses the same `$BASH_ENV`, so need to modify it
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
             echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
-      - run:
-          name: Check version of Node
-          command: node --version
-      - run:
-          name: Create directories for Artifacts
-          command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
-      - run:
-          name: Download helper scripts (for packagecloud)
-          command: |
-            mkdir ~/scripts
-            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
-            chmod 755 ~/scripts/packagecloud.sh
-            echo "export PATH=${HOME}/scripts:${PATH}" >> $BASH_ENV
       - run:
           name: Export package version
           command: |
@@ -65,6 +53,17 @@ jobs:
       - run:
           name: Install package dependencies
           command: lerna bootstrap
+
+      - run:
+          name: Run unit tests
+          command: npm run test-unit
+
+      - run:
+          name: Update Docker Compose
+          command: |
+            set -x
+            sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+            sudo chmod +x /usr/local/bin/docker-compose
       - run:
           name: Clone test containers
           command: git clone --depth 1 https://github.com/StackStorm/st2-docker ~/st2-docker
@@ -79,13 +78,15 @@ jobs:
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
             sleep 60
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
       - run:
           name: Check test containers
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
       - run:
-          name: Run tests
-          command: npm run test
+          name: Run functional tests
+          command: npm run test-functional
       - run:
           name: Reset test containers
           command: |
@@ -100,6 +101,10 @@ jobs:
       - run:
           name: Run tests on production version
           command: npm run test-production
+
+      - run:
+          name: Create directories for Artifacts
+          command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
       - run:
           name: Fetch container logs
           command: |
