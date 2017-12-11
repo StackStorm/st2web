@@ -156,25 +156,31 @@ const historyReducer = (state = {}, input) => {
       }
       else {
         if (record.parent) {
-          let found = false;
           for (const index in executions) {
             if (executions[index].id !== record.parent) {
               continue;
             }
 
-            found = true;
-            executions[index] = { ...executions[index] };
-            if (executions[index].fetchedChildren) {
-              executions[index].fetchedChildren = [ ...executions[index].fetchedChildren ];
+            const parent = executions[index] = { ...executions[index] };
+            if (parent.fetchedChildren) {
+              parent.fetchedChildren = [ ...parent.fetchedChildren ];
             }
             else {
-              executions[index].fetchedChildren = [];
+              parent.fetchedChildren = [];
             }
 
-            executions[index].fetchedChildren.unshift(record);
-          }
-          if (!found) {
-            executions.push(record);
+            let found = false;
+            for (const index in parent.fetchedChildren) {
+              if (parent.fetchedChildren[index].id !== record.id) {
+                continue;
+              }
+
+              found = true;
+              parent.fetchedChildren[index] = record;
+            }
+            if (!found) {
+              parent.fetchedChildren.unshift(record);
+            }
           }
         }
         else {

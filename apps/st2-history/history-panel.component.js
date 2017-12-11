@@ -85,8 +85,6 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentDidMount() {
-    const { notification } = this.props;
-
     api.client.stream.listen().then((source) => {
       this._source = source;
 
@@ -118,17 +116,19 @@ export default class HistoryPanel extends React.Component {
       this.setState({ id });
     }
 
+    const { page, activeFilters } = this.urlParams;
+    this.fetchGroups({ page, activeFilters });
+
+    const { notification } = this.props;
     store.dispatch({
       type: 'FETCH_FILTERS',
       promise: api.client.executionsFilters.list()
         .catch((res) => {
           notification.error('Unable to retrieve history. See details in developer tools console.');
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     });
-
-    const { page, activeFilters } = this.urlParams;
-    this.fetchGroups({ page, activeFilters });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -166,17 +166,18 @@ export default class HistoryPanel extends React.Component {
         limit: PER_PAGE,
         page,
       })
-        .then((list) => {
+        .then((res) => {
           const { total, limit } = api.client.executions;
           this.setState({
             maxPages: Math.ceil(total / limit),
           });
 
-          return list;
+          return res;
         })
         .catch((res) => {
           notification.error('Unable to retrieve history. See details in developer tools console.');
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     })
       .then(() => {
@@ -272,6 +273,7 @@ export default class HistoryPanel extends React.Component {
         .catch((res) => {
           notification.error('Unable to retrieve children. See details in developer tools console.');
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }) : null,
     });
   }
@@ -286,7 +288,7 @@ export default class HistoryPanel extends React.Component {
         no_merge: true,
       })
         .then((execution) => {
-          notification.success(`Execution "${execution.id}" has been run successfully.`);
+          notification.success(`Execution "${execution.action.ref}" has been run successfully.`);
 
           this.navigate({
             id: execution.id,
@@ -298,6 +300,7 @@ export default class HistoryPanel extends React.Component {
         .catch((res) => {
           notification.error(`Unable to rerun execution "${id}". See details in developer tools console.`);
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     });
   }

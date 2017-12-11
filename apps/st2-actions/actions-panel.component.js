@@ -107,7 +107,9 @@ export default class ActionsPanel extends React.Component {
 
     this.fetchGroups().then(() => {
       const { id } = this.urlParams;
-      store.dispatch(flexActions.toggle(id.split('.')[0], false));
+      if (id) {
+        store.dispatch(flexActions.toggle(id.split('.')[0], false));
+      }
     });
   }
 
@@ -119,7 +121,9 @@ export default class ActionsPanel extends React.Component {
     }
     if (id !== this.state.id) {
       this.setState({ id }, () => {
-        store.dispatch(flexActions.toggle(id.split('.')[0], false));
+        if (id) {
+          store.dispatch(flexActions.toggle(id.split('.')[0], false));
+        }
       });
     }
   }
@@ -139,6 +143,7 @@ export default class ActionsPanel extends React.Component {
         .catch((res) => {
           notification.error('Unable to retrieve actions. See details in developer tools console.');
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     })
       .then(() => {
@@ -220,21 +225,17 @@ export default class ActionsPanel extends React.Component {
             trace_tag,
           },
         },
-      }),
-    })
-      .then(({ payload }) => {
-        notification.success(`Action "${ref}" has been scheduled successfully.`);
-
-        this.navigate({
-          id: payload.ref,
-          section: 'general',
-        });
       })
-      .catch((res) => {
-        notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
-        console.error(res); // eslint-disable-line no-console
-      })
-    ;
+        .then((execution) => {
+          notification.success(`Action "${ref}" has been scheduled successfully.`);
+          return execution;
+        })
+        .catch((res) => {
+          notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
+          console.error(res); // eslint-disable-line no-console
+          throw res;
+        }),
+    });
   }
 
   render() {

@@ -103,6 +103,7 @@ export default class RulesDetails extends React.Component {
       .catch((res) => {
         notification.error(`Unable to retrieve rule "${id}". See details in developer tools console.`);
         console.error(res); // eslint-disable-line no-console
+        throw res;
       })
     ;
   }

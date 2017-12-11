@@ -104,6 +104,7 @@ export default class ActionsDetails extends React.Component {
       .catch((res) => {
         notification.error(`Unable to retrieve action "${id}". See details in developer tools console.`);
         console.error(res); // eslint-disable-line no-console
+        throw res;
       })
     ;
 
@@ -116,6 +117,7 @@ export default class ActionsDetails extends React.Component {
       .catch((res) => {
         notification.error(`Unable to retrieve history for action "${id}". See details in developer tools console.`);
         console.error(res); // eslint-disable-line no-console
+        throw res;
       })
     ;
   }

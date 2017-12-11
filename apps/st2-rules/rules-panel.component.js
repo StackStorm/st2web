@@ -1,14 +1,15 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-
 import store from './store';
-import api from '@stackstorm/module-api';
-import setTitle from '@stackstorm/module-title';
 
+import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
 } from '@stackstorm/module-flex-table/flex-table.reducer';
+import setTitle from '@stackstorm/module-title';
+
+import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import {
   Panel,
   PanelView,
@@ -17,9 +18,9 @@ import {
   ToolbarActions,
   ToolbarSearch,
   Content,
+  ContentEmpty,
   ToggleButton,
 } from '@stackstorm/module-panel';
-import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
 import RulesFlexCard from './rules-flex-card.component';
 import RulesDetails from './rules-details.component';
 
@@ -110,22 +111,41 @@ export default class RulesPanel extends React.Component {
 
     this.fetchGroups().then(() => {
       const { id } = this.urlParams;
-      store.dispatch(flexActions.toggle(id.split('.')[0], false));
+      if (id) {
+        store.dispatch(flexActions.toggle(id.split('.')[0], false));
+      }
     });
+
+    const { notification } = this.props;
 
     store.dispatch({
       type: 'FETCH_PACK_SPEC',
-      promise: api.client.packs.list(),
+      promise: api.client.packs.list()
+        .catch((res) => {
+          notification.error('Unable to retrieve pack spec. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
+          throw res;
+        }),
     });
 
     store.dispatch({
       type: 'FETCH_TRIGGER_SPEC',
-      promise: api.client.triggerTypes.list(),
+      promise: api.client.triggerTypes.list()
+        .catch((res) => {
+          notification.error('Unable to retrieve trigger spec. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
+          throw res;
+        }),
     });
 
     store.dispatch({
       type: 'FETCH_ACTION_SPEC',
-      promise: api.client.actionOverview.list(),
+      promise: api.client.actionOverview.list()
+        .catch((res) => {
+          notification.error('Unable to retrieve action spec. See details in developer tools console.');
+          console.error(res); // eslint-disable-line no-console
+          throw res;
+        }),
     });
   }
 
@@ -137,7 +157,9 @@ export default class RulesPanel extends React.Component {
     }
     if (id !== this.state.id) {
       this.setState({ id }, () => {
-        store.dispatch(flexActions.toggle(id.split('.')[0], false));
+        if (id) {
+          store.dispatch(flexActions.toggle(id.split('.')[0], false));
+        }
       });
     }
   }
@@ -157,6 +179,7 @@ export default class RulesPanel extends React.Component {
         .catch((res) => {
           notification.error('Unable to retrieve rules. See details in developer tools console.');
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     })
       .then(() => {
@@ -240,12 +263,12 @@ export default class RulesPanel extends React.Component {
           });
 
           this.fetchGroups(); // TODO: shouldn't be necessary
-
           return rule;
         })
         .catch((res) => {
           notification.error('Unable to create rule. See details in developer tools console.');
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     });
   }
@@ -274,6 +297,7 @@ export default class RulesPanel extends React.Component {
         .catch((res) => {
           notification.error(`Unable to save rule "${rule.ref}". See details in developer tools console.`);
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     });
   }
@@ -288,16 +312,18 @@ export default class RulesPanel extends React.Component {
     return store.dispatch({
       type: 'DELETE_RULE',
       promise: api.client.rules.delete(ref)
-        .then(() => {
+        .then((res) => {
           notification.success(`Rule "${ref}" has been deleted successfully.`);
 
           this.navigate({ id: null });
 
           this.fetchGroups(); // TODO: shouldn't be necessary
+          return res;
         })
         .catch((res) => {
           notification.error(`Unable to delete rule "${ref}". See details in developer tools console.`);
           console.error(res); // eslint-disable-line no-console
+          throw res;
         }),
     });
   }
@@ -349,6 +375,10 @@ export default class RulesPanel extends React.Component {
                 </FlexTableWrapper>
               );
             }) }
+
+            { groups.length > 0 ? null : (
+              <ContentEmpty />
+            ) }
           </Content>
         </PanelView>
 

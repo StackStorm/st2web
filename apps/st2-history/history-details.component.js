@@ -88,6 +88,7 @@ export default class HistoryDetails extends React.Component {
       .catch((res) => {
         notification.error(`Unable to retrieve execution "${id}". See details in developer tools console.`);
         console.error(res); // eslint-disable-line no-console
+        throw res;
       })
     ;
   }

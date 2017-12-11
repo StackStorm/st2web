@@ -62,22 +62,24 @@ export default class st2Highlight extends React.Component {
 
   _update(language, code) {
     let outputFull = (function () {
-      if (language && Prism.languages[language]) {
-        return Prism.highlight(code, Prism.languages[language]);
-      }
+      if (code) {
+        if (language && Prism.languages[language]) {
+          return Prism.highlight(code, Prism.languages[language]);
+        }
 
-      const type = getType(code);
+        const type = getType(code);
 
-      if (type === 'json') {
-        return Prism.highlight(code, Prism.languages.json);
-      }
+        if (type === 'json') {
+          return Prism.highlight(code, Prism.languages.json);
+        }
 
-      if (type === 'string') {
-        return code.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
-      }
+        if (type === 'string') {
+          return code.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
+        }
 
-      if (type === 'object') {
-        return Prism.highlight(JSON.stringify(code, null, 2), Prism.languages.json);
+        if (type === 'object') {
+          return Prism.highlight(JSON.stringify(code, null, 2), Prism.languages.json);
+        }
       }
 
       return '';
