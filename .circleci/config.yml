@@ -26,9 +26,18 @@ jobs:
       - run:
           name: Switch to supported version of Node
           command: |
+            set +e
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm install 8.4.0
+            nvm install 8.9.0
+            nvm alias default 8.9.0
+
+            # Each step uses the same `$BASH_ENV`, so need to modify it
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+      - run:
+          name: Check version of Node
+          command: node --version
       - run:
           name: Create directories for Artifacts
           command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
