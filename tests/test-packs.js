@@ -22,7 +22,6 @@ describe('User visits packs page', function () {
   before(() => browser.visit('/#/packs')
     .then(util.login)
     .then(() => {
-
       packs_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/packs$').test(e.url));
 
       index_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/packs/index$').test(e.url));
@@ -30,7 +29,6 @@ describe('User visits packs page', function () {
       config_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/configs(\\?|$)').test(e.url));
 
       config_schema_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/config_schemas$').test(e.url));
-
     }));
 
   it('should be successful', () => {
@@ -80,16 +78,19 @@ describe('User visits packs page', function () {
     expect(elements[0].className).to.have.string('st2-flex-card--active');
   });
 
-  it('should filter packs (case insensitive)', () => browser.fill(util.name('filter'), 'CORE')
-    .wait()
-    .then(() => {
-      const packs = browser.queryAll(util.name('pack'));
+  it('should filter packs (case insensitive)', () => {
+    return browser.fill(util.name('filter'), 'CORE').wait()
+      .then(() => {
+        const packs = browser.queryAll(util.name('pack'));
 
-      expect(packs).to.have.length.at.least(1, 'All the actions has been filtered out');
-      for (const pack of packs) {
-        expect(pack.getAttribute('data-test')).to.have.string('pack:core');
-      }
-    }));
+        expect(packs).to.have.length.at.least(1, 'All the actions has been filtered out');
+        for (const pack of packs) {
+          expect(pack.getAttribute('data-test')).to.have.string('pack:core');
+        }
+      })
+      .then(() => browser.fill(util.name('filter'), '').wait())
+    ;
+  });
 
   it('should have pack details present', () => {
     const pack = JSON.parse(packs_resource[0].response.body)[0];

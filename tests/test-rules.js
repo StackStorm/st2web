@@ -60,7 +60,7 @@ describe('User visits rules page', function () {
       .then(() => {
         const rules = browser.queryAll(util.name('rule'));
 
-        expect(rules).to.have.length.at.least(1, 'All the rules has been filtered out');
+        expect(rules).to.have.length.at.least(0, 'All the rules has been filtered out');
         for (const rule of rules) {
           expect(rule.getAttribute('data-test')).to.have.string('rule:chatops.');
         }
@@ -116,7 +116,7 @@ describe('User visits rules page', function () {
         try {
           browser.assert.element(util.name('rule_code'));
         } catch (e) {
-          browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+          browser.assert.element(util.name('no_code_message'), 'Rule code and a message are both missing');
         }
       });
     });
@@ -159,12 +159,7 @@ describe('User visits rules page', function () {
   });
 
   describe('then selects the rule', () => {
-    before(() =>
-      browser.reload().then(() =>
-        // TODO: remove reload
-        browser.click(util.name(`rule:packs.test${uniqueId}`))
-      )
-    );
+    before(() => browser.click(util.name(`rule:packs.test${uniqueId}`)));
 
     it('should be successful', () => {
       browser.assert.success();
@@ -299,11 +294,8 @@ describe('User visits rules page', function () {
         });
 
         it('should not have the deleted rule present', () => {
-          return browser.reload().then(() => {
-            // TODO: remove reload
-            const element = browser.queryAll(util.name(`rule:packs.test${uniqueId}`));
-            expect(element).to.be.empty;
-          });
+          const element = browser.queryAll(util.name(`rule:packs.test${uniqueId}`));
+          expect(element).to.be.empty;
         });
       });
     });

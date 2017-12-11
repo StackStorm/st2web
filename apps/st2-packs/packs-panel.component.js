@@ -305,7 +305,11 @@ export default class PacksPanel extends React.Component {
         <PanelView className="st2-packs">
           <Toolbar title="Packs">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
-            <ToolbarSearch title="Filter" value={filter} onChange={(e) => this.handleFilterChange(e)} />
+            <ToolbarSearch
+              title="Filter"
+              value={filter}
+              onChange={({ target: { value }}) => this.handleFilterChange(value)}
+            />
           </Toolbar>
           <Content>
             { groups.map(({ status, packs }) => {
