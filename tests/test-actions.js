@@ -160,7 +160,7 @@ describe('User visits actions page', function () {
         resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/actions/views/overview/core.announcement$').test(e.url));
       });
 
-      it('should make a call to actions endpoint once', () => {
+      it('should make a call to actions endpoint', () => {
         // NOTE: expecting 2 calls because of filtering
         expect(resource).to.have.length.at.least(2, 'Actions endpoint has not been called');
         expect(resource).to.have.length.at.most(2, 'Actions endpoint called several times');

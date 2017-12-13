@@ -55,16 +55,19 @@ describe('User visits rules page', function () {
       expect(elements[0].className).to.have.string('st2-flex-card--active');
     });
 
-    it('should filter rules (case insensitive)', () => browser.fill(util.name('filter'), 'cHatoPs.')
-      .wait()
-      .then(() => {
-        const rules = browser.queryAll(util.name('rule'));
+    it('should filter rules (case insensitive)', () => {
+      return browser.fill(util.name('filter'), 'cHatoPs.').wait()
+        .then(() => {
+          const rules = browser.queryAll(util.name('rule'));
 
-        expect(rules).to.have.length.at.least(0, 'All the rules has been filtered out');
-        for (const rule of rules) {
-          expect(rule.getAttribute('data-test')).to.have.string('rule:chatops.');
-        }
-      }));
+          expect(rules).to.have.length.at.least(0, 'All the rules has been filtered out');
+          for (const rule of rules) {
+            expect(rule.getAttribute('data-test')).to.have.string('rule:chatops.');
+          }
+        })
+        .then(() => browser.fill(util.name('filter'), '').wait())
+      ;
+    });
   });
 
   describe('Details view', () => {
@@ -77,9 +80,9 @@ describe('User visits rules page', function () {
       });
     });
 
-    it('should make a call to rule endpoint once', () => {
-      expect(resource).to.have.length.at.least(1, 'Rule endpoint has not been called');
-      expect(resource).to.have.length.at.most(1, 'Rule endpoint called several times');
+    it('should make a call to rules endpoint', () => {
+      expect(resource).to.have.length.at.least(1, 'Rules endpoint has not been called');
+      expect(resource).to.have.length.at.most(1, 'Rules endpoint called several times');
     });
 
     it('should recieve a response containing a rule', () => {
@@ -131,7 +134,6 @@ describe('User visits rules page', function () {
 
     it('should show a popup', () => {
       browser.assert.element(util.name('rule_create_popup'), 'Rule create popup is absent');
-      browser.assert.hasNoClass(util.name('rule_create_popup'), 'ng-hide', 'Rule create popup is hidden');
     });
 
     describe('then creates a new rule', () => {
@@ -183,7 +185,7 @@ describe('User visits rules page', function () {
         resource = browser.resources.filter((e) => new RegExp(`^https://example.com/api/v1/rules/packs.test${uniqueId}$`).test(e.url));
       });
 
-      it('should make a call to rules endpoint once', () => {
+      it('should make a call to rules endpoint', () => {
         expect(resource).to.have.length.at.least(1, 'Rules endpoint has not been called');
         expect(resource).to.have.length.at.most(1, 'Rules endpoint called several times');
       });
