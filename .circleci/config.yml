@@ -93,6 +93,8 @@ jobs:
             docker-compose -f ~/st2-docker/docker-compose.yml down
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
             sleep 60
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
+            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
       - run:
           name: Recheck test containers
           command: |
