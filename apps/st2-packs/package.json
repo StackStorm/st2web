@@ -34,15 +34,6 @@
           ],
           "parser": "@stackstorm/postcss-less-engine/parser"
         }
-      ],
-      [
-        "browserify-global-shim",
-        {
-          "global": true,
-          "lodash": "_",
-          "st2client": "st2client",
-          "react": "React"
-        }
       ]
     ]
   },
@@ -66,7 +57,6 @@
     "@stackstorm/browserify-postcss": "0.3.4-patch.1",
     "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
-    "browserify-global-shim": "1.0.3",
     "less": "2.7.1",
     "postcss": "6.0.11"
   }

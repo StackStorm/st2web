@@ -20,16 +20,7 @@
   "homepage": "https://github.com/stackstorm/st2web#readme",
   "browserify": {
     "transform": [
-      "babelify",
-      [
-        "browserify-global-shim",
-        {
-          "global": true,
-          "lodash": "_",
-          "st2client": "st2client",
-          "react": "React"
-        }
-      ]
+      "babelify"
     ]
   },
   "publishConfig": {
@@ -39,7 +30,6 @@
     "redux": "3.7.2"
   },
   "devDependencies": {
-    "babelify": "7.2.0",
-    "browserify-global-shim": "1.0.3"
+    "babelify": "7.2.0"
   }
 }
