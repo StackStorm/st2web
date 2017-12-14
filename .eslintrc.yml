@@ -18,6 +18,9 @@ env:
   es6: true
 rules:
   block-scoped-var: error
+  brace-style:
+    - error
+    - stroustrup
   camelcase: off
   consistent-return: error
   curly:

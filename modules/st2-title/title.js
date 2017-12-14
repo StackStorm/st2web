@@ -5,5 +5,7 @@ export default function setTitle(title) {
     title = [ title ];
   }
 
+  title = title.filter(v => v);
+
   document.title = title.length ? `${title.join(' - ')} | ${TITLE}` : TITLE;
 }

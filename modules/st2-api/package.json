@@ -27,6 +27,7 @@
     "access": "public"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "lodash": "2.4.2",
     "st2client": "1.1.1",
     "urijs": "1.17.1"
@@ -36,6 +37,7 @@
     "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "7.2.0",
     "less": "2.7.1",
+    "moxios": "^0.4.0",
     "postcss": "6.0.11"
   }
 }

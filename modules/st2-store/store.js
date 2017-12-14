@@ -18,7 +18,8 @@ const rootReducer = (state = {}, originalAction) => {
       if (path) {
         const { reducer } = scopedStores.find(({ name }) => name === path);
         state[path] = reducer(state[path], action);
-      } else {
+      }
+      else {
         scopedStores.forEach(({ name, reducer }) => state[name] = reducer(state[name], action));
       }
   }
@@ -48,7 +49,6 @@ const promiseMiddleware = () => (next) => (action) => {
     (error) => next(actionFactory('error', { error }))
   );
 };
-
 
 const composeEnhancers = global.window && global.window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

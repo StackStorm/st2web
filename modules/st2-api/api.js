@@ -2,7 +2,7 @@ import _ from 'lodash';
 import st2client from 'st2client';
 import URI from 'urijs';
 
-class API {
+export class API {
   constructor(servers) {
     this.servers = servers;
     this.token = {};
@@ -11,7 +11,8 @@ class API {
       const session = JSON.parse(localStorage.getItem('st2Session'));
       this.token = session.token || {};
       this.server = session.server;
-    } catch (e) {
+    }
+    catch (e) {
       // do nothing
     }
 
@@ -27,7 +28,8 @@ class API {
       const url = (() => {
         if (_.find(this.servers, { url: server.url })) {
           return server.url;
-        } else {
+        }
+        else {
           return _.first(this.servers).url;
         }
       })();
@@ -60,7 +62,8 @@ class API {
           prefix: auth.path,
         };
       }
-    } else {
+    }
+    else {
       opts = {
         api: `https://${window.location.hostname}:443/api`,
         auth: `https://${window.location.hostname}:443/auth`,
@@ -96,7 +99,8 @@ class API {
         .then((token) => {
           this.token = token;
         });
-    } else {
+    }
+    else {
       promise = Promise.resolve(this.client);
     }
 
@@ -112,6 +116,7 @@ class API {
 
   disconnect() {
     this.client = null;
+    this.token = {};
     localStorage.removeItem('st2Session');
 
     return this;
@@ -123,7 +128,8 @@ class API {
       const now = new Date();
 
       return now < expiry;
-    } else {
+    }
+    else {
       return !!this.client;
     }
   }
