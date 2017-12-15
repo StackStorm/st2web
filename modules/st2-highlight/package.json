@@ -43,9 +43,7 @@
   "dependencies": {
     "@stackstorm/st2-style": "1.0.0-pre.4",
     "insert-css": "2.0.0",
-    "prismjs": "github:enykeev/prism#v0.0.1",
-    "prop-types": "15.5.10",
-    "react": "15.6.1"
+    "prismjs": "github:enykeev/prism#v0.0.1"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.1",
@@ -53,5 +51,10 @@
     "babelify": "7.2.0",
     "less": "2.7.1",
     "postcss": "6.0.11"
+  },
+  "peerDepedencies": {
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   }
 }

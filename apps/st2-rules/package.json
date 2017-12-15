@@ -3,12 +3,6 @@
   "version": "1.0.0-pre.4",
   "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -63,5 +57,10 @@
     "babelify": "7.2.0",
     "less": "2.7.1",
     "postcss": "6.0.11"
+  },
+  "peerDepedencies": {
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   }
 }
