@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "eslint .",
     "develop": "gulp",
-    "build": "gulp production",
+    "build": "gulp production && npm version build",
     "clean": "rm -rf js css build",
     "test": "gulp test",
     "test-unit": "gulp test-unit",
