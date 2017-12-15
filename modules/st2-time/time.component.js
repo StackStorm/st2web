@@ -7,25 +7,27 @@ export default class TimeComponent extends React.Component {
     timestamp: PropTypes.string,
     format: PropTypes.string,
     utcdisplay: PropTypes.bool,
-    togglecallback: PropTypes.func,
+  }
+
+  static defaultProps = {
+    format: 'ddd, DD MMM YYYY HH:mm:ss',
+    utcdisplay: false,
   }
 
   render() {
-    const { format, timestamp, utcdisplay, togglecallback, ...props } = this.props;
-    const timeStamp = new Date(timestamp);
+    const { timestamp, format, utcdisplay, ...props } = this.props;
 
-    let dateFormat = format ? format : 'ddd, DD MMM YYYY HH:mm:ss';
+    let dateFormat = format;
     if (utcdisplay){
       dateFormat += ' UTC';
     }
 
     return (
       <Time
-        onClick={togglecallback}
-        value={timeStamp}
+        {...props}
+        value={new Date(timestamp)}
         format={dateFormat}
         utc={utcdisplay}
-        {...props}
       />
     );
   }
