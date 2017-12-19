@@ -30,7 +30,7 @@ function getType(string) {
   return 'object';
 }
 
-export default class st2Highlight extends React.Component {
+export default class Highlight extends React.Component {
   static propTypes = {
     code: PropTypes.any,
     language: PropTypes.string,

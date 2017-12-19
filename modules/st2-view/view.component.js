@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 import './style.less';
 
-export default class Filter extends React.Component {
+export default class View extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     spec: PropTypes.object,

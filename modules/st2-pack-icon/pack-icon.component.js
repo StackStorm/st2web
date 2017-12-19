@@ -5,7 +5,7 @@ import api from '@stackstorm/module-api';
 
 import './style.less';
 
-export default class Criteria extends React.Component {
+export default class PackIcon extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     small: PropTypes.bool,
