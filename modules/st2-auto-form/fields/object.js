@@ -33,7 +33,8 @@ export default class ObjectField extends BaseTextareaField {
       }
 
       return false;
-    } catch(e) {
+    }
+    catch(e) {
       return e.message;
     }
   }

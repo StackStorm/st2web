@@ -30,10 +30,10 @@ export default class AutoForm extends React.Component {
     // getElementByField portion
     const { spec } = this.props;
 
-    if (spec && spec.properties){
+    if (spec && spec.properties) {
       Object.keys(spec.properties).forEach(function(key) {
         const value = spec.properties[key];
-        if (value.default !== undefined && value.enum){
+        if (value.default !== undefined && value.enum) {
           this.handleChange(key, value.default);
         }
       }, this);
@@ -88,13 +88,13 @@ export default class AutoForm extends React.Component {
       .sort((a, b) => {
         // If position exists for the items we're comparing then lets
         // favor sorting by that
-        if (a.position || b.position){
+        if (a.position || b.position) {
           // Some items might have position undefined. If it's undefined
           // it should be sorted behind an item with position defined
-          if (a.position === undefined){
+          if (a.position === undefined) {
             return 1;
           }
-          if (b.position === undefined){
+          if (b.position === undefined) {
             return -1;
           }
           // If both items have positon then the lower positon should come
@@ -103,7 +103,7 @@ export default class AutoForm extends React.Component {
         }
         // If required matches for both objects then we need to sort by other
         // criteria
-        if(a.required === b.required){
+        if(a.required === b.required) {
           // Sort items in alphabetical order
           return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
         }

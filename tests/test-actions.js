@@ -111,7 +111,8 @@ describe('User visits actions page', function () {
 
       try {
         browser.assert.element(util.name('action_executions'));
-      } catch (e) {
+      }
+      catch (e) {
         browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
       }
     });
@@ -123,7 +124,8 @@ describe('User visits actions page', function () {
       it('should have action code present', () => {
         try {
           browser.assert.element(util.name('action_code'));
-        } catch (e) {
+        }
+        catch (e) {
           browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
         }
       });
@@ -185,7 +187,8 @@ describe('User visits actions page', function () {
 
         try {
           browser.assert.element(util.name('action_executions'));
-        } catch (e) {
+        }
+        catch (e) {
           browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
         }
       });
@@ -197,7 +200,8 @@ describe('User visits actions page', function () {
         it('should have action code present', () => {
           try {
             browser.assert.element(util.name('action_code'));
-          } catch (e) {
+          }
+          catch (e) {
             browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
           }
         });

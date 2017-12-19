@@ -52,11 +52,11 @@ export default class ArrayField extends BaseTextField {
   static icon = '[ ]'
 
   fromStateValue(v) {
-    if (v === ''){
+    if (v === '') {
       return void 0;
     }
 
-    if (jsonCheck(v)){
+    if (jsonCheck(v)) {
       return JSON.parse(v);
     }
 
@@ -71,7 +71,7 @@ export default class ArrayField extends BaseTextField {
   }
 
   toStateValue(v) {
-    if (jsonCheck(v)){
+    if (jsonCheck(v)) {
       return JSON.stringify(v);
     }
 
@@ -88,7 +88,7 @@ export default class ArrayField extends BaseTextField {
       return invalid;
     }
 
-    if (jsonCheck(value)){
+    if (jsonCheck(value)) {
       try {
         const { items } = this.props.spec;
         const o = value && JSON.parse(value);

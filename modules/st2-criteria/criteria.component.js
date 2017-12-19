@@ -49,7 +49,7 @@ export default class Criteria extends React.Component {
   }
 
   static defaultProps = {
-  	disabled: false,
+    disabled: false,
   }
 
   handleChangeKey(oldKey, key) {

@@ -109,7 +109,8 @@ describe('User visits history page', function () {
       it('should have execution code present', () => {
         try {
           browser.assert.element(util.name('execution_code'));
-        } catch (e) {
+        }
+        catch (e) {
           browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
         }
       });

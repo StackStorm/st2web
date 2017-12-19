@@ -36,6 +36,7 @@ rules:
   eqeqeq:
     - error
     - allow-null
+  space-before-blocks: error
   strict: off
   new-cap: error
   no-bitwise: error

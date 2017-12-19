@@ -18,7 +18,7 @@ export default class TimeComponent extends React.Component {
     const { timestamp, format, utcdisplay, ...props } = this.props;
 
     let dateFormat = format;
-    if (utcdisplay){
+    if (utcdisplay) {
       dateFormat += ' UTC';
     }
 

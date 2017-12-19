@@ -118,7 +118,8 @@ describe('User visits rules page', function () {
       it('should have rule code present', () => {
         try {
           browser.assert.element(util.name('rule_code'));
-        } catch (e) {
+        }
+        catch (e) {
           browser.assert.element(util.name('no_code_message'), 'Rule code and a message are both missing');
         }
       });
@@ -216,7 +217,8 @@ describe('User visits rules page', function () {
         it('should have rule code present', () => {
           try {
             browser.assert.element(util.name('rule_code'));
-          } catch (e) {
+          }
+          catch (e) {
             browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
           }
         });
