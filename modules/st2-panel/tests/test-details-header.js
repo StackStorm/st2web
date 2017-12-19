@@ -11,7 +11,6 @@ describe(`${DetailsHeader.name} Component`, () => {
       const instance = ReactTester.create(
         <DetailsHeader
           className="foobar"
-          status="status"
           title="title"
           subtitle="subtitle"
         />
@@ -24,7 +23,6 @@ describe(`${DetailsHeader.name} Component`, () => {
       const instance = ReactTester.create(
         <DetailsHeader
           foo="bar"
-          status="status"
           title="title"
           subtitle="subtitle"
         />

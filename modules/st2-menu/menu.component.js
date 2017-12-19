@@ -23,7 +23,9 @@ class Icon extends React.Component {
 export default class Menu extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    location: PropTypes.object,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
     routes: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
       href: PropTypes.string,
@@ -57,11 +59,10 @@ export default class Menu extends React.Component {
         <div className="st2-menu__spacer" />
 
         <div className="st2-menu__nav">
-          { _.map(routes, ({ title, href, url, target, icon, ...props }) => {
+          { _.map(routes, ({ title, href, url, target, icon }) => {
             if (href) {
               return (
                 <a
-                  {...props}
                   key={title}
                   className="st2-menu__nav-item"
                   href={href}
@@ -76,7 +77,6 @@ export default class Menu extends React.Component {
             if (url) {
               return (
                 <Link
-                  {...props}
                   key={title}
                   className={cx('st2-menu__nav-item', {
                     'st2-menu__nav-item--active': location.pathname.indexOf(url) === 0,

@@ -158,7 +158,7 @@ export class ToolbarSearch extends React.Component {
         <form>
           <input
             type="search"
-            className="$1"
+            className="st2-panel__search-bar"
             data-test="filter"
             placeholder={title}
             value={value}
@@ -230,7 +230,7 @@ export class Content extends React.Component {
 
     return (
       <div {...props} className={cx('st2-panel__content', className)}>
-        <div className="$1" ref={(ref) => this._scroller = ref}>
+        <div className="st2-panel__scroller" ref={(ref) => this._scroller = ref}>
           { children }
         </div>
       </div>
@@ -257,7 +257,7 @@ export class ContentEmpty extends React.Component {
 export class DetailsHeader extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    status: PropTypes.string.isRequired,
+    status: PropTypes.string,
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string.isRequired,
     children: PropTypes.node,
@@ -268,7 +268,7 @@ export class DetailsHeader extends React.Component {
 
     return (
       <div {...props} className={cx('st2-details__header', className)}>
-        <div className="$1">
+        <div className="st2-details__header-name">
           { status ? (
             <Label status={status} short={true} data-test="status" />
           ) : null }
@@ -276,7 +276,7 @@ export class DetailsHeader extends React.Component {
             { title }
           </a>
         </div>
-        <div className="$1" data-test="header_description">
+        <div className="st2-details__header-description" data-test="header_description">
           { subtitle }
         </div>
         { children }
@@ -336,8 +336,8 @@ export class DetailsBody extends React.Component {
     const { className, children, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-details__body st2-details__body--active', className)}>
-        <div className="$1">
+      <div {...props} className={cx('st2-details__body', 'st2-details__body--active', className)}>
+        <div className="st2-panel__scroller">
           { children }
         </div>
       </div>
@@ -377,7 +377,7 @@ export class DetailsPanelHeading extends React.Component {
 
     return (
       <div {...props} className={cx('st2-details__panel-heading', className)}>
-        <h2 className="$1">{ title }</h2>
+        <h2 className="st2-details__panel-title">{ title }</h2>
       </div>
     );
   }
@@ -412,8 +412,8 @@ export class DetailsPanelBodyLine extends React.Component {
 
     return (
       <dl {...props} className={cx('st2-details__panel-body-line', className)}>
-        <dt className="$1">{ label }:</dt>
-        <dd className="$1">{ children }</dd>
+        <dt className="st2-details__panel-body-label">{ label }:</dt>
+        <dd className="st2-details__panel-body-value">{ children }</dd>
       </dl>
     );
   }

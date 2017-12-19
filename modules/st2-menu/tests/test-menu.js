@@ -20,6 +20,7 @@ describe(`${Menu.name} Component`, () => {
         <Menu
           className="foobar"
           routes={[]}
+          location={{ pathname: 'pathname' }}
         />
       );
 
@@ -31,6 +32,7 @@ describe(`${Menu.name} Component`, () => {
         <Menu
           foo="bar"
           routes={[]}
+          location={{ pathname: 'pathname' }}
         />
       );
 

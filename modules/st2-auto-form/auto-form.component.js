@@ -18,7 +18,7 @@ export default class AutoForm extends React.Component {
     spec: PropTypes.object,
     data: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
   }
 
   static defaultProps = {

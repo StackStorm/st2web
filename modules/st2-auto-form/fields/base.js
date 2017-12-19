@@ -7,7 +7,7 @@ import { TextFieldWrapper } from '../wrappers';
 let Textarea;
 (function() {
   // don't include this during testing
-  if (typeof global !== 'undefined') {
+  if (typeof window === 'undefined' || global !== window) {
     Textarea = 'textarea';
     return;
   }

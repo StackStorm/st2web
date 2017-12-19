@@ -9,15 +9,23 @@ import PacksPanel from './packs-panel.component';
 
 export default class Packs extends React.Component {
   static propTypes = {
-    context: PropTypes.object,
-    routes: PropTypes.array,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+    routes: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      href: PropTypes.string,
+      url: PropTypes.string,
+      target: PropTypes.string,
+      icon: PropTypes.string,
+    })).isRequired,
   }
 
   render() {
     return (
       <Provider store={store}>
         <div className="wrapper">
-          <Menu {...this.props} />
+          <Menu location={this.props.location} routes={this.props.routes} />
           <PacksPanel {...this.props} />
         </div>
       </Provider>

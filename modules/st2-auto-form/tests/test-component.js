@@ -12,7 +12,6 @@ describe(`${AutoForm.name} Component`, () => {
       const instance = ReactTester.create(
         <AutoForm
           className="foobar"
-          onChange={() => {}}
         />
       );
 
@@ -23,7 +22,6 @@ describe(`${AutoForm.name} Component`, () => {
       const instance = ReactTester.create(
         <AutoForm
           foo="bar"
-          onChange={() => {}}
         />
       );
 
@@ -36,7 +34,7 @@ describe(`${AutoForm.name} Component`, () => {
       properties: {},
     };
 
-    const output = ReactTester.create(<AutoForm spec={spec} onChange={() => {}} />);
+    const output = ReactTester.create(<AutoForm spec={spec} />);
 
     expect(output.node.props.children).to.be.an('array').of.length(0);
   });
@@ -48,7 +46,7 @@ describe(`${AutoForm.name} Component`, () => {
       },
     };
 
-    const output = ReactTester.create(<AutoForm spec={spec} onChange={() => {}} />);
+    const output = ReactTester.create(<AutoForm spec={spec} />);
 
     expect(output.node.props.children).to.be.an('array').of.length(1)
       .with.nested.property('[0].type', StringField);

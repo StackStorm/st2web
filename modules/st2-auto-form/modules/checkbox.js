@@ -36,7 +36,6 @@ export default class CheckboxModule extends React.Component {
             <input
               type="checkbox"
               className="st2-auto-form__checkbox"
-              placeholder={spec.default}
               disabled={disabled}
               checked={data}
               onChange={({ target: { checked } }) => this.onChange(checked)}

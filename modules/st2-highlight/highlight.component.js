@@ -8,7 +8,7 @@ import './style.less';
 
 (function() {
   // don't include this during testing
-  if (typeof global !== 'undefined') {
+  if (typeof window === 'undefined' || global !== window) {
     return;
   }
 
