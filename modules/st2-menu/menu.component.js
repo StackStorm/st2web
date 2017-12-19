@@ -1,28 +1,36 @@
 import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Link } from 'react-router-dom';
-
+import cx from 'classnames';
 import api from '@stackstorm/module-api';
+
+import { Link } from 'react-router-dom';
 
 import './style.less';
 
 class Icon extends React.Component {
   static propTypes = {
-    name: PropTypes.string,
+    name: PropTypes.string.isRequired,
   }
 
   render() {
     return (
-      <i className={`st2-menu__icon ${this.props.name}`} />
+      <i className={cx('st2-menu__icon', this.props.name)} />
     );
   }
 }
 
 export default class Menu extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     location: PropTypes.object,
-    routes: PropTypes.array,
+    routes: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      href: PropTypes.string,
+      url: PropTypes.string,
+      target: PropTypes.string,
+      icon: PropTypes.string,
+    })).isRequired,
   }
 
   handleDisconnect() {
@@ -31,9 +39,9 @@ export default class Menu extends React.Component {
   }
 
   render() {
-    const { location } = this.props;
+    const { className, location, routes: allRoutes, ...props } = this.props;
 
-    const routes = _(this.props.routes)
+    const routes = _(allRoutes)
       .filter((e) => !!e.icon)
       .sortBy((e) => e.position)
       .value()
@@ -43,38 +51,46 @@ export default class Menu extends React.Component {
     const server = api.server;
 
     return (
-      <header className="st2-menu">
+      <header {...props} className={cx('st2-menu', className)}>
         <a href="#" className="st2-menu__logo" />
 
         <div className="st2-menu__spacer" />
 
         <div className="st2-menu__nav">
-          { _.map(routes, (route) => {
-            const props = {
-              key: route.title,
-              className: 'st2-menu__nav-item',
-              target: route.target,
-            };
-
-            if (route.href) {
+          { _.map(routes, ({ title, href, url, target, icon, ...props }) => {
+            if (href) {
               return (
-                <a href={route.href} {...props}>
-                  <Icon name={route.icon} />
-                  { route.title }
+                <a
+                  {...props}
+                  key={title}
+                  className="st2-menu__nav-item"
+                  href={href}
+                  target={target}
+                >
+                  <Icon name={icon} />
+                  { title }
                 </a>
               );
             }
 
-            if (location.pathname.indexOf(route.url) === 0) {
-              props.className += ' st2-menu__nav-item--active';
+            if (url) {
+              return (
+                <Link
+                  {...props}
+                  key={title}
+                  className={cx('st2-menu__nav-item', {
+                    'st2-menu__nav-item--active': location.pathname.indexOf(url) === 0,
+                  })}
+                  to={url}
+                  target={target}
+                >
+                  <Icon name={icon} />
+                  { title }
+                </Link>
+              );
             }
 
-            return (
-              <Link to={route.url} {...props}>
-                <Icon name={route.icon} />
-                { route.title }
-              </Link>
-            );
+            return null;
           }) }
         </div>
 

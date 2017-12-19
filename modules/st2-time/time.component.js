@@ -4,9 +4,9 @@ import Time from 'react-time';
 
 export default class TimeComponent extends React.Component {
   static propTypes = {
-    timestamp: PropTypes.string,
-    format: PropTypes.string,
-    utcdisplay: PropTypes.bool,
+    timestamp: PropTypes.string.isRequired,
+    format: PropTypes.string.isRequired,
+    utcdisplay: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {

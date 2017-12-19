@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import { actions } from './flex-table.reducer';
 
@@ -7,32 +8,28 @@ import './style.less';
 
 export class FlexTable extends React.Component {
   static propTypes = {
-    uid: PropTypes.string,
+    className: PropTypes.string,
+    uid: PropTypes.string.isRequired,
     title: PropTypes.node,
     titleType: PropTypes.string,
-    collapsed: PropTypes.bool,
+    collapsed: PropTypes.bool.isRequired,
     children: PropTypes.node,
     icon: PropTypes.string,
-    onToggle: PropTypes.func,
+    onToggle: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    collapsed: false,
   }
 
   static actions = actions
 
   render() {
-    const { title, titleType, collapsed, children, icon, onToggle, uid, ...otherProps } = this.props;
+    const { className, uid, title, titleType, collapsed, children, icon, onToggle, ...props } = this.props;
     uid;
 
-    const props = {
-      ...otherProps,
-      className: 'st2-flex-table',
-    };
-
-    if (collapsed) {
-      props.className += ' st2-flex-table--collapsed';
-    }
-
     return (
-      <div {...props} >
+      <div {...props} className={cx('st2-flex-table', className, { 'st2-flex-table--collapsed': collapsed })}>
         { title ? (
           <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
             { title }
@@ -46,6 +43,7 @@ export class FlexTable extends React.Component {
 
 export class FlexTableTitle extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     children: PropTypes.node,
     type: PropTypes.string,
     icon: PropTypes.string,
@@ -53,23 +51,17 @@ export class FlexTableTitle extends React.Component {
   }
 
   render() {
-    const { children, type, icon, onToggle } = this.props;
-
-    const props = {
-      className: 'st2-flex-table__caption',
-      onClick: (e) => onToggle(e),
-    };
-
-    if (icon) {
-      props.className += ' st2-flex-table__caption--pack';
-    }
-
-    if (type) {
-      props.className += ` st2-flex-table__caption--${type}`;
-    }
+    const { className, children, type, icon, onToggle, ...props } = this.props;
 
     return (
-      <div {...props}>
+      <div
+        {...props}
+        className={cx('st2-flex-table__caption', className, {
+          'st2-flex-table__caption--pack': icon,
+          [`st2-flex-table__caption--${type}`]: type,
+        })}
+        onClick={(e) => onToggle(e)}
+      >
         { icon ? (
           <img src={icon} />
         ) : null }
@@ -81,6 +73,7 @@ export class FlexTableTitle extends React.Component {
 
 export class FlexTableRow extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     columns: PropTypes.arrayOf(PropTypes.shape({
       type: PropTypes.string,
       children: PropTypes.node,
@@ -90,12 +83,12 @@ export class FlexTableRow extends React.Component {
   static actions = actions
 
   render() {
-    const { columns, ...props } = this.props;
+    const { className, columns, ...props } = this.props;
 
     return (
-      <div className="st2-flex-table__row" {...props}>
+      <div {...props} className={cx('st2-flex-table__row', className)}>
         { columns.map(({ Component = 'div', className, children, ...props }, key) => (
-          <Component key={key} className={`st2-flex-table__column ${className}`} {...props}>
+          <Component {...props} key={key} className={cx('st2-flex-table__column', className)}>
             { children }
           </Component>
         )) }
@@ -106,6 +99,7 @@ export class FlexTableRow extends React.Component {
 
 export class FlexTableInsert extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     visible: PropTypes.bool,
     children: PropTypes.node,
   }
@@ -117,14 +111,14 @@ export class FlexTableInsert extends React.Component {
   static actions = actions
 
   render() {
-    const { visible, children } = this.props;
+    const { className, visible, children, ...props } = this.props;
 
     if (!visible) {
       return null;
     }
 
     return (
-      <div className="st2-flex-table__insert">
+      <div {...props} className={cx('st2-flex-table__insert', className)}>
         <div className="st2-details__panel-body">
           { children }
         </div>

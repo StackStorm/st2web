@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import TextFieldModule from './text-field';
 
@@ -32,7 +33,7 @@ export default class ObjectModule extends React.Component {
 
     return (
       <TextFieldModule
-        className={`st2-form-object ${className}`}
+        className={cx('st2-form-object', className)}
         name={name}
         disabled={disabled}
         spec={spec}

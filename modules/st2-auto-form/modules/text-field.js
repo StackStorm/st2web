@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import {
   Label,
@@ -81,7 +82,7 @@ export default class TextFieldModule extends React.Component {
     const { className = '', name, disabled, spec, data = '' } = this.props;
 
     return (
-      <div className={`st2-form-text-field ${className}`}>
+      <div className={cx('st2-form-text-field', className)}>
         <Label spec={spec} className="st2-auto-form__text-field">
           <Title name={name} spec={spec} />
 

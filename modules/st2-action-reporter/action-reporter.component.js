@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-
 import cx from 'classnames';
+
 import reporters from './reporters';
 
 import './style.less';
@@ -9,8 +9,8 @@ import './style.less';
 export default class ActionReporter extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    runner: PropTypes.string,
-    execution: PropTypes.object,
+    runner: PropTypes.string.isRequired,
+    execution: PropTypes.object.isRequired,
   }
 
   render() {

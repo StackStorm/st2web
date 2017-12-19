@@ -1,15 +1,17 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import './style.less';
 
 export default class Filter extends React.Component {
   static propTypes = {
-    label: PropTypes.string,
-    multiple: PropTypes.bool,
-    items: PropTypes.arrayOf(PropTypes.string),
-    activeItems: PropTypes.arrayOf(PropTypes.string),
-    onChange: PropTypes.func,
+    className: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    multiple: PropTypes.bool.isRequired,
+    items: PropTypes.arrayOf(PropTypes.string).isRequired,
+    activeItems: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -60,12 +62,13 @@ export default class Filter extends React.Component {
   }
 
   render() {
-    const { label, multiple, items, activeItems } = this.props;
+    const { className, label, multiple, items, activeItems, onChange, ...props } = this.props;
+    onChange;
 
     return (
-      <div className={`st2-filter ${this.state.visible ? 'st2-filter--active' : ''}`}>
+      <div {...props} className={cx('st2-filter', className, { 'st2-filter--active': this.state.visible })}>
         <div
-          className={`st2-filter__label ${activeItems.length > 0 ? 'st2-filter__label--active' : ''}`}
+          className={cx('st2-filter__label', { 'st2-filter__label--active' : activeItems.length > 0 })}
           onClick={() => this.toggleVisible()}
         >
           { label }
@@ -96,7 +99,7 @@ export default class Filter extends React.Component {
             { this.visibleItems.map((item) => (
               <div
                 key={item}
-                className={`st2-filter__item ${activeItems.includes(item) ? 'st2-filter__item--active' : ''}`}
+                className={cx('st2-filter__item', { 'st2-filter__item--active' : activeItems.includes(item) })}
                 onClick={() => this.handleToggleItem(item)}
               >
                 { item }

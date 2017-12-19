@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import {
   Label,
@@ -40,7 +41,7 @@ export default class InputModule extends React.Component {
     const { className = '', name, disabled, spec, data = '' } = this.props;
 
     return (
-      <div className={`st2-form-input ${className}`}>
+      <div className={cx('st2-form-input', className)}>
         <Label spec={spec}>
           <Title name={name} spec={spec} />
 

@@ -1,13 +1,15 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import './style.less';
 
 export default class View extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     name: PropTypes.string.isRequired,
-    spec: PropTypes.object,
-    onChange: PropTypes.func,
+    spec: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   state = {
@@ -48,17 +50,22 @@ export default class View extends React.Component {
   }
 
   render() {
-    const options = getOptions(this.props.spec, this.value);
+    const { className, name, spec, onChange, ...props } = this.props;
+    name; onChange;
+    const options = getOptions(spec, this.value);
 
     return (
-      <div className={`st2-view ${this.state.visible ? 'st2-view--active' : ''}`}>
+      <div {...props} className={cx('st2-view', className, { 'st2-view--active' : this.state.visible })}>
         <div className="st2-view__label" onClick={() => this.toggleVisible()} />
         <div className="st2-view__variants">
           <div className="st2-view__list">
             { options.map(({ key, title, value }) => (
               <div
                 key={key}
-                className={`st2-view__item ${value ? 'st2-view__item--active' : ''} ${key.includes('.') ? 'st2-view__item--secondary' : ''}`}
+                className={cx('st2-view__item', {
+                  'st2-view__item--active' : value,
+                  'st2-view__item--secondary' : key.includes('.'),
+                })}
                 onClick={() => this.handleChange(key, !value)}
               >
                 { title }

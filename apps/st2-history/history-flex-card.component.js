@@ -21,6 +21,7 @@ export default class HistoryFlexCard extends React.Component {
 
   static defaultProps = {
     isChild: false,
+    selected: false,
   }
 
   static contextTypes = {
@@ -39,8 +40,7 @@ export default class HistoryFlexCard extends React.Component {
 
     return (
       <div
-        className={cx({
-          'st2-flex-card': true,
+        className={cx('st2-flex-card', {
           'st2-flex-card--active': selected,
         })}
         onClick={onClick}

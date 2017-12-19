@@ -17,11 +17,15 @@ export default class AutoForm extends React.Component {
   static propTypes = {
     spec: PropTypes.object,
     data: PropTypes.object,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func,
+    disabled: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
-  componentWillMount(){
+  static defaultProps = {
+    disabled: false,
+  }
+
+  componentWillMount() {
     // Once everything is inside react we should be able to move this to the
     // getElementByField portion
     const { spec } = this.props;

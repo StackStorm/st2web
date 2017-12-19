@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import {
   Label,
@@ -55,7 +56,7 @@ export default class ComboboxModule extends React.Component {
     const suggestions = value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
 
     return (
-      <div className={`st2-auto-form-combobox ${className}`} ref={(ref) => this.ref = ref}>
+      <div className={cx('st2-auto-form-combobox', className)} ref={(ref) => this.ref = ref}>
         <Label spec={spec}>
           <Title name={name} spec={spec} />
 
@@ -80,7 +81,7 @@ export default class ComboboxModule extends React.Component {
             { suggestions.map(({ name, description }) => (
               <div
                 key={name}
-                className={`st2-auto-form__suggestion ${value === name ? 'st2-auto-form__suggestion--active' : ''}`}
+                className={cx('st2-auto-form__suggestion', { 'st2-auto-form__suggestion--active' : value === name })}
                 onMouseDown={() => this.onChoose(name)}
               >
                 <div className="st2-auto-form__suggestion-primary">{ name }</div>

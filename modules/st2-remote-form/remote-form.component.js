@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import AutoForm from '@stackstorm/module-auto-form';
 import AutoFormText from '@stackstorm/module-auto-form/modules/text';
@@ -9,11 +10,21 @@ import './style.less';
 
 export default class RemoteForm extends React.Component {
   static propTypes = {
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    spec: PropTypes.object,
-    data: PropTypes.object,
-    onChange: PropTypes.func,
+    className: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    spec: PropTypes.shape({
+      enum: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        spec: PropTypes.object,
+      })).isRequired,
+    }).isRequired,
+    data: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    disabled: false,
   }
 
   onChangeValue(value) {
@@ -35,7 +46,7 @@ export default class RemoteForm extends React.Component {
   }
 
   render() {
-    const { name, disabled, spec, data, onChange, ...props } = this.props;
+    const { className, name, disabled, spec, data, onChange, ...props } = this.props;
     onChange;
 
     const key = name === 'trigger' ? 'type' : 'ref';
@@ -44,7 +55,7 @@ export default class RemoteForm extends React.Component {
     const childSpec = child ? child.spec : {};
 
     return (
-      <div {...props} className="st2-remote-form">
+      <div {...props} className={cx('st2-remote-form', className)}>
         { disabled ? (
           <AutoFormText
             name={name}

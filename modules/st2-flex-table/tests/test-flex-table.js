@@ -1,23 +1,45 @@
+import { expect } from 'chai';
+
 import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
-import chai, { expect } from 'chai';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 
-chai.use(sinonChai);
-
-import {
-  FlexTable,
-  FlexTableTitle,
-} from '../flex-table.component.js';
+import { FlexTable } from '..';
 
 function render(component) {
   return ReactTester.create(component).node;
 }
 
-describe('FlexTable component', () => {
+describe(`${FlexTable.name} Component`, () => {
+  describe('common functionality', () => {
+    it('proxies className', () => {
+      const instance = ReactTester.create(
+        <FlexTable
+          className="foobar"
+          uid="uid"
+          onToggle={() => {}}
+        />
+      );
+
+      expect(instance.node.classList).to.contain('foobar');
+    });
+
+    it('proxies extra props', () => {
+      const instance = ReactTester.create(
+        <FlexTable
+          foo="bar"
+          uid="uid"
+          onToggle={() => {}}
+        />
+      );
+
+      expect(instance.node.props.foo).to.equal('bar');
+    });
+  });
+
   it('renders an element', () => {
     const props = {
+      uid: 'uid',
       title: 'Some title',
       collapsed: false,
       icon: 'icon.png',
@@ -33,7 +55,7 @@ describe('FlexTable component', () => {
     expect(titleComponent.props.children).to.be.equal(props.title);
 
     titleComponent.props.onToggle();
-    expect(props.onToggle).to.be.calledOnce;
+    expect(props.onToggle.calledOnce).to.be.true;
 
     expect(restComponents).to.have.length(1);
     expect(restComponents[0]).to.be.equal('some child node');
@@ -41,6 +63,7 @@ describe('FlexTable component', () => {
 
   it('renders an element without icon', () => {
     const props = {
+      uid: 'uid',
       title: 'Some title',
       collapsed: false,
       onToggle: sinon.spy(),
@@ -55,7 +78,7 @@ describe('FlexTable component', () => {
     expect(titleComponent.props.children).to.be.equal(props.title);
 
     titleComponent.props.onToggle();
-    expect(props.onToggle).to.be.calledOnce;
+    expect(props.onToggle.calledOnce).to.be.true;
 
     expect(restComponents).to.have.length(1);
     expect(restComponents[0]).to.be.equal('some child node');
@@ -63,6 +86,7 @@ describe('FlexTable component', () => {
 
   it('renders an element without title', () => {
     const props = {
+      uid: 'uid',
       collapsed: false,
       icon: 'icon.png',
       onToggle: sinon.spy(),
@@ -81,6 +105,7 @@ describe('FlexTable component', () => {
 
   it('renders an element collapsed', () => {
     const props = {
+      uid: 'uid',
       title: 'Some title',
       collapsed: true,
       icon: 'icon.png',
@@ -96,50 +121,9 @@ describe('FlexTable component', () => {
     expect(titleComponent.props.children).to.be.equal(props.title);
 
     titleComponent.props.onToggle();
-    expect(props.onToggle).to.be.calledOnce;
+    expect(props.onToggle.calledOnce).to.be.true;
 
     expect(restComponents).to.have.length(1);
     expect(restComponents[0]).to.be.null;
-  });
-});
-
-describe('FlexTableTitle component', () => {
-  it('renders an element', () => {
-    const props = {
-      icon: 'icon.png',
-      onToggle: sinon.spy(),
-    };
-
-    const c = render(<FlexTableTitle {...props}>some child node</FlexTableTitle>);
-
-    expect(c.props.className).to.be.equal('st2-flex-table__caption st2-flex-table__caption--pack');
-
-    c.props.onClick();
-    expect(props.onToggle).to.be.calledOnce;
-
-    const [ imgComponent, headingComponent ] = c.props.children;
-    expect(imgComponent.props.src).to.be.equal(props.icon);
-
-    expect(headingComponent.props.className).to.be.equal('st2-flex-table__caption-title');
-    expect(headingComponent.props.children).to.be.equal('some child node');
-  });
-
-  it('renders an element without icon', () => {
-    const props = {
-      onToggle: sinon.spy(),
-    };
-
-    const c = render(<FlexTableTitle {...props}>some child node</FlexTableTitle>);
-
-    expect(c.props.className).to.be.equal('st2-flex-table__caption');
-
-    c.props.onClick();
-    expect(props.onToggle).to.be.calledOnce;
-
-    const [ imgComponent, headingComponent ] = c.props.children;
-    expect(imgComponent).to.be.null;
-
-    expect(headingComponent.props.className).to.be.equal('st2-flex-table__caption-title');
-    expect(headingComponent.props.children).to.be.equal('some child node');
   });
 });

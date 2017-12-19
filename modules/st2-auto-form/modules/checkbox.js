@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import {
   Label,
@@ -29,7 +30,7 @@ export default class CheckboxModule extends React.Component {
     const { className = '', name, disabled, spec, data = false } = this.props;
 
     return (
-      <div className={`st2-form-checkbox ${className}`}>
+      <div className={cx('st2-form-checkbox', className)}>
         <Label spec={spec}>
           <div className="st2-auto-form__title">
             <input

@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import {
   Label,
@@ -35,7 +36,7 @@ export default class SelectModule extends React.Component {
     ;
 
     return (
-      <div className={`st2-auto-form-select ${className}`}>
+      <div className={cx('st2-auto-form-select', className)}>
         <Label spec={spec} className="st2-auto-form__select">
           <Title name={name} spec={spec} />
 
@@ -52,7 +53,8 @@ export default class SelectModule extends React.Component {
                 key={value}
                 value={value}
                 label={label}
-              >{ label }
+              >
+                { label }
               </option>
             )) }
           </select>

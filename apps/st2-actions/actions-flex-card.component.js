@@ -1,14 +1,19 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import isExpandable from '@stackstorm/module-filter-expandable';
 
 export default class ActionsFlexCard extends React.Component {
   static propTypes = {
-    action: PropTypes.object,
-    selected: PropTypes.bool,
-    view: PropTypes.object,
-    onClick: PropTypes.func,
+    action: PropTypes.object.isRequired,
+    selected: PropTypes.bool.isRequired,
+    view: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    selected: false,
   }
 
   static contextTypes = {
@@ -18,18 +23,15 @@ export default class ActionsFlexCard extends React.Component {
   render() {
     const { action, selected, view, onClick } = this.props;
 
-    const props = {
-      className: 'st2-flex-card',
-      'data-test': `action action:${action.ref}`,
-      onClick,
-    };
-
-    if (selected) {
-      props.className += ' st2-flex-card--active';
-    }
-
     return (
-      <div {...props} ref={selected ? this.context.scrollIntoView : null}>
+      <div
+        className={cx('st2-flex-card', {
+          'st2-flex-card--active': selected,
+        })}
+        onClick={onClick}
+        data-test={`action action:${action.ref}`}
+        ref={selected ? this.context.scrollIntoView : null}
+      >
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__column">
             { view.action ? (

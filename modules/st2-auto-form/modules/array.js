@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import AutoFormInput from './input';
 
@@ -24,7 +25,7 @@ export default class ArrayModule extends React.Component {
 
     return (
       <AutoFormInput
-        className={`st2-form-array ${className}`}
+        className={cx('st2-form-array', className)}
         name={name}
         disabled={disabled}
         spec={spec}

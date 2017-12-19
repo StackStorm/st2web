@@ -1,46 +1,38 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import './style.less';
 
 export default class Button extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    small: PropTypes.bool,
-    flat: PropTypes.bool,
-    red: PropTypes.bool,
-    submit: PropTypes.bool,
-    onClick: PropTypes.func,
-    value: PropTypes.string,
+    small: PropTypes.bool.isRequired,
+    flat: PropTypes.bool.isRequired,
+    red: PropTypes.bool.isRequired,
+    submit: PropTypes.bool.isRequired,
+  }
+
+  static defaultProps = {
+    small: false,
+    flat: false,
+    red: false,
+    submit: false,
   }
 
   render() {
-    const { small, flat, red, submit, className, ...otherProps } = this.props;
-
-    const props = {
-      ...otherProps,
-      className: 'st2-forms__button',
-      type: submit ? 'submit' : 'button',
-    };
-
-    if (className) {
-      props.className += ` ${className}`;
-    }
-
-    if (small) {
-      props.className += ' st2-forms__button--small';
-    }
-
-    if (flat) {
-      props.className += ' st2-forms__button--flat';
-    }
-
-    if (red) {
-      props.className += ' st2-forms__button--red';
-    }
+    const { className, small, flat, red, submit, ...props } = this.props;
 
     return (
-      <input {...props} />
+      <input
+        {...props}
+        type={submit ? 'submit' : 'button'}
+        className={cx('st2-forms__button', className, {
+          'st2-forms__button--small': small,
+          'st2-forms__button--flat': flat,
+          'st2-forms__button--red': red,
+        })}
+      />
     );
   }
 }

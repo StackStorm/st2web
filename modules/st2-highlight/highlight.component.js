@@ -1,6 +1,10 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
+
 import Prism from 'prismjs';
+
+import './style.less';
 
 (function() {
   // don't include this during testing
@@ -14,8 +18,6 @@ import Prism from 'prismjs';
   require('prismjs/components/prism-python');
   require('prismjs/components/prism-json');
 })();
-
-import './style.less';
 
 function getType(string) {
   try {
@@ -40,6 +42,7 @@ function getType(string) {
 
 export default class Highlight extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     code: PropTypes.any,
     language: PropTypes.string,
     lines: PropTypes.number.isRequired,
@@ -148,14 +151,17 @@ export default class Highlight extends React.Component {
   }
 
   render() {
-    if (!this.props.code) {
+    const { className, code, language, lines, ...props } = this.props;
+    language; lines;
+
+    if (!code) {
       return null;
     }
 
     const whiteSpace = this.state.wrap ? 'pre-wrap' : 'auto';
 
     return (
-      <div className="st2-highlight">
+      <div {...props} className={cx('st2-highlight', className)}>
         <div className="st2-highlight__well">
           <pre>
             <code ref={(ref) => this.onRefShort(ref)} />
@@ -173,13 +179,13 @@ export default class Highlight extends React.Component {
               <div className="st2-highlight__buttons">
                 <input
                   type="button"
-                  className={`st2-forms__button st2-forms__button--small st2-details__toolbar-button ${this.state.wrap ? 'input--active' : ''}`}
+                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.wrap })}
                   onClick={() => this.setState({ wrap: !this.state.wrap })}
                   value="WRAP LINES"
                 />
                 <input
                   type="button"
-                  className={`st2-forms__button st2-forms__button--small st2-details__toolbar-button ${this.state.newlines ? 'input--active' : ''}`}
+                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.newlines })}
                   onClick={() => this.setState({ newlines: !this.state.newlines }, () => this._update())}
                   value="SHOW NEWLINES"
                 />

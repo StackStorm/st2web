@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-
+import cx from 'classnames';
 
 export class Label extends React.Component {
   static propTypes = {
@@ -15,7 +15,11 @@ export class Label extends React.Component {
     const { spec, className, children } = this.props;
 
     return (
-      <label className={`st2-auto-form__label ${className || ''} ${spec && spec.required ? ' st2-auto-form--required' : ''}`}>
+      <label
+        className={cx('st2-auto-form__label', className, {
+          'st2-auto-form--required' : spec && spec.required,
+        })}
+      >
         { children }
       </label>
     );
@@ -40,7 +44,7 @@ export class Title extends React.Component {
     }
 
     return (
-      <div className={`st2-auto-form__title ${className || ''}`}>
+      <div className={cx('st2-auto-form__title', className)}>
         { displayName }{ spec && spec.required ? ' *' : '' }
       </div>
     );
@@ -61,7 +65,7 @@ export class ErrorMessage extends React.Component {
     }
 
     return (
-      <span className={`st2-auto-form__error ${className || ''}`}>
+      <span className={cx('st2-auto-form__error', className)}>
         { children }
       </span>
     );
@@ -86,7 +90,7 @@ export class Icon extends React.Component {
 
     return (
       <span
-        className={`st2-auto-form__type ${className || ''} icon-${name}`}
+        className={cx('st2-auto-form__type', `icon-${name}`, className)}
         title={title}
         onClick={(e) => this.onClick(e)}
       />
@@ -112,7 +116,7 @@ export class Button extends React.Component {
 
     return (
       <span
-        className={`st2-auto-form__button ${className || ''} icon-${icon}`}
+        className={cx('st2-auto-form__button', `icon-${icon}`, className)}
         title={title}
         onClick={(e) => this.onClick(e)}
       />
@@ -136,7 +140,7 @@ export class Description extends React.Component {
     }
 
     return (
-      <p className={`st2-auto-form__description ${className || ''}`}>
+      <p className={cx('st2-auto-form__description', className)}>
         { spec.description }
       </p>
     );
@@ -158,7 +162,7 @@ export class TextFieldWrapper extends React.Component {
   render() {
     const line = (
       <div className='st2-auto-form__line'>
-        <Label className={this.props.labelClass || 'st2-auto-form__text-field'} >
+        <Label className={this.props.labelClass || 'st2-auto-form__text-field'}>
           <Icon name={this.props.icon} />
           <Title {...this.props} />
           { this.props.children }
@@ -206,10 +210,10 @@ export class BooleanFieldWrapper extends React.Component {
     const line = (
       <div className='st2-auto-form__line'>
         <Label>
-          <div {...blockProps} >
+          <div {...blockProps}>
             { !this.props.disabled && <Button {...buttonProps} /> }
             { this.props.children }
-            <span {...labelProps} >{ spec.name || name }</span>
+            <span {...labelProps}>{ spec.name || name }</span>
           </div>
         </Label>
         <Description {...this.props} />

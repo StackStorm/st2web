@@ -3,23 +3,42 @@ import { ReactTester } from '@stackstorm/module-test-utils';
 import { expect } from 'chai';
 const sinon = require('sinon');
 
-import Component from '../auto-form.component.js';
-
+import AutoForm from '..';
 import StringField from '../fields/string';
 
-function render(component) {
-  return ReactTester.create(component).node;
-}
+describe(`${AutoForm.name} Component`, () => {
+  describe('common functionality', () => {
+    it('proxies className', () => {
+      const instance = ReactTester.create(
+        <AutoForm
+          className="foobar"
+          onChange={() => {}}
+        />
+      );
 
-describe('AutoForm Component', () => {
+      expect(instance.node.classList).to.contain('foobar');
+    });
+
+    it('proxies extra props', () => {
+      const instance = ReactTester.create(
+        <AutoForm
+          foo="bar"
+          onChange={() => {}}
+        />
+      );
+
+      expect(instance.node.props.foo).to.equal('bar');
+    });
+  });
+
   it('produces an empty element when provided a spec with no properties', () => {
     const spec = {
       properties: {},
     };
 
-    const output = render(<Component spec={spec} />);
+    const output = ReactTester.create(<AutoForm spec={spec} onChange={() => {}} />);
 
-    expect(output.props.children).to.be.an('array').of.length(0);
+    expect(output.node.props.children).to.be.an('array').of.length(0);
   });
 
   it('produces a form of single string field for spec of one empty property', () => {
@@ -29,9 +48,9 @@ describe('AutoForm Component', () => {
       },
     };
 
-    const output = render(<Component spec={spec} />);
+    const output = ReactTester.create(<AutoForm spec={spec} onChange={() => {}} />);
 
-    expect(output.props.children).to.be.an('array').of.length(1)
+    expect(output.node.props.children).to.be.an('array').of.length(1)
       .with.nested.property('[0].type', StringField);
   });
 
@@ -41,11 +60,12 @@ describe('AutoForm Component', () => {
         test: {},
       },
     };
+
     const onChange = sinon.spy();
 
-    const output = render(<Component spec={spec} onChange={onChange} />);
+    const output = ReactTester.create(<AutoForm spec={spec} onChange={onChange} />);
 
-    const [ field ] = output.props.children;
+    const [ field ] = output.node.props.children;
     field.props.onChange('test');
 
     expect(onChange.withArgs({ test: 'test' }).calledOnce).to.be.true;

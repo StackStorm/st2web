@@ -1,21 +1,21 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
-
 import api from '@stackstorm/module-api';
 
 import './style.less';
 
 class LoginForm extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     children: PropTypes.node,
   }
 
   render() {
-    const { children, ...restProps } = this.props;
+    const { className, children, ...props } = this.props;
 
     return (
-      <form className="st2-login__form" {...restProps}>
+      <form {...props} className={cx('st2-login__form', className)}>
         { children }
       </form>
     );
@@ -23,22 +23,34 @@ class LoginForm extends React.Component {
 }
 
 class LoginLogo extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+  }
+
   render() {
+    const { className, children, ...props } = this.props;
+
     return (
-      <a href="#" className="st2-menu__logo" />
+      <a {...props} href="#" className={cx('st2-menu__logo', className)}>
+        {children}
+      </a>
     );
   }
 }
 
 class LoginError extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     message: PropTypes.string,
   }
 
   render() {
+    const { className, message, ...props } = this.props;
+
     return (
-      <div className="st2-login__error">
-        { this.props.message }
+      <div {...props} className={cx('st2-login__error', className)}>
+        { message }
       </div>
     );
   }
@@ -46,12 +58,12 @@ class LoginError extends React.Component {
 
 class LoginRow extends React.Component {
   static propTypes = {
-    children: PropTypes.node,
     className: PropTypes.string,
+    children: PropTypes.node,
   }
 
   render() {
-    const { children, className, ...props } = this.props;
+    const { className, children, ...props } = this.props;
 
     return (
       <div {...props} className={cx('st2-login__row', className)}>
@@ -63,14 +75,15 @@ class LoginRow extends React.Component {
 
 class LoginBottomRow extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     children: PropTypes.node,
   }
 
   render() {
-    const { children } = this.props;
+    const { className, children, ...props } = this.props;
 
     return (
-      <div className="st2-login__links">
+      <div {...props} className={cx('st2-login__links', className)}>
         { children }
       </div>
     );
@@ -79,7 +92,8 @@ class LoginBottomRow extends React.Component {
 
 export default class Login extends React.Component {
   static propTypes = {
-    onConnect: PropTypes.func,
+    className: PropTypes.string,
+    onConnect: PropTypes.func.isRequired,
   }
 
   state = {
@@ -112,8 +126,11 @@ export default class Login extends React.Component {
   }
 
   render() {
+    const { className, onConnect, ...props } = this.props;
+    onConnect;
+
     return (
-      <div className="st2-login">
+      <div {...props} className={cx('st2-login', className)}>
         <LoginForm data-test="login" onSubmit={(e) => this.connect(e)}>
           <LoginLogo />
 

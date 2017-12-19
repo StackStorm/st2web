@@ -33,7 +33,7 @@ export default class BooleanField extends BaseTextField {
     }
 
     return (
-      <BooleanFieldWrapper {...wrapperProps} >
+      <BooleanFieldWrapper {...wrapperProps}>
         <input type="checkbox" {...inputProps} />
       </BooleanFieldWrapper>
     );

@@ -1,38 +1,39 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import './style.less';
 
 const states = {
   'complete': {
-    class: 'st2-label--success',
+    className: 'st2-label--success',
   },
   'error': {
-    class: 'st2-label--danger',
+    className: 'st2-label--danger',
   },
   'enabled': {
-    class: 'st2-label--success',
+    className: 'st2-label--success',
   },
   'disabled': {
-    class: 'st2-label--danger',
+    className: 'st2-label--danger',
   },
   'succeeded': {
-    class: 'st2-label--succeeded',
+    className: 'st2-label--succeeded',
   },
   'failed': {
-    class: 'st2-label--failed',
+    className: 'st2-label--failed',
   },
   'running': {
-    class: 'st2-label--progress',
+    className: 'st2-label--progress',
   },
   'scheduled': {
-    class: 'st2-label--progress',
+    className: 'st2-label--progress',
   },
   'canceling': {
-    class: 'st2-label--warning',
+    className: 'st2-label--warning',
   },
   'canceled': {
-    class: 'st2-label--warning',
+    className: 'st2-label--warning',
   },
 };
 
@@ -45,28 +46,24 @@ function capitalize(string) {
 
 export default class Label extends React.Component {
   static propTypes = {
-    status: PropTypes.string,
-    short: PropTypes.bool,
+    className: PropTypes.string,
+    status: PropTypes.string.isRequired,
+    short: PropTypes.bool.isRequired,
+  }
+
+  static defaultProps = {
+    short: false,
   }
 
   render() {
-    const { status, short, ...otherProps } = this.props;
-
-    const props = {
-      ...otherProps,
-      className: 'st2-label__label',
-    };
+    const { className, status, short, ...props } = this.props;
 
     const state = states[status];
-
-    if (state) {
-      props.className += ` ${states[status].class}`;
-    }
 
     if (short) {
       return (
         <span className="st2-label st2-label--short">
-          <span {...props}>
+          <span {...props} className={cx('st2-label__label', className, state && state.className)}>
             { capitalize(state && state.title || status) }
           </span>
         </span>
@@ -74,8 +71,8 @@ export default class Label extends React.Component {
     }
 
     return (
-      <span {...props}>
-        { capitalize(state && state.title || this.props.status) }
+      <span {...props} className={cx('st2-label__label', className, state && state.className)}>
+        { capitalize(state && state.title || status) }
       </span>
     );
   }

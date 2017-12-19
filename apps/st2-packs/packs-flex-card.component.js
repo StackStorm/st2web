@@ -1,11 +1,16 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 export default class PacksFlexCard extends React.Component {
   static propTypes = {
-    pack: PropTypes.object,
-    selected: PropTypes.bool,
-    onClick: PropTypes.func,
+    pack: PropTypes.object.isRequired,
+    selected: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    selected: false,
   }
 
   static contextTypes = {
@@ -14,16 +19,6 @@ export default class PacksFlexCard extends React.Component {
 
   render() {
     const { pack, selected, onClick } = this.props;
-
-    const props = {
-      className: 'st2-flex-card',
-      'data-test': `pack pack:${pack.ref}`,
-      onClick,
-    };
-
-    if (selected) {
-      props.className += ' st2-flex-card--active';
-    }
 
     const { version, installedVersion } = pack;
 
@@ -36,7 +31,14 @@ export default class PacksFlexCard extends React.Component {
     }
 
     return (
-      <div {...props} ref={selected ? this.context.scrollIntoView : null}>
+      <div
+        className={cx('st2-flex-card', {
+          'st2-flex-card--active': selected,
+        })}
+        onClick={onClick}
+        data-test={`pack pack:${pack.ref}`}
+        ref={selected ? this.context.scrollIntoView : null}
+      >
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__column">
             <div className="st2-flex-card__header-primary" title={pack.name}>{ pack.name }</div>

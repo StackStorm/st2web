@@ -103,7 +103,7 @@ export class BaseTextField extends React.Component {
     }
 
     return (
-      <TextFieldWrapper icon={icon} {...wrapperProps} >
+      <TextFieldWrapper icon={icon} {...wrapperProps}>
         <input {...inputProps} />
       </TextFieldWrapper>
     );
@@ -138,7 +138,7 @@ export class BaseTextareaField extends BaseTextField {
     }
 
     return (
-      <TextFieldWrapper icon={icon} {...wrapperProps} >
+      <TextFieldWrapper icon={icon} {...wrapperProps}>
         <Textarea {...inputProps} />
       </TextFieldWrapper>
     );

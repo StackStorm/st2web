@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 import AutoFormSelect from '@stackstorm/module-auto-form/modules/select';
@@ -40,10 +41,15 @@ const types = {
 
 export default class Criteria extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     spec: PropTypes.object,
     data: PropTypes.object,
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func,
+    disabled: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+  	disabled: false,
   }
 
   handleChangeKey(oldKey, key) {
@@ -104,11 +110,11 @@ export default class Criteria extends React.Component {
   }
 
   render() {
-    const { spec, data, disabled, onChange, ...props } = this.props;
+    const { className, spec, data, disabled, onChange, ...props } = this.props;
     onChange;
 
     return (
-      <div {...props} className="st2-criteria">
+      <div {...props} className={cx('st2-criteria', className)}>
         <div>
           { _.map(data, ({ type, pattern }, key) => (
             <div className="st2-criteria__line" key={key}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import {
   Title,
@@ -22,7 +23,7 @@ export default class TextModule extends React.Component {
     }
 
     return (
-      <div className={`st2-auto-form-text ${className}`}>
+      <div className={cx('st2-auto-form-text', className)}>
         <Title name={name} spec={spec} />
 
         <div className="st2-auto-form__value">
