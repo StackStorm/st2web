@@ -1,17 +1,29 @@
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { ReactTester } from '@stackstorm/module-test-utils';
 
 export class TestComponent {
   constructor(component) {
-    this._renderer = new ShallowRenderer();
-    this._renderer.render(component);
-  }
-
-  output() {
-    return this._renderer.getRenderOutput();
+    this._instance = ReactTester.create(component);
   }
 
   field() {
-    return this.output().props.children;
+    try {
+      return this._instance.find((instance) => {
+        if (!instance.props.className) {
+          return false;
+        }
+
+        return instance.props.className.split(' ').includes('st2-auto-form__field');
+      });
+    }
+    catch (e) {
+      return this._instance.find((instance) => {
+        if (!instance.props.className) {
+          return false;
+        }
+
+        return instance.props.className.split(' ').includes('st2-auto-form__checkbox');
+      });
+    }
   }
 
   makeChange(value, name) {
@@ -25,7 +37,7 @@ export class TestComponent {
   }
 
   fieldType() {
-    return this.field().type;
+    return this.field()._instance.type;
   }
 
   fieldValue(name) {
@@ -37,7 +49,7 @@ export class TestComponent {
   }
 
   value() {
-    const instance = this._renderer._instance._instance;
+    const instance = this._instance._instance.instance;
     return instance.fromStateValue(instance.state.value);
   }
 }

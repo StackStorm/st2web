@@ -76,7 +76,7 @@ describe('AutoForm BooleanField', () => {
     expect(c.value()).to.be.deep.equal(false);
     expect(c.fieldClass()).to.not.have.string('st2-auto-form__checkbox--default');
 
-    c.output().props.onReset();
+    c._instance.node.props.onReset();
 
     expect(onChange.withArgs(undefined)).to.be.calledOnce;
     expect(c.fieldValue('checked')).to.be.equal(undefined);

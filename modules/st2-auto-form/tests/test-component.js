@@ -1,5 +1,5 @@
 import React from 'react';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { ReactTester } from '@stackstorm/module-test-utils';
 import { expect } from 'chai';
 const sinon = require('sinon');
 
@@ -8,9 +8,7 @@ import Component from '../auto-form.component.js';
 import StringField from '../fields/string';
 
 function render(component) {
-  const renderer = new ShallowRenderer();
-  renderer.render(component);
-  return renderer.getRenderOutput();
+  return ReactTester.create(component).node;
 }
 
 describe('AutoForm Component', () => {

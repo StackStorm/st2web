@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import AutoFormCheckbox from '@stackstorm/module-auto-form/modules/checkbox';
 import Criteria from '@stackstorm/module-criteria';
 import Button from '@stackstorm/module-forms/button.component';
-import St2Highlight from '@stackstorm/module-highlight';
+import Highlight from '@stackstorm/module-highlight';
 import PackIcon from '@stackstorm/module-pack-icon';
 import {
   PanelDetails,
@@ -319,7 +319,7 @@ export default class RulesDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="rule_code">
-              <St2Highlight code={rule} />
+              <Highlight code={rule} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>

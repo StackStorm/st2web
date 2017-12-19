@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import ActionReporter from '@stackstorm/module-action-reporter';
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
-import St2Highlight from '@stackstorm/module-highlight';
+import Highlight from '@stackstorm/module-highlight';
 import Label from '@stackstorm/module-label';
 import {
   PanelDetails,
@@ -200,7 +200,7 @@ export default class HistoryDetails extends React.Component {
                   </DetailsPanelBody>
                   { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
                     <DetailsPanelBody>
-                      <St2Highlight code={execution.trigger_instance.payload} />
+                      <Highlight code={execution.trigger_instance.payload} />
                     </DetailsPanelBody>
                   ) : null }
                 </DetailsPanel>
@@ -228,7 +228,7 @@ export default class HistoryDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="execution_code">
-              <St2Highlight code={execution} />
+              <Highlight code={execution} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>

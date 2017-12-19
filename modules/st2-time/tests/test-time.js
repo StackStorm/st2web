@@ -10,7 +10,7 @@ describe(`${Time.name} Component`, () => {
     it('proxies className', () => {
       const instance = ReactTester.create(
         <Time
-          className='foobar'
+          className="foobar"
           timestamp={new Date().toJSON()}
         />
       );

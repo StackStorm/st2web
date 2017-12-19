@@ -10,7 +10,7 @@ import setTitle from '@stackstorm/module-title';
 
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
-import St2Highlight from '@stackstorm/module-highlight';
+import Highlight from '@stackstorm/module-highlight';
 import {
   PanelDetails,
   DetailsHeader,
@@ -207,7 +207,7 @@ export default class PacksPanel extends React.Component {
                   <Button submit value="Save" />
                 </DetailsButtonsPanel>
                 { this.state.configPreview ? (
-                  <St2Highlight code={this.configField.getValue()} />
+                  <Highlight code={this.configField.getValue()} />
                 ) : null  }
               </form>
             </DetailsPanel>

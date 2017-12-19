@@ -6,7 +6,7 @@ import setTitle from '@stackstorm/module-title';
 import AutoForm from '@stackstorm/module-auto-form';
 import StringField from '@stackstorm/module-auto-form/fields/string';
 import Button from '@stackstorm/module-forms/button.component';
-import St2Highlight from '@stackstorm/module-highlight';
+import Highlight from '@stackstorm/module-highlight';
 import {
   DetailsPanel,
   DetailsPanelBody,
@@ -100,7 +100,7 @@ export default class HistoryPopup extends React.Component {
                 </DetailsButtonsPanel>
 
                 { this.state.preview ? (
-                  <St2Highlight code={this.state.payload} />
+                  <Highlight code={this.state.payload} />
                 ) : null }
               </DetailsPanelBody>
             </DetailsPanel>

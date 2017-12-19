@@ -1,9 +1,19 @@
 import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import Textarea from 'react-textarea-autosize';
 
 import { TextFieldWrapper } from '../wrappers';
+
+let Textarea;
+(function() {
+  // don't include this during testing
+  if (typeof global !== 'undefined') {
+    Textarea = 'textarea';
+    return;
+  }
+
+  Textarea = require('react-textarea-autosize');
+})();
 
 export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
@@ -60,7 +70,7 @@ export class BaseTextField extends React.Component {
   handleChange(value) {
     const invalid = this.validate(value, this.props.spec);
 
-    this.setState({ value, invalid }, this.props.onChange && !invalid && this.emitChange);
+    this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
   }
 
   emitChange() {

@@ -2,11 +2,18 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import Prism from 'prismjs';
 
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-yaml';
-import 'prismjs/components/prism-powershell';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-json';
+(function() {
+  // don't include this during testing
+  if (typeof global !== 'undefined') {
+    return;
+  }
+
+  require('prismjs/components/prism-bash');
+  require('prismjs/components/prism-yaml');
+  require('prismjs/components/prism-powershell');
+  require('prismjs/components/prism-python');
+  require('prismjs/components/prism-json');
+})();
 
 import './style.less';
 
@@ -19,7 +26,8 @@ function getType(string) {
     }
 
     return 'json';
-  } catch (e) {
+  }
+  catch (e) {
     // do nothing
   }
 

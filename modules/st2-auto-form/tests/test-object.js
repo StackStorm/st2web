@@ -2,7 +2,6 @@ import React from 'react';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import Textarea from 'react-textarea-autosize';
 
 chai.use(sinonChai);
 
@@ -18,7 +17,7 @@ describe('AutoForm ObjectField', () => {
 
     const c = new TestComponent(<ObjectField {...props} />);
 
-    expect(c.fieldType()).to.be.equal(Textarea);
+    expect(c.fieldType()).to.be.equal('textarea');
   });
 
   it('calls the callback if value is valid', () => {

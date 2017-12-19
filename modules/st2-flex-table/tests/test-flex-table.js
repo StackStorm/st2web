@@ -1,5 +1,5 @@
 import React from 'react';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { ReactTester } from '@stackstorm/module-test-utils';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -12,9 +12,7 @@ import {
 } from '../flex-table.component.js';
 
 function render(component) {
-  const renderer = new ShallowRenderer();
-  renderer.render(component);
-  return renderer.getRenderOutput();
+  return ReactTester.create(component).node;
 }
 
 describe('FlexTable component', () => {

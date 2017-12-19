@@ -17,7 +17,7 @@ import {
   FlexTableInsert,
 } from '@stackstorm/module-flex-table';
 import Button from '@stackstorm/module-forms/button.component';
-import St2Highlight from '@stackstorm/module-highlight';
+import Highlight from '@stackstorm/module-highlight';
 import Label from '@stackstorm/module-label';
 import {
   PanelDetails,
@@ -197,7 +197,7 @@ export default class ActionsDetails extends React.Component {
                       <Button submit value="Run" data-test="run_submit" />
                     </DetailsButtonsPanel>
                     { this.state.runPreview ? (
-                      <St2Highlight data-test="action_code" code={this.state.runValue} />
+                      <Highlight data-test="action_code" code={this.state.runValue} />
                     ) : null }
                   </form>
                 </DetailsPanelBody>
@@ -258,7 +258,7 @@ export default class ActionsDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="action_code">
-              <St2Highlight code={action} />
+              <Highlight code={action} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>

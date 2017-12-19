@@ -1,9 +1,7 @@
 import { expect } from 'chai';
-// import sinon from 'sinon';
 
 global.window = {
   st2constants: { st2Config: {} },
-  location: { hostname: 'example.com' },
 };
 global.localStorage = { removeItem: () => {} };
 const API = require('..').API; // using `require` so that globals run first
@@ -16,7 +14,10 @@ process.on('unhandledRejection', (reason) => {
 
 describe('API', () => {
   let api;
-  before(() => api = new API());
+  before(() => {
+    global.window.location = { hostname: 'example.com' };
+    api = new API();
+  });
 
   describe('connect', () => {
     before(() => moxios.install());

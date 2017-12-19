@@ -6,7 +6,8 @@ import { BaseTextField, isJinja } from './base';
 const jsonCheck = (value) => {
   try {
     JSON.parse(value);
-  } catch (e) {
+  }
+  catch (e) {
     return false;
   }
   return true;
@@ -96,10 +97,12 @@ export default class ArrayField extends BaseTextField {
         }
         const invalidItem = o.find((v) => typeChecks(items && items.type, v));
         return invalidItem && typeChecks(items && items.type, invalidItem);
-      } catch(e) {
+      }
+      catch(e) {
         return e.message;
       }
-    } else {
+    }
+    else {
       const { required, items } = spec;
 
       const list = split(value);
