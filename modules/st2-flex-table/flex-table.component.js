@@ -9,13 +9,13 @@ import './style.less';
 export class FlexTable extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    uid: PropTypes.string.isRequired,
+    uid: PropTypes.string,
     title: PropTypes.node,
     titleType: PropTypes.string,
     collapsed: PropTypes.bool.isRequired,
     children: PropTypes.node,
     icon: PropTypes.string,
-    onToggle: PropTypes.func.isRequired,
+    onToggle: PropTypes.func,
   }
 
   static defaultProps = {

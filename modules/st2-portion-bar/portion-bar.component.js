@@ -14,7 +14,7 @@ export default class PortionBar extends React.Component {
   render() {
     const { className, content, ...props } = this.props;
 
-    const portions = _.pick(content, (v) => !!v);
+    const portions = _.pickBy(content, (v) => !!v);
 
     const total = _.reduce(portions, (sum, num) => sum + num);
 
@@ -33,7 +33,7 @@ export default class PortionBar extends React.Component {
         </ul>
         <ul className="st2-portion-bar__info">
           { _.map(portions, (value, key) => (
-            <li {...props} key={key} className="st2-portion-bar__info-value">{key}: {value}</li>
+            <li key={key} className="st2-portion-bar__info-value">{key}: {value}</li>
           )) }
         </ul>
       </div>

@@ -60,7 +60,7 @@ export default class HistoryPopup extends React.Component {
     return (
       <div className="st2-rerun">
         <Popup title="Rerun an execution" onCancel={onCancel} data-test="rerun_popup">
-          <form onSubmit={(e) => this.handleSubmit(e)}>
+          <form>
             <DetailsPanel>
               <DetailsPanelBody>
                 <StringField
@@ -95,6 +95,7 @@ export default class HistoryPopup extends React.Component {
                     submit
                     className="st2-details__toolbar-button"
                     value="Submit"
+                    onClick={(e) => this.handleSubmit(e)}
                     data-test="rerun_submit"
                   />
                 </DetailsButtonsPanel>

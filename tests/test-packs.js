@@ -23,11 +23,8 @@ describe('User visits packs page', function () {
     .then(util.login)
     .then(() => {
       packs_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/packs$').test(e.url));
-
       index_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/packs/index$').test(e.url));
-
       config_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/configs(\\?|$)').test(e.url));
-
       config_schema_resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/config_schemas$').test(e.url));
     }));
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import Time from 'react-time';
+import TimeComponent from 'react-time';
 
-export default class TimeComponent extends React.Component {
+export default class Time extends React.Component {
   static propTypes = {
     timestamp: PropTypes.string.isRequired,
     format: PropTypes.string.isRequired,
@@ -23,7 +23,7 @@ export default class TimeComponent extends React.Component {
     }
 
     return (
-      <Time
+      <TimeComponent
         {...props}
         value={new Date(timestamp)}
         format={dateFormat}

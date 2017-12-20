@@ -16,8 +16,6 @@ describe(`${FlexTable.name} Component`, () => {
       const instance = ReactTester.create(
         <FlexTable
           className="foobar"
-          uid="uid"
-          onToggle={() => {}}
         />
       );
 
@@ -28,8 +26,6 @@ describe(`${FlexTable.name} Component`, () => {
       const instance = ReactTester.create(
         <FlexTable
           foo="bar"
-          uid="uid"
-          onToggle={() => {}}
         />
       );
 
@@ -39,7 +35,6 @@ describe(`${FlexTable.name} Component`, () => {
 
   it('renders an element', () => {
     const props = {
-      uid: 'uid',
       title: 'Some title',
       collapsed: false,
       icon: 'icon.png',
@@ -63,7 +58,6 @@ describe(`${FlexTable.name} Component`, () => {
 
   it('renders an element without icon', () => {
     const props = {
-      uid: 'uid',
       title: 'Some title',
       collapsed: false,
       onToggle: sinon.spy(),
@@ -86,7 +80,6 @@ describe(`${FlexTable.name} Component`, () => {
 
   it('renders an element without title', () => {
     const props = {
-      uid: 'uid',
       collapsed: false,
       icon: 'icon.png',
       onToggle: sinon.spy(),
@@ -105,7 +98,6 @@ describe(`${FlexTable.name} Component`, () => {
 
   it('renders an element collapsed', () => {
     const props = {
-      uid: 'uid',
       title: 'Some title',
       collapsed: true,
       icon: 'icon.png',

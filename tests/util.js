@@ -4,7 +4,7 @@ const URI = require('urijs');
 const moment = require('moment');
 const zombie = require('zombie');
 
-const ST2client = require('st2client');
+const ST2client = require('@stackstorm/module-api/node_modules/st2client');
 
 let client;
 

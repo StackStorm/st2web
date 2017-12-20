@@ -140,20 +140,24 @@ export default class HistoryDetails extends React.Component {
                       </DetailsPanelBodyLine>
                     ) : null
                     }
-                    <DetailsPanelBodyLine label="Started">
-                      <Time
-                        timestamp={execution.start_timestamp}
-                        format="ddd, DD MMM YYYY HH:mm:ss"
-                        data-test="start_timestamp"
-                      />
-                    </DetailsPanelBodyLine>
-                    <DetailsPanelBodyLine label="Finished">
-                      <Time
-                        timestamp={execution.end_timestamp}
-                        format="ddd, DD MMM YYYY HH:mm:ss"
-                        data-test="end_timestamp"
-                      />
-                    </DetailsPanelBodyLine>
+                    { execution.start_timestamp ? (
+                      <DetailsPanelBodyLine label="Started">
+                        <Time
+                          timestamp={execution.start_timestamp}
+                          format="ddd, DD MMM YYYY HH:mm:ss"
+                          data-test="start_timestamp"
+                        />
+                      </DetailsPanelBodyLine>
+                    ) : null }
+                    { execution.end_timestamp ? (
+                      <DetailsPanelBodyLine label="Finished">
+                        <Time
+                          timestamp={execution.end_timestamp}
+                          format="ddd, DD MMM YYYY HH:mm:ss"
+                          data-test="end_timestamp"
+                        />
+                      </DetailsPanelBodyLine>
+                    ) : null }
                     <DetailsPanelBodyLine label="Execution Time">
                       <span data-test="execution_time">
                         {getExecutionTime(execution)}s

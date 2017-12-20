@@ -27,9 +27,8 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^0.17.1",
     "lodash": "2.4.2",
-    "st2client": "1.1.1",
+    "st2client": "github:christopherjbaker/st2client.js",
     "urijs": "1.17.1"
   },
   "devDependencies": {

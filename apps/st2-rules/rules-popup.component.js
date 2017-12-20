@@ -105,7 +105,7 @@ export default class RulesPopup extends React.Component {
     return (
       <div className="st2-rerun">
         <Popup title="Create a rule" onCancel={onCancel} data-test="rule_create_popup">
-          <form onSubmit={(e) => this.handleSubmit(e)}>
+          <form>
             <DetailsPanel>
               <DetailsPanelBody>
                 <AutoForm
@@ -190,6 +190,7 @@ export default class RulesPopup extends React.Component {
                 submit
                 className="st2-details__toolbar-button"
                 value="Create"
+                onClick={(e) => this.handleSubmit(e)}
                 data-test="rule_create_submit"
               />
             </DetailsButtonsPanel>

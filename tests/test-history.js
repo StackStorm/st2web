@@ -130,42 +130,61 @@ describe('User visits history page', function () {
         });
     });
 
-    it('should show a form', () => browser.pressButton(util.name('rerun_button'))
-      .then(() => {
-        browser.assert.element(util.name('rerun_form_action'), 'Action input is missing');
-        browser.assert.element(util.name('rerun_preview'), 'Preview button is missing');
-        browser.assert.element(util.name('rerun_cancel'), 'Cancel button is missing');
-        browser.assert.element(util.name('rerun_submit'), 'Submit button is missing');
-      }));
+    it('should show a form', () => {
+      return browser.pressButton(util.name('rerun_button'))
+        .then(() => {
+          browser.assert.element(util.name('rerun_form_action'), 'Action input is missing');
+          browser.assert.element(util.name('rerun_preview'), 'Preview button is missing');
+          browser.assert.element(util.name('rerun_cancel'), 'Cancel button is missing');
+          browser.assert.element(util.name('rerun_submit'), 'Submit button is missing');
+        })
+      ;
+    });
 
-    it('should rerun the action on submit button', () => browser.pressButton(util.name('rerun_submit'))
-      .then(() => {
-        const resource = browser.resources.filter((e) => e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions/\\w+/re_run\\?no_merge=true$').test(e.url));
+    it('should rerun the action on submit button', () => {
+      return browser.pressButton(util.name('rerun_submit'))
+        .then(() => new Promise(resolve => setTimeout(resolve, 2500)))
+        .then(() => {
+          const resource = browser.resources.filter((e) => {
+            if (e.request.method !== 'POST') {
+              return false;
+            }
 
-        expect(resource).to.have.length(1, 'Rerun should make a single request');
+            return new RegExp('^https://example.com/api/v1/executions/\\w+/re_run\\?no_merge=true$').test(e.url);
+          });
 
-        browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
-      }));
+          expect(resource).to.have.length(1, 'Rerun should make a single request');
 
-    it('should close the popup on cancel button', () => browser.pressButton(util.name('rerun_button'))
-      .then(() => {
-        browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
-      })
-      .then(() => browser.pressButton(util.name('rerun_cancel')))
-      .then(() => {
-        browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
-      }));
+          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+        })
+      ;
+    });
 
-    it('should close the popup on clicking outside the view', () => browser.pressButton(util.name('rerun_button'))
-      .then(() => {
-        browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
-      })
-      .then(() => {
-        browser.click(util.name('rerun_popup'));
-      })
-      .then(() => {
-        browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
-      }));
+    it('should close the popup on cancel button', () => {
+      return browser.pressButton(util.name('rerun_button'))
+        .then(() => {
+          browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
+        })
+        .then(() => browser.pressButton(util.name('rerun_cancel')))
+        .then(() => {
+          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+        })
+      ;
+    });
+
+    it('should close the popup on clicking outside the view', () => {
+      return browser.pressButton(util.name('rerun_button'))
+        .then(() => {
+          browser.assert.element(util.name('rerun_popup'), 'Rerun is not in DOM');
+        })
+        .then(() => {
+          browser.click(util.name('rerun_popup'));
+        })
+        .then(() => {
+          browser.assert.elements(util.name('rerun_popup'), 0, 'Rerun popup is in DOM when it should not be');
+        })
+      ;
+    });
   });
 
   after(() => {

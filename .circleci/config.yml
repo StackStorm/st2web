@@ -49,7 +49,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
-            npm i -g lerna
+            npm install --global lerna
       - run:
           name: Install package dependencies
           command: lerna bootstrap
