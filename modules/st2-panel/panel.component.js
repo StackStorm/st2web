@@ -366,6 +366,23 @@ export class DetailsPanel extends React.Component {
   }
 }
 
+export class DetailsPanelEmpty extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  render() {
+    const { className, children, ...props } = this.props;
+
+    return (
+      <div {...props} className={cx('st2-details__panel-empty', className)}>
+        { children }
+      </div>
+    );
+  }
+}
+
 export class DetailsPanelHeading extends React.Component {
   static propTypes = {
     className: PropTypes.string,

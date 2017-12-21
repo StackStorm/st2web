@@ -25,6 +25,7 @@ import {
   DetailsSwitch,
   DetailsBody,
   DetailsPanel,
+  DetailsPanelEmpty,
   DetailsPanelHeading,
   DetailsPanelBody,
   DetailsButtonsPanel,
@@ -58,6 +59,28 @@ export default class ActionsDetails extends React.Component {
   }
 
   componentDidMount() {
+    api.client.stream.listen().then((source) => {
+      this._source = source;
+
+      this._streamListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        if (record.action.id !== this.props.action.id) {
+          return;
+        }
+
+        store.dispatch({
+          type: 'UPDATE_EXECUTION',
+          event: e.type,
+          record,
+        });
+      };
+
+      this._source.addEventListener('st2.execution__create', this._streamListener);
+      this._source.addEventListener('st2.execution__update', this._streamListener);
+      this._source.addEventListener('st2.execution__delete', this._streamListener);
+    });
+
     const { id, provideRefresh } = this.props;
 
     if (provideRefresh) {
@@ -83,6 +106,12 @@ export default class ActionsDetails extends React.Component {
     }
 
     return true;
+  }
+
+  componentWillUnmount() {
+    this._source.removeEventListener('st2.execution__create', this._streamListener);
+    this._source.removeEventListener('st2.execution__update', this._streamListener);
+    this._source.removeEventListener('st2.execution__delete', this._streamListener);
   }
 
   refresh() {
@@ -229,7 +258,7 @@ export default class ActionsDetails extends React.Component {
                             },
                             {
                               className: 'st2-actions__details-column-time',
-                              children: <Time timestamp={execution.start_timestamp} format="ddd, DD MMM YYYY" />,
+                              children: <Time timestamp={execution.start_timestamp} />,
                             },
                             {
                               Component: Link,
@@ -246,7 +275,7 @@ export default class ActionsDetails extends React.Component {
                       ]) }
                     </FlexTable>
                   ) : (
-                    <div className="st2-details__panel-empty">No history records for this action</div>
+                    <DetailsPanelEmpty>No history records for this action</DetailsPanelEmpty>
                   ) }
 
                   <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>

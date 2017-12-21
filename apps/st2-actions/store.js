@@ -105,6 +105,83 @@ const actionReducer = (state = {}, input) => {
         groups,
       };
 
+    case 'UPDATE_EXECUTION': {
+      const { event, record } = input;
+
+      executions = [ ...executions ];
+
+      if (event.endsWith('__delete')) {
+        if (record.parent) {
+          for (const index in executions) {
+            if (executions[index].id !== record.parent) {
+              continue;
+            }
+
+            const parent = executions[index] = { ...executions[index] };
+            if (parent.fetchedChildren) {
+              parent.fetchedChildren = [ ...parent.fetchedChildren ]
+                .filter(execution => execution.id !== record.id)
+              ;
+            }
+          }
+        }
+        else {
+          executions = executions
+            .filter(execution => execution.id !== record.id)
+          ;
+        }
+      }
+      else {
+        if (record.parent) {
+          for (const index in executions) {
+            if (executions[index].id !== record.parent) {
+              continue;
+            }
+
+            const parent = executions[index] = { ...executions[index] };
+            if (parent.fetchedChildren) {
+              parent.fetchedChildren = [ ...parent.fetchedChildren ];
+            }
+            else {
+              parent.fetchedChildren = [];
+            }
+
+            let found = false;
+            for (const index in parent.fetchedChildren) {
+              if (parent.fetchedChildren[index].id !== record.id) {
+                continue;
+              }
+
+              found = true;
+              parent.fetchedChildren[index] = record;
+            }
+            if (!found) {
+              parent.fetchedChildren.unshift(record);
+            }
+          }
+        }
+        else {
+          let found = false;
+          for (const index in executions) {
+            if (executions[index].id !== record.id) {
+              continue;
+            }
+
+            found = true;
+            executions[index] = record;
+          }
+          if (!found) {
+            executions.unshift(record);
+          }
+        }
+      }
+
+      return {
+        ...state,
+        executions,
+      };
+    }
+
     case 'SET_FILTER':
       filter = input.filter;
       groups = makeGroups(actions, filter);
