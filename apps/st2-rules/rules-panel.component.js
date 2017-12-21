@@ -142,12 +142,6 @@ export default class RulesPanel extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this._source.removeEventListener('st2.rule__create', this._streamListener);
-    this._source.removeEventListener('st2.rule__update', this._streamListener);
-    this._source.removeEventListener('st2.rule__delete', this._streamListener);
-  }
-
   fetchGroups() {
     const { notification } = this.props;
 

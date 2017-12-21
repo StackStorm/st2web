@@ -109,7 +109,10 @@ export default class HistoryDetails extends React.Component {
 
     return (
       <PanelDetails data-test="details">
-        <DetailsHeader title={execution.action.ref} subtitle={execution.action.description} />
+        <DetailsHeader
+          title={( <Link to={`/actions/${execution.action.ref}`}>{execution.action.ref}</Link> )}
+          subtitle={execution.action.description}
+        />
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },

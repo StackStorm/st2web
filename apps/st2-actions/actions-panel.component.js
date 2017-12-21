@@ -74,28 +74,6 @@ export default class ActionsPanel extends React.Component {
   }
 
   componentDidMount() {
-    api.client.stream.listen().then((source) => {
-      this._source = source;
-
-      this._streamListener = (e) => {
-        const record = JSON.parse(e.data);
-
-        if (record.ref === this.urlParams.id) {
-          this._refreshDetails && this._refreshDetails();
-        }
-
-        store.dispatch({
-          type: 'UPDATE_ACTION',
-          event: e.type,
-          record,
-        });
-      };
-
-      this._source.addEventListener('st2.action__create', this._streamListener);
-      this._source.addEventListener('st2.action__update', this._streamListener);
-      this._source.addEventListener('st2.action__delete', this._streamListener);
-    });
-
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
@@ -126,12 +104,6 @@ export default class ActionsPanel extends React.Component {
         }
       });
     }
-  }
-
-  componentWillUnmount() {
-    this._source.removeEventListener('st2.action__create', this._streamListener);
-    this._source.removeEventListener('st2.action__update', this._streamListener);
-    this._source.removeEventListener('st2.action__delete', this._streamListener);
   }
 
   fetchGroups() {

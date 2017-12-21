@@ -201,7 +201,11 @@ export default class RulesDetails extends React.Component {
 
     return (
       <PanelDetails data-test="details">
-        <DetailsHeader status={rule.enabled ? 'enabled' : 'disabled'} title={rule.ref} subtitle={rule.description}>
+        <DetailsHeader
+          status={rule.enabled ? 'enabled' : 'disabled'}
+          title={( <Link to={`/rules/${rule.ref}`}>{rule.ref}</Link> )}
+          subtitle={rule.description}
+        >
           <div className="st2-details__header-conditions">
             <div className="st2-details__header-condition st2-details__header-condition--if" data-test="header_if">
               <span className="st2-details__header-condition-label">If</span>

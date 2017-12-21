@@ -190,7 +190,10 @@ export default class ActionsDetails extends React.Component {
 
     return (
       <PanelDetails data-test="details">
-        <DetailsHeader title={action.ref} subtitle={action.description} />
+        <DetailsHeader
+          title={( <Link to={`/actions/${action.ref}`}>{action.ref}</Link> )}
+          subtitle={action.description}
+        />
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },

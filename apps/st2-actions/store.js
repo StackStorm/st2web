@@ -72,39 +72,6 @@ const actionReducer = (state = {}, input) => {
         executions,
       };
 
-    case 'UPDATE_ACTION':
-      const { event, record } = input;
-
-      actions = [ ...actions ];
-
-      if (event.endsWith('__delete')) {
-        actions = actions
-          .filter(action => action.id !== record.id)
-        ;
-      }
-      else {
-        let found = false;
-        for (const index in actions) {
-          if (actions[index].id !== record.id) {
-            continue;
-          }
-
-          found = true;
-          actions[index] = record;
-        }
-        if (!found) {
-          actions.push(record);
-        }
-      }
-
-      groups = makeGroups(actions, filter);
-
-      return {
-        ...state,
-        actions,
-        groups,
-      };
-
     case 'UPDATE_EXECUTION': {
       const { event, record } = input;
 

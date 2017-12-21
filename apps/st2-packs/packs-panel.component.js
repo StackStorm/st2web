@@ -87,28 +87,6 @@ export default class PacksPanel extends React.Component {
   }
 
   componentDidMount() {
-    api.client.stream.listen().then((source) => {
-      this._source = source;
-
-      this._streamListener = (e) => {
-        const record = JSON.parse(e.data);
-
-        if (record.ref === this.urlParams.id) {
-          this._refreshDetails && this._refreshDetails();
-        }
-
-        store.dispatch({
-          type: 'UPDATE_PACK',
-          event: e.type,
-          record,
-        });
-      };
-
-      this._source.addEventListener('st2.pack__create', this._streamListener);
-      this._source.addEventListener('st2.pack__update', this._streamListener);
-      this._source.addEventListener('st2.pack__delete', this._streamListener);
-    });
-
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
@@ -130,12 +108,6 @@ export default class PacksPanel extends React.Component {
     if (id !== this.state.id) {
       this.setState({ id });
     }
-  }
-
-  componentWillUnmount() {
-    this._source.removeEventListener('st2.pack__create', this._streamListener);
-    this._source.removeEventListener('st2.pack__update', this._streamListener);
-    this._source.removeEventListener('st2.pack__delete', this._streamListener);
   }
 
   fetchGroups() {

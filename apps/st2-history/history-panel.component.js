@@ -373,7 +373,7 @@ export default class HistoryPanel extends React.Component {
 
               return (
                 <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
-                  { executions .map((execution) => [
+                  { executions.map((execution) => [
                     <HistoryFlexCard
                       key={execution.id}
                       execution={execution}

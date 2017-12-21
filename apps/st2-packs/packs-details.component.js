@@ -8,6 +8,7 @@ import store from './store';
 import apiPacks from './api';
 import setTitle from '@stackstorm/module-title';
 
+import { Link } from 'react-router-dom';
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
 import Highlight from '@stackstorm/module-highlight';
@@ -183,7 +184,10 @@ export default class PacksPanel extends React.Component {
 
     return (
       <PanelDetails data-test="details">
-        <DetailsHeader title={pack.name} subtitle={pack.description} />
+        <DetailsHeader
+          title={( <Link to={`/packs/${pack.ref}`}>{pack.name}</Link> )}
+          subtitle={pack.description}
+        />
         <DetailsBody>
           <DetailsPanel>
             <Table content={this.packMeta} data-test="pack_info" />

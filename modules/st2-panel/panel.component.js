@@ -258,8 +258,8 @@ export class DetailsHeader extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     status: PropTypes.string,
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
+    title: PropTypes.node.isRequired,
+    subtitle: PropTypes.node.isRequired,
     children: PropTypes.node,
   }
 
@@ -272,9 +272,9 @@ export class DetailsHeader extends React.Component {
           { status ? (
             <Label status={status} short={true} data-test="status" />
           ) : null }
-          <a href="#/actions/core.announcement/general" data-test="header_name">
+          <div data-test="header_name">
             { title }
-          </a>
+          </div>
         </div>
         <div className="st2-details__header-description" data-test="header_description">
           { subtitle }
