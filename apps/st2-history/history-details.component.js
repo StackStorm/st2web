@@ -42,6 +42,12 @@ export default class HistoryDetails extends React.Component {
     id: PropTypes.string,
     section: PropTypes.string,
     execution: PropTypes.object,
+    displayUTC: PropTypes.bool.isRequired,
+    handleToggleUTC: PropTypes.func,
+  }
+
+  static defaultProps = {
+    displayUTC: false,
   }
 
   componentDidMount() {
@@ -99,7 +105,7 @@ export default class HistoryDetails extends React.Component {
   }
 
   render() {
-    const { section, execution } = this.props;
+    const { section, execution, displayUTC, handleToggleUTC } = this.props;
 
     if (!execution) {
       return null;
@@ -148,6 +154,8 @@ export default class HistoryDetails extends React.Component {
                         <Time
                           timestamp={execution.start_timestamp}
                           format="ddd, DD MMM YYYY HH:mm:ss"
+                          utc={displayUTC}
+                          onClick={handleToggleUTC}
                           data-test="start_timestamp"
                         />
                       </DetailsPanelBodyLine>
@@ -157,6 +165,8 @@ export default class HistoryDetails extends React.Component {
                         <Time
                           timestamp={execution.end_timestamp}
                           format="ddd, DD MMM YYYY HH:mm:ss"
+                          utc={displayUTC}
+                          onClick={handleToggleUTC}
                           data-test="end_timestamp"
                         />
                       </DetailsPanelBodyLine>
@@ -201,7 +211,12 @@ export default class HistoryDetails extends React.Component {
                     ) : null }
                     { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
                       <DetailsPanelBodyLine label="Occurrence">
-                        <Time timestamp={execution.trigger_instance.occurrence_time} format="ddd, DD MMM YYYY HH:mm:ss" />
+                        <Time
+                          timestamp={execution.trigger_instance.occurrence_time}
+                          format="ddd, DD MMM YYYY HH:mm:ss"
+                          utc={displayUTC}
+                          onClick={handleToggleUTC}
+                        />
                       </DetailsPanelBodyLine>
                     ) : null }
                   </DetailsPanelBody>

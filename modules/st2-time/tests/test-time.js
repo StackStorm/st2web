@@ -47,11 +47,11 @@ describe(`${Time.name} Component`, () => {
     }
   });
 
-  it('renders properly with utcdisplay', () => {
+  it('renders properly with utc', () => {
     const instance = ReactTester.create(
       <Time
         timestamp="1970-01-01T00:00:00.000Z"
-        utcdisplay={true}
+        utc={true}
       />
     );
 
@@ -76,12 +76,12 @@ describe(`${Time.name} Component`, () => {
     }
   });
 
-  it('renders properly with format and utcdisplay', () => {
+  it('renders properly with format and utc', () => {
     const instance = ReactTester.create(
       <Time
         timestamp="1970-01-01T00:00:00.000Z"
         format="MMMM D YYYY HH:mm A"
-        utcdisplay={true}
+        utc={true}
       />
     );
 

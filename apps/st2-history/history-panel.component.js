@@ -82,6 +82,7 @@ export default class HistoryPanel extends React.Component {
   state = {
     maxPages: 0,
     id: undefined,
+    displayUTC: false,
   }
 
   componentDidMount() {
@@ -256,6 +257,12 @@ export default class HistoryPanel extends React.Component {
     return this.navigate({ page });
   }
 
+  handleToggleUTC() {
+    const { displayUTC } = this.state;
+
+    this.setState({ displayUTC: !displayUTC });
+  }
+
   handleToggleAll() {
     return store.dispatch(flexActions.toggleAll());
   }
@@ -381,6 +388,8 @@ export default class HistoryPanel extends React.Component {
                       view={view}
                       onClick={() => this.handleSelect(execution.id)}
                       onToggleExpand={() => this.handleExpandChildren(execution.id, !execution.fetchedChildren)}
+                      displayUTC={this.state.displayUTC}
+                      handleToggleUTC={() => this.handleToggleUTC()}
                     />,
                     execution.fetchedChildren ? (
                       <div
@@ -395,6 +404,8 @@ export default class HistoryPanel extends React.Component {
                             selected={id === execution.id}
                             view={view}
                             onClick={() => this.handleSelect(execution.id)}
+                            displayUTC={this.state.displayUTC}
+                            handleToggleUTC={() => this.handleToggleUTC()}
                           />
                         ))}
                       </div>
@@ -438,6 +449,8 @@ export default class HistoryPanel extends React.Component {
 
           id={id}
           section={section}
+          displayUTC={this.state.displayUTC}
+          handleToggleUTC={() => this.handleToggleUTC()}
         />
       </Panel>
     );

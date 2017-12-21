@@ -6,19 +6,19 @@ export default class Time extends React.Component {
   static propTypes = {
     timestamp: PropTypes.string.isRequired,
     format: PropTypes.string.isRequired,
-    utcdisplay: PropTypes.bool.isRequired,
+    utc: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
     format: 'ddd, DD MMM YYYY HH:mm:ss',
-    utcdisplay: false,
+    utc: false,
   }
 
   render() {
-    const { timestamp, format, utcdisplay, ...props } = this.props;
+    const { timestamp, format, utc, ...props } = this.props;
 
     let dateFormat = format;
-    if (utcdisplay) {
+    if (utc) {
       dateFormat += ' UTC';
     }
 
@@ -27,7 +27,7 @@ export default class Time extends React.Component {
         {...props}
         value={new Date(timestamp)}
         format={dateFormat}
-        utc={utcdisplay}
+        utc={utc}
       />
     );
   }

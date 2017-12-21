@@ -17,11 +17,14 @@ export default class HistoryFlexCard extends React.Component {
     view: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     onToggleExpand: PropTypes.func,
+    displayUTC: PropTypes.bool.isRequired,
+    handleToggleUTC: PropTypes.func,
   }
 
   static defaultProps = {
     isChild: false,
     selected: false,
+    displayUTC: false,
   }
 
   static contextTypes = {
@@ -36,7 +39,7 @@ export default class HistoryFlexCard extends React.Component {
   }
 
   render() {
-    const { isChild, execution, selected, view, onClick } = this.props;
+    const { isChild, execution, selected, view, onClick, displayUTC, handleToggleUTC } = this.props;
 
     return (
       <div
@@ -69,7 +72,12 @@ export default class HistoryFlexCard extends React.Component {
           <div className="st2-flex-card__column st2-flex-card__timestamp">
             { view.meta && view.meta.time ? (
               <div className="st2-flex-card__header-primary">
-                <Time timestamp={execution.start_timestamp} format="HH:mm:ss" />
+                <Time
+                  timestamp={execution.start_timestamp}
+                  format="HH:mm:ss"
+                  utc={displayUTC}
+                  onClick={handleToggleUTC}
+                />
               </div>
             ) : null }
           </div>
