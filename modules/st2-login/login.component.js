@@ -119,9 +119,12 @@ export default class Login extends React.Component {
   connect(e) {
     e.preventDefault();
 
+    this.setState({ error: null });
+
     const { server, username, password, remember } = this.state;
     return api.connect(server, username, password, remember)
       .then(() => this.props.onConnect())
+      .catch((err) => this.setState({ error: err.message }))
     ;
   }
 

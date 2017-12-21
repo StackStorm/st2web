@@ -94,6 +94,13 @@ export class API {
             };
           }
 
+          if (err.response && err.response.data.faultstring) {
+            throw {
+              name: err.response.statusText,
+              message: err.response.data.faultstring,
+            };
+          }
+
           throw err;
         })
         .then((token) => {
