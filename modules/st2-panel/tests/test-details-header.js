@@ -12,7 +12,6 @@ describe(`${DetailsHeader.name} Component`, () => {
         <DetailsHeader
           className="foobar"
           title="title"
-          subtitle="subtitle"
         />
       );
 
@@ -24,7 +23,6 @@ describe(`${DetailsHeader.name} Component`, () => {
         <DetailsHeader
           foo="bar"
           title="title"
-          subtitle="subtitle"
         />
       );
 

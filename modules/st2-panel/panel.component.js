@@ -259,7 +259,7 @@ export class DetailsHeader extends React.Component {
     className: PropTypes.string,
     status: PropTypes.string,
     title: PropTypes.node.isRequired,
-    subtitle: PropTypes.node.isRequired,
+    subtitle: PropTypes.node,
     children: PropTypes.node,
   }
 
