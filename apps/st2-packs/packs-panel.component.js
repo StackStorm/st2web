@@ -249,7 +249,7 @@ export default class PacksPanel extends React.Component {
     });
   }
 
-  handleConfigSave(ref, pack) {
+  handleSave(ref, pack) {
     const { notification } = this.props;
 
     return store.dispatch({

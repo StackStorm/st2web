@@ -87,8 +87,7 @@ export default class PacksPanel extends React.Component {
       type: 'FETCH_PACK',
       promise: apiPacks.get(id)
         .then((pack) => {
-          // console.warn(`is this the right pack? ${this.props.pack.ref} ${this.props.pack.ref === id ? 'yes' : 'no'}`); // eslint-disable-line
-          // this.setState({ config: this.props.pack.config || {} });
+          this.setState({ config: pack.config || {} });
           return pack;
         })
         .catch((res) => {
@@ -211,7 +210,7 @@ export default class PacksPanel extends React.Component {
                   <Button submit value="Save" />
                 </DetailsButtonsPanel>
                 { this.state.configPreview ? (
-                  <Highlight code={this.configField.getValue()} />
+                  <Highlight code={this.state.config} />
                 ) : null  }
               </form>
             </DetailsPanel>

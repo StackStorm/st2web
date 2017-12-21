@@ -97,8 +97,9 @@ const packReducer = (state = {}, input) => {
     case 'CONFIGURE_PACK':
       switch(input.status) {
         case 'success':
-          packs = mergePacks(packs, [ input.payload ]);
-          groups = makeGroups(packs, filter);
+          // Note: `input.payload` is undefined?
+          // packs = mergePacks(packs, [ input.payload ]);
+          // groups = makeGroups(packs, filter);
           break;
         case 'error':
           break;
@@ -108,8 +109,6 @@ const packReducer = (state = {}, input) => {
 
       return {
         ...state,
-        packs,
-        groups,
       };
 
     case 'SET_FILTER':
