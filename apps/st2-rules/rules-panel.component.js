@@ -78,28 +78,6 @@ export default class RulesPanel extends React.Component {
   }
 
   componentDidMount() {
-    api.client.stream.listen().then((source) => {
-      this._source = source;
-
-      this._streamListener = (e) => {
-        const record = JSON.parse(e.data);
-
-        if (record.ref === this.urlParams.id) {
-          this._refreshDetails && this._refreshDetails();
-        }
-
-        store.dispatch({
-          type: 'UPDATE_RULE',
-          event: e.type,
-          record,
-        });
-      };
-
-      this._source.addEventListener('st2.rule__create', this._streamListener);
-      this._source.addEventListener('st2.rule__update', this._streamListener);
-      this._source.addEventListener('st2.rule__delete', this._streamListener);
-    });
-
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
@@ -262,7 +240,6 @@ export default class RulesPanel extends React.Component {
             section: 'general',
           });
 
-          this.fetchGroups(); // TODO: shouldn't be necessary
           return rule;
         })
         .catch((res) => {
@@ -311,13 +288,13 @@ export default class RulesPanel extends React.Component {
 
     return store.dispatch({
       type: 'DELETE_RULE',
+      ref: ref,
       promise: api.client.rules.delete(ref)
         .then((res) => {
           notification.success(`Rule "${ref}" has been deleted successfully.`);
 
           this.navigate({ id: null });
 
-          this.fetchGroups(); // TODO: shouldn't be necessary
           return res;
         })
         .catch((res) => {

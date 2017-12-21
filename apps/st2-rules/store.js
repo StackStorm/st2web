@@ -164,43 +164,21 @@ const ruleReducer = (state = {}, input) => {
         packSpec,
       };
 
-    case 'UPDATE_RULE':
-      const { event, record } = input;
-
-      rules = [ ...rules ];
-
-      if (event.endsWith('__delete')) {
-        rules = rules
-          .filter(action => action.id !== record.id)
-        ;
-      }
-      else {
-        let found = false;
-        for (const index in rules) {
-          if (rules[index].id !== record.id) {
-            continue;
-          }
-
-          found = true;
-          rules[index] = record;
-        }
-        if (!found) {
-          rules.push(record);
-        }
-      }
-
-      groups = makeGroups(rules, filter);
-
-      return {
-        ...state,
-        rules,
-        groups,
-      };
-
     case 'EDIT_RULE':
       switch(input.status) {
         case 'success':
           rule = input.payload;
+
+          rules = [ ...rules ];
+          for (const index in rules) {
+            if (rules[index].id !== rule.id) {
+              continue;
+            }
+
+            rules[index] = rule;
+          }
+
+          groups = makeGroups(rules, filter);
           break;
         case 'error':
           break;
@@ -211,12 +189,16 @@ const ruleReducer = (state = {}, input) => {
       return {
         ...state,
         rule,
+        rules,
+        groups,
       };
 
     case 'CREATE_RULE':
       switch(input.status) {
         case 'success':
           rule = input.payload;
+          rules = [ ...rules, rule ];
+          groups = makeGroups(rules, filter);
           break;
         case 'error':
           break;
@@ -227,6 +209,30 @@ const ruleReducer = (state = {}, input) => {
       return {
         ...state,
         rule,
+        rules,
+        groups,
+      };
+
+    case 'DELETE_RULE':
+      const { ref } = input;
+
+      switch(input.status) {
+        case 'success':
+          rules = [ ...rules ]
+            .filter(rule => rule.ref !== ref)
+          ;
+          groups = makeGroups(rules, filter);
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        rules,
+        groups,
       };
 
     case 'SET_FILTER':
