@@ -4,6 +4,23 @@ import cx from 'classnames';
 
 import './style.less';
 
+export class PopupTitle extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  render() {
+    const { className, children, ...props } = this.props;
+
+    return (
+      <div {...props} className={cx('st2-popup__title', className)}>
+        { children }
+      </div>
+    );
+  }
+}
+
 export class Popup extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -25,23 +42,6 @@ export class Popup extends React.Component {
             { children }
           </div>
         </div>
-      </div>
-    );
-  }
-}
-
-export class PopupTitle extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-  }
-
-  render() {
-    const { className, children, ...props } = this.props;
-
-    return (
-      <div {...props} className={cx('st2-popup__title', className)}>
-        { children }
       </div>
     );
   }

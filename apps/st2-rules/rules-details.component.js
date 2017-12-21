@@ -60,7 +60,7 @@ export default class RulesDetails extends React.Component {
       provideRefresh(() => this.refresh());
     }
 
-    if (id && id !== 'new') {
+    if (id) {
       this.fetchRule(id);
     }
   }
@@ -68,7 +68,7 @@ export default class RulesDetails extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { id } = nextProps;
 
-    if (id && id !== this.props.id && id !== 'new') {
+    if (id && id !== this.props.id) {
       this.fetchRule(id);
     }
   }
@@ -94,6 +94,10 @@ export default class RulesDetails extends React.Component {
   }
 
   fetchRule(id) {
+    if (id === 'new') {
+      return;
+    }
+
     const { notification } = this.props;
 
     store.dispatch({
@@ -179,14 +183,14 @@ export default class RulesDetails extends React.Component {
     if (id === 'new') {
       return (
         <PanelDetails data-test="details">
-          { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+          { triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
             <RulesPopup
               triggerSpec={triggerSpec}
               criteriaSpecs={criteriaSpecs}
               actionSpec={actionSpec}
               packSpec={packSpec}
               onSubmit={(data) => this.props.handleCreate(data)}
-              onCancel={() => this.handleSection('general')}
+              onCancel={() => this.props.handleNavigate({ id: false })}
             />
           ) : null }
         </PanelDetails>

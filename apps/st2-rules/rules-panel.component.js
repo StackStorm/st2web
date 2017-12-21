@@ -158,7 +158,7 @@ export default class RulesPanel extends React.Component {
         const { id } = this.urlParams;
         const { groups } = this.props;
 
-        if (id && !groups.some(({ rules }) => rules.some(({ ref }) => ref === id))) {
+        if (id && id !== 'new' && !groups.some(({ rules }) => rules.some(({ ref }) => ref === id))) {
           this.navigate({ id: false });
         }
       })
