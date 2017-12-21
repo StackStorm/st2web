@@ -72,6 +72,11 @@ export default class Highlight extends React.Component {
   }
 
   _update(language, code) {
+    if (arguments.length === 0) {
+      language = this.props.language;
+      code = this.props.code;
+    }
+
     let outputFull = (function () {
       if (code) {
         if (language && Prism.languages[language]) {
@@ -98,8 +103,8 @@ export default class Highlight extends React.Component {
 
     if (this.state.newlines) {
       outputFull = outputFull
-        .replace(/\r/g, '\\r\r')
-        .replace(/\n/g, '\\n\n')
+        .replace(/\\r/g, '\r')
+        .replace(/\\n/g, '\n')
       ;
     }
 
