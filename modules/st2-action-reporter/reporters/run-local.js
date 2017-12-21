@@ -20,7 +20,7 @@ export default function debug(execution) {
     ] : null,
 
     !execution.result.stderr && !execution.result.stdout && !execution.result.traceback ? (
-      <div className="st2-highlight st2-action-reporter__message" code="'// Action produced no data'" />
+      <div key="none" className="st2-highlight st2-action-reporter__message" code="'// Action produced no data'" />
     ) : null,
   ];
 }
