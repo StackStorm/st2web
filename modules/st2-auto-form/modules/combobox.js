@@ -36,7 +36,7 @@ export default class ComboboxModule extends React.Component {
 
   onInput(value) {
     const { spec } = this.props;
-    if (spec.enum.some(({ name }) => name === value)) {
+    if (spec && spec.enum.some(({ name }) => name === value)) {
       this.onChoose(value);
     }
     else {
@@ -53,7 +53,7 @@ export default class ComboboxModule extends React.Component {
     const { className = '', name, disabled, spec, data = '' } = this.props;
     const { value } = this.state;
 
-    const suggestions = value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
+    const suggestions = !spec || value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
 
     return (
       <div className={cx('st2-auto-form-combobox', className)} ref={(ref) => this.ref = ref}>
@@ -63,14 +63,14 @@ export default class ComboboxModule extends React.Component {
           <input
             type="text"
             className="st2-auto-form__field st2-auto-form__field--combo"
-            placeholder={spec.default}
-            required={spec.required}
+            placeholder={spec && spec.default || ''}
+            required={spec && spec.required ? true : false}
             disabled={disabled}
             value={value === null ? data : value}
             onFocus={() => this.onFocus()}
             onBlur={(e) => this.onBlur(e)}
             onChange={({ target: { value } }) => this.onInput(value)}
-            data-test={`field:${spec.name || name}`}
+            data-test={`field:${spec && spec.name || name}`}
           />
 
           <ErrorMessage>{ this.state.error }</ErrorMessage>
