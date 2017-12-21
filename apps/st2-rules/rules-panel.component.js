@@ -236,10 +236,16 @@ export default class RulesPanel extends React.Component {
 
           return rule;
         })
-        .catch((res) => {
-          notification.error('Unable to create rule. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          if (err.name === 'APIError') {
+            notification.error(`Unable to create rule: ${err.message}`);
+          }
+          else {
+            notification.error('Unable to create rule. See details in developer tools console.');
+            console.error(err); // eslint-disable-line no-console
+          }
+
+          throw err;
         }),
     });
   }
