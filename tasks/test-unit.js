@@ -11,7 +11,7 @@ gulp.task('test-unit', (done) => gulp.src(argv['test-files'] || settings.units, 
   .pipe(plugins.mocha({
     reporter: 'dot',
     require: [
-      'babel-core/register',
+      'babel-register',
       'ignore-styles',
     ],
   }))

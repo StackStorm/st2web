@@ -24,7 +24,7 @@ gulp.task('test-functional', gulp.series([ 'build' ], (done) => {
     .pipe(plugins.mocha({
       reporter: 'dot',
       require: [
-        'babel-core/register',
+        'babel-register',
         'ignore-styles',
       ],
     }))

@@ -58,7 +58,7 @@ const flexTableReducer = (state = {}, action) => {
     }
 
     case 'TOGGLE_ALL': {
-      const uniqueStates = _(tables).map('collapsed').unique().value();
+      const uniqueStates = _(tables).map('collapsed').uniq().value();
       if (uniqueStates.length === 1) {
         collapsed = uniqueStates[0];
       }

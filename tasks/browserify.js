@@ -15,6 +15,8 @@ const watchify = require('watchify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const cssExtract = require('css-extract');
+const chalk = require('chalk');
+const fancylog = require('fancy-log');
 
 function buildHeader() {
   const host = 'https://github.com/';
@@ -47,15 +49,15 @@ function bundle(file, name) {
 
   b
     .plugin(cssExtract, { out: path.join(settings.styles.dest, 'style.css')})
-    .on('log', plugins.util.log)
+    .on('log', fancylog)
   ;
 
   fs.mkdir(settings.styles.dest, () => { /* noop */ });
 
   return b.bundle()
     .on('error', function (error) {
-      plugins.util.log(
-        plugins.util.colors.cyan('Browserify') + plugins.util.colors.red(' found unhandled error:\n'),
+      fancylog(
+        chalk.cyan('Browserify') + chalk.red(' found unhandled error:\n'),
         error.toString()
       );
       this.emit('end');

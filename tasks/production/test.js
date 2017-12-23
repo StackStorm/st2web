@@ -24,7 +24,7 @@ gulp.task('test-production', gulp.series([ 'production' ], (done) => {
     .pipe(plugins.mocha({
       reporter: 'dot',
       compilers: {
-        js: require('babel-core/register'),
+        js: require('babel-register'),
       },
     }))
     .on('end', () => {

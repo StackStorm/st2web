@@ -27,10 +27,10 @@
     "access": "public"
   },
   "dependencies": {
-    "react-time": "4.3.0"
+    "react-time": "^4.3.0"
   },
   "devDependencies": {
-    "babelify": "7.2.0"
+    "babelify": "^8.0.0"
   },
   "peerDepedencies": {
     "prop-types": "^15.6.0",
