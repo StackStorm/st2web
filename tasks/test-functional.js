@@ -25,7 +25,6 @@ gulp.task('test-functional', gulp.series([ 'build' ], (done) => {
       reporter: 'dot',
       require: [
         'babel-register',
-        'ignore-styles',
       ],
     }))
     .on('end', () => {
