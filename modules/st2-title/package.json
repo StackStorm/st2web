@@ -29,9 +29,11 @@
   "devDependencies": {
     "babelify": "^8.0.0"
   },
-  "peerDepedencies": {
-    "prop-types": "^15.6.0",
+  "peerDependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.0"
   }
 }
