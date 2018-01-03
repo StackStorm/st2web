@@ -6,6 +6,13 @@ import { ReactTester } from '@stackstorm/module-test-utils';
 import { Popup } from '..';
 
 describe(`${Popup.name} Component`, () => {
+  before(() => {
+    global.document = {
+      addEventListener: () => null,
+      removeEventListener: () => null,
+    };
+  });
+
   describe('common functionality', () => {
     it('proxies className', () => {
       const instance = ReactTester.create(

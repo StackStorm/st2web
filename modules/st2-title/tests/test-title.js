@@ -1,19 +1,25 @@
 import { expect } from 'chai';
 
-const document = global.document = {
-  _title: 'My App Title',
-  get title() {
-    return this._title;
-  },
-  set title(title) {
-    this._title = title;
-  },
+global.document = {
+  title: 'My App Title',
 };
 const setTitle = require('..').default; // using `require` so that globals run first
 
 describe('title', () => {
+  before(() => {
+    global.document = {
+      _title: 'My App Title',
+      get title() {
+        return this._title;
+      },
+      set title(title) {
+        this._title = title;
+      },
+    };
+  });
+
   it('accepts a string argument', () => {
-    document.title = 'foobar';
+    document.title = 'dummy';
     setTitle('Foobar');
     expect(document.title).to.equal('Foobar | My App Title');
   });

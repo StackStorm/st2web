@@ -6,6 +6,13 @@ import { ReactTester } from '@stackstorm/module-test-utils';
 import Highlight from '..';
 
 describe(`${Highlight.name} Component`, () => {
+  before(() => {
+    global.localStorage = {
+      getItem: (name) => JSON.stringify({}),
+      setItem: (name, data) => {},
+    };
+  });
+
   describe('common functionality', () => {
     it('proxies className', () => {
       const instance = ReactTester.create(
