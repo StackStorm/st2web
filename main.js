@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {
-  HashRouter as Router,
+  Router,
   Redirect,
   Route,
   Switch,
 } from 'react-router-dom';
+import createHashHistory from 'history/createHashHistory';
 
 import api from '@stackstorm/module-api';
 import Login from '@stackstorm/module-login';
@@ -19,6 +20,8 @@ import Docs from '@stackstorm/app-docs';
 
 import '@stackstorm/st2-style';
 
+const history = window.routerHistory = createHashHistory({});
+
 const routes = [
   History,
   Actions,
@@ -27,11 +30,11 @@ const routes = [
   Docs,
 ];
 
-class Container extends React.Component {
+export class Container extends React.Component {
   render() {
     return (
       <div className="wrapper">
-        <Router>
+        <Router history={history}>
           <Switch>
             <Route exact path="/" render={() => <Redirect to="/history" />} />
             { routes.map(({ url, Component }) => {
