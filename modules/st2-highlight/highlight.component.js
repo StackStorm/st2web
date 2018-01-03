@@ -54,8 +54,8 @@ export default class Highlight extends React.Component {
 
   state = {
     expanded: false,
-    wrap: false,
-    newlines: false,
+    wrap: undefined,
+    newlines: undefined,
     more: 0,
     outputFull: '',
     outputShort: '',
@@ -64,6 +64,11 @@ export default class Highlight extends React.Component {
   componentWillMount() {
     const { language, code } = this.props;
     this._update(language, code);
+
+    const { wrap, newlines } = JSON.parse(localStorage.getItem('st2Highlight')) || { wrap: false, newlines: false };
+    if (this.state.wrap !== wrap || this.state.newlines !== newlines) {
+      this.setState({ wrap, newlines });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -155,6 +160,22 @@ export default class Highlight extends React.Component {
     }
   }
 
+  toggleWrap() {
+    const wrap = !this.state.wrap;
+    const newlines = this.state.newlines;
+
+    localStorage.setItem('st2Highlight', JSON.stringify({ wrap, newlines }));
+    this.setState({ wrap, newlines });
+  }
+
+  toggleNewlines() {
+    const wrap = this.state.wrap;
+    const newlines = !this.state.newlines;
+
+    localStorage.setItem('st2Highlight', JSON.stringify({ wrap, newlines }));
+    this.setState({ wrap, newlines }, () => this._update());
+  }
+
   render() {
     const { className, code, language, lines, ...props } = this.props;
     language; lines;
@@ -170,11 +191,9 @@ export default class Highlight extends React.Component {
         <div className="st2-highlight__well">
           <pre>
             <code ref={(ref) => this.onRefShort(ref)} />
-            { this.state.more > 0 ? (
-              <div className="st2-highlight__more" onClick={() => this.setState({ expanded: true })}>
-                + {this.state.more} more lines
-              </div>
-            ) : null }
+            <div className="st2-highlight__more" onClick={() => this.setState({ expanded: true })}>
+              { this.state.more > 0 ? `+ ${this.state.more} more lines` : 'expand' }
+            </div>
           </pre>
         </div>
 
@@ -185,13 +204,13 @@ export default class Highlight extends React.Component {
                 <input
                   type="button"
                   className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.wrap })}
-                  onClick={() => this.setState({ wrap: !this.state.wrap })}
+                  onClick={() => this.toggleWrap()}
                   value="WRAP LINES"
                 />
                 <input
                   type="button"
                   className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.newlines })}
-                  onClick={() => this.setState({ newlines: !this.state.newlines }, () => this._update())}
+                  onClick={() => this.toggleNewlines()}
                   value="SHOW NEWLINES"
                 />
               </div>
