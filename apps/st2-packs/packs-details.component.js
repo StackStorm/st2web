@@ -6,6 +6,7 @@ import store from './store';
 
 // import api from '@stackstorm/module-api';
 import apiPacks from './api';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
@@ -30,7 +31,6 @@ import Table from './table.component';
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
-    notification: PropTypes.object.isRequired,
     handleInstall: PropTypes.func.isRequired,
     handleRemove: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
@@ -81,8 +81,6 @@ export default class PacksPanel extends React.Component {
   }
 
   fetchPack(id) {
-    const { notification } = this.props;
-
     store.dispatch({
       type: 'FETCH_PACK',
       promise: apiPacks.get(id)

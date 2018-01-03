@@ -2,7 +2,7 @@ import Noty from 'noty';
 
 import './style.less';
 
-export default class Notification {
+export class Notification {
   success(...args) {
     return this.notify('success', ...args);
   }
@@ -36,3 +36,5 @@ export default class Notification {
     }).show();
   }
 }
+
+export default new Notification();

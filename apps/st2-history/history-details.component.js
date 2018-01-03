@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import store from './store';
 
 import api from '@stackstorm/module-api';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
@@ -34,7 +35,6 @@ import HistoryPopup from './history-popup.component';
 })
 export default class HistoryDetails extends React.Component {
   static propTypes = {
-    notification: PropTypes.object.isRequired,
     handleNavigate: PropTypes.func.isRequired,
     handleRerun: PropTypes.func.isRequired,
     provideRefresh: PropTypes.func.isRequired,
@@ -85,8 +85,6 @@ export default class HistoryDetails extends React.Component {
   }
 
   fetchExecution(id) {
-    const { notification } = this.props;
-
     store.dispatch({
       type: 'FETCH_EXECUTION',
       promise: api.client.executions.get(id),

@@ -7,6 +7,7 @@ import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
 } from '@stackstorm/module-flex-table/flex-table.reducer';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table';
@@ -52,7 +53,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class ActionsPanel extends React.Component {
   static propTypes = {
-    notification: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.shape({
       pathname: PropTypes.string,
@@ -107,8 +107,6 @@ export default class ActionsPanel extends React.Component {
   }
 
   fetchGroups() {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.actions.list()
@@ -185,8 +183,6 @@ export default class ActionsPanel extends React.Component {
   }
 
   handleRun(ref, parameters, trace_tag) {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'RUN_ACTION',
       promise: api.client.executions.create({
@@ -211,7 +207,7 @@ export default class ActionsPanel extends React.Component {
   }
 
   render() {
-    const { notification, groups, filter, collapsed } = this.props;
+    const { groups, filter, collapsed } = this.props;
     const { id, section } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
@@ -268,7 +264,6 @@ export default class ActionsPanel extends React.Component {
         </PanelView>
 
         <ActionsDetails
-          notification={notification}
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}

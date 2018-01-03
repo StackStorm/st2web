@@ -11,9 +11,6 @@ import {
 import api from '@stackstorm/module-api';
 import Login from '@stackstorm/module-login';
 
-import Notification from '@stackstorm/module-notification';
-const notification = new Notification();
-
 import History from '@stackstorm/app-history';
 import Actions from '@stackstorm/app-actions';
 import Rules from '@stackstorm/app-rules';
@@ -53,7 +50,6 @@ class Container extends React.Component {
 
                     return (
                       <Component
-                        notification={notification}
                         history={history}
                         match={match}
                         location={location}

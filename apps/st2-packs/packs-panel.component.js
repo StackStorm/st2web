@@ -8,6 +8,7 @@ import apiPacks from './api';
 import {
   actions as flexActions,
 } from '@stackstorm/module-flex-table/flex-table.reducer';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
@@ -65,7 +66,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
-    notification: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.shape({
       pathname: PropTypes.string,
@@ -182,7 +182,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleInstall(ref) {
-    const { notification, history } = this.props;
+    const { history } = this.props;
 
     return store.dispatch({
       type: 'INSTALL_PACK',
@@ -216,7 +216,7 @@ export default class PacksPanel extends React.Component {
   }
 
   handleRemove(ref) {
-    const { notification, history } = this.props;
+    const { history } = this.props;
 
     return store.dispatch({
       type: 'UNINSTALL_PACK',
@@ -250,8 +250,6 @@ export default class PacksPanel extends React.Component {
   }
 
   handleSave(ref, pack) {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'CONFIGURE_PACK',
       promise: apiPacks.save(ref, pack)
@@ -267,7 +265,7 @@ export default class PacksPanel extends React.Component {
   }
 
   render() {
-    const { notification, groups, filter, collapsed } = this.props;
+    const { groups, filter, collapsed } = this.props;
     const { id, section } = this.urlParams;
 
     setTitle([ 'Packs' ]);
@@ -307,7 +305,6 @@ export default class PacksPanel extends React.Component {
 
         { groups.length > 0 ? (
           <PacksDetails
-            notification={notification}
             ref={(ref) => this._details = ref}
             handleInstall={(...args) => this.handleInstall(...args)}
             handleRemove={(...args) => this.handleRemove(...args)}

@@ -5,6 +5,7 @@ import store from './store';
 
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
@@ -40,7 +41,6 @@ import Time from '@stackstorm/module-time';
 })
 export default class ActionsDetails extends React.Component {
   static propTypes = {
-    notification: PropTypes.object.isRequired,
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
     provideRefresh: PropTypes.func.isRequired,
@@ -121,8 +121,6 @@ export default class ActionsDetails extends React.Component {
   }
 
   fetchAction(id) {
-    const { notification } = this.props;
-
     store.dispatch({
       type: 'FETCH_ACTION',
       promise: api.client.actionOverview.get(id),

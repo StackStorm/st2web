@@ -7,6 +7,7 @@ import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
 } from '@stackstorm/module-flex-table/flex-table.reducer';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
@@ -52,7 +53,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class RulesPanel extends React.Component {
   static propTypes = {
-    notification: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.shape({
       search: PropTypes.string,
@@ -93,8 +93,6 @@ export default class RulesPanel extends React.Component {
         store.dispatch(flexActions.toggle(id.split('.')[0], false));
       }
     });
-
-    const { notification } = this.props;
 
     store.dispatch({
       type: 'FETCH_PACK_SPEC',
@@ -143,8 +141,6 @@ export default class RulesPanel extends React.Component {
   }
 
   fetchGroups() {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.ruleOverview.list()
@@ -221,8 +217,6 @@ export default class RulesPanel extends React.Component {
   }
 
   handleCreate(rule) {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'CREATE_RULE',
       promise: api.client.rules.create(rule)
@@ -251,8 +245,6 @@ export default class RulesPanel extends React.Component {
   }
 
   handleSave(rule) {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'EDIT_RULE',
       promise: api.client.rules.edit(rule.id, rule)
@@ -284,8 +276,6 @@ export default class RulesPanel extends React.Component {
       return undefined;
     }
 
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'DELETE_RULE',
       ref: ref,
@@ -311,7 +301,7 @@ export default class RulesPanel extends React.Component {
   }
 
   render() {
-    const { notification, groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
+    const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
     const { id, section } = this.urlParams;
 
     setTitle([ 'Rules' ]);
@@ -360,7 +350,6 @@ export default class RulesPanel extends React.Component {
         </PanelView>
 
         <RulesDetails
-          notification={notification}
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleCreate={(...args) => this.handleCreate(...args)}

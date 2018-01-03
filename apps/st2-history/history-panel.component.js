@@ -10,6 +10,7 @@ import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
 } from '@stackstorm/module-flex-table/flex-table.reducer';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import Filter from '@stackstorm/module-filter';
@@ -61,7 +62,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
-    notification: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
@@ -120,7 +120,6 @@ export default class HistoryPanel extends React.Component {
     const { page, activeFilters } = this.urlParams;
     this.fetchGroups({ page, activeFilters });
 
-    const { notification } = this.props;
     store.dispatch({
       type: 'FETCH_FILTERS',
       promise: api.client.executionsFilters.list()
@@ -157,8 +156,6 @@ export default class HistoryPanel extends React.Component {
   }
 
   fetchGroups({ page, activeFilters }) {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.executions.list({
@@ -268,8 +265,6 @@ export default class HistoryPanel extends React.Component {
   }
 
   handleExpandChildren(id, expanded) {
-    const { notification } = this.props;
-
     return store.dispatch({
       type: 'FETCH_EXECUTION_CHILDREN',
       id,
@@ -286,7 +281,6 @@ export default class HistoryPanel extends React.Component {
   }
 
   handleRerun(parameters) {
-    const { notification } = this.props;
     const { id } = this.urlParams;
 
     return store.dispatch({
@@ -325,7 +319,7 @@ export default class HistoryPanel extends React.Component {
   }
 
   render() {
-    const { notification, filters, groups, collapsed } = this.props;
+    const { filters, groups, collapsed } = this.props;
     const { id, section, page, activeFilters } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
@@ -441,7 +435,6 @@ export default class HistoryPanel extends React.Component {
         </PanelView>
 
         <HistoryDetails
-          notification={notification}
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}

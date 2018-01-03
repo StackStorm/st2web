@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import store from './store';
 
 import api from '@stackstorm/module-api';
+import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
@@ -32,7 +33,6 @@ import RulesPopup from './rules-popup.component';
 })
 export default class RulesDetails extends React.Component {
   static propTypes = {
-    notification: PropTypes.object.isRequired,
     handleNavigate: PropTypes.func.isRequired,
     handleCreate: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
@@ -97,8 +97,6 @@ export default class RulesDetails extends React.Component {
     if (id === 'new') {
       return;
     }
-
-    const { notification } = this.props;
 
     store.dispatch({
       type: 'FETCH_RULE',
