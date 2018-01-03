@@ -22,6 +22,55 @@ export default class ComboboxModule extends React.Component {
   state = {
     value: null,
     error: null,
+    selected: null,
+  }
+
+  componentWillMount() {
+    this._listener = (event) => {
+      const { spec } = this.props;
+      const { value } = this.state;
+      const suggestions = !spec || value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
+
+      if (!suggestions || !suggestions.length) {
+        return;
+      }
+
+      if (event.key === 'ArrowDown') {
+        let selected = suggestions.findIndex(({ name }) => name === this.state.selected);
+        selected = selected + 1;
+
+        if (selected < suggestions.length) {
+          selected = suggestions[selected].name;
+          this.setState({ selected });
+        }
+      }
+
+      if (event.key === 'ArrowUp') {
+        let selected = suggestions.findIndex(({ name }) => name === this.state.selected);
+        selected = selected - 1;
+
+        if (selected >= 0) {
+          selected = suggestions[selected].name;
+          this.setState({ selected });
+        }
+      }
+
+      if (event.key === 'Enter') {
+        const selected = this.state.selected || suggestions[0].name;
+        this.onChoose(selected);
+      }
+
+      if (event.key === 'Escape') {
+        this.onBlur();
+      }
+    };
+
+    document.addEventListener('keydown', this._listener, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._listener, false);
+    delete this._listener;
   }
 
   onFocus() {
@@ -29,9 +78,7 @@ export default class ComboboxModule extends React.Component {
   }
 
   onBlur(e) {
-    if (this.state.value !== 'null') {
-      this.setState({ value: null });
-    }
+    this.setState({ value: null });
   }
 
   onInput(value) {
@@ -40,7 +87,10 @@ export default class ComboboxModule extends React.Component {
       this.onChoose(value);
     }
     else {
-      this.setState({ value });
+      this.setState({
+        value,
+        selected: null,
+      });
     }
   }
 
@@ -51,7 +101,7 @@ export default class ComboboxModule extends React.Component {
 
   render() {
     const { className = '', name, disabled, spec, data = '' } = this.props;
-    const { value } = this.state;
+    const { value, selected } = this.state;
 
     const suggestions = !spec || value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
 
@@ -76,12 +126,15 @@ export default class ComboboxModule extends React.Component {
           <ErrorMessage>{ this.state.error }</ErrorMessage>
         </Label>
 
-        { suggestions ? (
+        { suggestions && suggestions.length ? (
           <div className="st2-auto-form__suggestions">
             { suggestions.map(({ name, description }) => (
               <div
                 key={name}
-                className={cx('st2-auto-form__suggestion', { 'st2-auto-form__suggestion--active' : value === name })}
+                className={cx('st2-auto-form__suggestion', {
+                  'st2-auto-form__suggestion--active': name === value,
+                  'st2-auto-form__suggestion--selected': name === selected,
+                })}
                 onMouseDown={() => this.onChoose(name)}
               >
                 <div className="st2-auto-form__suggestion-primary">{ name }</div>
