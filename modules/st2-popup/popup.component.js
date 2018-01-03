@@ -29,6 +29,21 @@ export class Popup extends React.Component {
     children: PropTypes.node,
   }
 
+  componentWillMount() {
+    this._listener = (event) => {
+      if (event.key === 'Escape') {
+        this.props.onCancel();
+      }
+    };
+
+    document.addEventListener('keydown', this._listener, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._listener, false);
+    delete this._listener;
+  }
+
   render() {
     const { className, title, onCancel, children, ...props } = this.props;
 
