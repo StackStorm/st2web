@@ -3,15 +3,12 @@ import { expect } from 'chai';
 import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 
-global.window = {
-  st2constants: { st2Config: {} },
-};
-global.localStorage = { removeItem: () => {} };
-const api = require('@stackstorm/module-api').default; // using `require` so that globals run first
+import '@stackstorm/module-test-utils/bootstrap/st2constants';
+import api from '@stackstorm/module-api';
 api.token = { user: 'Username' };
 api.server = { name: 'Server' };
 
-const Menu = require('..').default;
+import Menu from '..';
 
 describe(`${Menu.name} Component`, () => {
   describe('common functionality', () => {

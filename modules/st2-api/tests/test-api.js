@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 
-global.window = {
-  st2constants: { st2Config: {} },
-};
-global.localStorage = { removeItem: () => {} };
-const API = require('..').API; // using `require` so that globals run first
+import '@stackstorm/module-test-utils/bootstrap/st2constants';
+import '@stackstorm/module-test-utils/bootstrap/storage';
+import '@stackstorm/module-test-utils/bootstrap/location';
+import api from '..';
 
 import moxios from 'moxios';
 
@@ -13,12 +12,6 @@ process.on('unhandledRejection', (reason) => {
 });
 
 describe('API', () => {
-  let api;
-  before(() => {
-    global.window.location = { hostname: 'example.com' };
-    api = new API();
-  });
-
   describe('connect', () => {
     before(() => moxios.install());
     after(() => moxios.uninstall());

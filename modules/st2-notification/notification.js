@@ -1,4 +1,11 @@
-import Noty from 'noty';
+const Noty = (function() {
+  // don't include this during testing
+  if (typeof window === 'undefined' || global !== window) {
+    return function() {};
+  }
+
+  return require('noty');
+})();
 
 import './style.less';
 

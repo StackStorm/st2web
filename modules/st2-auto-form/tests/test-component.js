@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 import { expect } from 'chai';
-const sinon = require('sinon');
+import sinon from 'sinon';
 
 import AutoForm from '..';
 import StringField from '../fields/string';

@@ -3,11 +3,8 @@ import { expect } from 'chai';
 import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 
-global.sessionStorage = {
-  getItem: (name) => JSON.stringify({}),
-  setItem: (name, data) => {},
-};
-const View = require('..').default; // using `require` so that globals run first
+import '@stackstorm/module-test-utils/bootstrap/storage';
+import View from '..';
 
 describe(`${View.name} Component`, () => {
   describe('common functionality', () => {

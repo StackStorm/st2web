@@ -4,15 +4,13 @@ import { PropTypes } from 'prop-types';
 
 import { TextFieldWrapper } from '../wrappers';
 
-let Textarea;
-(function() {
+const Textarea = (function() {
   // don't include this during testing
   if (typeof window === 'undefined' || global !== window) {
-    Textarea = 'textarea';
-    return;
+    return 'textarea';
   }
 
-  Textarea = require('react-textarea-autosize');
+  return require('react-textarea-autosize');
 })();
 
 export function isJinja(v) {

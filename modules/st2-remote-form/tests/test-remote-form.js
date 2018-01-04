@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 
+import '@stackstorm/module-test-utils/bootstrap/document';
 import RemoteForm from '..';
 
 describe(`${RemoteForm.name} Component`, () => {

@@ -1,11 +1,8 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 
+import '@stackstorm/module-test-utils/bootstrap/events';
 import proportional from '..';
-global.window = {
-  addEventListener: () => {},
-  removeEventListener: () => {},
-};
 
 describe('proportional', () => {
   let spyAdd;

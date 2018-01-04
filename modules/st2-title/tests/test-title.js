@@ -1,23 +1,9 @@
 import { expect } from 'chai';
 
-global.document = {
-  title: 'My App Title',
-};
-const setTitle = require('..').default; // using `require` so that globals run first
+import '@stackstorm/module-test-utils/bootstrap/title';
+import setTitle from '..';
 
 describe('title', () => {
-  before(() => {
-    global.document = {
-      _title: 'My App Title',
-      get title() {
-        return this._title;
-      },
-      set title(title) {
-        this._title = title;
-      },
-    };
-  });
-
   it('accepts a string argument', () => {
     document.title = 'dummy';
     setTitle('Foobar');
