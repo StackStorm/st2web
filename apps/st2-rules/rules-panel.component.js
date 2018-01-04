@@ -97,30 +97,27 @@ export default class RulesPanel extends React.Component {
     store.dispatch({
       type: 'FETCH_PACK_SPEC',
       promise: api.client.packs.list()
-        .catch((res) => {
-          notification.error('Unable to retrieve pack spec. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve pack spec.', { err });
+          throw err;
         }),
     });
 
     store.dispatch({
       type: 'FETCH_TRIGGER_SPEC',
       promise: api.client.triggerTypes.list()
-        .catch((res) => {
-          notification.error('Unable to retrieve trigger spec. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve trigger spec.', { err });
+          throw err;
         }),
     });
 
     store.dispatch({
       type: 'FETCH_ACTION_SPEC',
       promise: api.client.actionOverview.list()
-        .catch((res) => {
-          notification.error('Unable to retrieve action spec. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve action spec.', { err });
+          throw err;
         }),
     });
   }
@@ -144,10 +141,9 @@ export default class RulesPanel extends React.Component {
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.ruleOverview.list()
-        .catch((res) => {
-          notification.error('Unable to retrieve rules. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve rules.', { err });
+          throw err;
         }),
     })
       .then(() => {
@@ -231,14 +227,7 @@ export default class RulesPanel extends React.Component {
           return rule;
         })
         .catch((err) => {
-          if (err.name === 'APIError') {
-            notification.error(`Unable to create rule: ${err.message}`);
-          }
-          else {
-            notification.error('Unable to create rule. See details in developer tools console.');
-            console.error(err); // eslint-disable-line no-console
-          }
-
+          notification.error('Unable to create rule.', { err });
           throw err;
         }),
     });
@@ -263,10 +252,9 @@ export default class RulesPanel extends React.Component {
 
           return rule;
         })
-        .catch((res) => {
-          notification.error(`Unable to save rule "${rule.ref}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to save rule "${rule.ref}".`, { err });
+          throw err;
         }),
     });
   }
@@ -287,10 +275,9 @@ export default class RulesPanel extends React.Component {
 
           return res;
         })
-        .catch((res) => {
-          notification.error(`Unable to delete rule "${ref}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to delete rule "${ref}".`, { err });
+          throw err;
         }),
     });
   }

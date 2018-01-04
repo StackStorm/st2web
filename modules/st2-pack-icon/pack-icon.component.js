@@ -38,10 +38,9 @@ export default class PackIcon extends React.Component {
           icons[ref] = api.client.packFile.route(`${ref}/icon.png`);
         }
       });
-    }).catch((res) => {
-      notification.error('Unable to retrieve pack icons. See details in developer tools console.');
-      console.error(res); // eslint-disable-line no-console
-      throw res;
+    }).catch((err) => {
+      notification.error('Unable to retrieve pack icons.', { err });
+      throw err;
     });
   }
 

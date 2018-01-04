@@ -110,10 +110,9 @@ export default class ActionsPanel extends React.Component {
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.actions.list()
-        .catch((res) => {
-          notification.error('Unable to retrieve actions. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve actions.', { err });
+          throw err;
         }),
     })
       .then(() => {
@@ -195,13 +194,17 @@ export default class ActionsPanel extends React.Component {
         },
       })
         .then((execution) => {
-          notification.success(`Action "${ref}" has been scheduled successfully.`);
+          notification.success(`Action "${ref}" has been scheduled successfully.`, {
+            execution_id: execution.id,
+          });
           return execution;
         })
-        .catch((res) => {
-          notification.error(`Unable to schedule action "${ref}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to schedule action "${ref}".`, {
+            err,
+            execution_id: err.id,
+          });
+          throw err;
         }),
     });
   }

@@ -128,10 +128,9 @@ export default class ActionsDetails extends React.Component {
       .then(() => {
         this.setState({ runValue: {}, runTrace: '' });
       })
-      .catch((res) => {
-        notification.error(`Unable to retrieve action "${id}". See details in developer tools console.`);
-        console.error(res); // eslint-disable-line no-console
-        throw res;
+      .catch((err) => {
+        notification.error(`Unable to retrieve action "${id}".`, { err });
+        throw err;
       })
     ;
 
@@ -141,10 +140,9 @@ export default class ActionsDetails extends React.Component {
         action: id,
       }),
     })
-      .catch((res) => {
-        notification.error(`Unable to retrieve history for action "${id}". See details in developer tools console.`);
-        console.error(res); // eslint-disable-line no-console
-        throw res;
+      .catch((err) => {
+        notification.error(`Unable to retrieve history for action "${id}".`, { err });
+        throw err;
       })
     ;
   }

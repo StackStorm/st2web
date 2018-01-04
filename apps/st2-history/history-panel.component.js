@@ -123,10 +123,9 @@ export default class HistoryPanel extends React.Component {
     store.dispatch({
       type: 'FETCH_FILTERS',
       promise: api.client.executionsFilters.list()
-        .catch((res) => {
-          notification.error('Unable to retrieve history. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve history.', { err });
+          throw err;
         }),
     });
   }
@@ -172,10 +171,9 @@ export default class HistoryPanel extends React.Component {
 
           return res;
         })
-        .catch((res) => {
-          notification.error('Unable to retrieve history. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve history.', { err });
+          throw err;
         }),
     })
       .then(() => {
@@ -272,10 +270,9 @@ export default class HistoryPanel extends React.Component {
       promise: expanded ? api.client.executions.list({
         parent: id,
       })
-        .catch((res) => {
-          notification.error('Unable to retrieve children. See details in developer tools console.');
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error('Unable to retrieve children.', { err });
+          throw err;
         }) : null,
     });
   }
@@ -298,10 +295,12 @@ export default class HistoryPanel extends React.Component {
 
           return execution;
         })
-        .catch((res) => {
-          notification.error(`Unable to rerun execution "${id}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to rerun execution "${id}".`, {
+            err,
+            execution_id: err.id,
+          });
+          throw err;
         }),
     });
   }

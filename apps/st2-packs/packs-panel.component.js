@@ -182,18 +182,13 @@ export default class PacksPanel extends React.Component {
   }
 
   handleInstall(ref) {
-    const { history } = this.props;
-
     return store.dispatch({
       type: 'INSTALL_PACK',
       ref,
       promise: apiPacks.install(ref)
         .then((res) => {
           notification.success(`Pack "${ref}" has been scheduled for installation.`, {
-            buttons: [{
-              text: 'Show execution',
-              onClick: () => history.push(`/history/${res.execution_id}`),
-            }],
+            execution_id: res.execution_id,
           });
 
           this._refreshDetails && this._refreshDetails();
@@ -207,27 +202,24 @@ export default class PacksPanel extends React.Component {
           this._refreshDetails && this._refreshDetails();
           return res;
         })
-        .catch((res) => {
-          notification.error(`Unable to schedule pack "${ref}" for installation. See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to schedule pack "${ref}" for installation.`, {
+            err,
+            execution_id: err.id,
+          });
+          throw err;
         }),
     });
   }
 
   handleRemove(ref) {
-    const { history } = this.props;
-
     return store.dispatch({
       type: 'UNINSTALL_PACK',
       ref,
       promise: apiPacks.uninstall(ref)
         .then((res) => {
           notification.success(`Pack "${ref}" has been scheduled for removal.`, {
-            buttons: [{
-              text: 'Show execution',
-              onClick: () => history.push(`/history/${res.execution_id}`),
-            }],
+            execution_id: res.execution_id,
           });
 
           this._refreshDetails && this._refreshDetails();
@@ -241,10 +233,12 @@ export default class PacksPanel extends React.Component {
           this._refreshDetails && this._refreshDetails();
           return res;
         })
-        .catch((res) => {
-          notification.error(`Unable to schedule pack "${ref}" for removal. See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to schedule pack "${ref}" for removal.`, {
+            err,
+            execution_id: err.id,
+          });
+          throw err;
         }),
     });
   }
@@ -256,10 +250,12 @@ export default class PacksPanel extends React.Component {
         .then(() => {
           notification.success(`Configuration for pack "${ref}" has been saved succesfully.`);
         })
-        .catch((res) => {
-          notification.error(`Unable to save the configuration for pack "${ref}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to save the configuration for pack "${ref}".`, {
+            err,
+            execution_id: err.id,
+          });
+          throw err;
         }),
     });
   }

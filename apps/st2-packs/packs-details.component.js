@@ -88,10 +88,9 @@ export default class PacksPanel extends React.Component {
           this.setState({ config: pack.config || {} });
           return pack;
         })
-        .catch((res) => {
-          notification.error(`Unable to retrieve pack "${id}". See details in developer tools console.`);
-          console.error(res); // eslint-disable-line no-console
-          throw res;
+        .catch((err) => {
+          notification.error(`Unable to retrieve pack "${id}".`, { err });
+          throw err;
         }),
     });
   }

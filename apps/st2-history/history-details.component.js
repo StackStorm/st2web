@@ -89,10 +89,9 @@ export default class HistoryDetails extends React.Component {
       type: 'FETCH_EXECUTION',
       promise: api.client.executions.get(id),
     })
-      .catch((res) => {
-        notification.error(`Unable to retrieve execution "${id}". See details in developer tools console.`);
-        console.error(res); // eslint-disable-line no-console
-        throw res;
+      .catch((err) => {
+        notification.error(`Unable to retrieve execution "${id}".`, { err });
+        throw err;
       })
     ;
   }
