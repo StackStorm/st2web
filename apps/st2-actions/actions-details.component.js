@@ -17,6 +17,7 @@ import {
   FlexTableRow,
   FlexTableInsert,
 } from '@stackstorm/module-flex-table';
+import FlowLink from '@stackstorm/module-flow-link';
 import Button from '@stackstorm/module-forms/button.component';
 import Highlight from '@stackstorm/module-highlight';
 import Label from '@stackstorm/module-label';
@@ -291,6 +292,10 @@ export default class ActionsDetails extends React.Component {
           ) : null }
         </DetailsBody>
         <DetailsToolbar>
+          { action.runner_type === 'mistral-v2' ? (
+            <FlowLink action={action.ref} data-test="flow_link" />
+          ) : null }
+
           <DetailsToolbarSeparator />
         </DetailsToolbar>
       </PanelDetails>

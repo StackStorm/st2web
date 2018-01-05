@@ -11,6 +11,7 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table';
+import FlowLink from '@stackstorm/module-flow-link';
 import {
   Panel,
   PanelView,
@@ -220,6 +221,9 @@ export default class ActionsPanel extends React.Component {
     return (
       <Panel data-test="actions_panel">
         <PanelView className="st2-actions">
+          <div className="st2-panel__toolbar-actions">
+            <FlowLink />
+          </div>
           <Toolbar title="Actions">
             <ToolbarSearch
               title="Filter"

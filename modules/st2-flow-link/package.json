@@ -1,8 +1,14 @@
 {
-  "name": "@stackstorm/app-actions",
+  "name": "@stackstorm/module-flow-link",
   "version": "1.0.0-pre.4",
   "description": "",
-  "main": "index.js",
+  "main": "flow-link.component.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -35,21 +41,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-action-reporter": "1.0.0-pre.4",
-    "@stackstorm/module-api": "1.0.0-pre.4",
-    "@stackstorm/module-auto-form": "1.0.0-pre.4",
-    "@stackstorm/module-filter-expandable": "1.0.0-pre.4",
-    "@stackstorm/module-flex-table": "1.0.0-pre.4",
-    "@stackstorm/module-flow-link": "1.0.0-pre.4",
-    "@stackstorm/module-forms": "1.0.0-pre.4",
-    "@stackstorm/module-highlight": "1.0.0-pre.4",
-    "@stackstorm/module-label": "1.0.0-pre.4",
-    "@stackstorm/module-menu": "1.0.0-pre.4",
-    "@stackstorm/module-panel": "1.0.0-pre.4",
-    "@stackstorm/module-store": "1.0.0-pre.4",
-    "@stackstorm/module-time": "1.0.0-pre.4",
-    "@stackstorm/module-title": "1.0.0-pre.4",
-    "@stackstorm/module-view": "1.0.0-pre.4",
+    "@stackstorm/st2-style": "1.0.0-pre.4",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },

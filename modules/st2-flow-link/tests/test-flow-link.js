@@ -4,20 +4,22 @@ import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 
 import '@stackstorm/module-test-utils/bootstrap/misc';
-import RemoteForm from '..';
+import '@stackstorm/module-test-utils/bootstrap/st2constants';
+import '@stackstorm/module-test-utils/bootstrap/location';
+import api from '@stackstorm/module-api';
 
-describe(`${RemoteForm.name} Component`, () => {
+import FlowLink from '..';
+
+describe(`${FlowLink.name} Component`, () => {
+  before(() => {
+    api.client = api.initClient({}, 'api.token');
+  });
+
   describe('common functionality', () => {
     it('proxies className', () => {
       const instance = ReactTester.create(
-        <RemoteForm
+        <FlowLink
           className="foobar"
-          name="name"
-          spec={{
-            enum: [],
-          }}
-          data={{}}
-          onChange={() => {}}
         />
       );
 
@@ -26,14 +28,8 @@ describe(`${RemoteForm.name} Component`, () => {
 
     it('proxies extra props', () => {
       const instance = ReactTester.create(
-        <RemoteForm
+        <FlowLink
           foo="bar"
-          name="name"
-          spec={{
-            enum: [],
-          }}
-          data={{}}
-          onChange={() => {}}
         />
       );
 

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 
-import '@stackstorm/module-test-utils/bootstrap/document';
+import '@stackstorm/module-test-utils/bootstrap/misc';
 import { Popup } from '..';
 
 describe(`${Popup.name} Component`, () => {
