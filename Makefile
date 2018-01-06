@@ -10,7 +10,7 @@ DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || ec
 all: build
 
 build:
-	node_modules/.bin/gulp production
+	npm run build
 
 clean:
 	rm -Rf build/

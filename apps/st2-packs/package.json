@@ -41,6 +41,7 @@
     "@stackstorm/module-forms": "1.0.0-pre.4",
     "@stackstorm/module-highlight": "1.0.0-pre.4",
     "@stackstorm/module-menu": "1.0.0-pre.4",
+    "@stackstorm/module-notification": "1.0.0-pre.4",
     "@stackstorm/module-panel": "1.0.0-pre.4",
     "@stackstorm/module-portion-bar": "1.0.0-pre.4",
     "@stackstorm/module-store": "1.0.0-pre.4",

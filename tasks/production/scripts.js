@@ -5,7 +5,7 @@ const settings = require('../settings.json');
 const plugins = require('gulp-load-plugins')(settings.plugins);
 
 gulp.task('production-scripts', gulp.series([ 'browserify' ], () =>
-  gulp.src(settings.production.scripts, { base: `${__dirname}/../..` })
+  gulp.src(settings.production.scripts, { base: '.' })
     .pipe(plugins.uglify({
       mangle: false,
       compress: {

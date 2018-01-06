@@ -40,13 +40,17 @@ module.exports = function (browser) {
     const url = new URI(response.url);
 
     if (url.path() === '/config.js') {
-      return new zombie.Response(`angular.module('main').constant('st2Config', {
+      return new zombie.Response(`'use strict';
+
+window.st2constants = window.st2constants || {};
+window.st2constants.st2Config = {
   hosts: [{
     name: 'Test',
     url: 'https://${process.env.ST2_HOST}/api',
     auth: 'https://${process.env.ST2_HOST}/auth',
   }],
-});`);
+};
+`);
     }
 
     if (url.path().indexOf('/reamaze.js') >= 0) {

@@ -6,10 +6,5 @@
     "modules/*",
     "tasks",
     "."
-  ],
-  "command": {
-    "init": {
-      "exact": true
-    }
-  }
+  ]
 }

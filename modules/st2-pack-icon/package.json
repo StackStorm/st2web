@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@stackstorm/module-api": "1.0.0-pre.4",
+    "@stackstorm/module-notification": "1.0.0-pre.4",
     "@stackstorm/st2-style": "1.0.0-pre.4",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"

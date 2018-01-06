@@ -1,13 +1,9 @@
 npm-debug.log
 lerna-debug.log
 node_modules
-components
 css
 js
 build
-discs
-
-.htmlhintrc
 
 debian/st2web
 debian/*.debhelper.log

@@ -43,6 +43,7 @@
     "@stackstorm/module-highlight": "1.0.0-pre.4",
     "@stackstorm/module-label": "1.0.0-pre.4",
     "@stackstorm/module-menu": "1.0.0-pre.4",
+    "@stackstorm/module-notification": "1.0.0-pre.4",
     "@stackstorm/module-pack-icon": "1.0.0-pre.4",
     "@stackstorm/module-panel": "1.0.0-pre.4",
     "@stackstorm/module-popup": "1.0.0-pre.4",

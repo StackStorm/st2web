@@ -20,7 +20,21 @@
   },
   "browserify": {
     "transform": [
-      "babelify"
+      "babelify",
+      [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".less"
+          ],
+          "inject": "insert-css",
+          "modularize": false,
+          "plugin": [
+            "@stackstorm/postcss-less-engine"
+          ],
+          "parser": "@stackstorm/postcss-less-engine/parser"
+        }
+      ]
     ]
   },
   "dependencies": {
@@ -31,9 +45,9 @@
     "@stackstorm/app-rules": "1.0.0-pre.4",
     "@stackstorm/module-api": "1.0.0-pre.4",
     "@stackstorm/module-login": "1.0.0-pre.4",
-    "@stackstorm/module-notification": "1.0.0-pre.4",
     "@stackstorm/st2-style": "1.0.0-pre.4",
     "classnames": "^2.2.5",
+    "insert-css": "^2.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "prop-types": "^15.6.0",
@@ -45,7 +59,9 @@
     "urijs": "^1.17.1"
   },
   "devDependencies": {
+    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
     "@stackstorm/module-test-utils": "1.0.0-pre.4",
+    "@stackstorm/postcss-less-engine": "0.6.2",
     "@stackstorm/st2-build": "1.0.0-pre.4",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.1.2",
@@ -63,6 +79,7 @@
     "gulp": "github:gulpjs/gulp#d8f5c90a0622d19ef1943a2a3d02dc50e3c853e7",
     "ignore-styles": "^5.0.1",
     "lerna": "^2.5.1",
+    "less": "^2.7.3",
     "postcss": "^6.0.14",
     "request": "^2.69.0",
     "sinon": "^4.1.3",
