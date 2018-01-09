@@ -111,7 +111,7 @@ export default class HistoryPanel extends React.Component {
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
-      id = groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
+      id = groups && groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -137,7 +137,7 @@ export default class HistoryPanel extends React.Component {
     let { ref: id } = nextProps.match.params;
     if (!id) {
       const { groups } = nextProps;
-      id = groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
+      id = groups && groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -180,7 +180,7 @@ export default class HistoryPanel extends React.Component {
         const { id: ref } = this.urlParams;
         const { groups } = this.props;
 
-        if (ref && !groups.some(({ executions }) => executions.some(({ id }) => id === ref))) {
+        if (ref && groups && !groups.some(({ executions }) => executions.some(({ id }) => id === ref))) {
           this.navigate({ id: false });
         }
       })
@@ -368,7 +368,7 @@ export default class HistoryPanel extends React.Component {
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>
-            { groups.map(({ date, executions }) => {
+            { groups && groups.map(({ date, executions }) => {
               const title = <Time timestamp={date} format="ddd, DD MMM YYYY" />;
 
               return (
@@ -408,7 +408,7 @@ export default class HistoryPanel extends React.Component {
               );
             }) }
 
-            { groups.length > 0 ? (
+            { groups ? ( groups.length > 0 ? (
               <PanelNavigation>
                 <Button
                   className={cx({
@@ -429,7 +429,7 @@ export default class HistoryPanel extends React.Component {
               </PanelNavigation>
             ) : (
               <ContentEmpty />
-            ) }
+            ) ) : null }
           </Content>
         </PanelView>
 

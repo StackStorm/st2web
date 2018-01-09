@@ -6,7 +6,7 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const packReducer = (state = {}, input) => {
   let {
     packs = [],
-    groups = [],
+    groups = null,
     filter = '',
     pack = undefined,
   } = state;

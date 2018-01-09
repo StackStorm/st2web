@@ -78,7 +78,7 @@ export default class ActionsPanel extends React.Component {
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
-      id = groups.length > 0 && groups[0].actions.length > 0 ? groups[0].actions[0].ref : undefined;
+      id = groups && groups.length > 0 && groups[0].actions.length > 0 ? groups[0].actions[0].ref : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -91,7 +91,7 @@ export default class ActionsPanel extends React.Component {
     let { ref: id } = nextProps.match.params;
     if (!id) {
       const { groups } = nextProps;
-      id = groups.length > 0 && groups[0].actions.length > 0 ? groups[0].actions[0].ref : undefined;
+      id = groups && groups.length > 0 && groups[0].actions.length > 0 ? groups[0].actions[0].ref : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -111,7 +111,7 @@ export default class ActionsPanel extends React.Component {
         const { id } = this.urlParams;
         const { groups } = this.props;
 
-        if (id && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
+        if (id && groups && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
           this.navigate({ id: false });
         }
       })
@@ -237,7 +237,7 @@ export default class ActionsPanel extends React.Component {
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>
-            { groups.map(({ pack, actions }) => {
+            { groups && groups.map(({ pack, actions }) => {
               const icon = api.client.packFile.route(`${pack}/icon.png`);
 
               return (
@@ -255,7 +255,7 @@ export default class ActionsPanel extends React.Component {
               );
             }) }
 
-            { groups.length > 0 ? null : (
+            { !groups || groups.length > 0 ? null : (
               <ContentEmpty />
             ) }
           </Content>

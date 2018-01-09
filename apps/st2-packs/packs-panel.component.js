@@ -90,7 +90,7 @@ export default class PacksPanel extends React.Component {
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
-      id = groups.length > 0 && groups[0].packs.length > 0 ? groups[0].packs[0].ref : undefined;
+      id = groups && groups.length > 0 && groups[0].packs.length > 0 ? groups[0].packs[0].ref : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -103,7 +103,7 @@ export default class PacksPanel extends React.Component {
     let { ref: id } = nextProps.match.params;
     if (!id) {
       const { groups } = nextProps;
-      id = groups.length > 0 && groups[0].packs.length > 0 ? groups[0].packs[0].ref : undefined;
+      id = groups && groups.length > 0 && groups[0].packs.length > 0 ? groups[0].packs[0].ref : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -119,7 +119,7 @@ export default class PacksPanel extends React.Component {
         const { id } = this.urlParams;
         const { groups } = this.props;
 
-        if (id && !groups.some(({ packs }) => packs.some(({ ref }) => ref === id))) {
+        if (id && groups && !groups.some(({ packs }) => packs.some(({ ref }) => ref === id))) {
           this.navigate({ id: false });
         }
       })
@@ -278,7 +278,7 @@ export default class PacksPanel extends React.Component {
             />
           </Toolbar>
           <Content>
-            { groups.map(({ status, packs }) => {
+            { groups && groups.map(({ status, packs }) => {
               return (
                 <FlexTableWrapper key={status} uid={status} title={status} >
                   { packs.map((pack) => (
@@ -293,13 +293,13 @@ export default class PacksPanel extends React.Component {
               );
             }) }
 
-            { groups.length > 0 ? null : (
+            { !groups || groups.length > 0 ? null : (
               <ContentEmpty />
             ) }
           </Content>
         </PanelView>
 
-        { groups.length > 0 ? (
+        { groups && groups.length > 0 ? (
           <PacksDetails
             ref={(ref) => this._details = ref}
             handleInstall={(...args) => this.handleInstall(...args)}

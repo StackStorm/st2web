@@ -81,7 +81,7 @@ export default class RulesPanel extends React.Component {
     let { ref: id } = this.props.match.params;
     if (!id) {
       const { groups } = this.props;
-      id = groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
+      id = groups && groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -121,7 +121,7 @@ export default class RulesPanel extends React.Component {
     let { ref: id } = nextProps.match.params;
     if (!id) {
       const { groups } = nextProps;
-      id = groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
+      id = groups && groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
     }
     if (id !== this.state.id) {
       this.setState({ id });
@@ -141,7 +141,7 @@ export default class RulesPanel extends React.Component {
         const { id } = this.urlParams;
         const { groups } = this.props;
 
-        if (id && id !== 'new' && !groups.some(({ rules }) => rules.some(({ ref }) => ref === id))) {
+        if (id && id !== 'new' && groups && !groups.some(({ rules }) => rules.some(({ ref }) => ref === id))) {
           this.navigate({ id: false });
         }
       })
@@ -305,7 +305,7 @@ export default class RulesPanel extends React.Component {
             />
           </Toolbar>
           <Content>
-            { groups.map(({ pack, rules }) => {
+            { groups && groups.map(({ pack, rules }) => {
               const icon = api.client.packFile.route(`${pack}/icon.png`);
 
               return (
@@ -321,7 +321,7 @@ export default class RulesPanel extends React.Component {
               );
             }) }
 
-            { groups.length > 0 ? null : (
+            { !groups || groups.length > 0 ? null : (
               <ContentEmpty />
             ) }
           </Content>

@@ -6,7 +6,7 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const actionReducer = (state = {}, input) => {
   let {
     actions = [],
-    groups = [],
+    groups = null,
     filter = '',
     action = undefined,
     executions = [],

@@ -7,7 +7,7 @@ const historyReducer = (state = {}, input) => {
   let {
     filters = undefined,
     executions = [],
-    groups = [],
+    groups = null,
     execution = undefined,
   } = state;
 

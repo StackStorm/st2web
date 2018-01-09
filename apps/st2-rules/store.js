@@ -6,7 +6,7 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 const ruleReducer = (state = {}, input) => {
   let {
     rules = [],
-    groups = [],
+    groups = null,
     filter = '',
     rule = undefined,
     triggerSpec = undefined,
