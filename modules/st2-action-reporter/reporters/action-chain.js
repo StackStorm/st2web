@@ -7,7 +7,7 @@ import {
 } from '@stackstorm/module-flex-table';
 import Label from '@stackstorm/module-label';
 
-export default function debug(execution) {
+export default function actionChain(execution) {
   return (
     <dl>
       { Object.keys(execution.result).map((task) => {

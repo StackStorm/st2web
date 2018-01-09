@@ -1,16 +1,26 @@
 import React from 'react';
 
-export default function debug(execution) {
+import Highlight from '@stackstorm/module-highlight';
+
+export default function http(execution) {
   return (
-    <pre>
-      <strong>{ (execution.parameters.method || 'get').toUpperCase() }</strong> { execution.parameters.url }
-
-    &gt; { execution.result.status_code }
-      { Object.keys(execution.result.headers).map((key) => (
-        <span key={key}>&gt; { key.toUpperCase() }: { execution.result.headers[key] }</span>
-      )) }
-
-      { execution.result.body }
-    </pre>
+    <Highlight code={getCode(execution)} />
   );
+}
+
+function getCode(execution) {
+  if (!execution.parameters || !execution.result) {
+    return null;
+  }
+
+  return `${(execution.parameters.method || 'get').toUpperCase()} ${execution.parameters.url}
+> STATUS: ${execution.result.status_code}
+${
+  Object.keys(execution.result.headers).map((key) => (
+    `> ${key.toUpperCase()}: ${execution.result.headers[key]}`
+  )).join('\n')
+}
+
+${execution.result.body}
+`;
 }

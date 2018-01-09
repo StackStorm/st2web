@@ -13,10 +13,10 @@ import './style.less';
   }
 
   require('prismjs/components/prism-bash');
-  require('prismjs/components/prism-yaml');
+  require('prismjs/components/prism-json');
   require('prismjs/components/prism-powershell');
   require('prismjs/components/prism-python');
-  require('prismjs/components/prism-json');
+  require('prismjs/components/prism-yaml');
 })();
 
 function getType(string) {
