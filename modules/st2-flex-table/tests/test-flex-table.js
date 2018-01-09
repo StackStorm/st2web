@@ -47,7 +47,7 @@ describe(`${FlexTable.name} Component`, () => {
 
     const [ titleComponent, ...restComponents ] = c.props.children;
     expect(titleComponent.props.icon).to.be.equal(props.icon);
-    expect(titleComponent.props.children).to.be.equal(props.title);
+    expect(titleComponent.props.title).to.be.equal(props.title);
 
     titleComponent.props.onToggle();
     expect(props.onToggle.calledOnce).to.be.true;
@@ -69,7 +69,7 @@ describe(`${FlexTable.name} Component`, () => {
 
     const [ titleComponent, ...restComponents ] = c.props.children;
     expect(titleComponent.props.icon).to.be.undefined;
-    expect(titleComponent.props.children).to.be.equal(props.title);
+    expect(titleComponent.props.title).to.be.equal(props.title);
 
     titleComponent.props.onToggle();
     expect(props.onToggle.calledOnce).to.be.true;
@@ -110,7 +110,7 @@ describe(`${FlexTable.name} Component`, () => {
 
     const [ titleComponent, ...restComponents ] = c.props.children;
     expect(titleComponent.props.icon).to.be.equal(props.icon);
-    expect(titleComponent.props.children).to.be.equal(props.title);
+    expect(titleComponent.props.title).to.be.equal(props.title);
 
     titleComponent.props.onToggle();
     expect(props.onToggle.calledOnce).to.be.true;

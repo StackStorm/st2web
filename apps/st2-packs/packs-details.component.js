@@ -207,7 +207,7 @@ export default class PacksPanel extends React.Component {
                   <Button submit value="Save" />
                 </DetailsButtonsPanel>
                 { this.state.configPreview ? (
-                  <Highlight code={this.state.config} />
+                  <Highlight lines={20} code={this.state.config} />
                 ) : null  }
               </form>
             </DetailsPanel>

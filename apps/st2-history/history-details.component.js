@@ -247,7 +247,7 @@ export default class HistoryDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="execution_code">
-              <Highlight code={execution} />
+              <Highlight lines={20} code={execution} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>

@@ -5,6 +5,9 @@ import store from './store';
 
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
+import {
+  actions as flexActions,
+} from '@stackstorm/module-flex-table/flex-table.reducer';
 import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
@@ -128,6 +131,9 @@ export default class ActionsDetails extends React.Component {
     })
       .then(() => {
         this.setState({ runValue: {}, runTrace: '' });
+
+        const { action } = this.props;
+        store.dispatch(flexActions.toggle(action.pack, false));
       })
       .catch((err) => {
         notification.error(`Unable to retrieve action "${id}".`, { err });
@@ -215,7 +221,7 @@ export default class ActionsDetails extends React.Component {
                       onChange={(runValue) => this.setState({ runValue })}
                     />
                     <StringField
-                      name="trace"
+                      name="trace-tag"
                       spec={{}}
                       value={this.state.runTrace}
                       onChange={(runTrace) => this.setState({ runTrace })}
@@ -287,7 +293,7 @@ export default class ActionsDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="action_code">
-              <Highlight code={action} />
+              <Highlight lines={20} code={action} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>

@@ -87,12 +87,7 @@ export default class RulesPanel extends React.Component {
       this.setState({ id });
     }
 
-    this.fetchGroups().then(() => {
-      const { id } = this.urlParams;
-      if (id) {
-        store.dispatch(flexActions.toggle(id.split('.')[0], false));
-      }
-    });
+    this.fetchGroups();
 
     store.dispatch({
       type: 'FETCH_PACK_SPEC',
@@ -129,11 +124,7 @@ export default class RulesPanel extends React.Component {
       id = groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
     }
     if (id !== this.state.id) {
-      this.setState({ id }, () => {
-        if (id) {
-          store.dispatch(flexActions.toggle(id.split('.')[0], false));
-        }
-      });
+      this.setState({ id });
     }
   }
 

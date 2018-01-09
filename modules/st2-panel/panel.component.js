@@ -241,14 +241,15 @@ export class Content extends React.Component {
 export class ContentEmpty extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    children: PropTypes.node,
   }
 
   render() {
-    const { className, ...props } = this.props;
+    const { className, children, ...props } = this.props;
 
     return (
       <div {...props} className={cx('st2-panel__content-empty', className)}>
-        No results were found for your current filter.
+        { children || 'No results were found for your current filter.' }
       </div>
     );
   }

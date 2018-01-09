@@ -12,22 +12,22 @@ import createHashHistory from 'history/createHashHistory';
 import api from '@stackstorm/module-api';
 import Login from '@stackstorm/module-login';
 
-import History from '@stackstorm/app-history';
 import Actions from '@stackstorm/app-actions';
-import Rules from '@stackstorm/app-rules';
-import Packs from '@stackstorm/app-packs';
 import Docs from '@stackstorm/app-docs';
+import History from '@stackstorm/app-history';
+import Packs from '@stackstorm/app-packs';
+import Rules from '@stackstorm/app-rules';
 
 import './style.less';
 
 const history = window.routerHistory = createHashHistory({});
 
 const routes = [
-  History,
   Actions,
-  Rules,
-  Packs,
   Docs,
+  History,
+  Packs,
+  Rules,
 ];
 
 export class Container extends React.Component {

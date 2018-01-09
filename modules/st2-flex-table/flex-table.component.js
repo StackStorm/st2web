@@ -12,6 +12,7 @@ export class FlexTable extends React.Component {
     uid: PropTypes.string,
     title: PropTypes.node,
     titleType: PropTypes.string,
+    note: PropTypes.node,
     collapsed: PropTypes.bool.isRequired,
     children: PropTypes.node,
     icon: PropTypes.string,
@@ -25,16 +26,21 @@ export class FlexTable extends React.Component {
   static actions = actions
 
   render() {
-    const { className, uid, title, titleType, collapsed, children, icon, onToggle, ...props } = this.props;
+    const { className, uid, title, titleType, note, collapsed, children, icon, onToggle, ...props } = this.props;
     uid;
 
     return (
       <div {...props} className={cx('st2-flex-table', className, { 'st2-flex-table--collapsed': collapsed })}>
         { title ? (
-          <FlexTableTitle type={titleType} icon={icon} onToggle={(e) => onToggle(e)}>
-            { title }
-          </FlexTableTitle>
+          <FlexTableTitle
+            type={titleType}
+            icon={icon}
+            onToggle={(e) => onToggle(e)}
+            title={title}
+            note={note}
+          />
         ) : null  }
+
         { collapsed ? null : children }
       </div>
     );
@@ -48,10 +54,12 @@ export class FlexTableTitle extends React.Component {
     type: PropTypes.string,
     icon: PropTypes.string,
     onToggle: PropTypes.func.isRequired,
+    title: PropTypes.node,
+    note: PropTypes.node,
   }
 
   render() {
-    const { className, children, type, icon, onToggle, ...props } = this.props;
+    const { className, children, type, icon, onToggle, title, note, ...props } = this.props;
 
     return (
       <div
@@ -65,7 +73,14 @@ export class FlexTableTitle extends React.Component {
         { icon ? (
           <img src={icon} />
         ) : null }
-        <h2 className="st2-flex-table__caption-title">{ children }</h2>
+
+        <h2 className="st2-flex-table__caption-title">{ title }</h2>
+
+        { note ? (
+          <h4 className="st2-flex-table__caption-note">{ note }</h4>
+        ) : null }
+
+        { children }
       </div>
     );
   }

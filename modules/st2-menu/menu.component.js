@@ -32,6 +32,7 @@ export default class Menu extends React.Component {
       url: PropTypes.string,
       target: PropTypes.string,
       icon: PropTypes.string,
+      position: PropTypes.number,
     })).isRequired,
   }
 

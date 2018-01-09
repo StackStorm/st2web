@@ -41,7 +41,7 @@ describe(`${FlexTableTitle.name} Component`, () => {
       onToggle: sinon.spy(),
     };
 
-    const c = render(<FlexTableTitle {...props}>some child node</FlexTableTitle>);
+    const c = render(<FlexTableTitle {...props} title="some child node" />);
 
     expect(c.props.className).to.be.equal('st2-flex-table__caption st2-flex-table__caption--pack');
 
@@ -60,7 +60,7 @@ describe(`${FlexTableTitle.name} Component`, () => {
       onToggle: sinon.spy(),
     };
 
-    const c = render(<FlexTableTitle {...props}>some child node</FlexTableTitle>);
+    const c = render(<FlexTableTitle {...props} title="some child node" />);
 
     expect(c.props.className).to.be.equal('st2-flex-table__caption');
 
