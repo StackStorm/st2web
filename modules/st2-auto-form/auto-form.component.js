@@ -25,21 +25,6 @@ export default class AutoForm extends React.Component {
     disabled: false,
   }
 
-  componentWillMount() {
-    // Once everything is inside react we should be able to move this to the
-    // getElementByField portion
-    const { spec } = this.props;
-
-    if (spec && spec.properties) {
-      Object.keys(spec.properties).forEach(function(key) {
-        const value = spec.properties[key];
-        if (value.default !== undefined && value.enum) {
-          this.handleChange(key, value.default);
-        }
-      }, this);
-    }
-  }
-
   getElementByField(field) {
     if (field.enum) {
       return EnumField;
@@ -68,8 +53,9 @@ export default class AutoForm extends React.Component {
   }
 
   handleChange(name, value) {
-    const { data, onChange } = this.props;
+    const { spec, data, onChange } = this.props;
     return onChange({
+      ...getDefaults(spec),
       ...data,
       [name]: value,
     });
@@ -135,4 +121,17 @@ export default class AutoForm extends React.Component {
       </div>
     );
   }
+}
+
+function getDefaults(spec) {
+  const defaults = {};
+
+  Object.keys(spec.properties).forEach((key) => {
+    const property = spec.properties[key];
+    if (property.default !== undefined) {
+      defaults[key] = property.default;
+    }
+  });
+
+  return defaults;
 }
