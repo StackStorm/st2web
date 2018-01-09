@@ -227,20 +227,22 @@ export default class HistoryDetails extends React.Component {
               <DetailsPanel>
                 <DetailsPanelHeading title="Action Input" />
                 <DetailsPanelBody>
-                  <form className="st2-details__form">
-                    <AutoForm
-                      spec={{
-                        type: 'object',
-                        properties: {
-                          ...execution.runner.runner_parameters,
-                          ...execution.action.parameters,
-                        },
-                      }}
-                      disabled={true}
-                      data={execution.parameters}
-                      data-test="action_input"
-                    />
-                  </form>
+                  { execution.parameters ? (
+                    <form className="st2-details__form">
+                      <AutoForm
+                        spec={{
+                          type: 'object',
+                          properties: {
+                            ...execution.runner.runner_parameters,
+                            ...execution.action.parameters,
+                          },
+                        }}
+                        disabled={true}
+                        data={execution.parameters}
+                        data-test="action_input"
+                      />
+                    </form>
+                  ) : 'No Input' }
                 </DetailsPanelBody>
               </DetailsPanel>
             </div>

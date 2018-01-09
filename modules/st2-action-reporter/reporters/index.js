@@ -4,7 +4,6 @@ import runRemote from './run-remote';
 import runPython from './run-python';
 // import actionChain from './action-chain';
 import http from './http';
-import noop from './noop';
 // import windows from './windows';
 
 export default {
@@ -26,7 +25,7 @@ export default {
   'python-script': runPython,
   'http-runner': http,
   'http-request': http,
-  'noop': noop,
+  'noop': debug,
   // 'windows-cmd': window,
   // 'windows-script': window,
   'cloudslang': runLocal,
