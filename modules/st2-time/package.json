@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-time",
-  "version": "1.0.0-pre.4",
+  "version": "1.0.0-pre.5",
   "description": "",
   "main": "time.component.js",
   "directories": {
@@ -27,8 +27,8 @@
     "access": "public"
   },
   "dependencies": {
-    "react-time": "^4.3.0",
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.0",
+    "react-time": "^4.3.0"
   },
   "devDependencies": {
     "babelify": "^8.0.0"

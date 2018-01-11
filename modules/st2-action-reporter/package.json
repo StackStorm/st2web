@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-action-reporter",
-  "version": "1.0.0-pre.4",
+  "version": "1.0.0-pre.5",
   "description": "",
   "main": "action-reporter.component.js",
   "directories": {
@@ -41,10 +41,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "1.0.0-pre.4",
-    "@stackstorm/module-flex-table": "1.0.0-pre.4",
-    "@stackstorm/module-highlight": "1.0.0-pre.4",
-    "@stackstorm/module-label": "1.0.0-pre.4",
+    "@stackstorm/module-flex-table": "^1.0.0-pre.5",
+    "@stackstorm/module-highlight": "^1.0.0-pre.5",
+    "@stackstorm/module-label": "^1.0.0-pre.5",
+    "@stackstorm/st2-style": "^1.0.0-pre.5",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
