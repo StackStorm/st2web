@@ -1,18 +1,17 @@
 'use strict';
 
-var gulp = require('gulp')
-  , settings = require('../../settings.json')
-  , plugins = require('gulp-load-plugins')(settings.plugins)
-  ;
+const gulp = require('gulp');
+const settings = require('../settings.json');
+const plugins = require('gulp-load-plugins')(settings.plugins);
 
-var server;
+let server;
 
-gulp.task('serve-production', ['production'], function () {
+gulp.task('serve-production', gulp.series([ 'production' ], () => {
   server = gulp.src('./build')
     .pipe(plugins.webserver({
       host: '0.0.0.0',
-      port: 3000
+      port: 3000,
     }));
 
   return server;
-});
+}));

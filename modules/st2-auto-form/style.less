@@ -1,4 +1,4 @@
-@import 'colors';
+@import 'node_modules/@stackstorm/st2-style/colors.less';
 
 .st2-auto-form {
   position: relative;
@@ -321,6 +321,10 @@
 
     &--active {
       color: @aqua-base;
+    }
+
+    &--selected {
+      background-color: @aqua-lighten-5;
     }
 
     &:hover {

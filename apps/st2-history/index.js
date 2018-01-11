@@ -1,17 +1,11 @@
-'use strict';
+import History from './history.component';
 
-var mod = module.exports = angular.module('main.apps.st2History', [
+const route = {
+  title: 'History',
+  url: '/history',
+  icon: 'icon-history',
+  Component: History,
+  position: 1,
+};
 
-]);
-
-var controller = require('./history.controller.js');
-var config = require('./history.config.js');
-var fmtParam = require('./fmt-param.filter.js');
-var rerun = require('./rerun.directive.js');
-
-mod
-  .config(config)
-  .directive(rerun.name, rerun)
-  .controller(controller.name, controller)
-  .filter(fmtParam.name, fmtParam)
-  ;
+export default route;

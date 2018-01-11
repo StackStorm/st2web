@@ -3,3 +3,9 @@ platform:
     isarray:
       tests:
         deprecated: skip
+    base:
+      tests:
+        unlicensed: skip
+    jade:
+      tests:
+        deprecated: skip

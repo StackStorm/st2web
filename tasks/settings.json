@@ -1,0 +1,54 @@
+{
+  "port": 3000,
+  "dev": ".",
+  "styles": {
+    "src": [
+      "./less/style.less",
+      "./apps/**/*.less",
+      "./modules/**/*.less",
+      "!**/node_modules/**"
+    ],
+    "includes": "less/",
+    "dest": "css"
+  },
+  "modules": {
+    "main.js": "main.js"
+  },
+  "html": "index.html",
+  "production": {
+    "dest": "build/",
+    "scripts": [
+      "js/*.js"
+    ],
+    "static": [
+      "index.html",
+      "img/*",
+      "font/*",
+      "config.js",
+      "favicon.ico"
+    ],
+    "styles": [
+      "css/*.css"
+    ],
+    "tests": [
+      "tests/**/test-*.js",
+      "!**/node_modules/**"
+    ]
+  },
+  "lint": [
+    "*.js",
+    "modules/**/*.js",
+    "apps/**/*.js",
+    "tasks/**/*.js",
+    "!**/node_modules/**"
+  ],
+  "tests": [
+    "tests/**/test-*.js",
+    "!**/node_modules/**"
+  ],
+  "units": [
+    "apps/**/test-*.js",
+    "modules/**/test-*.js",
+    "!**/node_modules/**"
+  ]
+}

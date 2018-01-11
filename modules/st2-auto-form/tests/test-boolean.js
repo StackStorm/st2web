@@ -12,7 +12,7 @@ describe('AutoForm BooleanField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -20,12 +20,12 @@ describe('AutoForm BooleanField', () => {
     expect(c.fieldType()).to.be.equal('input');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -43,7 +43,7 @@ describe('AutoForm BooleanField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -53,17 +53,16 @@ describe('AutoForm BooleanField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue('checked')).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
   });
 
-  it('resets the value when reset button is pressed', function () {
+  it('resets the value when reset button is pressed', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {
-        default: true
+        default: true,
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
@@ -77,7 +76,7 @@ describe('AutoForm BooleanField', () => {
     expect(c.value()).to.be.deep.equal(false);
     expect(c.fieldClass()).to.not.have.string('st2-auto-form__checkbox--default');
 
-    c.output().props.onReset();
+    c._instance.node.props.onReset();
 
     expect(onChange.withArgs(undefined)).to.be.calledOnce;
     expect(c.fieldValue('checked')).to.be.equal(undefined);

@@ -1,18 +1,22 @@
 /* jshint node:true */
 'use strict';
-var URI = require('urijs');
-var moment = require('moment');
-var zombie = require('zombie');
+const URI = require('urijs');
+const moment = require('moment');
+const zombie = require('zombie');
 
-var ST2client = require('st2client');
+const ST2client = require('@stackstorm/module-api/node_modules/st2client');
 
-var client;
+let client;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at:', p); // eslint-disable-line no-console
+});
+
 class TestMarker {
   constructor(name) {
-    this.names = [name];
+    this.names = [ name ];
   }
 
   in(name) {
@@ -21,32 +25,32 @@ class TestMarker {
   }
 
   toString() {
-    return this.names.map(name => `[data-test~="${name}"]`).join(' ');
+    return this.names.map((name) => `[data-test~="${name}"]`).join(' ');
   }
 }
 
 module.exports = function (browser) {
   browser.waitDuration = '10s';
 
-  browser.on('opened', function (win) {
+  browser.on('opened', (win) => {
     win.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};
   });
 
-  browser.pipeline.addHandler(function(b, request) {
-    var url = new URI(request.url);
-
-    if (url.directory().match(/^\/auth/) || url.directory().match(/^\/api/)) {
-      request.url = url.host(process.env.ST2_HOST).toString();
-    }
-
-    return null;
-  });
-
-  browser.pipeline.addHandler(function(b, request, response) {
-    var url = new URI(response.url);
+  browser.pipeline.addHandler((b, request, response) => {
+    const url = new URI(response.url);
 
     if (url.path() === '/config.js') {
-      return new zombie.Response('angular.module(\'main\').constant(\'st2Config\', {})');
+      return new zombie.Response(`'use strict';
+
+window.st2constants = window.st2constants || {};
+window.st2constants.st2Config = {
+  hosts: [{
+    name: 'Test',
+    url: 'https://${process.env.ST2_HOST}/api',
+    auth: 'https://${process.env.ST2_HOST}/auth',
+  }],
+};
+`);
     }
 
     if (url.path().indexOf('/reamaze.js') >= 0) {
@@ -91,21 +95,19 @@ module.exports = function (browser) {
             protocol: 'https',
             host: process.env.ST2_HOST.split(':')[0],
             port: process.env.ST2_HOST.split(':')[1] || 443,
-            prefix: '/auth'
-          }
+            prefix: '/auth',
+          },
         });
 
         client = cli.authenticate(process.env.ST2_USERNAME, process.env.ST2_PASSWORD)
-          .then(function () {
+          .then(() => {
             // No need to wait for token to expire since we're not going to use the client for long
             cli.close();
           })
-          .then(function () {
-            return cli;
-          });
+          .then(() => cli);
       }
 
       return client;
-    }
+    },
   };
 };

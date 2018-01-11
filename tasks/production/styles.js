@@ -1,18 +1,17 @@
 'use strict';
 
-var gulp = require('gulp')
-  , settings = require('../../settings.json')
-  , plugins = require('gulp-load-plugins')(settings.plugins)
-  ;
+const gulp = require('gulp');
+const settings = require('../settings.json');
+const plugins = require('gulp-load-plugins')(settings.plugins);
 
-gulp.task('production-styles', ['styles'], function () {
-  return gulp.src(settings.production.styles, { base: __dirname + '/../..' })
+gulp.task('production-styles', () =>
+  gulp.src(settings.production.styles, { base: '.' })
     .pipe(gulp.dest(settings.production.dest))
     .pipe(plugins.size({
-      showFiles: true
+      showFiles: true,
     }))
     .pipe(plugins.size({
       showFiles: true,
-      gzip: true
-    }));
-});
+      gzip: true,
+    }))
+);

@@ -1,0 +1,134 @@
+@import 'node_modules/@stackstorm/st2-style/colors.less';
+
+.st2-login {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+
+  color: white;
+  background: radial-gradient(ellipse at center,rgb(0, 115, 150) 0,rgb(68, 50, 153) 100%);
+
+  align-items: center;
+  justify-content: center;
+
+  &__logo {
+    display: block;
+
+    width: 50px;
+    margin: 20px auto;
+
+    img {
+      width: 50px;
+    }
+  }
+
+  &__form {
+    display: block;
+
+    width: 240px;
+  }
+
+  &__row {
+    display: flex;
+
+    margin: 10px;
+
+    align-items: center;
+  }
+
+  & &__button {
+    padding: 3px 12px;
+  }
+
+  & &__checkbox-wrapper {
+    flex: 1;
+
+    text-align: right;
+  }
+
+  &__error {
+    margin: 10px;
+    padding: 10px;
+
+    color: #ff4500;
+    border: 1px solid #ff4500;
+    border-radius: 4px;
+  }
+
+  &__error::selection {
+    color: #151a1e;
+    background-color: #ff4500;
+  }
+
+  &__links {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+
+    padding: 10px;
+
+    text-align: center;
+
+    justify-content: space-between;
+  }
+
+  a,
+  a:link,
+  a:active,
+  a:visited,
+  a:hover {
+    color: @gray-light;
+  }
+
+  &__checkbox {
+    display: none;
+
+    margin: 0;
+    padding: 0;
+
+    &-block {
+      font-size: 15px;
+      line-height: 36px;
+    }
+
+    &-label {
+      font-weight: 100;
+
+      cursor: pointer;
+      user-select: none;
+      vertical-align: top;
+    }
+
+    & + &-label:before {
+      font-family: 'brocadeicons';
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 10px;
+
+      display: inline-block;
+
+      width: 10px;
+      height: 10px;
+      margin-right: .3em;
+
+      content: '\e968';
+      text-decoration: inherit;
+
+      color: white;
+      border: 1px solid white;
+      background-color: transparent;
+    }
+
+    &:not(:checked) + &-label:before {
+      color: transparent;
+    }
+  }
+}

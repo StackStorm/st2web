@@ -12,7 +12,7 @@ describe('AutoForm NumberField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<NumberField {...props} />);
@@ -20,12 +20,12 @@ describe('AutoForm NumberField', () => {
     expect(c.fieldType()).to.be.equal('input');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<NumberField {...props} />);
@@ -43,7 +43,7 @@ describe('AutoForm NumberField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<NumberField {...props} />);
@@ -53,7 +53,6 @@ describe('AutoForm NumberField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });

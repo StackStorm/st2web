@@ -1,29 +1,48 @@
 import _ from 'lodash';
 import React from 'react';
-import Textarea from 'react-textarea-autosize';
+import { PropTypes } from 'prop-types';
 
 import { TextFieldWrapper } from '../wrappers';
 
-function isJinja(v) {
+const Textarea = (function() {
+  // don't include this during testing
+  if (typeof window === 'undefined' || global !== window) {
+    return 'textarea';
+  }
+
+  return require('react-textarea-autosize');
+})();
+
+export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
 }
 
+// TODO: make controlled
 export class BaseTextField extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    value: React.PropTypes.any,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func,
-    'data-test': React.PropTypes.string
+    name: PropTypes.string,
+    spec: PropTypes.object,
+    value: PropTypes.any,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+    'data-test': PropTypes.string,
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      value: this.toStateValue(this.props.value)
+      value: this.toStateValue(this.props.value),
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let { value } = nextProps;
+
+    if (!_.isEqual(this.props.value, value)) {
+      value = this.toStateValue(value);
+      this.setState({ value });
+    }
   }
 
   fromStateValue() {
@@ -42,40 +61,18 @@ export class BaseTextField extends React.Component {
     if (isJinja(v)) {
       return false;
     }
-  }
 
-  getValue() {
-    const { value } = this.state;
-    const invalid = this.validate(value, this.props.spec);
-
-    if (invalid) {
-      throw new Error(invalid);
-    }
-
-    if (isJinja(value)) {
-      return value;
-    }
-
-    return this.fromStateValue(value);
+    return undefined;
   }
 
   handleChange(value) {
     const invalid = this.validate(value, this.props.spec);
 
-    this.setState({ value, invalid }, this.props.onChange && !invalid && this.emitChange);
+    this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
   }
 
   emitChange() {
-    return this.props.onChange(this.getValue());
-  }
-
-  componentWillReceiveProps(nextProps) {
-    var { value } = nextProps;
-
-    if (!_.isEqual(this.props.value, value)) {
-      value = this.toStateValue(value);
-      this.setState({ value });
-    }
+    return this.props.onChange(this.fromStateValue(this.state.value));
   }
 
   render() {
@@ -96,16 +93,18 @@ export class BaseTextField extends React.Component {
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e.target.value),
-      'data-test': this.props['data-test']
+      'data-test': this.props['data-test'],
     };
 
     if (this.state.invalid) {
       inputProps.className += ' ' + 'st2-auto-form__field--invalid';
     }
 
-    return <TextFieldWrapper icon={icon} {...wrapperProps} >
-      <input {...inputProps} />
-    </TextFieldWrapper>;
+    return (
+      <TextFieldWrapper icon={icon} {...wrapperProps}>
+        <input {...inputProps} />
+      </TextFieldWrapper>
+    );
   }
 }
 
@@ -129,15 +128,17 @@ export class BaseTextareaField extends BaseTextField {
       onChange: (e) => this.handleChange(e.target.value),
       minRows: 1,
       maxRows: 10,
-      'data-test': this.props['data-test']
+      'data-test': this.props['data-test'],
     };
 
     if (this.state.invalid) {
       inputProps.className += ' ' + 'st2-auto-form__field--invalid';
     }
 
-    return <TextFieldWrapper icon={icon} {...wrapperProps} >
-      <Textarea {...inputProps} />
-    </TextFieldWrapper>;
+    return (
+      <TextFieldWrapper icon={icon} {...wrapperProps}>
+        <Textarea {...inputProps} />
+      </TextFieldWrapper>
+    );
   }
 }

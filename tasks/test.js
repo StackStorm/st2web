@@ -1,6 +1,8 @@
 'use strict';
 
-var gulp = require('gulp')
-  ;
+const gulp = require('gulp');
 
-gulp.task('test', ['unit', 'integration']);
+gulp.task('test', gulp.series([
+  'test-unit',
+  'test-functional',
+]));

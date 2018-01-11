@@ -1,55 +1,71 @@
 import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+import { ReactTester } from '@stackstorm/module-test-utils';
 import { expect } from 'chai';
-const sinon = require('sinon');
+import sinon from 'sinon';
 
-import Component from '../auto-form.component.js';
-
+import AutoForm from '..';
 import StringField from '../fields/string';
 
-describe('AutoForm Component', () => {
+describe(`${AutoForm.name} Component`, () => {
+  describe('common functionality', () => {
+    it('proxies className', () => {
+      const instance = ReactTester.create(
+        <AutoForm
+          className="foobar"
+        />
+      );
+
+      expect(instance.node.classList).to.contain('foobar');
+    });
+
+    it('proxies extra props', () => {
+      const instance = ReactTester.create(
+        <AutoForm
+          foo="bar"
+        />
+      );
+
+      expect(instance.node.props.foo).to.equal('bar');
+    });
+  });
+
   it('produces an empty element when provided a spec with no properties', () => {
     const spec = {
-      properties: {}
+      properties: {},
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Component spec={spec} />);
-    const output = renderer.getRenderOutput();
+    const output = ReactTester.create(<AutoForm spec={spec} />);
 
-    expect(output.props.children).to.be.an('array').of.length(0);
+    expect(output.node.props.children).to.be.an('array').of.length(0);
   });
 
   it('produces a form of single string field for spec of one empty property', () => {
     const spec = {
       properties: {
-        test: {}
-      }
+        test: {},
+      },
     };
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Component spec={spec} />);
-    const output = renderer.getRenderOutput();
+    const output = ReactTester.create(<AutoForm spec={spec} />);
 
-    expect(output.props.children).to.be.an('array').of.length(1)
+    expect(output.node.props.children).to.be.an('array').of.length(1)
       .with.nested.property('[0].type', StringField);
   });
 
   it('calls an onChange callback as soon as one on the child element gets called', () => {
     const spec = {
       properties: {
-        test: {}
-      }
+        test: {},
+      },
     };
+
     const onChange = sinon.spy();
 
-    const renderer = TestUtils.createRenderer();
-    renderer.render(<Component spec={spec} onChange={onChange}/>);
-    const output = renderer.getRenderOutput();
+    const output = ReactTester.create(<AutoForm spec={spec} onChange={onChange} />);
 
-    const [ field ] = output.props.children;
+    const [ field ] = output.node.props.children;
     field.props.onChange('test');
 
-    expect(onChange.withArgs('test').calledOnce).to.be.true;
+    expect(onChange.withArgs({ test: 'test' }).calledOnce).to.be.true;
   });
 });

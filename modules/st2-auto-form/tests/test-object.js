@@ -2,7 +2,6 @@ import React from 'react';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import Textarea from 'react-textarea-autosize';
 
 chai.use(sinonChai);
 
@@ -13,20 +12,20 @@ describe('AutoForm ObjectField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<ObjectField {...props} />);
 
-    expect(c.fieldType()).to.be.equal(Textarea);
+    expect(c.fieldType()).to.be.equal('textarea');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ObjectField {...props} />);
@@ -44,7 +43,7 @@ describe('AutoForm ObjectField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ObjectField {...props} />);
@@ -54,7 +53,6 @@ describe('AutoForm ObjectField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
@@ -63,8 +61,8 @@ describe('AutoForm ObjectField', () => {
     const props = {
       name: 'test',
       spec: {
-        default: {}
-      }
+        default: {},
+      },
     };
 
     const c = new TestComponent(<ObjectField {...props} />);

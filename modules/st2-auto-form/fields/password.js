@@ -8,6 +8,6 @@ export default class PasswordField extends BaseTextField {
   }
 
   toStateValue(v) {
-    return v;
+    return v || '';
   }
 }

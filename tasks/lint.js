@@ -1,14 +1,11 @@
 'use strict';
 
-var gulp = require('gulp')
-  , settings = require('../settings.json')
-  , plugins = require('gulp-load-plugins')(settings.plugins)
-  ;
+const gulp = require('gulp');
+const settings = require('./settings.json');
+const plugins = require('gulp-load-plugins')(settings.plugins);
 
-gulp.task('lint', function () {
-  return gulp.src(settings.lint, { cwd: settings.dev })
-    .pipe(plugins.plumber())
-    .pipe(plugins.eslint())
-    .pipe(plugins.eslint.format())
-    ;
-});
+gulp.task('lint', () => gulp.src(settings.lint, { cwd: settings.dev })
+  .pipe(plugins.plumber())
+  .pipe(plugins.eslint())
+  .pipe(plugins.eslint.format())
+);

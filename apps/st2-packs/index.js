@@ -1,15 +1,11 @@
-'use strict';
+import Packs from './packs.component';
 
-var mod = module.exports = angular.module('main.apps.st2Packs', [
+const route = {
+  title: 'Packs',
+  url: '/packs',
+  icon: 'icon-platforms',
+  Component: Packs,
+  position: 4,
+};
 
-]);
-
-var controller = require('./packs.controller.js');
-var config = require('./packs.config.js');
-var directive = require('./packs.directive.js');
-
-mod
-  .config(config)
-  .controller(controller.name, controller)
-  .directive(directive.name, directive)
-  ;
+export default route;

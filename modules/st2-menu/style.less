@@ -1,4 +1,4 @@
-@import 'colors';
+@import 'node_modules/@stackstorm/st2-style/colors.less';
 
 .st2-menu {
   font-family: Roboto,sans-serif;
@@ -34,7 +34,7 @@
     text-decoration: none;
 
     color: transparent;
-    background-image: url(../img/logo-stackstorm.svg);
+    background-image: url(../img/logo.svg);
     background-repeat: no-repeat;
     background-size: 153px;
 
@@ -114,6 +114,7 @@
 
       height: 40px;
       padding: 0 10px;
+      margin-left: 0.25em;
 
       cursor: pointer;
       user-select: text;
@@ -129,6 +130,10 @@
 
       input {
         display: none;
+      }
+
+      .icon-user {
+        margin-left: 0.25em;
       }
     }
 

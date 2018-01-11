@@ -2,7 +2,6 @@ import React from 'react';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import Textarea from 'react-textarea-autosize';
 
 chai.use(sinonChai);
 
@@ -27,12 +26,12 @@ describe('AutoForm BaseTextareaField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
 
-    expect(c.fieldType()).to.be.equal(Textarea);
+    expect(c.fieldType()).to.be.equal('textarea');
   });
 
   it('invokes onChange callback the moment child\'s onChange callback is called', () => {
@@ -40,7 +39,7 @@ describe('AutoForm BaseTextareaField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
@@ -56,7 +55,7 @@ describe('AutoForm BaseTextareaField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<BaseTextareaFieldStub {...props} />);

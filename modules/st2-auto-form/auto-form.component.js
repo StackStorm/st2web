@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 import ArrayField from './fields/array';
 import NumberField from './fields/number';
@@ -10,19 +11,25 @@ import ObjectField from './fields/object';
 import PasswordField from './fields/password';
 import EnumField from './fields/enum';
 
+import './style.less';
+
 export default class AutoForm extends React.Component {
   static propTypes = {
-    key: React.PropTypes.string,
-    spec: React.PropTypes.object,
-    ngModel: React.PropTypes.object,
-    disabled: React.PropTypes.bool,
-    onChange: React.PropTypes.func
+    spec: PropTypes.object,
+    data: PropTypes.object,
+    disabled: PropTypes.bool.isRequired,
+    onChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    disabled: false,
   }
 
   getElementByField(field) {
     if (field.enum) {
       return EnumField;
     }
+
     switch (field.type) {
       case 'array':
         return ArrayField;
@@ -36,6 +43,7 @@ export default class AutoForm extends React.Component {
         if (field.secret) {
           return PasswordField;
         }
+
         return StringField;
       case 'object':
         return ObjectField;
@@ -44,38 +52,18 @@ export default class AutoForm extends React.Component {
     }
   }
 
-  getValue() {
-    return _.mapValues(this.refs, v => {
-      try {
-        return v.getValue();
-      } catch (e) {
-        return undefined;
-      }
+  handleChange(name, value) {
+    const { spec, data, onChange } = this.props;
+    return onChange({
+      ...getDefaults(spec),
+      ...data,
+      [name]: value,
     });
   }
 
-  handleChange(name, value) {
-    const { onChange } = this.props;
-    return onChange && onChange(name, value);
-  }
-
-  componentWillMount(){
-    // Once everything is inside react we should be able to move this to the
-    // getElementByField portion
-    const { spec } = this.props;
-
-    if (_.has(spec, 'properties')){
-      Object.keys(spec.properties).forEach(function(key) {
-        let value = spec.properties[key];
-        if (value.default !== undefined && value.enum){
-          this.handleChange(key, value.default);
-        }
-      }, this);
-    }
-  }
-
   render() {
-    const { spec, ngModel, disabled } = this.props;
+    const { spec, data, disabled, onChange, ...props } = this.props;
+    onChange;
 
     const fields = _(spec && spec.properties)
       .map((field, name) => {
@@ -83,53 +71,67 @@ export default class AutoForm extends React.Component {
         return field;
       })
       .reject('immutable')
-      .sort(
-        (a, b) => {
-          // If position exists for the items we're comparing then lets
-          // favor sorting by that
-          if (a.position !== undefined || b.position !== undefined){
-            // Some items might have position undefined. If it's undefined
-            // it should be sorted behind an item with position defined
-            if (a.position === undefined){
-              return 1;
-            }
-            if (b.position === undefined){
-              return -1;
-            }
-            // If both items have positon then the lower positon should come
-            // first
-            return a.position < b.position ? -1 : a.position > b.position ? 1 : 0;
+      .sort((a, b) => {
+        // If position exists for the items we're comparing then lets
+        // favor sorting by that
+        if (a.position || b.position) {
+          // Some items might have position undefined. If it's undefined
+          // it should be sorted behind an item with position defined
+          if (a.position === undefined) {
+            return 1;
           }
-          // If required matches for both objects then we need to sort by other
-          // criteria
-          if(a.required === b.required){
-            // Sort items in alphabetical order
-            return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
+          if (b.position === undefined) {
+            return -1;
           }
-          // Sort all required items first
-          return a.required === b.required ? 0 : a.required ? -1 : 1;
+          // If both items have positon then the lower positon should come
+          // first
+          return a.position < b.position ? -1 : a.position > b.position ? 1 : 0;
         }
-      )
-      .value();
+        // If required matches for both objects then we need to sort by other
+        // criteria
+        if(a.required === b.required) {
+          // Sort items in alphabetical order
+          return a._name < b._name ? -1 : a._name > b._name ? 1 : 0;
+        }
+        // Sort all required items first
+        return a.required === b.required ? 0 : a.required ? -1 : 1;
+      })
+      .value()
+    ;
 
-    return <div>
-      {
-        fields.map(field => {
+    return (
+      <div {...props}>
+        { fields.map((field) => {
           const name = field._name;
-          const props = {
-            name: name,
-            spec: field,
-            value: ngModel && ngModel[name],
-            disabled: disabled,
-            onChange: (value) => this.handleChange(name, value),
-            'data-test': `field:${name}`
-          };
 
           const FieldElement = this.getElementByField(field);
 
-          return <FieldElement key={name} ref={name} {...props} />;
-        })
-      }
-    </div>;
+          return (
+            <FieldElement
+              key={name}
+              name={name}
+              spec={field}
+              value={data && data[name]}
+              disabled={disabled}
+              onChange={(value) => this.handleChange(name, value)}
+              data-test={`field:${name}`}
+            />
+          );
+        }) }
+      </div>
+    );
   }
+}
+
+function getDefaults(spec) {
+  const defaults = {};
+
+  Object.keys(spec.properties).forEach((key) => {
+    const property = spec.properties[key];
+    if (property.default !== undefined) {
+      defaults[key] = property.default;
+    }
+  });
+
+  return defaults;
 }

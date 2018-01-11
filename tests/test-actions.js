@@ -1,98 +1,104 @@
 /* jshint node:true, mocha:true */
 'use strict';
-var Browser = require('zombie');
-var chai = require('chai');
+const Browser = require('zombie');
+const chai = require('chai');
 
-var expect = chai.expect;
-var utilFactory = require('./util');
+const expect = chai.expect;
+const utilFactory = require('./util');
 
 Browser.localhost('example.com', process.env.PORT || 3000);
 
 describe('User visits actions page', function () {
-  var browser = new Browser();
-  var util = utilFactory(browser);
+  const browser = new Browser();
+  const util = utilFactory(browser);
 
   this.timeout(20000);
 
-  before(function () {
-    return browser.visit('/#/actions').then(util.login);
-  });
+  before(() => browser.visit('/#/actions')
+    .then(util.login)
+    .then(() => {
+      const element = browser.query(util.name('toggle-all'));
+      if (element.classList.contains('st2-panel__toolbar-toggle-all--collapsed')) {
+        return browser.click(util.name('toggle-all'));
+      }
 
-  it('should be successful', function () {
+      return browser.click(util.name('toggle-all')).then(() => browser.click(util.name('toggle-all')));
+    })
+  );
+
+  it('should be successful', () => {
     browser.assert.success();
   });
 
-  it('should have correct url', function () {
+  it('should have correct url', () => {
     browser.assert.url('http://example.com/#/actions');
   });
 
-  describe('List view', function () {
-    var resource;
+  describe('List view', () => {
+    let resource;
 
-    before(function () {
-      resource = browser.resources.filter(function (e) {
-        return new RegExp('^https://example.com/api/v1/actions[?]').test(e.url);
-      });
+    before(() => {
+      resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/actions(\\?|$)').test(e.url));
     });
 
-    it('should make a call to actions endpoint once', function () {
+    it('should make a call to actions endpoint once', () => {
       expect(resource).to.have.length.at.least(1, 'Actions endpoint has not been called');
       expect(resource).to.have.length.at.most(1, 'Actions endpoint called several times');
     });
 
-    it('should recieve a response containing a number of actions', function () {
-      var actions = JSON.parse(resource[0].response.body);
+    it('should recieve a response containing a number of actions', () => {
+      const actions = JSON.parse(resource[0].response.body);
 
       expect(actions).to.have.length.of.at.least(1, 'No actions to show');
     });
 
-    it('should have all the actions present', function () {
-      var executions = JSON.parse(resource[0].response.body);
+    it('should have all the actions present', () => {
+      const executions = JSON.parse(resource[0].response.body);
 
       browser.assert.elements(util.name('action'), executions.length, 'Wrong number of actions');
     });
 
-    it('should highlight the first row', function () {
-      var elements = browser.queryAll(util.name('action'));
+    it('should highlight the first row', () => {
+      const elements = browser.queryAll(util.name('action'));
       expect(elements[0].className).to.have.string('st2-flex-card--active');
     });
 
-    it('should filter actions (case insensitive)', function () {
-      return browser.fill(util.name('filter'), 'CORE.')
-        .wait()
-        .then(function () {
-          var actions = browser.queryAll(util.name('action'));
+    it('should filter actions (case insensitive)', () => {
+      return browser.fill(util.name('filter'), 'CORE.').wait()
+        .then(() => {
+          const actions = browser.queryAll(util.name('action'));
 
           expect(actions).to.have.length.at.least(1, 'All the actions has been filtered out');
           for (const action of actions) {
             expect(action.getAttribute('data-test')).to.have.string('action:core.');
           }
-        });
+        })
+        .then(() => browser.fill(util.name('filter'), '').wait())
+      ;
     });
   });
 
-  describe('Details view', function () {
-    var resource;
+  describe('Details view', () => {
+    let resource;
 
-    before(function () {
-      resource = browser.resources.filter(function (e) {
-        return new RegExp('^https://example.com/api/v1/actions/views/overview/[\\w.-]+$').test(e.url);
-      });
+    before(() => {
+      resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/actions/views/overview/[\\w.-]+$').test(e.url));
     });
 
-    it('should make a call to actions endpoint once', function () {
-      expect(resource).to.have.length.at.least(1, 'Execution endpoint has not been called');
-      expect(resource).to.have.length.at.most(1, 'Execution endpoint called several times');
+    it('should make a call to actions endpoint', () => {
+      // NOTE: expecting 3 calls because of filtering
+      expect(resource).to.have.length.at.least(3, 'Execution endpoint has not been called');
+      expect(resource).to.have.length.at.most(3, 'Execution endpoint called several times');
     });
 
-    it('should recieve a response containing an action', function () {
-      var action = JSON.parse(resource[0].response.body);
+    it('should recieve a response containing an action', () => {
+      const action = JSON.parse(resource[0].response.body);
 
       expect(action).to.be.an('object');
     });
 
-    it('should have action details present', function () {
-      var action = JSON.parse(resource[0].response.body);
+    it('should have action details present', () => {
+      const action = JSON.parse(resource[0].response.body);
 
       browser.assert.element(util.name('details'), 'Details panel is absent');
 
@@ -104,67 +110,73 @@ describe('User visits actions page', function () {
       browser.assert.element(util.name('action_parameters'), 'Action parameters are missing');
 
       try {
-        browser.assert.element(util.name('action_code'));
-      } catch (e) {
-        browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
-      }
-
-      try {
         browser.assert.element(util.name('action_executions'));
-      } catch (e) {
+      }
+      catch (e) {
         browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
       }
     });
+
+    describe('then chooses code', () => {
+      before(() => browser.click(util.name('switch:code')));
+      after(() => browser.click(util.name('switch:general')));
+
+      it('should have action code present', () => {
+        try {
+          browser.assert.element(util.name('action_code'));
+        }
+        catch (e) {
+          browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+        }
+      });
+    });
   });
 
-  describe('then selects an action', function () {
-    before(function () {
-      return browser.click(util.name('action:core.announcement'));
-    });
+  describe('then selects an action', () => {
+    before(() => browser.click(util.name('action:core.announcement')));
 
-    it('should be successful', function () {
+    it('should be successful', () => {
       browser.assert.success();
     });
 
-    it('should have correct url', function () {
-      browser.assert.url('http://example.com/#/actions/core.announcement/general');
+    it('should have correct url', () => {
+      browser.assert.url('http://example.com/#/actions/core.announcement');
     });
 
-    describe('List view', function () {
-      it('should highlight the selected row', function () {
-        var element = browser.query(util.name('action:core.announcement'));
+    describe('List view', () => {
+      it('should highlight the selected row', () => {
+        const element = browser.query(util.name('action:core.announcement'));
         expect(element.className).to.have.string('st2-flex-card--active');
       });
 
-      it('should expand the pack', function () {
-        var element = browser.query(util.name('pack:core'));
+      it('should expand the pack', () => {
+        const element = browser.query(util.name('pack:core'));
         expect(element.className).to.not.have.string('st2-flex-table--collapsed');
       });
     });
 
-    describe('Details view', function () {
-      var resource;
+    describe('Details view', () => {
+      let resource;
 
-      before(function () {
-        resource = browser.resources.filter(function (e) {
-          return new RegExp('^https://example.com/api/v1/actions/views/overview/core.announcement$').test(e.url);
-        });
+      before(() => {
+        resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/actions/views/overview/core.announcement$').test(e.url));
       });
 
-      it('should make a call to actions endpoint once', function () {
-        expect(resource).to.have.length.at.least(1, 'Actions endpoint has not been called');
-        expect(resource).to.have.length.at.most(1, 'Actions endpoint called several times');
+      it('should make a call to actions endpoint', () => {
+        // NOTE: expecting 2 calls because of filtering
+        expect(resource).to.have.length.at.least(2, 'Actions endpoint has not been called');
+        expect(resource).to.have.length.at.most(2, 'Actions endpoint called several times');
       });
 
-      it('should recieve a response containing an action', function () {
-        var action = JSON.parse(resource[0].response.body);
+      it('should recieve a response containing an action', () => {
+        const action = JSON.parse(resource[0].response.body);
 
         expect(action).to.be.an('object')
           .and.have.property('ref', 'core.announcement');
       });
 
-      it('should have action details present', function () {
-        var action = JSON.parse(resource[0].response.body);
+      it('should have action details present', () => {
+        const action = JSON.parse(resource[0].response.body);
 
         browser.assert.element(util.name('details'), 'Details panel is absent');
 
@@ -174,36 +186,41 @@ describe('User visits actions page', function () {
         browser.assert.element(util.name('action_parameters'), 'Action parameters are missing');
 
         try {
-          browser.assert.element(util.name('action_code'));
-        } catch (e) {
-          browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
-        }
-
-        try {
           browser.assert.element(util.name('action_executions'));
-        } catch (e) {
+        }
+        catch (e) {
           browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
         }
       });
+
+      describe('then chooses code', () => {
+        before(() => browser.click(util.name('switch:code')));
+        after(() => browser.click(util.name('switch:general')));
+
+        it('should have action code present', () => {
+          try {
+            browser.assert.element(util.name('action_code'));
+          }
+          catch (e) {
+            browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+          }
+        });
+      });
     });
 
-    describe('and runs it', function () {
-      var resource;
+    describe('and runs it', () => {
+      let resource;
 
-      before(function () {
-        return browser
-          .fill(util.name('field:route'), 'test')
-          .fill(util.name('field:message'), '{ "passed": true }')
-          .pressButton(util.name('run_submit'))
-          .then(function () {
-            resource = browser.resources.filter(function (e) {
-              return e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions$').test(e.url);
-            });
-          })
-          ;
-      });
+      before(() => browser
+        .fill(util.name('field:route'), 'test')
+        .fill(util.name('field:message'), '{ "passed": true }')
+        .pressButton(util.name('run_submit'))
+        .then(() => {
+          resource = browser.resources.filter((e) => e.request.method === 'POST' && new RegExp('^https://example.com/api/v1/executions$').test(e.url));
+        })
+      );
 
-      it('should make a call to executions endpoint once', function () {
+      it('should make a call to executions endpoint once', () => {
         expect(resource).to.have.length.at.least(1, 'Executions endpoint has not been called');
         expect(resource).to.have.length.at.most(1, 'Executions endpoint called several times');
       });
@@ -211,34 +228,26 @@ describe('User visits actions page', function () {
 
   });
 
-  describe('then selects an action with a specific parameter and fills it', function () {
-    before(function () {
-      return browser
-        .click(util.name('action:core.local'))
-        .then(function () {
-          return browser.fill(util.name('field:cmd'), 'test');
-        })
-        ;
-    });
+  describe('then selects an action with a specific parameter and fills it', () => {
+    before(() => browser
+      .click(util.name('action:core.local'))
+      .then(() => browser.fill(util.name('field:cmd'), 'test'))
+    );
 
-    it('should have parameter filled', function () {
+    it('should have parameter filled', () => {
       browser.assert.input(util.name('field:cmd'), 'test', 'Field have not been filled');
     });
 
-    describe('then selects another action with the same parameter', function () {
-      before(function () {
-        return browser
-          .click(util.name('action:core.local_sudo'))
-          ;
-      });
+    describe('then selects another action with the same parameter', () => {
+      before(() => browser.click(util.name('action:core.local_sudo')));
 
-      it('should have empty parameter', function () {
+      it('should have empty parameter', () => {
         browser.assert.input(util.name('field:cmd'), '', 'Field have not been reset');
       });
     });
   });
 
-  after(function () {
+  after(() => {
     browser.tabs.closeAll();
   });
 });

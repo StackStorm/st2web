@@ -12,7 +12,7 @@ describe('AutoForm ArrayField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -20,29 +20,29 @@ describe('AutoForm ArrayField', () => {
     expect(c.fieldType()).to.be.equal('input');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
 
     c.makeChange('["t","e","s","t"]');
 
-    expect(onChange.withArgs(['t','e','s','t'])).to.be.calledOnce;
+    expect(onChange.withArgs([ 't','e','s','t' ])).to.be.calledOnce;
 
     expect(c.fieldValue()).to.be.equal('["t","e","s","t"]');
-    expect(c.value()).to.be.deep.equal(['t','e','s','t']);
+    expect(c.value()).to.be.deep.equal([ 't','e','s','t' ]);
 
     c.makeChange('t,e,s,t');
 
-    expect(onChange.withArgs(['t','e','s','t'])).to.be.calledTwice;
+    expect(onChange.withArgs([ 't','e','s','t' ])).to.be.calledTwice;
 
     expect(c.fieldValue()).to.be.equal('t,e,s,t');
-    expect(c.value()).to.be.deep.equal(['t','e','s','t']);
+    expect(c.value()).to.be.deep.equal([ 't','e','s','t' ]);
   });
 
   it('does not change the value or calls the callback if value is invalid', () => {
@@ -51,10 +51,10 @@ describe('AutoForm ArrayField', () => {
       name: 'test',
       spec: {
         items: {
-          type: 'number'
-        }
+          type: 'number',
+        },
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -64,7 +64,6 @@ describe('AutoForm ArrayField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
@@ -73,8 +72,8 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {
-        default: [1,2,3]
-      }
+        default: [ 1,2,3 ],
+      },
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -96,24 +95,24 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
 
     c.makeChange('["t"]');
 
-    expect(onChange.withArgs(['t'])).to.be.calledOnce;
+    expect(onChange.withArgs([ 't' ])).to.be.calledOnce;
 
     expect(c.fieldValue()).to.be.equal('["t"]');
-    expect(c.value()).to.be.deep.equal(['t']);
+    expect(c.value()).to.be.deep.equal([ 't' ]);
 
     c.makeChange('t');
 
-    expect(onChange.withArgs(['t'])).to.be.calledTwice;
+    expect(onChange.withArgs([ 't' ])).to.be.calledTwice;
 
     expect(c.fieldValue()).to.be.equal('t');
-    expect(c.value()).to.be.deep.equal(['t']);
+    expect(c.value()).to.be.deep.equal([ 't' ]);
   });
 
   it('handles an array of objects', () => {
@@ -121,7 +120,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -139,7 +138,7 @@ describe('AutoForm ArrayField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
@@ -149,7 +148,6 @@ describe('AutoForm ArrayField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('{"a": "b", "c": "d"}');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });

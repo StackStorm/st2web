@@ -12,7 +12,7 @@ describe('AutoForm EnumField', () => {
   it('produces an element with textarea as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<EnumField {...props} />);
@@ -20,14 +20,14 @@ describe('AutoForm EnumField', () => {
     expect(c.fieldType()).to.be.equal('select');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {
-        enum: ['test']
+        enum: [ 'test' ],
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<EnumField {...props} />);
@@ -44,9 +44,9 @@ describe('AutoForm EnumField', () => {
     const props = {
       name: 'test',
       spec: {
-        enum: ['test']
+        enum: [ 'test' ],
       },
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<EnumField {...props} />);
@@ -56,7 +56,6 @@ describe('AutoForm EnumField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });

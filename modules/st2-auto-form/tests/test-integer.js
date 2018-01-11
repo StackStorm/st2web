@@ -12,7 +12,7 @@ describe('AutoForm IntegerField', () => {
   it('produces an element with input as a child', () => {
     const props = {
       name: 'test',
-      spec: {}
+      spec: {},
     };
 
     const c = new TestComponent(<IntegerField {...props} />);
@@ -20,12 +20,12 @@ describe('AutoForm IntegerField', () => {
     expect(c.fieldType()).to.be.equal('input');
   });
 
-  it('changes the value and calls the callback if value is valid', () => {
+  it('calls the callback if value is valid', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<IntegerField {...props} />);
@@ -43,7 +43,7 @@ describe('AutoForm IntegerField', () => {
     const props = {
       name: 'test',
       spec: {},
-      onChange
+      onChange,
     };
 
     const c = new TestComponent(<IntegerField {...props} />);
@@ -53,7 +53,6 @@ describe('AutoForm IntegerField', () => {
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
     expect(c.fieldValue()).to.be.equal('invalid');
-    expect(() => c.value()).to.throw(Error);
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });
@@ -63,7 +62,7 @@ describe('AutoForm IntegerField', () => {
 
     c.makeChange('invalid');
 
-    expect(() => c.value()).to.throw(Error);
+    expect(c.fieldValue()).to.be.equal('invalid');
   });
 
   it('allows you to put a jinja template in the field', () => {

@@ -1,13 +1,13 @@
 'use strict';
 
-var gulp = require('gulp')
-  , requireDir = require('require-dir');
+const gulp = require('gulp');
+const requireDir = require('require-dir');
 
 module.exports = requireDir('./', { recurse: true });
 
-gulp.task('production', [
+gulp.task('production', gulp.series([
+  'production-environment',
   'production-scripts',
   'production-styles',
-  'production-libs',
-  'production-static'
-]);
+  'production-static',
+]));

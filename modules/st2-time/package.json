@@ -1,0 +1,40 @@
+{
+  "name": "@stackstorm/module-time",
+  "version": "1.0.0-pre.4",
+  "description": "",
+  "main": "time.component.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  },
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "react-time": "^4.3.0",
+    "prop-types": "^15.6.0"
+  },
+  "devDependencies": {
+    "babelify": "^8.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}

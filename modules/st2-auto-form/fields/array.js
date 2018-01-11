@@ -1,19 +1,20 @@
-import validator from 'validator';
 import _ from 'lodash';
+import validator from 'validator';
 
-import { BaseTextField } from './base';
+import { BaseTextField, isJinja } from './base';
 
-const jsonCheck = value => {
-    try {
-        JSON.parse(value);
-    } catch (e) {
-        return false;
-    }
-    return true;
+const jsonCheck = (value) => {
+  try {
+    JSON.parse(value);
+  }
+  catch (e) {
+    return false;
+  }
+  return true;
 };
 
 const typeChecks = (type, value) => {
-  let v = String(value);
+  const v = String(value);
   switch (type) {
     case 'number':
       return !validator.isFloat(v) && `'${v}' is not a number`;
@@ -42,55 +43,66 @@ const typeConversions = (type, v) => {
 function split(value) {
   return value
     .split(',')
-    .map(v => v.trim())
-    .filter(v => v.length)
-    ;
+    .map((v) => v.trim())
+    .filter((v) => v.length)
+  ;
 }
 
 export default class ArrayField extends BaseTextField {
   static icon = '[ ]'
-  fromStateValue(value) {
-    if (value === ''){
+
+  fromStateValue(v) {
+    if (v === '') {
       return void 0;
     }
 
-    if (jsonCheck(value)){
-      return JSON.parse(value);
+    if (jsonCheck(v)) {
+      return JSON.parse(v);
     }
 
-    const { items } = this.props.spec;
-    return split(value)
-      .map(v => typeConversions(items && items.type, v))
-      ;
+    if (isJinja(v)) {
+      return v;
+    }
+
+    const { items } = this.props.spec || {};
+    return split(v)
+      .map((v) => typeConversions(items && items.type, v))
+    ;
   }
 
-  toStateValue(value) {
-    if (jsonCheck(value)){
-      return JSON.stringify(value);
+  toStateValue(v) {
+    if (jsonCheck(v)) {
+      return JSON.stringify(v);
     }
 
-    return value && value.join(', ');
+    if (isJinja(v)) {
+      return v;
+    }
+
+    return v ? v.join(', ') : '';
   }
 
   validate(value, spec={}) {
     const invalid = super.validate(value, spec);
     if (invalid !== void 0) {
       return invalid;
-    };
+    }
 
-    if (jsonCheck(value)){
+    if (jsonCheck(value)) {
       try {
         const { items } = this.props.spec;
         const o = value && JSON.parse(value);
         if (o && !_.isArray(o)) {
           return 'value is not an array';
         }
-        const invalidItem = o.find(v => typeChecks(items && items.type, v));
+        const invalidItem = o.find((v) => typeChecks(items && items.type, v));
         return invalidItem && typeChecks(items && items.type, invalidItem);
-      } catch(e) {
+      }
+      catch(e) {
         return e.message;
       }
-    } else {
+    }
+    else {
       const { required, items } = spec;
 
       const list = split(value);
@@ -99,7 +111,7 @@ export default class ArrayField extends BaseTextField {
         return 'parameter is required';
       }
 
-      const invalidItem = list.find(v => typeChecks(items && items.type, v));
+      const invalidItem = list.find((v) => typeChecks(items && items.type, v));
 
       return invalidItem && typeChecks(items && items.type, invalidItem);
     }

@@ -1,4 +1,4 @@
-@import 'colors';
+@import 'node_modules/@stackstorm/st2-style/colors.less';
 
 .st2-forms {
   &__matcher {
@@ -105,6 +105,21 @@
         &:active {
           color: @red-lighten-2;
         }
+      }
+    }
+
+    &--skeleton {
+      font-size: 12px;
+
+      padding: 3px 6px;
+
+      color: @gray-white;
+      border: 1px solid currentColor;
+      background: transparent;
+      box-shadow: none;
+
+      &:active {
+        background: fade(@gray-white, 10%);
       }
     }
   }

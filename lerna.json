@@ -1,0 +1,10 @@
+{
+  "lerna": "2.5.1",
+  "version": "1.0.0-pre.4",
+  "packages": [
+    "apps/*",
+    "modules/*",
+    "tasks",
+    "."
+  ]
+}
