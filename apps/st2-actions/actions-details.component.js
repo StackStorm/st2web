@@ -5,9 +5,6 @@ import store from './store';
 
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
-import {
-  actions as flexActions,
-} from '@stackstorm/module-flex-table/flex-table.reducer';
 import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
@@ -131,9 +128,6 @@ export default class ActionsDetails extends React.Component {
     })
       .then(() => {
         this.setState({ runValue: {}, runTrace: '' });
-
-        const { action } = this.props;
-        store.dispatch(flexActions.toggle(action.pack, false));
       })
       .catch((err) => {
         notification.error(`Unable to retrieve action "${id}".`, { err });

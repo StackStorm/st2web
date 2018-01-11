@@ -37,6 +37,7 @@ export default class HistoryDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRerun: PropTypes.func.isRequired,
+    handleCancel: PropTypes.func.isRequired,
     provideRefresh: PropTypes.func.isRequired,
 
     id: PropTypes.string,
@@ -176,8 +177,8 @@ export default class HistoryDetails extends React.Component {
                   </DetailsPanelBody>
                 </div>
                 <DetailsPanelHeading title="Action Output" />
-                <DetailsPanelBody>
-                  <ActionReporter runner={execution.runner.name} execution={execution} data-test="action_output" />
+                <DetailsPanelBody data-test="action_output">
+                  <ActionReporter runner={execution.runner.name} execution={execution} />
                 </DetailsPanelBody>
               </DetailsPanel>
               { execution.rule ? (
@@ -224,7 +225,7 @@ export default class HistoryDetails extends React.Component {
                   ) : null }
                 </DetailsPanel>
               ) : null }
-              <DetailsPanel>
+              <DetailsPanel data-test="action_input">
                 <DetailsPanelHeading title="Action Input" />
                 <DetailsPanelBody>
                   { execution.parameters ? (
@@ -239,7 +240,6 @@ export default class HistoryDetails extends React.Component {
                         }}
                         disabled={true}
                         data={execution.parameters}
-                        data-test="action_input"
                       />
                     </form>
                   ) : 'No Input' }
@@ -255,7 +255,7 @@ export default class HistoryDetails extends React.Component {
         </DetailsBody>
         <DetailsToolbar>
           <Button small value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
-          <Button small value="Cancel" onClick={() => this.handleCancel()} disabled={!execution || execution.status !== 'running'} />
+          <Button small value="Cancel" onClick={() => this.props.handleCancel()} disabled={!execution || execution.status !== 'running'} />
 
           <DetailsToolbarSeparator />
         </DetailsToolbar>

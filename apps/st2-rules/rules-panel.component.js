@@ -43,7 +43,7 @@ class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
-    store.dispatch(flexActions.register(uid));
+    store.dispatch(flexActions.register(uid, false));
   }
 }
 
@@ -288,12 +288,8 @@ export default class RulesPanel extends React.Component {
       <Panel data-test="rules_panel">
         <PanelView className="st2-rules">
           <ToolbarActions>
-            <ToolbarButton>
-              <i
-                className="icon-plus"
-                onClick={() => this.handleCreatePopup()}
-                data-test="rule_create_button"
-              />
+            <ToolbarButton onClick={() => this.handleCreatePopup()}>
+              <i className="icon-plus" data-test="rule_create_button" />
             </ToolbarButton>
           </ToolbarActions>
           <Toolbar title="Rules">

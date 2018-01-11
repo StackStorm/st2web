@@ -52,7 +52,7 @@ class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
-    store.dispatch(flexActions.register(uid));
+    store.dispatch(flexActions.register(uid, false));
   }
 }
 
@@ -281,12 +281,12 @@ export default class HistoryPanel extends React.Component {
     const { id } = this.urlParams;
 
     return store.dispatch({
-      type: 'RERUN_RULE',
+      type: 'RERUN_EXECUTION',
       promise: api.client.executions.repeat(id, { parameters }, {
         no_merge: true,
       })
         .then((execution) => {
-          notification.success(`Execution "${execution.action.ref}" has been run successfully.`);
+          notification.success(`Execution "${execution.action.ref}" has been rerun successfully.`);
 
           this.navigate({
             id: execution.id,
@@ -297,6 +297,27 @@ export default class HistoryPanel extends React.Component {
         })
         .catch((err) => {
           notification.error(`Unable to rerun execution "${id}".`, {
+            err,
+            execution_id: err.id,
+          });
+          throw err;
+        }),
+    });
+  }
+
+  handleCancel(parameters) {
+    const { id } = this.urlParams;
+
+    return store.dispatch({
+      type: 'CANCEL_EXECUTION',
+      promise: api.client.executions.delete(id)
+        .then((execution) => {
+          notification.success(`Execution "${execution.action.ref}" has been canceled successfully.`);
+
+          return execution;
+        })
+        .catch((err) => {
+          notification.error(`Unable to cancel execution "${id}".`, {
             err,
             execution_id: err.id,
           });
@@ -437,6 +458,7 @@ export default class HistoryPanel extends React.Component {
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
+          handleCancel={(...args) => this.handleCancel(...args)}
           provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}

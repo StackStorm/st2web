@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import store from './store';
 
 import api from '@stackstorm/module-api';
-import {
-  actions as flexActions,
-} from '@stackstorm/module-flex-table/flex-table.reducer';
 import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
@@ -105,10 +102,6 @@ export default class RulesDetails extends React.Component {
       type: 'FETCH_RULE',
       promise: api.client.rules.get(id),
     })
-      .then(() => {
-        const { rule } = this.props;
-        store.dispatch(flexActions.toggle(rule.pack, false));
-      })
       .catch((err) => {
         notification.error(`Unable to retrieve rule "${id}".`, { err });
         throw err;
@@ -184,24 +177,24 @@ export default class RulesDetails extends React.Component {
     const { id, section, triggerSpec, criteriaSpecs, actionSpec, packSpec } = this.props;
     const rule = this.state.editing || this.props.rule;
 
-    if (id === 'new') {
-      return (
-        <PanelDetails data-test="details">
-          { triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
-            <RulesPopup
-              triggerSpec={triggerSpec}
-              criteriaSpecs={criteriaSpecs}
-              actionSpec={actionSpec}
-              packSpec={packSpec}
-              onSubmit={(data) => this.props.handleCreate(data)}
-              onCancel={() => this.props.handleNavigate({ id: false })}
-            />
-          ) : null }
-        </PanelDetails>
-      );
-    }
-
     if (!rule) {
+      if (id === 'new') {
+        return (
+          <PanelDetails data-test="details">
+            { triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+              <RulesPopup
+                triggerSpec={triggerSpec}
+                criteriaSpecs={criteriaSpecs}
+                actionSpec={actionSpec}
+                packSpec={packSpec}
+                onSubmit={(data) => this.props.handleCreate(data)}
+                onCancel={() => this.props.handleNavigate({ id: false })}
+              />
+            ) : null }
+          </PanelDetails>
+        );
+      }
+
       return null;
     }
 
@@ -345,6 +338,17 @@ export default class RulesDetails extends React.Component {
           ] }
           <DetailsToolbarSeparator />
         </DetailsToolbar>
+
+        { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+          <RulesPopup
+            triggerSpec={triggerSpec}
+            criteriaSpecs={criteriaSpecs}
+            actionSpec={actionSpec}
+            packSpec={packSpec}
+            onSubmit={(data) => this.props.handleCreate(data)}
+            onCancel={() => this.props.handleNavigate({ id: rule.ref })}
+          />
+        ) : null }
       </PanelDetails>
     );
   }

@@ -56,7 +56,7 @@ class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
-    store.dispatch(flexActions.register(uid));
+    store.dispatch(flexActions.register(uid, false));
   }
 }
 

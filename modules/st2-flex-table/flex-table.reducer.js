@@ -19,26 +19,28 @@ const flexTableReducer = (state = {}, action) => {
   };
 
   switch (action.type) {
-
     case 'REGISTER_FLEX_TABLE': {
-      const { title, collapsed: initial = collapsed } = action;
+      const { title, collapsed = false } = action;
+
+      tables = {
+        ...tables,
+        [title]: {
+          ...tables[title],
+          collapsed,
+        },
+      };
 
       return {
         ...state,
-        tables: {
-          ...tables,
-          [title]: {
-            ...tables[title],
-            collapsed: initial,
-          },
-        },
+        tables,
+        collapsed: getCollapsed(tables),
       };
     }
 
     case 'TOGGLE_FLEX_TABLE': {
       const { title } = action;
 
-      const newTables = {
+      tables = {
         ...tables,
         [title]: {
           ...tables[title],
@@ -46,14 +48,10 @@ const flexTableReducer = (state = {}, action) => {
         },
       };
 
-      if (_.some(newTables, (item) => item.collapsed === newTables[title].collapsed)) {
-        collapsed = newTables[title].collapsed;
-      }
-
       return {
         ...state,
-        collapsed,
-        tables: newTables,
+        tables,
+        collapsed: getCollapsed(tables),
       };
     }
 
@@ -64,7 +62,7 @@ const flexTableReducer = (state = {}, action) => {
       }
 
       collapsed = !collapsed;
-      tables = _.mapValues(tables, (v) => ({ ...v, collapsed }));
+      tables = _.mapValues(tables, (table) => ({ ...table, collapsed }));
 
       return {
         ...state,
@@ -79,3 +77,7 @@ const flexTableReducer = (state = {}, action) => {
 };
 
 export default flexTableReducer;
+
+function getCollapsed(tables) {
+  return _.every(tables, ({ collapsed }) => collapsed === true);
+}

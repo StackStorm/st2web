@@ -180,20 +180,23 @@ export default class RulesPopup extends React.Component {
               </DetailsPanelBody>
             </DetailsPanel>
 
-            <DetailsButtonsPanel>
-              <Button
-                className="st2-details__toolbar-button"
-                onClick={onCancel}
-                value="Cancel"
-              />
-              <Button
-                submit
-                className="st2-details__toolbar-button"
-                value="Create"
-                onClick={(e) => this.handleSubmit(e)}
-                data-test="rule_create_submit"
-              />
-            </DetailsButtonsPanel>
+            <DetailsPanel>
+              <DetailsButtonsPanel>
+                <Button
+                  flat red
+                  className="st2-details__toolbar-button"
+                  onClick={onCancel}
+                  value="Cancel"
+                />
+                <Button
+                  submit
+                  className="st2-details__toolbar-button"
+                  value="Create"
+                  onClick={(e) => this.handleSubmit(e)}
+                  data-test="rule_create_submit"
+                />
+              </DetailsButtonsPanel>
+            </DetailsPanel>
           </form>
         </Popup>
       </div>
