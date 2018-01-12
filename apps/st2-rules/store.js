@@ -77,6 +77,10 @@ const ruleReducer = (state = {}, input) => {
                 enum: _.map(trigger.payload_schema.properties, (spec, name) => ({
                   name: `trigger.${name}`,
                   description: spec.description,
+                  patternSpec: {
+                    ...spec,
+                    required: true,
+                  },
                 })),
               };
 
