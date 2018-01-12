@@ -8,10 +8,26 @@ export default class ObjectModule extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     name: PropTypes.string,
-    disabled: PropTypes.bool,
+    disabled: PropTypes.bool.isRequired,
     spec: PropTypes.object,
     data: PropTypes.string,
-    onChange: PropTypes.func,
+    onChange: function (props, propName, componentName) {
+      if (props.disabled) {
+        return null;
+      }
+
+      if (props[propName]) {
+        return PropTypes.checkPropTypes({
+          [propName]: PropTypes.func,
+        }, props, propName, componentName);
+      }
+
+      return new Error('You provided a `disabled: false` prop to an object-module without an `onChange` handler.');
+    },
+  }
+
+  static defaultProps = {
+    disabled: false,
   }
 
   onChange(value) {

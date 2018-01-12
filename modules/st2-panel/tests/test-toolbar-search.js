@@ -13,6 +13,7 @@ describe(`${ToolbarSearch.name} Component`, () => {
           className="foobar"
           title="Title"
           value="value"
+          onChange={() => {}}
         />
       );
 
@@ -25,6 +26,7 @@ describe(`${ToolbarSearch.name} Component`, () => {
           foo="bar"
           title="Title"
           value="value"
+          onChange={() => {}}
         />
       );
 
