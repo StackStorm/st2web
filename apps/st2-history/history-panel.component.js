@@ -177,10 +177,11 @@ export default class HistoryPanel extends React.Component {
         }),
     })
       .then(() => {
+        const { ref: urlRef } = this.props.match.params;
         const { id: ref } = this.urlParams;
         const { groups } = this.props;
 
-        if (ref && groups && !groups.some(({ executions }) => executions.some(({ id }) => id === ref))) {
+        if (!urlRef && ref && groups && !groups.some(({ executions }) => executions.some(({ id }) => id === ref))) {
           this.navigate({ id: false });
         }
       })
