@@ -54,7 +54,7 @@ export default class AutoForm extends React.Component {
 
   handleChange(name, value) {
     const { spec, data, onChange } = this.props;
-    return onChange({
+    return onChange && onChange({
       ...getDefaults(spec),
       ...data,
       [name]: value,

@@ -162,6 +162,7 @@ export default class HistoryPanel extends React.Component {
         parent: 'null',
         limit: PER_PAGE,
         page,
+        exclude_attributes: 'result,trigger_instance',
       })
         .then((res) => {
           const { total, limit } = api.client.executions;
@@ -270,6 +271,7 @@ export default class HistoryPanel extends React.Component {
       expanded,
       promise: expanded ? api.client.executions.list({
         parent: id,
+        exclude_attributes: 'result,trigger_instance',
       })
         .catch((err) => {
           notification.error('Unable to retrieve children.', { err });
