@@ -21,15 +21,33 @@
   <!-- end:reamaze -->
 
   <script type="text/javascript">
-  window.angular = {
-    module: () => ({
-      constant: (name, value) => {
-        window.st2constants = window.st2constants || {};
-        window.st2constants[name] = value;
-      }
-    })
-  };
-</script>
+    window.angular = {
+      module: (module) => ({
+        constant: (constant, value) => {
+          if (module !== 'main') {
+            throw new Error('The st2web angular-config-polyfill only supports the "main" module.');
+          }
+
+          if (constant !== 'st2Config') {
+            throw new Error('The st2web angular-config-polyfill only supports the "st2Config" constant.');
+          }
+
+          window.st2constants = window.st2constants || {};
+          window.st2constants.st2Config = value;
+        },
+        run: (fn) => {
+          if (module !== 'main') {
+            throw new Error('The st2web angular-config-polyfill only supports the "main" module.');
+          }
+
+          window.st2constants = window.st2constants || {};
+          window.st2constants.st2Config = window.st2constants.st2Config || {};
+
+          fn(window.st2constants.st2Config);
+        },
+      }),
+    };
+  </script>
 </head>
 
 <body>
