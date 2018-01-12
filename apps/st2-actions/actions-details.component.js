@@ -139,6 +139,9 @@ export default class ActionsDetails extends React.Component {
       type: 'FETCH_EXECUTIONS',
       promise: api.client.executions.list({
         action: id,
+        limit: 5,
+        exclude_attributes: 'trigger_instance',
+        parent: 'null',
       }),
     })
       .catch((err) => {
