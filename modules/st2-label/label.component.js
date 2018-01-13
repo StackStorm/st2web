@@ -62,8 +62,8 @@ export default class Label extends React.Component {
 
     if (short) {
       return (
-        <span className="st2-label st2-label--short">
-          <span {...props} className={cx('st2-label__label', className, state && state.className)}>
+        <span {...props} className={cx('st2-label--short', className, state && state.className)}>
+          <span className="st2-label__label">
             { capitalize(state && state.title || status) }
           </span>
         </span>
@@ -71,7 +71,7 @@ export default class Label extends React.Component {
     }
 
     return (
-      <span {...props} className={cx('st2-label__label', className, state && state.className)}>
+      <span {...props} className={cx('st2-label', className, state && state.className)}>
         { capitalize(state && state.title || status) }
       </span>
     );

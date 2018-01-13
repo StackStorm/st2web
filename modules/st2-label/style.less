@@ -1,35 +1,43 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
 .st2-label {
-  &__label {
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 11px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 11px;
 
+  display: inline-block;
+  padding: 8px 10px;
+
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  color: #fff;
+  border-radius: 2px;
+
+  &--short {
     display: inline-block;
-
-    padding: 8px 10px;
+    width: 16px;
+    height: 16px;
 
     text-align: center;
     vertical-align: middle;
-    white-space: nowrap;
 
     color: #fff;
-    border-radius: 2px;
-    background-color: #777;
+    border-radius: 50%;
 
     &:before {
       font-family: 'brocadeicons';
       font-size: 9px;
+      line-height: 16px;
       font-weight: normal;
       font-style: normal;
-
-      display: inline-block;
-
-      margin-right: 3px;
-
-      vertical-align: baseline;
+      vertical-align: top;
     }
+  }
+  
+  &--short &__label {
+    display: none;
   }
 
   &--primary {
@@ -47,50 +55,35 @@
   &--danger {
     background-color: @red-base;
   }
-
   &--failed {
     background-color: @red-base;
-    &:before {
-      display: none;
+  }
+  &--succeeded {
+    background-color: @green-base;
+  }
+  &--progress {
+    background-color: #777;
+  }
 
+  &--short&--failed {
+    &:before {
       content: '\e940';
     }
   }
 
-  &--succeeded {
-    background-color: @green-base;
+  &--short&--succeeded {
     &:before {
-      display: none;
-
       content: '\e968';
     }
   }
 
-  &--progress {
+  &--short&--progress {
+    animation: breathe 1s ease-in-out infinite alternate;
+
     &:before {
       content: '\e94b';
       animation: spin 2s infinite linear;
     }
-  }
-
-  &--short &__label {
-    overflow: hidden;
-
-    box-sizing: border-box;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-
-    color: transparent;
-    border-radius: 50%;
-
-    &:before {
-      display: none;
-    }
-  }
-
-  &--short &--progress {
-    animation: breathe 1s ease-in-out infinite alternate;
   }
 
   @keyframes breathe {
