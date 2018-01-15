@@ -101,7 +101,9 @@ export default class ActionsPanel extends React.Component {
   fetchGroups() {
     return store.dispatch({
       type: 'FETCH_GROUPS',
-      promise: api.client.actions.list()
+      promise: api.client.actions.list({
+        exclude_attributes: 'parameters,notify',
+      })
         .catch((err) => {
           notification.error('Unable to retrieve actions.', { err });
           throw err;
