@@ -59,6 +59,7 @@ export default class ActionsPanel extends React.Component {
       pathname: PropTypes.string,
     }).isRequired,
     match: PropTypes.shape({
+      path: PropTypes.string,
       params: PropTypes.shape({
         ref: PropTypes.string,
         section: PropTypes.string,

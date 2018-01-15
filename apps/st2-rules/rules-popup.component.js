@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import setTitle from '@stackstorm/module-title';
 
@@ -19,12 +20,16 @@ import {
 
 import Popup from '@stackstorm/module-popup';
 
+@connect((state) => {
+  const { triggerSpec, criteriaSpecs, actionSpec, packSpec } = state;
+  return { triggerSpec, criteriaSpecs, actionSpec, packSpec };
+})
 export default class RulesPopup extends React.Component {
   static propTypes = {
-    triggerSpec: PropTypes.object.isRequired,
-    criteriaSpecs: PropTypes.object.isRequired,
-    actionSpec: PropTypes.object.isRequired,
-    packSpec: PropTypes.object.isRequired,
+    triggerSpec: PropTypes.object,
+    criteriaSpecs: PropTypes.object,
+    actionSpec: PropTypes.object,
+    packSpec: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
   }
@@ -99,6 +104,10 @@ export default class RulesPopup extends React.Component {
   render() {
     const { triggerSpec, criteriaSpecs, actionSpec, packSpec, onCancel } = this.props;
     const payload = this.state.payload;
+
+    if (!triggerSpec || !criteriaSpecs || !actionSpec || !packSpec) {
+      return null;
+    }
 
     setTitle([ 'Create', 'Rules' ]);
 

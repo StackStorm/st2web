@@ -3,6 +3,8 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
+import { Route, Switch } from 'react-router-dom';
+
 import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
@@ -24,6 +26,7 @@ import {
 } from '@stackstorm/module-panel';
 import RulesFlexCard from './rules-flex-card.component';
 import RulesDetails from './rules-details.component';
+import RulesPopup from './rules-popup.component';
 
 import './style.less';
 
@@ -48,8 +51,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = state;
-  return { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed };
+  const { groups, filter, rule, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = state;
+  return { groups, filter, rule, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed };
 })
 export default class RulesPanel extends React.Component {
   static propTypes = {
@@ -58,6 +61,7 @@ export default class RulesPanel extends React.Component {
       search: PropTypes.string,
     }),
     match: PropTypes.shape({
+      path: PropTypes.string,
       params: PropTypes.shape({
         ref: PropTypes.string,
         section: PropTypes.string,
@@ -66,10 +70,7 @@ export default class RulesPanel extends React.Component {
 
     groups: PropTypes.array,
     filter: PropTypes.string,
-    triggerSpec: PropTypes.object,
-    criteriaSpecs: PropTypes.object,
-    actionSpec: PropTypes.object,
-    packSpec: PropTypes.object,
+    rule: PropTypes.object,
     collapsed: PropTypes.bool,
   }
 
@@ -279,7 +280,7 @@ export default class RulesPanel extends React.Component {
   }
 
   render() {
-    const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
+    const { groups, filter, rule, collapsed } = this.props;
     const { id, section } = this.urlParams;
 
     setTitle([ 'Rules' ]);
@@ -333,12 +334,19 @@ export default class RulesPanel extends React.Component {
 
           id={id}
           section={section}
-
-          triggerSpec={triggerSpec}
-          criteriaSpecs={criteriaSpecs}
-          actionSpec={actionSpec}
-          packSpec={packSpec}
         />
+
+        <Switch>
+          <Route
+            path={`${this.props.match.path}/new`}
+            render={() => (
+              <RulesPopup
+                onSubmit={(data) => this.handleCreate(data)}
+                onCancel={() => this.navigate({ id: rule && rule.ref || null })}
+              />
+            )}
+          />
+        </Switch>
       </Panel>
     );
   }

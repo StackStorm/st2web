@@ -25,16 +25,14 @@ import {
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
 import RemoteForm from '@stackstorm/module-remote-form';
-import RulesPopup from './rules-popup.component';
 
 @connect((state) => {
-  const { rule } = state;
-  return { rule };
+  const { rule, triggerSpec, criteriaSpecs, actionSpec, packSpec } = state;
+  return { rule, triggerSpec, criteriaSpecs, actionSpec, packSpec };
 })
 export default class RulesDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
-    handleCreate: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
     provideRefresh: PropTypes.func.isRequired,
@@ -174,27 +172,10 @@ export default class RulesDetails extends React.Component {
   }
 
   render() {
-    const { id, section, triggerSpec, criteriaSpecs, actionSpec, packSpec } = this.props;
+    const { section, triggerSpec, criteriaSpecs, actionSpec, packSpec } = this.props;
     const rule = this.state.editing || this.props.rule;
 
     if (!rule) {
-      if (id === 'new') {
-        return (
-          <PanelDetails data-test="details">
-            { triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
-              <RulesPopup
-                triggerSpec={triggerSpec}
-                criteriaSpecs={criteriaSpecs}
-                actionSpec={actionSpec}
-                packSpec={packSpec}
-                onSubmit={(data) => this.props.handleCreate(data)}
-                onCancel={() => this.props.handleNavigate({ id: false })}
-              />
-            ) : null }
-          </PanelDetails>
-        );
-      }
-
       return null;
     }
 
@@ -338,17 +319,6 @@ export default class RulesDetails extends React.Component {
           ] }
           <DetailsToolbarSeparator />
         </DetailsToolbar>
-
-        { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
-          <RulesPopup
-            triggerSpec={triggerSpec}
-            criteriaSpecs={criteriaSpecs}
-            actionSpec={actionSpec}
-            packSpec={packSpec}
-            onSubmit={(data) => this.props.handleCreate(data)}
-            onCancel={() => this.props.handleNavigate({ id: rule.ref })}
-          />
-        ) : null }
       </PanelDetails>
     );
   }
