@@ -68,4 +68,31 @@ describe(`${AutoForm.name} Component`, () => {
 
     expect(onChange.withArgs({ test: 'test' }).calledOnce).to.be.true;
   });
+
+  it('calls an onChange callback as soon as one on the child element gets called', () => {
+    const spec = {
+      properties: {
+        enumed: {
+          default: 'world',
+          enum: [ 'hello', 'world' ],
+        },
+        defaulted: {
+          type: 'string',
+          default: 'foobar',
+        },
+        other: {
+          type: 'string',
+        },
+      },
+    };
+
+    const onChange = sinon.spy();
+
+    const output = ReactTester.create(<AutoForm spec={spec} onChange={onChange} />);
+
+    const [ , , other ] = output.node.props.children;
+    other.props.onChange('test');
+
+    expect(onChange.withArgs({ enumed: 'world', other: 'test' }).calledOnce).to.be.true;
+  });
 });
