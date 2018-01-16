@@ -128,7 +128,7 @@ function getDefaults(spec) {
 
   Object.keys(spec.properties).forEach((key) => {
     const property = spec.properties[key];
-    if (property.default !== undefined) {
+    if (property.default !== undefined && property.enum) {
       defaults[key] = property.default;
     }
   });
