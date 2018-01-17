@@ -94,7 +94,6 @@ const historyReducer = (state = {}, input) => {
                 ...executions[index],
                 fetchedChildren: _(input.payload)
                   .sortBy('start_timestamp')
-                  .reverse()
                   .value()
                 ,
               };
