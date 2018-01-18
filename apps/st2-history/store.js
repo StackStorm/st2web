@@ -7,6 +7,8 @@ const historyReducer = (state = {}, input) => {
   let {
     filters = undefined,
     executions = [],
+    childExecutions = {},
+    expandedExecutions = {},
     groups = null,
     execution = undefined,
   } = state;
@@ -15,6 +17,8 @@ const historyReducer = (state = {}, input) => {
     ...state,
     filters,
     executions,
+    childExecutions,
+    expandedExecutions,
     groups,
     execution,
   };
@@ -84,35 +88,38 @@ const historyReducer = (state = {}, input) => {
     }
 
     case 'FETCH_EXECUTION_CHILDREN': {
-      if (input.expanded) {
-        switch(input.status) {
-          case 'success':
-            const result = mergeExecution(executions, {
-              id: input.id,
-              fetchedChildren: _(input.payload)
-                .sortBy('start_timestamp')
-                .value()
-              ,
-            }, false);
-            if (result) {
-              executions = result;
-            }
+      const { status, id, expanded, payload } = input;
+      switch(status) {
+        case 'success':
+          childExecutions[id] = payload;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
 
-            break;
-          case 'error':
-            break;
-          default:
-            break;
-        }
+      expandedExecutions[id] = expanded;
+
+      groups = makeGroups(executions);
+
+      return {
+        ...state,
+        executions,
+        expandedExecutions,
+        childExecutions,
+        groups,
+      };
+    }
+
+    case 'CREATE_EXECUTION': {
+      const { record } = input;
+
+      if (record.parent) {
+        childExecutions[record.parent] = [ ...childExecutions[record.parent] || [], record ];
       }
       else {
-        const result = mergeExecution(executions, {
-          id: input.id,
-          fetchedChildren: undefined,
-        }, false);
-        if (result) {
-          executions = result;
-        }
+        executions = [ ...executions, record ];
       }
 
       groups = makeGroups(executions);
@@ -120,28 +127,28 @@ const historyReducer = (state = {}, input) => {
       return {
         ...state,
         executions,
+        childExecutions,
         groups,
+        execution,
       };
     }
 
     case 'UPDATE_EXECUTION': {
-      const { event, record } = input;
+      const { record } = input;
 
       if (execution.id === record.id) {
         execution = record;
       }
 
-      if (event.endsWith('__delete')) {
-        const result = deleteExecution(executions, record);
-        if (result) {
-          executions = result;
+      if (record.parent) {
+        const index = (childExecutions[record.parent] || []).findIndex(({ id }) => id === record.id);
+        if (index > -1) {
+          childExecutions[record.parent][index] = record;
         }
       }
       else {
-        const result = mergeExecution(executions, record);
-        if (result) {
-          executions = result;
-        }
+        const index = executions.findIndex(({ id }) => id === record.id);
+        executions[index] = record;
       }
 
       groups = makeGroups(executions);
@@ -149,6 +156,27 @@ const historyReducer = (state = {}, input) => {
       return {
         ...state,
         executions,
+        childExecutions,
+        groups,
+        execution,
+      };
+    }
+
+    case 'DELETE_EXECUTION': {
+      // TODO: Delete execution from childExecutionss too.
+      const { record } = input;
+
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index > -1) {
+        executions = executions.filter(({ id }) => id !== record.id);
+      }
+
+      groups = makeGroups(executions);
+
+      return {
+        ...state,
+        executions,
+        childExecutions,
         groups,
         execution,
       };
@@ -217,59 +245,6 @@ export function deleteExecution(executions, record) {
 
       return executions;
     }
-  }
-
-  return null;
-}
-
-export function mergeExecution(executions, record, replace = true) {
-  const index = executions.findIndex(({ id }) => id === record.id);
-  if (index !== -1) {
-    executions = [ ...executions ];
-
-    if (replace) {
-      if (executions[index].fetchedChildren) {
-        record.fetchedChildren = executions[index].fetchedChildren;
-      }
-
-      executions[index] = record;
-    }
-    else {
-      executions[index] = {
-        ...executions[index],
-        ...record,
-      };
-    }
-
-    return executions;
-  }
-
-  for (const index in executions) {
-    if (executions[index].fetchedChildren) {
-      const result = mergeExecution(executions[index].fetchedChildren, record, replace);
-      if (result) {
-        executions = [ ...executions ];
-        executions[index] = {
-          ...executions[index],
-          fetchedChildren: result,
-        };
-        return executions;
-      }
-    }
-
-    if (replace && executions[index].id === record.parent) {
-      executions = [ ...executions ];
-
-      const parent = executions[index] = { ...executions[index] };
-      parent.fetchedChildren = parent.fetchedChildren ? [ ...parent.fetchedChildren ] : [];
-      parent.fetchedChildren.unshift(record);
-
-      return executions;
-    }
-  }
-
-  if (replace && !record.parent) {
-    return executions.concat([ record ]);
   }
 
   return null;

@@ -89,7 +89,17 @@ export default class HistoryPanel extends React.Component {
     api.client.stream.listen().then((source) => {
       this._source = source;
 
-      this._streamListener = (e) => {
+      this._executionCreateListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        store.dispatch({
+          type: 'CREATE_EXECUTION',
+          event: e.type,
+          record,
+        });
+      };
+
+      this._executionUpdateListener = (e) => {
         const record = JSON.parse(e.data);
 
         store.dispatch({
@@ -99,9 +109,19 @@ export default class HistoryPanel extends React.Component {
         });
       };
 
-      this._source.addEventListener('st2.execution__create', this._streamListener);
-      this._source.addEventListener('st2.execution__update', this._streamListener);
-      this._source.addEventListener('st2.execution__delete', this._streamListener);
+      this._executionDeleteListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        store.dispatch({
+          type: 'DELETE_EXECUTION',
+          event: e.type,
+          record,
+        });
+      };
+
+      this._source.addEventListener('st2.execution__create', this._executionCreateListener);
+      this._source.addEventListener('st2.execution__update', this._executionUpdateListener);
+      this._source.addEventListener('st2.execution__delete', this._executionDeleteListener);
     });
 
     let { ref: id } = this.props.match.params;
@@ -145,9 +165,9 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentWillUnmount() {
-    this._source.removeEventListener('st2.execution__create', this._streamListener);
-    this._source.removeEventListener('st2.execution__update', this._streamListener);
-    this._source.removeEventListener('st2.execution__delete', this._streamListener);
+    this._source.removeEventListener('st2.execution__create', this._executionCreateListener);
+    this._source.removeEventListener('st2.execution__update', this._executionUpdateListener);
+    this._source.removeEventListener('st2.execution__delete', this._executionDeleteListener);
   }
 
   fetchGroups({ page, activeFilters }) {
@@ -395,6 +415,7 @@ export default class HistoryPanel extends React.Component {
                 <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
                   { executions.map((execution) => (
                     <HistoryFlexCard
+                      store={store}
                       key={execution.id}
                       execution={execution}
                       selected={id}
