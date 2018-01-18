@@ -13,10 +13,12 @@ export default class PackIcon extends React.Component {
     className: PropTypes.string,
     name: PropTypes.string,
     small: PropTypes.bool.isRequired,
+    naked: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
     small: false,
+    naked: false,
   }
 
   componentWillMount() {
@@ -24,28 +26,38 @@ export default class PackIcon extends React.Component {
       return;
     }
 
-    if (iconPromise) {
-      iconPromise.then(() => {
-        this.forceUpdate();
+    if (!iconPromise) {
+      iconPromise = api.client.packs.list().then((packs) => {
+        packs.map(({ ref, files }) => {
+          if (files && files.indexOf('icon.png') >= 0) {
+            icons[ref] = api.client.packFile.route(`${ref}/icon.png`);
+          }
+        });
+      }).catch((err) => {
+        notification.error('Unable to retrieve pack icons.', { err });
+        throw err;
       });
-
-      return;
     }
 
-    iconPromise = api.client.packs.list().then((packs) => {
-      packs.map(({ ref, files }) => {
-        if (files && files.indexOf('icon.png') >= 0) {
-          icons[ref] = api.client.packFile.route(`${ref}/icon.png`);
-        }
-      });
-    }).catch((err) => {
-      notification.error('Unable to retrieve pack icons.', { err });
-      throw err;
+    iconPromise.then(() => {
+      this.forceUpdate();
     });
   }
 
   render() {
-    const { className, name, small, ...props } = this.props;
+    const { className, name, small, naked, ...props } = this.props;
+
+    if (naked) {
+      if (icons[name]) {
+        return (
+          <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name]} />
+        );
+      }
+
+      return (
+        <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name]} />
+      );
+    }
 
     return (
       <span {...props} className={cx('st2-pack-icon', className, { 'st2-pack-icon-small': small })}>

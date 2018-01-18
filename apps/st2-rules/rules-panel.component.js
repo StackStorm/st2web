@@ -11,6 +11,7 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
+import PackIcon from '@stackstorm/module-pack-icon';
 import {
   Panel,
   PanelView,
@@ -299,7 +300,7 @@ export default class RulesPanel extends React.Component {
           </Toolbar>
           <Content>
             { groups && groups.map(({ pack, rules }) => {
-              const icon = api.client.packFile.route(`${pack}/icon.png`);
+              const icon = <PackIcon naked name={pack} />;
 
               return (
                 <FlexTableWrapper key={pack} uid={pack} title={pack} icon={icon}>
