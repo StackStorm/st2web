@@ -8,7 +8,6 @@ const historyReducer = (state = {}, input) => {
     filters = undefined,
     executions = [],
     childExecutions = {},
-    expandedExecutions = {},
     groups = null,
     execution = undefined,
   } = state;
@@ -18,7 +17,6 @@ const historyReducer = (state = {}, input) => {
     filters,
     executions,
     childExecutions,
-    expandedExecutions,
     groups,
     execution,
   };
@@ -89,26 +87,32 @@ const historyReducer = (state = {}, input) => {
 
     case 'FETCH_EXECUTION_CHILDREN': {
       const { status, id, expanded, payload } = input;
-      switch(status) {
-        case 'success':
-          childExecutions[id] = payload;
-          break;
-        case 'error':
-          break;
-        default:
-          break;
+
+      if (expanded) {
+        switch(status) {
+          case 'success':
+            childExecutions = {
+              ...childExecutions,
+              [id]: _.sortBy(payload, 'start_timestamp'),
+            };
+            break;
+          case 'error':
+            break;
+          default:
+            break;
+        }
+      }
+      else {
+        childExecutions = {
+          ...childExecutions,
+        };
+        delete childExecutions[id];
       }
 
-      expandedExecutions[id] = expanded;
-
-      groups = makeGroups(executions);
 
       return {
         ...state,
-        executions,
-        expandedExecutions,
         childExecutions,
-        groups,
       };
     }
 
@@ -116,20 +120,26 @@ const historyReducer = (state = {}, input) => {
       const { record } = input;
 
       if (record.parent) {
-        childExecutions[record.parent] = [ ...childExecutions[record.parent] || [], record ];
+        if (childExecutions[record.parent]) {
+          childExecutions = {
+            ...childExecutions,
+            [record.parent]: _.sortBy([
+              ...childExecutions[record.parent],
+              record,
+            ], 'start_timestamp'),
+          };
+        }
       }
       else {
-        executions = [ ...executions, record ];
+        executions = [ record, ...executions ];
+        groups = makeGroups(executions);
       }
-
-      groups = makeGroups(executions);
 
       return {
         ...state,
         executions,
         childExecutions,
         groups,
-        execution,
       };
     }
 
@@ -141,17 +151,38 @@ const historyReducer = (state = {}, input) => {
       }
 
       if (record.parent) {
-        const index = (childExecutions[record.parent] || []).findIndex(({ id }) => id === record.id);
-        if (index > -1) {
-          childExecutions[record.parent][index] = record;
+        if (childExecutions[record.parent]) {
+          childExecutions = {
+            ...childExecutions,
+            [record.parent]: [
+              ...childExecutions[record.parent],
+            ],
+          };
+
+          const index = childExecutions[record.parent].findIndex(({ id }) => id === record.id);
+          if (index > -1) {
+            childExecutions[record.parent][index] = record;
+          }
+          else {
+            childExecutions[record.parent] = _.sortBy([
+              ...childExecutions[record.parent],
+              record,
+            ], 'start_timestamp');
+          }
         }
       }
       else {
         const index = executions.findIndex(({ id }) => id === record.id);
-        executions[index] = record;
+        if (index > -1) {
+          executions = [ ...executions ];
+          executions[index] = record;
+          groups = makeGroups(executions);
+        }
+        else {
+          executions = [ record, ...executions ];
+          groups = makeGroups(executions);
+        }
       }
-
-      groups = makeGroups(executions);
 
       return {
         ...state,
@@ -163,22 +194,27 @@ const historyReducer = (state = {}, input) => {
     }
 
     case 'DELETE_EXECUTION': {
-      // TODO: Delete execution from childExecutionss too.
       const { record } = input;
 
       const index = executions.findIndex(({ id }) => id === record.id);
       if (index > -1) {
         executions = executions.filter(({ id }) => id !== record.id);
+        groups = makeGroups(executions);
       }
 
-      groups = makeGroups(executions);
+      for (const id in childExecutions) {
+        const index = childExecutions[id].findIndex(({ id }) => id === record.id);
+        if (index > -1) {
+          childExecutions = { ...childExecutions };
+          childExecutions[id] = childExecutions[id].filter(({ id }) => id !== record.id);
+        }
+      }
 
       return {
         ...state,
         executions,
         childExecutions,
         groups,
-        execution,
       };
     }
 
@@ -212,40 +248,4 @@ function makeGroups(executions) {
   ;
 
   return  Object.keys(groups).map((date) => ({ date, executions: groups[date] }));
-}
-
-export function deleteExecution(executions, record) {
-  const index = executions.findIndex(({ id }) => id === record.id);
-  if (index !== -1) {
-    return executions.filter(({ id }) => id !== record.id);
-  }
-
-  for (const index in executions) {
-    if (!executions[index].fetchedChildren) {
-      continue;
-    }
-
-    const result = deleteExecution(executions[index].fetchedChildren, record);
-    if (result) {
-      executions = [ ...executions ];
-
-      if (result.length) {
-        executions[index] = {
-          ...executions[index],
-          fetchedChildren: result,
-        };
-      }
-      else {
-        executions[index] = {
-          ...executions[index],
-        };
-
-        delete executions[index].fetchedChildren;
-      }
-
-      return executions;
-    }
-  }
-
-  return null;
 }

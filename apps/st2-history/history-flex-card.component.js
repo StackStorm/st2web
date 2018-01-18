@@ -1,8 +1,5 @@
-import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import store from './store';
 
 import cx from 'classnames';
 import isExpandable from '@stackstorm/module-filter-expandable';
@@ -12,19 +9,14 @@ const makeProportional = proportional();
 import Label from '@stackstorm/module-label';
 import Time from '@stackstorm/module-time';
 
-@connect((state) => {
-  const { childExecutions, expandedExecutions } = state;
-  return { childExecutions, expandedExecutions };
-})
 export default class HistoryFlexCard extends React.Component {
   static propTypes = {
     isChild: PropTypes.bool.isRequired,
     execution: PropTypes.object.isRequired,
-    childExecutions: PropTypes.object,
+    childExecutions: PropTypes.object.isRequired,
     selected: PropTypes.string,
     view: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired,
-    expandedExecutions: PropTypes.object,
+    onSelect: PropTypes.func.isRequired,
     onToggleExpand: PropTypes.func.isRequired,
     displayUTC: PropTypes.bool.isRequired,
     handleToggleUTC: PropTypes.func,
@@ -39,22 +31,30 @@ export default class HistoryFlexCard extends React.Component {
     scrollIntoView: PropTypes.func.isRequired,
   }
 
-  handleToggleExpand(e, id, expanded) {
+  handleToggleExpand(e) {
     e && e.preventDefault();
     e && e.stopPropagation();
 
-    this.props.onToggleExpand(id, expanded);
+    const { onToggleExpand, execution, childExecutions } = this.props;
+    onToggleExpand(execution.id, !childExecutions[execution.id]);
+  }
+
+  handleSelect(e) {
+    e && e.preventDefault();
+    e && e.stopPropagation();
+
+    const { onSelect, execution } = this.props;
+    onSelect(execution.id);
   }
 
   render() {
     const {
       isChild,
       execution,
-      childExecutions = {},
+      childExecutions,
       selected,
       view,
-      onClick,
-      expandedExecutions = {},
+      onSelect,
       onToggleExpand,
       displayUTC,
       handleToggleUTC,
@@ -67,7 +67,7 @@ export default class HistoryFlexCard extends React.Component {
           className={cx('st2-flex-card', {
             'st2-flex-card--active': selected === execution.id,
           })}
-          onClick={() => onClick(execution.id)}
+          onClick={(e) => this.handleSelect(e)}
           data-test={`execution execution:${execution.id}`}
           ref={selected === execution.id ? this.context.scrollIntoView : null}
         >
@@ -76,10 +76,10 @@ export default class HistoryFlexCard extends React.Component {
               { isExpandable(execution) ? (
                 <i
                   className={cx({
-                    'icon-chevron-down': expandedExecutions[execution.id],
-                    'icon-chevron_right': !expandedExecutions[execution.id],
+                    'icon-chevron-down': !!childExecutions[execution.id],
+                    'icon-chevron_right': !childExecutions[execution.id],
                   })}
-                  onClick={(e) => this.handleToggleExpand(e, execution.id, !expandedExecutions[execution.id])}
+                  onClick={(e) => this.handleToggleExpand(e)}
                 />
               ) : null }
             </div>
@@ -169,30 +169,25 @@ export default class HistoryFlexCard extends React.Component {
           </div>
         </div>
       ),
-      expandedExecutions[execution.id] && childExecutions[execution.id] ? (
+      childExecutions[execution.id] ? (
         <div
           className="st2-history-child"
           key={`${execution.id}-children`}
         >
-          {
-            _(childExecutions[execution.id])
-              .sortBy('start_timestamp')
-              .map((execution) => (
-                <HistoryFlexCard
-                  store={store}
-                  key={execution.id}
-                  isChild
-                  execution={execution}
-                  selected={selected}
-                  view={view}
-                  onClick={() => onClick(execution.id)}
-                  onToggleExpand={onToggleExpand}
-                  displayUTC={displayUTC}
-                  handleToggleUTC={() => this.handleToggleUTC()}
-                />
-              ))
-              .value()
-          }
+          { childExecutions[execution.id].map((execution) => (
+            <HistoryFlexCard
+              key={execution.id}
+              isChild
+              execution={execution}
+              childExecutions={childExecutions}
+              selected={selected}
+              view={view}
+              onSelect={onSelect}
+              onToggleExpand={onToggleExpand}
+              displayUTC={displayUTC}
+              handleToggleUTC={handleToggleUTC}
+            />
+          )) }
         </div>
       ) : null,
     ];

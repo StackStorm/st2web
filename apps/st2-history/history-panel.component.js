@@ -57,8 +57,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { filters, groups, collapsed } = state;
-  return { filters, groups, collapsed };
+  const { filters, childExecutions, groups, collapsed } = state;
+  return { filters, childExecutions, groups, collapsed };
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
@@ -75,6 +75,7 @@ export default class HistoryPanel extends React.Component {
     }).isRequired,
 
     filters: PropTypes.object,
+    childExecutions: PropTypes.object,
     groups: PropTypes.array,
     collapsed: PropTypes.bool,
   }
@@ -94,7 +95,6 @@ export default class HistoryPanel extends React.Component {
 
         store.dispatch({
           type: 'CREATE_EXECUTION',
-          event: e.type,
           record,
         });
       };
@@ -104,7 +104,6 @@ export default class HistoryPanel extends React.Component {
 
         store.dispatch({
           type: 'UPDATE_EXECUTION',
-          event: e.type,
           record,
         });
       };
@@ -114,7 +113,6 @@ export default class HistoryPanel extends React.Component {
 
         store.dispatch({
           type: 'DELETE_EXECUTION',
-          event: e.type,
           record,
         });
       };
@@ -358,7 +356,7 @@ export default class HistoryPanel extends React.Component {
   }
 
   render() {
-    const { filters, groups, collapsed } = this.props;
+    const { filters, childExecutions, groups, collapsed } = this.props;
     const { id, section, page, activeFilters } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
@@ -415,12 +413,12 @@ export default class HistoryPanel extends React.Component {
                 <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
                   { executions.map((execution) => (
                     <HistoryFlexCard
-                      store={store}
                       key={execution.id}
                       execution={execution}
+                      childExecutions={childExecutions}
                       selected={id}
                       view={view}
-                      onClick={(id) => this.handleSelect(id)}
+                      onSelect={(id) => this.handleSelect(id)}
                       onToggleExpand={(...args) => this.handleExpandChildren(...args)}
                       displayUTC={this.state.displayUTC}
                       handleToggleUTC={() => this.handleToggleUTC()}
