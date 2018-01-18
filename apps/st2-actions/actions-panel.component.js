@@ -267,7 +267,6 @@ export default class ActionsPanel extends React.Component {
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
-          provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}
           section={section}

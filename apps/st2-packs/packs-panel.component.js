@@ -191,15 +191,12 @@ export default class PacksPanel extends React.Component {
             execution_id: res.execution_id,
           });
 
-          this._refreshDetails && this._refreshDetails();
-
           return api.client.stream
             .wait('st2.execution__update', (record) => waitExecution(res.execution_id, record))
           ;
         })
         .then((res) => {
           notification.success(`Pack "${ref}" has been successfully installed.`);
-          this._refreshDetails && this._refreshDetails();
           return res;
         })
         .catch((err) => {
@@ -222,15 +219,12 @@ export default class PacksPanel extends React.Component {
             execution_id: res.execution_id,
           });
 
-          this._refreshDetails && this._refreshDetails();
-
           return api.client.stream
             .wait('st2.execution__update', (record) => waitExecution(res.execution_id, record))
           ;
         })
         .then((res) => {
           notification.success(`Pack "${ref}" has been successfully removed.`);
-          this._refreshDetails && this._refreshDetails();
           return res;
         })
         .catch((err) => {
@@ -306,7 +300,6 @@ export default class PacksPanel extends React.Component {
             handleRemove={(...args) => this.handleRemove(...args)}
             handleSave={(...args) => this.handleSave(...args)}
             handleFilterChange={(...args) => this.handleFilterChange(...args)}
-            provideRefresh={(fn) => this._refreshDetails = fn}
 
             id={id}
             section={section}

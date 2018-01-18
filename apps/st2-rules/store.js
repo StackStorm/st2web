@@ -28,7 +28,7 @@ const ruleReducer = (state = {}, input) => {
   };
 
   switch (input.type) {
-    case 'FETCH_GROUPS':
+    case 'FETCH_GROUPS': {
       switch(input.status) {
         case 'success':
           rules = input.payload;
@@ -46,8 +46,9 @@ const ruleReducer = (state = {}, input) => {
         groups,
         rule,
       };
+    }
 
-    case 'FETCH_RULE':
+    case 'FETCH_RULE': {
       switch(input.status) {
         case 'success':
           rule = input.payload;
@@ -62,8 +63,9 @@ const ruleReducer = (state = {}, input) => {
         ...state,
         rule,
       };
+    }
 
-    case 'FETCH_TRIGGER_SPEC':
+    case 'FETCH_TRIGGER_SPEC': {
       switch(input.status) {
         case 'success':
           criteriaSpecs = {};
@@ -99,8 +101,9 @@ const ruleReducer = (state = {}, input) => {
         triggerSpec,
         criteriaSpecs,
       };
+    }
 
-    case 'FETCH_ACTION_SPEC':
+    case 'FETCH_ACTION_SPEC': {
       switch(input.status) {
         case 'success':
           actionSpec = {
@@ -126,8 +129,9 @@ const ruleReducer = (state = {}, input) => {
         ...state,
         actionSpec,
       };
+    }
 
-    case 'FETCH_PACK_SPEC':
+    case 'FETCH_PACK_SPEC': {
       switch(input.status) {
         case 'success':
           packSpec = {
@@ -163,8 +167,9 @@ const ruleReducer = (state = {}, input) => {
         ...state,
         packSpec,
       };
+    }
 
-    case 'EDIT_RULE':
+    case 'EDIT_RULE': {
       switch(input.status) {
         case 'success':
           rule = input.payload;
@@ -192,8 +197,9 @@ const ruleReducer = (state = {}, input) => {
         rules,
         groups,
       };
+    }
 
-    case 'CREATE_RULE':
+    case 'CREATE_RULE': {
       switch(input.status) {
         case 'success':
           rule = input.payload;
@@ -212,8 +218,9 @@ const ruleReducer = (state = {}, input) => {
         rules,
         groups,
       };
+    }
 
-    case 'DELETE_RULE':
+    case 'DELETE_RULE': {
       const { ref } = input;
 
       switch(input.status) {
@@ -234,8 +241,9 @@ const ruleReducer = (state = {}, input) => {
         rules,
         groups,
       };
+    }
 
-    case 'SET_FILTER':
+    case 'SET_FILTER': {
       filter = input.filter;
       groups = makeGroups(rules, filter);
 
@@ -244,6 +252,7 @@ const ruleReducer = (state = {}, input) => {
         groups,
         filter,
       };
+    }
 
     default:
       return state;

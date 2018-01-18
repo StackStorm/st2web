@@ -231,10 +231,7 @@ export default class RulesPanel extends React.Component {
         .then((rule) => {
           notification.success(`Rule "${rule.ref}" has been saved successfully.`);
 
-          if (this.props.match.params.ref === rule.ref) {
-            this._refreshDetails && this._refreshDetails();
-          }
-          else {
+          if (this.props.match.params.ref !== rule.ref) {
             this.navigate({
               id: rule.ref,
               section: 'general',
@@ -329,7 +326,6 @@ export default class RulesPanel extends React.Component {
           handleCreate={(...args) => this.handleCreate(...args)}
           handleSave={(...args) => this.handleSave(...args)}
           handleDelete={(...args) => this.handleDelete(...args)}
-          provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}
           section={section}

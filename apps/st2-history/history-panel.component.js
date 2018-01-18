@@ -92,10 +92,6 @@ export default class HistoryPanel extends React.Component {
       this._streamListener = (e) => {
         const record = JSON.parse(e.data);
 
-        if (record.id === this.urlParams.id) {
-          this._refreshDetails && this._refreshDetails();
-        }
-
         store.dispatch({
           type: 'UPDATE_EXECUTION',
           event: e.type,
@@ -462,7 +458,6 @@ export default class HistoryPanel extends React.Component {
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
           handleCancel={(...args) => this.handleCancel(...args)}
-          provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}
           section={section}

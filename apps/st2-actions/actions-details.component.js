@@ -44,7 +44,6 @@ export default class ActionsDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
-    provideRefresh: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -82,11 +81,7 @@ export default class ActionsDetails extends React.Component {
       this._source.addEventListener('st2.execution__delete', this._streamListener);
     });
 
-    const { id, provideRefresh } = this.props;
-
-    if (provideRefresh) {
-      provideRefresh(() => this.refresh());
-    }
+    const { id } = this.props;
 
     if (id) {
       this.fetchAction(id);

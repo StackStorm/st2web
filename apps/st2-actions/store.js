@@ -22,7 +22,7 @@ const actionReducer = (state = {}, input) => {
   };
 
   switch (input.type) {
-    case 'FETCH_GROUPS':
+    case 'FETCH_GROUPS': {
       switch(input.status) {
         case 'success':
           actions = input.payload;
@@ -39,8 +39,9 @@ const actionReducer = (state = {}, input) => {
         actions,
         groups,
       };
+    }
 
-    case 'FETCH_ACTION':
+    case 'FETCH_ACTION': {
       switch(input.status) {
         case 'success':
           action = input.payload;
@@ -55,8 +56,9 @@ const actionReducer = (state = {}, input) => {
         ...state,
         action,
       };
+    }
 
-    case 'FETCH_EXECUTIONS':
+    case 'FETCH_EXECUTIONS': {
       switch(input.status) {
         case 'success':
           executions = input.payload;
@@ -71,85 +73,31 @@ const actionReducer = (state = {}, input) => {
         ...state,
         executions,
       };
+    }
 
     case 'UPDATE_EXECUTION': {
       const { event, record } = input;
 
-      executions = [ ...executions ];
-
       if (event.endsWith('__delete')) {
-        if (record.parent) {
-          for (const index in executions) {
-            if (executions[index].id !== record.parent) {
-              continue;
-            }
-
-            const parent = executions[index] = { ...executions[index] };
-            if (parent.fetchedChildren) {
-              parent.fetchedChildren = [ ...parent.fetchedChildren ]
-                .filter(execution => execution.id !== record.id)
-              ;
-            }
-          }
-        }
-        else {
-          executions = executions
-            .filter(execution => execution.id !== record.id)
-          ;
+        const result = deleteExecution(executions, record);
+        if (result) {
+          executions = result;
         }
       }
       else {
-        if (record.parent) {
-          for (const index in executions) {
-            if (executions[index].id !== record.parent) {
-              continue;
-            }
-
-            const parent = executions[index] = { ...executions[index] };
-            if (parent.fetchedChildren) {
-              parent.fetchedChildren = [ ...parent.fetchedChildren ];
-            }
-            else {
-              parent.fetchedChildren = [];
-            }
-
-            let found = false;
-            for (const index in parent.fetchedChildren) {
-              if (parent.fetchedChildren[index].id !== record.id) {
-                continue;
-              }
-
-              found = true;
-              parent.fetchedChildren[index] = record;
-            }
-            if (!found) {
-              parent.fetchedChildren.unshift(record);
-            }
-          }
-        }
-        else {
-          let found = false;
-          for (const index in executions) {
-            if (executions[index].id !== record.id) {
-              continue;
-            }
-
-            found = true;
-            executions[index] = record;
-          }
-          if (!found) {
-            executions.unshift(record);
-          }
+        const result = mergeExecution(executions, record);
+        if (result) {
+          executions = result;
         }
       }
 
       return {
         ...state,
-        executions,
+        groups,
       };
     }
 
-    case 'SET_FILTER':
+    case 'SET_FILTER': {
       filter = input.filter;
       groups = makeGroups(actions, filter);
 
@@ -158,6 +106,7 @@ const actionReducer = (state = {}, input) => {
         groups,
         filter,
       };
+    }
 
     default:
       return state;
@@ -184,4 +133,93 @@ function makeGroups(actions, filter) {
   ;
 
   return Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
+}
+
+export function deleteExecution(executions, record) {
+  const index = executions.findIndex(({ id }) => id === record.id);
+  if (index !== -1) {
+    return executions.filter(({ id }) => id !== record.id);
+  }
+
+  for (const index in executions) {
+    if (!executions[index].fetchedChildren) {
+      continue;
+    }
+
+    const result = deleteExecution(executions[index].fetchedChildren, record);
+    if (result) {
+      executions = [ ...executions ];
+
+      if (result.length) {
+        executions[index] = {
+          ...executions[index],
+          fetchedChildren: result,
+        };
+      }
+      else {
+        executions[index] = {
+          ...executions[index],
+        };
+
+        delete executions[index].fetchedChildren;
+      }
+
+      return executions;
+    }
+  }
+
+  return null;
+}
+
+export function mergeExecution(executions, record, replace = true) {
+  const index = executions.findIndex(({ id }) => id === record.id);
+  if (index !== -1) {
+    executions = [ ...executions ];
+
+    if (replace) {
+      if (executions[index].fetchedChildren) {
+        record.fetchedChildren = executions[index].fetchedChildren;
+      }
+
+      executions[index] = record;
+    }
+    else {
+      executions[index] = {
+        ...executions[index],
+        ...record,
+      };
+    }
+
+    return executions;
+  }
+
+  for (const index in executions) {
+    if (executions[index].fetchedChildren) {
+      const result = mergeExecution(executions[index].fetchedChildren, record, replace);
+      if (result) {
+        executions = [ ...executions ];
+        executions[index] = {
+          ...executions[index],
+          fetchedChildren: result,
+        };
+        return executions;
+      }
+    }
+
+    if (replace && executions[index].id === record.parent) {
+      executions = [ ...executions ];
+
+      const parent = executions[index] = { ...executions[index] };
+      parent.fetchedChildren = parent.fetchedChildren ? [ ...parent.fetchedChildren ] : [];
+      parent.fetchedChildren.unshift(record);
+
+      return executions;
+    }
+  }
+
+  if (replace && !record.parent) {
+    return executions.concat([ record ]);
+  }
+
+  return null;
 }
