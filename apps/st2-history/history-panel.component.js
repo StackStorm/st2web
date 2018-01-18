@@ -393,37 +393,18 @@ export default class HistoryPanel extends React.Component {
 
               return (
                 <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
-                  { executions.map((execution) => [
+                  { executions.map((execution) => (
                     <HistoryFlexCard
                       key={execution.id}
                       execution={execution}
-                      selected={id === execution.id}
+                      selected={id}
                       view={view}
-                      onClick={() => this.handleSelect(execution.id)}
-                      onToggleExpand={() => this.handleExpandChildren(execution.id, !execution.fetchedChildren)}
+                      onClick={(id) => this.handleSelect(id)}
+                      onToggleExpand={(...args) => this.handleExpandChildren(...args)}
                       displayUTC={this.state.displayUTC}
                       handleToggleUTC={() => this.handleToggleUTC()}
-                    />,
-                    execution.fetchedChildren ? (
-                      <div
-                        className="st2-history-child"
-                        key={`${execution.id}-children`}
-                      >
-                        { execution.fetchedChildren.map((execution) => (
-                          <HistoryFlexCard
-                            key={execution.id}
-                            isChild
-                            execution={execution}
-                            selected={id === execution.id}
-                            view={view}
-                            onClick={() => this.handleSelect(execution.id)}
-                            displayUTC={this.state.displayUTC}
-                            handleToggleUTC={() => this.handleToggleUTC()}
-                          />
-                        ))}
-                      </div>
-                    ) : null,
-                  ]) }
+                    />
+                  )) }
                 </FlexTableWrapper>
               );
             }) }
