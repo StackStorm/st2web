@@ -62,7 +62,20 @@ export default class ActionsDetails extends React.Component {
     api.client.stream.listen().then((source) => {
       this._source = source;
 
-      this._streamListener = (e) => {
+      this._executionCreateListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        if (record.action.id !== this.props.action.id) {
+          return;
+        }
+
+        store.dispatch({
+          type: 'CREATE_EXECUTION',
+          record,
+        });
+      };
+
+      this._executionUpdateListener = (e) => {
         const record = JSON.parse(e.data);
 
         if (record.action.id !== this.props.action.id) {
@@ -71,14 +84,26 @@ export default class ActionsDetails extends React.Component {
 
         store.dispatch({
           type: 'UPDATE_EXECUTION',
-          event: e.type,
           record,
         });
       };
 
-      this._source.addEventListener('st2.execution__create', this._streamListener);
-      this._source.addEventListener('st2.execution__update', this._streamListener);
-      this._source.addEventListener('st2.execution__delete', this._streamListener);
+      this._executionDeleteListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        if (record.action.id !== this.props.action.id) {
+          return;
+        }
+
+        store.dispatch({
+          type: 'DELETE_EXECUTION',
+          record,
+        });
+      };
+
+      this._source.addEventListener('st2.execution__create', this._executionCreateListener);
+      this._source.addEventListener('st2.execution__update', this._executionUpdateListener);
+      this._source.addEventListener('st2.execution__delete', this._executionDeleteListener);
     });
 
     const { id } = this.props;
@@ -105,9 +130,9 @@ export default class ActionsDetails extends React.Component {
   }
 
   componentWillUnmount() {
-    this._source.removeEventListener('st2.execution__create', this._streamListener);
-    this._source.removeEventListener('st2.execution__update', this._streamListener);
-    this._source.removeEventListener('st2.execution__delete', this._streamListener);
+    this._source.removeEventListener('st2.execution__create', this._executionCreateListener);
+    this._source.removeEventListener('st2.execution__update', this._executionUpdateListener);
+    this._source.removeEventListener('st2.execution__delete', this._executionDeleteListener);
   }
 
   refresh() {

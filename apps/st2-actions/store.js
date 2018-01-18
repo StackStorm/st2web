@@ -75,25 +75,46 @@ const actionReducer = (state = {}, input) => {
       };
     }
 
-    case 'UPDATE_EXECUTION': {
-      const { event, record } = input;
+    case 'CREATE_EXECUTION': {
+      const { record } = input;
 
-      if (event.endsWith('__delete')) {
-        const result = deleteExecution(executions, record);
-        if (result) {
-          executions = result;
-        }
+      executions = [ record, ...executions ];
+
+      return {
+        ...state,
+        executions,
+      };
+    }
+
+    case 'UPDATE_EXECUTION': {
+      const { record } = input;
+
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index > -1) {
+        executions = [ ...executions ];
+        executions[index] = record;
       }
       else {
-        const result = mergeExecution(executions, record);
-        if (result) {
-          executions = result;
-        }
+        executions = [ record, ...executions ];
       }
 
       return {
         ...state,
-        groups,
+        executions,
+      };
+    }
+
+    case 'DELETE_EXECUTION': {
+      const { record } = input;
+
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index > -1) {
+        executions = executions.filter(({ id }) => id !== record.id);
+      }
+
+      return {
+        ...state,
+        executions,
       };
     }
 
@@ -133,93 +154,4 @@ function makeGroups(actions, filter) {
   ;
 
   return Object.keys(groups).map((pack) => ({ pack, actions: groups[pack] }));
-}
-
-export function deleteExecution(executions, record) {
-  const index = executions.findIndex(({ id }) => id === record.id);
-  if (index !== -1) {
-    return executions.filter(({ id }) => id !== record.id);
-  }
-
-  for (const index in executions) {
-    if (!executions[index].fetchedChildren) {
-      continue;
-    }
-
-    const result = deleteExecution(executions[index].fetchedChildren, record);
-    if (result) {
-      executions = [ ...executions ];
-
-      if (result.length) {
-        executions[index] = {
-          ...executions[index],
-          fetchedChildren: result,
-        };
-      }
-      else {
-        executions[index] = {
-          ...executions[index],
-        };
-
-        delete executions[index].fetchedChildren;
-      }
-
-      return executions;
-    }
-  }
-
-  return null;
-}
-
-export function mergeExecution(executions, record, replace = true) {
-  const index = executions.findIndex(({ id }) => id === record.id);
-  if (index !== -1) {
-    executions = [ ...executions ];
-
-    if (replace) {
-      if (executions[index].fetchedChildren) {
-        record.fetchedChildren = executions[index].fetchedChildren;
-      }
-
-      executions[index] = record;
-    }
-    else {
-      executions[index] = {
-        ...executions[index],
-        ...record,
-      };
-    }
-
-    return executions;
-  }
-
-  for (const index in executions) {
-    if (executions[index].fetchedChildren) {
-      const result = mergeExecution(executions[index].fetchedChildren, record, replace);
-      if (result) {
-        executions = [ ...executions ];
-        executions[index] = {
-          ...executions[index],
-          fetchedChildren: result,
-        };
-        return executions;
-      }
-    }
-
-    if (replace && executions[index].id === record.parent) {
-      executions = [ ...executions ];
-
-      const parent = executions[index] = { ...executions[index] };
-      parent.fetchedChildren = parent.fetchedChildren ? [ ...parent.fetchedChildren ] : [];
-      parent.fetchedChildren.unshift(record);
-
-      return executions;
-    }
-  }
-
-  if (replace && !record.parent) {
-    return executions.concat([ record ]);
-  }
-
-  return null;
 }
