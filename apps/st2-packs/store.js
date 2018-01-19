@@ -20,7 +20,7 @@ const packReducer = (state = {}, input) => {
   };
 
   switch (input.type) {
-    case 'FETCH_GROUPS':
+    case 'FETCH_GROUPS': {
       switch(input.status) {
         case 'success':
           packs = input.payload;
@@ -37,8 +37,9 @@ const packReducer = (state = {}, input) => {
         packs,
         groups,
       };
+    }
 
-    case 'FETCH_PACK':
+    case 'FETCH_PACK': {
       switch(input.status) {
         case 'success':
           pack = input.payload;
@@ -53,16 +54,20 @@ const packReducer = (state = {}, input) => {
         ...state,
         pack,
       };
+    }
 
-    case 'INSTALL_PACK':
+    case 'INSTALL_PACK': {
       switch(input.status) {
         case 'success':
+          pack = { ...pack, status: 'installed' };
           packs = mergePacks(packs, [{ ref: input.ref, status: 'installed' }]);
           break;
         case 'error':
+          pack = { ...pack, status: 'available' };
           packs = mergePacks(packs, [{ ref: input.ref, status: 'available' }]);
           break;
         default:
+          pack = { ...pack, status: 'installing' };
           packs = mergePacks(packs, [{ ref: input.ref, status: 'installing' }]);
       }
 
@@ -73,16 +78,20 @@ const packReducer = (state = {}, input) => {
         packs,
         groups,
       };
+    }
 
-    case 'UNINSTALL_PACK':
+    case 'UNINSTALL_PACK': {
       switch(input.status) {
         case 'success':
+          pack = { ...pack, status: 'available' };
           packs = mergePacks(packs, [{ ref: input.ref, status: 'available' }]);
           break;
         case 'error':
+          pack = { ...pack, status: 'installed' };
           packs = mergePacks(packs, [{ ref: input.ref, status: 'installed' }]);
           break;
         default:
+          pack = { ...pack, status: 'uninstalling' };
           packs = mergePacks(packs, [{ ref: input.ref, status: 'uninstalling' }]);
       }
 
@@ -93,8 +102,9 @@ const packReducer = (state = {}, input) => {
         packs,
         groups,
       };
+    }
 
-    case 'CONFIGURE_PACK':
+    case 'CONFIGURE_PACK': {
       switch(input.status) {
         case 'success':
           // Note: `input.payload` is undefined?
@@ -110,8 +120,9 @@ const packReducer = (state = {}, input) => {
       return {
         ...state,
       };
+    }
 
-    case 'SET_FILTER':
+    case 'SET_FILTER': {
       filter = input.filter;
       groups = makeGroups(packs, filter);
 
@@ -120,6 +131,7 @@ const packReducer = (state = {}, input) => {
         groups,
         filter,
       };
+    }
 
     default:
       return state;

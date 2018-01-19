@@ -37,7 +37,6 @@ export default class RulesDetails extends React.Component {
     handleCreate: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
-    provideRefresh: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -54,11 +53,7 @@ export default class RulesDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { id, provideRefresh } = this.props;
-
-    if (provideRefresh) {
-      provideRefresh(() => this.refresh());
-    }
+    const { id } = this.props;
 
     if (id) {
       this.fetchRule(id);

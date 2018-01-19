@@ -15,7 +15,7 @@ export class FlexTable extends React.Component {
     note: PropTypes.node,
     collapsed: PropTypes.bool.isRequired,
     children: PropTypes.node,
-    icon: PropTypes.string,
+    icon: PropTypes.node,
     onToggle: PropTypes.func,
   }
 
@@ -52,7 +52,7 @@ export class FlexTableTitle extends React.Component {
     className: PropTypes.string,
     children: PropTypes.node,
     type: PropTypes.string,
-    icon: PropTypes.string,
+    icon: PropTypes.node,
     onToggle: PropTypes.func.isRequired,
     title: PropTypes.node,
     note: PropTypes.node,
@@ -70,9 +70,11 @@ export class FlexTableTitle extends React.Component {
         })}
         onClick={(e) => onToggle(e)}
       >
-        { icon ? (
+        { typeof icon === 'string' ? (
           <img src={icon} />
-        ) : null }
+        ) : (
+          icon || null
+        ) }
 
         <h2 className="st2-flex-table__caption-title">{ title }</h2>
 

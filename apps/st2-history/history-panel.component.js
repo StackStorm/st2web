@@ -57,8 +57,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { filters, groups, collapsed } = state;
-  return { filters, groups, collapsed };
+  const { filters, childExecutions, groups, collapsed } = state;
+  return { filters, childExecutions, groups, collapsed };
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
@@ -75,6 +75,7 @@ export default class HistoryPanel extends React.Component {
     }).isRequired,
 
     filters: PropTypes.object,
+    childExecutions: PropTypes.object,
     groups: PropTypes.array,
     collapsed: PropTypes.bool,
   }
@@ -89,23 +90,36 @@ export default class HistoryPanel extends React.Component {
     api.client.stream.listen().then((source) => {
       this._source = source;
 
-      this._streamListener = (e) => {
+      this._executionCreateListener = (e) => {
         const record = JSON.parse(e.data);
 
-        if (record.id === this.urlParams.id) {
-          this._refreshDetails && this._refreshDetails();
-        }
-
         store.dispatch({
-          type: 'UPDATE_EXECUTION',
-          event: e.type,
+          type: 'CREATE_EXECUTION',
           record,
         });
       };
 
-      this._source.addEventListener('st2.execution__create', this._streamListener);
-      this._source.addEventListener('st2.execution__update', this._streamListener);
-      this._source.addEventListener('st2.execution__delete', this._streamListener);
+      this._executionUpdateListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        store.dispatch({
+          type: 'UPDATE_EXECUTION',
+          record,
+        });
+      };
+
+      this._executionDeleteListener = (e) => {
+        const record = JSON.parse(e.data);
+
+        store.dispatch({
+          type: 'DELETE_EXECUTION',
+          record,
+        });
+      };
+
+      this._source.addEventListener('st2.execution__create', this._executionCreateListener);
+      this._source.addEventListener('st2.execution__update', this._executionUpdateListener);
+      this._source.addEventListener('st2.execution__delete', this._executionDeleteListener);
     });
 
     let { ref: id } = this.props.match.params;
@@ -149,9 +163,9 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentWillUnmount() {
-    this._source.removeEventListener('st2.execution__create', this._streamListener);
-    this._source.removeEventListener('st2.execution__update', this._streamListener);
-    this._source.removeEventListener('st2.execution__delete', this._streamListener);
+    this._source.removeEventListener('st2.execution__create', this._executionCreateListener);
+    this._source.removeEventListener('st2.execution__update', this._executionUpdateListener);
+    this._source.removeEventListener('st2.execution__delete', this._executionDeleteListener);
   }
 
   fetchGroups({ page, activeFilters }) {
@@ -342,7 +356,7 @@ export default class HistoryPanel extends React.Component {
   }
 
   render() {
-    const { filters, groups, collapsed } = this.props;
+    const { filters, childExecutions, groups, collapsed } = this.props;
     const { id, section, page, activeFilters } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
@@ -397,37 +411,19 @@ export default class HistoryPanel extends React.Component {
 
               return (
                 <FlexTableWrapper key={date} uid={date} title={title} titleType="date">
-                  { executions.map((execution) => [
+                  { executions.map((execution) => (
                     <HistoryFlexCard
                       key={execution.id}
                       execution={execution}
-                      selected={id === execution.id}
+                      childExecutions={childExecutions}
+                      selected={id}
                       view={view}
-                      onClick={() => this.handleSelect(execution.id)}
-                      onToggleExpand={() => this.handleExpandChildren(execution.id, !execution.fetchedChildren)}
+                      onSelect={(id) => this.handleSelect(id)}
+                      onToggleExpand={(...args) => this.handleExpandChildren(...args)}
                       displayUTC={this.state.displayUTC}
                       handleToggleUTC={() => this.handleToggleUTC()}
-                    />,
-                    execution.fetchedChildren ? (
-                      <div
-                        className="st2-history-child"
-                        key={`${execution.id}-children`}
-                      >
-                        { execution.fetchedChildren.map((execution) => (
-                          <HistoryFlexCard
-                            key={execution.id}
-                            isChild
-                            execution={execution}
-                            selected={id === execution.id}
-                            view={view}
-                            onClick={() => this.handleSelect(execution.id)}
-                            displayUTC={this.state.displayUTC}
-                            handleToggleUTC={() => this.handleToggleUTC()}
-                          />
-                        ))}
-                      </div>
-                    ) : null,
-                  ]) }
+                    />
+                  )) }
                 </FlexTableWrapper>
               );
             }) }
@@ -462,7 +458,6 @@ export default class HistoryPanel extends React.Component {
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
           handleCancel={(...args) => this.handleCancel(...args)}
-          provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}
           section={section}

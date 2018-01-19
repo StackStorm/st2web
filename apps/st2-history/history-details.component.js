@@ -38,7 +38,6 @@ export default class HistoryDetails extends React.Component {
     handleNavigate: PropTypes.func.isRequired,
     handleRerun: PropTypes.func.isRequired,
     handleCancel: PropTypes.func.isRequired,
-    provideRefresh: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -52,11 +51,7 @@ export default class HistoryDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { id, provideRefresh } = this.props;
-
-    if (provideRefresh) {
-      provideRefresh(() => this.refresh());
-    }
+    const { id } = this.props;
 
     if (id) {
       this.fetchExecution(id);
@@ -77,12 +72,6 @@ export default class HistoryDetails extends React.Component {
     }
 
     return true;
-  }
-
-  refresh() {
-    const { id } = this.props;
-
-    this.fetchExecution(id);
   }
 
   fetchExecution(id) {

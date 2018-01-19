@@ -12,6 +12,7 @@ import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table';
 import FlowLink from '@stackstorm/module-flow-link';
+import PackIcon from '@stackstorm/module-pack-icon';
 import {
   Panel,
   PanelView,
@@ -240,7 +241,7 @@ export default class ActionsPanel extends React.Component {
           </Toolbar>
           <Content>
             { groups && groups.map(({ pack, actions }) => {
-              const icon = api.client.packFile.route(`${pack}/icon.png`);
+              const icon = <PackIcon naked name={pack} />;
 
               return (
                 <FlexTableWrapper key={pack} uid={pack} title={pack} icon={icon} data-test={`pack pack:${pack}`}>
@@ -267,7 +268,6 @@ export default class ActionsPanel extends React.Component {
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
-          provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}
           section={section}

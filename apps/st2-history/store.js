@@ -7,6 +7,7 @@ const historyReducer = (state = {}, input) => {
   let {
     filters = undefined,
     executions = [],
+    childExecutions = {},
     groups = null,
     execution = undefined,
   } = state;
@@ -15,12 +16,13 @@ const historyReducer = (state = {}, input) => {
     ...state,
     filters,
     executions,
+    childExecutions,
     groups,
     execution,
   };
 
   switch (input.type) {
-    case 'FETCH_FILTERS':
+    case 'FETCH_FILTERS': {
       switch(input.status) {
         case 'success':
           filters = Object.keys(input.payload)
@@ -45,8 +47,9 @@ const historyReducer = (state = {}, input) => {
         ...state,
         filters,
       };
+    }
 
-    case 'FETCH_GROUPS':
+    case 'FETCH_GROUPS': {
       switch(input.status) {
         case 'success':
           executions = input.payload;
@@ -63,8 +66,9 @@ const historyReducer = (state = {}, input) => {
         executions,
         groups,
       };
+    }
 
-    case 'FETCH_EXECUTION':
+    case 'FETCH_EXECUTION': {
       switch(input.status) {
         case 'success':
           execution = input.payload;
@@ -79,26 +83,18 @@ const historyReducer = (state = {}, input) => {
         ...state,
         execution,
       };
+    }
 
-    case 'FETCH_EXECUTION_CHILDREN':
-      if (input.expanded) {
-        switch(input.status) {
+    case 'FETCH_EXECUTION_CHILDREN': {
+      const { status, id, expanded, payload } = input;
+
+      if (expanded) {
+        switch(status) {
           case 'success':
-            executions = [ ...executions ];
-            for (const index in executions) {
-              if (executions[index].id !== input.id) {
-                continue;
-              }
-
-              executions[index] = {
-                ...executions[index],
-                fetchedChildren: _(input.payload)
-                  .sortBy('start_timestamp')
-                  .reverse()
-                  .value()
-                ,
-              };
-            }
+            childExecutions = {
+              ...childExecutions,
+              [id]: _.sortBy(payload, 'start_timestamp'),
+            };
             break;
           case 'error':
             break;
@@ -107,105 +103,123 @@ const historyReducer = (state = {}, input) => {
         }
       }
       else {
-        executions = [ ...executions ];
-        for (const index in executions) {
-          if (executions[index].id !== input.id) {
-            continue;
-          }
-
-          executions[index] = {
-            ...executions[index],
-            fetchedChildren: undefined,
-          };
-        }
+        childExecutions = {
+          ...childExecutions,
+        };
+        delete childExecutions[id];
       }
 
-      groups = makeGroups(executions);
 
       return {
         ...state,
-        executions,
-        groups,
+        childExecutions,
       };
+    }
 
-    case 'UPDATE_EXECUTION':
-      const { event, record } = input;
+    case 'CREATE_EXECUTION': {
+      const { record } = input;
 
-      executions = [ ...executions ];
-
-      if (event.endsWith('__delete')) {
-        if (record.parent) {
-          for (const index in executions) {
-            if (executions[index].id !== record.parent) {
-              continue;
-            }
-
-            const parent = executions[index] = { ...executions[index] };
-            if (parent.fetchedChildren) {
-              parent.fetchedChildren = [ ...parent.fetchedChildren ]
-                .filter(execution => execution.id !== record.id)
-              ;
-            }
+      if (record.parent) {
+        if (childExecutions[record.parent]) {
+          const index = childExecutions[record.parent].findIndex(({ id }) => id === record.id);
+          if (index === -1) {
+            childExecutions = {
+              ...childExecutions,
+              [record.parent]: _.sortBy([
+                ...childExecutions[record.parent],
+                record,
+              ], 'start_timestamp'),
+            };
           }
-        }
-        else {
-          executions = executions
-            .filter(execution => execution.id !== record.id)
-          ;
         }
       }
       else {
-        if (record.parent) {
-          for (const index in executions) {
-            if (executions[index].id !== record.parent) {
-              continue;
-            }
-
-            const parent = executions[index] = { ...executions[index] };
-            if (parent.fetchedChildren) {
-              parent.fetchedChildren = [ ...parent.fetchedChildren ];
-            }
-            else {
-              parent.fetchedChildren = [];
-            }
-
-            let found = false;
-            for (const index in parent.fetchedChildren) {
-              if (parent.fetchedChildren[index].id !== record.id) {
-                continue;
-              }
-
-              found = true;
-              parent.fetchedChildren[index] = record;
-            }
-            if (!found) {
-              parent.fetchedChildren.unshift(record);
-            }
-          }
-        }
-        else {
-          let found = false;
-          for (const index in executions) {
-            if (executions[index].id !== record.id) {
-              continue;
-            }
-
-            found = true;
-            executions[index] = record;
-          }
-          if (!found) {
-            executions.push(record);
-          }
-        }
+        executions = [ record, ...executions ];
+        groups = makeGroups(executions);
       }
-
-      groups = makeGroups(executions);
 
       return {
         ...state,
         executions,
+        childExecutions,
         groups,
       };
+    }
+
+    case 'UPDATE_EXECUTION': {
+      const { record } = input;
+
+      if (execution.id === record.id) {
+        execution = record;
+      }
+
+      if (record.parent) {
+        if (childExecutions[record.parent]) {
+          childExecutions = {
+            ...childExecutions,
+            [record.parent]: [
+              ...childExecutions[record.parent],
+            ],
+          };
+
+          const index = childExecutions[record.parent].findIndex(({ id }) => id === record.id);
+          if (index > -1) {
+            childExecutions[record.parent][index] = record;
+          }
+          else {
+            childExecutions[record.parent] = _.sortBy([
+              ...childExecutions[record.parent],
+              record,
+            ], 'start_timestamp');
+          }
+        }
+      }
+      else {
+        const index = executions.findIndex(({ id }) => id === record.id);
+        if (index > -1) {
+          executions = [ ...executions ];
+          executions[index] = record;
+          groups = makeGroups(executions);
+        }
+        else {
+          executions = [ record, ...executions ];
+          groups = makeGroups(executions);
+        }
+      }
+
+      return {
+        ...state,
+        executions,
+        childExecutions,
+        groups,
+        execution,
+      };
+    }
+
+    case 'DELETE_EXECUTION': {
+      const { record } = input;
+
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index > -1) {
+        executions = executions.filter(({ id }) => id !== record.id);
+        groups = makeGroups(executions);
+      }
+
+      for (const id in childExecutions) {
+        const index = childExecutions[id].findIndex(({ id }) => id === record.id);
+        if (index > -1) {
+          childExecutions = { ...childExecutions };
+          childExecutions[id] = childExecutions[id].filter(({ id }) => id !== record.id);
+        }
+      }
+
+      return {
+        ...state,
+        executions,
+        childExecutions,
+        groups,
+      };
+    }
 
     default:
       return state;

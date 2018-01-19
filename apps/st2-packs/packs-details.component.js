@@ -35,7 +35,6 @@ export default class PacksPanel extends React.Component {
     handleRemove: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
     handleFilterChange: PropTypes.func.isRequired,
-    provideRefresh: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     pack: PropTypes.object,
@@ -47,11 +46,7 @@ export default class PacksPanel extends React.Component {
   }
 
   componentDidMount() {
-    const { id, provideRefresh } = this.props;
-
-    if (provideRefresh) {
-      provideRefresh(() => this.refresh());
-    }
+    const { id } = this.props;
 
     if (id) {
       this.fetchPack(id);

@@ -11,6 +11,7 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table/flex-table.component';
+import PackIcon from '@stackstorm/module-pack-icon';
 import {
   Panel,
   PanelView,
@@ -231,10 +232,7 @@ export default class RulesPanel extends React.Component {
         .then((rule) => {
           notification.success(`Rule "${rule.ref}" has been saved successfully.`);
 
-          if (this.props.match.params.ref === rule.ref) {
-            this._refreshDetails && this._refreshDetails();
-          }
-          else {
+          if (this.props.match.params.ref !== rule.ref) {
             this.navigate({
               id: rule.ref,
               section: 'general',
@@ -302,7 +300,7 @@ export default class RulesPanel extends React.Component {
           </Toolbar>
           <Content>
             { groups && groups.map(({ pack, rules }) => {
-              const icon = api.client.packFile.route(`${pack}/icon.png`);
+              const icon = <PackIcon naked name={pack} />;
 
               return (
                 <FlexTableWrapper key={pack} uid={pack} title={pack} icon={icon}>
@@ -329,7 +327,6 @@ export default class RulesPanel extends React.Component {
           handleCreate={(...args) => this.handleCreate(...args)}
           handleSave={(...args) => this.handleSave(...args)}
           handleDelete={(...args) => this.handleDelete(...args)}
-          provideRefresh={(fn) => this._refreshDetails = fn}
 
           id={id}
           section={section}

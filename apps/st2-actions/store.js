@@ -22,7 +22,7 @@ const actionReducer = (state = {}, input) => {
   };
 
   switch (input.type) {
-    case 'FETCH_GROUPS':
+    case 'FETCH_GROUPS': {
       switch(input.status) {
         case 'success':
           actions = input.payload;
@@ -39,8 +39,9 @@ const actionReducer = (state = {}, input) => {
         actions,
         groups,
       };
+    }
 
-    case 'FETCH_ACTION':
+    case 'FETCH_ACTION': {
       switch(input.status) {
         case 'success':
           action = input.payload;
@@ -55,8 +56,9 @@ const actionReducer = (state = {}, input) => {
         ...state,
         action,
       };
+    }
 
-    case 'FETCH_EXECUTIONS':
+    case 'FETCH_EXECUTIONS': {
       switch(input.status) {
         case 'success':
           executions = input.payload;
@@ -71,76 +73,29 @@ const actionReducer = (state = {}, input) => {
         ...state,
         executions,
       };
+    }
+
+    case 'CREATE_EXECUTION': {
+      const { record } = input;
+
+      executions = [ record, ...executions ];
+
+      return {
+        ...state,
+        executions,
+      };
+    }
 
     case 'UPDATE_EXECUTION': {
-      const { event, record } = input;
+      const { record } = input;
 
-      executions = [ ...executions ];
-
-      if (event.endsWith('__delete')) {
-        if (record.parent) {
-          for (const index in executions) {
-            if (executions[index].id !== record.parent) {
-              continue;
-            }
-
-            const parent = executions[index] = { ...executions[index] };
-            if (parent.fetchedChildren) {
-              parent.fetchedChildren = [ ...parent.fetchedChildren ]
-                .filter(execution => execution.id !== record.id)
-              ;
-            }
-          }
-        }
-        else {
-          executions = executions
-            .filter(execution => execution.id !== record.id)
-          ;
-        }
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index > -1) {
+        executions = [ ...executions ];
+        executions[index] = record;
       }
       else {
-        if (record.parent) {
-          for (const index in executions) {
-            if (executions[index].id !== record.parent) {
-              continue;
-            }
-
-            const parent = executions[index] = { ...executions[index] };
-            if (parent.fetchedChildren) {
-              parent.fetchedChildren = [ ...parent.fetchedChildren ];
-            }
-            else {
-              parent.fetchedChildren = [];
-            }
-
-            let found = false;
-            for (const index in parent.fetchedChildren) {
-              if (parent.fetchedChildren[index].id !== record.id) {
-                continue;
-              }
-
-              found = true;
-              parent.fetchedChildren[index] = record;
-            }
-            if (!found) {
-              parent.fetchedChildren.unshift(record);
-            }
-          }
-        }
-        else {
-          let found = false;
-          for (const index in executions) {
-            if (executions[index].id !== record.id) {
-              continue;
-            }
-
-            found = true;
-            executions[index] = record;
-          }
-          if (!found) {
-            executions.unshift(record);
-          }
-        }
+        executions = [ record, ...executions ];
       }
 
       return {
@@ -149,7 +104,21 @@ const actionReducer = (state = {}, input) => {
       };
     }
 
-    case 'SET_FILTER':
+    case 'DELETE_EXECUTION': {
+      const { record } = input;
+
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index > -1) {
+        executions = executions.filter(({ id }) => id !== record.id);
+      }
+
+      return {
+        ...state,
+        executions,
+      };
+    }
+
+    case 'SET_FILTER': {
       filter = input.filter;
       groups = makeGroups(actions, filter);
 
@@ -158,6 +127,7 @@ const actionReducer = (state = {}, input) => {
         groups,
         filter,
       };
+    }
 
     default:
       return state;
