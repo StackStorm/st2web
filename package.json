@@ -59,7 +59,7 @@
     "urijs": "^1.17.1"
   },
   "devDependencies": {
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
+    "@stackstorm/browserify-postcss": "0.3.4-patch.3",
     "@stackstorm/module-test-utils": "^1.0.0-pre.5",
     "@stackstorm/postcss-less-engine": "0.6.2",
     "@stackstorm/st2-build": "^1.0.0-pre.5",
@@ -72,7 +72,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-register": "^6.26.0",
     "babelify": "^8.0.0",
-    "browserify": "^14.5.0",
+    "browserify": "^15.2.0",
     "chai": "^4.1.2",
     "eslint": "^4.14.0",
     "eslint-plugin-react": "^7.5.1",
