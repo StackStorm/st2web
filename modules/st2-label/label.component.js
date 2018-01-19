@@ -5,17 +5,20 @@ import cx from 'classnames';
 import './style.less';
 
 const states = {
-  'complete': {
-    className: 'st2-label--success',
-  },
-  'error': {
-    className: 'st2-label--danger',
-  },
   'enabled': {
     className: 'st2-label--success',
   },
   'disabled': {
     className: 'st2-label--danger',
+  },
+  'scheduled': {
+    className: 'st2-label--progress',
+  },
+  'running': {
+    className: 'st2-label--progress',
+  },
+  'complete': {
+    className: 'st2-label--success',
   },
   'succeeded': {
     className: 'st2-label--succeeded',
@@ -23,16 +26,16 @@ const states = {
   'failed': {
     className: 'st2-label--failed',
   },
-  'running': {
-    className: 'st2-label--progress',
-  },
-  'scheduled': {
-    className: 'st2-label--progress',
+  'error': {
+    className: 'st2-label--danger',
   },
   'canceling': {
     className: 'st2-label--warning',
   },
   'canceled': {
+    className: 'st2-label--warning',
+  },
+  'timeout': {
     className: 'st2-label--warning',
   },
 };

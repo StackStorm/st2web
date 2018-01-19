@@ -61,7 +61,7 @@ const actionReducer = (state = {}, input) => {
     case 'FETCH_EXECUTIONS': {
       switch(input.status) {
         case 'success':
-          executions = input.payload;
+          executions = _.sortBy(input.payload, 'start_timestamp');
           break;
         case 'error':
           break;
@@ -78,7 +78,10 @@ const actionReducer = (state = {}, input) => {
     case 'CREATE_EXECUTION': {
       const { record } = input;
 
-      executions = [ record, ...executions ];
+      const index = executions.findIndex(({ id }) => id === record.id);
+      if (index === -1) {
+        executions = _.sortBy([ record, ...executions ], 'start_timestamp');
+      }
 
       return {
         ...state,
@@ -95,7 +98,7 @@ const actionReducer = (state = {}, input) => {
         executions[index] = record;
       }
       else {
-        executions = [ record, ...executions ];
+        executions = _.sortBy([ record, ...executions ], 'start_timestamp');
       }
 
       return {

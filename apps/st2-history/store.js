@@ -134,8 +134,11 @@ const historyReducer = (state = {}, input) => {
         }
       }
       else {
-        executions = [ record, ...executions ];
-        groups = makeGroups(executions);
+        const index = executions.findIndex(({ id }) => id === record.id);
+        if (index === -1) {
+          executions = _.sortBy([ record, ...executions ], 'start_timestamp');
+          groups = makeGroups(executions);
+        }
       }
 
       return {
