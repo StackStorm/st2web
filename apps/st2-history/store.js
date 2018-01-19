@@ -121,13 +121,16 @@ const historyReducer = (state = {}, input) => {
 
       if (record.parent) {
         if (childExecutions[record.parent]) {
-          childExecutions = {
-            ...childExecutions,
-            [record.parent]: _.sortBy([
-              ...childExecutions[record.parent],
-              record,
-            ], 'start_timestamp'),
-          };
+          const index = childExecutions[record.parent].findIndex(({ id }) => id === record.id);
+          if (index === -1) {
+            childExecutions = {
+              ...childExecutions,
+              [record.parent]: _.sortBy([
+                ...childExecutions[record.parent],
+                record,
+              ], 'start_timestamp'),
+            };
+          }
         }
       }
       else {
