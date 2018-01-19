@@ -13,6 +13,10 @@ export class ReactInstanceTester {
     this._instance = instance;
   }
 
+  get type() {
+    return this._instance.type;
+  }
+  
   get props() {
     return this._instance.props || {};
   }
