@@ -30,6 +30,6 @@
     "redux": "^3.7.2"
   },
   "devDependencies": {
-    "babelify": "^8.0.0"
+    "babelify": "8.0.0"
   }
 }
