@@ -1,6 +1,12 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":pinVersions"
   ],
-  "schedule": "every weekend"
+  "pathRules": [
+    {
+      "paths": ["modules/*/package.json", "apps/*/packages.json"],
+      "extends": [":pinOnlyDevDependencies"]
+    }
+  ]
 }
