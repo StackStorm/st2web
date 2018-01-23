@@ -31,7 +31,7 @@
     "react-time": "^4.3.0"
   },
   "devDependencies": {
-    "babelify": "^8.0.0"
+    "babelify": "8.0.0"
   },
   "peerDependencies": {
     "react": "^16.2.0",

@@ -52,9 +52,9 @@
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.1",
     "@stackstorm/postcss-less-engine": "0.6.2",
-    "babelify": "^8.0.0",
-    "less": "^2.7.3",
-    "postcss": "^6.0.14"
+    "babelify": "8.0.0",
+    "less": "2.7.3",
+    "postcss": "6.0.16"
   },
   "peerDependencies": {
     "react": "^16.2.0",

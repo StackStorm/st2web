@@ -27,7 +27,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "babelify": "^8.0.0"
+    "babelify": "8.0.0"
   },
   "peerDependencies": {
     "react": "^16.2.0",
