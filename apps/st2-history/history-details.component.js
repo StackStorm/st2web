@@ -158,11 +158,13 @@ export default class HistoryDetails extends React.Component {
                         />
                       </DetailsPanelBodyLine>
                     ) : null }
-                    <DetailsPanelBodyLine label="Execution Time">
-                      <span data-test="execution_time">
-                        {getExecutionTime(execution)}s
-                      </span>
-                    </DetailsPanelBodyLine>
+                    { execution.end_timestamp ? (
+                      <DetailsPanelBodyLine label="Execution Time">
+                        <span data-test="execution_time">
+                          {getExecutionTime(execution)}s
+                        </span>
+                      </DetailsPanelBodyLine>
+                    ) : null }
                   </DetailsPanelBody>
                 </div>
                 <DetailsPanelHeading title="Action Output" />
