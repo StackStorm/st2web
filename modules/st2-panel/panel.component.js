@@ -147,24 +147,29 @@ export class ToolbarSearch extends React.Component {
     className: PropTypes.string,
     title: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
+    hidden: PropTypes.bool,
     onChange: PropTypes.func,
+    onToggle: PropTypes.func,
   }
 
   render() {
-    const { className, title, value, onChange, ...props } = this.props;
+    const { className, title, value, onChange, onToggle, hidden, ...props } = this.props;
 
     return (
       <div {...props} className={cx('st2-panel__toolbar-search', className)}>
         <form>
           <input
             type="search"
-            className="st2-panel__search-bar"
+            className={cx('st2-panel__search-bar', { 'st2-panel__search-bar--hidden': hidden })}
             data-test="filter"
             placeholder={title}
             value={value}
-            onChange={(e) => onChange(e)}
+            onChange={(e) => onChange && onChange(e)}
           />
-          <i className={cx('icon-lens', className)} />
+          <i
+            className={cx('icon-lens', className)}
+            onClick={(e) => onToggle && onToggle(e)}
+          />
         </form>
       </div>
     );
