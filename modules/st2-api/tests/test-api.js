@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import '@stackstorm/module-test-utils/bootstrap/st2constants';
 import '@stackstorm/module-test-utils/bootstrap/storage';
 import '@stackstorm/module-test-utils/bootstrap/location';
-import api from '..';
+import api, { API } from '..';
 
 import moxios from 'moxios';
 
@@ -12,6 +12,20 @@ process.on('unhandledRejection', (reason) => {
 });
 
 describe('API', () => {
+  describe('inherits host from window', () => {
+    const host = window.location.host; // capture initial value
+    window.location.host = 'www.example.net:1234'; // set test value
+
+    const api = new API();
+    const client = api.initClient();
+
+    expect(client.index.protocol).to.equal('https'); // always
+    expect(client.index.host).to.equal('www.example.net');
+    expect(client.index.port).to.equal('1234'); // stored as a string
+
+    window.location.host = host; // restore initial value
+  });
+
   describe('connect', () => {
     before(() => moxios.install());
     after(() => moxios.uninstall());
