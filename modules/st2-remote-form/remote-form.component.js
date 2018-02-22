@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import AutoForm from '@stackstorm/module-auto-form';
-import AutoFormText from '@stackstorm/module-auto-form/modules/text';
+import AutoFormLink from '@stackstorm/module-auto-form/modules/link';
 import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 
 import './style.less';
@@ -21,6 +21,7 @@ export default class RemoteForm extends React.Component {
     }).isRequired,
     data: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    flat: PropTypes.bool
   }
 
   static defaultProps = {
@@ -46,7 +47,7 @@ export default class RemoteForm extends React.Component {
   }
 
   render() {
-    const { className, name, disabled, spec, data, onChange, ...props } = this.props;
+    const { className, name, disabled, spec, data, onChange, flat, ...props } = this.props;
     onChange;
 
     const key = name === 'trigger' ? 'type' : 'ref';
@@ -55,12 +56,14 @@ export default class RemoteForm extends React.Component {
     const childSpec = child ? child.spec : {};
 
     return (
-      <div {...props} className={cx('st2-remote-form', className)}>
+      <div {...props} className={cx('st2-remote-form', flat && 'st2-auto-form--flat', className)}>
         { disabled ? (
-          <AutoFormText
+          <AutoFormLink
             name={name}
+            href={`/actions/${data[key]}`}
             spec={spec}
             data={data[key]}
+            flat={flat}
           />
         ) : (
           <AutoFormCombobox
@@ -68,6 +71,7 @@ export default class RemoteForm extends React.Component {
             spec={spec}
             data={data[key]}
             onChange={(ref) => this.onChangeValue(ref)}
+            flat={flat}
           />
         ) }
         <AutoForm
@@ -75,6 +79,7 @@ export default class RemoteForm extends React.Component {
           data={data.parameters}
           disabled={disabled}
           onChange={(parameters) => this.onChangeParameters(parameters)}
+          flat={flat}
         />
       </div>
     );

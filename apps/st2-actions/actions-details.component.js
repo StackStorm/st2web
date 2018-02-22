@@ -218,109 +218,113 @@ export default class ActionsDetails extends React.Component {
           sections={[
             { label: 'General', path: 'general' },
             { label: 'Code', path: 'code' },
+            { label: 'executions', path: 'executions' },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
-        <DetailsBody>
-          { section === 'general' ? (
-            <div>
-              <DetailsPanel data-test="action_parameters">
-                <DetailsPanelHeading title="Parameters" />
-                <DetailsPanelBody>
-                  <form onSubmit={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)}>
-                    <AutoForm
-                      spec={{
-                        type: 'object',
-                        properties: action.parameters,
-                      }}
-                      data={this.state.runValue}
-                      onChange={(runValue) => this.setState({ runValue })}
-                    />
-                    <StringField
-                      name="trace-tag"
-                      spec={{}}
-                      value={this.state.runTrace}
-                      onChange={(runTrace) => this.setState({ runTrace })}
-                    />
 
-                    <DetailsButtonsPanel>
-                      <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
-                      <Button submit value="Run" data-test="run_submit" />
-                    </DetailsButtonsPanel>
-                    { this.state.runPreview ? (
-                      <Highlight data-test="action_code" code={this.state.runValue} />
-                    ) : null }
-                  </form>
-                </DetailsPanelBody>
-              </DetailsPanel>
-              <DetailsPanel data-test="action_executions">
-                <DetailsPanelHeading title="Executions" />
-                <DetailsPanelBody>
-                  { executions.length > 0 ? (
-                    <FlexTable>
-                      { executions.map((execution) => [
-                        <FlexTableRow
-                          key={execution.id}
-                          onClick={() => this.handleToggleExecution(execution.id)}
-                          columns={[
-                            {
-                              className: 'st2-actions__details-column-utility',
-                              children: (
-                                <i
-                                  className={cx({
-                                    'icon-chevron-down': this.state.executionsVisible[execution.id],
-                                    'icon-chevron_right': !this.state.executionsVisible[execution.id],
-                                  })}
-                                />
-                              ),
-                            },
-                            {
-                              className: 'st2-actions__details-column-meta',
-                              children: <Label status={execution.status} short={true} />,
-                            },
-                            {
-                              className: 'st2-actions__details-column-time',
-                              children: <Time timestamp={execution.start_timestamp} />,
-                            },
-                            {
-                              Component: Link,
-                              to: `/history/${execution.id}/general?action=${action.ref}`,
-                              className: 'st2-actions__details-column-history',
-                              title: 'Jump to History',
-                              children: <i className="icon-history" />,
-                            },
-                          ]}
-                        />,
-                        <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
-                          <ActionReporter runner={execution.runner.name} execution={execution} />
-                        </FlexTableInsert>,
-                      ]) }
-                    </FlexTable>
-                  ) : (
-                    <DetailsPanelEmpty>No history records for this action</DetailsPanelEmpty>
-                  ) }
-
-                  <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
-                    <i className="icon-history" /> See full action history
-                  </Link>
-                </DetailsPanelBody>
-              </DetailsPanel>
-            </div>
-          ) : null }
-          { section === 'code' ? (
-            <DetailsPanel data-test="action_code">
-              <Highlight lines={20} code={action} />
+        { section === 'general' ? (
+          <DetailsBody>
+            <DetailsToolbar key="toolbar">
+              <Button value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)}/>
+              <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
+              <DetailsToolbarSeparator />
+              { action.runner_type === 'mistral-v2' ? (
+                <FlowLink action={action.ref} data-test="flow_link" />
+              ) : null }
+            </DetailsToolbar>
+            { this.state.runPreview && <Highlight key="preview" well data-test="action_code" code={this.state.runValue} /> }
+            <DetailsPanel key="panel" data-test="action_parameters">
+              <DetailsPanelHeading title="Parameters" />
+              <DetailsPanelBody>
+                <form>
+                  <AutoForm
+                    spec={{
+                      type: 'object',
+                      properties: action.parameters,
+                    }}
+                    data={this.state.runValue}
+                    onChange={(runValue) => this.setState({ runValue })}
+                  />
+                  <StringField
+                    name="trace-tag"
+                    spec={{}}
+                    value={this.state.runTrace}
+                    onChange={(runTrace) => this.setState({ runTrace })}
+                  />
+                </form>
+              </DetailsPanelBody>
             </DetailsPanel>
-          ) : null }
-        </DetailsBody>
-        <DetailsToolbar>
-          { action.runner_type === 'mistral-v2' ? (
-            <FlowLink action={action.ref} data-test="flow_link" />
-          ) : null }
+          </DetailsBody>
+        ) : null }
 
-          <DetailsToolbarSeparator />
-        </DetailsToolbar>
+        { section === 'code' ? (
+          <DetailsBody>
+            <DetailsPanel data-test="action_code">
+              <Highlight code={action} />
+            </DetailsPanel>
+          </DetailsBody>
+        ) : null }
+
+        { section === 'executions' ? (
+          <DetailsBody>
+            <DetailsToolbar key="toolbar">
+              <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
+                <i className="icon-history" /> See full action history
+              </Link>
+            </DetailsToolbar>,
+            <DetailsPanel key="panel" data-test="action_executions">
+              <DetailsPanelHeading title="Executions" />
+              <DetailsPanelBody>
+                { executions.length > 0 ? (
+                  <FlexTable>
+                    { executions.map((execution) => [
+                      <FlexTableRow
+                        key={execution.id}
+                        onClick={() => this.handleToggleExecution(execution.id)}
+                        columns={[
+                          {
+                            className: 'st2-actions__details-column-utility',
+                            children: (
+                              <i
+                                className={cx({
+                                  'icon-chevron-down': this.state.executionsVisible[execution.id],
+                                  'icon-chevron_right': !this.state.executionsVisible[execution.id],
+                                })}
+                              />
+                            ),
+                          },
+                          {
+                            className: 'st2-actions__details-column-meta',
+                            children: <Label status={execution.status} short={true} />,
+                          },
+                          {
+                            className: 'st2-actions__details-column-time',
+                            children: <Time timestamp={execution.start_timestamp} />,
+                          },
+                          {
+                            Component: Link,
+                            to: `/history/${execution.id}/general?action=${action.ref}`,
+                            className: 'st2-actions__details-column-history',
+                            title: 'Jump to History',
+                            children: <i className="icon-history" />,
+                          },
+                        ]}
+                      />,
+                      <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
+                        <ActionReporter runner={execution.runner.name} execution={execution} />
+                      </FlexTableInsert>,
+                    ]) }
+                  </FlexTable>
+                ) : (
+                  <DetailsPanelEmpty>No history records for this action</DetailsPanelEmpty>
+                ) }
+              </DetailsPanelBody>
+            </DetailsPanel>
+          </DetailsBody>
+        ) : null }
+
       </PanelDetails>
     );
   }

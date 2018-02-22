@@ -12,30 +12,20 @@ export default class TextModule extends React.Component {
     name: PropTypes.string,
     spec: PropTypes.object,
     data: PropTypes.string,
+    href: PropTypes.string,
   }
 
   render() {
-    const { className = '', name, spec, data } = this.props;
-
-    let link = null;
-    if (name === 'action') {
-      link = `/actions/${data}`;
-    }
+    const { className = '', name, spec, data, href } = this.props;
 
     return (
       <div className={cx('st2-auto-form-text', className)}>
         <Title name={name} spec={spec} />
 
         <div className="st2-auto-form__value">
-          { link ? (
-            <a className="st2-auto-form__link" href={link}>
+          <a className="st2-auto-form__link" href={href}>
               { data }
-            </a>
-          ) : (
-            <div className="st2-auto-form__text">
-              { data }
-            </div>
-          ) }
+          </a>
         </div>
       </div>
     );

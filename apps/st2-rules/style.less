@@ -96,9 +96,93 @@
     text-overflow: ellipsis;
   }
 
-  .st2-pack-icon {
-    float: left;
+  &__condition {
+    &s {
+      display: flex;
+      overflow: hidden;
+  
+      flex-wrap: wrap;
 
-    margin: -5px 12px -5px 2px;
+      .st2-pack-icon {
+        float: left;
+    
+        margin: -5px 12px -5px 2px;
+      }
+    }
+
+    &-if {
+      box-sizing: border-box;
+      min-width: 0;
+      max-width: 100%;
+      max-height: 52px;
+  
+      border-bottom: 1px solid @grey-lighten-3;
+
+      position: relative;
+
+      padding: 10px 15px;
+
+      flex: 1;
+  
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      padding-right: 5px;
+  
+      background: white;
+
+      min-width: initial;
+  
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: -22px;
+  
+        display: block;
+  
+        width: 0;
+        height: 0;
+  
+        content: '';
+  
+        border-width: 26px 11px 26px 11px;
+        border-style: solid;
+        border-color: transparent transparent transparent white;
+      }
+      &:before {
+        z-index: 1;
+        right: -23px;
+  
+        border-color: transparent transparent transparent #cacaca;
+      }
+    }
+
+    &-then {
+      box-sizing: border-box;
+      min-width: 0;
+      max-width: 100%;
+      max-height: 52px;
+  
+      border-bottom: 1px solid @grey-lighten-3;
+
+      position: relative;
+
+      padding: 10px 15px;
+
+      flex: 1;
+  
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      overflow: visible;
+
+      padding-left: 25px;
+  
+      background: white;
+
+      min-width: initial;
+    }
   }
 }

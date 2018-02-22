@@ -97,15 +97,15 @@ export default class Menu extends React.Component {
 
         <div className="st2-menu__spacer" />
 
-        <div className="st2-menu__user">
-          <label className="st2-menu__user-item">
+        <div className="st2-menu__side">
+          <label className="st2-menu__side-item">
             { user || 'Stanley' }@{ server.name }
             <i className="st2-menu__icon icon-user" />
             <input type="checkbox" />
-            <div className="st2-menu__user-dropdown">
-              <div className="st2-menu__user-dropdown-backdrop" />
+            <div className="st2-menu__side-dropdown">
+              <div className="st2-menu__side-dropdown-backdrop" />
               <div
-                className="st2-menu__user-dropdown-item"
+                className="st2-menu__side-dropdown-item"
                 onClick={() => this.handleDisconnect()}
               >
                 Sign out
@@ -114,9 +114,12 @@ export default class Menu extends React.Component {
           </label>
         </div>
 
-        <a href="mailto:support@stackstorm.com" className="st2-menu__nav-item" data-reamaze-lightbox="contact">
-          <i className="st2-menu__icon icon-question" />
-          Contact us
+        <a href="https://docs.stackstorm.com/" className="st2-menu__side">
+          Docs
+        </a>
+
+        <a href="mailto:support@stackstorm.com" className="st2-menu__side" data-reamaze-lightbox="contact">
+          Contact
         </a>
       </header>
     );

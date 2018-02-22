@@ -10,7 +10,7 @@ import setTitle from '@stackstorm/module-title';
 import { Link } from 'react-router-dom';
 import AutoFormCheckbox from '@stackstorm/module-auto-form/modules/checkbox';
 import Criteria from '@stackstorm/module-criteria';
-import Button from '@stackstorm/module-forms/button.component';
+import Button, { Toggle } from '@stackstorm/module-forms/button.component';
 import Highlight from '@stackstorm/module-highlight';
 import PackIcon from '@stackstorm/module-pack-icon';
 import {
@@ -95,7 +95,7 @@ export default class RulesDetails extends React.Component {
 
     store.dispatch({
       type: 'FETCH_RULE',
-      promise: api.client.rules.get(id),
+      promise: api.client.ruleOverview.get(id),
     })
       .catch((err) => {
         notification.error(`Unable to retrieve rule "${id}".`, { err });
@@ -201,34 +201,7 @@ export default class RulesDetails extends React.Component {
           status={rule.enabled ? 'enabled' : 'disabled'}
           title={( <Link to={`/rules/${rule.ref}`}>{rule.ref}</Link> )}
           subtitle={rule.description}
-        >
-          <div className="st2-details__header-conditions">
-            <div className="st2-details__header-condition st2-details__header-condition--if" data-test="header_if">
-              <span className="st2-details__header-condition-label">If</span>
-              <span className="st2-details__header-condition-icon">
-                <PackIcon small name={rule.trigger.type.split('.')[0]} />
-              </span>
-              <span className="st2-details__header-condition-name">
-                { rule ? (
-                  <span>{ rule.trigger.type }</span>
-                ) : null }
-              </span>
-            </div>
-            <div className="st2-details__header-condition st2-details__header-condition--then" data-test="header_then">
-              <span className="st2-details__header-condition-label">Then</span>
-              <span className="st2-details__header-condition-icon">
-                <PackIcon small name={rule.action.ref.split('.')[0]} />
-              </span>
-              <span className="st2-details__header-condition-name">
-                { rule ? (
-                  <Link to={`/actions/${rule.action.ref}`}>
-                    { rule.action.ref }
-                  </Link>
-                ) : null }
-              </span>
-            </div>
-          </div>
-        </DetailsHeader>
+        />
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
@@ -237,21 +210,50 @@ export default class RulesDetails extends React.Component {
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
+        <DetailsToolbar>
+          <Toggle title="enabled" value={rule.enabled} />
+          { this.state.editing ? [
+            <Button key="save" small value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
+            <Button key="cancel" small value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
+          ] : [
+            <Button key="edit" small value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
+            <Button key="delete" small value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
+          ] }
+          <DetailsToolbarSeparator />
+        </DetailsToolbar>
+        <div className="st2-rules__conditions">
+          <div className="st2-rules__condition-if">
+            <div className="st2-rules__column-trigger" title={rule.trigger.type}>
+              <span className="st2-rules__label">If</span>
+              <PackIcon name={rule && rule.trigger.type.split('.')[0]} />
+
+              <span className="st2-rules__name">
+                { rule.trigger.type }
+              </span>
+              { rule.trigger.description ? (
+                <span className="st2-rules__description">
+                  { rule.trigger.description }
+                </span>
+              ) : null }
+            </div>
+          </div>
+          <div className="st2-rules__condition-then">
+            <div className="st2-rules__column-action" title={rule.action.ref}>
+              <span className="st2-rules__label">Then</span>
+              <PackIcon name={rule && rule.action.ref.split('.')[0]} />
+
+              <span className="st2-rules__name">
+                { rule.action.ref }
+              </span>
+              <span className="st2-rules__description">
+                { rule.action.description }
+              </span>
+            </div>
+          </div>
+        </div>
         <DetailsBody>
           { section === 'general' ? (
             <form name="form">
-              <DetailsPanel>
-                <AutoFormCheckbox
-                  spec={{
-                    name: 'enabled',
-                    type: 'boolean',
-                    default: true,
-                  }}
-                  disabled={!this.state.editing}
-                  data={rule.enabled}
-                  onChange={(value) => this.handleChange('enabled', value)}
-                />
-              </DetailsPanel>
               { triggerSpec ? (
                 <DetailsPanel>
                   <DetailsPanelHeading title="Trigger" />
@@ -263,6 +265,7 @@ export default class RulesDetails extends React.Component {
                       data={rule.trigger}
                       onChange={(trigger) => this.handleChange('trigger', trigger)}
                       data-test="rule_trigger_form"
+                      flat
                     />
                   </DetailsPanelBody>
                 </DetailsPanel>
@@ -277,6 +280,7 @@ export default class RulesDetails extends React.Component {
                       spec={criteriaSpecs[rule.trigger.type]}
                       onChange={(criteria) => this.handleChange('criteria', criteria)}
                       data-test="rule_criteria_form"
+                      flat
                     />
                   </DetailsPanelBody>
                 </DetailsPanel>
@@ -292,6 +296,7 @@ export default class RulesDetails extends React.Component {
                       data={rule.action}
                       onChange={(action) => this.handleChange('action', action)}
                       data-test="rule_action_form"
+                      flat
                     />
                   </DetailsPanelBody>
                 </DetailsPanel>
@@ -311,6 +316,7 @@ export default class RulesDetails extends React.Component {
                           : this.handleChange('pack', pack)
                       }
                       data-test="rule_pack_form"
+                      flat
                     />
                   </DetailsPanelBody>
                 </DetailsPanel>
@@ -323,16 +329,6 @@ export default class RulesDetails extends React.Component {
             </DetailsPanel>
           ) : null }
         </DetailsBody>
-        <DetailsToolbar>
-          { this.state.editing ? [
-            <Button key="save" small value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
-            <Button key="cancel" small value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
-          ] : [
-            <Button key="edit" small value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
-            <Button key="delete" small value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
-          ] }
-          <DetailsToolbarSeparator />
-        </DetailsToolbar>
 
         { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
           <RulesPopup

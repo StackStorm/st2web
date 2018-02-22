@@ -45,36 +45,6 @@ export default class RulesFlexCard extends React.Component {
             </div>
           </div>
         </div>
-        <div className="st2-flex-card__row">
-          <div className="st2-flex-card__column st2-flex-card__if">
-            <div className="st2-rules__column-trigger" title={rule.trigger.type}>
-              <span className="st2-rules__label">If</span>
-              <PackIcon name={rule && rule.trigger.type.split('.')[0]} />
-
-              <span className="st2-rules__name">
-                { rule.trigger.type }
-              </span>
-              { rule.trigger.description ? (
-                <span className="st2-rules__description">
-                  { rule.trigger.description }
-                </span>
-              ) : null }
-            </div>
-          </div>
-          <div className="st2-flex-card__column st2-flex-card__then">
-            <div className="st2-rules__column-action" title={rule.action.ref}>
-              <span className="st2-rules__label">Then</span>
-              <PackIcon name={rule && rule.action.ref.split('.')[0]} />
-
-              <span className="st2-rules__name">
-                { rule.action.ref }
-              </span>
-              <span className="st2-rules__description">
-                { rule.action.description }
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }

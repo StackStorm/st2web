@@ -4,8 +4,9 @@
   position: relative;
 
   color: black;
-  border-bottom: 1px solid @grey-lighten-1;
   background-color: transparent;
+
+  margin-left: 10px;
 
   &__caption {
     position: relative;
@@ -40,14 +41,14 @@
 
       &:after {
         font-family: 'brocadeicons';
-        font-size: 15px;
+        font-size: 10px;
         font-weight: normal;
         font-style: normal;
         line-height: 42px;
 
         display: block;
 
-        padding: 0 10px 0 20px;
+        padding: 0 5px;
 
         content: '\e95f';
 
@@ -76,7 +77,6 @@
       width: 32px;
       height: 32px;
       margin-right: 5px;
-      margin-left: -47px;
       padding: 5px;
 
       vertical-align: top;
@@ -84,19 +84,30 @@
       border-radius: 5px;
       background: white;
 
+      overflow: hidden;
+
       &:not([src]) {
         display: none;
       }
     }
 
-    &--pack:before {
+    &--pack img:before {
+      // Calendar icon is missing in brocade pack
+      font-family: 'brocadeicons';
       font-size: 29px;
+      font-weight: normal;
+      font-style: normal;
       line-height: 32px;
+
+      display: inline-block;
+
+      padding-bottom: 5px;
+
+      vertical-align: top;
 
       width: 32px;
       height: 32px;
       margin-right: 5px;
-      padding: 5px;
 
       content: '\e94d';
       text-align: center;
@@ -181,47 +192,42 @@
 
   padding: 0;
 
-  background-color: white;
-
   &:hover {
     cursor: pointer;
 
-    background: @yellow-lighten-5;
+    background: #DEEEFB;
   }
 
   & &__expand {
-    font-size: 15px;
-    line-height: 32px;
+    font-size: 10px;
+    line-height: 31px;
 
     flex: initial;
 
     box-sizing: content-box;
-    min-width: 15px;
+    min-width: 10px;
     padding-right: 0;
-    padding-left: 30px;
-
-    border-top: 1px solid @grey-lighten-3;
   }
 
   & &__timestamp {
     line-height: 32px;
 
     flex: initial;
-
-    border-top: 1px solid @grey-lighten-3;
   }
 
   & &__status {
-    font-size: 21px;
+    font-size: 18px;
     line-height: 32px;
 
     flex: initial;
 
-    width: 52px;
+    width: 31px;
 
     text-align: right;
 
     color: @grey-lighten-3;
+
+    padding-right: 0;
 
     .st2-label__label {
       overflow: hidden;
@@ -340,60 +346,38 @@
 
     white-space: nowrap;
 
-    border-top: 1px solid @grey-lighten-3;
-  }
-
-  &__if {
-    overflow: visible;
-
-    padding-right: 5px;
-
-    background: white;
-
-    &:before,
-    &:after {
-      position: absolute;
-      z-index: 2;
-      top: 0;
-      right: -22px;
-
-      display: block;
-
-      width: 0;
-      height: 0;
-
-      content: '';
-
-      border-width: 26px 11px 26px 11px;
-      border-style: solid;
-      border-color: transparent transparent transparent white;
-    }
-    &:before {
-      z-index: 1;
-      right: -23px;
-
-      border-color: transparent transparent transparent #cacaca;
-    }
-  }
-  &__then {
-    overflow: visible;
-
-    padding-left: 25px;
-
-    background: white;
-  }
-
-  &__if&__column,
-  &__then&__column {
-    min-width: initial;
+    border-bottom: 1px solid @grey-lighten-3;
   }
 
   &--active {
-    border-left: 5px solid @yellow-base;
+    background-color: #008CEB;
+
+    color: white;
+
+    &:hover {
+      background-color: #008CEB;
+    }
+  }
+
+  &--active &__header-type,
+  &--active &__header-status, {
+    color: white;
   }
 
   &--active &__header-expand,
   &--active &__expand {
-    padding-left: 25px;
+    // padding-left: 25px;
+  }
+
+  &--expanded &__row {
+    border: 1px solid #ccc;
+    border-top: 0;
+    box-shadow: 0 1px 4px #ccc;
+
+    position: relative;
+  }
+
+  &--expanded &__column {
+    border: 0;
   }
 }

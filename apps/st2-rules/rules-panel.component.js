@@ -283,7 +283,7 @@ export default class RulesPanel extends React.Component {
     setTitle([ 'Rules' ]);
 
     return (
-      <Panel data-test="rules_panel">
+      <Panel data-test="rules_panel" detailed>
         <PanelView className="st2-rules">
           <ToolbarActions>
             <ToolbarButton onClick={() => this.handleCreatePopup()}>

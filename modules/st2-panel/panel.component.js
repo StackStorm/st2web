@@ -10,14 +10,15 @@ import './style.less';
 export class Panel extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    detailed: PropTypes.bool,
     children: PropTypes.node,
   }
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, detailed = false, ...props } = this.props;
 
     return (
-      <main {...props} className={cx('st2-panel', className)}>
+      <main {...props} className={cx('st2-panel', detailed && 'st2-panel--detailed', className)}>
         { children }
       </main>
     );
@@ -286,7 +287,6 @@ export class DetailsHeader extends React.Component {
   }
 }
 
-const SWITCH_COUNT = [ 'first', 'second' ];
 export class DetailsSwitch extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -307,8 +307,8 @@ export class DetailsSwitch extends React.Component {
         {...props}
         className={cx(
           'st2-details__switch',
-          'st2-details__switch--of-two',
-          `st2-details__switch--${SWITCH_COUNT[active < 0 ? 0 : active]}`,
+          `st2-details__switch--of-${sections.length}`,
+          `st2-details__switch--${active < 0 ? 0 : active}`,
           className,
         )}
       >
