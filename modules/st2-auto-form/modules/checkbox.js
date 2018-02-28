@@ -12,10 +12,26 @@ export default class CheckboxModule extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     name: PropTypes.string,
-    disabled: PropTypes.bool,
+    disabled: PropTypes.bool.isRequired,
     spec: PropTypes.object,
     data: PropTypes.bool,
-    onChange: PropTypes.func,
+    onChange: function (props, propName, componentName) {
+      if (props.disabled) {
+        return null;
+      }
+
+      if (props[propName]) {
+        return PropTypes.checkPropTypes({
+          [propName]: PropTypes.func,
+        }, props, propName, componentName);
+      }
+
+      return new Error('You provided a `disabled: false` prop to a checkbox-module without an `onChange` handler.');
+    },
+  }
+
+  static defaultProps = {
+    disabled: false,
   }
 
   state = {

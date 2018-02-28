@@ -147,7 +147,7 @@ export class ToolbarSearch extends React.Component {
     className: PropTypes.string,
     title: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {
@@ -295,7 +295,7 @@ export class DetailsSwitch extends React.Component {
       label: PropTypes.string.isRequired,
     })).isRequired,
     current: PropTypes.string.isRequired,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
   }
 
   render() {

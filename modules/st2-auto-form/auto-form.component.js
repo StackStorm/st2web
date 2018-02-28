@@ -18,7 +18,19 @@ export default class AutoForm extends React.Component {
     spec: PropTypes.object,
     data: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func,
+    onChange: function (props, propName, componentName) {
+      if (props.disabled) {
+        return null;
+      }
+
+      if (props[propName]) {
+        return PropTypes.checkPropTypes({
+          [propName]: PropTypes.func,
+        }, props, propName, componentName);
+      }
+
+      return new Error('You provided a `disabled: false` prop to an auto-form without an `onChange` handler.');
+    },
   }
 
   static defaultProps = {

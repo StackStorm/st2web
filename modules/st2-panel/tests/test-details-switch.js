@@ -13,6 +13,7 @@ describe(`${DetailsSwitch.name} Component`, () => {
           className="foobar"
           sections={[]}
           current="current"
+          onChange={() => {}}
         />
       );
 
@@ -25,6 +26,7 @@ describe(`${DetailsSwitch.name} Component`, () => {
           foo="bar"
           sections={[]}
           current="current"
+          onChange={() => {}}
         />
       );
 
