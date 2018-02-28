@@ -68,6 +68,7 @@ export default class HistoryPanel extends React.Component {
       search: PropTypes.string,
     }).isRequired,
     match: PropTypes.shape({
+      path: PropTypes.string,
       params: PropTypes.shape({
         ref: PropTypes.string,
         section: PropTypes.string,
