@@ -13,7 +13,7 @@ import api from '@stackstorm/module-api';
 import Login from '@stackstorm/module-login';
 
 import Actions from '@stackstorm/app-actions';
-import Docs from '@stackstorm/app-docs';
+import Triggers from '@stackstorm/app-triggers';
 import History from '@stackstorm/app-history';
 import Packs from '@stackstorm/app-packs';
 import Rules from '@stackstorm/app-rules';
@@ -24,7 +24,7 @@ const history = window.routerHistory = createHashHistory({});
 
 const routes = [
   Actions,
-  Docs,
+  Triggers,
   History,
   Packs,
   Rules,

@@ -1,0 +1,188 @@
+@import 'node_modules/@stackstorm/st2-style/colors.less';
+
+.st2-triggers {
+  // Table columns
+
+  .st2-flex-table {
+    &__column {
+      position: relative;
+
+      padding: 10px 15px;
+    }
+    &__row {
+      padding: 0;
+    }
+
+    &--collapsed {
+      padding-bottom: 0;
+
+      .st2-flex-table__caption {
+        border-bottom: 0;
+      }
+
+      .st2-flex-rule {
+        display: none;
+      }
+    }
+  }
+
+  &__column-name {
+    font-size: 16px;
+
+    overflow: hidden;
+
+    margin-right: 35px;
+
+    text-overflow: ellipsis;
+
+    color: #56a8db;
+  }
+  &__column-enabled {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+
+    margin-top: -10px;
+
+    .st2-label__label {
+      overflow: hidden;
+
+      width: 16px;
+      height: 16px;
+      padding: 0;
+
+      text-indent: -100000px;
+
+      border-radius: 8px;
+    }
+  }
+  &__column-desc {
+    padding-right: 35px;
+  }
+  &__label {
+    font-size: 22px;
+    line-height: 32px;
+
+    float: left;
+
+    margin-right: 10px;
+
+    text-transform: uppercase;
+
+    color: #b7d2da;
+  }
+  &__name {
+    font-weight: bold;
+
+    position: relative;
+    top: -2px;
+
+    display: block;
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: @aqua-base;
+  }
+  &__description {
+    position: relative;
+    top: -2px;
+
+    display: block;
+    overflow: hidden;
+
+    margin-bottom: -4px;
+
+    text-overflow: ellipsis;
+  }
+
+  &__condition {
+    &s {
+      display: flex;
+      overflow: hidden;
+  
+      flex-wrap: wrap;
+
+      .st2-pack-icon {
+        float: left;
+    
+        margin: -5px 12px -5px 2px;
+      }
+    }
+
+    &-if {
+      box-sizing: border-box;
+      min-width: 0;
+      max-width: 100%;
+      max-height: 52px;
+  
+      border-bottom: 1px solid @grey-lighten-3;
+
+      position: relative;
+
+      padding: 10px 15px;
+
+      flex: 1;
+  
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      padding-right: 5px;
+  
+      background: white;
+
+      min-width: initial;
+  
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: -22px;
+  
+        display: block;
+  
+        width: 0;
+        height: 0;
+  
+        content: '';
+  
+        border-width: 26px 11px 26px 11px;
+        border-style: solid;
+        border-color: transparent transparent transparent white;
+      }
+      &:before {
+        z-index: 1;
+        right: -23px;
+  
+        border-color: transparent transparent transparent #cacaca;
+      }
+    }
+
+    &-then {
+      box-sizing: border-box;
+      min-width: 0;
+      max-width: 100%;
+      max-height: 52px;
+  
+      border-bottom: 1px solid @grey-lighten-3;
+
+      position: relative;
+
+      padding: 10px 15px;
+
+      flex: 1;
+  
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      overflow: visible;
+
+      padding-left: 25px;
+  
+      background: white;
+
+      min-width: initial;
+    }
+  }
+}
