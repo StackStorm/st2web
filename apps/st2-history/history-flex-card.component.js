@@ -69,7 +69,6 @@ export default class HistoryFlexCard extends React.Component {
           })}
           onClick={(e) => this.handleSelect(e)}
           data-test={`execution execution:${execution.id}`}
-          ref={selected === execution.id ? this.context.scrollIntoView : null}
         >
           <div className="st2-flex-card__row">
             <div className="st2-flex-card__column st2-flex-card__expand">
