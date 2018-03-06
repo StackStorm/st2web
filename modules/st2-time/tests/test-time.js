@@ -38,12 +38,14 @@ describe(`${Time.name} Component`, () => {
     );
 
     // note: this will only work in places with whole hour offsets
-    const hour = (24 - new Date().getTimezoneOffset() / 60).toFixed(0).padStart(2, '0');
-    if (hour === '24') {
-      expect(instance.text).to.equal('Thu, 01 Jan 1970 00:00:00');
+    const hour = (24 - new Date().getTimezoneOffset() / 60);
+    if (hour >= 24) {
+      expect(instance.text).to.equal(
+        `Thu, 01 Jan 1970 ${(hour - 24).toFixed(0).padStart(2, '0')}:00:00`
+      );
     }
     else {
-      expect(instance.text).to.equal(`Wed, 31 Dec 1969 ${hour}:00:00`);
+      expect(instance.text).to.equal(`Wed, 31 Dec 1969 ${hour.toFixed(0).padStart(2, '0')}:00:00`);
     }
   });
 
@@ -67,12 +69,14 @@ describe(`${Time.name} Component`, () => {
     );
 
     // note: this will only work in places with whole hour offsets
-    const hour = (24 - new Date().getTimezoneOffset() / 60).toFixed(0).padStart(2, '0');
-    if (hour === '24') {
-      expect(instance.text).to.equal('January 1 1970 00:00 AM');
+    const hour = (24 - new Date().getTimezoneOffset() / 60);
+    if (hour >= 24) {
+      expect(instance.text).to.equal(
+        `January 1 1970 ${(hour - 24).toFixed(0).padStart(2, '0')}:00 AM`
+      );
     }
     else {
-      expect(instance.text).to.equal(`December 31 1969 ${hour}:00 PM`);
+      expect(instance.text).to.equal(`December 31 1969 ${hour.toFixed(0).padStart(2, '0')}:00 PM`);
     }
   });
 
