@@ -79,6 +79,11 @@ export default class ComboboxModule extends React.Component {
 
   onBlur(e) {
     const { value } = this.state;
+
+    if (value === null) {
+      return;
+    } 
+
     this.setState({ value: null });
     this.props.onChange(value);
   }

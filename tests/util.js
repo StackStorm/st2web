@@ -34,23 +34,20 @@ module.exports = function (browser) {
 
   browser.on('opened', (win) => {
     win.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};
+    win.document.raise = (e) => console.error(e);
   });
 
   browser.pipeline.addHandler((b, request, response) => {
     const url = new URI(response.url);
 
     if (url.path() === '/config.js') {
-      return new zombie.Response(`'use strict';
-
-window.st2constants = window.st2constants || {};
-window.st2constants.st2Config = {
-  hosts: [{
-    name: 'Test',
-    url: 'https://${process.env.ST2_HOST}/api',
-    auth: 'https://${process.env.ST2_HOST}/auth',
-  }],
-};
-`);
+      return new zombie.Response(`angular.module('main').constant('st2Config', {
+        hosts: [{
+          name: 'Test',
+          url: 'https://${process.env.ST2_HOST}/api',
+          auth: 'https://${process.env.ST2_HOST}/auth',
+        }],
+      });`);
     }
 
     if (url.path().indexOf('/reamaze.js') >= 0) {
@@ -61,6 +58,8 @@ window.st2constants.st2Config = {
       response._url = url.host('example.com').toString();
       request.url = response.url;
     }
+
+    response.headers.set('access-control-allow-origin', '*');
 
     return response;
   });
