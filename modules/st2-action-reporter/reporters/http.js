@@ -16,7 +16,7 @@ function getCode(execution) {
   if (execution.status === 'failed') {
     return [
       `${execution.result.error}`,
-      `${execution.result.traceback}`
+      `${execution.result.traceback}`,
     ].join('\n');
   }
 
@@ -26,7 +26,7 @@ function getCode(execution) {
   result.push(`> STATUS: ${execution.result.status_code}`);
   
   Object.keys(execution.result.headers).forEach(key => {
-    result.push(`> ${key.toUpperCase()}: ${execution.result.headers[key]}`)
+    result.push(`> ${key.toUpperCase()}: ${execution.result.headers[key]}`);
   });
   
   result.push(`\n${JSON.stringify(execution.result.body, null, 2)}`);
