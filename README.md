@@ -49,7 +49,7 @@ You can see the whole list of tasks in `gulpfile.js`.
 
 Connecting to st2 server
 -------------------------
-Configure the CORS on StackStorm server: on your st2 installation, edit the following lines to [[api] section](https://github.com/StackStorm/st2/blob/master/conf/st2.conf#L3-L9) in `/etc/st2/st2.conf`:
+Configure the CORS on StackStorm server: on your st2 installation, edit the following lines to [[api] section](https://github.com/StackStorm/st2/blob/master/conf/st2.prod.conf#L3-L10) in `/etc/st2/st2.conf`:
 
     [api]
     # Host and port to bind the API server.
