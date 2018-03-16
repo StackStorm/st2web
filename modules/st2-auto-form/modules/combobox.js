@@ -29,7 +29,7 @@ export default class ComboboxModule extends React.Component {
     this._listener = (event) => {
       const { spec } = this.props;
       const { value } = this.state;
-      const suggestions = !spec || value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
+      const suggestions = this.getSuggestions(spec, value);
 
       if (!suggestions || !suggestions.length) {
         return;
@@ -78,7 +78,14 @@ export default class ComboboxModule extends React.Component {
   }
 
   onBlur(e) {
+    const { value } = this.state;
+
+    if (value === null) {
+      return;
+    } 
+
     this.setState({ value: null });
+    this.props.onChange(value);
   }
 
   onInput(value) {
@@ -95,15 +102,22 @@ export default class ComboboxModule extends React.Component {
   }
 
   onChoose(value) {
-    this.setState({ value: null, error: null });
-    this.props.onChange(value);
+    this.setState({ value, error: null });
+  }
+
+  getSuggestions(spec, value) {
+    if (!spec || value === null) {
+      return null;
+    }
+
+    return spec.enum.filter(({ name }) => name.includes(value));
   }
 
   render() {
     const { className = '', name, disabled, spec, data = '' } = this.props;
     const { value, selected } = this.state;
 
-    const suggestions = !spec || value === null ? null : spec.enum.filter(({ name }) => name.includes(value));
+    const suggestions = this.getSuggestions(spec, value);
 
     return (
       <div className={cx('st2-auto-form-combobox', className)} ref={(ref) => this.ref = ref}>

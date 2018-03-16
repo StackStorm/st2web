@@ -13,14 +13,23 @@ function getCode(execution) {
     return null;
   }
 
-  return `${(execution.parameters.method || 'get').toUpperCase()} ${execution.parameters.url}
-> STATUS: ${execution.result.status_code}
-${
-  Object.keys(execution.result.headers).map((key) => (
-    `> ${key.toUpperCase()}: ${execution.result.headers[key]}`
-  )).join('\n')
-}
+  if (execution.status === 'failed') {
+    return [
+      `${execution.result.error}`,
+      `${execution.result.traceback}`,
+    ].join('\n');
+  }
 
-${execution.result.body}
-`;
+  const result = [];
+
+  result.push(`${(execution.parameters.method || 'get').toUpperCase()} ${execution.parameters.url}\n`);
+  result.push(`> STATUS: ${execution.result.status_code}`);
+  
+  Object.keys(execution.result.headers).forEach(key => {
+    result.push(`> ${key.toUpperCase()}: ${execution.result.headers[key]}`);
+  });
+  
+  result.push(`\n${JSON.stringify(execution.result.body, null, 2)}`);
+
+  return result.join('\n');
 }
