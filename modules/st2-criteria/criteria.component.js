@@ -46,7 +46,7 @@ export default class Criteria extends React.Component {
     data: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired,
-    flat: PropTypes.bool
+    flat: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -115,7 +115,7 @@ export default class Criteria extends React.Component {
     onChange;
 
     return (
-      <div {...props} className={cx('st2-criteria', flat && ['st2-auto-form--flat', 'flat'], className)}>
+      <div {...props} className={cx('st2-criteria', flat && [ 'st2-auto-form--flat', 'flat' ], className)}>
         <div>
           { _.map(data, ({ type, pattern }, key) => (
             <div className="st2-criteria__line" key={key}>

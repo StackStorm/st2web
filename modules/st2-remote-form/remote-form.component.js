@@ -21,7 +21,7 @@ export default class RemoteForm extends React.Component {
     }).isRequired,
     data: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
-    flat: PropTypes.bool
+    flat: PropTypes.bool,
   }
 
   static defaultProps = {

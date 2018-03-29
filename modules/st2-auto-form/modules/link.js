@@ -24,7 +24,7 @@ export default class TextModule extends React.Component {
 
         <div className="st2-auto-form__value">
           <a className="st2-auto-form__link" href={href}>
-              { data }
+            { data }
           </a>
         </div>
       </div>

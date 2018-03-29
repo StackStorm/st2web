@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import Label from '@stackstorm/module-label';
-import PackIcon from '@stackstorm/module-pack-icon';
 
 export default class RulesFlexCard extends React.Component {
   static propTypes = {

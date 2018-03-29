@@ -30,7 +30,6 @@ import {
   DetailsPanelEmpty,
   DetailsPanelHeading,
   DetailsPanelBody,
-  DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
@@ -227,7 +226,7 @@ export default class ActionsDetails extends React.Component {
         { section === 'general' ? (
           <DetailsBody>
             <DetailsToolbar key="toolbar">
-              <Button value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)}/>
+              <Button value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
               { action.runner_type === 'mistral-v2' ? (

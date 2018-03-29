@@ -9,7 +9,7 @@ export class Toggle extends React.Component {
   static propTypes = {
     title: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.bool
+    value: PropTypes.bool,
   }
 
   _id = uniqueId('st2toggle')
@@ -21,11 +21,13 @@ export class Toggle extends React.Component {
   render() {
     const { title, value } = this.props;
 
-    return <div className="st2-forms__switch">
-      <input id={this._id} type="checkbox" checked={value || false} onChange={({ target: { checked } }) => this.handleChange(checked)} />
-      <label htmlFor={this._id} />
-      <label htmlFor={this._id} className="st2-forms__switch-title">{ title }</label>
-    </div>;
+    return (
+      <div className="st2-forms__switch">
+        <input id={this._id} type="checkbox" checked={value || false} onChange={({ target: { checked } }) => this.handleChange(checked)} />
+        <label htmlFor={this._id} />
+        <label htmlFor={this._id} className="st2-forms__switch-title">{ title }</label>
+      </div>
+    );
   }
 }
 

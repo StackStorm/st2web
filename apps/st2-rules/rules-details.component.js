@@ -8,7 +8,6 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
-import AutoFormCheckbox from '@stackstorm/module-auto-form/modules/checkbox';
 import Criteria from '@stackstorm/module-criteria';
 import Button, { Toggle } from '@stackstorm/module-forms/button.component';
 import Highlight from '@stackstorm/module-highlight';
