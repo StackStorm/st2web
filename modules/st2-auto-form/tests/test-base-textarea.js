@@ -6,7 +6,7 @@ import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 
 import { TestComponent } from './utils';
-import { BaseTextareaField } from '../fields/base';
+import { BaseTextareaField, Textarea } from '../fields/base';
 
 class BaseTextareaFieldStub extends BaseTextareaField {
   fromStateValue(v) {
@@ -31,7 +31,7 @@ describe('AutoForm BaseTextareaField', () => {
 
     const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
 
-    expect(c.fieldType()).to.be.equal('textarea');
+    expect(c.fieldType()).to.be.equal(Textarea);
   });
 
   it('invokes onChange callback the moment child\'s onChange callback is called', () => {

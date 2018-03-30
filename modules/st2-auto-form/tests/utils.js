@@ -27,7 +27,10 @@ export class TestComponent {
   }
 
   makeChange(value, name) {
-    const event = { target: { value } };
+    const event = {
+      stopPropagation: () => {},
+      target: { value },
+    };
     if (name) {
       event.target[name] = value;
     }

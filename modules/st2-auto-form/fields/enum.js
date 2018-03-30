@@ -40,7 +40,7 @@ export default class EnumField extends BaseTextField {
       className: 'st2-auto-form__field',
       disabled: this.props.disabled,
       value: this.state.value,
-      onChange: (e) => this.handleChange(e.target.value),
+      onChange: (e) => this.handleChange(e, e.target.value),
     };
 
     if (this.state.invalid) {

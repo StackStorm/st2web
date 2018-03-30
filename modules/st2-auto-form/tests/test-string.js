@@ -7,6 +7,7 @@ chai.use(sinonChai);
 
 import { TestComponent } from './utils';
 import StringField from '../fields/string';
+import { Textarea } from '../fields/base';
 
 describe('AutoForm StringField', () => {
   it('produces an element with textarea as a child', () => {
@@ -17,7 +18,7 @@ describe('AutoForm StringField', () => {
 
     const c = new TestComponent(<StringField {...props} />);
 
-    expect(c.fieldType()).to.be.equal('textarea');
+    expect(c.fieldType()).to.be.equal(Textarea);
   });
 
   it('calls the callback if value is valid', () => {

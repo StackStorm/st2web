@@ -76,9 +76,11 @@ describe('AutoForm BooleanField', () => {
     expect(c.value()).to.be.deep.equal(false);
     expect(c.fieldClass()).to.not.have.string('st2-auto-form__checkbox--default');
 
-    c._instance.node.props.onReset();
+    const stopPropagation = sinon.spy();
+    c._instance.node.props.onReset({ stopPropagation });
 
     expect(onChange.withArgs(undefined)).to.be.calledOnce;
+    expect(stopPropagation).to.be.calledOnce;
     expect(c.fieldValue('checked')).to.be.equal(undefined);
     expect(c.value()).to.be.deep.equal(undefined);
     expect(c.fieldClass()).to.have.string('st2-auto-form__checkbox--default');

@@ -3,15 +3,18 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 import { TextFieldWrapper } from '../wrappers';
+import TextareaAutosize from 'react-textarea-autosize';
 
-const Textarea = (function() {
-  // don't include this during testing
-  if (typeof window === 'undefined' || global !== window) {
-    return 'textarea';
+export class Textarea extends TextareaAutosize {
+  constructor (...props) {
+    super(...props);
+
+    // don't attempt to resize the component during testing
+    if (typeof window === 'undefined' || global !== window || window.navigator.appName === 'Zombie') {
+      this._resizeComponent = () => {};
+    }
   }
-
-  return require('react-textarea-autosize');
-})();
+}
 
 export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
@@ -65,7 +68,9 @@ export class BaseTextField extends React.Component {
     return undefined;
   }
 
-  handleChange(value) {
+  handleChange(e, value) {
+    e.stopPropagation();
+
     const invalid = this.validate(value, this.props.spec);
 
     this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
@@ -92,7 +97,7 @@ export class BaseTextField extends React.Component {
       placeholder: this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
-      onChange: (e) => this.handleChange(e.target.value),
+      onChange: (e) => this.handleChange(e, e.target.value),
       'data-test': this.props['data-test'],
     };
 
@@ -125,7 +130,7 @@ export class BaseTextareaField extends BaseTextField {
       placeholder: this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
-      onChange: (e) => this.handleChange(e.target.value),
+      onChange: (e) => this.handleChange(e, e.target.value),
       minRows: 1,
       maxRows: 10,
       'data-test': this.props['data-test'],

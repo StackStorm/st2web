@@ -18,14 +18,14 @@ export default class BooleanField extends BaseTextField {
 
   render() {
     const wrapperProps = Object.assign({}, this.props, {
-      onReset: () => this.handleChange(void 0),
+      onReset: (e) => this.handleChange(e, void 0),
     });
 
     const inputProps = {
       className: 'st2-auto-form__checkbox',
       disabled: this.props.disabled,
       checked: this.state.value,
-      onChange: (e) => this.handleChange(e.target.checked),
+      onChange: (e) => this.handleChange(e, e.target.checked),
     };
 
     if (this.props.spec.default && this.state.value === void 0) {
