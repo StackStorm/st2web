@@ -5,6 +5,7 @@ import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
 const historyReducer = (state = {}, input) => {
   let {
+    filter = '',
     filters = undefined,
     executions = [],
     childExecutions = {},
@@ -14,6 +15,7 @@ const historyReducer = (state = {}, input) => {
 
   state = {
     ...state,
+    filter,
     filters,
     executions,
     childExecutions,
@@ -221,6 +223,17 @@ const historyReducer = (state = {}, input) => {
         executions,
         childExecutions,
         groups,
+      };
+    }
+
+    case 'UPDATE_FILTER': {
+      const { value } = input;
+
+      filter = value;
+
+      return {
+        ...state,
+        filter,
       };
     }
 
