@@ -22,6 +22,7 @@ import {
   PanelNavigation,
   Toolbar,
   ToolbarFilters,
+  ToolbarSearch,
   ToolbarView,
   Content,
   ContentEmpty,
@@ -57,8 +58,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { filters, childExecutions, groups, collapsed } = state;
-  return { filters, childExecutions, groups, collapsed };
+  const { filter, filters, childExecutions, groups, collapsed } = state;
+  return { filter, filters, childExecutions, groups, collapsed };
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
@@ -74,6 +75,7 @@ export default class HistoryPanel extends React.Component {
       }).isRequired,
     }).isRequired,
 
+    filter: PropTypes.string,
     filters: PropTypes.object,
     childExecutions: PropTypes.object,
     groups: PropTypes.array,
@@ -84,6 +86,7 @@ export default class HistoryPanel extends React.Component {
     maxPages: 0,
     id: undefined,
     displayUTC: false,
+    advanced: false,
   }
 
   componentDidMount() {
@@ -145,7 +148,8 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const next = parseSearch(nextProps.location.search);
+    const { page, activeFilters } = parseSearch(nextProps.location.search);
+    const { filter } = nextProps;
     const current = parseSearch(this.props.location.search);
 
     let { ref: id } = nextProps.match.params;
@@ -157,9 +161,28 @@ export default class HistoryPanel extends React.Component {
       this.setState({ id });
     }
 
-    if (next.page !== current.page || !_.isEqual(next.activeFilters, current.activeFilters)) {
-      this.fetchGroups(next);
+    if (page === current.page && 
+      _.isEqual(activeFilters, current.activeFilters) &&
+      filter === this.props.filter
+    ) {
+      return;
     }
+
+    if (filter) {
+      const tokens = filter.split(' ');
+      if (!tokens.length) {
+        return;
+      }
+  
+      for (const token of tokens) {
+        const [ , v ] = token.split(':');
+        if (!v) {
+          return;
+        }
+      }
+    }
+
+    this.fetchGroups({ page, activeFilters, filter });
   }
 
   componentWillUnmount() {
@@ -168,7 +191,7 @@ export default class HistoryPanel extends React.Component {
     this._source.removeEventListener('st2.execution__delete', this._executionDeleteListener);
   }
 
-  fetchGroups({ page, activeFilters }) {
+  fetchGroups({ page, activeFilters, filter }) {
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.client.executions.list({
@@ -176,6 +199,7 @@ export default class HistoryPanel extends React.Component {
         parent: 'null',
         limit: PER_PAGE,
         page,
+        filter,
         exclude_attributes: 'result,trigger_instance',
       })
         .then((res) => {
@@ -355,8 +379,15 @@ export default class HistoryPanel extends React.Component {
     });
   }
 
+  handleFilterStringChange(value) {
+    return store.dispatch({
+      type: 'UPDATE_FILTER',
+      value,
+    });
+  }
+
   render() {
-    const { filters, childExecutions, groups, collapsed } = this.props;
+    const { filter, filters, childExecutions, groups, collapsed } = this.props;
     const { id, section, page, activeFilters } = this.urlParams;
 
     const view = this._view ? this._view.value : {};
@@ -364,12 +395,23 @@ export default class HistoryPanel extends React.Component {
 
     setTitle([ 'History' ]);
 
+    const { advanced } = this.state;
+
     return (
       <Panel data-test="history_panel">
         <PanelView className="st2-history">
           <Toolbar title="History">
+            <ToolbarSearch
+              title="Filter"
+              value={filter}
+              hidden={!advanced}
+              onChange={({ target: { value }}) => this.handleFilterStringChange(value)}
+              onToggle={() => this.setState({ advanced: !advanced })}
+            />
             { filters ? (
-              <ToolbarFilters>
+              <ToolbarFilters
+                hidden={advanced}
+              >
                 { filters.map(({ key, label, items }) => (
                   <Filter
                     key={key}
