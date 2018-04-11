@@ -25,6 +25,7 @@ import {
 } from '@stackstorm/module-panel';
 import RulesFlexCard from './rules-flex-card.component';
 import RulesDetails from './rules-details.component';
+import RulesPopup from './rules-popup.component';
 
 import './style.less';
 
@@ -49,8 +50,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = state;
-  return { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed };
+  const { rules, groups, filter, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = state;
+  return { rules, groups, filter, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed };
 })
 export default class RulesPanel extends React.Component {
   static propTypes = {
@@ -65,12 +66,18 @@ export default class RulesPanel extends React.Component {
       }),
     }),
 
+    rules: PropTypes.array,
     groups: PropTypes.array,
     filter: PropTypes.string,
+
+    triggerParameters: PropTypes.object,
+    actionParameters: PropTypes.object,
+
     triggerSpec: PropTypes.object,
     criteriaSpecs: PropTypes.object,
     actionSpec: PropTypes.object,
     packSpec: PropTypes.object,
+
     collapsed: PropTypes.bool,
   }
 
@@ -91,7 +98,7 @@ export default class RulesPanel extends React.Component {
     this.fetchGroups();
 
     store.dispatch({
-      type: 'FETCH_PACK_SPEC',
+      type: 'FETCH_PACKS',
       promise: api.client.packs.list()
         .catch((err) => {
           notification.error('Unable to retrieve pack spec.', { err });
@@ -100,7 +107,7 @@ export default class RulesPanel extends React.Component {
     });
 
     store.dispatch({
-      type: 'FETCH_TRIGGER_SPEC',
+      type: 'FETCH_TRIGGERS',
       promise: api.client.triggerTypes.list()
         .catch((err) => {
           notification.error('Unable to retrieve trigger spec.', { err });
@@ -109,7 +116,7 @@ export default class RulesPanel extends React.Component {
     });
 
     store.dispatch({
-      type: 'FETCH_ACTION_SPEC',
+      type: 'FETCH_ACTIONS',
       promise: api.client.actionOverview.list()
         .catch((err) => {
           notification.error('Unable to retrieve action spec.', { err });
@@ -277,8 +284,10 @@ export default class RulesPanel extends React.Component {
   }
 
   render() {
-    const { groups, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
+    const { rules=[], groups, filter, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
     const { id, section } = this.urlParams;
+
+    const rule = rules.find(({ ref }) => ref === id);
 
     setTitle([ 'Rules' ]);
 
@@ -304,7 +313,7 @@ export default class RulesPanel extends React.Component {
 
               return (
                 <FlexTableWrapper key={pack} uid={pack} title={pack} icon={icon}>
-                  { rules .map((rule) => (
+                  { rules.map((rule) => (
                     <RulesFlexCard
                       key={rule.ref} rule={rule}
                       selected={id === rule.ref}
@@ -324,18 +333,32 @@ export default class RulesPanel extends React.Component {
         <RulesDetails
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
-          handleCreate={(...args) => this.handleCreate(...args)}
           handleSave={(...args) => this.handleSave(...args)}
           handleDelete={(...args) => this.handleDelete(...args)}
 
-          id={id}
+          id={rule && rule.ref}
+          rule={rule}
           section={section}
+
+          triggerParameters={triggerParameters}
+          actionParameters={actionParameters}
 
           triggerSpec={triggerSpec}
           criteriaSpecs={criteriaSpecs}
           actionSpec={actionSpec}
           packSpec={packSpec}
         />
+
+        { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+          <RulesPopup
+            triggerSpec={triggerSpec}
+            criteriaSpecs={criteriaSpecs}
+            actionSpec={actionSpec}
+            packSpec={packSpec}
+            onSubmit={(data) => this.handleCreate(data)}
+            onCancel={() => this.navigate({ id: false })}
+          />
+        ) : null }
       </Panel>
     );
   }

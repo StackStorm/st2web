@@ -22,7 +22,7 @@ gulp.task('test-functional', gulp.series([ 'build' ], (done) => {
   return gulp.src(argv['test-files'] || settings.tests, {read: false})
     .pipe(plugins.plumber())
     .pipe(plugins.mocha({
-      reporter: 'dot',
+      reporter: 'spec',
       require: [
         'babel-register',
       ],

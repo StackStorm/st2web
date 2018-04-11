@@ -72,12 +72,11 @@ describe('User visits rules page', function () {
 
   describe('Details view', () => {
     let resource;
+    let rules;
+    let rule;
 
     before(() => {
-      resource = browser.resources.filter((e) => {
-        const match = e.url.match(new RegExp('^https://example.com/api/v1/rules/([\\w.-]+)$'));
-        return match && match[1] && match[1] !== 'views';
-      });
+      resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/rules/views$').test(e.url));
     });
 
     it('should make a call to rules endpoint', () => {
@@ -86,14 +85,13 @@ describe('User visits rules page', function () {
     });
 
     it('should recieve a response containing a rule', () => {
-      const rule = JSON.parse(resource[0].response.body);
+      rules = JSON.parse(resource[0].response.body);
+      rule = rules[0];
 
       expect(rule).to.be.an('object');
     });
 
     it('should have rule details present', () => {
-      const rule = JSON.parse(resource[0].response.body);
-
       browser.assert.element(util.name('details'), 'Details panel is absent');
 
       browser.assert.element(util.name('edit_button'), 'Edit button is missing');
@@ -102,8 +100,8 @@ describe('User visits rules page', function () {
       browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
       browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
       browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
-      browser.assert.text(util.name('header_if'), `If${rule.trigger.type}`, 'Wrong if in header');
-      browser.assert.text(util.name('header_then'), `Then${rule.action.ref}`, 'Wrong then in header');
+      browser.assert.text(util.name('condition_if'), `If${rule.trigger.type}${rule.trigger.description}`, 'Wrong if in header');
+      browser.assert.text(util.name('condition_then'), `Then${rule.action.ref}${rule.action.description}`, 'Wrong then in header');
 
       browser.assert.element(util.name('rule_trigger_form'), 'Rule trigger form is missing');
       browser.assert.element(util.name('rule_criteria_form'), 'Rule criteria form is missing');
@@ -111,17 +109,12 @@ describe('User visits rules page', function () {
       browser.assert.element(util.name('rule_pack_form'), 'Rule action form is missing');
     });
 
-    describe('then chooses code', () => {
+    describe('then chooses code tab', () => {
       before(() => browser.click(util.name('switch:code')));
       after(() => browser.click(util.name('switch:general')));
 
       it('should have rule code present', () => {
-        try {
-          browser.assert.element(util.name('rule_code'));
-        }
-        catch (e) {
-          browser.assert.element(util.name('no_code_message'), 'Rule code and a message are both missing');
-        }
+        browser.assert.element(util.name('rule_code'));
       });
     });
   });
@@ -183,7 +176,10 @@ describe('User visits rules page', function () {
       let resource;
 
       before(() => {
-        resource = browser.resources.filter((e) => new RegExp(`^https://example.com/api/v1/rules/packs.test${uniqueId}$`).test(e.url));
+        resource = browser.resources.filter((e) => {
+          const match = e.url.match(new RegExp('^https://example.com/api/v1/rules/([\\w.-]+)$'));
+          return match && match[1] && match[1] !== 'views';
+        });
       });
 
       it('should make a call to rules endpoint', () => {
@@ -210,7 +206,7 @@ describe('User visits rules page', function () {
         browser.assert.element(util.name('rule_action_form'), 'Rule action form is missing');
       });
 
-      describe('then chooses code', () => {
+      describe('then chooses code tab', () => {
         before(() => browser.click(util.name('switch:code')));
         after(() => browser.click(util.name('switch:general')));
 

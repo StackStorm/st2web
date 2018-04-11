@@ -15,7 +15,7 @@ export default class RemoteForm extends React.Component {
     disabled: PropTypes.bool.isRequired,
     spec: PropTypes.shape({
       enum: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         spec: PropTypes.object,
       })).isRequired,
     }).isRequired,
@@ -29,12 +29,11 @@ export default class RemoteForm extends React.Component {
   }
 
   onChangeValue(value) {
-    const { name } = this.props;
-    const key = name === 'trigger' ? 'type' : 'ref';
+    const { spec: { name } } = this.props;
 
     this.props.onChange({
       ...this.props.data,
-      [key]: value,
+      [name]: value,
       parameters: {},
     });
   }
@@ -50,9 +49,7 @@ export default class RemoteForm extends React.Component {
     const { className, name, disabled, spec, data, onChange, flat, ...props } = this.props;
     onChange;
 
-    const key = name === 'trigger' ? 'type' : 'ref';
-
-    const child = spec.enum.find(({ name }) => name === data[key]);
+    const child = spec.enum.find(({ name }) => name === data[spec.name]);
     const childSpec = child ? child.spec : {};
 
     return (
@@ -60,16 +57,16 @@ export default class RemoteForm extends React.Component {
         { disabled ? (
           <AutoFormLink
             name={name}
-            href={`/actions/${data[key]}`}
+            href={`/actions/${data[name]}`}
             spec={spec}
-            data={data[key]}
+            data={data[spec.name]}
             flat={flat}
           />
         ) : (
           <AutoFormCombobox
             name={name}
             spec={spec}
-            data={data[key]}
+            data={data[spec.name]}
             onChange={(ref) => this.onChangeValue(ref)}
             flat={flat}
           />

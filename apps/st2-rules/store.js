@@ -9,6 +9,9 @@ const ruleReducer = (state = {}, input) => {
     groups = null,
     filter = '',
     rule = undefined,
+    triggerParameters = undefined,
+    actionParameters = undefined,
+    packs = undefined,
     triggerSpec = undefined,
     criteriaSpecs = undefined,
     actionSpec = undefined,
@@ -21,6 +24,9 @@ const ruleReducer = (state = {}, input) => {
     groups,
     filter,
     rule,
+    triggerParameters,
+    actionParameters,
+    packs,
     triggerSpec,
     criteriaSpecs,
     actionSpec,
@@ -65,15 +71,17 @@ const ruleReducer = (state = {}, input) => {
       };
     }
 
-    case 'FETCH_TRIGGER_SPEC': {
+    case 'FETCH_TRIGGERS': {
       switch(input.status) {
         case 'success':
           criteriaSpecs = {};
 
+          const triggers = input.payload;
+
           triggerSpec = {
-            name: 'name',
+            name: 'type',
             required: true,
-            enum: _.map(input.payload, (trigger) => {
+            enum: _.map(triggers, (trigger) => {
               criteriaSpecs[trigger.ref] = {
                 required: true,
                 enum: _.map(trigger.payload_schema.properties, (spec, name) => ({
@@ -89,6 +97,16 @@ const ruleReducer = (state = {}, input) => {
               };
             }),
           };
+
+          triggerParameters = _.mapValues(_.keyBy(triggers, 'ref'), trigger => {
+            return _.keys(trigger.parameters_schema.properties)
+              .map(key => {
+                return {
+                  name: key,
+                  default: trigger.parameters_schema.properties[key].default,
+                };
+              });
+          });
           break;
         case 'error':
           break;
@@ -100,16 +118,19 @@ const ruleReducer = (state = {}, input) => {
         ...state,
         triggerSpec,
         criteriaSpecs,
+        triggerParameters,
       };
     }
 
-    case 'FETCH_ACTION_SPEC': {
+    case 'FETCH_ACTIONS': {
       switch(input.status) {
         case 'success':
+          const actions = input.payload;
+
           actionSpec = {
-            name: 'name',
+            name: 'ref',
             required: true,
-            enum: _.map(input.payload, (action) => ({
+            enum: _.map(actions, (action) => ({
               name: action.ref,
               description: action.description,
               spec: {
@@ -118,6 +139,16 @@ const ruleReducer = (state = {}, input) => {
               },
             })),
           };
+
+          actionParameters = _.mapValues(_.keyBy(actions, 'ref'), action => {
+            return Object.keys(action.parameters || {})
+              .map(key => {
+                return {
+                  name: key,
+                  default: action.parameters[key].default,
+                };
+              });
+          });
           break;
         case 'error':
           break;
@@ -128,19 +159,22 @@ const ruleReducer = (state = {}, input) => {
       return {
         ...state,
         actionSpec,
+        actionParameters,
       };
     }
 
-    case 'FETCH_PACK_SPEC': {
+    case 'FETCH_PACKS': {
       switch(input.status) {
         case 'success':
+          packs = input.payload;
+
           packSpec = {
             name: 'pack',
             required: true,
             default: 'default',
-            enum: _.map(input.payload, (action) => ({
-              name: action.name,
-              description: action.description,
+            enum: _.map(packs, (pack) => ({
+              name: pack.name,
+              description: pack.description,
               spec: {
                 type: 'object',
                 properties: {
@@ -166,6 +200,7 @@ const ruleReducer = (state = {}, input) => {
       return {
         ...state,
         packSpec,
+        packs,
       };
     }
 
@@ -228,6 +263,30 @@ const ruleReducer = (state = {}, input) => {
           rules = [ ...rules ]
             .filter(rule => rule.ref !== ref)
           ;
+          groups = makeGroups(rules, filter);
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        rules,
+        groups,
+      };
+    }
+
+    case 'TOGGLE_ENABLE': {
+      switch(input.status) {
+        case 'success':
+          const index = rules.findIndex(({ id }) => id === input.payload.id);
+          rules = [
+            ...rules.slice(0, index),
+            input.payload,
+            ...rules.slice(index + 1),
+          ];
           groups = makeGroups(rules, filter);
           break;
         case 'error':

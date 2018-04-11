@@ -351,6 +351,58 @@ export class DetailsBody extends React.Component {
   }
 }
 
+export class DetailsFormLine extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.any,
+  }
+
+  render() {
+    const { name } = this.props;
+    let { value } = this.props;
+
+    if (name === undefined || value === undefined) {
+      return false;
+    }
+
+    if (typeof value === 'boolean') {
+      value = value ? 'yes' : 'no';
+    }
+
+    if (typeof value === 'object' || Array.isArray(value)) {
+      value = JSON.stringify(value, null, '  ');
+    }
+
+    return <DetailsLine name={name} value={value} />;
+  }
+}
+
+export class DetailsLine extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.any,
+  }
+
+  render() {
+    const { name, value } = this.props;
+
+    if (name === undefined || value === undefined) {
+      return false;
+    }
+
+    return (
+      <div className="st2-details__line">
+        <div className="st2-details__line-name">
+          { name }
+        </div>
+        <div className="st2-details__line-value">
+          { value }
+        </div>
+      </div>
+    );
+  }
+}
+
 export class DetailsPanel extends React.Component {
   static propTypes = {
     className: PropTypes.string,
