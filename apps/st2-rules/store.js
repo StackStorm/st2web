@@ -282,9 +282,10 @@ const ruleReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           const index = rules.findIndex(({ id }) => id === input.payload.id);
+          const rule = rules[index];
           rules = [
             ...rules.slice(0, index),
-            input.payload,
+            { ...input.payload, action: rule.action, trigger: rule.trigger },
             ...rules.slice(index + 1),
           ];
           groups = makeGroups(rules, filter);

@@ -348,7 +348,10 @@
 
 .st2-details {
   &__panel {
-    padding: 20px 10px 0 20px;
+    padding: 20px 10px 10px 0;
+    margin-left: 20px;
+
+    border-bottom: 1px solid #bbb;
 
     &-heading {
       display: flex;
@@ -360,7 +363,7 @@
       font-size: 15px;
       font-weight: 400;
 
-              flex: 1;
+      flex: 1;
 
       margin: 0;
       margin-bottom: -2px;
@@ -469,10 +472,12 @@
     color: white;
     background: @grey-darken-1;
 
-    a {
-      text-decoration: none;
-
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
       color: inherit;
+      text-decoration: none;
     }
 
     &-name {
@@ -562,6 +567,7 @@
 
   &__toolbar {
     display: flex;
+    align-items: center;
 
     height: 28px;
     padding: 15px 15px 15px 20px;
@@ -603,6 +609,8 @@
     display: none;
     flex: 1;
 
+    font-size: 14px;
+
     &--active {
       display: block;
     }
@@ -610,9 +618,30 @@
 
   &__line {
     display: flex;
+    line-height: 20px;
   
     &-name {
       width: 150px;
+      color: #666;
+    }
+
+    &-key {
+      width: 150px;
+      color: #000;
+    }
+
+    &-type {
+      width: 150px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    &-value {
+      color: #000;
+    }
+
+    &-note {
+      color: #aaa;
     }
   }
 

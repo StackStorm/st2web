@@ -18,6 +18,8 @@ import {
   DetailsBody,
   DetailsLine,
   DetailsFormLine,
+  DetailsCriteriaLine,
+  DetailsLineNote,
   DetailsPanel,
   DetailsPanelHeading,
   DetailsPanelBody,
@@ -142,25 +144,8 @@ export default class RulesDetails extends React.Component {
       return false;
     }
 
-    const triggerProperties = triggerParameters[rule.trigger.type]
-      .map(({ name, default:def }) => {
-        return {
-          name,
-          value: rule.trigger.parameters[name] !== undefined ? rule.trigger.parameters[name] : def,
-        };
-      })
-      .filter(({ value }) => value !== undefined)
-      ;
-
-    const actionProperties = actionParameters[rule.action.ref]
-      .map(({ name, default:def }) => {
-        return {
-          name,
-          value: rule.action.parameters[name] !== undefined ? rule.action.parameters[name] : def,
-        };
-      })
-      .filter(({ value }) => value !== undefined)
-      ;
+    const trigger = triggerParameters[rule.trigger.type];
+    const action = actionParameters[rule.action.ref];
 
     setTitle([ rule.ref, 'Rules' ]);
 
@@ -182,12 +167,12 @@ export default class RulesDetails extends React.Component {
         <DetailsToolbar>
           <Toggle title="enabled" value={rule.enabled} onChange={() => this.handleToggleEnable(rule)} />
           { this.state.editing ? [
-            <Button key="save" small value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
-            <Button key="cancel" small value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
-            <Button key="preview" flat value="Preview" onClick={() => this.handleToggleRunPreview()} />,
+            <Button key="save" value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
+            <Button key="cancel" value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
+            <Button key="preview" value="Preview" onClick={() => this.handleToggleRunPreview()} />,
           ] : [
-            <Button key="edit" small value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
-            <Button key="delete" small value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
+            <Button key="edit" value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
+            <Button key="delete" value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
           ] }
           <DetailsToolbarSeparator />
         </DetailsToolbar>
@@ -231,10 +216,24 @@ export default class RulesDetails extends React.Component {
                   <DetailsPanelBody>
                     <Link to={`/triggers/${rule.trigger.type}`}>{rule.trigger.type}</Link>
                     {
-                      (triggerProperties || [])
-                        .map(({ name, value }) => {
-                          return <DetailsFormLine key={name} name={name} value={value} />;
-                        })
+                      trigger
+                        ? (
+                          trigger
+                            .map(({ name, default:def }) => {
+                              const value = rule.trigger.parameters[name] !== undefined ? rule.trigger.parameters[name] : def;
+    
+                              if (value === undefined) {
+                                return false;
+                              }
+    
+                              return <DetailsFormLine key={name} name={name} value={value} />;
+                            })
+                        ) : (
+                          <div>
+                            Trigger is missing
+                          </div>
+                        )
+                        
                     }
                   </DetailsPanelBody>
                 </DetailsPanel>
@@ -243,10 +242,23 @@ export default class RulesDetails extends React.Component {
                   <DetailsPanelBody>
                     <Link to={`/actions/${rule.action.ref}`}>{rule.action.ref}</Link>
                     {
-                      (actionProperties || [])
-                        .map(({ name, value }) => {
-                          return <DetailsFormLine key={name} name={name} value={value} />;
-                        })
+                      action 
+                        ? (
+                          action
+                            .map(({ name, default:def }) => {
+                              const value = rule.action.parameters[name] !== undefined ? rule.action.parameters[name] : def;
+
+                              if (value === undefined) {
+                                return false;
+                              }
+
+                              return <DetailsFormLine key={name} name={name} value={value} />;
+                            })
+                        ) : (
+                          <DetailsLineNote>
+                            Action has not been installed
+                          </DetailsLineNote>
+                        )
                     }
                   </DetailsPanelBody>
                 </DetailsPanel>
@@ -259,7 +271,20 @@ export default class RulesDetails extends React.Component {
                 <DetailsPanel>
                   <DetailsPanelHeading title="Criteria" />
                   <DetailsPanelBody>
-                    {}
+                    {
+                      Object.keys(rule.criteria || {}).length
+                        ? (
+                          Object.keys(rule.criteria || {})
+                            .map(name => {
+                              const { type, pattern } = rule.criteria[name];
+                              return <DetailsCriteriaLine key={`${name}//${type}//${pattern}`} name={name} type={type} pattern={pattern} />;
+                            })
+                        ) : (
+                          <DetailsLineNote>
+                            No criteria defined for this rule
+                          </DetailsLineNote>
+                        )
+                    }
                   </DetailsPanelBody>
                 </DetailsPanel>
               </div>

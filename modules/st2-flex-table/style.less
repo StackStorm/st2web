@@ -12,12 +12,13 @@
     position: relative;
 
     display: flex;
+    align-items: center;
 
     margin: 10px;
     margin-left: 10px;
 
     &-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 42px;
 
@@ -61,7 +62,7 @@
     &:before {
       // Calendar icon is missing in brocade pack
       font-family: 'brocadeicons';
-      font-size: 24px;
+      font-size: 20px;
       font-weight: normal;
       font-style: normal;
       line-height: 42px;
@@ -74,8 +75,8 @@
     }
 
     &--pack img {
-      width: 32px;
-      height: 32px;
+      width: 20px;
+      height: 20px;
       margin-right: 5px;
       padding: 5px;
 
@@ -94,19 +95,19 @@
     &--pack img:before {
       // Calendar icon is missing in brocade pack
       font-family: 'brocadeicons';
-      font-size: 29px;
+      font-size: 20px;
       font-weight: normal;
       font-style: normal;
-      line-height: 32px;
+      line-height: 20px;
 
       display: inline-block;
 
-      padding-bottom: 5px;
+      padding-bottom: 10px;
 
       vertical-align: top;
 
-      width: 32px;
-      height: 32px;
+      width: 16px;
+      height: 16px;
       margin-right: 5px;
 
       content: '\e94d';
@@ -249,7 +250,7 @@
     display: flex;
 
     &-primary {
-      font-size: 16px;
+      font-size: 14px;
 
       overflow: hidden;
 
@@ -257,6 +258,8 @@
     }
 
     &-secondary {
+      font-size: 12px;
+
       overflow: hidden;
 
       text-overflow: ellipsis;

@@ -31,14 +31,13 @@
     text-decoration: none;
     letter-spacing: .02em;
     word-spacing: normal;
-    text-transform: uppercase;
+    text-transform: capitalize;
 
     opacity: 1;
-    color: #fff;
+    color: #222;
     border: 0;
     outline: 0;
-    background-color: @aqua-base;
-    box-shadow: 0 2px 1px rgba(0, 0, 0, .3);
+    background-color: transparent;
 
     &:before,
     &:after {
@@ -80,10 +79,6 @@
       font-weight: bold;
     }
 
-    & + & {
-      margin-left: 10px;
-    }
-
     &--flat {
       padding-right: 0;
       padding-left: 0;
@@ -122,6 +117,11 @@
         background: fade(@gray-white, 10%);
       }
     }
+  }
+
+  &__button + &__button,
+  &__switch + &__button {
+    margin-left: 10px;
   }
 
   &__button-prev {
@@ -245,12 +245,12 @@
     }
 
     &-title {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 200;
       line-height: 21px;
       position: relative;
       display: inline-block;
-      padding: 3px 6px;
+      padding: 6px 12px;
       cursor: pointer;
       user-select: none;
       text-align: center;
@@ -259,7 +259,7 @@
       text-decoration: none;
       letter-spacing: .02em;
       word-spacing: normal;
-      text-transform: uppercase;
+      text-transform: capitalize;
       opacity: 1;
       color: #222;
       border: 0;

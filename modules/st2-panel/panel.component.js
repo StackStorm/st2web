@@ -351,6 +351,32 @@ export class DetailsBody extends React.Component {
   }
 }
 
+export class DetailsCriteriaLine extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    type: PropTypes.string,
+    pattern: PropTypes.string,
+  }
+
+  render() {
+    const { name, type, pattern } = this.props;
+
+    return (
+      <div className="st2-details__line">
+        <div className="st2-details__line-key">
+          { name }
+        </div>
+        <div className="st2-details__line-type">
+          { type }
+        </div>
+        <div className="st2-details__line-value">
+          { pattern }
+        </div>
+      </div>
+    );
+  }
+}
+
 export class DetailsFormLine extends React.Component {
   static propTypes = {
     name: PropTypes.string,
@@ -398,6 +424,20 @@ export class DetailsLine extends React.Component {
         <div className="st2-details__line-value">
           { value }
         </div>
+      </div>
+    );
+  }
+}
+
+export class DetailsLineNote extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return (
+      <div className="st2-details__line-note">
+        { this.props.children }
       </div>
     );
   }
