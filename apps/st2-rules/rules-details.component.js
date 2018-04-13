@@ -98,14 +98,14 @@ export default class RulesDetails extends React.Component {
 
   handleCancel(e) {
     e && e.preventDefault();
-    this.setState({ editing: null });
+    this.setState({ editing: null, rulePreview: false });
   }
 
   handleSave(e) {
     e && e.preventDefault();
 
     return this.props.handleSave(this.state.editing).then(() => {
-      this.setState({ editing: null });
+      this.setState({ editing: null, rulePreview: false });
     });
   }
 
