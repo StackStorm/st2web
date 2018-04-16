@@ -59,22 +59,15 @@ describe('AutoForm BooleanField', () => {
     const onChange = sinon.spy();
     const props = {
       name: 'test',
-      spec: {
-        default: true,
-      },
+      spec: {},
+      value: false,
       onChange,
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
 
-    expect(c.fieldClass()).to.have.string('st2-auto-form__checkbox--default');
-
-    c.makeChange(false, 'checked');
-
-    expect(onChange.withArgs(false)).to.be.calledOnce;
     expect(c.fieldValue('checked')).to.be.equal(false);
     expect(c.value()).to.be.deep.equal(false);
-    expect(c.fieldClass()).to.not.have.string('st2-auto-form__checkbox--default');
 
     const stopPropagation = sinon.spy();
     c._instance.node.props.onReset({ stopPropagation });
@@ -83,6 +76,21 @@ describe('AutoForm BooleanField', () => {
     expect(stopPropagation).to.be.calledOnce;
     expect(c.fieldValue('checked')).to.be.equal(undefined);
     expect(c.value()).to.be.deep.equal(undefined);
-    expect(c.fieldClass()).to.have.string('st2-auto-form__checkbox--default');
+  });
+
+  it('shows default value when no value is set', () => {
+    const props = {
+      name: 'test',
+      spec: {
+        default: true,
+      },
+      onChange: () => {},
+    };
+
+    const c1 = new TestComponent(<BooleanField {...props} />);
+    expect(c1.fieldClass()).to.have.string('st2-auto-form__checkbox--default');
+
+    const c2 = new TestComponent(<BooleanField {...props} value={false} />);
+    expect(c2.fieldClass()).to.not.have.string('st2-auto-form__checkbox--default');
   });
 });

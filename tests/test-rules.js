@@ -102,11 +102,6 @@ describe('User visits rules page', function () {
       browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
       browser.assert.text(util.name('condition_if'), `If${rule.trigger.type}${rule.trigger.description}`, 'Wrong if in header');
       browser.assert.text(util.name('condition_then'), `Then${rule.action.ref}${rule.action.description}`, 'Wrong then in header');
-
-      browser.assert.element(util.name('rule_trigger_form'), 'Rule trigger form is missing');
-      browser.assert.element(util.name('rule_criteria_form'), 'Rule criteria form is missing');
-      browser.assert.element(util.name('rule_action_form'), 'Rule action form is missing');
-      browser.assert.element(util.name('rule_pack_form'), 'Rule action form is missing');
     });
 
     describe('then chooses code tab', () => {
@@ -138,8 +133,8 @@ describe('User visits rules page', function () {
         .fill(util.name('field:description').in('rule_create_popup'), 'some')
         .fill(util.name('field:pack').in('rule_create_popup'), 'packs')
         .uncheck(util.name('field:enabled').in('rule_create_popup'))
-        .fill(util.name('field:name').in('rule_create_trigger_form').in('rule_create_popup'), 'core.st2.sensor.process_exit')
-        .fill(util.name('field:name').in('rule_create_action_form').in('rule_create_popup'), 'core.announcement')
+        .fill(util.name('field:type').in('rule_create_trigger_form').in('rule_create_popup'), 'core.st2.sensor.process_exit')
+        .fill(util.name('field:ref').in('rule_create_action_form').in('rule_create_popup'), 'core.announcement')
         .wait()
         .then(() => browser.pressButton(util.name('rule_create_submit')))
         .then(() => {
@@ -177,8 +172,7 @@ describe('User visits rules page', function () {
 
       before(() => {
         resource = browser.resources.filter((e) => {
-          const match = e.url.match(new RegExp('^https://example.com/api/v1/rules/([\\w.-]+)$'));
-          return match && match[1] && match[1] !== 'views';
+          return e.request.method === 'POST' && e.url.match(new RegExp('^https://example.com/api/v1/rules'));
         });
       });
 
@@ -198,12 +192,8 @@ describe('User visits rules page', function () {
         browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
         browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
         browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
-        browser.assert.text(util.name('header_if'), `If${rule.trigger.type}`, 'Wrong if in header');
-        browser.assert.text(util.name('header_then'), `Then${rule.action.ref}`, 'Wrong then in header');
-
-        browser.assert.element(util.name('rule_trigger_form'), 'Rule trigger form is missing');
-        browser.assert.element(util.name('rule_criteria_form'), 'Rule trigger form is missing');
-        browser.assert.element(util.name('rule_action_form'), 'Rule action form is missing');
+        browser.assert.text(util.name('condition_if'), `If${rule.trigger.type}${rule.trigger.description || ''}`, 'Wrong if in header');
+        browser.assert.text(util.name('condition_then'), `Then${rule.action.ref}${rule.action.description || ''}`, 'Wrong then in header');
       });
 
       describe('then chooses code tab', () => {
@@ -222,7 +212,34 @@ describe('User visits rules page', function () {
     });
 
     describe('clicks Edit button', () => {
+      let resource;
+
       before(() => browser.click(util.name('edit_button')));
+
+      before(() => {
+        resource = browser.resources.filter((e) => {
+          return e.request.method === 'POST' && e.url.match(new RegExp('^https://example.com/api/v1/rules'));
+        });
+      });
+
+      it('should have rule details present', () => {
+        const rule = JSON.parse(resource[0].response.body);
+
+        browser.assert.element(util.name('details'), 'Details panel is absent');
+
+        browser.assert.element(util.name('save_button'), 'Save button is missing');
+        browser.assert.element(util.name('cancel_button'), 'Cancel button is missing');
+        
+        browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
+        browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
+        browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
+        browser.assert.text(util.name('condition_if'), `If${rule.trigger.type}${rule.trigger.description || ''}`, 'Wrong if in header');
+        browser.assert.text(util.name('condition_then'), `Then${rule.action.ref}${rule.action.description || ''}`, 'Wrong then in header');
+
+        browser.assert.element(util.name('rule_trigger_form'), 'Rule trigger form is missing');
+        browser.assert.element(util.name('rule_criteria_form'), 'Rule trigger form is missing');
+        browser.assert.element(util.name('rule_action_form'), 'Rule action form is missing');
+      });
 
       describe('changes the rule', () => {
         let resource;

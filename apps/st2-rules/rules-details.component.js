@@ -342,8 +342,8 @@ export default class RulesDetails extends React.Component {
                         name="pack"
                         disabled={!this.state.editing}
                         spec={packSpec}
-                        data={{ ref: rule.pack, parameters: rule }}
-                        onChange={({ ref: pack, parameters: rule }) =>
+                        data={{ pack: rule.pack, parameters: rule }}
+                        onChange={({ pack, parameters: rule }) =>
                           pack === rule.pack
                             ? this.handleChange(null, rule)
                             : this.handleChange('pack', pack)
