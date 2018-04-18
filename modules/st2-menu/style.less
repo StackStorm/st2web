@@ -1,6 +1,6 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-menu {
+.component {
   font-family: Roboto,sans-serif;
   font-size: 16px;
   font-weight: normal;
@@ -27,174 +27,174 @@
     color: inherit;
     text-decoration: none;
   }
+}
 
-  &__logo {
-    // We need to specify it here so the logo on login screen would match the menu one
-    font-size: 16px;
+.logo {
+  // We need to specify it here so the logo on login screen would match the menu one
+  font-size: 16px;
 
-    display: flex;
+  display: flex;
 
-    min-width: 200px;
-    height: 52px;
-    margin: 10px;
+  min-width: 200px;
+  height: 52px;
+  margin: 10px;
 
-    text-decoration: none;
+  text-decoration: none;
 
-    color: transparent;
-    background-image: url(../img/logo.svg);
-    background-repeat: no-repeat;
-    background-size: 153px;
+  color: transparent;
+  background-image: url(../img/logo.svg);
+  background-repeat: no-repeat;
+  background-size: 153px;
 
-    align-items: flex-end;
+  align-items: flex-end;
 
-    &:after {
-      content: 'Event-driven automation';
-      white-space: nowrap;
+  &:after {
+    content: 'Event-driven automation';
+    white-space: nowrap;
 
-      color: @gray-2;
-    }
+    color: @gray-2;
+  }
+}
+
+// TODO: Remove this ugliness
+.spacer {
+  flex: 1;
+}
+
+.nav {
+  display: flex;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav-item {
+  font-size: 10px;
+
+  display: block;
+
+  min-width: 35px;
+  height: 72px;
+  padding: 0 16px;
+
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  color: inherit;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(0,0,0,.1);
   }
 
-  // TODO: Remove this ugliness
-  &__spacer {
-    flex: 1;
-  }
-
-  &__nav {
-    display: flex;
-
-    margin: 0;
-    padding: 0;
-
-    list-style: none;
-  }
-
-  &__nav-item {
-    font-size: 10px;
+  i {
+    font-size: 20px;
+    line-height: 35px;
 
     display: block;
 
-    min-width: 35px;
-    height: 72px;
-    padding: 0 16px;
+    width: 35px;
+    height: 35px;
+    margin: 8px auto;
 
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
+    border-radius: 50%;
+  }
+
+  &-active i {
+    background-color: @selected;
+    color: white;
+  }
+}
+
+.side {
+  position: relative;
+
+  padding: 10px;
+  font-size: 10px;
+
+  cursor: default;
+  white-space: nowrap;
+  text-transform: uppercase;
+
+  color: inherit;
+  text-decoration: none;
+
+
+  &-item {
+    position: relative;
+
+    font-size: 12px;
+
+    height: 40px;
+    padding: 0 10px;
+    margin-left: 0.25em;
+
+    text-transform: lowercase;
+
+    cursor: pointer;
+    user-select: text;
+    user-select: none;
+    white-space: nowrap;
 
     color: inherit;
-    border: 1px solid transparent;
 
-    &:hover {
-      background-color: rgba(0,0,0,.1);
-    }
 
     i {
-      font-size: 20px;
-      line-height: 35px;
+      font-size: 15px;
+      font-weight: normal;
 
-      display: block;
-
-      width: 35px;
-      height: 35px;
-      margin: 8px auto;
-
-      border-radius: 50%;
+      vertical-align: text-top;
     }
 
-    &--active i {
-      background-color: @selected;
-      color: white;
+    input {
+      display: none;
+    }
+
+    .icon-user {
+      margin-left: 0.25em;
     }
   }
 
-  &__side {
-    position: relative;
+  &-dropdown {
+    font-size: 14px;
+    font-weight: normal;
 
-    padding: 10px;
-    font-size: 10px;
+    position: absolute;
+    z-index: 1;
+    right: 0;
 
-    cursor: default;
-    white-space: nowrap;
-    text-transform: uppercase;
+    display: none;
 
-    color: inherit;
-    text-decoration: none;
+    color: black;
+    background-color: white;
 
+    &-backdrop {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
 
     &-item {
+      line-height: 2em;
+
       position: relative;
+      z-index: 11;
 
-      font-size: 12px;
-
-      height: 40px;
       padding: 0 10px;
-      margin-left: 0.25em;
 
-      text-transform: lowercase;
-
-      cursor: pointer;
-      user-select: text;
-      user-select: none;
-      white-space: nowrap;
-
-      color: inherit;
-
-
-      i {
-        font-size: 15px;
-        font-weight: normal;
-
-        vertical-align: text-top;
-      }
-
-      input {
-        display: none;
-      }
-
-      .icon-user {
-        margin-left: 0.25em;
+      &:hover {
+        background-color: @yellow-lighten-5;
       }
     }
+  }
 
-    &-dropdown {
-      font-size: 14px;
-      font-weight: normal;
-
-      position: absolute;
-      z-index: 1;
-      right: 0;
-
-      display: none;
-
-      color: black;
-      background-color: white;
-
-      &-backdrop {
-        position: fixed;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-
-      &-item {
-        line-height: 2em;
-
-        position: relative;
-        z-index: 11;
-
-        padding: 0 10px;
-
-        &:hover {
-          background-color: @yellow-lighten-5;
-        }
-      }
-    }
-
-    &-item input[type=checkbox]:checked ~ &-dropdown {
-      display: block;
-    }
+  &-item input[type=checkbox]:checked ~ &-dropdown {
+    display: block;
   }
 }

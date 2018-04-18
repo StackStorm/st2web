@@ -3,7 +3,8 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import './style.less';
+import style from './style.less';
+import menuStyle from '@stackstorm/module-menu/style.less';
 
 class LoginForm extends React.Component {
   static propTypes = {
@@ -15,7 +16,7 @@ class LoginForm extends React.Component {
     const { className, children, ...props } = this.props;
 
     return (
-      <form {...props} className={cx('st2-login__form', className)}>
+      <form {...props} className={cx(style.from, className)}>
         { children }
       </form>
     );
@@ -32,7 +33,7 @@ class LoginLogo extends React.Component {
     const { className, children, ...props } = this.props;
 
     return (
-      <a {...props} href="#" className={cx('st2-menu__logo', className)}>
+      <a {...props} href="#" className={cx(menuStyle.logo, className)}>
         {children}
       </a>
     );
@@ -49,7 +50,7 @@ class LoginError extends React.Component {
     const { className, message, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-login__error', className)}>
+      <div {...props} className={cx(style.error, className)}>
         { message }
       </div>
     );
@@ -66,7 +67,7 @@ class LoginRow extends React.Component {
     const { className, children, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-login__row', className)}>
+      <div {...props} className={cx(style.row, className)}>
         { children }
       </div>
     );
@@ -83,7 +84,7 @@ class LoginBottomRow extends React.Component {
     const { className, children, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-login__links', className)}>
+      <div {...props} className={cx(style.links, className)}>
         { children }
       </div>
     );
@@ -135,7 +136,7 @@ export default class Login extends React.Component {
     onConnect;
 
     return (
-      <div {...props} className={cx('st2-login', className)}>
+      <div {...props} className={cx(style.component, className)}>
         <LoginForm data-test="login" onSubmit={(e) => this.connect(e)}>
           <LoginLogo />
 
@@ -144,9 +145,9 @@ export default class Login extends React.Component {
           ) : null }
 
           { api.servers && api.servers.length > 1 ? (
-            <LoginRow className="st2-auto-form__select">
+            <LoginRow className={cx('st2-auto-form__select')}>
               <select
-                className="st2-auto-form__field st2-login__field"
+                className={cx('st2-auto-form__field', style.field)}
                 value={JSON.stringify(this.state.server)}
                 onChange={({ target: { value } }) => this.setState({ server: JSON.parse(value) })}
               >
@@ -165,7 +166,7 @@ export default class Login extends React.Component {
 
           <LoginRow>
             <input
-              className="st2-auto-form__field st2-login__field"
+              className={cx('st2-auto-form__field', style.field)}
               type="text"
               name="username"
               placeholder="Username"
@@ -176,7 +177,7 @@ export default class Login extends React.Component {
           </LoginRow>
           <LoginRow>
             <input
-              className="st2-auto-form__field st2-login__field"
+              className={cx('st2-auto-form__field', style.field)}
               type="password"
               name="password"
               placeholder="Password"
@@ -187,19 +188,19 @@ export default class Login extends React.Component {
           </LoginRow>
           <LoginRow>
             <input
-              className="st2-forms__button st2-login__button"
+              className={cx('st2-forms__button', style.button)}
               type="submit"
               value="Connect"
             />
 
-            <label className="st2-login__checkbox-wrapper">
+            <label className={style.checkboxWrapper}>
               <input
-                className="st2-login__checkbox"
+                className={style.checkbox}
                 type="checkbox"
                 checked={this.state.remember}
                 onChange={({ target: { checked: remember } }) => this.setState({ remember })}
               />
-              <span className="st2-login__checkbox-label">
+              <span className={style.checkboxLabel}>
                 remember
               </span>
             </label>

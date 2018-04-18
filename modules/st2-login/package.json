@@ -28,7 +28,9 @@
             ".less"
           ],
           "inject": "insert-css",
-          "modularize": false,
+          "modularize": {
+            "camelCase": true
+          },
           "plugin": [
             "@stackstorm/postcss-less-engine"
           ],
@@ -41,12 +43,13 @@
     "access": "public"
   },
   "dependencies": {
+    "@stackstorm/module-menu": "^1.0.0-pre.5",
     "@stackstorm/st2-style": "^1.0.0-pre.5",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
   "devDependencies": {
-    "@stackstorm/browserify-postcss": "0.3.4-patch.1",
+    "@stackstorm/browserify-postcss": "0.3.4-patch.4",
     "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "^8.0.0",
     "less": "^2.7.3",

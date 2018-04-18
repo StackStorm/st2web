@@ -6,7 +6,7 @@ import api from '@stackstorm/module-api';
 
 import { Link } from 'react-router-dom';
 
-import './style.less';
+import style from './style.less';
 
 class Icon extends React.Component {
   static propTypes = {
@@ -54,18 +54,18 @@ export default class Menu extends React.Component {
     const server = api.server;
 
     return (
-      <header {...props} className={cx('st2-menu', className)}>
-        <a href="#" className="st2-menu__logo" />
+      <header {...props} className={cx(style.component, className)}>
+        <a href="#" className={style.logo} />
 
-        <div className="st2-menu__spacer" />
+        <div className={style.spacer} />
 
-        <div className="st2-menu__nav">
+        <div className={style.nav}>
           { _.map(routes, ({ title, href, url, target, icon }) => {
             if (href) {
               return (
                 <a
                   key={title}
-                  className="st2-menu__nav-item"
+                  className={style.navItem}
                   href={href}
                   target={target}
                 >
@@ -79,9 +79,7 @@ export default class Menu extends React.Component {
               return (
                 <Link
                   key={title}
-                  className={cx('st2-menu__nav-item', {
-                    'st2-menu__nav-item--active': location.pathname.indexOf(url) === 0,
-                  })}
+                  className={cx(style.navItem, location.pathname.indexOf(url) === 0 && style.navItemActive)}
                   to={url}
                   target={target}
                 >
@@ -95,17 +93,17 @@ export default class Menu extends React.Component {
           }) }
         </div>
 
-        <div className="st2-menu__spacer" />
+        <div className={style.spacer} />
 
-        <div className="st2-menu__side">
-          <label className="st2-menu__side-item">
+        <div className={style.side}>
+          <label className={style.sideItem}>
             { user || 'Stanley' }@{ server.name }
-            <i className="st2-menu__icon icon-user" />
+            <i className={cx(style.icon, 'icon-user')} />
             <input type="checkbox" />
-            <div className="st2-menu__side-dropdown">
-              <div className="st2-menu__side-dropdown-backdrop" />
+            <div className={style.sideDropdown}>
+              <div className={style.sideDropdownBackdrop} />
               <div
-                className="st2-menu__side-dropdown-item"
+                className={style.sideDropdownItem}
                 onClick={() => this.handleDisconnect()}
               >
                 Sign out
@@ -114,11 +112,11 @@ export default class Menu extends React.Component {
           </label>
         </div>
 
-        <a href="https://docs.stackstorm.com/" className="st2-menu__side">
+        <a href="https://docs.stackstorm.com/" className={style.side}>
           Docs
         </a>
 
-        <a href="https://forum.stackstorm.com/" className="st2-menu__side">
+        <a href="https://forum.stackstorm.com/" className={style.side}>
           Support
         </a>
       </header>
