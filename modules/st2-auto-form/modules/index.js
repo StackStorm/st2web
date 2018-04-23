@@ -5,7 +5,7 @@ import InputModule from './input';
 import ObjectModule from './object';
 import SelectModule from './select';
 import TextFieldModule from './text-field';
-import TextModule from './text';
+import TextModule from './link';
 
 export {
   ArrayModule,

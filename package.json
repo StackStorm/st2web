@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@stackstorm/app-actions": "^1.0.0-pre.5",
-    "@stackstorm/app-docs": "^1.0.0-pre.5",
+    "@stackstorm/app-triggers": "^1.0.0-pre.5",
     "@stackstorm/app-history": "^1.0.0-pre.5",
     "@stackstorm/app-packs": "^1.0.0-pre.5",
     "@stackstorm/app-rules": "^1.0.0-pre.5",

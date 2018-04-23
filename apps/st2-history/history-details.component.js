@@ -114,6 +114,12 @@ export default class HistoryDetails extends React.Component {
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
+        <DetailsToolbar>
+          <Button small value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
+          <Button small value="Cancel" onClick={() => this.props.handleCancel()} disabled={!execution || execution.status !== 'running'} />
+
+          <DetailsToolbarSeparator />
+        </DetailsToolbar>
         <DetailsBody>
           { section === 'general' ? (
             <div>
@@ -244,12 +250,6 @@ export default class HistoryDetails extends React.Component {
             </DetailsPanel>
           ) : null }
         </DetailsBody>
-        <DetailsToolbar>
-          <Button small value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
-          <Button small value="Cancel" onClick={() => this.props.handleCancel()} disabled={!execution || execution.status !== 'running'} />
-
-          <DetailsToolbarSeparator />
-        </DetailsToolbar>
 
         { section === 'rerun' ? (
           <HistoryPopup

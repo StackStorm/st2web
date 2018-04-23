@@ -60,23 +60,32 @@ export default class HistoryFlexCard extends React.Component {
       handleToggleUTC,
     } = this.props;
 
+    const expanded = !!childExecutions[execution.id];
+
     return [
       (
         <div
           key={`${execution.id}-card`}
           className={cx('st2-flex-card', {
             'st2-flex-card--active': selected === execution.id,
+            'st2-flex-card--expanded': expanded,
           })}
           onClick={(e) => this.handleSelect(e)}
           data-test={`execution execution:${execution.id}`}
         >
           <div className="st2-flex-card__row">
+            <div className="st2-flex-card__column st2-flex-card__status">
+              { view.meta && view.meta.status ? (
+                <Label status={execution.status} short={true} />
+              ) : null }
+            </div>
+
             <div className="st2-flex-card__column st2-flex-card__expand">
               { isExpandable(execution) ? (
                 <i
                   className={cx({
-                    'icon-chevron-down': !!childExecutions[execution.id],
-                    'icon-chevron_right': !childExecutions[execution.id],
+                    'icon-chevron-down': expanded,
+                    'icon-chevron_right': !expanded,
                   })}
                   onClick={(e) => this.handleToggleExpand(e)}
                 />
@@ -84,8 +93,8 @@ export default class HistoryFlexCard extends React.Component {
             </div>
 
             <div className="st2-flex-card__column st2-flex-card__status">
-              { view.meta && view.meta.status ? (
-                <Label status={execution.status} short={true} />
+              { isExpandable(execution) && view.meta && view.meta.type ? (
+                <i className="icon-branch" onClick={(e) => this.handleToggleExpand(e)} />
               ) : null }
             </div>
 
@@ -159,12 +168,6 @@ export default class HistoryFlexCard extends React.Component {
                 </div>
               ) : null
             ) }
-
-            <div className="st2-flex-card__column st2-flex-card__status">
-              { isExpandable(execution) && view.meta && view.meta.type ? (
-                <i className="icon-branch" onClick={(e) => this.handleToggleExpand(e)} />
-              ) : null }
-            </div>
           </div>
         </div>
       ),

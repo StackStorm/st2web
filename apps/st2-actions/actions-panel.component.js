@@ -213,7 +213,7 @@ export default class ActionsPanel extends React.Component {
     setTitle([ 'Actions' ]);
 
     return (
-      <Panel data-test="actions_panel">
+      <Panel data-test="actions_panel" detailed>
         <PanelView className="st2-actions">
           <div className="st2-panel__toolbar-actions">
             <FlowLink />

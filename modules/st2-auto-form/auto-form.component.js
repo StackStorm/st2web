@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import cx from 'classnames';
 
 import ArrayField from './fields/array';
 import NumberField from './fields/number';
@@ -15,10 +16,12 @@ import './style.less';
 
 export default class AutoForm extends React.Component {
   static propTypes = {
+    className: PropTypes.string,
     spec: PropTypes.object,
     data: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     onChange: PropTypes.func,
+    flat: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -62,8 +65,7 @@ export default class AutoForm extends React.Component {
   }
 
   render() {
-    const { spec, data, disabled, onChange, ...props } = this.props;
-    onChange;
+    const { spec, data, disabled, flat, className, ...props } = this.props;
 
     const fields = _(spec && spec.properties)
       .map((field, name) => {
@@ -100,7 +102,7 @@ export default class AutoForm extends React.Component {
     ;
 
     return (
-      <div {...props}>
+      <div className={cx('st2-auto-form', flat && 'st2-auto-form--flat', className)} {...props}>
         { fields.map((field) => {
           const name = field._name;
 

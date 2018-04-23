@@ -1,8 +1,35 @@
+import { uniqueId } from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import './style.less';
+
+export class Toggle extends React.Component {
+  static propTypes = {
+    title: PropTypes.string,
+    onChange: PropTypes.func,
+    value: PropTypes.bool,
+  }
+
+  _id = uniqueId('st2toggle')
+  
+  handleChange(value) {
+    return this.props.onChange && this.props.onChange(value);
+  }
+
+  render() {
+    const { title, value } = this.props;
+
+    return (
+      <div className="st2-forms__switch">
+        <input id={this._id} type="checkbox" checked={value || false} onChange={({ target: { checked } }) => this.handleChange(checked)} />
+        <label htmlFor={this._id} />
+        <label htmlFor={this._id} className="st2-forms__switch-title">{ title }</label>
+      </div>
+    );
+  }
+}
 
 export default class Button extends React.Component {
   static propTypes = {

@@ -1,6 +1,6 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-rules {
+.st2-triggers {
   // Table columns
 
   .st2-flex-table {
@@ -69,10 +69,10 @@
 
     text-transform: uppercase;
 
-    color: #999;
+    color: #b7d2da;
   }
   &__name {
-    font-size: 14px;
+    font-weight: bold;
 
     position: relative;
     top: -2px;
@@ -81,11 +81,12 @@
     overflow: hidden;
 
     text-overflow: ellipsis;
+
+    color: @aqua-base;
   }
   &__description {
-    font-size: 12px;
-
     position: relative;
+    top: -2px;
 
     display: block;
     overflow: hidden;
@@ -93,8 +94,6 @@
     margin-bottom: -4px;
 
     text-overflow: ellipsis;
-
-    color: #666;
   }
 
   &__condition {

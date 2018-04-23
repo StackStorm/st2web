@@ -33,7 +33,7 @@ module.exports = function (browser) {
   browser.waitDuration = '10s';
 
   browser.on('opened', (win) => {
-    win.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {};
+    win.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true };
     win.document.raise = (e) => console.error(e);
   });
 

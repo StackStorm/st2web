@@ -1,6 +1,5 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
 import store from './store';
 
 import api from '@stackstorm/module-api';
@@ -8,9 +7,8 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from 'react-router-dom';
-import AutoFormCheckbox from '@stackstorm/module-auto-form/modules/checkbox';
 import Criteria from '@stackstorm/module-criteria';
-import Button from '@stackstorm/module-forms/button.component';
+import Button, { Toggle } from '@stackstorm/module-forms/button.component';
 import Highlight from '@stackstorm/module-highlight';
 import PackIcon from '@stackstorm/module-pack-icon';
 import {
@@ -18,6 +16,10 @@ import {
   DetailsHeader,
   DetailsSwitch,
   DetailsBody,
+  DetailsLine,
+  DetailsFormLine,
+  DetailsCriteriaLine,
+  DetailsLineNote,
   DetailsPanel,
   DetailsPanelHeading,
   DetailsPanelBody,
@@ -25,22 +27,19 @@ import {
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
 import RemoteForm from '@stackstorm/module-remote-form';
-import RulesPopup from './rules-popup.component';
 
-@connect((state) => {
-  const { rule } = state;
-  return { rule };
-})
 export default class RulesDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
-    handleCreate: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
     rule: PropTypes.object,
+
+    triggerParameters: PropTypes.object,
+    actionParameters: PropTypes.object,
 
     triggerSpec: PropTypes.object,
     criteriaSpecs: PropTypes.object,
@@ -50,58 +49,7 @@ export default class RulesDetails extends React.Component {
 
   state = {
     editing: null,
-  }
-
-  componentDidMount() {
-    const { id } = this.props;
-
-    if (id) {
-      this.fetchRule(id);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { id } = nextProps;
-
-    if (id && id !== this.props.id) {
-      this.fetchRule(id);
-    }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.id === 'new') {
-      return true;
-    }
-
-    if (nextProps.id !== this.props.id) {
-      return false;
-    }
-
-    return true;
-  }
-
-  refresh() {
-    const { id } = this.props;
-
-    if (id !== 'new') {
-      this.fetchRule(id);
-    }
-  }
-
-  fetchRule(id) {
-    if (id === 'new') {
-      return;
-    }
-
-    store.dispatch({
-      type: 'FETCH_RULE',
-      promise: api.client.rules.get(id),
-    })
-      .catch((err) => {
-        notification.error(`Unable to retrieve rule "${id}".`, { err });
-        throw err;
-      })
-    ;
+    rulePreview: false,
   }
 
   handleSection(section) {
@@ -150,14 +98,14 @@ export default class RulesDetails extends React.Component {
 
   handleCancel(e) {
     e && e.preventDefault();
-    this.setState({ editing: null });
+    this.setState({ editing: null, rulePreview: false });
   }
 
   handleSave(e) {
     e && e.preventDefault();
 
     return this.props.handleSave(this.state.editing).then(() => {
-      this.setState({ editing: null });
+      this.setState({ editing: null, rulePreview: false });
     });
   }
 
@@ -168,30 +116,36 @@ export default class RulesDetails extends React.Component {
     return this.props.handleDelete(id);
   }
 
+  handleToggleEnable(rule) {
+    return store.dispatch({
+      type: 'TOGGLE_ENABLE',
+      promise: api.client.rules.edit(rule.id, { ...rule, enabled: !rule.enabled }),
+    })
+      .catch((err) => {
+        notification.error(`Unable to update rule "${rule.ref}".`, { err });
+        throw err;
+      })
+    ;
+  }
+
+  handleToggleRunPreview() {
+    let { rulePreview } = this.state;
+
+    rulePreview = !rulePreview;
+
+    this.setState({ rulePreview });
+  }
+
   render() {
-    const { id, section, triggerSpec, criteriaSpecs, actionSpec, packSpec } = this.props;
+    const { section, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec } = this.props;
     const rule = this.state.editing || this.props.rule;
 
-    if (!rule) {
-      if (id === 'new') {
-        return (
-          <PanelDetails data-test="details">
-            { triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
-              <RulesPopup
-                triggerSpec={triggerSpec}
-                criteriaSpecs={criteriaSpecs}
-                actionSpec={actionSpec}
-                packSpec={packSpec}
-                onSubmit={(data) => this.props.handleCreate(data)}
-                onCancel={() => this.props.handleNavigate({ id: false })}
-              />
-            ) : null }
-          </PanelDetails>
-        );
-      }
-
-      return null;
+    if (!rule || !triggerParameters || !actionParameters) {
+      return false;
     }
+
+    const trigger = triggerParameters[rule.trigger.type];
+    const action = actionParameters[rule.action.ref];
 
     setTitle([ rule.ref, 'Rules' ]);
 
@@ -201,34 +155,7 @@ export default class RulesDetails extends React.Component {
           status={rule.enabled ? 'enabled' : 'disabled'}
           title={( <Link to={`/rules/${rule.ref}`}>{rule.ref}</Link> )}
           subtitle={rule.description}
-        >
-          <div className="st2-details__header-conditions">
-            <div className="st2-details__header-condition st2-details__header-condition--if" data-test="header_if">
-              <span className="st2-details__header-condition-label">If</span>
-              <span className="st2-details__header-condition-icon">
-                <PackIcon small name={rule.trigger.type.split('.')[0]} />
-              </span>
-              <span className="st2-details__header-condition-name">
-                { rule ? (
-                  <span>{ rule.trigger.type }</span>
-                ) : null }
-              </span>
-            </div>
-            <div className="st2-details__header-condition st2-details__header-condition--then" data-test="header_then">
-              <span className="st2-details__header-condition-label">Then</span>
-              <span className="st2-details__header-condition-icon">
-                <PackIcon small name={rule.action.ref.split('.')[0]} />
-              </span>
-              <span className="st2-details__header-condition-name">
-                { rule ? (
-                  <Link to={`/actions/${rule.action.ref}`}>
-                    { rule.action.ref }
-                  </Link>
-                ) : null }
-              </span>
-            </div>
-          </div>
-        </DetailsHeader>
+        />
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
@@ -237,85 +164,197 @@ export default class RulesDetails extends React.Component {
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
+        <DetailsToolbar>
+          <Toggle title="enabled" value={rule.enabled} onChange={() => this.handleToggleEnable(rule)} />
+          { this.state.editing ? [
+            <Button key="save" value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
+            <Button key="cancel" value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
+            <Button key="preview" value="Preview" onClick={() => this.handleToggleRunPreview()} />,
+          ] : [
+            <Button key="edit" value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
+            <Button key="delete" value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
+          ] }
+          <DetailsToolbarSeparator />
+        </DetailsToolbar>
+        { this.state.rulePreview && <Highlight key="preview" well data-test="rule_preview" code={rule} /> }
+        <div className="st2-rules__conditions">
+          <div className="st2-rules__condition-if" data-test="condition_if">
+            <div className="st2-rules__column-trigger" title={rule.trigger.type}>
+              <span className="st2-rules__label">If</span>
+              <PackIcon name={rule && rule.trigger.type.split('.')[0]} />
+
+              <span className="st2-rules__name">
+                { rule.trigger.type }
+              </span>
+              { rule.trigger.description ? (
+                <span className="st2-rules__description">
+                  { rule.trigger.description }
+                </span>
+              ) : null }
+            </div>
+          </div>
+          <div className="st2-rules__condition-then" data-test="condition_then">
+            <div className="st2-rules__column-action" title={rule.action.ref}>
+              <span className="st2-rules__label">Then</span>
+              <PackIcon name={rule && rule.action.ref.split('.')[0]} />
+
+              <span className="st2-rules__name">
+                { rule.action.ref }
+              </span>
+              <span className="st2-rules__description">
+                { rule.action.description }
+              </span>
+            </div>
+          </div>
+        </div>
         <DetailsBody>
           { section === 'general' ? (
-            <form name="form">
-              <DetailsPanel>
-                <AutoFormCheckbox
-                  spec={{
-                    name: 'enabled',
-                    type: 'boolean',
-                    default: true,
-                  }}
-                  disabled={!this.state.editing}
-                  data={rule.enabled}
-                  onChange={(value) => this.handleChange('enabled', value)}
-                />
-              </DetailsPanel>
-              { triggerSpec ? (
+            !this.state.editing ? (
+              <div>
                 <DetailsPanel>
                   <DetailsPanelHeading title="Trigger" />
                   <DetailsPanelBody>
-                    <RemoteForm
-                      name="trigger"
-                      disabled={!this.state.editing}
-                      spec={triggerSpec}
-                      data={rule.trigger}
-                      onChange={(trigger) => this.handleChange('trigger', trigger)}
-                      data-test="rule_trigger_form"
-                    />
+                    <Link to={`/triggers/${rule.trigger.type}`}>{rule.trigger.type}</Link>
+                    {
+                      trigger
+                        ? (
+                          trigger
+                            .map(({ name, default:def }) => {
+                              const value = rule.trigger.parameters[name] !== undefined ? rule.trigger.parameters[name] : def;
+    
+                              if (value === undefined) {
+                                return false;
+                              }
+    
+                              return <DetailsFormLine key={name} name={name} value={value} />;
+                            })
+                        ) : (
+                          <div>
+                            Trigger is missing
+                          </div>
+                        )
+                        
+                    }
                   </DetailsPanelBody>
                 </DetailsPanel>
-              ) : null }
-              { criteriaSpecs ? (
-                <DetailsPanel>
-                  <DetailsPanelHeading title="Criteria" />
-                  <DetailsPanelBody>
-                    <Criteria
-                      disabled={!this.state.editing}
-                      data={rule.criteria}
-                      spec={criteriaSpecs[rule.trigger.type]}
-                      onChange={(criteria) => this.handleChange('criteria', criteria)}
-                      data-test="rule_criteria_form"
-                    />
-                  </DetailsPanelBody>
-                </DetailsPanel>
-              ) : null }
-              { actionSpec ? (
                 <DetailsPanel>
                   <DetailsPanelHeading title="Action" />
                   <DetailsPanelBody>
-                    <RemoteForm
-                      name="action"
-                      disabled={!this.state.editing}
-                      spec={actionSpec}
-                      data={rule.action}
-                      onChange={(action) => this.handleChange('action', action)}
-                      data-test="rule_action_form"
-                    />
+                    <Link to={`/actions/${rule.action.ref}`}>{rule.action.ref}</Link>
+                    {
+                      action 
+                        ? (
+                          action
+                            .map(({ name, default:def }) => {
+                              const value = rule.action.parameters[name] !== undefined ? rule.action.parameters[name] : def;
+
+                              if (value === undefined) {
+                                return false;
+                              }
+
+                              return <DetailsFormLine key={name} name={name} value={value} />;
+                            })
+                        ) : (
+                          <DetailsLineNote>
+                            Action has not been installed
+                          </DetailsLineNote>
+                        )
+                    }
                   </DetailsPanelBody>
                 </DetailsPanel>
-              ) : null }
-              { packSpec ? (
                 <DetailsPanel>
                   <DetailsPanelHeading title="Rule" />
                   <DetailsPanelBody>
-                    <RemoteForm
-                      name="pack"
-                      disabled={!this.state.editing}
-                      spec={packSpec}
-                      data={{ ref: rule.pack, parameters: rule }}
-                      onChange={({ ref: pack, parameters: rule }) =>
-                        pack === rule.pack
-                          ? this.handleChange(null, rule)
-                          : this.handleChange('pack', pack)
-                      }
-                      data-test="rule_pack_form"
-                    />
+                    <DetailsLine name="pack" value={<Link to={`/packs/${rule.pack}`}>{rule.pack}</Link>} />
                   </DetailsPanelBody>
                 </DetailsPanel>
-              ) : null }
-            </form>
+                <DetailsPanel>
+                  <DetailsPanelHeading title="Criteria" />
+                  <DetailsPanelBody>
+                    {
+                      Object.keys(rule.criteria || {}).length
+                        ? (
+                          Object.keys(rule.criteria || {})
+                            .map(name => {
+                              const { type, pattern } = rule.criteria[name];
+                              return <DetailsCriteriaLine key={`${name}//${type}//${pattern}`} name={name} type={type} pattern={pattern} />;
+                            })
+                        ) : (
+                          <DetailsLineNote>
+                            No criteria defined for this rule
+                          </DetailsLineNote>
+                        )
+                    }
+                  </DetailsPanelBody>
+                </DetailsPanel>
+              </div>
+            ) : (
+              <form name="form">
+                { triggerSpec ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Trigger" />
+                    <DetailsPanelBody>
+                      <RemoteForm
+                        name="trigger"
+                        disabled={!this.state.editing}
+                        spec={triggerSpec}
+                        data={rule.trigger}
+                        onChange={(trigger) => this.handleChange('trigger', trigger)}
+                        data-test="rule_trigger_form"
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+                { criteriaSpecs ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Criteria" />
+                    <DetailsPanelBody>
+                      <Criteria
+                        disabled={!this.state.editing}
+                        data={rule.criteria}
+                        spec={criteriaSpecs[rule.trigger.type]}
+                        onChange={(criteria) => this.handleChange('criteria', criteria)}
+                        data-test="rule_criteria_form"
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+                { actionSpec ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Action" />
+                    <DetailsPanelBody>
+                      <RemoteForm
+                        name="action"
+                        disabled={!this.state.editing}
+                        spec={actionSpec}
+                        data={rule.action}
+                        onChange={(action) => this.handleChange('action', action)}
+                        data-test="rule_action_form"
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+                { packSpec ? (
+                  <DetailsPanel>
+                    <DetailsPanelHeading title="Rule" />
+                    <DetailsPanelBody>
+                      <RemoteForm
+                        name="pack"
+                        disabled={!this.state.editing}
+                        spec={packSpec}
+                        data={{ pack: rule.pack, parameters: rule }}
+                        onChange={({ pack, parameters: rule }) =>
+                          pack === rule.pack
+                            ? this.handleChange(null, rule)
+                            : this.handleChange('pack', pack)
+                        }
+                        data-test="rule_pack_form"
+                      />
+                    </DetailsPanelBody>
+                  </DetailsPanel>
+                ) : null }
+              </form>
+            )
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="rule_code">
@@ -323,27 +362,6 @@ export default class RulesDetails extends React.Component {
             </DetailsPanel>
           ) : null }
         </DetailsBody>
-        <DetailsToolbar>
-          { this.state.editing ? [
-            <Button key="save" small value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
-            <Button key="cancel" small value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
-          ] : [
-            <Button key="edit" small value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
-            <Button key="delete" small value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
-          ] }
-          <DetailsToolbarSeparator />
-        </DetailsToolbar>
-
-        { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
-          <RulesPopup
-            triggerSpec={triggerSpec}
-            criteriaSpecs={criteriaSpecs}
-            actionSpec={actionSpec}
-            packSpec={packSpec}
-            onSubmit={(data) => this.props.handleCreate(data)}
-            onCancel={() => this.props.handleNavigate({ id: rule.ref })}
-          />
-        ) : null }
       </PanelDetails>
     );
   }

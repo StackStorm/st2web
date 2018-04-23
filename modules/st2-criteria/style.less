@@ -55,4 +55,12 @@
   &__buttons {
     margin-top: 20px;
   }
+
+  // Let's try and diverge from BEM to see if it actually makes more sense for what we're doing here
+  // Initially it should have been `&--flat`
+  &.flat &__entity {
+    display: inline-block;
+
+    flex: initial;
+  }
 }

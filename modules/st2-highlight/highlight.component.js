@@ -45,12 +45,9 @@ export default class Highlight extends React.Component {
     className: PropTypes.string,
     code: PropTypes.any,
     language: PropTypes.string,
-    lines: PropTypes.number.isRequired,
+    lines: PropTypes.number,
+    well: PropTypes.bool,
   };
-
-  static defaultProps = {
-    lines: 5,
-  }
 
   state = {
     expanded: false,
@@ -122,9 +119,12 @@ export default class Highlight extends React.Component {
     }
 
     let outputShort = outputFull;
-    const more = outputShort.length - this.props.lines;
-    if (more > 0) {
-      outputShort = outputShort.slice(0, this.props.lines);
+    let more = 0;
+    if (this.props.lines) {
+      more = outputShort.length - this.props.lines;
+      if (more > 0) {
+        outputShort = outputShort.slice(0, this.props.lines);
+      }
     }
 
     outputFull = outputFull.join('\n');
@@ -177,7 +177,7 @@ export default class Highlight extends React.Component {
   }
 
   render() {
-    const { className, code, language, lines, ...props } = this.props;
+    const { className, code, language, lines, well, ...props } = this.props;
     language; lines;
 
     if (!code) {
@@ -187,7 +187,7 @@ export default class Highlight extends React.Component {
     const whiteSpace = this.state.wrap ? 'pre-wrap' : 'auto';
 
     return (
-      <div {...props} className={cx('st2-highlight', className)}>
+      <div {...props} className={cx('st2-highlight', well && 'st2-highlight--well', className)}>
         <div className="st2-highlight__well">
           <pre>
             <code ref={(ref) => this.onRefShort(ref)} />

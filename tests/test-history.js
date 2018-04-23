@@ -102,7 +102,7 @@ describe('User visits history page', function () {
       browser.assert.element(util.name('action_input'), 'Action input is missing');
     });
 
-    describe('then chooses code', () => {
+    describe('then chooses code tab', () => {
       before(() => browser.click(util.name('switch:code')));
       after(() => browser.click(util.name('switch:general')));
 

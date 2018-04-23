@@ -10,14 +10,15 @@ import './style.less';
 export class Panel extends React.Component {
   static propTypes = {
     className: PropTypes.string,
+    detailed: PropTypes.bool,
     children: PropTypes.node,
   }
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, detailed = false, ...props } = this.props;
 
     return (
-      <main {...props} className={cx('st2-panel', className)}>
+      <main {...props} className={cx('st2-panel', detailed && 'st2-panel--detailed', className)}>
         { children }
       </main>
     );
@@ -291,7 +292,6 @@ export class DetailsHeader extends React.Component {
   }
 }
 
-const SWITCH_COUNT = [ 'first', 'second' ];
 export class DetailsSwitch extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -312,8 +312,8 @@ export class DetailsSwitch extends React.Component {
         {...props}
         className={cx(
           'st2-details__switch',
-          'st2-details__switch--of-two',
-          `st2-details__switch--${SWITCH_COUNT[active < 0 ? 0 : active]}`,
+          `st2-details__switch--of-${sections.length}`,
+          `st2-details__switch--${active < 0 ? 0 : active}`,
           className,
         )}
       >
@@ -346,6 +346,98 @@ export class DetailsBody extends React.Component {
         <div className="st2-panel__scroller">
           { children }
         </div>
+      </div>
+    );
+  }
+}
+
+export class DetailsCriteriaLine extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    type: PropTypes.string,
+    pattern: PropTypes.string,
+  }
+
+  render() {
+    const { name, type, pattern } = this.props;
+
+    return (
+      <div className="st2-details__line">
+        <div className="st2-details__line-key">
+          { name }
+        </div>
+        <div className="st2-details__line-type">
+          { type }
+        </div>
+        <div className="st2-details__line-value">
+          { pattern }
+        </div>
+      </div>
+    );
+  }
+}
+
+export class DetailsFormLine extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.any,
+  }
+
+  render() {
+    const { name } = this.props;
+    let { value } = this.props;
+
+    if (name === undefined || value === undefined) {
+      return false;
+    }
+
+    if (typeof value === 'boolean') {
+      value = value ? 'yes' : 'no';
+    }
+
+    if (typeof value === 'object' || Array.isArray(value)) {
+      value = JSON.stringify(value, null, '  ');
+    }
+
+    return <DetailsLine name={name} value={value} />;
+  }
+}
+
+export class DetailsLine extends React.Component {
+  static propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.any,
+  }
+
+  render() {
+    const { name, value } = this.props;
+
+    if (name === undefined || value === undefined) {
+      return false;
+    }
+
+    return (
+      <div className="st2-details__line">
+        <div className="st2-details__line-name">
+          { name }
+        </div>
+        <div className="st2-details__line-value">
+          { value }
+        </div>
+      </div>
+    );
+  }
+}
+
+export class DetailsLineNote extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+  }
+
+  render() {
+    return (
+      <div className="st2-details__line-note">
+        { this.props.children }
       </div>
     );
   }

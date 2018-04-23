@@ -4,7 +4,7 @@ import Highlight from '@stackstorm/module-highlight';
 
 export default function http(execution) {
   return (
-    <Highlight code={getCode(execution)} />
+    <Highlight well code={getCode(execution)} />
   );
 }
 

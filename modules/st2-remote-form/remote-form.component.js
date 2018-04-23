@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import AutoForm from '@stackstorm/module-auto-form';
-import AutoFormText from '@stackstorm/module-auto-form/modules/text';
+import AutoFormLink from '@stackstorm/module-auto-form/modules/link';
 import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 
 import './style.less';
@@ -15,12 +15,13 @@ export default class RemoteForm extends React.Component {
     disabled: PropTypes.bool.isRequired,
     spec: PropTypes.shape({
       enum: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         spec: PropTypes.object,
       })).isRequired,
     }).isRequired,
     data: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
+    flat: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -28,12 +29,11 @@ export default class RemoteForm extends React.Component {
   }
 
   onChangeValue(value) {
-    const { name } = this.props;
-    const key = name === 'trigger' ? 'type' : 'ref';
+    const { spec: { name } } = this.props;
 
     this.props.onChange({
       ...this.props.data,
-      [key]: value,
+      [name]: value,
       parameters: {},
     });
   }
@@ -46,28 +46,29 @@ export default class RemoteForm extends React.Component {
   }
 
   render() {
-    const { className, name, disabled, spec, data, onChange, ...props } = this.props;
+    const { className, name, disabled, spec, data, onChange, flat, ...props } = this.props;
     onChange;
 
-    const key = name === 'trigger' ? 'type' : 'ref';
-
-    const child = spec.enum.find(({ name }) => name === data[key]);
+    const child = spec.enum.find(({ name }) => name === data[spec.name]);
     const childSpec = child ? child.spec : {};
 
     return (
-      <div {...props} className={cx('st2-remote-form', className)}>
+      <div {...props} className={cx('st2-remote-form', flat && 'st2-auto-form--flat', className)}>
         { disabled ? (
-          <AutoFormText
+          <AutoFormLink
             name={name}
+            href={`/actions/${data[name]}`}
             spec={spec}
-            data={data[key]}
+            data={data[spec.name]}
+            flat={flat}
           />
         ) : (
           <AutoFormCombobox
             name={name}
             spec={spec}
-            data={data[key]}
+            data={data[spec.name]}
             onChange={(ref) => this.onChangeValue(ref)}
+            flat={flat}
           />
         ) }
         <AutoForm
@@ -75,6 +76,7 @@ export default class RemoteForm extends React.Component {
           data={data.parameters}
           disabled={disabled}
           onChange={(parameters) => this.onChangeParameters(parameters)}
+          flat={flat}
         />
       </div>
     );

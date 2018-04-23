@@ -108,16 +108,9 @@ describe('User visits actions page', function () {
       browser.assert.text(util.name('header_description'), action.description, 'Wrong description in header');
 
       browser.assert.element(util.name('action_parameters'), 'Action parameters are missing');
-
-      try {
-        browser.assert.element(util.name('action_executions'));
-      }
-      catch (e) {
-        browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
-      }
     });
 
-    describe('then chooses code', () => {
+    describe('then chooses code tab', () => {
       before(() => browser.click(util.name('switch:code')));
       after(() => browser.click(util.name('switch:general')));
 
@@ -127,6 +120,20 @@ describe('User visits actions page', function () {
         }
         catch (e) {
           browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+        }
+      });
+    });
+
+    describe('then chooses executions tab', () => {
+      before(() => browser.click(util.name('switch:executions')));
+      after(() => browser.click(util.name('switch:general')));
+
+      it('should have action executions present', () => {
+        try {
+          browser.assert.element(util.name('action_executions'));
+        }
+        catch (e) {
+          browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
         }
       });
     });
@@ -184,16 +191,9 @@ describe('User visits actions page', function () {
         browser.assert.text(util.name('header_description'), action.description, 'Wrong description in header');
 
         browser.assert.element(util.name('action_parameters'), 'Action parameters are missing');
-
-        try {
-          browser.assert.element(util.name('action_executions'));
-        }
-        catch (e) {
-          browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
-        }
       });
 
-      describe('then chooses code', () => {
+      describe('then chooses code tab', () => {
         before(() => browser.click(util.name('switch:code')));
         after(() => browser.click(util.name('switch:general')));
 
@@ -203,6 +203,20 @@ describe('User visits actions page', function () {
           }
           catch (e) {
             browser.assert.element(util.name('no_code_message'), 'Action code and a message are both missing');
+          }
+        });
+      });
+
+      describe('then chooses executions tab', () => {
+        before(() => browser.click(util.name('switch:executions')));
+        after(() => browser.click(util.name('switch:general')));
+  
+        it('should have action executions present', () => {
+          try {
+            browser.assert.element(util.name('action_executions'));
+          }
+          catch (e) {
+            browser.assert.element(util.name('no_executions_message'), 'Action executions and an error message are both missing');
           }
         });
       });
