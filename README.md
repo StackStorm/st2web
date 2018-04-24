@@ -1,7 +1,10 @@
 StackStorm Web UI
 =================
 
+[![CircleCI](https://circleci.com/gh/StackStorm/st2web.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/StackStorm/st2web)
+
 ![st2web](https://cloud.githubusercontent.com/assets/1357357/7393040/010f78ac-eea5-11e4-82bf-8253674683e1.png)
+
 
 Quick start
 -----------
