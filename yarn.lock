@@ -111,6 +111,16 @@
     resolve "^1.1.6"
     sink-transform "^2.0.0"
 
+"@stackstorm/browserify-postcss@0.3.4-patch.4":
+  version "0.3.4-patch.4"
+  resolved "https://registry.yarnpkg.com/@stackstorm/browserify-postcss/-/browserify-postcss-0.3.4-patch.4.tgz#75e706f28541b029493ff6ce8a30236ecd10f6bb"
+  dependencies:
+    css-modules-loader-core "1.1.0"
+    cssify "^1.0.2"
+    postcss "^5.0.0"
+    resolve "^1.1.6"
+    sink-transform "^2.0.0"
+
 "@stackstorm/postcss-less-engine@0.6.2":
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@stackstorm/postcss-less-engine/-/postcss-less-engine-0.6.2.tgz#6633500bffa763f0b18a40cab64e8cc3cd97d99f"

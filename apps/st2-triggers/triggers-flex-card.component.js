@@ -44,7 +44,7 @@ export default class TriggersFlexCard extends React.Component {
       >
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__header-status st2-flex-card__column">
-            { sensor && <Label status={sensor.enabled ? 'enabled' : 'disabled'} /> }
+            { sensor && <Label status={sensor.enabled ? 'enabled' : 'disabled'} short /> }
           </div>
           <div className="st2-flex-card__column">
             <div className="st2-flex-card__header-primary" title={trigger.ref}>

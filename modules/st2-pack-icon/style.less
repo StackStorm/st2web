@@ -1,7 +1,7 @@
 @size: 32px;
 @sizesm: 24px;
 
-.st2-pack-icon {
+.component {
   position: relative;
 
   display: inline-block;
@@ -32,36 +32,36 @@
 
     color: #000;
   }
+}
+
+.small {
+  width: @sizesm;
+  height: @sizesm;
+
+  border: 4px solid #fff;
+
+  &:after {
+    font-size: @sizesm;
+
+    top: 0;
+
+    width: @sizesm;
+    height: @sizesm;
+  }
+}
+
+.image {
+  position: relative;
+  z-index: 1;
+
+  width: @size;
+  height: @size;
+
+  background: #fff;
+  box-shadow: 0 0 0 3px white;
 
   &-small {
     width: @sizesm;
     height: @sizesm;
-
-    border: 4px solid #fff;
-
-    &:after {
-      font-size: @sizesm;
-
-      top: 0;
-
-      width: @sizesm;
-      height: @sizesm;
-    }
-  }
-
-  &__image {
-    position: relative;
-    z-index: 1;
-
-    width: @size;
-    height: @size;
-
-    background: #fff;
-    box-shadow: 0 0 0 3px white;
-
-    &-small {
-      width: @sizesm;
-      height: @sizesm;
-    }
   }
 }

@@ -15,7 +15,7 @@ class Icon extends React.Component {
 
   render() {
     return (
-      <i className={cx('st2-menu__icon', this.props.name)} />
+      <i className={cx(style.icon, this.props.name)} />
     );
   }
 }

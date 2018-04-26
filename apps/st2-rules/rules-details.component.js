@@ -327,7 +327,7 @@ export default class RulesDetails extends React.Component {
           <div className="st2-rules__condition-if" data-test="condition_if">
             <div className="st2-rules__column-trigger" title={rule.trigger.type}>
               <span className="st2-rules__label">If</span>
-              <PackIcon name={rule && rule.trigger.type.split('.')[0]} />
+              <PackIcon className="st2-rules__condition-icon" name={rule && rule.trigger.type.split('.')[0]} />
 
               <span className="st2-rules__name">
                 { rule.trigger.type }
@@ -342,7 +342,7 @@ export default class RulesDetails extends React.Component {
           <div className="st2-rules__condition-then" data-test="condition_then">
             <div className="st2-rules__column-action" title={rule.action.ref}>
               <span className="st2-rules__label">Then</span>
-              <PackIcon name={rule && rule.action.ref.split('.')[0]} />
+              <PackIcon className="st2-rules__condition-icon" name={rule && rule.action.ref.split('.')[0]} />
 
               <span className="st2-rules__name">
                 { rule.action.ref }

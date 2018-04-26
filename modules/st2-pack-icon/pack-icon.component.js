@@ -4,7 +4,8 @@ import cx from 'classnames';
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
 
-import './style.less';
+import style from './style.less';
+
 const icons = {};
 let iconPromise = null;
 
@@ -54,19 +55,20 @@ export default class PackIcon extends React.Component {
     if (naked) {
       if (icons[name]) {
         return (
-          <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name]} />
+          <img className={cx(style.image, small && style.imageSmall)} src={icons[name]} />
         );
       }
 
       return (
-        <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name]} />
+        <img className={cx(style.image, small && style.imageSmall)} src={icons[name]} />
       );
+      // ^^ WAT?
     }
 
     return (
-      <span {...props} className={cx('st2-pack-icon', className, { 'st2-pack-icon-small': small })}>
+      <span {...props} className={cx(style.component, className, small && style.small)}>
         { icons[name] ? (
-          <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name] || ''} />
+          <img className={cx(style.image, small && style.imageSmall)} src={icons[name] || ''} />
         ) : null }
       </span>
     );
