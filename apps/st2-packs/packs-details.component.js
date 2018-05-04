@@ -18,6 +18,8 @@ import {
   DetailsHeader,
   DetailsBody,
   DetailsPanel,
+  DetailsPanelHeading,
+  DetailsPanelBody,
   DetailsButtonsPanel,
   DetailsToolbar,
   DetailsToolbarSeparator,
@@ -179,35 +181,6 @@ export default class PacksPanel extends React.Component {
           title={( <Link to={`/packs/${pack.ref}`}>{pack.name}</Link> )}
           subtitle={pack.description}
         />
-        <DetailsBody>
-          <DetailsPanel>
-            <Table content={this.packMeta} data-test="pack_info" />
-          </DetailsPanel>
-          { pack.content ? (
-            <DetailsPanel>
-              <St2PortionBar content={_.mapValues(pack.content, 'count')} data-test="pack_content" />
-            </DetailsPanel>
-          ) : null }
-          { pack.config_schema ? (
-            <DetailsPanel data-test="pack_config" >
-              <form onSubmit={(e) => this.handleSave(e)}>
-                <AutoForm
-                  spec={pack.config_schema}
-                  data={this.state.config}
-                  onChange={(config) => this.setState({ config })}
-                />
-
-                <DetailsButtonsPanel>
-                  <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
-                  <Button submit value="Save" />
-                </DetailsButtonsPanel>
-                { this.state.configPreview ? (
-                  <Highlight lines={20} code={this.state.config} />
-                ) : null  }
-              </form>
-            </DetailsPanel>
-          ) : null }
-        </DetailsBody>
         <DetailsToolbar>
           { pack.status === 'available' ? (
             <Button small value="Install" onClick={() => this.handleInstall()} />
@@ -223,6 +196,38 @@ export default class PacksPanel extends React.Component {
           ) : null }
           <DetailsToolbarSeparator />
         </DetailsToolbar>
+        <DetailsBody>
+          <DetailsPanel>
+            <Table content={this.packMeta} data-test="pack_info" />
+          </DetailsPanel>
+          { pack.content ? (
+            <DetailsPanel>
+              <St2PortionBar content={_.mapValues(pack.content, 'count')} data-test="pack_content" />
+            </DetailsPanel>
+          ) : null }
+          { pack.config_schema ? (
+            <DetailsPanel data-test="pack_config" >
+              <DetailsPanelHeading title="Config" />
+              <DetailsPanelBody>
+                <form onSubmit={(e) => this.handleSave(e)}>
+                  <AutoForm
+                    spec={pack.config_schema}
+                    data={this.state.config}
+                    onChange={(config) => this.setState({ config })}
+                  />
+
+                  <DetailsButtonsPanel>
+                    <Button flat value="Preview" onClick={() => this.handleToggleConfigPreview()} />
+                    <Button submit value="Save" />
+                  </DetailsButtonsPanel>
+                  { this.state.configPreview ? (
+                    <Highlight lines={20} code={this.state.config} />
+                  ) : null  }
+                </form>
+              </DetailsPanelBody>
+            </DetailsPanel>
+          ) : null }
+        </DetailsBody>
       </PanelDetails>
     );
   }
