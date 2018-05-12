@@ -19,7 +19,7 @@ export default class TextModule extends React.Component {
 
     let link = null;
     if (name === 'action') {
-      link = `/actions/${data}`;
+      link = `/#/actions/${data}`;
     }
 
     return (
