@@ -25,13 +25,14 @@ First of all, you need to make sure you have `node` and `npm` packages installed
     $ npm -v
     5.3.0
 
-then you need to globally install `gulp`
+then you need to globally install `gulp`, `lerna`
 
     $ npm install -g gulp
+    $ npm install -g lerna
 
 then you need to install the requirements
 
-    $ npm install
+    $ lerna bootstrap
 
 and finally run build system to fetch the font, compile css and so on
 
