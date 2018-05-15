@@ -168,11 +168,11 @@ export default class RulesDetails extends React.Component {
           <Toggle title="enabled" value={rule.enabled} onChange={() => this.handleToggleEnable(rule)} />
           { this.state.editing ? [
             <Button key="save" value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
-            <Button key="cancel" value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
-            <Button key="preview" value="Preview" onClick={() => this.handleToggleRunPreview()} />,
+            <Button flat red key="cancel" value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
+            <Button flat key="preview" value="Preview" onClick={() => this.handleToggleRunPreview()} />,
           ] : [
-            <Button key="edit" value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
-            <Button key="delete" value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
+            <Button flat key="edit" value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
+            <Button flat red key="delete" value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
           ] }
           <DetailsToolbarSeparator />
         </DetailsToolbar>

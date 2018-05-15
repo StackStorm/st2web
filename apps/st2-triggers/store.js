@@ -10,6 +10,7 @@ const triggerReducer = (state = {}, input) => {
     filter = '',
     trigger = undefined,
     sensors = {},
+    instances = [],
   } = state;
 
   state = {
@@ -19,6 +20,7 @@ const triggerReducer = (state = {}, input) => {
     filter,
     trigger,
     sensors,
+    instances,
   };
 
   switch (input.type) {
@@ -62,6 +64,23 @@ const triggerReducer = (state = {}, input) => {
       return {
         ...state,
         sensors,
+      };
+    }
+
+    case 'FETCH_INSTANCES': {
+      switch(input.status) {
+        case 'success':
+          instances = input.payload;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        instances,
       };
     }
 

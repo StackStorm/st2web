@@ -477,7 +477,8 @@ export default class HistoryPanel extends React.Component {
                     'st2-forms__button-prev': true,
                     'st2-forms__button-prev--disabled': page <= 1,
                   })}
-                  value="Previous"
+                  value="Newer"
+                  flat
                   onClick={() => this.handlePage(page - 1)}
                 />
                 <Button
@@ -485,7 +486,8 @@ export default class HistoryPanel extends React.Component {
                     'st2-forms__button-next': true,
                     'st2-forms__button-next--disabled': page >= maxPages,
                   })}
-                  value="Next"
+                  value="Older"
+                  flat
                   onClick={() => this.handlePage(page + 1)}
                 />
               </PanelNavigation>

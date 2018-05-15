@@ -18,6 +18,9 @@
     border-radius: 2px;
     background-color: #777;
 
+    border: 1px solid #fff;
+    box-sizing: border-box;
+
     &:before {
       font-family: 'brocadeicons';
       font-size: 9px;
@@ -36,20 +39,20 @@
     background-color: #428bca;
   }
   &--success {
-    background-color: @green-base;
+    background-color: #00BD49;
   }
   &--info {
     background-color: #5bc0de;
   }
   &--warning {
-    background-color: @yellow-base;
+    background-color: #FF6600;
   }
   &--danger {
-    background-color: @red-base;
+    background-color: #E63544;
   }
 
   &--failed {
-    background-color: @red-base;
+    background-color: #E63544;
     &:before {
       display: none;
 
@@ -58,7 +61,7 @@
   }
 
   &--succeeded {
-    background-color: @green-base;
+    background-color: #00BD49;
     &:before {
       display: none;
 

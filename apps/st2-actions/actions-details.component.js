@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
-import cx from 'classnames';
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
@@ -15,6 +14,7 @@ import StringField from '@stackstorm/module-auto-form/fields/string';
 import {
   FlexTable,
   FlexTableRow,
+  FlexTableColumn,
   FlexTableInsert,
 } from '@stackstorm/module-flex-table';
 import FlowLink from '@stackstorm/module-flow-link';
@@ -28,7 +28,6 @@ import {
   DetailsBody,
   DetailsPanel,
   DetailsPanelEmpty,
-  DetailsPanelHeading,
   DetailsPanelBody,
   DetailsToolbar,
   DetailsToolbarSeparator,
@@ -215,7 +214,7 @@ export default class ActionsDetails extends React.Component {
         />
         <DetailsSwitch
           sections={[
-            { label: 'General', path: 'general' },
+            { label: 'Parameters', path: 'general' },
             { label: 'Code', path: 'code' },
             { label: 'executions', path: 'executions' },
           ]}
@@ -235,7 +234,6 @@ export default class ActionsDetails extends React.Component {
             </DetailsToolbar>
             { this.state.runPreview && <Highlight key="preview" well data-test="action_code" code={this.state.runValue} /> }
             <DetailsPanel key="panel" data-test="action_parameters">
-              <DetailsPanelHeading title="Parameters" />
               <DetailsPanelBody>
                 <form>
                   <AutoForm
@@ -267,54 +265,44 @@ export default class ActionsDetails extends React.Component {
         ) : null }
 
         { section === 'executions' ? (
+          // TODO: redo in the likeness of Trigger's InstancePanel
           <DetailsBody>
             <DetailsToolbar key="toolbar">
               <Link className="st2-forms__button st2-forms__button--flat" to={`/history?action=${action.ref}`}>
                 <i className="icon-history" /> See full action history
               </Link>
-            </DetailsToolbar>,
-            <DetailsPanel key="panel" data-test="action_executions">
-              <DetailsPanelHeading title="Executions" />
+            </DetailsToolbar>
+            <DetailsPanel key="panel" stick data-test="action_executions">
               <DetailsPanelBody>
                 { executions.length > 0 ? (
                   <FlexTable>
-                    { executions.map((execution) => [
+                    { executions.map((execution) => ([
                       <FlexTableRow
                         key={execution.id}
                         onClick={() => this.handleToggleExecution(execution.id)}
-                        columns={[
-                          {
-                            className: 'st2-actions__details-column-utility',
-                            children: (
-                              <i
-                                className={cx({
-                                  'icon-chevron-down': this.state.executionsVisible[execution.id],
-                                  'icon-chevron_right': !this.state.executionsVisible[execution.id],
-                                })}
-                              />
-                            ),
-                          },
-                          {
-                            className: 'st2-actions__details-column-meta',
-                            children: <Label status={execution.status} short={true} />,
-                          },
-                          {
-                            className: 'st2-actions__details-column-time',
-                            children: <Time timestamp={execution.start_timestamp} />,
-                          },
-                          {
-                            Component: Link,
-                            to: `/history/${execution.id}/general?action=${action.ref}`,
-                            className: 'st2-actions__details-column-history',
-                            title: 'Jump to History',
-                            children: <i className="icon-history" />,
-                          },
-                        ]}
-                      />,
+                        columns={[]}
+                      >
+                        <FlexTableColumn className='st2-actions__details-column-utility'>
+                          <i className={this.state.executionsVisible[execution.id] ? 'icon-chevron-down' : 'icon-chevron_right'} />
+                        </FlexTableColumn>
+                        <FlexTableColumn className={'st2-actions__details-column-meta'}>
+                          <Label status={execution.status} short={true} />
+                        </FlexTableColumn>
+                        <FlexTableColumn className={'st2-actions__details-column-time'}>
+                          <Time timestamp={execution.start_timestamp} />
+                        </FlexTableColumn>
+                        <Link
+                          to={`/history/${execution.id}/general?action=${action.ref}`}
+                          className='st2-actions__details-column-history'
+                          title='Jump to History'
+                        >
+                          <i className="icon-history" />
+                        </Link>
+                      </FlexTableRow>,
                       <FlexTableInsert key={`${execution.id}-insert`} visible={this.state.executionsVisible[execution.id] || false}>
                         <ActionReporter runner={execution.runner.name} execution={execution} />
                       </FlexTableInsert>,
-                    ]) }
+                    ])) }
                   </FlexTable>
                 ) : (
                   <DetailsPanelEmpty>No history records for this action</DetailsPanelEmpty>

@@ -35,7 +35,7 @@
 
     width: 480px;
 
-    background-color: @grey-lighten-5;
+    background-color: #f6f6f6;
   }
 
   &--detailed &__view {
@@ -135,8 +135,8 @@
 
       color: white;
       border-radius: 50%;
-      background-color: @aqua-base;
-      box-shadow: 0 0 10px @grey-base;
+      background-color: #008ceb;
+      box-shadow: 0 0 10px #b3b0ba;
 
       a&,
       a&:link,
@@ -361,6 +361,10 @@
 
     border-bottom: 1px solid #bbb;
 
+    &--stick {
+      padding-right: 0;
+    }
+
     &-heading {
       display: flex;
 
@@ -429,12 +433,13 @@
       }
 
       &-label {
-        font-weight: bold;
         line-height: 34px;
 
         width: 100px;
 
         text-transform: capitalize;
+
+        color: #818083;
       }
 
       &-value {
@@ -580,7 +585,7 @@
     height: 28px;
     padding: 15px 15px 15px 20px;
 
-    border-bottom: 1px solid @grey-lighten-2;
+    background-color: #e5e5e5;
 
     &-separator {
       flex: 1;
