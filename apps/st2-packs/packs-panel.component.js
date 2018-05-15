@@ -261,7 +261,7 @@ export default class PacksPanel extends React.Component {
     setTitle([ 'Packs' ]);
 
     return (
-      <Panel data-test="packs_panel">
+      <Panel data-test="packs_panel" detailed>
         <PanelView className="st2-packs">
           <Toolbar title="Packs">
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
