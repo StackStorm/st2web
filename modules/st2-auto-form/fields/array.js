@@ -79,6 +79,11 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
+    const { secret } = this.props.spec || {};
+    if (secret && v && !Array.isArray(v)) {
+      return v;
+    }
+
     return v ? v.join(', ') : '';
   }
 
