@@ -188,7 +188,7 @@ export default class TriggersPanel extends React.Component {
       return false;
     }
 
-    const trigger = triggers.find(trigger => id === trigger.ref);
+    const trigger = triggers.find(trigger => id === trigger.ref) || {};
 
     setTitle([ 'Trigger Types' ]);
 
