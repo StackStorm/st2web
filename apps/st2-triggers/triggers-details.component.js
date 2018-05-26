@@ -28,16 +28,23 @@ import {
 import InstancePanel from './panels/instances';
 
 @connect(
-  ({ instances, triggers, sensors }, props) => ({
+  ({
+    instances,
+    triggers,
+    sensors,
+  }, props) => ({
     trigger: triggers.find(trigger => props.id === trigger.ref),
     sensor: sensors[props.id],
     instances,
   }),
   (dispatch, props) => ({
-    onSelect: (trigger) => dispatch({
+    onComponentUpdate: () => dispatch({
       type: 'FETCH_INSTANCES',
-      // promise: api.client.index.request({ method: 'get', path: '/triggerinstances', query: {trigger: trigger.ref} }).then(res => res.data),
-      promise: api.client.index.request({ method: 'get', path: '/triggerinstances' }).then(res => res.data),
+      promise: api.client.index.request({ method: 'get', path: '/triggerinstances', query: {
+        trigger_type: props.id,
+        limit: 10,
+      } })
+        .then(res => res.data),
     }),
     onToggleEnable: (sensor) => dispatch({
       type: 'TOGGLE_ENABLE',
@@ -59,23 +66,26 @@ export default class TriggersDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
 
+    id: PropTypes.string,
     section: PropTypes.string,
     trigger: PropTypes.object,
     sensor: PropTypes.object,
     instances: PropTypes.array,
 
-    onSelect: PropTypes.func,
+    onComponentUpdate: PropTypes.func,
     onToggleEnable: PropTypes.func,
   }
 
   componentDidMount() {
-    this.props.onSelect();
+    this.props.onComponentUpdate && this.props.onComponentUpdate();
   }
 
-  componentWillReceiveProps(props) {
-    if (props.trigger !== this.props.trigger) {
-      this.props.onSelect();
+  componentDidUpdate(prevProps) {
+    if (prevProps.id === this.props.id) {
+      return;
     }
+
+    this.props.onComponentUpdate && this.props.onComponentUpdate();
   }
 
   handleSection(section) {
@@ -85,10 +95,6 @@ export default class TriggersDetails extends React.Component {
 
   handleToggleEnable() {
     return this.props.onToggleEnable();
-  }
-
-  handleToggleInstance() {
-
   }
 
   render() {

@@ -47,7 +47,7 @@ export default class InstancePanel extends DetailsPanel {
                   key={instance.id}
                   onClick={() => this.handleToggle(instance.id)}
                 >
-                  <FlexTableColumn className='st2-actions__details-column-utility'>
+                  <FlexTableColumn fixed>
                     <i className={this.state.visible[instance.id] ? 'icon-chevron-down' : 'icon-chevron_right'} />
                   </FlexTableColumn>
                   <FlexTableColumn>
@@ -56,7 +56,7 @@ export default class InstancePanel extends DetailsPanel {
                   <FlexTableColumn>
                     <Time timestamp={instance.occurrence_time} />
                   </FlexTableColumn>
-                  <FlexTableColumn>
+                  <FlexTableColumn fixed>
                     <Label status={instance.status} data-test="status" />
                   </FlexTableColumn>
                 </FlexTableRow>,
