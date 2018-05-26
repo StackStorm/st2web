@@ -134,15 +134,16 @@ export class FlexTableColumn extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    fixed: PropTypes.bool,
   }
 
   static actions = actions
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, fixed, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-flex-table__column', className)}>
+      <div {...props} className={cx('st2-flex-table__column', fixed && 'st2-flex-table__column--fixed', className)}>
         { children }
       </div>
     );
@@ -170,7 +171,24 @@ export class FlexTableInsert extends React.Component {
     }
 
     return (
-      <div {...props} className={cx('st2-flex-table__insert', className)}>
+      <div {...props} className={cx('st2-flex-insert', className)}>
+        { children }
+      </div>
+    );
+  }
+}
+
+export class FlexTableInsertColumn extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  render() {
+    const { className, children, ...props } = this.props;
+
+    return (
+      <div {...props} className={cx('st2-flex-insert__column', className)}>
         { children }
       </div>
     );

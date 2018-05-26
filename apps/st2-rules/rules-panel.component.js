@@ -49,10 +49,11 @@ class FlexTableWrapper extends FlexTable {
   }
 }
 
-@connect((state) => {
-  const { rules, groups, filter, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = state;
-  return { rules, groups, filter, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed };
-})
+@connect(({
+  rules, groups, filter, collapsed,
+}) => ({
+  rules, groups, filter, collapsed,
+}))
 export default class RulesPanel extends React.Component {
   static propTypes = {
     history: PropTypes.object,
@@ -69,14 +70,6 @@ export default class RulesPanel extends React.Component {
     rules: PropTypes.array,
     groups: PropTypes.array,
     filter: PropTypes.string,
-
-    triggerParameters: PropTypes.object,
-    actionParameters: PropTypes.object,
-
-    triggerSpec: PropTypes.object,
-    criteriaSpecs: PropTypes.object,
-    actionSpec: PropTypes.object,
-    packSpec: PropTypes.object,
 
     collapsed: PropTypes.bool,
   }
@@ -197,7 +190,7 @@ export default class RulesPanel extends React.Component {
   }
 
   handleSelect(id) {
-    return this.navigate({ id });
+    this.navigate({ id });
   }
 
   handleToggleAll() {
@@ -211,83 +204,14 @@ export default class RulesPanel extends React.Component {
     });
   }
 
-  handleCreate(rule) {
-    return store.dispatch({
-      type: 'CREATE_RULE',
-      promise: api.client.rules.create(rule)
-        .then((rule) => {
-          notification.success(`Rule "${rule.ref}" has been created successfully.`);
-
-          this.navigate({
-            id: rule.ref,
-            section: 'general',
-          });
-
-          return rule;
-        })
-        .catch((err) => {
-          notification.error('Unable to create rule.', { err });
-          throw err;
-        }),
-    });
-  }
-
-  handleSave(rule) {
-    return store.dispatch({
-      type: 'EDIT_RULE',
-      promise: api.client.rules.edit(rule.id, rule)
-        .then((rule) => {
-          notification.success(`Rule "${rule.ref}" has been saved successfully.`);
-
-          if (this.props.match.params.ref !== rule.ref) {
-            this.navigate({
-              id: rule.ref,
-              section: 'general',
-            });
-          }
-
-          return rule;
-        })
-        .catch((err) => {
-          notification.error(`Unable to save rule "${rule.ref}".`, { err });
-          throw err;
-        }),
-    });
-  }
-
-  handleDelete(ref) {
-    if (!window.confirm(`Do you really want to delete rule "${ref}"?`)) {
-      return undefined;
-    }
-
-    return store.dispatch({
-      type: 'DELETE_RULE',
-      ref: ref,
-      promise: api.client.rules.delete(ref)
-        .then((res) => {
-          notification.success(`Rule "${ref}" has been deleted successfully.`);
-
-          this.navigate({ id: null });
-
-          return res;
-        })
-        .catch((err) => {
-          notification.error(`Unable to delete rule "${ref}".`, { err });
-          throw err;
-        }),
-    });
-  }
-
   handleCreatePopup() {
     const { history } = this.props;
     history.push('/rules/new');
   }
 
   render() {
-    const { rules=[], groups, filter, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
+    const { groups, filter, collapsed } = this.props;
     const { id, section } = this.urlParams;
-
-    const rule = rules.find(({ ref }) => ref === id);
 
     setTitle([ 'Rules' ]);
 
@@ -332,31 +256,15 @@ export default class RulesPanel extends React.Component {
 
         <RulesDetails
           ref={(ref) => this._details = ref}
-          handleNavigate={(...args) => this.navigate(...args)}
-          handleSave={(...args) => this.handleSave(...args)}
-          handleDelete={(...args) => this.handleDelete(...args)}
+          onNavigate={(...args) => this.navigate(...args)}
 
-          id={rule && rule.ref}
-          rule={rule}
+          id={id}
           section={section}
-
-          triggerParameters={triggerParameters}
-          actionParameters={actionParameters}
-
-          triggerSpec={triggerSpec}
-          criteriaSpecs={criteriaSpecs}
-          actionSpec={actionSpec}
-          packSpec={packSpec}
         />
 
-        { id === 'new' && triggerSpec && criteriaSpecs && actionSpec && packSpec ? (
+        { id === 'new' ? (
           <RulesPopup
-            triggerSpec={triggerSpec}
-            criteriaSpecs={criteriaSpecs}
-            actionSpec={actionSpec}
-            packSpec={packSpec}
-            onSubmit={(data) => this.handleCreate(data)}
-            onCancel={() => this.navigate({ id: false })}
+            onNavigate={this.navigate}
           />
         ) : null }
       </Panel>

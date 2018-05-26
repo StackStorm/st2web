@@ -425,11 +425,12 @@
       }
 
       &-line {
-        display: flex;
+        display: grid;
+
+        grid-template-columns: max-content auto;
+        grid-column-gap: 10px;
 
         margin: 0;
-
-        flex-wrap: nowrap;
       }
 
       &-label {

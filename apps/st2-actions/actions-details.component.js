@@ -282,13 +282,13 @@ export default class ActionsDetails extends React.Component {
                         onClick={() => this.handleToggleExecution(execution.id)}
                         columns={[]}
                       >
-                        <FlexTableColumn className='st2-actions__details-column-utility'>
+                        <FlexTableColumn fixed>
                           <i className={this.state.executionsVisible[execution.id] ? 'icon-chevron-down' : 'icon-chevron_right'} />
                         </FlexTableColumn>
-                        <FlexTableColumn className={'st2-actions__details-column-meta'}>
+                        <FlexTableColumn fixed>
                           <Label status={execution.status} short={true} />
                         </FlexTableColumn>
-                        <FlexTableColumn className={'st2-actions__details-column-time'}>
+                        <FlexTableColumn>
                           <Time timestamp={execution.start_timestamp} />
                         </FlexTableColumn>
                         <Link

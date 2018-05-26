@@ -172,6 +172,10 @@
 
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    &--fixed {
+      flex: initial;
+    }
   }
 
   &__row:hover {
@@ -186,15 +190,27 @@
   &--passive &__row--even:hover {
     background-color: rgba(255,255,255,.5);
   }
+}
 
-  &__insert {
-    flex: 1;
+.st2-flex-insert {
+  flex: 1;
 
-    margin: 0;
-    padding: 10px;
-    padding-left: 0;
+  margin: 0;
+  padding: 10px;
+  padding-left: 0;
 
-    border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  & > * {
+    grid-column-start: 1;
+    grid-column-end: -1;
+  }
+
+  &__column {
+    grid-column: initial;
   }
 }
 

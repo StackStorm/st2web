@@ -1,7 +1,10 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
+import api from '@stackstorm/module-api';
 import setTitle from '@stackstorm/module-title';
+import notification from '@stackstorm/module-notification';
 
 import AutoForm from '@stackstorm/module-auto-form';
 import RemoteForm from '@stackstorm/module-remote-form';
@@ -19,12 +22,41 @@ import {
 
 import Popup from '@stackstorm/module-popup';
 
+@connect(
+  ({
+    triggerSpec, criteriaSpecs, actionSpec, packSpec,
+  }) => ({
+    triggerSpec, criteriaSpecs, actionSpec, packSpec,
+  }),
+  (dispatch, props) => ({
+    onSubmit: (rule) => dispatch({
+      type: 'CREATE_RULE',
+      promise: api.client.rules.create(rule)
+        .then((rule) => {
+          notification.success(`Rule "${rule.ref}" has been created successfully.`);
+
+          props.onNavigate({
+            id: rule.ref,
+            section: 'general',
+          });
+
+          return rule;
+        })
+        .catch((err) => {
+          notification.error('Unable to create rule.', { err });
+          throw err;
+        }),
+    }),
+    onCancel: () => props.navigate({ id: false }),
+  })
+)
 export default class RulesPopup extends React.Component {
   static propTypes = {
     triggerSpec: PropTypes.object.isRequired,
     criteriaSpecs: PropTypes.object.isRequired,
     actionSpec: PropTypes.object.isRequired,
     packSpec: PropTypes.object.isRequired,
+
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
   }

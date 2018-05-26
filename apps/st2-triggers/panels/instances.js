@@ -27,7 +27,7 @@ export default class InstancePanel extends DetailsPanel {
     visible: {},
   }
 
-  handleToggleInstance(id) {
+  handleToggle(id) {
     const { visible } = this.state;
     return this.setState({
       visible: update(id, (v) => !v)(visible),
@@ -45,7 +45,7 @@ export default class InstancePanel extends DetailsPanel {
               { instances.map((instance) => [
                 <FlexTableRow
                   key={instance.id}
-                  onClick={() => this.handleToggleInstance(instance.id)}
+                  onClick={() => this.handleToggle(instance.id)}
                 >
                   <FlexTableColumn className='st2-actions__details-column-utility'>
                     <i className={this.state.visible[instance.id] ? 'icon-chevron-down' : 'icon-chevron_right'} />
