@@ -106,7 +106,9 @@ export default class TriggersPanel extends React.Component {
     return Promise.all([
       store.dispatch({
         type: 'FETCH_GROUPS',
-        promise: api.client.triggerTypes.list()
+        promise: api.request({
+          path: '/triggertypes',
+        })
           .catch((err) => {
             notification.error('Unable to retrieve trigger types.', { err });
             throw err;
@@ -114,8 +116,7 @@ export default class TriggersPanel extends React.Component {
       }),
       store.dispatch({
         type: 'FETCH_SENSORS',
-        promise: api.client.index.request({ method: 'get', path: '/sensortypes' })
-          .then(res => res.data)
+        promise: api.request({ path: '/sensortypes' })
           .catch((err) => {
             notification.error('Unable to retrieve sensor types.', { err });
             throw err;

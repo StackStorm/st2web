@@ -40,15 +40,14 @@ import InstancePanel from './panels/instances';
   (dispatch, props) => ({
     onComponentUpdate: () => dispatch({
       type: 'FETCH_INSTANCES',
-      promise: api.client.index.request({ method: 'get', path: '/triggerinstances', query: {
+      promise: api.request({ path: '/triggerinstances', query: {
         trigger_type: props.id,
         limit: 10,
-      } })
-        .then(res => res.data),
+      } }),
     }),
     onToggleEnable: (sensor) => dispatch({
       type: 'TOGGLE_ENABLE',
-      promise: api.client.index.request({ method: 'put', path: `/sensortypes/${sensor.ref}`}, { ...sensor, enabled: !sensor.enabled }).then(res => res.data),
+      promise: api.request({ method: 'put', path: `/sensortypes/${sensor.ref}`}, { ...sensor, enabled: !sensor.enabled }),
     }).catch((err) => {
       notification.error(`Unable to retrieve sensor "${sensor.ref}".`, { err });
       throw err;

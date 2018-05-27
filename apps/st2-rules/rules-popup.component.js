@@ -31,7 +31,10 @@ import Popup from '@stackstorm/module-popup';
   (dispatch, props) => ({
     onSubmit: (rule) => dispatch({
       type: 'CREATE_RULE',
-      promise: api.client.rules.create(rule)
+      promise: api.request({
+        method: 'post',
+        path: '/rules',
+      }, rule)
         .then((rule) => {
           notification.success(`Rule "${rule.ref}" has been created successfully.`);
 
@@ -52,13 +55,13 @@ import Popup from '@stackstorm/module-popup';
 )
 export default class RulesPopup extends React.Component {
   static propTypes = {
-    triggerSpec: PropTypes.object.isRequired,
-    criteriaSpecs: PropTypes.object.isRequired,
-    actionSpec: PropTypes.object.isRequired,
-    packSpec: PropTypes.object.isRequired,
+    triggerSpec: PropTypes.object,
+    criteriaSpecs: PropTypes.object,
+    actionSpec: PropTypes.object,
+    packSpec: PropTypes.object,
 
-    onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
   }
 
   state = {
@@ -136,7 +139,7 @@ export default class RulesPopup extends React.Component {
 
     return (
       <div className="st2-rerun">
-        <Popup title="Create a rule" onCancel={onCancel} data-test="rule_create_popup">
+        <Popup title="Create a rule" onCancel={() => onCancel()} data-test="rule_create_popup">
           <form>
             <DetailsPanel>
               <DetailsPanelBody>
@@ -217,7 +220,7 @@ export default class RulesPopup extends React.Component {
                 <Button
                   flat red
                   className="st2-details__toolbar-button"
-                  onClick={onCancel}
+                  onClick={() => onCancel()}
                   value="Cancel"
                 />
                 <Button

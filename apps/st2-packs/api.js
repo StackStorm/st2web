@@ -10,14 +10,17 @@ let globalPacks = [];
 export default {
   list() {
     return Promise.all([
-      api.client.packs.list()
+      api.request({
+        path: '/packs',
+      })
         .then((packs) => _.map(packs, (pack) => ({
           ...pack,
           status: 'installed',
           installedVersion: pack.version,
         }))),
-      api.client.packs.get('index')
-        // `index: packs`: A rather ugly hack that helps us not to update st2client just yet
+      api.request({
+        path: '/packs/index',
+      })
         .then(({ index: packs }) => _.map(packs, (pack, ref) => ({
           ...pack,
           status: 'available',
@@ -25,14 +28,21 @@ export default {
           // In some cases, pack.ref might be missing and we better sort it out earlier
           ref: pack.ref || ref,
         }))),
-      api.client.configSchemas.list()
+      api.request({
+        path: '/config_schemas',
+      })
         .then((packs) => _.map(packs, ({ pack, attributes }) => ({
           ref: pack,
           config_schema: {
             properties: attributes,
           },
         }))),
-      api.client.configs.list({ show_secrets: true })
+      api.request({
+        path: '/configs',
+        query: {
+          show_secrets: true,
+        },
+      })
         .then((packs) => _.map(packs, ({ pack, values }) => ({
           ref: pack,
           config: values,
@@ -94,17 +104,29 @@ export default {
     });
   },
   install(id) {
-    return api.client.packInstall.schedule({ packs: [ id ] })
+    return api.request({
+      method: 'post',
+      path: '/packs/install',
+    }, { packs: [ id ] })
       .then((pack) => mergePack({ ...pack, ref: id, status: 'installed' }))
     ;
   },
   uninstall(id) {
-    return api.client.packUninstall.schedule({ packs: [ id ] })
+    return api.request({
+      method: 'post',
+      path: '/packs/uninstall',
+    }, { packs: [ id ] })
       .then((pack) => mergePack({ ...pack, ref: id, status: 'available' }))
     ;
   },
   save(id, pack) {
-    return api.client.configs.edit(id, pack, { show_secrets: true })
+    return api.request({
+      method: 'put',
+      path: `/packs/configs/${id}`,
+      query: {
+        show_secrets: true,
+      },
+    }, pack)
       .then((res) => ({ ref: id, config: res }))
       .then(mergePack)
     ;

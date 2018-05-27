@@ -100,8 +100,8 @@ describe('User visits rules page', function () {
       browser.assert.text(util.name('status'), rule.enabled ? 'Enabled' : 'Disabled', 'Wrong status');
       browser.assert.text(util.name('header_name'), rule.ref, 'Wrong ref in header');
       browser.assert.text(util.name('header_description'), rule.description, 'Wrong description in header');
-      browser.assert.text(util.name('condition_if'), `If${rule.trigger.type}${rule.trigger.description}`, 'Wrong if in header');
-      browser.assert.text(util.name('condition_then'), `Then${rule.action.ref}${rule.action.description}`, 'Wrong then in header');
+      browser.assert.text(util.name('condition_if'), `If${rule.trigger.type}${rule.trigger.description || ''}`, 'Wrong if in header');
+      browser.assert.text(util.name('condition_then'), `Then${rule.action.ref}${rule.action.description || ''}`, 'Wrong then in header');
     });
 
     describe('then chooses code tab', () => {
@@ -172,17 +172,21 @@ describe('User visits rules page', function () {
 
       before(() => {
         resource = browser.resources.filter((e) => {
-          return e.request.method === 'POST' && e.url.match(new RegExp('^https://example.com/api/v1/rules'));
+          return (
+            e.request.method === 'POST' && e.url.match(new RegExp('^https://example.com/api/v1/rules'))
+          ) || (
+            e.request.method === 'GET' && e.url.match(new RegExp(`^https://example.com/api/v1/rules/views/packs.test${uniqueId}`))
+          );
         });
       });
 
       it('should make a call to rules endpoint', () => {
-        expect(resource).to.have.length.at.least(1, 'Rules endpoint has not been called');
-        expect(resource).to.have.length.at.most(1, 'Rules endpoint called several times');
+        expect(resource).to.have.length.at.least(2, 'Rules endpoint has not been called');
+        expect(resource).to.have.length.at.most(2, 'Rules endpoint called several times');
       });
 
       it('should have rule details present', () => {
-        const rule = JSON.parse(resource[0].response.body);
+        const rule = JSON.parse(resource[1].response.body);
 
         browser.assert.element(util.name('details'), 'Details panel is absent');
 
@@ -218,7 +222,7 @@ describe('User visits rules page', function () {
 
       before(() => {
         resource = browser.resources.filter((e) => {
-          return e.request.method === 'POST' && e.url.match(new RegExp('^https://example.com/api/v1/rules'));
+          return e.request.method === 'GET' && e.url.match(new RegExp(`^https://example.com/api/v1/rules/views/packs.test${uniqueId}`));
         });
       });
 

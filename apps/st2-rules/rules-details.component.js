@@ -59,19 +59,20 @@ import EnforcementPanel from './panels/enforcements';
     onComponentUpdate: () => Promise.all([
       dispatch({
         type: 'FETCH_RULE',
-        promise: api.client.ruleOverview.get(props.id)
+        promise: api.request({
+          path: `/rules/views/${props.id}`,
+        })
           .catch((err) => {
-            notification.error(`Unable to save rule "${props.id}".`, { err });
+            notification.error(`Unable to retrieve the rule "${props.id}".`, { err });
             throw err;
           }),
       }),
       dispatch({
         type: 'FETCH_ENFORCEMENTS',
-        promise: api.client.index.request({ method: 'get', path: '/ruleenforcements/views', query: {
+        promise: api.request({ path: '/ruleenforcements/views', query: {
           rule_ref: props.id,
           limit: 10,
         }})
-          .then(res => res.data)
           .catch((err) => {
             notification.error(`Unable to retrieve enforcements for "${props.id}".`, { err });
             throw err;
@@ -80,43 +81,60 @@ import EnforcementPanel from './panels/enforcements';
     ]),
     onSave: (rule) => dispatch({
       type: 'EDIT_RULE',
-      promise: api.client.rules.edit(rule.id, rule)
+      promise: api.request({
+        method: 'put',
+        path: `/rules/${rule.id}`,
+      }, rule)
         .then((rule) => {
           notification.success(`Rule "${rule.ref}" has been saved successfully.`);
 
-          if (this.props.match.params.ref !== rule.ref) {
-            props.onNavigate({
-              id: rule.ref,
-              section: 'general',
-            });
-          }
+          props.onNavigate({
+            id: rule.ref,
+            section: 'general',
+          });
 
           return rule;
         })
         .catch((err) => {
           notification.error(`Unable to save rule "${rule.ref}".`, { err });
           throw err;
+        })
+        .then((rule) => api.request({
+          path: `/rules/views/${rule.ref}`,
+        }))
+        .catch((err) => {
+          notification.error(`Unable to retrieve the rule "${rule.ref}".`, { err });
+          throw err;
         }),
     }),
-    onDelete: (rule) => dispatch({
+    onDelete: (ref) => dispatch({
       type: 'DELETE_RULE',
-      ref: rule.ref,
-      promise: api.client.rules.delete(rule.ref)
+      ref,
+      promise: api.request({
+        method: 'delete',
+        path: `/rules/${ref}`,
+      })
         .then((res) => {
-          notification.success(`Rule "${rule.ref}" has been deleted successfully.`);
+          notification.success(`Rule "${ref}" has been deleted successfully.`);
 
           props.onNavigate({ id: null });
 
           return res;
         })
         .catch((err) => {
-          notification.error(`Unable to delete rule "${rule.ref}".`, { err });
+          notification.error(`Unable to delete rule "${ref}".`, { err });
           throw err;
         }),
     }),
     onToggleEnable: (rule) => dispatch({
       type: 'TOGGLE_ENABLE',
-      promise: api.client.rules.edit(rule.id, { ...rule, enabled: !rule.enabled }),
+      promise: api.request({
+        method: 'put',
+        path: `/rules/${rule.id}`,
+      }, { 
+        ...rule, 
+        enabled: !rule.enabled,
+      }),
     })
       .catch((err) => {
         notification.error(`Unable to update rule "${rule.ref}".`, { err });
@@ -128,7 +146,7 @@ import EnforcementPanel from './panels/enforcements';
     ...state,
     ...dispatch,
     onSave: (rule) => dispatch.onSave(rule),
-    onDelete: () => dispatch.onDelete(state.rule.ref),
+    onDelete: () => dispatch.onDelete(props.id),
     onToggleEnable: () => dispatch.onToggleEnable(state.rule),
   })
 )
@@ -163,6 +181,10 @@ export default class RulesDetails extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.id === this.props.id) {
+      return;
+    }
+
+    if (this.props.id === 'new') {
       return;
     }
 

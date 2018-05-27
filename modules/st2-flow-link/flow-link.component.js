@@ -25,7 +25,8 @@ export default class Filter extends React.Component {
 
   get target() {
     const { action } = this.props;
-    return [ 'st2flow', api.client.index.url, action ].filter(v => v).join('+');
+
+    return action ? `st2flow+${api.opts.api}+${action}` : `st2flow+${api.opts.api}`;
   }
 
   render() {

@@ -57,7 +57,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   componentDidMount() {
-    api.client.stream.listen().then((source) => {
+    api.listen().then((source) => {
       this._source = source;
 
       this._executionCreateListener = (e) => {
@@ -142,7 +142,7 @@ export default class ActionsDetails extends React.Component {
   fetchAction(id) {
     store.dispatch({
       type: 'FETCH_ACTION',
-      promise: api.client.actionOverview.get(id),
+      promise: api.request({ path: `/actions/views/overview/${id}` }),
     })
       .then(() => {
         this.setState({ runValue: {}, runTrace: '' });
@@ -155,11 +155,14 @@ export default class ActionsDetails extends React.Component {
 
     store.dispatch({
       type: 'FETCH_EXECUTIONS',
-      promise: api.client.executions.list({
-        action: id,
-        limit: 5,
-        exclude_attributes: 'trigger_instance',
-        parent: 'null',
+      promise: api.request({
+        path: '/executions',
+        query: {
+          action: id,
+          limit: 5,
+          exclude_attributes: 'trigger_instance',
+          parent: 'null',
+        },
       }),
     })
       .catch((err) => {

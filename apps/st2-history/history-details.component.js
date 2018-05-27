@@ -77,7 +77,7 @@ export default class HistoryDetails extends React.Component {
   fetchExecution(id) {
     store.dispatch({
       type: 'FETCH_EXECUTION',
-      promise: api.client.executions.get(id),
+      promise: api.request({ path: `/executions/${id}` }),
     })
       .catch((err) => {
         notification.error(`Unable to retrieve execution "${id}".`, { err });

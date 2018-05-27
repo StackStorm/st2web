@@ -92,7 +92,9 @@ export default class RulesPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_PACKS',
-      promise: api.client.packs.list()
+      promise: api.request({
+        path: '/packs',
+      })
         .catch((err) => {
           notification.error('Unable to retrieve pack spec.', { err });
           throw err;
@@ -101,7 +103,9 @@ export default class RulesPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_TRIGGERS',
-      promise: api.client.triggerTypes.list()
+      promise: api.request({
+        path: '/triggertypes',
+      })
         .catch((err) => {
           notification.error('Unable to retrieve trigger spec.', { err });
           throw err;
@@ -110,7 +114,9 @@ export default class RulesPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_ACTIONS',
-      promise: api.client.actionOverview.list()
+      promise: api.request({
+        path: '/actions/views/overview',
+      })
         .catch((err) => {
           notification.error('Unable to retrieve action spec.', { err });
           throw err;
@@ -132,7 +138,9 @@ export default class RulesPanel extends React.Component {
   fetchGroups() {
     return store.dispatch({
       type: 'FETCH_GROUPS',
-      promise: api.client.ruleOverview.list()
+      promise: api.request({
+        path: '/rules/views',
+      })
         .catch((err) => {
           notification.error('Unable to retrieve rules.', { err });
           throw err;
@@ -264,7 +272,7 @@ export default class RulesPanel extends React.Component {
 
         { id === 'new' ? (
           <RulesPopup
-            onNavigate={this.navigate}
+            onNavigate={(...args) => this.navigate(...args)}
           />
         ) : null }
       </Panel>
