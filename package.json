@@ -37,6 +37,11 @@
       ]
     ]
   },
+  "workspaces": [
+    "apps/*",
+    "modules/*",
+    "tasks"
+  ],
   "dependencies": {
     "@stackstorm/app-actions": "^1.0.0-pre.5",
     "@stackstorm/app-history": "^1.0.0-pre.5",
