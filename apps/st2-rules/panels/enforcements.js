@@ -79,7 +79,7 @@ export default class EnforcementPanel extends DetailsPanel {
                     <Time timestamp={enforcement.enforced_at} />
                   </FlexTableColumn>
                   <FlexTableColumn fixed>
-                    <Label status={enforcement.failure_reason ? 'failed' : 'succeeded'} data-test="status" />
+                    <Label status={enforcement.status} data-test="status" />
                   </FlexTableColumn>
                 </FlexTableRow>,
                 <FlexTableInsert key={`${enforcement.id}-insert`} visible={this.state.visible[enforcement.id] || false}>
