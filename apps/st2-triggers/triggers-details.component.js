@@ -131,8 +131,8 @@ export default class TriggersDetails extends React.Component {
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
-            { label: 'Code', path: 'code' },
             { label: 'Instances', path: 'instances' },
+            { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}

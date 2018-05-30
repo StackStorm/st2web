@@ -218,8 +218,8 @@ export default class ActionsDetails extends React.Component {
         <DetailsSwitch
           sections={[
             { label: 'Parameters', path: 'general' },
-            { label: 'Code', path: 'code' },
             { label: 'executions', path: 'executions' },
+            { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}

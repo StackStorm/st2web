@@ -305,22 +305,23 @@ export class DetailsSwitch extends React.Component {
 
   render() {
     const { className, sections, current, onChange, ...props } = this.props;
-    const active = sections.findIndex(({ path }) => path === current);
 
     return (
       <div
         {...props}
         className={cx(
           'st2-details__switch',
-          `st2-details__switch--of-${sections.length}`,
-          `st2-details__switch--${active < 0 ? 0 : active}`,
           className,
         )}
       >
         { sections.map((section) => (
           <div
             key={section.path}
-            className="st2-details__switch-item"
+            className={cx(
+              'st2-details__switch-item',
+              section.path === current && 'st2-details__switch-item--active',
+              section.className
+            )}
             onClick={() => onChange(section)}
             data-test={`switch:${section.path}`}
           >

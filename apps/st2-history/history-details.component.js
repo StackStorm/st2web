@@ -109,7 +109,7 @@ export default class HistoryDetails extends React.Component {
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
-            { label: 'Code', path: 'code' },
+            { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}
