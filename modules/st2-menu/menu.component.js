@@ -50,7 +50,7 @@ export default class Menu extends React.Component {
       .value()
     ;
 
-    const user = api.token.user;
+    const user = api.token && api.token.user;
     const server = api.server;
 
     return (

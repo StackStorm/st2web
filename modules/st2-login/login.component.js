@@ -107,8 +107,10 @@ export default class Login extends React.Component {
 
   componentWillMount() {
     let server = { auth: true };
-    if (api.servers && api.servers.length > 0) {
-      server = api.servers[0];
+    const servers = window.st2constants.st2Config.hosts;
+
+    if (servers && servers.length > 0) {
+      server = servers[0];
     }
 
     this.setState({

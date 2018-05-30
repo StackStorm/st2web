@@ -9,7 +9,7 @@ function toBase64(str) {
     return btoa(str);
   }
   else {
-    return new global.Buffer(str.toString(), 'binary').toString('base64');
+    return global.Buffer.from(str.toString(), 'binary').toString('base64');
   }
 }
 
@@ -26,29 +26,31 @@ function localize(urlString) {
 }
 
 export class API {
-  constructor(servers) {
-    this.servers = servers;
-    this.token = {};
+  constructor() {
+    this.token = null;
 
-    try {
-      const session = JSON.parse(localStorage.getItem('st2Session'));
-      this.token = session.token || {};
-      this.server = session.server;
-    }
-    catch (e) {
-      // do nothing
-    }
+    const { server, token } = this.readPersistent();
 
-    if (this.server && this.token) {
-      this.client = this.initClient(this.server, this.token);
+    if (server && token) {
+      this.token = token;
+      this.server = server;
     }
   }
 
-  initClient({ url }, token) {
-    if (this.servers) {
-      const server = _.find(this.servers, { url }) || _.first(this.servers);
+  readPersistent() {
+    try {
+      return JSON.parse(localStorage.getItem('st2Session')) || {};
+    }
+    catch (e) {
+      return {};
+    }
+  }
 
-      this.opts = {
+  async connect(server, username, password, remember) {
+    const { token } = server || {};
+
+    if (server && server.url) {
+      this.server = {
         api: localize(server.url),
         auth: server.auth && _.isString(server.auth) && localize(server.auth),
         stream: server.stream && _.isString(server.stream) && localize(server.stream),
@@ -56,7 +58,7 @@ export class API {
       };
     }
     else {
-      this.opts = {
+      this.server = {
         api: `https://${window.location.host}/api`,
         auth: `https://${window.location.host}/auth`,
         stream: `https://${window.location.host}/stream`,
@@ -64,18 +66,13 @@ export class API {
       };
     }
 
-    window.name = `st2web+${this.opts.api}`;
-  }
+    window.name = `st2web+${this.server.api}`;
 
-  async connect(server, username, password, remember) {
-    this.initClient(server, this.token);
-    this.server = server;
-
-    if (server.auth && username && password) {
+    if (this.server.auth && username && password) {
       try {
         const res = await axios({
           method: 'post',
-          url: `${this.opts.auth || this.opts.api}/tokens`,
+          url: `${this.server.auth || this.server.api}/tokens`,
           headers: {
             'Authorization': `Basic ${toBase64(`${username}:${password}`)}`,
           },
@@ -112,7 +109,7 @@ export class API {
 
     if (remember) {
       localStorage.setItem('st2Session', JSON.stringify({
-        server: server,
+        server: this.server,
         token: this.token,
       }));
     }
@@ -120,11 +117,12 @@ export class API {
 
   disconnect() {
     this.token = null;
+    this.server = null;
     localStorage.removeItem('st2Session');
   }
 
   isConnected() {
-    if (!this.token) {
+    if (!this.token || !this.server) {
       return false;
     }
 
@@ -144,7 +142,7 @@ export class API {
     const verPath = version ? `/${_.trim(version, '/')}` : '';
     const token = queryToken && this.token.token ? `?x-auth-token=${this.token.token}` : '';
 
-    return `${this.opts.api}${verPath}${path}${token}`;
+    return `${this.server.api}${verPath}${path}${token}`;
   }
 
   async request(opts, data) {
@@ -156,7 +154,7 @@ export class API {
 
     const headers = {};
 
-    if (this.token.token) {
+    if (this.token && this.token.token) {
       headers['x-auth-token'] = this.token.token;
     }
 
@@ -204,7 +202,7 @@ export class API {
 
   listen() {
     return new Promise((resolve, reject) => {
-      const streamUrl = `${this.opts.stream || this.opts.api}/stream${this.token.token && `?x-auth-token=${this.token.token}`}`;
+      const streamUrl = `${this.server.stream || this.server.api}/stream${this.token.token && `?x-auth-token=${this.token.token}`}`;
 
       try {
         const source = _source = _source || new EventSource(streamUrl, {
@@ -253,6 +251,6 @@ export class API {
   }
 }
 
-const st2api = new API(window.st2constants.st2Config.hosts);
+const st2api = new API();
 
 export default st2api;
