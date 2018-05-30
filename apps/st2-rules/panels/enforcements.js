@@ -2,7 +2,15 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
+import cond from 'lodash/fp/cond';
+import constant from 'lodash/fp/constant';
+import identity from 'lodash/fp/identity';
+import isEmpty from 'lodash/fp/isEmpty';
+import toPairs from 'lodash/fp/toPairs';
+import flow from 'lodash/fp/flow';
 import get from 'lodash/fp/get';
+import getOr from 'lodash/fp/getOr';
+import map from 'lodash/fp/map';
 import update from 'lodash/fp/update';
 
 import {
@@ -10,6 +18,8 @@ import {
   DetailsPanelBody,
   DetailsPanelBodyLine,
   DetailsPanelEmpty,
+  DetailsPanelHeading,
+  DetailsFormLine,
 } from '@stackstorm/module-panel';
 import {
   FlexTable,
@@ -91,6 +101,28 @@ export default class EnforcementPanel extends DetailsPanel {
                         }
                       </DetailsPanelBodyLine>
                     </DetailsPanelBody>
+                    {
+                      enforcement.execution_id && (
+                        <DetailsPanelBody>
+                          <DetailsPanelHeading title="Action input" />
+                          {
+                            flow(
+                              get('execution.action.parameters'),
+                              toPairs,
+                              map(([ name, { default:def }]) => {
+                                const value = getOr(def, `execution.parameters[${name}]`, enforcement);
+
+                                return value !== undefined && <DetailsFormLine key={name} name={name} value={value} />;
+                              }),
+                              cond([
+                                [ isEmpty, constant(false) ],
+                                [ constant(true), identity ],
+                              ]),
+                            )(enforcement) || <DetailsPanelEmpty>Action was executied with no parameters</DetailsPanelEmpty>
+                          }
+                        </DetailsPanelBody>
+                      ) 
+                    }
                   </FlexTableInsertColumn>
                   <FlexTableInsertColumn>
                     <Highlight well lines={20} code={get('trigger_instance.payload', enforcement)} />
