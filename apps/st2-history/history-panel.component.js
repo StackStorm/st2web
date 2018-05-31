@@ -197,7 +197,7 @@ export default class HistoryPanel extends React.Component {
       promise: api.request({
         path: '/executions',
         query: {
-          ...activeFilters,
+          ..._.mapValues(activeFilters, f => f[0]),
           parent: 'null',
           limit: PER_PAGE,
           page,
