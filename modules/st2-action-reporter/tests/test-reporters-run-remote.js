@@ -11,6 +11,6 @@ describe(`ActionReporter: ${reporter.name}`, () => {
       reporter({})
     );
 
-    expect(instance.node.classList).to.contain('st2-highlight');
+    expect(instance.node.children.length).to.equal(1);
   });
 });

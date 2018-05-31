@@ -121,6 +121,16 @@
     resolve "^1.1.6"
     sink-transform "^2.0.0"
 
+"@stackstorm/browserify-postcss@0.3.4-patch.5":
+  version "0.3.4-patch.5"
+  resolved "https://registry.yarnpkg.com/@stackstorm/browserify-postcss/-/browserify-postcss-0.3.4-patch.5.tgz#a91be9699f77d3a529c82b180e8812343e1c3b94"
+  dependencies:
+    css-modules-loader-core "1.1.0"
+    cssify "^1.0.2"
+    postcss "^6.0.12"
+    resolve "^1.1.6"
+    sink-transform "^2.0.0"
+
 "@stackstorm/postcss-less-engine@0.6.2":
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@stackstorm/postcss-less-engine/-/postcss-less-engine-0.6.2.tgz#6633500bffa763f0b18a40cab64e8cc3cd97d99f"
@@ -6065,7 +6075,7 @@ posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
 
-postcss-import@^11.0.0:
+postcss-import@^11.0.0, postcss-import@^11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/postcss-import/-/postcss-import-11.1.0.tgz#55c9362c9192994ec68865d224419df1db2981f0"
   dependencies:
@@ -6130,7 +6140,7 @@ postcss@^5.0.0:
     source-map "^0.5.6"
     supports-color "^3.2.3"
 
-postcss@^6.0.1, postcss@^6.0.14:
+postcss@^6.0.1, postcss@^6.0.12, postcss@^6.0.14:
   version "6.0.22"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.22.tgz#e23b78314905c3b90cbd61702121e7a78848f2a3"
   dependencies:

@@ -4,7 +4,8 @@ import cx from 'classnames';
 
 import Prism from 'prismjs';
 
-import './style.less';
+import './editor.css';
+import style from './style.less';
 
 (function() {
   // don't include this during testing
@@ -187,29 +188,29 @@ export default class Highlight extends React.Component {
     const whiteSpace = this.state.wrap ? 'pre-wrap' : 'auto';
 
     return (
-      <div {...props} className={cx('st2-highlight', well && 'st2-highlight--well', className)}>
-        <div className="st2-highlight__well">
+      <div {...props} className={cx(style.component, well && style.welled, className)}>
+        <div className={style.well}>
           <pre>
             <code ref={(ref) => this.onRefShort(ref)} />
-            <div className="st2-highlight__more" onClick={() => this.setState({ expanded: true })}>
+            <div className={style.more} onClick={() => this.setState({ expanded: true })}>
               { this.state.more > 0 ? `+ ${this.state.more} more lines` : 'expand' }
             </div>
           </pre>
         </div>
 
         { this.state.expanded ? (
-          <div className="st2-highlight__fullscreen" onClick={() => this.setState({ expanded: false })}>
-            <div className="st2-highlight__well" onClick={(e) => e.stopPropagation()}>
-              <div className="st2-highlight__buttons">
+          <div className={style.fullscreen} onClick={() => this.setState({ expanded: false })}>
+            <div className={style.well} onClick={(e) => e.stopPropagation()}>
+              <div className={style.buttons}>
                 <input
                   type="button"
-                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.wrap })}
+                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.wrap && style.inputActive)}
                   onClick={() => this.toggleWrap()}
                   value="WRAP LINES"
                 />
                 <input
                   type="button"
-                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.newlines })}
+                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.newlines && style.inputActive)}
                   onClick={() => this.toggleNewlines()}
                   value="SHOW NEWLINES"
                 />
