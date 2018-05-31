@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import './style.less';
+import style from './style.less';
 
 export default class FlowLink extends React.Component {
   static propTypes = {
@@ -33,7 +33,7 @@ export default class FlowLink extends React.Component {
     const { className, action, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-flow-link', className)}>
+      <div {...props} className={cx(style.component, className)}>
         { action ? (
           <a
             className="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
