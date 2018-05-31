@@ -35,7 +35,7 @@
 
     width: 480px;
 
-    background-color: @grey-lighten-5;
+    background-color: #f6f6f6;
   }
 
   &--detailed &__view {
@@ -135,8 +135,8 @@
 
       color: white;
       border-radius: 50%;
-      background-color: @aqua-base;
-      box-shadow: 0 0 10px @grey-base;
+      background-color: #008ceb;
+      box-shadow: 0 0 10px #b3b0ba;
 
       a&,
       a&:link,
@@ -361,6 +361,10 @@
 
     border-bottom: 1px solid #bbb;
 
+    &--stick {
+      padding-right: 0;
+    }
+
     &-heading {
       display: flex;
 
@@ -421,20 +425,22 @@
       }
 
       &-line {
-        display: flex;
+        display: grid;
+
+        grid-template-columns: max-content auto;
+        grid-column-gap: 10px;
 
         margin: 0;
-
-        flex-wrap: nowrap;
       }
 
       &-label {
-        font-weight: bold;
         line-height: 34px;
 
         width: 100px;
 
         text-transform: capitalize;
+
+        color: #818083;
       }
 
       &-value {
@@ -580,7 +586,7 @@
     height: 28px;
     padding: 15px 15px 15px 20px;
 
-    border-bottom: 1px solid @grey-lighten-2;
+    background-color: #e5e5e5;
 
     &-separator {
       flex: 1;
@@ -658,8 +664,6 @@
 
     display: flex;
 
-    padding-bottom: 5px;
-
     user-select: none;
     text-transform: uppercase;
 
@@ -671,54 +675,48 @@
 
       z-index: 2;
 
-      flex: 1;
-
       cursor: pointer;
       text-align: center;
+
+      padding: 0 10px;
+      min-width: 100px;
+
+      border-bottom: 5px solid transparent;
+
+      &--active {
+        border-color: @selected;
+      }
     }
 
-    &:before {
-      position: absolute;
-      left: 0;
+    &-button[class] {
+      min-width: 0;
 
-      box-sizing: border-box;
-      height: 100%;
+      margin: 0 7px 7px auto;
+      padding: 0 5px;
+      border: 1px solid white;
+      border-radius: 3px;
 
-      content: '';
-      transition: transform .3s;
+      line-height: 21px;
+      height: 21px;
 
-      border-bottom: 5px solid @selected;
+      overflow: hidden;
+
+      -webkit-font-smoothing: initial;
+
+      &:before {
+        display: block;
+
+        width: 100%;
+        height: 21px;
+      }
     }
 
-    &&--of-2:before {
-      width: 50%;
+    &-button&-item {
+      &--active {
+        border-color: transparent;
+        background-color: @selected;
+      }
     }
-
-    &&--of-2&--0:before {
-      transform: translateX(0);
-    }
-
-    &&--of-2&--1:before {
-      transform: translateX(100%);
-    }
-
-    &&--of-3:before {
-      width: 33.33%;
-      width: calc(100% / 3);
-    }
-
-    &&--of-3&--0:before {
-      transform: translateX(0);
-    }
-
-    &&--of-3&--1:before {
-      transform: translateX(100%);
-    }
-
-    &&--of-3&--2:before {
-      transform: translateX(200%);
-    }
-
   }
 
   .st2-flex-table {

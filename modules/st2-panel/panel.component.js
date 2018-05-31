@@ -305,22 +305,23 @@ export class DetailsSwitch extends React.Component {
 
   render() {
     const { className, sections, current, onChange, ...props } = this.props;
-    const active = sections.findIndex(({ path }) => path === current);
 
     return (
       <div
         {...props}
         className={cx(
           'st2-details__switch',
-          `st2-details__switch--of-${sections.length}`,
-          `st2-details__switch--${active < 0 ? 0 : active}`,
           className,
         )}
       >
         { sections.map((section) => (
           <div
             key={section.path}
-            className="st2-details__switch-item"
+            className={cx(
+              'st2-details__switch-item',
+              section.path === current && 'st2-details__switch-item--active',
+              section.className
+            )}
             onClick={() => onChange(section)}
             data-test={`switch:${section.path}`}
           >
@@ -448,13 +449,14 @@ export class DetailsPanel extends React.Component {
     className: PropTypes.string,
     title: PropTypes.string,
     children: PropTypes.node,
+    stick: PropTypes.bool,
   }
 
   render() {
-    const { className, title, children, ...props } = this.props;
+    const { className, title, children, stick, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-details__panel', className)}>
+      <div {...props} className={cx('st2-details__panel', stick && 'st2-details__panel--stick', className)}>
         { title ? (
           <DetailsPanelHeading title={title} />
         ) : null }
@@ -527,7 +529,7 @@ export class DetailsPanelBodyLine extends React.Component {
 
     return (
       <dl {...props} className={cx('st2-details__panel-body-line', className)}>
-        <dt className="st2-details__panel-body-label">{ label }:</dt>
+        <dt className="st2-details__panel-body-label">{ label }</dt>
         <dd className="st2-details__panel-body-value">{ children }</dd>
       </dl>
     );

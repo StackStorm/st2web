@@ -27,16 +27,20 @@ export default class PackIcon extends React.Component {
     }
 
     if (!iconPromise) {
-      iconPromise = api.client.packs.list().then((packs) => {
-        packs.map(({ ref, files }) => {
-          if (files && files.indexOf('icon.png') >= 0) {
-            icons[ref] = api.client.packFile.route(`${ref}/icon.png`);
-          }
+      iconPromise = api.request({
+        path: '/packs',
+      })
+        .then((packs) => {
+          packs.map(({ ref, files }) => {
+            if (files && files.indexOf('icon.png') >= 0) {
+              icons[ref] = api.route({ path: `/packs/views/file/${ref}/icon.png` });
+            }
+          });
+        })
+        .catch((err) => {
+          notification.error('Unable to retrieve pack icons.', { err });
+          throw err;
         });
-      }).catch((err) => {
-        notification.error('Unable to retrieve pack icons.', { err });
-        throw err;
-      });
     }
 
     iconPromise.then(() => {
@@ -62,7 +66,7 @@ export default class PackIcon extends React.Component {
     return (
       <span {...props} className={cx('st2-pack-icon', className, { 'st2-pack-icon-small': small })}>
         { icons[name] ? (
-          <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name]} />
+          <img className={cx('st2-pack-icon__image', { 'st2-pack-icon__image-small' : small })} src={icons[name] || ''} />
         ) : null }
       </span>
     );

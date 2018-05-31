@@ -2,6 +2,10 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
+import get from 'lodash/fp/get';
+import update from 'lodash/fp/update';
+import map from 'lodash/fp/map';
+
 import { actions } from './flex-table.reducer';
 
 import './style.less';
@@ -95,12 +99,13 @@ export class FlexTableRow extends React.Component {
       type: PropTypes.string,
       children: PropTypes.node,
     })),
+    children: PropTypes.node,
   }
 
   static actions = actions
 
   render() {
-    const { className, columns, ...props } = this.props;
+    const { className, columns=[], children, ...props } = this.props;
 
     return (
       <div {...props} className={cx('st2-flex-table__row', className)}>
@@ -109,6 +114,37 @@ export class FlexTableRow extends React.Component {
             { children }
           </Component>
         )) }
+        {
+          map(child => {
+            const className = get('props.className', child);
+            
+            if (className) {
+              return update('props.className', () => cx(className, 'st2-flex-table__column'), child);
+            }
+
+            return child;
+          })([].concat(children))
+        }
+      </div>
+    );
+  }
+}
+
+export class FlexTableColumn extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+    fixed: PropTypes.bool,
+  }
+
+  static actions = actions
+
+  render() {
+    const { className, children, fixed, ...props } = this.props;
+
+    return (
+      <div {...props} className={cx('st2-flex-table__column', fixed && 'st2-flex-table__column--fixed', className)}>
+        { children }
       </div>
     );
   }
@@ -135,10 +171,25 @@ export class FlexTableInsert extends React.Component {
     }
 
     return (
-      <div {...props} className={cx('st2-flex-table__insert', className)}>
-        <div className="st2-details__panel-body">
-          { children }
-        </div>
+      <div {...props} className={cx('st2-flex-insert', className)}>
+        { children }
+      </div>
+    );
+  }
+}
+
+export class FlexTableInsertColumn extends React.Component {
+  static propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  render() {
+    const { className, children, ...props } = this.props;
+
+    return (
+      <div {...props} className={cx('st2-flex-insert__column', className)}>
+        { children }
       </div>
     );
   }

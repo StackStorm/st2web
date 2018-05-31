@@ -1,6 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import store from './store';
+import { connect } from 'react-redux';
+
+import get from 'lodash/fp/get';
+import map from 'lodash/fp/map';
+import flow from 'lodash/fp/flow';
+import toPairs from 'lodash/fp/toPairs';
 
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
@@ -17,18 +22,69 @@ import {
   DetailsPanel,
   DetailsPanelHeading,
   DetailsPanelBody,
-  DetailsToolbar,
-  DetailsToolbarSeparator,
+  DetailsLine,
+  DetailsLineNote,
 } from '@stackstorm/module-panel';
-import AutoForm from '@stackstorm/module-auto-form';
+import InstancePanel from './panels/instances';
 
+@connect(
+  ({
+    instances,
+    triggers,
+    sensors,
+  }, props) => ({
+    trigger: triggers.find(trigger => props.id === trigger.ref),
+    sensor: sensors[props.id],
+    instances,
+  }),
+  (dispatch, props) => ({
+    onComponentUpdate: () => dispatch({
+      type: 'FETCH_INSTANCES',
+      promise: api.request({ path: '/triggerinstances', query: {
+        trigger_type: props.id,
+        limit: 10,
+      } }),
+    }),
+    onToggleEnable: (sensor) => dispatch({
+      type: 'TOGGLE_ENABLE',
+      promise: api.request({ method: 'put', path: `/sensortypes/${sensor.ref}`}, { ...sensor, enabled: !sensor.enabled }),
+    }).catch((err) => {
+      notification.error(`Unable to retrieve sensor "${sensor.ref}".`, { err });
+      throw err;
+    }),
+  }),
+  (state, dispatch, props) => ({
+    ...props,
+    ...state,
+    ...dispatch,
+    onSelect: () => dispatch.onSelect(state.trigger),
+    onToggleEnable: () => dispatch.onToggleEnable(state.sensor),
+  })
+)
 export default class TriggersDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
 
+    id: PropTypes.string,
     section: PropTypes.string,
     trigger: PropTypes.object,
     sensor: PropTypes.object,
+    instances: PropTypes.array,
+
+    onComponentUpdate: PropTypes.func,
+    onToggleEnable: PropTypes.func,
+  }
+
+  componentDidMount() {
+    this.props.onComponentUpdate && this.props.onComponentUpdate();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.id === this.props.id) {
+      return;
+    }
+
+    this.props.onComponentUpdate && this.props.onComponentUpdate();
   }
 
   handleSection(section) {
@@ -36,25 +92,33 @@ export default class TriggersDetails extends React.Component {
     return this.props.handleNavigate({ id, section });
   }
 
-  handleToggleEnable(sensor) {
-    return store.dispatch({
-      type: 'TOGGLE_ENABLE',
-      promise: api.client.index.request({ method: 'put', path: `/sensortypes/${sensor.ref}`}, { ...sensor, enabled: !sensor.enabled }).then(res => res.data),
-    })
-      .catch((err) => {
-        notification.error(`Unable to retrieve sensor "${sensor.ref}".`, { err });
-        throw err;
-      })
-    ;
+  handleToggleEnable() {
+    return this.props.onToggleEnable();
   }
 
   render() {
-    const { section, trigger, sensor } = this.props;
+    const { section, trigger, sensor, instances } = this.props;
 
     if (!trigger) {
       return null;
     }
-    
+
+    const parameters = flow([
+      get('parameters_schema.properties'),
+      toPairs,
+      map(([ key, value ]) => {
+        return <DetailsLine key={key} name={key} value={get('description')(value) || ''} />;
+      }),
+    ])(trigger);
+
+    const payload = flow([
+      get('payload_schema.properties'),
+      toPairs,
+      map(([ key, value ]) => {
+        return <DetailsLine key={key} name={key} value={get('description')(value) || ''} />;
+      }),
+    ])(trigger);
+
     setTitle([ trigger.ref, 'Trigger Types' ]);
 
     return (
@@ -67,41 +131,46 @@ export default class TriggersDetails extends React.Component {
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
-            { label: 'Code', path: 'code' },
+            { label: 'Instances', path: 'instances' },
+            { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
-        <DetailsToolbar>
-          { sensor
-            ? <Toggle title="enabled" value={sensor.enabled} onChange={() => this.handleToggleEnable(sensor)} />
-            : <Toggle title="no sensor" value={false} disabled />
-          }
-          <DetailsToolbarSeparator />
-        </DetailsToolbar>
         <DetailsBody>
           { section === 'general' ? (
             <form name="form">
+              { sensor ? (
+                <DetailsPanel>
+                  <DetailsPanelHeading title="Sensor" />
+                  <DetailsPanelBody>
+                    <DetailsLine name="ref" value={sensor.ref} />
+                    <Toggle title="enabled" value={sensor.enabled} onChange={() => this.handleToggleEnable(sensor)} />
+                  </DetailsPanelBody>
+                </DetailsPanel>
+              ) : null }
               <DetailsPanel>
                 <DetailsPanelHeading title="Parameters" />
                 <DetailsPanelBody>
-                  <AutoForm
-                    spec={{
-                      type: 'object',
-                      properties: {
-                        name: {
-                          type: 'string',
-                        },
-                        description: {
-                          type: 'string',
-                        },
-                      },
-                    }}
-                    data={trigger}
-                    disabled
-                    data-test="parameters_form"
-                    flat
-                  />
+                  { parameters.length > 0 ? (
+                    parameters
+                  ) : (
+                    <DetailsLineNote>
+                      Trigger type does not have any parameters
+                    </DetailsLineNote>
+                  ) }
+                </DetailsPanelBody>
+              </DetailsPanel>
+              <DetailsPanel>
+                <DetailsPanelHeading title="Payload" />
+                <DetailsPanelBody>
+                  { payload.length > 0 ? (
+                    payload
+                  ) : (
+                    <DetailsLineNote>
+                      Trigger type does not have any payload
+                    </DetailsLineNote>
+                  ) }
                 </DetailsPanelBody>
               </DetailsPanel>
             </form>
@@ -110,6 +179,9 @@ export default class TriggersDetails extends React.Component {
             <DetailsPanel data-test="trigger_code">
               <Highlight lines={20} code={trigger} />
             </DetailsPanel>
+          ) : null }
+          { section === 'instances' ? (
+            <InstancePanel instances={instances} key="panel" data-test="trigger_instances" />
           ) : null }
         </DetailsBody>
       </PanelDetails>

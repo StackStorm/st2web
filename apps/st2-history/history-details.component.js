@@ -77,7 +77,7 @@ export default class HistoryDetails extends React.Component {
   fetchExecution(id) {
     store.dispatch({
       type: 'FETCH_EXECUTION',
-      promise: api.client.executions.get(id),
+      promise: api.request({ path: `/executions/${id}` }),
     })
       .catch((err) => {
         notification.error(`Unable to retrieve execution "${id}".`, { err });
@@ -109,14 +109,14 @@ export default class HistoryDetails extends React.Component {
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
-            { label: 'Code', path: 'code' },
+            { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
         <DetailsToolbar>
-          <Button small value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
-          <Button small value="Cancel" onClick={() => this.props.handleCancel()} disabled={!execution || execution.status !== 'running'} />
+          <Button value="Rerun" data-test="rerun_button" onClick={() => this.handleSection('rerun')} />
+          <Button flat value="Cancel" onClick={() => this.props.handleCancel()} disabled={!execution || execution.status !== 'running'} />
 
           <DetailsToolbarSeparator />
         </DetailsToolbar>

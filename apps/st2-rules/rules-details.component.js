@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import store from './store';
+import { connect } from 'react-redux';
 
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
@@ -27,12 +27,137 @@ import {
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
 import RemoteForm from '@stackstorm/module-remote-form';
+import EnforcementPanel from './panels/enforcements';
 
+@connect(
+  ({
+    rule,
+
+    enforcements,
+
+    triggerParameters,
+    actionParameters,
+
+    triggerSpec,
+    criteriaSpecs,
+    actionSpec,
+    packSpec,
+  }, props) => ({
+    rule,
+    
+    enforcements,
+
+    triggerParameters,
+    actionParameters,
+
+    triggerSpec,
+    criteriaSpecs,
+    actionSpec,
+    packSpec,
+  }),
+  (dispatch, props) => ({
+    onComponentUpdate: () => Promise.all([
+      dispatch({
+        type: 'FETCH_RULE',
+        promise: api.request({
+          path: `/rules/views/${props.id}`,
+        })
+          .catch((err) => {
+            notification.error(`Unable to retrieve the rule "${props.id}".`, { err });
+            throw err;
+          }),
+      }),
+      dispatch({
+        type: 'FETCH_ENFORCEMENTS',
+        promise: api.request({ path: '/ruleenforcements/views', query: {
+          rule_ref: props.id,
+          limit: 10,
+        }})
+          .catch((err) => {
+            notification.error(`Unable to retrieve enforcements for "${props.id}".`, { err });
+            throw err;
+          }),
+      }),
+    ]),
+    onSave: (rule) => dispatch({
+      type: 'EDIT_RULE',
+      promise: api.request({
+        method: 'put',
+        path: `/rules/${rule.id}`,
+      }, rule)
+        .then((rule) => {
+          notification.success(`Rule "${rule.ref}" has been saved successfully.`);
+
+          props.onNavigate({
+            id: rule.ref,
+            section: 'general',
+          });
+
+          return rule;
+        })
+        .catch((err) => {
+          notification.error(`Unable to save rule "${rule.ref}".`, { err });
+          throw err;
+        })
+        .then((rule) => api.request({
+          path: `/rules/views/${rule.ref}`,
+        }))
+        .catch((err) => {
+          notification.error(`Unable to retrieve the rule "${rule.ref}".`, { err });
+          throw err;
+        }),
+    }),
+    onDelete: (ref) => dispatch({
+      type: 'DELETE_RULE',
+      ref,
+      promise: api.request({
+        method: 'delete',
+        path: `/rules/${ref}`,
+      })
+        .then((res) => {
+          notification.success(`Rule "${ref}" has been deleted successfully.`);
+
+          props.onNavigate({ id: null });
+
+          return res;
+        })
+        .catch((err) => {
+          notification.error(`Unable to delete rule "${ref}".`, { err });
+          throw err;
+        }),
+    }),
+    onToggleEnable: (rule) => dispatch({
+      type: 'TOGGLE_ENABLE',
+      promise: api.request({
+        method: 'put',
+        path: `/rules/${rule.id}`,
+      }, { 
+        ...rule, 
+        enabled: !rule.enabled,
+      }),
+    })
+      .catch((err) => {
+        notification.error(`Unable to update rule "${rule.ref}".`, { err });
+        throw err;
+      }),
+  }),
+  (state, dispatch, props) => ({
+    ...props,
+    ...state,
+    ...dispatch,
+    onSave: (rule) => dispatch.onSave(rule),
+    onDelete: () => dispatch.onDelete(props.id),
+    onToggleEnable: () => dispatch.onToggleEnable(state.rule),
+  })
+)
 export default class RulesDetails extends React.Component {
   static propTypes = {
-    handleNavigate: PropTypes.func.isRequired,
-    handleSave: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
+    onComponentUpdate: PropTypes.func,
+
+    onNavigate: PropTypes.func.isRequired,
+    onSave: PropTypes.func,
+    onDelete: PropTypes.func,
+    onToggleEnable: PropTypes.func,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -40,6 +165,8 @@ export default class RulesDetails extends React.Component {
 
     triggerParameters: PropTypes.object,
     actionParameters: PropTypes.object,
+
+    enforcements: PropTypes.array,
 
     triggerSpec: PropTypes.object,
     criteriaSpecs: PropTypes.object,
@@ -52,9 +179,21 @@ export default class RulesDetails extends React.Component {
     rulePreview: false,
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.id === this.props.id) {
+      return;
+    }
+
+    if (this.props.id === 'new') {
+      return;
+    }
+
+    this.props.onComponentUpdate && this.props.onComponentUpdate();
+  }
+
   handleSection(section) {
-    const { id } = this.props;
-    return this.props.handleNavigate({ id, section });
+    const { rule } = this.props;
+    return this.props.onNavigate({ id: rule.ref, section });
   }
 
   handleChange(path, value) {
@@ -104,28 +243,24 @@ export default class RulesDetails extends React.Component {
   handleSave(e) {
     e && e.preventDefault();
 
-    return this.props.handleSave(this.state.editing).then(() => {
-      this.setState({ editing: null, rulePreview: false });
-    });
+    return this.props.onSave(this.state.editing)
+      .then(() => {
+        this.setState({ editing: null, rulePreview: false });
+      });
   }
 
   handleDelete(e) {
     e && e.preventDefault();
 
-    const { id } = this.props;
-    return this.props.handleDelete(id);
+    if (!window.confirm(`Do you really want to delete rule "${this.props.rule.ref}"?`)) {
+      return undefined;
+    }
+
+    return this.props.onDelete();
   }
 
   handleToggleEnable(rule) {
-    return store.dispatch({
-      type: 'TOGGLE_ENABLE',
-      promise: api.client.rules.edit(rule.id, { ...rule, enabled: !rule.enabled }),
-    })
-      .catch((err) => {
-        notification.error(`Unable to update rule "${rule.ref}".`, { err });
-        throw err;
-      })
-    ;
+    return this.props.onToggleEnable();
   }
 
   handleToggleRunPreview() {
@@ -137,7 +272,17 @@ export default class RulesDetails extends React.Component {
   }
 
   render() {
-    const { section, triggerParameters, actionParameters, triggerSpec, criteriaSpecs, actionSpec, packSpec } = this.props;
+    const {
+      section,
+      enforcements, 
+      triggerParameters, 
+      actionParameters, 
+      triggerSpec, 
+      criteriaSpecs, 
+      actionSpec, 
+      packSpec,
+    } = this.props;
+
     const rule = this.state.editing || this.props.rule;
 
     if (!rule || !triggerParameters || !actionParameters) {
@@ -159,7 +304,8 @@ export default class RulesDetails extends React.Component {
         <DetailsSwitch
           sections={[
             { label: 'General', path: 'general' },
-            { label: 'Code', path: 'code' },
+            { label: 'Enforcements', path: 'enforcements' },
+            { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}
@@ -168,11 +314,11 @@ export default class RulesDetails extends React.Component {
           <Toggle title="enabled" value={rule.enabled} onChange={() => this.handleToggleEnable(rule)} />
           { this.state.editing ? [
             <Button key="save" value="Save" onClick={() => this.handleSave()} data-test="save_button" />,
-            <Button key="cancel" value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
-            <Button key="preview" value="Preview" onClick={() => this.handleToggleRunPreview()} />,
+            <Button flat red key="cancel" value="Cancel" onClick={() => this.handleCancel()} data-test="cancel_button" />,
+            <Button flat key="preview" value="Preview" onClick={() => this.handleToggleRunPreview()} />,
           ] : [
-            <Button key="edit" value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
-            <Button key="delete" value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
+            <Button flat key="edit" value="Edit" onClick={() => this.handleEdit()} data-test="edit_button" />,
+            <Button flat red key="delete" value="Delete" onClick={() => this.handleDelete()} data-test="delete_button" />,
           ] }
           <DetailsToolbarSeparator />
         </DetailsToolbar>
@@ -360,6 +506,9 @@ export default class RulesDetails extends React.Component {
             <DetailsPanel data-test="rule_code">
               <Highlight lines={20} code={rule} />
             </DetailsPanel>
+          ) : null }
+          { section === 'enforcements' ? (
+            <EnforcementPanel enforcements={enforcements} data-test="rule_enforcements" />
           ) : null }
         </DetailsBody>
       </PanelDetails>

@@ -49,6 +49,7 @@
     "@stackstorm/module-popup": "^1.0.0-pre.5",
     "@stackstorm/module-remote-form": "^1.0.0-pre.5",
     "@stackstorm/module-store": "^1.0.0-pre.5",
+    "@stackstorm/module-time": "^1.0.0-pre.5",
     "@stackstorm/module-title": "^1.0.0-pre.5",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"

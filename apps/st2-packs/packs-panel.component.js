@@ -191,8 +191,7 @@ export default class PacksPanel extends React.Component {
             execution_id: res.execution_id,
           });
 
-          return api.client.stream
-            .wait('st2.execution__update', (record) => waitExecution(res.execution_id, record))
+          return api.wait('st2.execution__update', (record) => waitExecution(res.execution_id, record))
           ;
         })
         .then((res) => {
@@ -219,8 +218,7 @@ export default class PacksPanel extends React.Component {
             execution_id: res.execution_id,
           });
 
-          return api.client.stream
-            .wait('st2.execution__update', (record) => waitExecution(res.execution_id, record))
+          return api.wait('st2.execution__update', (record) => waitExecution(res.execution_id, record))
           ;
         })
         .then((res) => {

@@ -12,7 +12,7 @@ import Menu from '..';
 
 describe(`${Menu.name} Component`, () => {
   before(() => {
-    api.client = api.initClient({}, 'api.token');
+    api.client = api.connect();
   });
 
   describe('common functionality', () => {
