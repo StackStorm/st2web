@@ -31,13 +31,14 @@
     text-decoration: none;
     letter-spacing: .02em;
     word-spacing: normal;
-    text-transform: capitalize;
+    text-transform: uppercase;
 
     opacity: 1;
-    color: #222;
+    color: #fff;
     border: 0;
     outline: 0;
-    background-color: transparent;
+    background-color: #008ceb;
+    border-radius: 2px;
 
     &:before,
     &:after {
@@ -61,11 +62,15 @@
       cursor: default;
       pointer-events: none;
 
-      background-color: @grey-lighten-2;
+      background-color: #b3b0ba;
+    }
+
+    &:focus {
+      background-color: #0076c6;
     }
 
     &:active {
-      background-color: @aqua-lighten-2;
+      background-color: #0076c6;
     }
 
     &--small {
@@ -80,25 +85,36 @@
     }
 
     &--flat {
-      padding-right: 0;
-      padding-left: 0;
-
-      color: @aqua-base;
-      background: transparent;
+      color: #008ceb;
+      background-color: transparent;
       box-shadow: none;
 
-      &:active {
-        color: @aqua-lighten-2;
-        background: transparent;
+      &:focus {
+        background-color: #e6f4fd;
       }
+
+      &:active {
+        background-color: #cfe9fb;
+      }
+
+      &:disabled {
+        color: #b3b0ba;
+        background-color: transparent;
+      }
+    }
+
+    &--flat&--disabled {
+      color: #b3b0ba;
+      background-color: transparent;
     }
 
     &--flat& {
       &--red {
-        color: @red-base;
+        color: #E63544;
 
         &:active {
-          color: @red-lighten-2;
+          color: #E63544;
+          background-color: #FDEBED;
         }
       }
     }
@@ -240,7 +256,7 @@
       }
       
       &:checked + label {
-        background: #0076C6;
+        background: #008ceb;
       }
     }
 

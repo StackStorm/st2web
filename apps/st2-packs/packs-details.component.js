@@ -183,16 +183,16 @@ export default class PacksPanel extends React.Component {
         />
         <DetailsToolbar>
           { pack.status === 'available' ? (
-            <Button small value="Install" onClick={() => this.handleInstall()} />
+            <Button value="Install" onClick={() => this.handleInstall()} />
           ) : null }
           { pack.status === 'installing' ? (
-            <Button small value="Install" disabled />
+            <Button value="Install" disabled />
           ) : null }
           { pack.status === 'installed' ? (
-            <Button small value="Remove" onClick={() => this.handleRemove()} />
+            <Button flat red value="Remove" onClick={() => this.handleRemove()} />
           ) : null }
           { pack.status === 'uninstalling' ? (
-            <Button small value="Remove" disabled />
+            <Button flat value="Remove" disabled />
           ) : null }
           <DetailsToolbarSeparator />
         </DetailsToolbar>

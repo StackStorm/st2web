@@ -17,11 +17,9 @@ describe('API', () => {
     window.location.host = 'www.example.net:1234'; // set test value
 
     const api = new API();
-    const client = api.initClient();
+    api.connect();
 
-    expect(client.index.protocol).to.equal('https'); // always
-    expect(client.index.host).to.equal('www.example.net');
-    expect(client.index.port).to.equal('1234'); // stored as a string
+    expect(api.server.api).to.equal('https://www.example.net:1234/api'); // always
 
     window.location.host = host; // restore initial value
   });
@@ -31,7 +29,7 @@ describe('API', () => {
     after(() => moxios.uninstall());
 
     it('authenticates', () => {
-      moxios.stubRequest('https://example.com:443/auth/tokens', {
+      moxios.stubRequest('https://example.com/auth/tokens', {
         status: 201,
         response: {
           user: 'st2admin',
@@ -43,8 +41,9 @@ describe('API', () => {
       return api.connect({ auth: true }, 'username', 'password');
     });
 
-    it('has a client', () => {
-      expect(api.client).to.exist;
+    it('has opts and token', () => {
+      expect(api.server).to.exist;
+      expect(api.token).to.exist;
     });
 
     it('is connected', () => {
@@ -55,8 +54,9 @@ describe('API', () => {
   describe('disconnect', () => {
     before(() => api.disconnect());
 
-    it('doesn\'t have a client', () => {
-      expect(api.client).to.not.exist;
+    it('doesn\'t have opts or token', () => {
+      expect(api.server).to.not.exist;
+      expect(api.token).to.not.exist;
     });
 
     it('is not connected', () => {

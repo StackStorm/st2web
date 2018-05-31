@@ -102,8 +102,11 @@ export default class ActionsPanel extends React.Component {
   fetchGroups() {
     return store.dispatch({
       type: 'FETCH_GROUPS',
-      promise: api.client.actions.list({
-        exclude_attributes: 'parameters,notify',
+      promise: api.request({ 
+        path: '/actions', 
+        query: {
+          exclude_attributes: 'parameters,notify',
+        },
       })
         .catch((err) => {
           notification.error('Unable to retrieve actions.', { err });
@@ -179,7 +182,10 @@ export default class ActionsPanel extends React.Component {
   handleRun(ref, parameters, trace_tag) {
     return store.dispatch({
       type: 'RUN_ACTION',
-      promise: api.client.executions.create({
+      promise: api.request({
+        method: 'post',
+        path: '/executions',
+      }, {
         action: ref,
         parameters,
         context: {

@@ -16,6 +16,7 @@ const ruleReducer = (state = {}, input) => {
     criteriaSpecs = undefined,
     actionSpec = undefined,
     packSpec = undefined,
+    enforcements = [],
   } = state;
 
   state = {
@@ -31,6 +32,7 @@ const ruleReducer = (state = {}, input) => {
     criteriaSpecs,
     actionSpec,
     packSpec,
+    enforcements,
   };
 
   switch (input.type) {
@@ -201,6 +203,23 @@ const ruleReducer = (state = {}, input) => {
         ...state,
         packSpec,
         packs,
+      };
+    }
+
+    case 'FETCH_ENFORCEMENTS': {
+      switch(input.status) {
+        case 'success':
+          enforcements = input.payload;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        enforcements,
       };
     }
 

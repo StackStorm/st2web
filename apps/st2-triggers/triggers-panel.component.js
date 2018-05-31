@@ -47,8 +47,8 @@ class FlexTableWrapper extends FlexTable {
 }
 
 @connect((state) => {
-  const { groups, triggers, sensors, filter, collapsed } = state;
-  return { groups, triggers, sensors, filter, collapsed };
+  const { groups, triggers, filter, collapsed } = state;
+  return { groups, triggers, filter, collapsed };
 })
 export default class TriggersPanel extends React.Component {
   static propTypes = {
@@ -65,7 +65,6 @@ export default class TriggersPanel extends React.Component {
 
     groups: PropTypes.array,
     triggers: PropTypes.array,
-    sensors: PropTypes.object,
     filter: PropTypes.string,
     collapsed: PropTypes.bool,
 
@@ -107,7 +106,9 @@ export default class TriggersPanel extends React.Component {
     return Promise.all([
       store.dispatch({
         type: 'FETCH_GROUPS',
-        promise: api.client.triggerTypes.list()
+        promise: api.request({
+          path: '/triggertypes',
+        })
           .catch((err) => {
             notification.error('Unable to retrieve trigger types.', { err });
             throw err;
@@ -115,8 +116,7 @@ export default class TriggersPanel extends React.Component {
       }),
       store.dispatch({
         type: 'FETCH_SENSORS',
-        promise: api.client.index.request({ method: 'get', path: '/sensortypes' })
-          .then(res => res.data)
+        promise: api.request({ path: '/sensortypes' })
           .catch((err) => {
             notification.error('Unable to retrieve sensor types.', { err });
             throw err;
@@ -181,14 +181,12 @@ export default class TriggersPanel extends React.Component {
   }
 
   render() {
-    const { groups, triggers, sensors, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
+    const { groups, triggers, filter, triggerSpec, criteriaSpecs, actionSpec, packSpec, collapsed } = this.props;
     const { id, section } = this.urlParams;
 
     if (!triggers.length) {
       return false;
     }
-
-    const trigger = triggers.find(trigger => id === trigger.ref) || {};
 
     setTitle([ 'Trigger Types' ]);
 
@@ -213,7 +211,6 @@ export default class TriggersPanel extends React.Component {
                     <TriggersFlexCard
                       key={trigger.ref}
                       trigger={trigger}
-                      sensor={sensors[trigger.ref]}
                       selected={id === trigger.ref}
                       onClick={() => this.handleSelect(trigger.ref)}
                     />
@@ -232,8 +229,7 @@ export default class TriggersPanel extends React.Component {
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
 
-          trigger={trigger}
-          sensor={sensors[trigger.ref]}
+          id={id}
           section={section}
 
           triggerSpec={triggerSpec}

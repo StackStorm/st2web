@@ -1,7 +1,10 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
+import api from '@stackstorm/module-api';
 import setTitle from '@stackstorm/module-title';
+import notification from '@stackstorm/module-notification';
 
 import AutoForm from '@stackstorm/module-auto-form';
 import RemoteForm from '@stackstorm/module-remote-form';
@@ -19,14 +22,46 @@ import {
 
 import Popup from '@stackstorm/module-popup';
 
+@connect(
+  ({
+    triggerSpec, criteriaSpecs, actionSpec, packSpec,
+  }) => ({
+    triggerSpec, criteriaSpecs, actionSpec, packSpec,
+  }),
+  (dispatch, props) => ({
+    onSubmit: (rule) => dispatch({
+      type: 'CREATE_RULE',
+      promise: api.request({
+        method: 'post',
+        path: '/rules',
+      }, rule)
+        .then((rule) => {
+          notification.success(`Rule "${rule.ref}" has been created successfully.`);
+
+          props.onNavigate({
+            id: rule.ref,
+            section: 'general',
+          });
+
+          return rule;
+        })
+        .catch((err) => {
+          notification.error('Unable to create rule.', { err });
+          throw err;
+        }),
+    }),
+    onCancel: () => props.navigate({ id: false }),
+  })
+)
 export default class RulesPopup extends React.Component {
   static propTypes = {
-    triggerSpec: PropTypes.object.isRequired,
-    criteriaSpecs: PropTypes.object.isRequired,
-    actionSpec: PropTypes.object.isRequired,
-    packSpec: PropTypes.object.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    triggerSpec: PropTypes.object,
+    criteriaSpecs: PropTypes.object,
+    actionSpec: PropTypes.object,
+    packSpec: PropTypes.object,
+
+    onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
   }
 
   state = {
@@ -104,7 +139,7 @@ export default class RulesPopup extends React.Component {
 
     return (
       <div className="st2-rerun">
-        <Popup title="Create a rule" onCancel={onCancel} data-test="rule_create_popup">
+        <Popup title="Create a rule" onCancel={() => onCancel()} data-test="rule_create_popup">
           <form>
             <DetailsPanel>
               <DetailsPanelBody>
@@ -185,7 +220,7 @@ export default class RulesPopup extends React.Component {
                 <Button
                   flat red
                   className="st2-details__toolbar-button"
-                  onClick={onCancel}
+                  onClick={() => onCancel()}
                   value="Cancel"
                 />
                 <Button

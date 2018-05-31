@@ -90,7 +90,7 @@ export default class HistoryPanel extends React.Component {
   }
 
   componentDidMount() {
-    api.client.stream.listen().then((source) => {
+    api.listen().then((source) => {
       this._source = source;
 
       this._executionCreateListener = (e) => {
@@ -139,7 +139,7 @@ export default class HistoryPanel extends React.Component {
 
     store.dispatch({
       type: 'FETCH_FILTERS',
-      promise: api.client.executionsFilters.list()
+      promise: api.request({ path: '/executions/views/filters' })
         .catch((err) => {
           notification.error('Unable to retrieve history.', { err });
           throw err;
@@ -194,21 +194,26 @@ export default class HistoryPanel extends React.Component {
   fetchGroups({ page, activeFilters, filter }) {
     return store.dispatch({
       type: 'FETCH_GROUPS',
-      promise: api.client.executions.list({
-        ...activeFilters,
-        parent: 'null',
-        limit: PER_PAGE,
-        page,
-        filter,
-        exclude_attributes: 'result,trigger_instance',
+      promise: api.request({
+        path: '/executions',
+        query: {
+          ...activeFilters,
+          parent: 'null',
+          limit: PER_PAGE,
+          page,
+          filter,
+          exclude_attributes: 'result,trigger_instance',
+        },
+        raw: true, // so we can extract headers
       })
         .then((res) => {
-          const { total, limit } = api.client.executions;
+          const total = res.headers['x-total-count'] || res.data.length;
+          const limit = res.headers['x-limit'] || PER_PAGE;
           this.setState({
             maxPages: Math.ceil(total / limit),
           });
 
-          return res;
+          return res.data;
         })
         .catch((err) => {
           notification.error('Unable to retrieve history.', { err });
@@ -307,9 +312,12 @@ export default class HistoryPanel extends React.Component {
       type: 'FETCH_EXECUTION_CHILDREN',
       id,
       expanded,
-      promise: expanded ? api.client.executions.list({
-        parent: id,
-        exclude_attributes: 'result,trigger_instance',
+      promise: expanded ? api.request({
+        path: '/executions',
+        query: {
+          parent: id,
+          exclude_attributes: 'result,trigger_instance',
+        },
       })
         .catch((err) => {
           notification.error('Unable to retrieve children.', { err });
@@ -323,11 +331,17 @@ export default class HistoryPanel extends React.Component {
 
     return store.dispatch({
       type: 'RERUN_EXECUTION',
-      promise: api.client.executions.repeat(id, { parameters }, {
-        no_merge: true,
+      promise: api.request({
+        method: 'post',
+        path: `/executions/${id}/re_run`,
+        query: {
+          no_merge: true,
+        },
+      }, {
+        parameters,
       })
         .then((execution) => {
-          notification.success(`Execution "${execution.action.ref}" has been rerun successfully.`);
+          notification.success(`Execution of action "${execution.action.ref}" has been rerun successfully.`);
 
           this.navigate({
             id: execution.id,
@@ -351,7 +365,10 @@ export default class HistoryPanel extends React.Component {
 
     return store.dispatch({
       type: 'CANCEL_EXECUTION',
-      promise: api.client.executions.delete(id)
+      promise: api.request({
+        method: 'delete',
+        path: `/executions/${id}`,
+      })
         .then((execution) => {
           notification.success(`Execution "${execution.action.ref}" has been canceled successfully.`);
 
@@ -477,7 +494,8 @@ export default class HistoryPanel extends React.Component {
                     'st2-forms__button-prev': true,
                     'st2-forms__button-prev--disabled': page <= 1,
                   })}
-                  value="Previous"
+                  value="Newer"
+                  flat
                   onClick={() => this.handlePage(page - 1)}
                 />
                 <Button
@@ -485,7 +503,8 @@ export default class HistoryPanel extends React.Component {
                     'st2-forms__button-next': true,
                     'st2-forms__button-next--disabled': page >= maxPages,
                   })}
-                  value="Next"
+                  value="Older"
+                  flat
                   onClick={() => this.handlePage(page + 1)}
                 />
               </PanelNavigation>

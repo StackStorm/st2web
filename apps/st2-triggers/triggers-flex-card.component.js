@@ -1,9 +1,16 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import Label from '@stackstorm/module-label';
 
+@connect(
+  ({ id, sensors }, props) => ({
+    ...props,
+    sensor: sensors[props.trigger.ref],
+  })
+)
 export default class TriggersFlexCard extends React.Component {
   static propTypes = {
     trigger: PropTypes.object.isRequired,
@@ -16,8 +23,11 @@ export default class TriggersFlexCard extends React.Component {
     selected: false,
   }
 
-  static contextTypes = {
-    scrollIntoView: PropTypes.func,
+  static get contextTypes() {
+    return {
+      ...super.contextTypes,
+      scrollIntoView: PropTypes.func,
+    };
   }
 
   render() {

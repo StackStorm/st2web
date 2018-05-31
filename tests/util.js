@@ -4,7 +4,8 @@ const URI = require('urijs');
 const moment = require('moment');
 const zombie = require('zombie');
 
-const ST2client = require('@stackstorm/module-api/node_modules/st2client');
+require('@stackstorm/module-test-utils/bootstrap/st2constants');
+const { API } = require('@stackstorm/module-api');
 
 let client;
 
@@ -85,25 +86,13 @@ module.exports = function (browser) {
     },
     client: function () {
       if (!client) {
-        const cli = new ST2client({
-          protocol: 'https',
-          host: process.env.ST2_HOST.split(':')[0],
-          port: process.env.ST2_HOST.split(':')[1],
-          prefix: '/api',
-          auth: {
-            protocol: 'https',
-            host: process.env.ST2_HOST.split(':')[0],
-            port: process.env.ST2_HOST.split(':')[1] || 443,
-            prefix: '/auth',
-          },
-        });
+        const api = new API();
 
-        client = cli.authenticate(process.env.ST2_USERNAME, process.env.ST2_PASSWORD)
-          .then(() => {
-            // No need to wait for token to expire since we're not going to use the client for long
-            cli.close();
-          })
-          .then(() => cli);
+        client = api.connect({
+          url: `https://${process.env.ST2_HOST}/api`,
+          auth: `https://${process.env.ST2_HOST}/auth`,
+        }, process.env.ST2_USERNAME, process.env.ST2_PASSWORD)
+          .then(() => api);
       }
 
       return client;

@@ -37,12 +37,17 @@
       ]
     ]
   },
+  "workspaces": [
+    "apps/*",
+    "modules/*",
+    "tasks"
+  ],
   "dependencies": {
     "@stackstorm/app-actions": "^1.0.0-pre.5",
-    "@stackstorm/app-triggers": "^1.0.0-pre.5",
     "@stackstorm/app-history": "^1.0.0-pre.5",
     "@stackstorm/app-packs": "^1.0.0-pre.5",
     "@stackstorm/app-rules": "^1.0.0-pre.5",
+    "@stackstorm/app-triggers": "^1.0.0-pre.5",
     "@stackstorm/module-api": "^1.0.0-pre.5",
     "@stackstorm/module-login": "^1.0.0-pre.5",
     "@stackstorm/st2-style": "^1.0.0-pre.5",
@@ -68,6 +73,7 @@
     "babel-plugin-transform-class-properties": "^6.6.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.5.0",
     "babel-register": "^6.26.0",

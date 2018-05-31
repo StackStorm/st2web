@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import { createScopedStore } from '@stackstorm/module-store';
 
+import findIndex from 'lodash/fp/findIndex';
+import set from 'lodash/fp/set';
+
 import flexTableReducer from '@stackstorm/module-flex-table/flex-table.reducer';
 
 const triggerReducer = (state = {}, input) => {
@@ -10,6 +13,7 @@ const triggerReducer = (state = {}, input) => {
     filter = '',
     trigger = undefined,
     sensors = {},
+    instances = [],
   } = state;
 
   state = {
@@ -19,6 +23,7 @@ const triggerReducer = (state = {}, input) => {
     filter,
     trigger,
     sensors,
+    instances,
   };
 
   switch (input.type) {
@@ -62,6 +67,46 @@ const triggerReducer = (state = {}, input) => {
       return {
         ...state,
         sensors,
+      };
+    }
+
+    case 'FETCH_INSTANCES': {
+      switch(input.status) {
+        case 'success':
+          instances = input.payload;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        instances,
+      };
+    }
+
+    case 'FETCH_ENFORCEMENTS': {
+      switch(input.status) {
+        case 'success':
+          const { id } = input;
+
+          const index = findIndex({ id })(instances);
+
+          if (index > -1) {
+            instances = set(`[${index}].enforcements`, input.payload)(instances);
+          }
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        instances,
       };
     }
 
