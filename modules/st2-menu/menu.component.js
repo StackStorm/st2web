@@ -118,8 +118,8 @@ export default class Menu extends React.Component {
           Docs
         </a>
 
-        <a href="mailto:support@stackstorm.com" className="st2-menu__side" data-reamaze-lightbox="contact">
-          Contact
+        <a href="https://forum.stackstorm.com/" className="st2-menu__side">
+          Support
         </a>
       </header>
     );

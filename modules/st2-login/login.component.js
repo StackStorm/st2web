@@ -209,8 +209,8 @@ export default class Login extends React.Component {
             <a target="_blank" rel="noopener noreferrer" href="http://docs.stackstorm.com">
               Documentation
             </a>
-            <a href="mailto:support@stackstorm.com" data-reamaze-lightbox="contact">
-              Contact Us
+            <a href="https://forum.stackstorm.com/">
+              Support
             </a>
           </LoginBottomRow>
         </LoginForm>
