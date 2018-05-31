@@ -1,66 +1,65 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-criteria {
-  &__line {
-    // Combobox suggestion box takes all the space of the next prlatively positioned element.
-    // In this case we want it to be as wide as the whole criteria.
-    position: relative;
+.component {
+}
 
-    display: flex;
+.line {
+  // Combobox suggestion box takes all the space of the next prlatively positioned element.
+  // In this case we want it to be as wide as the whole criteria.
+  position: relative;
 
-    word-spacing: 3px;
+  display: flex;
 
-    flex-wrap: wrap;
+  word-spacing: 3px;
+
+  flex-wrap: wrap;
+
+  &:after {
+    display: block;
+
+    width: 100%;
+    margin-top: -10px; // TODO: find a better way
+
+    content: 'and';
+    text-align: center;
+  }
+
+  &:last-child {
+    margin-bottom: -12px;
 
     &:after {
-      display: block;
-
-      width: 100%;
-      margin-top: -10px; // TODO: find a better way
-
-      content: 'and';
-      text-align: center;
-    }
-
-    &:last-child {
-      margin-bottom: -12px;
-
-      &:after {
-        content: '';
-      }
+      content: '';
     }
   }
+}
 
-  &__entity {
-    display: block;
-    flex: 1;
+.entity {
+  display: block;
+  flex: 1;
 
-    margin-right: 4px;
+  margin-right: 4px;
 
-    vertical-align: top;
-  }
+  vertical-align: top;
+}
 
-  &__remove {
-    margin-bottom: 10px;
+.remove {
+  margin-bottom: 10px;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    align-self: center;
-  }
+  align-self: center;
 
-  &__remove:hover {
+  &:hover {
     color: @aqua-base;
   }
+}
 
-  &__buttons {
-    margin-top: 20px;
-  }
+.buttons {
+  margin-top: 20px;
+}
 
-  // Let's try and diverge from BEM to see if it actually makes more sense for what we're doing here
-  // Initially it should have been `&--flat`
-  &.flat &__entity {
-    display: inline-block;
+.flat .entity {
+  display: inline-block;
 
-    flex: initial;
-  }
+  flex: initial;
 }
