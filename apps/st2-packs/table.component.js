@@ -11,7 +11,7 @@ export default class Table extends React.Component {
     const { content, ...props } = this.props;
 
     return (
-      <div {...props} className="st2-details__panel-body st2-action-reporter__header" >
+      <div {...props} className="st2-details__panel-body" >
         { _(content).pickBy((v) => !!v).map((value, key) => (
           <dl key={key} className="st2-details__panel-body-line">
             <dt className="st2-details__panel-body-label">{ key }</dt>

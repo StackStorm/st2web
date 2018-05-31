@@ -2,25 +2,27 @@ import React from 'react';
 
 import Highlight from '@stackstorm/module-highlight';
 
+import style from '../style.less';
+
 export default function runLocal(execution) {
   return [
     execution.result && execution.result.stdout ? [
-      <div key="output" className="st2-action-reporter__source">Output</div>,
-      <Highlight well key="output-code" code={execution.result.stdout} />,
+      <div key="output" className={style.source}>Output</div>,
+      <Highlight well className={style.highlight} key="output-code" code={execution.result.stdout} />,
     ] : null,
 
     execution.result && execution.result.stderr ? [
-      <div key="error" className="st2-action-reporter__source">Error</div>,
-      <Highlight well key="error-code" code={execution.result.stderr} />,
+      <div key="error" className={style.source}>Error</div>,
+      <Highlight well className={style.highlight} key="error-code" code={execution.result.stderr} />,
     ] : null,
 
     execution.result && execution.result.traceback ? [
-      <div key="traceback" className="st2-action-reporter__source">Traceback</div>,
-      <Highlight well key="traceback-code" code={[ execution.result.error, execution.result.traceback ].join('\n')} />,
+      <div key="traceback" className={style.source}>Traceback</div>,
+      <Highlight well className={style.highlight} key="traceback-code" code={[ execution.result.error, execution.result.traceback ].join('\n')} />,
     ] : null,
 
     !execution.result || (!execution.result.stdout && !execution.result.stderr && !execution.result.traceback) ? (
-      <Highlight well key="none" code="// Action produced no data" />
+      <Highlight well className={style.highlight} key="none" code="// Action produced no data" />
     ) : null,
   ];
 }

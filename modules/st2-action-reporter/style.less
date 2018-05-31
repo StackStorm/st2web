@@ -1,62 +1,30 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-action-reporter {
+.component {
   position: relative;
+}
 
-  &__header {
-    margin-bottom: 30px;
+.hostname {
+  font-size: 15px;
 
-    .st2-label__label {
-      position: relative;
-      top: -1px;
+  margin: 5px 0;
+}
 
-      margin: -4px 0;
-      padding: 7px 10px 5px;
-    }
-  }
+.source {
+  font-size: 13px;
 
-  &__hostname {
-    font-size: 15px;
+  position: absolute;
+  right: 0;
 
-    margin: 5px 0;
-  }
+  display: inline-block;
 
-  &__source {
-    font-size: 13px;
+  padding: 3px 5px;
 
-    position: absolute;
-    right: 0;
+  text-transform: lowercase;
 
-    display: inline-block;
+  color: @grey-base;
+}
 
-    padding: 3px 5px;
-
-    text-transform: lowercase;
-
-    color: @grey-base;
-  }
-
-  &__message .st2-highlight__well {
-    color: @grey-lighten-2;
-  }
-
-  & .st2-highlight + .st2-highlight {
-    margin-bottom: 20px;
-  }
-
-  &__uuid {
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    line-height: 20px;
-
-    display: inline-block;
-
-    padding: 1px 10px 0;
-
-    color: white;
-    border: none;
-    border-radius: 4px;
-    outline: 0;
-    background: #151a1e;
-  }
+.highlight + .highlight {
+  margin-bottom: 20px;
 }
