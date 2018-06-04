@@ -29,7 +29,7 @@ export class Popup extends React.Component {
     children: PropTypes.node,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this._listener = (event) => {
       if (event.key === 'Escape') {
         this.props.onCancel();

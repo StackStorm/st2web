@@ -97,26 +97,22 @@ export default class Login extends React.Component {
     onConnect: PropTypes.func.isRequired,
   }
 
-  state = {
-    error: null,
-    username: '',
-    password: '',
-    remember: true,
+  constructor(props) {
+    super(props);
 
-    server: null,
-  }
-
-  componentWillMount() {
-    let server = { auth: true };
     const servers = window.st2constants.st2Config.hosts;
 
-    if (servers && servers.length > 0) {
-      server = servers[0];
-    }
+    const server = servers && servers.length > 0 ? servers[0] : { auth: true };
 
-    this.setState({
+    this.state = {
+      error: null,
+      
+      username: '',
+      password: '',
+      remember: true,
+  
       server,
-    });
+    };
   }
 
   connect(e) {

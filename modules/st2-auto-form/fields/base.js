@@ -39,7 +39,8 @@ export class BaseTextField extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    // I have a problem making it work via getDerivedStateFromProps because I see no way to figure out which of two values (from props or state) are the latest one which prevents fields to be externally updated. Moving to using them controlled should solve that for us.
     let { value } = nextProps;
 
     if (!_.isEqual(this.props.value, value)) {

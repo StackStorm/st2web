@@ -55,20 +55,12 @@ export default class PacksPanel extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { id } = nextProps;
+  componentDidUpdate(prevProps) {
+    const { id } = this.props;
 
-    if (id && (id !== this.props.id)) {
+    if (id && id !== prevProps.id) {
       this.fetchPack(id);
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.id !== this.props.id) {
-      return false;
-    }
-
-    return true;
   }
 
   refresh() {

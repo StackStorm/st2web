@@ -25,15 +25,13 @@ export default class TextFieldModule extends React.Component {
     error: null,
   }
 
-  componentWillUpdate() {
-    setTimeout(() => {
-      if (!this._textarea) {
-        return;
-      }
+  componentDidUpdate() {
+    if (!this._textarea) {
+      return;
+    }
 
-      this._textarea.style.height = 0;
-      this._textarea.style.height = `${this._textarea.scrollHeight}px`;
-    }, 0);
+    this._textarea.style.height = 0;
+    this._textarea.style.height = `${this._textarea.scrollHeight}px`;
   }
 
   onRef(textarea) {

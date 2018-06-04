@@ -18,24 +18,22 @@ export default class HistoryPopup extends React.Component {
   static propTypes = {
     action: PropTypes.string,
     spec: PropTypes.object,
-    payload: PropTypes.object,
+    payload: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      preview: false,
-      payload: { ...this.props.payload },
+  static getDerivedStateFromProps(props, state) {
+    return {
+      ...state,
+      payload: {
+        ...props.payload,
+      },
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({
-      payload: { ...props.payload },
-    });
+  state = {
+    preview: false,
   }
 
   togglePreview() {

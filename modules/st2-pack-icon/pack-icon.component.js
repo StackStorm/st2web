@@ -22,27 +22,25 @@ export default class PackIcon extends React.Component {
     naked: false,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (Object.keys(icons).length > 0) {
       return;
     }
 
-    if (!iconPromise) {
-      iconPromise = api.request({
-        path: '/packs',
-      })
-        .then((packs) => {
-          packs.map(({ ref, files }) => {
-            if (files && files.indexOf('icon.png') >= 0) {
-              icons[ref] = api.route({ path: `/packs/views/file/${ref}/icon.png` });
-            }
-          });
-        })
-        .catch((err) => {
-          notification.error('Unable to retrieve pack icons.', { err });
-          throw err;
+    iconPromise = iconPromise || api.request({
+      path: '/packs',
+    })
+      .then((packs) => {
+        packs.map(({ ref, files }) => {
+          if (files && files.indexOf('icon.png') >= 0) {
+            icons[ref] = api.route({ path: `/packs/views/file/${ref}/icon.png` });
+          }
         });
-    }
+      })
+      .catch((err) => {
+        notification.error('Unable to retrieve pack icons.', { err });
+        throw err;
+      });
 
     iconPromise.then(() => {
       this.forceUpdate();
