@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-login",
-  "version": "1.0.0-pre.5",
+  "version": "2.0.0-pre.0",
   "description": "",
   "main": "login.component.js",
   "directories": {
@@ -43,8 +43,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-menu": "^1.0.0-pre.5",
-    "@stackstorm/st2-style": "^1.0.0-pre.5",
+    "@stackstorm/module-menu": "^2.0.0-pre.0",
+    "@stackstorm/st2-style": "^2.0.0-pre.0",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },

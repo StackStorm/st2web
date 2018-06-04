@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-notification",
-  "version": "1.0.0-pre.5",
+  "version": "2.0.0-pre.0",
   "description": "",
   "main": "notification.js",
   "directories": {

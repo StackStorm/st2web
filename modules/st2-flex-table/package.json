@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-flex-table",
-  "version": "1.0.0-pre.5",
+  "version": "2.0.0-pre.0",
   "description": "",
   "main": "flex-table.component.js",
   "directories": {
@@ -41,13 +41,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^1.0.0-pre.5",
+    "@stackstorm/st2-style": "^2.0.0-pre.0",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.1",
-    "@stackstorm/module-store": "^1.0.0-pre.5",
+    "@stackstorm/module-store": "^2.0.0-pre.0",
     "@stackstorm/postcss-less-engine": "0.6.2",
     "babelify": "^8.0.0",
     "less": "^2.7.3",
