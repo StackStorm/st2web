@@ -1,146 +1,141 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
-@import (less) 'node_modules/prismjs/themes/prism.css';
 
-.st2-highlight {
-  &--well &__well,
-  &__fullscreen &__well {
-    min-height: 20px;
-    padding: 4px;
+.component {
+  .st2-panel__scroller {
+    padding: 30px;
+  }
+}
+
+.welled .well,
+.fullscreen .well {
+  min-height: 20px;
+  padding: 4px;
+
+  color: black;
+  border-radius: 4px;
+  background-color: @grey-lighten-4;
+
+  pre {
+    font-family: 'Droid Sans Mono', monospace;
+    font-size: 12px;
+
+    display: block;
+    overflow: scroll;
+
+    margin: 0;
+    padding: 15px;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: rgba(150, 150, 150, .3);
+
+      &:hover {
+        background-color: rgba(150, 150, 150, .7);
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+  }
+
+  code {
+    font-family: inherit;
+    font-size: inherit;
+  }
+}
+
+.fullscreen {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  cursor: pointer;
+
+  color: #f4f4f4;
+  background-color: rgba(0,0,0,.8);
+
+  &:after {
+    font-family: 'brocadeicons';
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    display: block;
+
+    padding: 5px;
+
+    content: '\e940';
 
     color: black;
-    border-radius: 4px;
-    background-color: @grey-lighten-4;
-
-    pre {
-      font-family: 'Droid Sans Mono', monospace;
-      font-size: 12px;
-
-      display: block;
-      overflow: scroll;
-
-      margin: 0;
-      padding: 15px;
-
-      &::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-
-        background-color: transparent;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        border-radius: 3px;
-        background-color: rgba(150, 150, 150, .3);
-
-        &:hover {
-          background-color: rgba(150, 150, 150, .7);
-        }
-      }
-
-      &::-webkit-scrollbar-corner {
-        background-color: transparent;
-      }
-    }
-
-    code {
-      font-family: inherit;
-      font-size: inherit;
-    }
+    border-radius: 50%;
+    background-color: white;
   }
 
-  &__fullscreen {
-    position: fixed;
-    z-index: 2;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    cursor: pointer;
-
-    color: #f4f4f4;
-    background-color: rgba(0,0,0,.8);
-
-    &:after {
-      font-family: 'brocadeicons';
-      font-size: 18px;
-      font-weight: normal;
-      font-style: normal;
-
-      position: absolute;
-      top: 20px;
-      right: 20px;
-
-      display: block;
-
-      padding: 5px;
-
-      content: '\e940';
-
-      color: black;
-      border-radius: 50%;
-      background-color: white;
-    }
-  }
-
-  &__fullscreen &__well {
+  .well {
     position: absolute;
     top: 30px;
     right: 30px;
     bottom: 30px;
     left: 30px;
-
+  
     box-sizing: border-box;
     margin: 0;
-
+  
     cursor: text;
-
+  
     pre,
     code {
       box-sizing: border-box;
       height: 100%;
     }
-  }
 
-  &__fullscreen &__well code {
-    overflow: auto;
-  }
-
-  &__fullscreen &__buttons {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-
-    display: none;
-  }
-
-  &__fullscreen:hover &__buttons {
-    display: block;
-  }
-
-  &__more {
-    cursor: pointer;
-    text-decoration: underline;
-
-    color: #888;
-
-    &:hover {
-      color: inherit;
+    code {
+      overflow: auto;
     }
   }
 
-  & .st2-panel__scroller {
-    padding: 30px;
+  .buttons {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+  
+    display: none;
   }
 
-  .token.operator,
-  .token.entity,
-  .token.url,
-  .language-css .token.string,
-  .style .token.string {
-    background: none;
+  &:hover {
+    .buttons {
+      display: block;
+    }
+  }
+
+}
+
+.more {
+  cursor: pointer;
+  text-decoration: underline;
+
+  color: #888;
+
+  &:hover {
+    color: inherit;
   }
 }
-.input--active {
+
+.input-active {
   background-color: #ff9e1b;
 }

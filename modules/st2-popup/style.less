@@ -1,6 +1,6 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-popup {
+.component {
   font-family: Roboto, sans-serif;
 
   position: fixed;
@@ -21,21 +21,22 @@
   .st2-details__panel {
     padding-left: 0;
   }
+}
 
-  &__details {
-    height: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    padding-right: 0;
+.details {
+  height: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  padding-right: 0;
 
-    cursor: default;
+  cursor: default;
 
-    background-color: @grey-lighten-5;
+  background-color: @grey-lighten-5;
 
-    width: initial;
-  }
+  width: initial;
+}
 
-  &__title {
-    font-size: 24px;
-  }
+.title {
+  font-size: 24px;
+  padding: 20px 20px 0;
 }

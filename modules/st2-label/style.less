@@ -1,107 +1,114 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-label {
-  &__label {
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 11px;
+.component {
+}
+
+.label {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 11px;
+
+  display: inline-block;
+
+  padding: 8px 10px;
+
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  color: #fff;
+  border-radius: 2px;
+  background-color: #777;
+
+  border: 1px solid #fff;
+  box-sizing: border-box;
+
+  &:before {
+    font-family: 'brocadeicons';
+    font-size: 9px;
+    font-weight: normal;
+    font-style: normal;
 
     display: inline-block;
 
-    padding: 8px 10px;
+    margin-right: 3px;
 
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-
-    color: #fff;
-    border-radius: 2px;
-    background-color: #777;
-
-    border: 1px solid #fff;
-    box-sizing: border-box;
-
-    &:before {
-      font-family: 'brocadeicons';
-      font-size: 9px;
-      font-weight: normal;
-      font-style: normal;
-
-      display: inline-block;
-
-      margin-right: 3px;
-
-      vertical-align: baseline;
-    }
+    vertical-align: baseline;
   }
+}
 
-  &--primary {
-    background-color: #428bca;
+.primary {
+  background-color: #428bca;
+}
+
+.success {
+  background-color: #00BD49;
+}
+
+.info {
+  background-color: #5bc0de;
+}
+
+.warning {
+  background-color: #FF6600;
+}
+
+.danger {
+  background-color: #E63544;
+}
+
+.failed {
+  background-color: #E63544;
+  
+  &:before {
+    display: none;
+
+    content: '\e940';
   }
-  &--success {
-    background-color: #00BD49;
+}
+
+.succeeded {
+  background-color: #00BD49;
+  
+  &:before {
+    display: none;
+
+    content: '\e968';
   }
-  &--info {
-    background-color: #5bc0de;
+}
+
+.progress {
+  &:before {
+    content: '\e94b';
+    animation: spin 2s infinite linear;
   }
-  &--warning {
-    background-color: #FF6600;
+}
+
+.short .label {
+  overflow: hidden;
+
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+
+  color: transparent;
+  border-radius: 50%;
+
+  &:before {
+    display: none;
   }
-  &--danger {
-    background-color: #E63544;
+}
+
+.short .progress {
+  animation: breathe 1s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  0% {
+    background-color: @grey-lighten-1;
   }
-
-  &--failed {
-    background-color: #E63544;
-    &:before {
-      display: none;
-
-      content: '\e940';
-    }
-  }
-
-  &--succeeded {
-    background-color: #00BD49;
-    &:before {
-      display: none;
-
-      content: '\e968';
-    }
-  }
-
-  &--progress {
-    &:before {
-      content: '\e94b';
-      animation: spin 2s infinite linear;
-    }
-  }
-
-  &--short &__label {
-    overflow: hidden;
-
-    box-sizing: border-box;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-
-    color: transparent;
-    border-radius: 50%;
-
-    &:before {
-      display: none;
-    }
-  }
-
-  &--short &--progress {
-    animation: breathe 1s ease-in-out infinite alternate;
-  }
-
-  @keyframes breathe {
-    0% {
-      background-color: @grey-lighten-1;
-    }
-    100% {
-      background-color: @grey-lighten-3;
-    }
+  100% {
+    background-color: @grey-lighten-3;
   }
 }

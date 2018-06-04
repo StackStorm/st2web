@@ -2,42 +2,20 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import './style.less';
+import style from './style.less';
 
 const states = {
-  'enabled': {
-    className: 'st2-label--success',
-  },
-  'disabled': {
-    className: 'st2-label--danger',
-  },
-  'scheduled': {
-    className: 'st2-label--progress',
-  },
-  'running': {
-    className: 'st2-label--progress',
-  },
-  'complete': {
-    className: 'st2-label--success',
-  },
-  'succeeded': {
-    className: 'st2-label--succeeded',
-  },
-  'failed': {
-    className: 'st2-label--failed',
-  },
-  'error': {
-    className: 'st2-label--danger',
-  },
-  'canceling': {
-    className: 'st2-label--warning',
-  },
-  'canceled': {
-    className: 'st2-label--warning',
-  },
-  'timeout': {
-    className: 'st2-label--warning',
-  },
+  'enabled': style.success,
+  'disabled': style.danger,
+  'scheduled': style.progress,
+  'running': style.progress,
+  'complete': style.success,
+  'succeeded': style.succeeded,
+  'failed': style.failed,
+  'error': style.danger,
+  'canceling': style.warning,
+  'canceled': style.warning,
+  'timeout': style.warning,
 };
 
 function capitalize(string) {
@@ -65,17 +43,17 @@ export default class Label extends React.Component {
 
     if (short) {
       return (
-        <span className="st2-label st2-label--short">
-          <span {...props} className={cx('st2-label__label', className, state && state.className)}>
-            { capitalize(state && state.title || status) }
+        <span className={cx(style.component, style.short)}>
+          <span {...props} className={cx(style.label, className, state)}>
+            { capitalize(status) }
           </span>
         </span>
       );
     }
 
     return (
-      <span {...props} className={cx('st2-label__label', className, state && state.className)}>
-        { capitalize(state && state.title || status) }
+      <span {...props} className={cx(style.label, className, state)}>
+        { capitalize(status) }
       </span>
     );
   }

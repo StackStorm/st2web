@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import './style.less';
+import style from './style.less';
 
 export default class PortionBar extends React.Component {
   static propTypes = {
@@ -19,21 +19,21 @@ export default class PortionBar extends React.Component {
     const total = _.reduce(portions, (sum, num) => sum + num);
 
     return (
-      <div {...props} className={cx('st2-portion-bar', className)}>
-        <ul className="st2-portion-bar__bar">
+      <div {...props} className={cx(style.component, className)}>
+        <ul className={style.bar}>
           { _.map(portions, (value, key) => (
             <li
               key={key}
-              className={cx('st2-portion-bar__bar-value', `st2-portion-bar__bar-value--${key}`)}
+              className={cx(style.barValue, style[`barValue_${key}`])}
               style={{
                 width: `${(value / total * 100).toFixed(2)}%`,
               }}
             />
           )) }
         </ul>
-        <ul className="st2-portion-bar__info">
+        <ul className={style.info}>
           { _.map(portions, (value, key) => (
-            <li key={key} className="st2-portion-bar__info-value">{key}: {value}</li>
+            <li key={key} className={style.infoValue}>{key}: {value}</li>
           )) }
         </ul>
       </div>

@@ -7,7 +7,7 @@ const Noty = (function() {
   return require('noty');
 })();
 
-import './style.less';
+import './style.css';
 
 export class Notification {
   success(...args) {

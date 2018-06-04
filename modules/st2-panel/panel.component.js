@@ -277,7 +277,7 @@ export class DetailsHeader extends React.Component {
       <div {...props} className={cx('st2-details__header', className)}>
         <div className="st2-details__header-name">
           { status ? (
-            <Label status={status} short={true} data-test="status" />
+            <Label className="st2-details__header-label" status={status} short data-test="status" />
           ) : null }
           <div data-test="header_name">
             { title }

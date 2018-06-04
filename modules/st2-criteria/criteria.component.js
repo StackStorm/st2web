@@ -7,7 +7,7 @@ import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 import AutoFormSelect from '@stackstorm/module-auto-form/modules/select';
 import AutoFormInput from '@stackstorm/module-auto-form/modules/input';
 
-import './style.less';
+import style from './style.less';
 
 const types = {
   'regex': 'Regular expression match',
@@ -115,19 +115,19 @@ export default class Criteria extends React.Component {
     onChange;
 
     return (
-      <div {...props} className={cx('st2-criteria', flat && [ 'st2-auto-form--flat', 'flat' ], className)}>
+      <div {...props} className={cx(style.component, flat && [ 'st2-auto-form--flat', style.flat ], className)}>
         <div>
           { _.map(data, ({ type, pattern }, key) => (
-            <div className="st2-criteria__line" key={key}>
+            <div className={style.line} key={key}>
               <AutoFormCombobox
-                className="st2-criteria__entity"
+                className={style.entity}
                 disabled={disabled}
                 data={key}
                 spec={spec}
                 onChange={(value) => this.handleChangeKey(key, value)}
               />
               <AutoFormSelect
-                className="st2-criteria__entity"
+                className={style.entity}
                 disabled={disabled}
                 data={type}
                 spec={{
@@ -137,7 +137,7 @@ export default class Criteria extends React.Component {
                 onChange={(value) => this.handleChangeType(key, value)}
               />
               <AutoFormInput
-                className="st2-criteria__entity"
+                className={style.entity}
                 disabled={disabled}
                 data={pattern}
                 spec={{
@@ -146,13 +146,13 @@ export default class Criteria extends React.Component {
                 onChange={(value) => this.handleChangePattern(key, value)}
               />
               { disabled ? null :
-                <i className="icon-cross st2-criteria__remove" onClick={() => this.handleRemove(key)} />
+                <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
               }
             </div>
           )) }
         </div>
         { disabled ? null : (
-          <div className="st2-criteria__buttons">
+          <div className={style.buttons}>
             <input
               type="button"
               className="st2-forms__button st2-forms__button--small"

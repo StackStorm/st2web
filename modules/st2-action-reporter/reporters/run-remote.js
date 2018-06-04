@@ -2,10 +2,12 @@ import React from 'react';
 
 import Highlight from '@stackstorm/module-highlight';
 
+import style from '../style.less';
+
 export default function runRemote(execution) {
   if (!execution.result) {
     return (
-      <Highlight key="none" code="// Action produced no data" />
+      <Highlight className={style.highlight} key="none" code="// Action produced no data" />
     );
   }
 
@@ -13,25 +15,25 @@ export default function runRemote(execution) {
     const result = execution.result[host];
 
     return [
-      <div key="host" className="st2-action-reporter__hostname">Host: { host }</div>,
+      <div key="host" className={style.hostname}>Host: { host }</div>,
 
       result && result.stdout ? [
-        <div key="output" className="st2-action-reporter__source">Output</div>,
-        <Highlight well key="output-code" code={result.stdout} />,
+        <div key="output" className={style.source}>Output</div>,
+        <Highlight well className={style.highlight} key="output-code" code={result.stdout} />,
       ] : null,
 
       result && result.stderr ? [
-        <div key="error" className="st2-action-reporter__source">Error</div>,
-        <Highlight well key="error-code" code={result.stderr} />,
+        <div key="error" className={style.source}>Error</div>,
+        <Highlight well className={style.highlight} key="error-code" code={result.stderr} />,
       ] : null,
 
       result && result.traceback ? [
-        <div key="traceback" className="st2-action-reporter__source">Traceback</div>,
-        <Highlight well key="traceback-code" code={[ result.error, result.traceback ].join('\n')} />,
+        <div key="traceback" className={style.source}>Traceback</div>,
+        <Highlight well className={style.highlight} key="traceback-code" code={[ result.error, result.traceback ].join('\n')} />,
       ] : null,
 
       !result || (!result.result && !result.stderr && !result.stdout && !result.traceback) ? (
-        <Highlight well key="none" code="// Action produced no data" />
+        <Highlight well className={style.highlight} key="none" code="// Action produced no data" />
       ) : null,
     ];
   });

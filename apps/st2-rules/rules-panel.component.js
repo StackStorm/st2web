@@ -3,6 +3,8 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
+import get from 'lodash/fp/get';
+
 import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
@@ -67,27 +69,13 @@ export default class RulesPanel extends React.Component {
       }),
     }),
 
-    rules: PropTypes.array,
     groups: PropTypes.array,
     filter: PropTypes.string,
 
     collapsed: PropTypes.bool,
   }
 
-  state = {
-    id: undefined,
-  }
-
   componentDidMount() {
-    let { ref: id } = this.props.match.params;
-    if (!id) {
-      const { groups } = this.props;
-      id = groups && groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
-    }
-    if (id !== this.state.id) {
-      this.setState({ id });
-    }
-
     this.fetchGroups();
 
     store.dispatch({
@@ -124,17 +112,6 @@ export default class RulesPanel extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    let { ref: id } = nextProps.match.params;
-    if (!id) {
-      const { groups } = nextProps;
-      id = groups && groups.length > 0 && groups[0].rules.length > 0 ? groups[0].rules[0].ref : undefined;
-    }
-    if (id !== this.state.id) {
-      this.setState({ id });
-    }
-  }
-
   fetchGroups() {
     return store.dispatch({
       type: 'FETCH_GROUPS',
@@ -158,12 +135,14 @@ export default class RulesPanel extends React.Component {
   }
 
   get urlParams() {
-    const { id } = this.state;
-    const { section } = this.props.match.params;
+    const {
+      ref = get('groups[0].rules[0].ref', this.props),
+      section = 'general',
+    } = this.props.match.params;
 
     return {
-      id,
-      section: section || 'general',
+      id: ref,
+      section,
     };
   }
 

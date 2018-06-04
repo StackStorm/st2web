@@ -28,7 +28,9 @@
             ".less"
           ],
           "inject": "insert-css",
-          "modularize": false,
+          "modularize": {
+            "camelCase": true
+          },
           "plugin": [
             "@stackstorm/postcss-less-engine"
           ],

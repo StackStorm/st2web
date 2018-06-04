@@ -4,7 +4,8 @@ import cx from 'classnames';
 
 import Prism from 'prismjs';
 
-import './style.less';
+import './editor.css';
+import style from './style.less';
 
 (function() {
   // don't include this during testing
@@ -40,6 +41,69 @@ function getType(string) {
   return 'object';
 }
 
+function replaceNewlines(str) {
+  return str
+    .replace(/\\r/g, '\r')
+    .replace(/\\n/g, '\n')
+  ;
+}
+
+function getFullOutput(language, code) {
+  if (!code) {
+    return '';
+  }
+  
+  if (language && Prism.languages[language]) {
+    return Prism.highlight(code, Prism.languages[language]);
+  }
+
+  const type = getType(code);
+
+  if (type === 'json') {
+    return Prism.highlight(code, Prism.languages.json);
+  }
+
+  if (type === 'string') {
+    return code.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
+  }
+
+  if (type === 'object') {
+    return Prism.highlight(JSON.stringify(code, null, 2), Prism.languages.json);
+  }
+
+  return '';
+}
+
+function trimEmptyLines(str) {
+  const lines = str.split('\n');
+
+  while (lines[0] === '') {
+    lines.shift();
+  }
+
+  while (lines[lines.length - 1] === '') {
+    lines.pop();
+  }
+
+  return lines.join('\n');
+}
+
+function trimToLines(str, length) {
+  const lines = str.split('\n');
+
+  if (lines.length - length > 0) {
+    return {
+      str: lines.slice(0, length).join('\n'),
+      more: lines.length - length,
+    };
+  }
+
+  return {
+    str,
+    more: 0,
+  };
+}
+
 export default class Highlight extends React.Component {
   static propTypes = {
     className: PropTypes.string,
@@ -49,99 +113,59 @@ export default class Highlight extends React.Component {
     well: PropTypes.bool,
   };
 
-  state = {
-    expanded: false,
-    wrap: undefined,
-    newlines: undefined,
-    more: 0,
-    outputFull: '',
-    outputShort: '',
-  }
+  static getDerivedStateFromProps({ language, code, lines }, state) {
+    let outputFull = getFullOutput(language, code);
 
-  componentWillMount() {
-    const { language, code } = this.props;
-    this._update(language, code);
-
-    const { wrap, newlines } = JSON.parse(localStorage.getItem('st2Highlight')) || { wrap: false, newlines: false };
-    if (this.state.wrap !== wrap || this.state.newlines !== newlines) {
-      this.setState({ wrap, newlines });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { language, code } = nextProps;
-    this._update(language, code);
-  }
-
-  _update(language, code) {
-    if (arguments.length === 0) {
-      language = this.props.language;
-      code = this.props.code;
+    if (state.newlines) {
+      outputFull = replaceNewlines(outputFull);
     }
 
-    let outputFull = (function () {
-      if (code) {
-        if (language && Prism.languages[language]) {
-          return Prism.highlight(code, Prism.languages[language]);
-        }
+    outputFull = trimEmptyLines(outputFull);
+    
+    const { str: outputShort, more } = trimToLines(outputFull, lines);
 
-        const type = getType(code);
-
-        if (type === 'json') {
-          return Prism.highlight(code, Prism.languages.json);
-        }
-
-        if (type === 'string') {
-          return code.replace(/[\u00A0-\u9999<>&]/gim, (i) => `&#${i.charCodeAt(0)};`);
-        }
-
-        if (type === 'object') {
-          return Prism.highlight(JSON.stringify(code, null, 2), Prism.languages.json);
-        }
-      }
-
-      return '';
-    })();
-
-    if (this.state.newlines) {
-      outputFull = outputFull
-        .replace(/\\r/g, '\r')
-        .replace(/\\n/g, '\n')
-      ;
-    }
-
-    outputFull = outputFull.split('\n');
-    while (outputFull[0] === '') {
-      outputFull.shift();
-    }
-    while (outputFull[outputFull.length - 1] === '') {
-      outputFull.pop();
-    }
-
-    let outputShort = outputFull;
-    let more = 0;
-    if (this.props.lines) {
-      more = outputShort.length - this.props.lines;
-      if (more > 0) {
-        outputShort = outputShort.slice(0, this.props.lines);
-      }
-    }
-
-    outputFull = outputFull.join('\n');
-    outputShort = outputShort.join('\n');
-
-    if (this._refFull) {
-      this._refFull.innerHTML = outputFull;
-    }
-    if (this._refShort) {
-      this._refShort.innerHTML = outputShort;
-    }
-
-    this.setState({
+    return {
+      ...state,
       more,
       outputFull,
       outputShort,
-    });
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    const { wrap, newlines } = JSON.parse(localStorage.getItem('st2Highlight')) || { wrap: false, newlines: false };
+
+    this.state = {
+      expanded: false,
+      wrap,
+      newlines,
+    };
+  }
+
+  componentDidMount() {
+    this._listener = (event) => {
+      if (event.key === 'Escape') {
+        this.setState({ expanded: false });
+      }
+    };
+
+    document.addEventListener('keydown', this._listener, false);
+  }
+
+  componentDidUpdate() {
+    if (this._refFull) {
+      this._refFull.innerHTML = this.state.outputFull;
+    }
+    if (this._refShort) {
+      this._refShort.innerHTML = this.state.outputShort;
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._listener, false);
+    delete this._listener;
   }
 
   onRefFull(ref) {
@@ -173,7 +197,7 @@ export default class Highlight extends React.Component {
     const newlines = !this.state.newlines;
 
     localStorage.setItem('st2Highlight', JSON.stringify({ wrap, newlines }));
-    this.setState({ wrap, newlines }, () => this._update());
+    this.setState({ wrap, newlines });
   }
 
   render() {
@@ -187,29 +211,29 @@ export default class Highlight extends React.Component {
     const whiteSpace = this.state.wrap ? 'pre-wrap' : 'auto';
 
     return (
-      <div {...props} className={cx('st2-highlight', well && 'st2-highlight--well', className)}>
-        <div className="st2-highlight__well">
+      <div {...props} className={cx(style.component, well && style.welled, className)}>
+        <div className={style.well}>
           <pre>
             <code ref={(ref) => this.onRefShort(ref)} />
-            <div className="st2-highlight__more" onClick={() => this.setState({ expanded: true })}>
+            <div className={style.more} onClick={() => this.setState({ expanded: true })}>
               { this.state.more > 0 ? `+ ${this.state.more} more lines` : 'expand' }
             </div>
           </pre>
         </div>
 
         { this.state.expanded ? (
-          <div className="st2-highlight__fullscreen" onClick={() => this.setState({ expanded: false })}>
-            <div className="st2-highlight__well" onClick={(e) => e.stopPropagation()}>
-              <div className="st2-highlight__buttons">
+          <div className={style.fullscreen} onClick={() => this.setState({ expanded: false })}>
+            <div className={style.well} onClick={(e) => e.stopPropagation()}>
+              <div className={style.buttons}>
                 <input
                   type="button"
-                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.wrap })}
+                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.wrap && style.inputActive)}
                   onClick={() => this.toggleWrap()}
                   value="WRAP LINES"
                 />
                 <input
                   type="button"
-                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', { 'input--active' : this.state.newlines })}
+                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.newlines && style.inputActive)}
                   onClick={() => this.toggleNewlines()}
                   value="SHOW NEWLINES"
                 />

@@ -4,6 +4,8 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
+import get from 'lodash/fp/get';
+
 import cx from 'classnames';
 import qs from 'querystring';
 import api from '@stackstorm/module-api';
@@ -84,7 +86,6 @@ export default class HistoryPanel extends React.Component {
 
   state = {
     maxPages: 0,
-    id: undefined,
     displayUTC: false,
     advanced: false,
   }
@@ -125,15 +126,6 @@ export default class HistoryPanel extends React.Component {
       this._source.addEventListener('st2.execution__delete', this._executionDeleteListener);
     });
 
-    let { ref: id } = this.props.match.params;
-    if (!id) {
-      const { groups } = this.props;
-      id = groups && groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
-    }
-    if (id !== this.state.id) {
-      this.setState({ id });
-    }
-
     const { page, activeFilters } = this.urlParams;
     this.fetchGroups({ page, activeFilters });
 
@@ -147,23 +139,14 @@ export default class HistoryPanel extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { page, activeFilters } = parseSearch(nextProps.location.search);
-    const { filter } = nextProps;
-    const current = parseSearch(this.props.location.search);
+  componentDidUpdate(prevState, prevProps) {
+    const { filter } = this.props;
+    const { page, activeFilters } = parseSearch(get('location.search', this.props));
+    const prev = parseSearch(get('location.search', prevProps));
 
-    let { ref: id } = nextProps.match.params;
-    if (!id) {
-      const { groups } = nextProps;
-      id = groups && groups.length > 0 && groups[0].executions.length > 0 ? groups[0].executions[0].id : undefined;
-    }
-    if (id !== this.state.id) {
-      this.setState({ id });
-    }
-
-    if (page === current.page && 
-      _.isEqual(activeFilters, current.activeFilters) &&
-      filter === this.props.filter
+    if (page === prev.page && 
+      _.isEqual(activeFilters, prev.activeFilters) &&
+      filter === prevProps.filter
     ) {
       return;
     }
@@ -197,7 +180,7 @@ export default class HistoryPanel extends React.Component {
       promise: api.request({
         path: '/executions',
         query: {
-          ...activeFilters,
+          ..._.mapValues(activeFilters, f => f[0]),
           parent: 'null',
           limit: PER_PAGE,
           page,
@@ -233,13 +216,18 @@ export default class HistoryPanel extends React.Component {
   }
 
   get urlParams() {
-    const { id } = this.state;
-    const { section } = this.props.match.params;
-    const { page, activeFilters } = parseSearch(this.props.location.search);
+    const {
+      ref = get('groups[0].executions[0].id', this.props),
+      section = 'general',
+    } = this.props.match.params;
+    const {
+      page,
+      activeFilters,
+    } = parseSearch(get('location.search', this.props));
 
     return {
-      id,
-      section: section || 'general',
+      id: ref,
+      section,
       page,
       activeFilters,
     };
@@ -420,7 +408,7 @@ export default class HistoryPanel extends React.Component {
           <Toolbar title="History">
             <ToolbarSearch
               title="Filter"
-              value={filter}
+              value={filter || ''}
               hidden={!advanced}
               onChange={({ target: { value }}) => this.handleFilterStringChange(value)}
               onToggle={() => this.setState({ advanced: !advanced })}
@@ -530,7 +518,7 @@ export default class HistoryPanel extends React.Component {
   }
 }
 
-function parseSearch(search) {
+function parseSearch(search='') {
   const { page, ...activeFilters } = qs.parse(search.slice(1));
 
   for (const key in activeFilters) {

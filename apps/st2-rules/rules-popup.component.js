@@ -22,6 +22,8 @@ import {
 
 import Popup from '@stackstorm/module-popup';
 
+const emptySpec = { enum: [] };
+
 @connect(
   ({
     triggerSpec, criteriaSpecs, actionSpec, packSpec,
@@ -50,7 +52,7 @@ import Popup from '@stackstorm/module-popup';
           throw err;
         }),
     }),
-    onCancel: () => props.navigate({ id: false }),
+    onCancel: () => props.onNavigate({ id: false }),
   })
 )
 export default class RulesPopup extends React.Component {
@@ -163,7 +165,7 @@ export default class RulesPopup extends React.Component {
 
                 <AutoFormCombobox
                   name="pack"
-                  spec={packSpec}
+                  spec={packSpec || emptySpec}
                   data={payload.pack}
                   onChange={(pack) => this.handleChange('pack', pack)}
                 />
@@ -185,7 +187,7 @@ export default class RulesPopup extends React.Component {
               <DetailsPanelBody>
                 <RemoteForm
                   name="trigger"
-                  spec={triggerSpec}
+                  spec={triggerSpec || emptySpec}
                   data={payload.trigger}
                   onChange={(trigger) => this.handleChange('trigger', trigger)}
                   data-test="rule_create_trigger_form"
@@ -196,7 +198,7 @@ export default class RulesPopup extends React.Component {
             <DetailsPanel title="Criteria">
               <DetailsPanelBody>
                 <Criteria
-                  spec={criteriaSpecs[payload.trigger.type]}
+                  spec={criteriaSpecs && criteriaSpecs[payload.trigger.type] || emptySpec}
                   data={payload.criteria}
                   onChange={(criteria) => this.handleChange('criteria', criteria)}
                 />
@@ -207,7 +209,7 @@ export default class RulesPopup extends React.Component {
               <DetailsPanelBody>
                 <RemoteForm
                   name="action"
-                  spec={actionSpec}
+                  spec={actionSpec || emptySpec}
                   data={payload.action}
                   onChange={(action) => this.handleChange('action', action)}
                   data-test="rule_create_action_form"

@@ -58,20 +58,12 @@ export default class HistoryDetails extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { id } = nextProps;
+  componentDidUpdate(prevProps) {
+    const { id } = this.props;
 
-    if (id && id !== this.props.id) {
+    if (id && id !== prevProps.id) {
       this.fetchExecution(id);
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.id !== this.props.id) {
-      return false;
-    }
-
-    return true;
   }
 
   fetchExecution(id) {
@@ -124,55 +116,53 @@ export default class HistoryDetails extends React.Component {
           { section === 'general' ? (
             <div>
               <DetailsPanel>
-                <div className="st2-action-reporter__header">
-                  <DetailsPanelBody>
-                    <DetailsPanelBodyLine label="Status">
-                      <Label status={execution.status} data-test="status" />
-                    </DetailsPanelBodyLine>
-                    <DetailsPanelBodyLine label="Execution ID">
-                      <div className="st2-action-reporter__uuid" ref={selectOnClick} data-test="execution_id">
-                        { execution.id }
+                <DetailsPanelBody>
+                  <DetailsPanelBodyLine label="Status">
+                    <Label status={execution.status} data-test="status" />
+                  </DetailsPanelBodyLine>
+                  <DetailsPanelBodyLine label="Execution ID">
+                    <div className="st2-history__uuid" ref={selectOnClick} data-test="execution_id">
+                      { execution.id }
+                    </div>
+                  </DetailsPanelBodyLine>
+                  { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ? (
+                    <DetailsPanelBodyLine label="Trace Tag">
+                      <div className="st2-history__uuid" ref={selectOnClick}>
+                        { execution.context.trace_context.trace_tag }
                       </div>
                     </DetailsPanelBodyLine>
-                    { execution.context && execution.context.trace_context && execution.context.trace_context.trace_tag ? (
-                      <DetailsPanelBodyLine label="Trace Tag">
-                        <div className="st2-action-reporter__uuid" ref={selectOnClick}>
-                          { execution.context.trace_context.trace_tag }
-                        </div>
-                      </DetailsPanelBodyLine>
-                    ) : null
-                    }
-                    { execution.start_timestamp ? (
-                      <DetailsPanelBodyLine label="Started">
-                        <Time
-                          timestamp={execution.start_timestamp}
-                          format="ddd, DD MMM YYYY HH:mm:ss"
-                          utc={displayUTC}
-                          onClick={handleToggleUTC}
-                          data-test="start_timestamp"
-                        />
-                      </DetailsPanelBodyLine>
-                    ) : null }
-                    { execution.end_timestamp ? (
-                      <DetailsPanelBodyLine label="Finished">
-                        <Time
-                          timestamp={execution.end_timestamp}
-                          format="ddd, DD MMM YYYY HH:mm:ss"
-                          utc={displayUTC}
-                          onClick={handleToggleUTC}
-                          data-test="end_timestamp"
-                        />
-                      </DetailsPanelBodyLine>
-                    ) : null }
-                    { execution.end_timestamp ? (
-                      <DetailsPanelBodyLine label="Execution Time">
-                        <span data-test="execution_time">
-                          {getExecutionTime(execution)}s
-                        </span>
-                      </DetailsPanelBodyLine>
-                    ) : null }
-                  </DetailsPanelBody>
-                </div>
+                  ) : null
+                  }
+                  { execution.start_timestamp ? (
+                    <DetailsPanelBodyLine label="Started">
+                      <Time
+                        timestamp={execution.start_timestamp}
+                        format="ddd, DD MMM YYYY HH:mm:ss"
+                        utc={displayUTC}
+                        onClick={handleToggleUTC}
+                        data-test="start_timestamp"
+                      />
+                    </DetailsPanelBodyLine>
+                  ) : null }
+                  { execution.end_timestamp ? (
+                    <DetailsPanelBodyLine label="Finished">
+                      <Time
+                        timestamp={execution.end_timestamp}
+                        format="ddd, DD MMM YYYY HH:mm:ss"
+                        utc={displayUTC}
+                        onClick={handleToggleUTC}
+                        data-test="end_timestamp"
+                      />
+                    </DetailsPanelBodyLine>
+                  ) : null }
+                  { execution.end_timestamp ? (
+                    <DetailsPanelBodyLine label="Execution Time">
+                      <span data-test="execution_time">
+                        {getExecutionTime(execution)}s
+                      </span>
+                    </DetailsPanelBodyLine>
+                  ) : null }
+                </DetailsPanelBody>
                 <DetailsPanelHeading title="Action Output" />
                 <DetailsPanelBody data-test="action_output">
                   <ActionReporter runner={execution.runner.name} execution={execution} />

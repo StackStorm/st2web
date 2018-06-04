@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import './style.less';
+import style from './style.less';
 
 export class PopupTitle extends React.Component {
   static propTypes = {
@@ -14,7 +14,7 @@ export class PopupTitle extends React.Component {
     const { className, children, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-popup__title', className)}>
+      <div {...props} className={cx(style.title, className)}>
         { children }
       </div>
     );
@@ -29,7 +29,7 @@ export class Popup extends React.Component {
     children: PropTypes.node,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this._listener = (event) => {
       if (event.key === 'Escape') {
         this.props.onCancel();
@@ -48,8 +48,8 @@ export class Popup extends React.Component {
     const { className, title, onCancel, children, ...props } = this.props;
 
     return (
-      <div {...props} className={cx('st2-popup', className)} onClick={onCancel}>
-        <div className="st2-details st2-panel__details st2-popup__details" onClick={(e) => e.stopPropagation()}>
+      <div {...props} className={cx(style.component, className)} onClick={onCancel}>
+        <div className={cx('st2-details', 'st2-panel__details', style.details)} onClick={(e) => e.stopPropagation()}>
           <div className="st2-panel__scroller">
             { title ? (
               <PopupTitle>{title}</PopupTitle>

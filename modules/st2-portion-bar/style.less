@@ -1,67 +1,68 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-portion-bar {
+.component {
   width: 100%;
+}
 
-  &__bar {
-    display: table;
+.bar {
+  display: table;
 
-    width: 100%;
-    margin: 0;
-    padding: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 
-    list-style: none;
+  list-style: none;
 
-    &-value {
-      display: table-cell;
+  &-value {
+    display: table-cell;
 
-      height: 10px;
+    height: 10px;
 
-      &--actions {
-        background-color: #428bca;
-      }
-
-      &--aliases {
-        background-color: @green-base;
-      }
-
-      &--rules {
-        background-color: #5bc0de;
-      }
-
-      &--sensors {
-        background-color: @yellow-base;
-      }
-
-      &--tests {
-        background-color: @red-base;
-      }
-
-      &--triggers {
-        background-color: #ffa500;
-      }
+    &_actions {
+      background-color: #428bca;
     }
-  }
 
-  &__info {
-    font-size: 12px;
+    &_aliases {
+      background-color: @green-base;
+    }
 
-    display: flex;
+    &_rules {
+      background-color: #5bc0de;
+    }
 
-    margin: 0;
-    padding: 0;
+    &_sensors {
+      background-color: @yellow-base;
+    }
 
-    list-style: none;
+    &_tests {
+      background-color: @red-base;
+    }
 
-    background-color: #ddddde;
-
-    &-value {
-      flex: 1;
-
-      padding: 5px;
-
-      text-align: center;
-      white-space: nowrap;
+    &_triggers {
+      background-color: #ffa500;
     }
   }
 }
+
+.info {
+  font-size: 12px;
+
+  display: flex;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
+  background-color: #ddddde;
+
+  &-value {
+    flex: 1;
+
+    padding: 5px;
+
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+

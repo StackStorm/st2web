@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import reporters from './reporters';
 
-import './style.less';
+import style from './style.less';
 
 export default class ActionReporter extends React.Component {
   static propTypes = {
@@ -22,7 +22,7 @@ export default class ActionReporter extends React.Component {
     }
 
     return (
-      <div {...props} className={cx('st2-action-reporter', className)}>
+      <div {...props} className={cx(style.component, className)}>
         { reporter(execution) }
       </div>
     );

@@ -33,7 +33,7 @@ export default class RulesFlexCard extends React.Component {
       >
         <div className="st2-flex-card__header">
           <div className="st2-flex-card__header-status st2-flex-card__column">
-            <Label status={rule.enabled ? 'enabled' : 'disabled'} />
+            <Label status={rule.enabled ? 'enabled' : 'disabled'} short />
           </div>
           <div className="st2-flex-card__column">
             <div className="st2-flex-card__header-primary" title={rule.ref}>

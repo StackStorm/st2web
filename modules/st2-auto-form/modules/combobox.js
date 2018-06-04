@@ -25,7 +25,7 @@ export default class ComboboxModule extends React.Component {
     selected: null,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this._listener = (event) => {
       const { spec } = this.props;
       const { value } = this.state;

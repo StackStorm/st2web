@@ -207,6 +207,7 @@
   & > * {
     grid-column-start: 1;
     grid-column-end: -1;
+    overflow: hidden;
   }
 
   &__column {
@@ -256,19 +257,6 @@
     color: #929196;
 
     padding-right: 0;
-
-    .st2-label__label {
-      overflow: hidden;
-
-      width: 16px;
-      height: 16px;
-      margin-left: 5px;
-      padding: 0;
-
-      text-indent: -100000px;
-
-      border-radius: 50%;
-    }
   }
 
   &__header {
@@ -303,19 +291,6 @@
 
       order: 99;
       align-items: center;
-
-      .st2-label__label {
-        overflow: hidden;
-
-        width: 16px;
-        height: 16px;
-        margin-left: 5px;
-        padding: 0;
-
-        text-indent: -100000px;
-
-        border-radius: 50%;
-      }
     }
 
     & &-type {

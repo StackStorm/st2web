@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import './style.less';
+import style from './style.less';
 
 export default class Filter extends React.Component {
   static propTypes = {
@@ -66,24 +66,24 @@ export default class Filter extends React.Component {
     onChange;
 
     return (
-      <div {...props} className={cx('st2-filter', className, { 'st2-filter--active': this.state.visible })}>
+      <div {...props} className={cx(style.component, className, this.state.visible && style.active)}>
         <div
-          className={cx('st2-filter__label', { 'st2-filter__label--active' : activeItems.length > 0 })}
+          className={cx(style.label, activeItems.length > 0 && style.active)}
           onClick={() => this.toggleVisible()}
         >
           { label }
           { activeItems.length > 0 ? (
-            <span className="st2-filter__label-active-items">
+            <span className={style.labelActiveItems}>
             : { activeItems.join(', ') }
             </span>
           ) : null }
         </div>
-        <div className="st2-filter__variants">
+        <div className={style.variants}>
           { items.length > 4 ? (
-            <div className="st2-filter__search">
+            <div className={style.search}>
               <input
                 type="text"
-                className="st2-filter__search-bar"
+                className={style.searchBar}
                 placeholder="Find"
                 value={this.state.search}
                 onChange={({ target: { value: search } }) => this.setState({ search })}
@@ -92,14 +92,14 @@ export default class Filter extends React.Component {
           ) : null }
 
           { multiple && activeItems.length > 0 ? (
-            <button className="st2-filter__clear" onClick={() => this.handleToggleItem(null)}>Clear selected</button>
+            <button className={style.clear} onClick={() => this.handleToggleItem(null)}>Clear selected</button>
           ) : null }
 
-          <div className="st2-filter__list">
+          <div className={style.list}>
             { this.visibleItems.map((item) => (
               <div
                 key={item}
-                className={cx('st2-filter__item', { 'st2-filter__item--active' : activeItems.includes(item) })}
+                className={cx(style.item, activeItems.includes(item) && style.active)}
                 onClick={() => this.handleToggleItem(item)}
               >
                 { item }

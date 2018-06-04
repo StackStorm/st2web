@@ -1,6 +1,6 @@
 @import 'node_modules/@stackstorm/st2-style/colors.less';
 
-.st2-filter {
+.component {
   font-size: 14px;
   font-weight: normal;
   line-height: 35px;
@@ -13,199 +13,199 @@
 
   user-select: none;
 
-  &--active &__label:before {
+  &.active .label:before {
     position: fixed;
     z-index: 3;
     top: 0;
     left: 0;
-
+  
     width: 100%;
     height: 100%;
-
+  
     content: '';
   }
 
-  &:last-of-type&--active &__variants {
+  &.active .variants {
+    display: block;
+  }
+
+  &:last-of-type.active .variants {
     right: 0;
   }
+}
 
-  &__label {
-    position: relative;
+.label {
+  position: relative;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    max-width: 170px;
-    padding: 0 10px;
+  max-width: 170px;
+  padding: 0 10px;
 
-    cursor: pointer;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-    @media (max-width: 1279px) {
-      &-active-items {
-        display: none;
-      }
-    }
-
-    &:after {
-      font-family: 'brocadeicons';
-      font-size: 18px;
-      font-weight: normal;
-      font-style: normal;
-
-      display: inline;
-      vertical-align: middle;
-      margin-left: 0.25em;
-
-      // may always broke if we won't pay enough attention to keeping the same codes
-      content: '\e91c';
-    }
-
-    &--active {
-      color: @aqua-lighten-2;
+  @media (max-width: 1279px) {
+    &-active-items {
+      display: none;
     }
   }
 
-  &__variants {
+  &:after {
+    font-family: 'brocadeicons';
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+
+    display: inline;
+    vertical-align: middle;
+    margin-left: 0.25em;
+
+    // may always broke if we won't pay enough attention to keeping the same codes
+    content: '\e91c';
+  }
+
+  &.active {
+    color: @aqua-lighten-2;
+  }
+}
+
+.variants {
+  position: absolute;
+  z-index: 3;
+
+  display: none;
+
+  min-width: 100%;
+
+  color: black;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, .2) 0 8px 18px 0,
+  rgba(0, 0, 0, .2) 0 8px 20px 0;
+}
+
+.search {
+  position: relative;
+
+  margin: 6px 5px 15px;
+
+  &:after {
+    font-family: 'brocadeicons';
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 30px;
+
     position: absolute;
-    z-index: 3;
+    top: 0;
+    right: 0;
 
-    display: none;
+    padding: 1px 10px;
 
-    min-width: 100%;
+    content: '\e949';
 
-    color: black;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, .2) 0 8px 18px 0,
-    rgba(0, 0, 0, .2) 0 8px 20px 0;
+    color: @grey-lighten-2;
+  }
+}
+
+.search-bar {
+  font-size: 13px;
+  line-height: 18px;
+
+  display: block;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: 6px 30px 6px 7px;
+
+  border: 0;
+  border-bottom: 1px solid @grey-lighten-2;
+  outline: none;
+  background-color: white;
+
+  &::placeholder {
+    color: @grey-lighten-3;
+  }
+}
+
+.clear {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+
+  display: block;
+
+  margin: 0 0 5px 10px;
+  padding: 0;
+
+  cursor: pointer;
+
+  color: fade(@blue-lightest, 50%);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+
+  -webkit-appearance: none;
+      -moz-appearance: none;
+
+  &:hover {
+    color: #ff8300;
   }
 
-  &--active &__variants {
-    display: block;
-  }
+  &:before {
+    font-family: 'brocadeicons';
+    font-size: 9px;
+    font-weight: normal;
+    font-style: normal;
 
-  &__search {
     position: relative;
+    top: -1px;
 
-    margin: 6px 5px 15px;
+    margin-right: 5px;
 
-    &:after {
-      font-family: 'brocadeicons';
-      font-size: 16px;
-      font-weight: normal;
-      font-style: normal;
-      line-height: 30px;
+    content: '\e940';
+  }
+}
 
-      position: absolute;
-      top: 0;
-      right: 0;
+.list {
+  overflow-x: hidden;
+  overflow-y: auto;
 
-      padding: 1px 10px;
+  max-height: 150px;
 
-      content: '\e949';
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
 
-      color: @grey-lighten-2;
-    }
+    background-color: transparent;
   }
 
-  &__search-bar {
-    font-size: 13px;
-    line-height: 18px;
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: rgba(117, 117, 117, .3); // #757575
 
-    display: block;
-
-    box-sizing: border-box;
-    width: 100%;
-    padding: 6px 30px 6px 7px;
-
-    border: 0;
-    border-bottom: 1px solid @grey-lighten-2;
-    outline: none;
-    background-color: white;
-
-    &::placeholder {
-      color: @grey-lighten-3;
+    &:hover {
+      background-color: rgba(117, 117, 117, .7); // #757575
     }
   }
+}
 
-  &__clear {
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 1;
+.item {
+  font-weight: 300;
+  line-height: 2em;
 
-    display: block;
+  padding: 0 10px;
 
-    margin: 0 0 5px 10px;
-    padding: 0;
+  white-space: nowrap;
 
+  &:hover {
     cursor: pointer;
 
-    color: fade(@blue-lightest, 50%);
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-
-    -webkit-appearance: none;
-       -moz-appearance: none;
-
-    &:hover {
-      color: #ff8300;
-    }
-
-    &:before {
-      font-family: 'brocadeicons';
-      font-size: 9px;
-      font-weight: normal;
-      font-style: normal;
-
-      position: relative;
-      top: -1px;
-
-      margin-right: 5px;
-
-      content: '\e940';
-    }
+    background-color: @yellow-lighten-5;
   }
 
-  &__list {
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    max-height: 150px;
-
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-
-      background-color: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 3px;
-      background-color: rgba(117, 117, 117, .3); // #757575
-
-      &:hover {
-        background-color: rgba(117, 117, 117, .7); // #757575
-      }
-    }
-  }
-
-  &__item {
-    font-weight: 300;
-    line-height: 2em;
-
-    padding: 0 10px;
-
-    white-space: nowrap;
-
-    &:hover {
-      cursor: pointer;
-
-      background-color: @yellow-lighten-5;
-    }
-
-    &--active {
-      color: @aqua-base;
-    }
+  &.active {
+    color: @aqua-base;
   }
 }
