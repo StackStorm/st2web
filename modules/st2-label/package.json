@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-label",
-  "version": "2.0.0-pre.0",
+  "version": "2.0.0-pre.1",
   "description": "",
   "main": "label.component.js",
   "directories": {
@@ -43,7 +43,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0-pre.0",
+    "@stackstorm/st2-style": "^2.0.0-pre.1",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
