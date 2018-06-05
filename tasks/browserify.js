@@ -8,12 +8,13 @@ const fs = require('fs');
 
 const _ = require('lodash');
 const git = require('git-rev-sync');
-const pkg = require('./package.json');
+const pkg = require(`${process.cwd()}/package.json`);
 const es = require('event-stream');
 const browserify = require('browserify');
 const watchify = require('watchify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
+const pathmodify = require('pathmodify');
 const cssExtract = require('css-extract');
 const chalk = require('chalk');
 const fancylog = require('fancy-log');
@@ -25,11 +26,44 @@ function buildHeader() {
   return `Built ${new Date().toISOString()} from ${commitURL}`;
 }
 
+function walk(dir) {
+  const pkgPath = path.join(dir, 'package.json');
+  if (fs.existsSync(pkgPath)) {
+    return require(pkgPath);
+  }
+    
+  const nextDir = path.dirname(dir);
+
+  if (nextDir === dir) {
+    return false;
+  }
+
+  return walk(nextDir);
+}
+
+function overridePackage(from, to) {
+  return (rec) => {
+    if (rec.id !== from) {
+      return {};
+    }
+
+    const pkg = walk(path.dirname(rec.opts.filename));
+    if (pkg && pkg.name === to) {
+      return {
+        id: from,
+      };
+    }
+
+    return {
+      id: to,
+    };
+  };
+}
+
 function bundle(file, name) {
   const customOpts = {
     fullPaths: true,
     entries: [ file ],
-    transform: pkg.browserify.transform,
     debug: true,
   };
   const opts = _.assign({}, watchify.args, customOpts);
@@ -46,6 +80,13 @@ function bundle(file, name) {
         }))
       ;
     });
+
+  if (pkg.override) {
+    b
+      .plugin(pathmodify, {
+        mods: _.map(pkg.override, (to, from) => overridePackage(from, to)),
+      });
+  }
 
   b
     .plugin(cssExtract, { out: path.join(settings.styles.dest, 'style.css')})
