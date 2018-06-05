@@ -36,6 +36,9 @@ export default class Menu extends React.Component {
     })).isRequired,
   }
 
+  docsLink = 'https://docs.stackstorm.com/'
+  supportLink = 'https://forum.stackstorm.com/'
+
   handleDisconnect() {
     api.disconnect();
     window.location.reload();
@@ -112,11 +115,11 @@ export default class Menu extends React.Component {
           </label>
         </div>
 
-        <a href="https://docs.stackstorm.com/" className={style.side}>
+        <a href={this.docsLink} className={style.side}>
           Docs
         </a>
 
-        <a href="https://forum.stackstorm.com/" className={style.side}>
+        <a href={this.supportLink} className={style.side}>
           Support
         </a>
       </header>
