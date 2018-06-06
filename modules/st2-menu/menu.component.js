@@ -112,11 +112,11 @@ export default class Menu extends React.Component {
           </label>
         </div>
 
-        <a href="https://docs.stackstorm.com/" className={style.side}>
+        <a target="_blank" rel="noopener noreferrer" href="https://docs.stackstorm.com/" className={style.side}>
           Docs
         </a>
 
-        <a href="https://forum.stackstorm.com/" className={style.side}>
+        <a target="_blank" rel="noopener noreferrer" href="https://forum.stackstorm.com/" className={style.side}>
           Support
         </a>
       </header>
