@@ -115,11 +115,11 @@ export default class Menu extends React.Component {
           </label>
         </div>
 
-        <a href={this.docsLink} className={style.side}>
+        <a target="_blank" rel="noopener noreferrer" href={this.docsLink} className={style.side}>
           Docs
         </a>
 
-        <a href={this.supportLink} className={style.side}>
+        <a target="_blank" rel="noopener noreferrer" href={this.supportLink} className={style.side}>
           Support
         </a>
       </header>
