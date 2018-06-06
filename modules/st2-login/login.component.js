@@ -203,10 +203,10 @@ export default class Login extends React.Component {
           </LoginRow>
 
           <LoginBottomRow>
-            <a target="_blank" rel="noopener noreferrer" href="http://docs.stackstorm.com">
+            <a target="_blank" rel="noopener noreferrer" href="https://docs.stackstorm.com">
               Documentation
             </a>
-            <a href="https://forum.stackstorm.com/">
+            <a target="_blank" rel="noopener noreferrer" href="https://forum.stackstorm.com/">
               Support
             </a>
           </LoginBottomRow>
