@@ -97,7 +97,7 @@ export default class InstancePanel extends DetailsPanel {
                           </DetailsPanelBodyLine>
                         </DetailsPanelBody>
                       ) : (
-                        <DetailsPanelEmpty>Instance have never been enforced</DetailsPanelEmpty>
+                        <DetailsPanelEmpty>Instance has never been enforced</DetailsPanelEmpty>
                       )
                     }
                   </FlexTableInsertColumn>
