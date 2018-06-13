@@ -6,16 +6,23 @@ import api from '@stackstorm/module-api';
 
 import { Link } from 'react-router-dom';
 
-import style from './style.less';
+import componentStyle from './style.less';
 
 class Icon extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   render() {
+    const { style, name } = this.props;
+
     return (
-      <i className={cx(style.icon, this.props.name)} />
+      <i className={cx(style.icon, name)} />
     );
   }
 }
@@ -34,6 +41,11 @@ export default class Menu extends React.Component {
       icon: PropTypes.string,
       position: PropTypes.number,
     })).isRequired,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   docsLink = 'https://docs.stackstorm.com/'
@@ -45,7 +57,7 @@ export default class Menu extends React.Component {
   }
 
   render() {
-    const { className, location, routes: allRoutes, ...props } = this.props;
+    const { className, location, routes: allRoutes, style, ...props } = this.props;
 
     const routes = _(allRoutes)
       .filter((e) => !!e.icon)
@@ -72,7 +84,7 @@ export default class Menu extends React.Component {
                   href={href}
                   target={target}
                 >
-                  <Icon name={icon} />
+                  <Icon name={icon} style={style} />
                   { title }
                 </a>
               );
@@ -86,7 +98,7 @@ export default class Menu extends React.Component {
                   to={url}
                   target={target}
                 >
-                  <Icon name={icon} />
+                  <Icon name={icon} style={style} />
                   { title }
                 </Link>
               );
