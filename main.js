@@ -9,6 +9,8 @@ import {
 } from 'react-router-dom';
 import createHashHistory from 'history/createHashHistory';
 
+import './style.less';
+
 import api from '@stackstorm/module-api';
 import Login from '@stackstorm/module-login';
 
@@ -17,8 +19,6 @@ import Triggers from '@stackstorm/app-triggers';
 import History from '@stackstorm/app-history';
 import Packs from '@stackstorm/app-packs';
 import Rules from '@stackstorm/app-rules';
-
-import './style.less';
 
 const history = window.routerHistory = createHashHistory({});
 
