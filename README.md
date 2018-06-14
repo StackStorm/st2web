@@ -11,32 +11,47 @@ Quick start
 
 First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v8.x.x to be our stable.
 
-    $ n 8
+```shell
+$ n 8
 
-    install : node-v8.4.0
-      mkdir : /usr/local/n/versions/node/8.4.0
-      fetch : https://nodejs.org/dist/v8.4.0/node-v8.4.0-darwin-x64.tar.gz
-    ######################################################################## 100.0%
-    installed : v8.4.0
+install : node-v8.4.0
+ mkdir : /usr/local/n/versions/node/8.4.0
+ fetch : https://nodejs.org/dist/v8.4.0/node-v8.4.0-darwin-x64.tar.gz
+######################################################################## 100.0%
+installed : v8.4.0
 
-    $ node -v
-    v8.4.0
+$ node -v
+v8.4.0
 
-    $ npm -v
-    5.3.0
+$ npm -v
+5.3.0
+```
 
-then you need to globally install `gulp`, `lerna`
+then you need to globally install `gulp`, `gulp-cli`, `lerna`
 
-    $ npm install -g gulp
-    $ npm install -g lerna
+```shell
+$ sudo npm install -g gulp
+$ sudo npm install -g gulp-cli
+$ sudo npm install -g lerna
+```
+
+You will need to install [yarn](https://yarnpkg.com/en/). On macOS, you can do this with:
+
+```shell
+$ brew install yarn
+```
 
 then you need to install the requirements
 
-    $ lerna bootstrap
+```shell
+$ lerna bootstrap
+```
 
 and finally run build system to fetch the font, compile css and so on
 
-    $ gulp
+```shell
+$ gulp
+```
 
 At that point you should be able to point your browser to http://localhost:3000/ and see the the page.
 
@@ -101,7 +116,7 @@ To let test runner know the details of your st2 installation, you need to set ST
 Copyright, License, and Contributors Agreement
 ----------------------------------------------
 
-Copyright 2015 StackStorm, Inc.
+Copyright 2015-2018 StackStorm, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
 
