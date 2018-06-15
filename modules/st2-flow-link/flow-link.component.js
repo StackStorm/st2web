@@ -33,7 +33,7 @@ export default class FlowLink extends React.Component {
       <div {...props} className={cx(style.component, className)}>
         { action ? (
           <a
-            className="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
+            className="st2-forms__button st2-details__toolbar-button"
             {...this.getUrlProps(action)}
           >
             Edit
