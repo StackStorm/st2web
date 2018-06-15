@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import style from './style.less';
+import style from './style.css';
 
 export default class FlowLink extends React.Component {
   static propTypes = {

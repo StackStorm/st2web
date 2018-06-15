@@ -26,7 +26,7 @@ import {
 import TriggersFlexCard from './triggers-flex-card.component';
 import TriggersDetails from './triggers-details.component';
 
-import './style.less';
+import './style.css';
 
 @connect((state, props) => {
   const { uid } = props;

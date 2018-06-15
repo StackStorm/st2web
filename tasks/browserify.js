@@ -91,12 +91,12 @@ function bundle(file, name) {
       });
   }
 
+  fs.mkdir(settings.styles.dest, () => { /* noop */ });
+
   b
     .plugin(cssExtract, { out: path.join(settings.styles.dest, 'style.css')})
     .on('log', fancylog)
   ;
-
-  fs.mkdir(settings.styles.dest, () => { /* noop */ });
 
   return b.bundle()
     .on('error', function (error) {

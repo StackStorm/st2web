@@ -6,7 +6,7 @@ import AutoForm from '@stackstorm/module-auto-form';
 import AutoFormLink from '@stackstorm/module-auto-form/modules/link';
 import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 
-import './style.less';
+import './style.css';
 
 export default class RemoteForm extends React.Component {
   static propTypes = {

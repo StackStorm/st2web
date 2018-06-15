@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .component {
   font-size: 14px;
@@ -22,7 +22,7 @@
     width: 100%;
     height: 100%;
   
-    content: '';
+    content: "";
   }
 
   &.active .variants {
@@ -53,7 +53,7 @@
   }
 
   &:after {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -62,12 +62,12 @@
     vertical-align: middle;
     margin-left: 0.25em;
 
-    // may always broke if we won't pay enough attention to keeping the same codes
-    content: '\e91c';
+    /* may always broke if we won't pay enough attention to keeping the same codes */
+    content: "\e91c";
   }
 
   &.active {
-    color: @aqua-lighten-2;
+    color: var(--aqua-lighten-2);
   }
 }
 
@@ -91,7 +91,7 @@
   margin: 6px 5px 15px;
 
   &:after {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -103,9 +103,9 @@
 
     padding: 1px 10px;
 
-    content: '\e949';
+    content: "\e949";
 
-    color: @grey-lighten-2;
+    color: var(--grey-lighten-2);
   }
 }
 
@@ -120,12 +120,12 @@
   padding: 6px 30px 6px 7px;
 
   border: 0;
-  border-bottom: 1px solid @grey-lighten-2;
+  border-bottom: 1px solid var(--grey-lighten-2);
   outline: none;
   background-color: white;
 
   &::placeholder {
-    color: @grey-lighten-3;
+    color: var(--grey-lighten-3);
   }
 }
 
@@ -141,7 +141,7 @@
 
   cursor: pointer;
 
-  color: fade(@blue-lightest, 50%);
+  color: color-mod(var(--blue-lightest) alpha(50%));
   border: 0;
   background: transparent;
   box-shadow: none;
@@ -154,7 +154,7 @@
   }
 
   &:before {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 9px;
     font-weight: normal;
     font-style: normal;
@@ -164,7 +164,7 @@
 
     margin-right: 5px;
 
-    content: '\e940';
+    content: "\e940";
   }
 }
 
@@ -183,10 +183,10 @@
 
   &::-webkit-scrollbar-thumb {
     border-radius: 3px;
-    background-color: rgba(117, 117, 117, .3); // #757575
+    background-color: rgba(117, 117, 117, .3); /* #757575 */
 
     &:hover {
-      background-color: rgba(117, 117, 117, .7); // #757575
+      background-color: rgba(117, 117, 117, .7); /* #757575 */
     }
   }
 }
@@ -202,10 +202,10 @@
   &:hover {
     cursor: pointer;
 
-    background-color: @yellow-lighten-5;
+    background-color: var(--yellow-lighten-5);
   }
 
   &.active {
-    color: @aqua-base;
+    color: var(--aqua-base);
   }
 }

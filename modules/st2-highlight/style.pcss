@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .component {
   .st2-panel__scroller {
@@ -13,10 +13,10 @@
 
   color: black;
   border-radius: 4px;
-  background-color: @grey-lighten-4;
+  background-color: var(--grey-lighten-4);
 
   pre {
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: "Droid Sans Mono", monospace;
     font-size: 12px;
 
     display: block;
@@ -66,7 +66,7 @@
   background-color: rgba(0,0,0,.8);
 
   &:after {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -79,7 +79,7 @@
 
     padding: 5px;
 
-    content: '\e940';
+    content: "\e940";
 
     color: black;
     border-radius: 50%;

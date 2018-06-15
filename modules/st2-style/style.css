@@ -1,8 +1,8 @@
-@import (less) 'node_modules/normalize.css/normalize.css';
+@import "normalize.css/normalize.css";
 
-@import 'branding';
-@import 'fonts';
-@import 'colors';
+@import "./branding.css";
+@import "./fonts.css";
+@import "./colors.css";
 
 html,
 body,
@@ -15,7 +15,7 @@ body,
 
   height: 100%;
 
-  background-color: @body-bg-color;
+  background-color: var(--body-bg-color);
 }
 
 main {
@@ -24,15 +24,17 @@ main {
   display: flex;
   flex: 1;
 
-  #st2-fonts > #body;
+  font-family: Roboto, sans-serif;
+  
+  color: var(--text);
 }
 
 .hljs {
   background-color: transparent;
 }
 
-[class^='st2-icon__']:before,
-[class*=' st2-icon__']:before {
+[class^="st2-icon__"]:before,
+[class*=" st2-icon__"]:before {
   font-size: 120%;
 
   margin: 0;

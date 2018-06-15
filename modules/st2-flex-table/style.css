@@ -35,11 +35,11 @@
     }
 
     & {
-      // we're now assuming that every flextable caption is clickable
+      /* we're now assuming that every flextable caption is clickable */
       cursor: pointer;
 
       &:after {
-        font-family: 'brocadeicons';
+        font-family: "brocadeicons";
         font-size: 10px;
         font-weight: normal;
         font-style: normal;
@@ -49,7 +49,7 @@
 
         padding: 0 5px;
 
-        content: '\e95f';
+        content: "\e95f";
 
         color: rgba(0, 0, 0, .6);
 
@@ -58,8 +58,8 @@
     }
 
     &:before {
-      // Calendar icon is missing in brocade pack
-      font-family: 'brocadeicons';
+      /* Calendar icon is missing in brocade pack */
+      font-family: "brocadeicons";
       font-size: 20px;
       font-weight: normal;
       font-style: normal;
@@ -91,8 +91,8 @@
     }
 
     &--pack img:before {
-      // Calendar icon is missing in brocade pack
-      font-family: 'brocadeicons';
+      /* Calendar icon is missing in brocade pack */
+      font-family: "brocadeicons";
       font-size: 20px;
       font-weight: normal;
       font-style: normal;
@@ -108,7 +108,7 @@
       height: 16px;
       margin-right: 5px;
 
-      content: '\e94d';
+      content: "\e94d";
       text-align: center;
 
       color: black;
@@ -117,12 +117,12 @@
     }
 
     &--date:before {
-      content: '\e978';
+      content: "\e978";
     }
   }
 
   &--collapsed &__caption:after {
-    content: '\e972';
+    content: "\e972";
   }
 
   &--collapsed .st2-flex-card,
@@ -179,7 +179,7 @@
   }
 
   &__row:hover {
-    // Specificity of 0020
+    /* Specificity of 0020 */
     cursor: pointer;
   }
 
@@ -280,7 +280,7 @@
       text-overflow: ellipsis;
     }
 
-    // increasing specificity for flex to propagate
+    /* increasing specificity for flex to propagate */
     & &-status {
       font-size: 21px;
 
@@ -365,13 +365,13 @@
   }
 
   &--active &__header-type,
-  &--active &__header-status, {
+  &--active &__header-status {
     color: white;
   }
 
   &--active &__header-expand,
   &--active &__expand {
-    // padding-left: 25px;
+    /* padding-left: 25px; */
   }
 
   &--expanded &__row {

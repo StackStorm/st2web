@@ -1,7 +1,7 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .st2-triggers {
-  // Table columns
+  /* Table columns */
 
   .st2-flex-table {
     &__column {
@@ -70,7 +70,7 @@
 
     text-overflow: ellipsis;
 
-    color: @aqua-base;
+    color: var(--aqua-base);
   }
   &__description {
     position: relative;
@@ -104,7 +104,7 @@
       max-width: 100%;
       max-height: 52px;
   
-      border-bottom: 1px solid @grey-lighten-3;
+      border-bottom: 1px solid var(--grey-lighten-3);
 
       position: relative;
 
@@ -133,7 +133,7 @@
         width: 0;
         height: 0;
   
-        content: '';
+        content: "";
   
         border-width: 26px 11px 26px 11px;
         border-style: solid;
@@ -153,7 +153,7 @@
       max-width: 100%;
       max-height: 52px;
   
-      border-bottom: 1px solid @grey-lighten-3;
+      border-bottom: 1px solid var(--grey-lighten-3);
 
       position: relative;
 

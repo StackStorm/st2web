@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .component {
 }
@@ -24,7 +24,7 @@
   box-sizing: border-box;
 
   &:before {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 9px;
     font-weight: normal;
     font-style: normal;
@@ -63,7 +63,7 @@
   &:before {
     display: none;
 
-    content: '\e940';
+    content: "\e940";
   }
 }
 
@@ -73,13 +73,13 @@
   &:before {
     display: none;
 
-    content: '\e968';
+    content: "\e968";
   }
 }
 
 .progress {
   &:before {
-    content: '\e94b';
+    content: "\e94b";
     animation: spin 2s infinite linear;
   }
 }
@@ -106,9 +106,9 @@
 
 @keyframes breathe {
   0% {
-    background-color: @grey-lighten-1;
+    background-color: var(--grey-lighten-1);
   }
   100% {
-    background-color: @grey-lighten-3;
+    background-color: var(--grey-lighten-3);
   }
 }

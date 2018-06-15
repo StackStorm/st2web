@@ -35,7 +35,7 @@ import View from '@stackstorm/module-view';
 import HistoryDetails from './history-details.component';
 import HistoryFlexCard from './history-flex-card.component';
 
-import './style.less';
+import './style.css';
 
 const PER_PAGE = 50;
 

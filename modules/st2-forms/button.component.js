@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import './style.less';
+import './style.css';
 
 export class Toggle extends React.Component {
   static propTypes = {

@@ -2,13 +2,6 @@
   "port": 3000,
   "dev": ".",
   "styles": {
-    "src": [
-      "./less/style.less",
-      "./apps/**/*.less",
-      "./modules/**/*.less",
-      "!**/node_modules/**"
-    ],
-    "includes": "less/",
     "dest": "css"
   },
   "modules": {

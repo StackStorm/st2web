@@ -12,7 +12,7 @@ import ObjectField from './fields/object';
 import PasswordField from './fields/password';
 import EnumField from './fields/enum';
 
-import './style.less';
+import './style.css';
 
 export default class AutoForm extends React.Component {
   static propTypes = {

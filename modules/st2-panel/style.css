@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .st2-panel {
   display: flex;
@@ -9,7 +9,7 @@
   background-color: white;
 
   &__view {
-    // for .st2-panel__back-button to fill the right block
+    /* for .st2-panel__back-button to fill the right block */
     position: relative;
     z-index: 1;
 
@@ -49,8 +49,8 @@
   }
 
   &__scroller {
-    // Since you have already gone that far, why don't you eliminate the jump that happens when
-    // scroll appears
+    /* Since you have already gone that far, why don't you eliminate the jump that happens when
+       scroll appears */
     position: absolute;
     top: 0;
     right: 0;
@@ -68,10 +68,10 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: @grey-lighten-4;
+      background-color: var(--grey-lighten-4);
 
       &:hover {
-        background-color: @grey-lighten-3;
+        background-color: var(--grey-lighten-3);
       }
     }
   }
@@ -86,7 +86,7 @@
     padding: 10px;
 
     color: white;
-    background-color: @grey-darken-1;
+    background-color: var(--grey-darken-1);
 
     justify-content: space-between;
     flex-flow: row-reverse nowrap;
@@ -192,23 +192,23 @@
       order: 0;
 
       &:after {
-        font-family: 'brocadeicons';
+        font-family: "brocadeicons";
         font-weight: normal;
         font-style: normal;
 
         width: 100%;
 
-        content: '\e95f';
+        content: "\e95f";
       }
 
       &--collapsed:after {
-        content: '\e972';
+        content: "\e972";
       }
     }
   }
 
   &__search-bar {
-    &[type='search'] {
+    &[type="search"] {
       font-size: 13px;
       line-height: 20px;
   
@@ -218,13 +218,13 @@
   
       color: white;
       border: 0;
-      border-bottom: 1px solid @grey-lighten-2;
+      border-bottom: 1px solid var(--grey-lighten-2);
       outline: none;
       background-color: transparent;
     }
 
     &::placeholder {
-      color: @grey-lighten-2;
+      color: var(--grey-lighten-2);
     }
 
     & ~ i {
@@ -234,7 +234,7 @@
       top: 13px;
       right: 6px;
 
-      color: @grey-lighten-2;
+      color: var(--grey-lighten-2);
     }
 
     &:focus {
@@ -261,7 +261,7 @@
 
     min-height: 100px;
 
-    color: fade(@blue-light, 40%);
+    color: color-mod(var(--blue-light) alpha(40%));
 
     &-empty {
       font-size: 18px;
@@ -285,7 +285,7 @@
       text-align: center;
 
       &:before {
-        font-family: 'brocadeicons';
+        font-family: "brocadeicons";
         font-size: 32px;
         font-weight: normal;
         font-style: normal;
@@ -294,11 +294,11 @@
 
         padding-bottom: 10px;
 
-        content: '\e93d';
+        content: "\e93d";
       }
 
       &-title {
-        color: @blue-dull;
+        color: var(--blue-dull);
       }
 
       a,
@@ -306,7 +306,7 @@
       a:active,
       a:visited,
       a:hover {
-        color: @blue-dull;
+        color: var(--blue-dull);
       }
     }
   }
@@ -320,7 +320,7 @@
   }
 
   &__loader:before {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 92px;
     font-weight: normal;
     font-style: normal;
@@ -334,23 +334,23 @@
     height: 100px;
     margin: -50px 0 0 -50px;
 
-    content: '\e94b';
+    content: "\e94b";
     animation: spin 2s infinite linear;
     text-align: center;
     vertical-align: middle;
     pointer-events: none;
 
-    color: @blue-darker;
+    color: var(--blue-darker);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(359deg);
-    }
+  100% {
+    transform: rotate(359deg);
   }
 }
 
@@ -467,7 +467,7 @@
 
       text-align: left;
 
-      color: @grey-base;
+      color: var(--grey-base);
     }
 
     &:last-of-type {
@@ -484,7 +484,7 @@
     padding-top: 20px;
 
     color: white;
-    background: @grey-darken-1;
+    background: var(--grey-darken-1);
 
     a:link,
     a:visited,
@@ -661,7 +661,7 @@
     text-transform: uppercase;
 
     color: white;
-    background-color: @grey-darken-1;
+    background-color: var(--grey-darken-1);
 
     &-item {
       line-height: 25px;
@@ -677,7 +677,7 @@
       border-bottom: 5px solid transparent;
 
       &--active {
-        border-color: @selected;
+        border-color: var(--selected);
       }
     }
 
@@ -707,7 +707,7 @@
     &-button&-item {
       &--active {
         border-color: transparent;
-        background-color: @selected;
+        background-color: var(--selected);
       }
     }
   }
@@ -715,33 +715,23 @@
   .st2-flex-table {
     border: 0;
   }
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(359deg);
-    }
+@keyframes show-then-hide {
+  0% {
+    opacity: 0;
   }
 
-  @keyframes show-then-hide {
-    0% {
-      opacity: 0;
-    }
+  10% {
+    opacity: 1;
+  }
 
-    10% {
-      opacity: 1;
-    }
+  90% {
+    opacity: 1;
+  }
 
-    90% {
-      opacity: 1;
-    }
-
-    100% {
-      opacity: 0;
-    }
+  100% {
+    opacity: 0;
   }
 }
 

@@ -7,7 +7,7 @@ import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 import AutoFormSelect from '@stackstorm/module-auto-form/modules/select';
 import AutoFormInput from '@stackstorm/module-auto-form/modules/input';
 
-import style from './style.less';
+import style from './style.css';
 
 const types = {
   'regex': 'Regular expression match',

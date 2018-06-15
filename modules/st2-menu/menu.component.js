@@ -6,7 +6,7 @@ import api from '@stackstorm/module-api';
 
 import { Link } from 'react-router-dom';
 
-import componentStyle from './style.less';
+import componentStyle from './style.css';
 
 class Icon extends React.Component {
   static propTypes = {

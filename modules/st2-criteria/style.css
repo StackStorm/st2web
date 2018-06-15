@@ -1,11 +1,11 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .component {
 }
 
 .line {
-  // Combobox suggestion box takes all the space of the next prlatively positioned element.
-  // In this case we want it to be as wide as the whole criteria.
+  /* Combobox suggestion box takes all the space of the next prlatively positioned element. */
+  /* In this case we want it to be as wide as the whole criteria. */
   position: relative;
 
   display: flex;
@@ -18,9 +18,9 @@
     display: block;
 
     width: 100%;
-    margin-top: -10px; // TODO: find a better way
+    margin-top: -10px; /* TODO: find a better way */
 
-    content: 'and';
+    content: "and";
     text-align: center;
   }
 
@@ -28,7 +28,7 @@
     margin-bottom: -12px;
 
     &:after {
-      content: '';
+      content: "";
     }
   }
 }
@@ -50,7 +50,7 @@
   align-self: center;
 
   &:hover {
-    color: @aqua-base;
+    color: var(--aqua-base);
   }
 }
 

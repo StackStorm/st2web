@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import style from './style.less';
+import style from './style.css';
 
 export default class PortionBar extends React.Component {
   static propTypes = {

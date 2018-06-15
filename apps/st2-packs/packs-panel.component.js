@@ -26,7 +26,7 @@ import {
 import PacksDetails from './packs-details.component';
 import PacksFlexCard from './packs-flex-card.component';
 
-import './style.less';
+import './style.css';
 
 function waitExecution(execution_id, record) {
   if (record.id === execution_id) {

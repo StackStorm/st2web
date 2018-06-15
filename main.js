@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import createHashHistory from 'history/createHashHistory';
 
-import './style.less';
+import './style.css';
 
 import api from '@stackstorm/module-api';
 import Login from '@stackstorm/module-login';

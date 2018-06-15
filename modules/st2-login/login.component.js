@@ -3,8 +3,8 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import componentStyle from './style.less';
-import menuStyle from '@stackstorm/module-menu/style.less';
+import componentStyle from './style.css';
+import menuStyle from '@stackstorm/module-menu/style.css';
 
 class LoginForm extends React.Component {
   static propTypes = {
