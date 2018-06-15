@@ -13,20 +13,17 @@ export default class FlowLink extends React.Component {
 
   get token() {
     return btoa(JSON.stringify({
-      api: api.server.url,
+      api: api.server.api,
       auth: api.server.auth,
       token: api.token,
     })).replace(/=/g, '');
   }
 
-  get url() {
-    return api.server.flow || window.st2constants.st2Config.flow;
-  }
-
-  get target() {
-    const { action } = this.props;
-
-    return action ? `st2flow+${api.server.api}+${action}` : `st2flow+${api.server.api}`;
+  getUrlProps() {
+    return {
+      href: 'https://www.extremenetworks.com/product/workflow-composer/',
+      target: '_blank',
+    };
   }
 
   render() {
@@ -37,17 +34,12 @@ export default class FlowLink extends React.Component {
         { action ? (
           <a
             className="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            href={`${this.url}/#/import/${this.token}/${action}`}
-            target={this.target}
+            {...this.getUrlProps(action)}
           >
             Edit
           </a>
         ) : (
-          <a
-            className="st2-panel__toolbar-button"
-            href={`${this.url}/#/import/${this.token}`}
-            target={this.target}
-          >
+          <a className="st2-panel__toolbar-button" {...this.getUrlProps()} >
             <i className="icon-plus" />
           </a>
         ) }
