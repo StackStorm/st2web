@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-panel",
-  "version": "2.0.0-pre.3",
+  "version": "2.0.0-pre.4",
   "description": "",
   "main": "panel.component.js",
   "directories": {
@@ -41,9 +41,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-label": "^2.0.0-pre.3",
-    "@stackstorm/module-scroll-into-view": "^2.0.0-pre.3",
-    "@stackstorm/st2-style": "^2.0.0-pre.3",
+    "@stackstorm/module-label": "^2.0.0-pre.4",
+    "@stackstorm/module-scroll-into-view": "^2.0.0-pre.4",
+    "@stackstorm/st2-style": "^2.0.0-pre.4",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
