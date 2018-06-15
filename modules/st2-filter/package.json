@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-filter",
-  "version": "2.0.0-pre.2",
+  "version": "2.0.0-pre.3",
   "description": "",
   "main": "filter.component.js",
   "directories": {
@@ -43,7 +43,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0-pre.2",
+    "@stackstorm/st2-style": "^2.0.0-pre.3",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
