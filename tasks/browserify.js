@@ -41,9 +41,12 @@ function walk(dir) {
   return walk(nextDir);
 }
 
-function overridePackage(from, to) {
+function overridePackage(overrides) {
   return (rec) => {
-    if (rec.id !== from) {
+    const from = rec.id;
+    const to = overrides[from];
+
+    if (!to) {
       return {};
     }
 
@@ -84,7 +87,7 @@ function bundle(file, name) {
   if (pkg.override) {
     b
       .plugin(pathmodify, {
-        mods: _.map(pkg.override, (to, from) => overridePackage(from, to)),
+        mods: overridePackage(pkg.override),
       });
   }
 
