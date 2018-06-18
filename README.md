@@ -11,31 +11,39 @@ Quick start
 
 First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v10.x.x to be our stable.
 
-    $ n 10
+```shell
+$ n 10
 
-    install : node-v10.4.1
-      mkdir : /usr/local/n/versions/node/10.4.1
-      fetch : https://nodejs.org/dist/v10.4.1/node-v10.4.1-darwin-x64.tar.gz
-    ######################################################################## 100.0%
-    installed : v10.4.1
+install : node-v10.4.1
+  mkdir : /usr/local/n/versions/node/10.4.1
+  fetch : https://nodejs.org/dist/v10.4.1/node-v10.4.1-darwin-x64.tar.gz
+######################################################################## 100.0%
+installed : v10.4.1
 
-    $ node -v
-    v10.4.1
+$ node -v
+v10.4.1
 
-    $ npm -v
-    6.1.0
+$ npm -v
+6.1.0
+```
 
 then you need to globally install `gulp`, `lerna` and `yarn`
 
-    $ npm install -g gulp-cli lerna yarn
+```shell
+$ sudo npm install -g gulp-cli lerna yarn
+```
 
-then you need to install the requirements
+then you need to bootstrap the micromodules
 
-    $ lerna bootstrap
+```shell
+$ lerna bootstrap
+```
 
 and finally run build system to fetch the font, compile css and so on
 
-    $ gulp
+```shell
+$ gulp
+```
 
 At that point you should be able to point your browser to http://localhost:3000/ and see the the page.
 
@@ -63,18 +71,15 @@ Configure the CORS on StackStorm server: on your st2 installation, edit the foll
     # The URL must match the one the browser uses to access the st2web
     allow_origin = http://st2web.example.com:3000
 
-Configure st2web to point to the right server(s). By default, UI tries to get its data from the [devenv](https://www.github.com/StackStorm/devenv) vagrant box on 172.168.50.50.
+Configure st2web to point to the right server. By default, UI tries to get its data relative to the st2web.
 
-To make it work with your st2 API, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name**, **url** and **auth**. URL should include scheme, domain and port in compliance with [rfc1808](http://tools.ietf.org/html/rfc1808.html). Auth might be either boolean (in which case the default schema and port is used) or a url of the auth server (see url requirements). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
+If for some reason st2web is served from another domain, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name**, **url** and **auth**. URL should include scheme, domain and port in compliance with [rfc1808](http://tools.ietf.org/html/rfc1808.html). Auth might be either boolean (in which case the default schema and port is used) or a url of the auth server (see url requirements). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
 
     hosts: [{
       name: 'Express Deployment',
       url: 'http://172.168.90.50:9101',
       auth: true
     }]
-
-Multiple servers can be configured. Pick an desired server from the login screen and change the server by first disconnecting from the current one by picking 'Disconnect' from the drop down at the top right corner of the UI.
-
 
 Production
 ----------
@@ -100,7 +105,7 @@ To let test runner know the details of your st2 installation, you need to set ST
 Copyright, License, and Contributors Agreement
 ----------------------------------------------
 
-Copyright 2015 StackStorm, Inc.
+Copyright 2015-2018 StackStorm, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
 
