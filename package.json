@@ -62,7 +62,7 @@
     "@stackstorm/module-api": "^2.0.0-pre.5",
     "@stackstorm/module-login": "^2.0.0-pre.5",
     "@stackstorm/st2-style": "^2.0.0-pre.5",
-    "classnames": "2.2.5",
+    "classnames": "2.2.6",
     "insert-css": "2.0.0",
     "lodash": "4.17.10",
     "moment": "2.22.1",
