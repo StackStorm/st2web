@@ -163,6 +163,7 @@ export class API {
       headers,
       transformResponse: [],
       data,
+      withCredentials: true,
     };
   
     if (this.rejectUnauthorized === false) {
