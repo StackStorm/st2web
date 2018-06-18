@@ -1,10 +1,11 @@
-import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
 import get from 'lodash/fp/get';
+import isEqual from 'lodash/fp/isEqual';
+import mapValues from 'lodash/fp/mapValues';
 
 import cx from 'classnames';
 import qs from 'querystring';
@@ -139,14 +140,15 @@ export default class HistoryPanel extends React.Component {
     });
   }
 
-  componentDidUpdate(prevState, prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { filter } = this.props;
     const { page, activeFilters } = parseSearch(get('location.search', this.props));
     const prev = parseSearch(get('location.search', prevProps));
 
-    if (page === prev.page && 
-      _.isEqual(activeFilters, prev.activeFilters) &&
-      filter === prevProps.filter
+    if (
+      isEqual(page, prev.page) &&
+      isEqual(activeFilters, prev.activeFilters) &&
+      isEqual(filter, prevProps.filter)
     ) {
       return;
     }
@@ -180,7 +182,7 @@ export default class HistoryPanel extends React.Component {
       promise: api.request({
         path: '/executions',
         query: {
-          ..._.mapValues(activeFilters, f => f[0]),
+          ...mapValues(f => f[0], activeFilters),
           parent: 'null',
           limit: PER_PAGE,
           page,
