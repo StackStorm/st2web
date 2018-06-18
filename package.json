@@ -91,7 +91,7 @@
     "browserify": "14.5.0",
     "chai": "4.1.2",
     "eslint": "4.19.1",
-    "eslint-plugin-react": "7.8.2",
+    "eslint-plugin-react": "7.9.1",
     "gulp": "github:gulpjs/gulp#d8f5c90a0622d19ef1943a2a3d02dc50e3c853e7",
     "ignore-styles": "5.0.1",
     "lerna": "2.11.0",
