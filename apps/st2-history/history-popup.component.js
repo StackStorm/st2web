@@ -23,6 +23,10 @@ export default class HistoryPopup extends React.Component {
     onCancel: PropTypes.func.isRequired,
   }
 
+  state = {
+    preview: false,
+  }
+
   static getDerivedStateFromProps(props, state) {
     return {
       ...state,
@@ -30,10 +34,6 @@ export default class HistoryPopup extends React.Component {
         ...props.payload,
       },
     };
-  }
-
-  state = {
-    preview: false,
   }
 
   togglePreview() {
