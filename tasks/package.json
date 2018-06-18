@@ -52,7 +52,7 @@
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "1.1.0",
     "watchify": "3.11.0",
-    "yargs": "10.1.2"
+    "yargs": "11.0.0"
   },
   "peerDependencies": {
     "gulp": "github:gulpjs/gulp#d8f5c90a0622d19ef1943a2a3d02dc50e3c853e7"
