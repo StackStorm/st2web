@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-flex-table",
-  "version": "2.0.0-pre.4",
+  "version": "2.0.0-pre.5",
   "description": "",
   "main": "flex-table.component.js",
   "directories": {
@@ -32,13 +32,16 @@
           "plugin": [
             "postcss-import",
             "postcss-nested",
-            ["postcss-preset-env", {
-              "features": {
-                "custom-properties": {
-                  "preserve": false
+            [
+              "postcss-preset-env",
+              {
+                "features": {
+                  "custom-properties": {
+                    "preserve": false
+                  }
                 }
               }
-            }]
+            ]
           ]
         }
       ]
@@ -48,13 +51,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0-pre.4",
+    "@stackstorm/st2-style": "^2.0.0-pre.5",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
-    "@stackstorm/module-store": "^2.0.0-pre.4",
+    "@stackstorm/module-store": "^2.0.0-pre.5",
     "babelify": "^8.0.0",
     "postcss": "^6.0.14",
     "postcss-import": "^11.1.0",

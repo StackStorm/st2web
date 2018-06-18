@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/app-packs",
-  "version": "2.0.0-pre.4",
+  "version": "2.0.0-pre.5",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -26,13 +26,16 @@
           "plugin": [
             "postcss-import",
             "postcss-nested",
-            ["postcss-preset-env", {
-              "features": {
-                "custom-properties": {
-                  "preserve": false
+            [
+              "postcss-preset-env",
+              {
+                "features": {
+                  "custom-properties": {
+                    "preserve": false
+                  }
                 }
               }
-            }]
+            ]
           ]
         }
       ]
@@ -42,17 +45,17 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "^2.0.0-pre.4",
-    "@stackstorm/module-auto-form": "^2.0.0-pre.4",
-    "@stackstorm/module-flex-table": "^2.0.0-pre.4",
-    "@stackstorm/module-forms": "^2.0.0-pre.4",
-    "@stackstorm/module-highlight": "^2.0.0-pre.4",
-    "@stackstorm/module-menu": "^2.0.0-pre.4",
-    "@stackstorm/module-notification": "^2.0.0-pre.4",
-    "@stackstorm/module-panel": "^2.0.0-pre.4",
-    "@stackstorm/module-portion-bar": "^2.0.0-pre.4",
-    "@stackstorm/module-store": "^2.0.0-pre.4",
-    "@stackstorm/module-title": "^2.0.0-pre.4",
+    "@stackstorm/module-api": "^2.0.0-pre.5",
+    "@stackstorm/module-auto-form": "^2.0.0-pre.5",
+    "@stackstorm/module-flex-table": "^2.0.0-pre.5",
+    "@stackstorm/module-forms": "^2.0.0-pre.5",
+    "@stackstorm/module-highlight": "^2.0.0-pre.5",
+    "@stackstorm/module-menu": "^2.0.0-pre.5",
+    "@stackstorm/module-notification": "^2.0.0-pre.5",
+    "@stackstorm/module-panel": "^2.0.0-pre.5",
+    "@stackstorm/module-portion-bar": "^2.0.0-pre.5",
+    "@stackstorm/module-store": "^2.0.0-pre.5",
+    "@stackstorm/module-title": "^2.0.0-pre.5",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-forms",
-  "version": "2.0.0-pre.4",
+  "version": "2.0.0-pre.5",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -32,13 +32,16 @@
           "plugin": [
             "postcss-import",
             "postcss-nested",
-            ["postcss-preset-env", {
-              "features": {
-                "custom-properties": {
-                  "preserve": false
+            [
+              "postcss-preset-env",
+              {
+                "features": {
+                  "custom-properties": {
+                    "preserve": false
+                  }
                 }
               }
-            }]
+            ]
           ]
         }
       ]
@@ -48,7 +51,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0-pre.4",
+    "@stackstorm/st2-style": "^2.0.0-pre.5",
     "insert-css": "^2.0.0",
     "prop-types": "^15.6.0"
   },
