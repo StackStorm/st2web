@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .component {
   position: absolute;
@@ -13,6 +13,18 @@
 
   align-items: center;
   justify-content: center;
+
+  a,
+  a:link,
+  a:active,
+  a:visited,
+  a:hover {
+    color: var(--gray-light);
+  }
+
+  .field {
+    background-color: #F6F6F9;
+  }
 }
 
 .logo {
@@ -30,10 +42,6 @@
   display: block;
 
   width: 240px;
-}
-
-.field {
-  background-color: #F6F6F9;
 }
 
 .row {
@@ -83,14 +91,6 @@
   justify-content: space-between;
 }
 
-a,
-a:link,
-a:active,
-a:visited,
-a:hover {
-  color: @gray-light;
-}
-
 .checkbox {
   display: none;
 
@@ -111,7 +111,7 @@ a:hover {
   }
 
   & + &-label:before {
-    font-family: 'brocadeicons';
+    font-family: "brocadeicons";
     font-size: 12px;
     font-weight: normal;
     font-style: normal;
@@ -123,7 +123,7 @@ a:hover {
     height: 10px;
     margin-right: .3em;
 
-    content: '\e968';
+    content: "\e968";
     text-decoration: inherit;
 
     color: #1E1D1F;

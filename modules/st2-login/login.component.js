@@ -3,17 +3,22 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import style from './style.less';
-import menuStyle from '@stackstorm/module-menu/style.less';
+import componentStyle from './style.css';
+import menuStyle from '@stackstorm/module-menu/style.css';
 
 class LoginForm extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, style, ...props } = this.props;
 
     return (
       <form {...props} className={cx(style.from, className)}>
@@ -27,13 +32,18 @@ class LoginLogo extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, style, ...props } = this.props;
 
     return (
-      <a {...props} href="#" className={cx(menuStyle.logo, className)}>
+      <a {...props} href="#" className={cx(style.logo, className)}>
         {children}
       </a>
     );
@@ -44,10 +54,15 @@ class LoginError extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     message: PropTypes.string,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   render() {
-    const { className, message, ...props } = this.props;
+    const { className, message, style, ...props } = this.props;
 
     return (
       <div {...props} className={cx(style.error, className)}>
@@ -61,10 +76,15 @@ class LoginRow extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, style, ...props } = this.props;
 
     return (
       <div {...props} className={cx(style.row, className)}>
@@ -78,10 +98,15 @@ class LoginBottomRow extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: componentStyle,
   }
 
   render() {
-    const { className, children, ...props } = this.props;
+    const { className, children, style, ...props } = this.props;
 
     return (
       <div {...props} className={cx(style.links, className)}>
@@ -95,6 +120,14 @@ export default class Login extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     onConnect: PropTypes.func.isRequired,
+    style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    style: {
+      ...componentStyle,
+      logo: menuStyle.logo,
+    },
   }
 
   constructor(props) {
@@ -115,6 +148,9 @@ export default class Login extends React.Component {
     };
   }
 
+  docsLink = 'https://docs.stackstorm.com/'
+  supportLink = 'https://forum.stackstorm.com/'
+
   connect(e) {
     e.preventDefault();
 
@@ -128,20 +164,20 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const { className, onConnect, ...props } = this.props;
+    const { className, onConnect, style, ...props } = this.props;
     onConnect;
 
     return (
       <div {...props} className={cx(style.component, className)}>
-        <LoginForm data-test="login" onSubmit={(e) => this.connect(e)}>
-          <LoginLogo />
+        <LoginForm data-test="login" onSubmit={(e) => this.connect(e)} style={style} >
+          <LoginLogo style={style} />
 
           { this.state.error ? (
-            <LoginError message={this.state.error} />
+            <LoginError message={this.state.error} style={style} />
           ) : null }
 
           { api.servers && api.servers.length > 1 ? (
-            <LoginRow className={cx('st2-auto-form__select')}>
+            <LoginRow className={cx('st2-auto-form__select')} style={style} >
               <select
                 className={cx('st2-auto-form__field', style.field)}
                 value={JSON.stringify(this.state.server)}
@@ -160,7 +196,7 @@ export default class Login extends React.Component {
             </LoginRow>
           ) : null }
 
-          <LoginRow>
+          <LoginRow style={style} >
             <input
               className={cx('st2-auto-form__field', style.field)}
               type="text"
@@ -171,7 +207,7 @@ export default class Login extends React.Component {
               onChange={({ target: { value: username } }) => this.setState({ username })}
             />
           </LoginRow>
-          <LoginRow>
+          <LoginRow style={style} >
             <input
               className={cx('st2-auto-form__field', style.field)}
               type="password"
@@ -182,7 +218,7 @@ export default class Login extends React.Component {
               onChange={({ target: { value: password } }) => this.setState({ password })}
             />
           </LoginRow>
-          <LoginRow>
+          <LoginRow style={style} >
             <input
               className={cx('st2-forms__button', style.button)}
               type="submit"
@@ -202,11 +238,11 @@ export default class Login extends React.Component {
             </label>
           </LoginRow>
 
-          <LoginBottomRow>
-            <a target="_blank" rel="noopener noreferrer" href="http://docs.stackstorm.com">
+          <LoginBottomRow style={style} >
+            <a target="_blank" rel="noopener noreferrer" href={this.docsLink}>
               Documentation
             </a>
-            <a href="https://forum.stackstorm.com/">
+            <a target="_blank" rel="noopener noreferrer" href={this.supportLink}>
               Support
             </a>
           </LoginBottomRow>

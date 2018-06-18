@@ -4,7 +4,7 @@ import cx from 'classnames';
 
 import reporters from './reporters';
 
-import style from './style.less';
+import style from './style.css';
 
 export default class ActionReporter extends React.Component {
   static propTypes = {

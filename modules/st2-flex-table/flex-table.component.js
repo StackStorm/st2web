@@ -8,7 +8,7 @@ import map from 'lodash/fp/map';
 
 import { actions } from './flex-table.reducer';
 
-import './style.less';
+import './style.css';
 
 export class FlexTable extends React.Component {
   static propTypes = {

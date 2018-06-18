@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/st2-build",
-  "version": "1.0.0-pre.5",
+  "version": "2.0.0-pre.5",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -37,7 +37,6 @@
     "gulp-env": "^0.4.0",
     "gulp-eslint": "^4.0.0",
     "gulp-header": "^1.7.1",
-    "gulp-less": "^3.3.2",
     "gulp-load-plugins": "^1.2.0",
     "gulp-mocha": "^4.3.1",
     "gulp-plumber": "^1.1.0",
@@ -47,6 +46,7 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.7",
     "gulp-webserver": "^0.9.1",
+    "pathmodify": "^0.5.0",
     "require-dir": "^0.3.2",
     "undertaker-forward-reference": "^1.0.1",
     "vinyl-buffer": "^1.0.0",

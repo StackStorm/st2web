@@ -4,7 +4,7 @@ import cx from 'classnames';
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
 
-import style from './style.less';
+import style from './style.css';
 
 const icons = {};
 let iconPromise = null;

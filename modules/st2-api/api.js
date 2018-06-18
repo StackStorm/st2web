@@ -136,13 +136,11 @@ export class API {
     const {
       path,
       version = 'v1',
-      queryToken = false,
     } = opts;
 
     const verPath = version ? `/${_.trim(version, '/')}` : '';
-    const token = queryToken && this.token.token ? `?x-auth-token=${this.token.token}` : '';
 
-    return `${this.server.api}${verPath}${path}${token}`;
+    return `${this.server.api}${verPath}${path}`;
   }
 
   async request(opts, data) {
@@ -165,6 +163,7 @@ export class API {
       headers,
       transformResponse: [],
       data,
+      withCredentials: true,
     };
   
     if (this.rejectUnauthorized === false) {
@@ -202,7 +201,7 @@ export class API {
 
   listen() {
     return new Promise((resolve, reject) => {
-      const streamUrl = `${this.server.stream || this.server.api}/stream${this.token.token && `?x-auth-token=${this.token.token}`}`;
+      const streamUrl = `${this.server.stream || this.server.api}/stream`;
 
       try {
         const source = _source = _source || new EventSource(streamUrl, {

@@ -29,7 +29,7 @@ import RulesFlexCard from './rules-flex-card.component';
 import RulesDetails from './rules-details.component';
 import RulesPopup from './rules-popup.component';
 
-import './style.less';
+import './style.css';
 
 @connect((state, props) => {
   const { uid } = props;

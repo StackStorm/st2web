@@ -2,7 +2,7 @@ import React from 'react';
 
 import Highlight from '@stackstorm/module-highlight';
 
-import style from '../style.less';
+import style from '../style.css';
 
 export default function runPython(execution) {
   return [

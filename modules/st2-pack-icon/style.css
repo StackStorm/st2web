@@ -1,13 +1,15 @@
-@size: 32px;
-@sizesm: 24px;
+:root {
+  --size: 32px;
+  --sizesm: 24px;
+}
 
 .component {
   position: relative;
 
   display: inline-block;
 
-  width: @size;
-  height: @size;
+  width: var(--size);
+  height: var(--size);
 
   vertical-align: middle;
 
@@ -16,18 +18,18 @@
   background: #fff;
 
   &:after {
-    font-family: 'brocadeicons';
-    font-size: @size;
+    font-family: "brocadeicons";
+    font-size: var(--size);
     line-height: 1;
 
     position: absolute;
     top: 0;
     left: 0;
 
-    width: @size;
-    height: @size;
+    width: var(--size);
+    height: var(--size);
 
-    content: '\e94d';
+    content: "\e94d";
     text-align: center;
 
     color: #000;
@@ -35,18 +37,18 @@
 }
 
 .small {
-  width: @sizesm;
-  height: @sizesm;
+  width: var(--sizesm);
+  height: var(--sizesm);
 
   border: 4px solid #fff;
 
   &:after {
-    font-size: @sizesm;
+    font-size: var(--sizesm);
 
     top: 0;
 
-    width: @sizesm;
-    height: @sizesm;
+    width: var(--sizesm);
+    height: var(--sizesm);
   }
 }
 
@@ -54,14 +56,14 @@
   position: relative;
   z-index: 1;
 
-  width: @size;
-  height: @size;
+  width: var(--size);
+  height: var(--size);
 
   background: #fff;
   box-shadow: 0 0 0 3px white;
 
   &-small {
-    width: @sizesm;
-    height: @sizesm;
+    width: var(--sizesm);
+    height: var(--sizesm);
   }
 }

@@ -5,7 +5,7 @@ import cx from 'classnames';
 import scrollIntoView from '@stackstorm/module-scroll-into-view';
 import Label from '@stackstorm/module-label';
 
-import './style.less';
+import './style.css';
 
 export class Panel extends React.Component {
   static propTypes = {

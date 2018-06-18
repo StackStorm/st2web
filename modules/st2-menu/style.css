@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .component {
   font-family: Roboto,sans-serif;
@@ -15,7 +15,7 @@
   user-select: none;
   letter-spacing: .04em;
 
-  color: @gray-2;
+  color: var(--gray-2);
   background-color: white;
 
   align-items: center;
@@ -30,7 +30,7 @@
 }
 
 .logo {
-  // We need to specify it here so the logo on login screen would match the menu one
+  /* We need to specify it here so the logo on login screen would match the menu one */
   font-size: 16px;
 
   display: flex;
@@ -49,14 +49,14 @@
   align-items: flex-end;
 
   &:after {
-    content: 'Event-driven automation';
+    content: "Event-driven automation";
     white-space: nowrap;
 
-    color: @gray-2;
+    color: var(--gray-2);
   }
 }
 
-// TODO: Remove this ugliness
+/* TODO: Remove this ugliness */
 .spacer {
   flex: 1;
 }
@@ -104,7 +104,7 @@
   }
 
   &-active i {
-    background-color: @selected;
+    background-color: var(--selected);
     color: white;
   }
 }
@@ -115,7 +115,7 @@
   padding: 10px;
   font-size: 10px;
 
-  cursor: default;
+  cursor: pointer;
   white-space: nowrap;
   text-transform: uppercase;
 
@@ -189,7 +189,7 @@
       padding: 0 10px;
 
       &:hover {
-        background-color: @yellow-lighten-5;
+        background-color: var(--yellow-lighten-5);
       }
     }
   }

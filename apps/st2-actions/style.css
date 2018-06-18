@@ -1,7 +1,7 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .st2-actions {
-  // Table columns
+  /* Table columns */
   .st2-flex-table__column&__column {
     &-utility {
       flex: none;
@@ -68,7 +68,7 @@
     }
 
     .st2-history-child {
-      border: solid @grey-lighten-3;
+      border: solid var(--grey-lighten-3);
       border-width: 0 1px 1px 0;
     }
 

@@ -3,45 +3,37 @@ StackStorm Web UI
 
 [![CircleCI](https://circleci.com/gh/StackStorm/st2web.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/StackStorm/st2web)
 
-![st2web](https://cloud.githubusercontent.com/assets/1357357/7393040/010f78ac-eea5-11e4-82bf-8253674683e1.png)
+![st2web](https://user-images.githubusercontent.com/1357357/41534974-bdd8e768-732a-11e8-9ab1-7afcaf29ad23.png)
 
 
 Quick start
 -----------
 
-First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v8.x.x to be our stable.
+First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v10.x.x to be our stable.
 
 ```shell
-$ n 8
+$ n 10
 
-install : node-v8.4.0
- mkdir : /usr/local/n/versions/node/8.4.0
- fetch : https://nodejs.org/dist/v8.4.0/node-v8.4.0-darwin-x64.tar.gz
+install : node-v10.4.1
+  mkdir : /usr/local/n/versions/node/10.4.1
+  fetch : https://nodejs.org/dist/v10.4.1/node-v10.4.1-darwin-x64.tar.gz
 ######################################################################## 100.0%
-installed : v8.4.0
+installed : v10.4.1
 
 $ node -v
-v8.4.0
+v10.4.1
 
 $ npm -v
-5.3.0
+6.1.0
 ```
 
-then you need to globally install `gulp`, `gulp-cli`, `lerna`
+then you need to globally install `gulp`, `lerna` and `yarn`
 
 ```shell
-$ sudo npm install -g gulp
-$ sudo npm install -g gulp-cli
-$ sudo npm install -g lerna
+$ sudo npm install -g gulp-cli lerna yarn
 ```
 
-You will need to install [yarn](https://yarnpkg.com/en/). On macOS, you can do this with:
-
-```shell
-$ brew install yarn
-```
-
-then you need to install the requirements
+then you need to bootstrap the micromodules
 
 ```shell
 $ lerna bootstrap
@@ -79,18 +71,15 @@ Configure the CORS on StackStorm server: on your st2 installation, edit the foll
     # The URL must match the one the browser uses to access the st2web
     allow_origin = http://st2web.example.com:3000
 
-Configure st2web to point to the right server(s). By default, UI tries to get its data from the [devenv](https://www.github.com/StackStorm/devenv) vagrant box on 172.168.50.50.
+Configure st2web to point to the right server. By default, UI tries to get its data relative to the st2web.
 
-To make it work with your st2 API, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name**, **url** and **auth**. URL should include scheme, domain and port in compliance with [rfc1808](http://tools.ietf.org/html/rfc1808.html). Auth might be either boolean (in which case the default schema and port is used) or a url of the auth server (see url requirements). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
+If for some reason st2web is served from another domain, edit [`config.js`](./config.js) at the root of the project and update the `hosts` array with proper object of **name**, **url** and **auth**. URL should include scheme, domain and port in compliance with [rfc1808](http://tools.ietf.org/html/rfc1808.html). Auth might be either boolean (in which case the default schema and port is used) or a url of the auth server (see url requirements). For vagrant deployment of [st2express](https://github.com/StackStorm/st2express), it would be:
 
     hosts: [{
       name: 'Express Deployment',
       url: 'http://172.168.90.50:9101',
       auth: true
     }]
-
-Multiple servers can be configured. Pick an desired server from the login screen and change the server by first disconnecting from the current one by picking 'Disconnect' from the drop down at the top right corner of the UI.
-
 
 Production
 ----------

@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import style from './style.less';
+import style from './style.css';
 
 export default class FlowLink extends React.Component {
   static propTypes = {
@@ -13,20 +13,17 @@ export default class FlowLink extends React.Component {
 
   get token() {
     return btoa(JSON.stringify({
-      api: api.server.url,
+      api: api.server.api,
       auth: api.server.auth,
       token: api.token,
     })).replace(/=/g, '');
   }
 
-  get url() {
-    return api.server.flow || window.st2constants.st2Config.flow;
-  }
-
-  get target() {
-    const { action } = this.props;
-
-    return action ? `st2flow+${api.server.api}+${action}` : `st2flow+${api.server.api}`;
+  getUrlProps() {
+    return {
+      href: 'https://www.extremenetworks.com/product/workflow-composer/?utm_source=flow_link',
+      target: '_blank',
+    };
   }
 
   render() {
@@ -36,18 +33,13 @@ export default class FlowLink extends React.Component {
       <div {...props} className={cx(style.component, className)}>
         { action ? (
           <a
-            className="st2-forms__button st2-forms__button--small st2-details__toolbar-button"
-            href={`${this.url}/#/import/${this.token}/${action}`}
-            target={this.target}
+            className="st2-forms__button st2-details__toolbar-button"
+            {...this.getUrlProps(action)}
           >
             Edit
           </a>
         ) : (
-          <a
-            className="st2-panel__toolbar-button"
-            href={`${this.url}/#/import/${this.token}`}
-            target={this.target}
-          >
+          <a className="st2-panel__toolbar-button" {...this.getUrlProps()} >
             <i className="icon-plus" />
           </a>
         ) }

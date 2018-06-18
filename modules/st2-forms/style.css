@@ -1,4 +1,4 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .st2-forms {
   &__matcher {
@@ -49,12 +49,18 @@
       width: 0;
       height: 1px;
 
-      content: '';
+      content: "";
       -moz-transform: scale(.9999); /* Fixes antialiasing in Firefox on OS X */
 
       border: solid;
       border-width: 16px 10px;
       border-color: transparent;
+    }
+
+    &:link,
+    &:active,
+    &:visited {
+      color: #fff;
     }
 
     &:disabled,
@@ -124,13 +130,13 @@
 
       padding: 3px 6px;
 
-      color: @gray-white;
+      color: var(--gray-white);
       border: 1px solid currentColor;
       background: transparent;
       box-shadow: none;
 
       &:active {
-        background: fade(@gray-white, 10%);
+        background: color-mod(var(--gray-white) alpha(10%));
       }
     }
   }
@@ -146,15 +152,15 @@
     &:before {
       right: 100%;
 
-      border-right-color: @aqua-base;
+      border-right-color: var(--aqua-base);
     }
 
     &--disabled:before {
-      border-right-color: @grey-lighten-2;
+      border-right-color: var(--grey-lighten-2);
     }
 
     &:active:before {
-      border-right-color: @aqua-lighten-2;
+      border-right-color: var(--aqua-lighten-2);
     }
   }
 
@@ -164,15 +170,15 @@
     &:after {
       left: 100%;
 
-      border-left-color: @aqua-base;
+      border-left-color: var(--aqua-base);
     }
 
     &--disabled:after {
-      border-left-color: @grey-lighten-2;
+      border-left-color: var(--grey-lighten-2);
     }
 
     &:active:after {
-      border-left-color: @aqua-lighten-2;
+      border-left-color: var(--aqua-lighten-2);
     }
   }
 
@@ -199,7 +205,7 @@
     input[type=checkbox] {
       display: none;
   
-      // add default box-sizing for this scope
+      /* add default box-sizing for this scope */
       &,
       &:after,
       &:before,

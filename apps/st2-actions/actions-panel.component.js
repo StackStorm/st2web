@@ -29,7 +29,7 @@ import View from '@stackstorm/module-view';
 import ActionsDetails from './actions-details.component';
 import ActionsFlexCard from './actions-flex-card.component';
 
-import './style.less';
+import './style.css';
 
 @connect((state, props) => {
   const { uid } = props;

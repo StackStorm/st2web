@@ -1,7 +1,7 @@
-@import 'node_modules/@stackstorm/st2-style/colors.less';
+@import "@stackstorm/st2-style/colors.css";
 
 .st2-history {
-  // Table columns
+  /* Table columns */
   .st2-flex-table__column&__column {
     &-utility {
       font-size: 10px;
@@ -92,14 +92,14 @@
 
   &__column-user-name {
     &:before {
-      font-family: 'brocadeicons';
+      font-family: "brocadeicons";
       font-weight: bold;
       font-style: normal;
 
       width: 100%;
       margin-right: 0.25em;
 
-      content: '\e94f';
+      content: "\e94f";
     }
   }
 
@@ -108,7 +108,7 @@
 
     min-height: 20px;
 
-    border-bottom: 1px solid @grey-lighten-3;
+    border-bottom: 1px solid var(--grey-lighten-3);
     border-left: 5px solid #0076C6;
 
     & & {
@@ -135,16 +135,16 @@
 
     & & & .st2-flex-card .st2-flex-card__expand,
     & .st2-flex-card& .st2-flex-card--active .st2-flex-card__expand {
-      // padding-left: 15px;
+      /* padding-left: 15px; */
     }
 
     & .st2-flex-card& & .st2-flex-card--active .st2-flex-card__expand {
-      // padding-left: 10px;
+      /* padding-left: 10px; */
     }
   }
 
   &__uuid {
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     font-size: 13px;
     line-height: 20px;
   

@@ -1,0 +1,5 @@
+@import "@stackstorm/st2-style/colors.css";
+
+.st2-auto-form {
+/* TODO: Should it be .st2-remote-form? */
+}

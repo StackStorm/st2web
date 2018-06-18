@@ -5,7 +5,7 @@ import cx from 'classnames';
 import Prism from 'prismjs';
 
 import './editor.css';
-import style from './style.less';
+import style from './style.pcss';
 
 (function() {
   // don't include this during testing
