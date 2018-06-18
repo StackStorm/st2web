@@ -27,6 +27,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "babelify": "^8.0.0"
+    "babelify": "8.0.0"
   }
 }
