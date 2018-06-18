@@ -27,14 +27,14 @@
     "access": "public"
   },
   "dependencies": {
-    "prop-types": "^15.6.0",
-    "react-time": "^4.3.0"
+    "prop-types": "15.6.1",
+    "react-time": "4.3.0"
   },
   "devDependencies": {
-    "babelify": "^8.0.0"
+    "babelify": "8.0.0"
   },
   "peerDependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "16.4.0",
+    "react-dom": "16.4.0"
   }
 }

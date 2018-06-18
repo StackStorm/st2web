@@ -54,19 +54,19 @@
   },
   "dependencies": {
     "@stackstorm/st2-style": "^2.0.0-pre.5",
-    "insert-css": "^2.0.0",
-    "prop-types": "^15.6.0"
+    "insert-css": "2.0.0",
+    "prop-types": "15.6.1"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
-    "babelify": "^8.0.0",
-    "postcss": "^6.0.14",
-    "postcss-import": "^11.1.0",
-    "postcss-nested": "^3.0.0",
-    "postcss-preset-env": "^5.1.0"
+    "babelify": "8.0.0",
+    "postcss": "6.0.22",
+    "postcss-import": "11.1.0",
+    "postcss-nested": "3.0.0",
+    "postcss-preset-env": "5.1.0"
   },
   "peerDependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "16.4.0",
+    "react-dom": "16.4.0"
   }
 }
