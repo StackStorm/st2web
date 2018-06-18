@@ -3612,9 +3612,9 @@ gulp-eslint@4.0.2:
     fancy-log "^1.3.2"
     plugin-error "^1.0.0"
 
-gulp-header@1.8.12:
-  version "1.8.12"
-  resolved "https://registry.yarnpkg.com/gulp-header/-/gulp-header-1.8.12.tgz#ad306be0066599127281c4f8786660e705080a84"
+gulp-header@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/gulp-header/-/gulp-header-2.0.5.tgz#16e229c73593ade301168024fea68dab75d9d38c"
   dependencies:
     concat-with-sourcemaps "*"
     lodash.template "^4.4.0"
