@@ -145,6 +145,7 @@ export default class Login extends React.Component {
       remember: true,
   
       server,
+      servers,
     };
   }
 
@@ -176,14 +177,14 @@ export default class Login extends React.Component {
             <LoginError message={this.state.error} style={style} />
           ) : null }
 
-          { api.servers && api.servers.length > 1 ? (
+          { this.state.servers && this.state.servers.length > 1 ? (
             <LoginRow className={cx('st2-auto-form__select')} style={style} >
               <select
                 className={cx('st2-auto-form__field', style.field)}
                 value={JSON.stringify(this.state.server)}
                 onChange={({ target: { value } }) => this.setState({ server: JSON.parse(value) })}
               >
-                { api.servers.map((server) => {
+                { this.state.servers.map((server) => {
                   const stringified = JSON.stringify(server);
 
                   return (
