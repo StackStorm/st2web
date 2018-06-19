@@ -12,6 +12,13 @@ import Label from '@stackstorm/module-label';
   })
 )
 export default class TriggersFlexCard extends React.Component {
+  static get contextTypes() {
+    return {
+      ...super.contextTypes,
+      scrollIntoView: PropTypes.func,
+    };
+  }
+
   static propTypes = {
     trigger: PropTypes.object.isRequired,
     sensor: PropTypes.object,
@@ -21,13 +28,6 @@ export default class TriggersFlexCard extends React.Component {
 
   static defaultProps = {
     selected: false,
-  }
-
-  static get contextTypes() {
-    return {
-      ...super.contextTypes,
-      scrollIntoView: PropTypes.func,
-    };
   }
 
   render() {

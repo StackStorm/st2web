@@ -113,6 +113,18 @@ export default class Highlight extends React.Component {
     well: PropTypes.bool,
   };
 
+  constructor(props) {
+    super(props);
+
+    const { wrap, newlines } = JSON.parse(localStorage.getItem('st2Highlight')) || { wrap: false, newlines: false };
+
+    this.state = {
+      expanded: false,
+      wrap,
+      newlines,
+    };
+  }
+
   static getDerivedStateFromProps({ language, code, lines }, state) {
     let outputFull = getFullOutput(language, code);
 
@@ -129,18 +141,6 @@ export default class Highlight extends React.Component {
       more,
       outputFull,
       outputShort,
-    };
-  }
-
-  constructor(props) {
-    super(props);
-
-    const { wrap, newlines } = JSON.parse(localStorage.getItem('st2Highlight')) || { wrap: false, newlines: false };
-
-    this.state = {
-      expanded: false,
-      wrap,
-      newlines,
     };
   }
 

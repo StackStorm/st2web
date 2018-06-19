@@ -12,12 +12,12 @@ export default class ActionsFlexCard extends React.Component {
     onClick: PropTypes.func.isRequired,
   }
 
-  static defaultProps = {
-    selected: false,
-  }
-
   static contextTypes = {
     scrollIntoView: PropTypes.func,
+  }
+
+  static defaultProps = {
+    selected: false,
   }
 
   render() {

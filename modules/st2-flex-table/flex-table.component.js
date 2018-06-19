@@ -11,6 +11,8 @@ import { actions } from './flex-table.reducer';
 import './style.css';
 
 export class FlexTable extends React.Component {
+  static actions = actions
+
   static propTypes = {
     className: PropTypes.string,
     uid: PropTypes.string,
@@ -26,8 +28,6 @@ export class FlexTable extends React.Component {
   static defaultProps = {
     collapsed: false,
   }
-
-  static actions = actions
 
   render() {
     const { className, uid, title, titleType, note, collapsed, children, icon, onToggle, ...props } = this.props;
@@ -93,6 +93,8 @@ export class FlexTableTitle extends React.Component {
 }
 
 export class FlexTableRow extends React.Component {
+  static actions = actions
+
   static propTypes = {
     className: PropTypes.string,
     columns: PropTypes.arrayOf(PropTypes.shape({
@@ -101,8 +103,6 @@ export class FlexTableRow extends React.Component {
     })),
     children: PropTypes.node,
   }
-
-  static actions = actions
 
   render() {
     const { className, columns=[], children, ...props } = this.props;
@@ -131,13 +131,13 @@ export class FlexTableRow extends React.Component {
 }
 
 export class FlexTableColumn extends React.Component {
+  static actions = actions
+
   static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     fixed: PropTypes.bool,
   }
-
-  static actions = actions
 
   render() {
     const { className, children, fixed, ...props } = this.props;
@@ -151,6 +151,8 @@ export class FlexTableColumn extends React.Component {
 }
 
 export class FlexTableInsert extends React.Component {
+  static actions = actions
+
   static propTypes = {
     className: PropTypes.string,
     visible: PropTypes.bool,
@@ -160,8 +162,6 @@ export class FlexTableInsert extends React.Component {
   static defaultProps = {
     visible: true,
   }
-
-  static actions = actions
 
   render() {
     const { className, visible, children, ...props } = this.props;
