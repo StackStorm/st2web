@@ -54,7 +54,7 @@
     "@stackstorm/module-value-format": "^2.0.0-pre.5",
     "@stackstorm/st2-style": "^2.0.0-pre.5",
     "insert-css": "2.0.0",
-    "prop-types": "15.6.1",
+    "prop-types": "15.6.2",
     "react-textarea-autosize": "5.2.1",
     "validator": "5.7.0"
   },
