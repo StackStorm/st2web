@@ -7,8 +7,8 @@ angular.module('main')
     // hosts: [
     //   {
     //     name: 'Dev Env',
-    //     url: '//172.168.50.50:9101/api',
-    //     auth: '//172.168.50.50:9101/auth',
+    //     url: 'https://:443/api',
+    //     auth: 'https://:443/auth',
     //   },
     //   {
     //     name: 'Express',
