@@ -6,7 +6,6 @@ import { ReactTester } from '@stackstorm/module-test-utils';
 import '@stackstorm/module-test-utils/bootstrap/st2constants';
 import '@stackstorm/module-test-utils/bootstrap/storage';
 import '@stackstorm/module-test-utils/bootstrap/location';
-import api from '@stackstorm/module-api';
 import Login from '..';
 
 describe(`${Login.name} Component`, () => {
@@ -35,8 +34,9 @@ describe(`${Login.name} Component`, () => {
   });
 
   it('works with no hosts', () => {
-    const oldServers = api.servers;
-    api.servers = undefined;
+    window.st2constants.st2Config = {
+      hosts: undefined,
+    };
 
     const instance = ReactTester.create(
       <Login
@@ -51,18 +51,19 @@ describe(`${Login.name} Component`, () => {
     expect(instance.node.children[0].props.children[3].props.children.type).to.equal('input');
     expect(instance.node.children[0].props.children[3].props.children.props.name).to.equal('username');
 
-    api.servers = oldServers;
+    window.st2constants.st2Config = {};
   });
 
   it('works with one host', () => {
-    const oldServers = api.servers;
-    api.servers = [
-      {
-        name: 'Dev Env',
-        url: '//172.168.50.50:9101/api',
-        auth: '//172.168.50.50:9101/auth',
-      },
-    ];
+    window.st2constants.st2Config = {
+      hosts: [
+        {
+          name: 'Dev Env',
+          url: '//172.168.50.50:9101/api',
+          auth: '//172.168.50.50:9101/auth',
+        },
+      ],
+    };
 
     const instance = ReactTester.create(
       <Login
@@ -77,23 +78,24 @@ describe(`${Login.name} Component`, () => {
     expect(instance.node.children[0].props.children[3].props.children.type).to.equal('input');
     expect(instance.node.children[0].props.children[3].props.children.props.name).to.equal('username');
 
-    api.servers = oldServers;
+    window.st2constants.st2Config = {};
   });
 
   it('works with multiple hosts', () => {
-    const oldServers = api.servers;
-    api.servers = [
-      {
-        name: 'Dev Env',
-        url: '//172.168.50.50:9101/api',
-        auth: '//172.168.50.50:9101/auth',
-      },
-      {
-        name: 'Express',
-        url: '//172.168.90.50:9101/api',
-        auth: '//172.168.90.50:9101/auth',
-      },
-    ];
+    window.st2constants.st2Config = {
+      hosts: [
+        {
+          name: 'Dev Env',
+          url: '//172.168.50.50:9101/api',
+          auth: '//172.168.50.50:9101/auth',
+        },
+        {
+          name: 'Express',
+          url: '//172.168.90.50:9101/api',
+          auth: '//172.168.90.50:9101/auth',
+        },
+      ],
+    };
 
     const instance = ReactTester.create(
       <Login
@@ -110,6 +112,6 @@ describe(`${Login.name} Component`, () => {
     expect(instance.node.children[0].props.children[3].props.children.type).to.equal('input');
     expect(instance.node.children[0].props.children[3].props.children.props.name).to.equal('username');
 
-    api.servers = oldServers;
+    window.st2constants.st2Config = {};
   });
 });
