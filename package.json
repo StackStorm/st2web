@@ -101,7 +101,7 @@
     "postcss-preset-env": "5.1.0",
     "request": "2.87.0",
     "sinon": "6.0.0",
-    "sinon-chai": "2.14.0",
+    "sinon-chai": "3.2.0",
     "zombie": "5.0.8"
   }
 }
