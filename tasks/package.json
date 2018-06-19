@@ -50,7 +50,7 @@
     "require-dir": "1.0.0",
     "undertaker-forward-reference": "1.0.2",
     "vinyl-buffer": "1.0.1",
-    "vinyl-source-stream": "1.1.2",
+    "vinyl-source-stream": "2.0.0",
     "watchify": "3.11.0",
     "yargs": "11.0.0"
   },
