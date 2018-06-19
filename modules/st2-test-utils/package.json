@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "react-test-renderer": "16.4.0"
+    "react-test-renderer": "16.4.1"
   },
   "devDependencies": {
     "babelify": "8.0.0"

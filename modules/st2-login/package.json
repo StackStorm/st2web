@@ -67,7 +67,7 @@
     "postcss-preset-env": "5.1.0"
   },
   "peerDependencies": {
-    "react": "16.4.0",
-    "react-dom": "16.4.0"
+    "react": "16.4.1",
+    "react-dom": "16.4.1"
   }
 }
