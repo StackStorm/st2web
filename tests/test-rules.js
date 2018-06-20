@@ -324,7 +324,10 @@ describe('User visits rules page', function () {
 
   after(() => {
     util.client().then((client) => {
-      return client.rules.delete(`packs.test${uniqueId}`)
+      return client.request({
+        mathod: 'delete',
+        url: `/rules/packs.test${uniqueId}`,
+      })
         .then(() => console.warn(`Warning: Rule "packs.test${uniqueId}" has not been properly deleted`)) // eslint-disable-line no-console
         .catch(() => {})
       ;

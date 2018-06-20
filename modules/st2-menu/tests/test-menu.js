@@ -4,7 +4,6 @@ import React from 'react';
 import { ReactTester } from '@stackstorm/module-test-utils';
 
 import '@stackstorm/module-test-utils/bootstrap/st2constants';
-import '@stackstorm/module-test-utils/bootstrap/st2constants';
 import '@stackstorm/module-test-utils/bootstrap/location';
 import api from '@stackstorm/module-api';
 
