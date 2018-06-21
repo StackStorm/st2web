@@ -19,14 +19,11 @@ export default class FlowLink extends React.Component {
     })).replace(/=/g, '');
   }
 
-  getUrlProps() {
-    return {
-      href: 'https://www.extremenetworks.com/product/workflow-composer/?utm_source=flow_link',
-      target: '_blank',
-    };
-  }
-
   render() {
+    if (!this.getUrlProps) {
+      return false;
+    }
+
     const { className, action, ...props } = this.props;
 
     return (
