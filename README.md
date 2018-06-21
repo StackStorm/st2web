@@ -96,7 +96,7 @@ Testing
 -------
 We're using [zombie](https://github.com/assaf/zombie) as our headless browser for integration testing. It is a simulated environment (virtual DOM) so there's no need in WebDriver or a real browser to be present.
 
-First of all, you need to make sure you have a running copy of st2 to run tests against. We're using [official docker images](stackstorm/st2-docker) for our automated tests, but the [AIO](https://docs.stackstorm.com/install/index.html) deployment will work just as good (though will take more time to deploy).
+First of all, you need to make sure you have a running copy of st2 to run tests against. We're using [official docker images](https://github.com/stackstorm/st2-docker) for our automated tests, but the [AIO](https://docs.stackstorm.com/install/index.html) deployment will work just as good (though will take more time to deploy).
 
 To let test runner know the details of your st2 installation, you need to set ST2_HOST, ST2_USERNAME and ST2_PASSWORD env variables, then call `gulp test`.
 
