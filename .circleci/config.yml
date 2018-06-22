@@ -4,26 +4,67 @@
 # PACKAGECLOUD_ORGANIZATION (default: stackstorm)
 # PACKAGECLOUD_TOKEN
 
+test_steps: &test_steps
+  steps:
+    - checkout
+    - run:
+        name: Install system dependencies
+        command: sudo npm install -g lerna yarn
+    - run:
+        name: Install package dependencies
+        command: sudo lerna bootstrap
+    - run:
+        name: Run unit tests
+        command: yarn run test-unit
+    - run:
+        name: Build production version
+        command: yarn run build
+    - run:
+        name: Create Workspace
+        command: mkdir -p workspace/hashes
+    - run:
+        name: Compute production version hash
+        command: git ls-files -s build | git hash-object --stdin > workspace/hashes/hash_${NODE_VERSION}
+    - persist_to_workspace:
+        root: workspace
+        paths:
+          - hashes
+
 version: 2
 jobs:
-  build:
+  test_node10:
+    docker:
+      - image: circleci/node:10
+    <<: *test_steps
+  test_node9:
+    docker:
+      - image: circleci/node:9
+    <<: *test_steps
+  test_node8:
+    docker:
+      - image: circleci/node:8
+    <<: *test_steps
+  test_node6:
+    docker:
+      - image: circleci/node:6
+    <<: *test_steps
+  
+  compare_results:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: diff -q --from-file /tmp/workspace/hashes/*
+
+  test_functional:
     machine: true
     environment:
-      DEPLOY_PACKAGES: 1
-      DEB: trusty xenial
-      RPM: el6 el7
       ST2_HOST: localhost
       ST2_USERNAME: admin
       ST2_PASSWORD: 123
     steps:
       - checkout
-      - run:
-          name: Download helper scripts (for packagecloud)
-          command: |
-            mkdir ~/scripts
-            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
-            chmod 755 ~/scripts/packagecloud.sh
-            echo "export PATH=${HOME}/scripts:${PATH}" >> $BASH_ENV
       - run:
           name: Switch to supported version of Node
           command: |
@@ -37,27 +78,11 @@ jobs:
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
             echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
       - run:
-          name: Export package version
-          command: |
-            PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
-            PKG_RELEASE=$(packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
-            echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
-            echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
-      - run:
           name: Install system dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install rpm jq devscripts debhelper
-            gem install package_cloud
-            npm install --global lerna yarn
+          command: npm install -g lerna yarn
       - run:
           name: Install package dependencies
           command: lerna bootstrap
-
-      - run:
-          name: Run unit tests
-          command: npm run test-unit
-
       - run:
           name: Update Docker Compose
           command: |
@@ -85,59 +110,160 @@ jobs:
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
       - run:
-          name: Run functional tests
-          command: npm run test-functional
-      - run:
-          name: Reset test containers
-          command: |
-            docker-compose -f ~/st2-docker/docker-compose.yml down
-            docker-compose -f ~/st2-docker/docker-compose.yml up -d
-            sleep 60
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
-      - run:
-          name: Recheck test containers
-          command: |
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
-      - run:
           name: Run tests on production version
           command: npm run test-production
 
-      - run:
-          name: Create directories for Artifacts
-          command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
-      - run:
-          name: Fetch container logs
-          command: |
-            for container in $(docker ps -a --format "{{.Names}}"); do
-              docker logs ${container} > ~/artifacts/logs/${container}.log 2>&1
-            done
-      - run:
-          name: Make deb packages
-          command: |
-            make deb
-            echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} ~/artifacts/{}
-      - run:
-          name: Make RPM packages
-          command: |
-            make rpm
-            echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm ~/artifacts/{}
-      - store_artifacts:
-          path: ~/artifacts
-          destination: packages
-      - deploy:
-          name: Maybe Deploy
-          command: |
-            if [[ "${CIRCLE_BRANCH}" == "master" || "${CIRCLE_BRANCH}" =~ v[0-9]+(\.[0-9]+)* || "${CIRCLE_BRANCH}" == "feature/circleci" ]]; then
-              for distro in ${RPM} ${DEB}; do
-                packagecloud.sh deploy $distro ~/artifacts/$distro
-              done
-            fi
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test_node10
+      - test_node9
+      - test_node8
+      - test_node6
+      - compare_results:
+          requires:
+            - test_node10
+            - test_node9
+            - test_node8
+            - test_node6
+      - test_functional:
+          requires:
+            - compare_results
 
-experimental:
-  notify:
-    branches:
-      only:
-        - master
-        - /v[0-9]+(\.[0-9]+)*/
+
+#   build:
+#     machine: true
+#     environment:
+#       DEPLOY_PACKAGES: 1
+#       DEB: trusty xenial
+#       RPM: el6 el7
+#       ST2_HOST: localhost
+#       ST2_USERNAME: admin
+#       ST2_PASSWORD: 123
+#     steps:
+#       - checkout
+#       - run:
+#           name: Download helper scripts (for packagecloud)
+#           command: |
+#             mkdir ~/scripts
+#             wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/scripts/packagecloud.sh
+#             chmod 755 ~/scripts/packagecloud.sh
+#             echo "export PATH=${HOME}/scripts:${PATH}" >> $BASH_ENV
+#       - run:
+#           name: Switch to supported version of Node
+#           command: |
+#             set +e
+#             export NVM_DIR="/opt/circleci/.nvm"
+#             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+#             nvm install 10.4.1
+#             nvm alias default 10.4.1
+
+#             # Each step uses the same `$BASH_ENV`, so need to modify it
+#             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+#             echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+#       - run:
+#           name: Export package version
+#           command: |
+#             PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
+#             PKG_RELEASE=$(packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
+#             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
+#             echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
+#       - run:
+#           name: Install system dependencies
+#           command: |
+#             sudo apt-get update
+#             sudo apt-get install rpm jq devscripts debhelper
+#             gem install package_cloud
+#             npm install --global lerna yarn
+#       - run:
+#           name: Install package dependencies
+#           command: lerna bootstrap
+
+#       - run:
+#           name: Run unit tests
+#           command: npm run test-unit
+
+#       - run:
+#           name: Update Docker Compose
+#           command: |
+#             set -x
+#             sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+#             sudo chmod +x /usr/local/bin/docker-compose
+#       - run:
+#           name: Clone test containers
+#           command: git clone --depth 1 https://github.com/StackStorm/st2-docker ~/st2-docker
+#       - run:
+#           name: Update env variables for test containers
+#           command: |
+#             make -C ~/st2-docker env
+#             echo -e "ST2_USER=${ST2_USERNAME}\nST2_PASSWORD=${ST2_PASSWORD}" > ~/st2-docker/conf/stackstorm.env
+#             cat ~/st2-docker/conf/stackstorm.env
+#       - run:
+#           name: Start test containers
+#           command: |
+#             docker-compose -f ~/st2-docker/docker-compose.yml up -d
+#             sleep 60
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
+#       - run:
+#           name: Check test containers
+#           command: |
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
+#       - run:
+#           name: Run functional tests
+#           command: npm run test-functional
+#       - run:
+#           name: Reset test containers
+#           command: |
+#             docker-compose -f ~/st2-docker/docker-compose.yml down
+#             docker-compose -f ~/st2-docker/docker-compose.yml up -d
+#             sleep 60
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
+#       - run:
+#           name: Recheck test containers
+#           command: |
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
+#             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
+#       - run:
+#           name: Run tests on production version
+#           command: npm run test-production
+
+#       - run:
+#           name: Create directories for Artifacts
+#           command: mkdir ~/artifacts && cd ~/artifacts && mkdir ${DEB} ${RPM} logs
+#       - run:
+#           name: Fetch container logs
+#           command: |
+#             for container in $(docker ps -a --format "{{.Names}}"); do
+#               docker logs ${container} > ~/artifacts/logs/${container}.log 2>&1
+#             done
+#       - run:
+#           name: Make deb packages
+#           command: |
+#             make deb
+#             echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} ~/artifacts/{}
+#       - run:
+#           name: Make RPM packages
+#           command: |
+#             make rpm
+#             echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm ~/artifacts/{}
+#       - store_artifacts:
+#           path: ~/artifacts
+#           destination: packages
+#       - deploy:
+#           name: Maybe Deploy
+#           command: |
+#             if [[ "${CIRCLE_BRANCH}" == "master" || "${CIRCLE_BRANCH}" =~ v[0-9]+(\.[0-9]+)* || "${CIRCLE_BRANCH}" == "feature/circleci" ]]; then
+#               for distro in ${RPM} ${DEB}; do
+#                 packagecloud.sh deploy $distro ~/artifacts/$distro
+#               done
+#             fi
+
+# experimental:
+#   notify:
+#     branches:
+#       only:
+#         - master
+#         - /v[0-9]+(\.[0-9]+)*/
