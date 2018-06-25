@@ -15,7 +15,7 @@ describe(`${Label.name} Component`, () => {
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.node.children[0].classList).to.contain('foobar');
     });
 
     it('proxies extra props', () => {
@@ -26,7 +26,7 @@ describe(`${Label.name} Component`, () => {
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.node.children[0].props.foo).to.equal('bar');
     });
   });
 });

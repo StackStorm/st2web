@@ -29,10 +29,10 @@ export default class HistoryPopup extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     return {
-      ...state,
       payload: {
         ...props.payload,
       },
+      ...state,
     };
   }
 

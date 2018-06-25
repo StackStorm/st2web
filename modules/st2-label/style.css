@@ -51,6 +51,12 @@
 
 .warning {
   background-color: #FF6600;
+
+  &:before {
+    display: none;
+
+    content: "\e967";
+  }
 }
 
 .danger {
@@ -90,18 +96,27 @@
   box-sizing: border-box;
   width: 16px;
   height: 16px;
-  padding: 0;
+  padding: 2px 2.5px;
 
   color: transparent;
   border-radius: 50%;
 
   &:before {
-    display: none;
+    display: initial;
+
+    color: white;
+
+    font-weight: bold;
   }
 }
 
 .short .progress {
   animation: breathe 1s ease-in-out infinite alternate;
+
+  &:before {
+    content: none;
+    animation: none;
+  }
 }
 
 @keyframes breathe {

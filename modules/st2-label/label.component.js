@@ -52,8 +52,10 @@ export default class Label extends React.Component {
     }
 
     return (
-      <span {...props} className={cx(style.label, className, state)}>
-        { capitalize(status) }
+      <span className={cx(style.component)}>
+        <span {...props} className={cx(style.label, className, state)}>
+          { capitalize(status) }
+        </span>
       </span>
     );
   }
