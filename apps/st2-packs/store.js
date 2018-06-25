@@ -57,48 +57,50 @@ const packReducer = (state = {}, input) => {
     }
 
     case 'INSTALL_PACK': {
+      let targetPack = _.find(packs, { ref: input.ref });
+
       switch(input.status) {
         case 'success':
-          pack = { ...pack, status: 'installed' };
-          packs = mergePacks(packs, [{ ref: input.ref, status: 'installed' }]);
+          targetPack = { ...targetPack, status: 'installed' };
           break;
         case 'error':
-          pack = { ...pack, status: 'available' };
-          packs = mergePacks(packs, [{ ref: input.ref, status: 'available' }]);
+          targetPack = { ...targetPack, status: 'available' };
           break;
         default:
-          pack = { ...pack, status: 'installing' };
-          packs = mergePacks(packs, [{ ref: input.ref, status: 'installing' }]);
+          targetPack = { ...targetPack, status: 'installing' };
       }
 
+      packs = mergePacks(packs, [ targetPack ]);
       groups = makeGroups(packs, filter);
 
       return {
         ...state,
+        pack: pack.ref === input.ref ? targetPack : pack,
         packs,
         groups,
       };
     }
 
     case 'UNINSTALL_PACK': {
+      let targetPack = _.find(packs, { ref: input.ref });
+
       switch(input.status) {
         case 'success':
-          pack = { ...pack, status: 'available' };
-          packs = mergePacks(packs, [{ ref: input.ref, status: 'available' }]);
+          targetPack = { ...targetPack, status: 'available' };
           break;
         case 'error':
-          pack = { ...pack, status: 'installed' };
-          packs = mergePacks(packs, [{ ref: input.ref, status: 'installed' }]);
+          targetPack = { ...targetPack, status: 'installed' };
           break;
         default:
-          pack = { ...pack, status: 'uninstalling' };
-          packs = mergePacks(packs, [{ ref: input.ref, status: 'uninstalling' }]);
+          targetPack = { ...targetPack, status: 'uninstalling' };
       }
 
+      packs = mergePacks(packs, [ targetPack ]);
       groups = makeGroups(packs, filter);
 
       return {
         ...state,
+        pack: pack.ref === input.ref ? targetPack : pack,
         packs,
         groups,
       };
