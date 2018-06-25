@@ -56,7 +56,7 @@ import EnforcementPanel from './panels/enforcements';
     packSpec,
   }),
   (dispatch, props) => ({
-    onComponentUpdate: () => Promise.all([
+    onComponentUpdate: () => props.id && Promise.all([
       dispatch({
         type: 'FETCH_RULE',
         promise: api.request({
@@ -177,6 +177,10 @@ export default class RulesDetails extends React.Component {
   state = {
     editing: null,
     rulePreview: false,
+  }
+
+  componentDidMount() {
+    this.props.onComponentUpdate && this.props.onComponentUpdate();
   }
 
   componentDidUpdate(prevProps) {
