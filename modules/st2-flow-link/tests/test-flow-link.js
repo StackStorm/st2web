@@ -8,7 +8,13 @@ import '@stackstorm/module-test-utils/bootstrap/st2constants';
 import '@stackstorm/module-test-utils/bootstrap/location';
 import api from '@stackstorm/module-api';
 
-import FlowLink from '..';
+import FlowLinkBase from '..';
+
+class FlowLink extends FlowLinkBase {
+  getUrlProps() {
+    return {};
+  }
+}
 
 describe(`${FlowLink.name} Component`, () => {
   before(() => {
