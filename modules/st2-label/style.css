@@ -41,10 +41,6 @@
   background-color: #428bca;
 }
 
-.success {
-  background-color: #00BD49;
-}
-
 .info {
   background-color: #5bc0de;
 }
@@ -59,10 +55,7 @@
   }
 }
 
-.danger {
-  background-color: #E63544;
-}
-
+.danger,
 .failed {
   background-color: #E63544;
   
@@ -73,6 +66,7 @@
   }
 }
 
+.success,
 .succeeded {
   background-color: #00BD49;
   
