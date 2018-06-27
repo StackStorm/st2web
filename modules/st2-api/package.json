@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-api",
-  "version": "2.0.0-pre.9",
+  "version": "2.0.0-pre.10",
   "description": "",
   "main": "api.js",
   "directories": {
