@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/app-packs",
-  "version": "2.0.0-pre.7",
+  "version": "2.0.0-pre.8",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -45,17 +45,17 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "^2.0.0-pre.7",
-    "@stackstorm/module-auto-form": "^2.0.0-pre.7",
-    "@stackstorm/module-flex-table": "^2.0.0-pre.7",
-    "@stackstorm/module-forms": "^2.0.0-pre.7",
-    "@stackstorm/module-highlight": "^2.0.0-pre.7",
-    "@stackstorm/module-menu": "^2.0.0-pre.7",
-    "@stackstorm/module-notification": "^2.0.0-pre.7",
-    "@stackstorm/module-panel": "^2.0.0-pre.7",
-    "@stackstorm/module-portion-bar": "^2.0.0-pre.7",
-    "@stackstorm/module-store": "^2.0.0-pre.7",
-    "@stackstorm/module-title": "^2.0.0-pre.7",
+    "@stackstorm/module-api": "^2.0.0-pre.8",
+    "@stackstorm/module-auto-form": "^2.0.0-pre.8",
+    "@stackstorm/module-flex-table": "^2.0.0-pre.8",
+    "@stackstorm/module-forms": "^2.0.0-pre.8",
+    "@stackstorm/module-highlight": "^2.0.0-pre.8",
+    "@stackstorm/module-menu": "^2.0.0-pre.8",
+    "@stackstorm/module-notification": "^2.0.0-pre.8",
+    "@stackstorm/module-panel": "^2.0.0-pre.8",
+    "@stackstorm/module-portion-bar": "^2.0.0-pre.8",
+    "@stackstorm/module-store": "^2.0.0-pre.8",
+    "@stackstorm/module-title": "^2.0.0-pre.8",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2"
   },
