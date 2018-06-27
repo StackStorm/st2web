@@ -115,6 +115,7 @@ export default class HistoryFlexCard extends React.Component {
               <div className="st2-flex-card__column">
                 { execution.context.chain ? execution.context.chain.name : null }
                 { execution.context.mistral ? execution.context.mistral.task_name : null }
+                { execution.context.orchestra ? execution.context.orchestra.task_name : null }
               </div>
             ) : null }
 
