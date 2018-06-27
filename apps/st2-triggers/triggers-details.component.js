@@ -124,9 +124,9 @@ export default class TriggersDetails extends React.Component {
     return (
       <PanelDetails data-test="details">
         <DetailsHeader
-          status={trigger.enabled ? 'enabled' : 'disabled'}
           title={( <Link to={`/triggers/${trigger.ref}`}>{trigger.ref}</Link> )}
           subtitle={trigger.description}
+          {...(sensor && { status: sensor.enabled ? 'enabled' : 'disabled' })}
         />
         <DetailsSwitch
           sections={[
