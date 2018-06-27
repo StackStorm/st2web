@@ -176,7 +176,7 @@ export default class HistoryPanel extends React.Component {
     this._source.removeEventListener('st2.execution__delete', this._executionDeleteListener);
   }
 
-  fetchGroups({ page, activeFilters, filter }) {
+  fetchGroups({ page = 1, activeFilters, filter }) {
     return store.dispatch({
       type: 'FETCH_GROUPS',
       promise: api.request({
@@ -185,7 +185,7 @@ export default class HistoryPanel extends React.Component {
           ...mapValues(f => f[0], activeFilters),
           parent: 'null',
           limit: PER_PAGE,
-          page,
+          offset: PER_PAGE * (page - 1),
           filter,
           exclude_attributes: 'result,trigger_instance',
         },
