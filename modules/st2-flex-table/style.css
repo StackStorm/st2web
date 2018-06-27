@@ -365,7 +365,8 @@
   }
 
   &--active &__header-type,
-  &--active &__header-status {
+  &--active &__header-status,
+  &--active &__status {
     color: white;
   }
 

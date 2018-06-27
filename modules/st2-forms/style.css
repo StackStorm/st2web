@@ -90,7 +90,7 @@
       font-weight: bold;
     }
 
-    &--flat {
+    &&--flat {
       color: #008ceb;
       background-color: transparent;
       box-shadow: none;
