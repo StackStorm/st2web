@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-pack-icon",
-  "version": "2.0.0-pre.8",
+  "version": "2.0.0-pre.9",
   "description": "",
   "main": "pack-icon.component.js",
   "directories": {
@@ -53,9 +53,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "^2.0.0-pre.8",
-    "@stackstorm/module-notification": "^2.0.0-pre.8",
-    "@stackstorm/st2-style": "^2.0.0-pre.8",
+    "@stackstorm/module-api": "^2.0.0-pre.9",
+    "@stackstorm/module-notification": "^2.0.0-pre.9",
+    "@stackstorm/st2-style": "^2.0.0-pre.9",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2"
   },
