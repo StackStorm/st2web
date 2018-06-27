@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-menu",
-  "version": "2.0.0-pre.9",
+  "version": "2.0.0-pre.10",
   "description": "",
   "main": "menu.component.js",
   "directories": {
@@ -53,8 +53,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-api": "^2.0.0-pre.9",
-    "@stackstorm/st2-style": "^2.0.0-pre.9",
+    "@stackstorm/module-api": "^2.0.0-pre.10",
+    "@stackstorm/st2-style": "^2.0.0-pre.10",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2"
   },
