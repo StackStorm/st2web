@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-highlight",
-  "version": "2.0.0-pre.10",
+  "version": "2.0.0-pre.11",
   "description": "",
   "main": "highlight.component.js",
   "directories": {
@@ -66,7 +66,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0-pre.10",
+    "@stackstorm/st2-style": "^2.0.0-pre.11",
     "insert-css": "2.0.0",
     "prismjs": "github:enykeev/prism#v0.0.1",
     "prop-types": "15.6.2"

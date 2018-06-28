@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-criteria",
-  "version": "2.0.0-pre.10",
+  "version": "2.0.0-pre.11",
   "description": "",
   "main": "criteria.component.js",
   "directories": {
@@ -53,8 +53,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "^2.0.0-pre.10",
-    "@stackstorm/st2-style": "^2.0.0-pre.10",
+    "@stackstorm/module-auto-form": "^2.0.0-pre.11",
+    "@stackstorm/st2-style": "^2.0.0-pre.11",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2"
   },
