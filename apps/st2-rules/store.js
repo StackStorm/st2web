@@ -301,10 +301,10 @@ const ruleReducer = (state = {}, input) => {
       switch(input.status) {
         case 'success':
           const index = rules.findIndex(({ id }) => id === input.payload.id);
-          const rule = rules[index];
+          rule = { ...input.payload, action: rules[index].action, trigger: rules[index].trigger };
           rules = [
             ...rules.slice(0, index),
-            { ...input.payload, action: rule.action, trigger: rule.trigger },
+            rule,
             ...rules.slice(index + 1),
           ];
           groups = makeGroups(rules, filter);
@@ -317,6 +317,7 @@ const ruleReducer = (state = {}, input) => {
 
       return {
         ...state,
+        rule,
         rules,
         groups,
       };
