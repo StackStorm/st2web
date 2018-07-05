@@ -749,6 +749,30 @@
 
     &-body {
       flex: 1;
+      display: table;
+
+      border-spacing: 10px 0;
     }
+  }
+
+  &__line {
+      display: table-row;
+
+      &-key,
+      &-type,
+      &-name,
+      &-value {
+        display: table-cell;
+      }
+
+      &-name,
+      &-key {
+        min-width: 150px;
+        width: initial;
+      }
+
+      &-value {
+        width: 100%;
+      }
   }
 }
