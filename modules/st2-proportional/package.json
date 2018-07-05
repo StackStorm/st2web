@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-proportional",
-  "version": "2.0.0-pre.11",
+  "version": "2.0.0",
   "description": "",
   "main": "proportional.js",
   "directories": {

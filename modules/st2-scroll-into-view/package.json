@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-scroll-into-view",
-  "version": "2.0.0-pre.11",
+  "version": "2.0.0",
   "description": "",
   "main": "scroll-into-view.js",
   "directories": {
