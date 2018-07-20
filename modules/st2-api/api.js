@@ -75,6 +75,7 @@ export class API {
           url: `${this.server.auth || this.server.api}/tokens`,
           headers: {
             'Authorization': `Basic ${toBase64(`${username}:${password}`)}`,
+            'content-type': 'application/json'
           },
         });
 
