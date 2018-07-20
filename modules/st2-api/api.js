@@ -150,12 +150,14 @@ export class API {
       raw = false,
     } = opts;
 
-    const headers = {};
+    const headers = {
+      'content-type': 'application/json'
+    };
 
     if (this.token && this.token.token) {
       headers['x-auth-token'] = this.token.token;
     }
-
+    
     const config = {
       method,
       url: this.route(opts),
