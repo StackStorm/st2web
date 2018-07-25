@@ -7,6 +7,8 @@ const Noty = (function() {
   return require('noty');
 })();
 
+import router from '@stackstorm/module-router/methods';
+
 import './style.css';
 
 export class Notification {
@@ -27,8 +29,6 @@ export class Notification {
   }
 
   notify(type, text, { buttons = [], err, execution_id, ...options } = {}) {
-    const history = window.routerHistory;
-
     if (err) {
       let expanded = !!execution_id;
       let stack = null;
@@ -63,13 +63,11 @@ export class Notification {
       }
     }
 
-    if (history) {
-      if (execution_id) {
-        buttons.push({
-          text: 'Show execution',
-          onClick: () => history.push(`/history/${execution_id}`),
-        });
-      }
+    if (execution_id) {
+      buttons.push({
+        text: 'Show execution',
+        onClick: () => router.push({ pathname: `/history/${execution_id}` }),
+      });
     }
 
     return new Noty({

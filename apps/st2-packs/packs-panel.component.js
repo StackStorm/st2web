@@ -26,6 +26,8 @@ import {
 import PacksDetails from './packs-details.component';
 import PacksFlexCard from './packs-flex-card.component';
 
+import router from '@stackstorm/module-router';
+
 import './style.css';
 
 function waitExecution(execution_id, record) {
@@ -68,7 +70,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class PacksPanel extends React.Component {
   static propTypes = {
-    history: PropTypes.object,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
@@ -142,8 +143,7 @@ export default class PacksPanel extends React.Component {
       return;
     }
 
-    const { history } = this.props;
-    history.push(pathname);
+    router.push({ pathname });
   }
 
   handleSelect(id) {

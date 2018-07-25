@@ -1,8 +1,8 @@
 {
-  "name": "@stackstorm/module-store",
+  "name": "@stackstorm/module-router",
   "version": "2.0.0",
   "description": "",
-  "main": "store.js",
+  "main": "index.js",
   "directories": {
     "test": "tests"
   },
@@ -27,8 +27,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-router": "^2.0.0",
-    "redux": "3.7.2"
+    "lodash": "4.17.10",
+    "react-router-dom": "4.3.1"
   },
   "devDependencies": {
     "babelify": "8.0.0"

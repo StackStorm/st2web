@@ -36,6 +36,8 @@ import View from '@stackstorm/module-view';
 import HistoryDetails from './history-details.component';
 import HistoryFlexCard from './history-flex-card.component';
 
+import router from '@stackstorm/module-router';
+
 import './style.css';
 
 const PER_PAGE = 50;
@@ -66,7 +68,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class HistoryPanel extends React.Component {
   static propTypes = {
-    history: PropTypes.object.isRequired,
     location: PropTypes.shape({
       pathname: PropTypes.string,
       search: PropTypes.string,
@@ -275,8 +276,7 @@ export default class HistoryPanel extends React.Component {
       return;
     }
 
-    const { history } = this.props;
-    history.push(`${pathname}${search}`);
+    router.push({ search, pathname });
   }
 
   handleSelect(id) {

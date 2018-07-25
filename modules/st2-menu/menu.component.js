@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import { Link } from 'react-router-dom';
+import Link from '@stackstorm/module-router/link.component';
 
 import componentStyle from './style.css';
 
