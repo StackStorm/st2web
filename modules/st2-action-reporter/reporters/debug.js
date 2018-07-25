@@ -4,6 +4,6 @@ import Highlight from '@stackstorm/module-highlight';
 
 export default function debug(execution) {
   return (
-    <Highlight well code={execution.result} />
+    <Highlight well code={execution.result} type="result" id={execution.id} />
   );
 }

@@ -207,7 +207,7 @@ export default class HistoryDetails extends React.Component {
                   </DetailsPanelBody>
                   { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
                     <DetailsPanelBody>
-                      <Highlight code={execution.trigger_instance.payload} />
+                      <Highlight code={execution.trigger_instance.payload} lines={10} type="trigger_instance" id={execution.trigger_instance.id} />
                     </DetailsPanelBody>
                   ) : null }
                 </DetailsPanel>
@@ -236,7 +236,7 @@ export default class HistoryDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="execution_code">
-              <Highlight lines={20} code={execution} />
+              <Highlight code={execution} type="execution" id={execution.id} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>
