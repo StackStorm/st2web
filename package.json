@@ -61,6 +61,7 @@
     "@stackstorm/app-triggers": "^2.0.0",
     "@stackstorm/module-api": "^2.0.0",
     "@stackstorm/module-login": "^2.0.0",
+    "@stackstorm/module-router": "^2.0.0",
     "@stackstorm/st2-style": "^2.0.0",
     "classnames": "2.2.6",
     "insert-css": "2.0.0",
@@ -70,7 +71,6 @@
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-redux": "5.0.7",
-    "react-router-dom": "4.3.1",
     "redux": "3.7.2",
     "urijs": "1.19.1"
   },

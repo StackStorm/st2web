@@ -29,6 +29,8 @@ import RulesFlexCard from './rules-flex-card.component';
 import RulesDetails from './rules-details.component';
 import RulesPopup from './rules-popup.component';
 
+import router from '@stackstorm/module-router';
+
 import './style.css';
 
 @connect((state, props) => {
@@ -58,7 +60,6 @@ class FlexTableWrapper extends FlexTable {
 }))
 export default class RulesPanel extends React.Component {
   static propTypes = {
-    history: PropTypes.object,
     location: PropTypes.shape({
       search: PropTypes.string,
     }),
@@ -172,8 +173,7 @@ export default class RulesPanel extends React.Component {
       return;
     }
 
-    const { history } = this.props;
-    history.push(pathname);
+    router.push({ pathname });
   }
 
   handleSelect(id) {
@@ -192,8 +192,7 @@ export default class RulesPanel extends React.Component {
   }
 
   handleCreatePopup() {
-    const { history } = this.props;
-    history.push('/rules/new');
+    router.push({ pathname: '/rules/new' });
   }
 
   render() {

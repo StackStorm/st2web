@@ -29,6 +29,8 @@ import View from '@stackstorm/module-view';
 import ActionsDetails from './actions-details.component';
 import ActionsFlexCard from './actions-flex-card.component';
 
+import router from '@stackstorm/module-router';
+
 import './style.css';
 
 @connect((state, props) => {
@@ -57,7 +59,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class ActionsPanel extends React.Component {
   static propTypes = {
-    history: PropTypes.object,
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }).isRequired,
@@ -140,8 +141,7 @@ export default class ActionsPanel extends React.Component {
       return;
     }
 
-    const { history } = this.props;
-    history.push(pathname);
+    router.push({ pathname });
   }
 
   handleSelect(id) {

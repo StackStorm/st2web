@@ -26,6 +26,8 @@ import {
 import TriggersFlexCard from './triggers-flex-card.component';
 import TriggersDetails from './triggers-details.component';
 
+import router from '@stackstorm/module-router';
+
 import './style.css';
 
 @connect((state, props) => {
@@ -54,7 +56,6 @@ class FlexTableWrapper extends FlexTable {
 })
 export default class TriggersPanel extends React.Component {
   static propTypes = {
-    history: PropTypes.object,
     location: PropTypes.shape({
       search: PropTypes.string,
     }),
@@ -141,8 +142,7 @@ export default class TriggersPanel extends React.Component {
       return;
     }
 
-    const { history } = this.props;
-    history.push(pathname);
+    router.push({ pathname });
   }
 
   handleSelect(id) {

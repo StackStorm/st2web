@@ -1,26 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import {
-  Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom';
-import createHashHistory from 'history/createHashHistory';
+import { Provider } from 'react-redux';
 
 import './style.css';
 
-import api from '@stackstorm/module-api';
-import Login from '@stackstorm/module-login';
+import store from '@stackstorm/module-store';
+
+import { Router } from '@stackstorm/module-router';
 
 import Actions from '@stackstorm/app-actions';
 import Triggers from '@stackstorm/app-triggers';
 import History from '@stackstorm/app-history';
 import Packs from '@stackstorm/app-packs';
 import Rules from '@stackstorm/app-rules';
-
-const history = window.routerHistory = createHashHistory({});
 
 const routes = [
   Actions,
@@ -30,44 +22,6 @@ const routes = [
   Rules,
 ];
 
-export class Container extends React.Component {
-  render() {
-    return (
-      <div className="wrapper">
-        <Router history={history}>
-          <Switch>
-            <Route exact path="/" render={() => <Redirect to="/history" />} />
-            { routes.map(({ url, Component }) => {
-              if (!url) {
-                return null;
-              }
 
-              return (
-                <Route
-                  key={url}
-                  path={`${url}/:ref?/:section?`}
-                  render={({ history, match, location }) => {
-                    if (!api.isConnected()) {
-                      return <Login onConnect={() => history.replace()} />;
-                    }
 
-                    return (
-                      <Component
-                        history={history}
-                        match={match}
-                        location={location}
-                        routes={routes}
-                      />
-                    );
-                  }}
-                />
-              );
-            }) }
-          </Switch>
-        </Router>
-      </div>
-    );
-  }
-}
-
-ReactDOM.render(<Container />, document.querySelector('#container'));
+ReactDOM.render(<Provider store={store}><Router routes={routes} /></Provider>, document.querySelector('#container'));
