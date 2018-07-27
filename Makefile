@@ -1,7 +1,7 @@
 COMPONENT := $(notdir $(CURDIR))
 PKG_RELEASE ?= 1
 PKG_VERSION ?= $(shell node -e "console.log(require('./package.json').st2_version)")
-PREFIX ?= /opt/stackstorm/static/webui
+PREFIX ?= /opt/stackstorm/webui
 CHANGELOG_COMMENT ?= "automated build, version: $(PKG_VERSION)"
 #DEB_EPOCH := $(shell echo $(PKG_VERSION) | grep -q dev || echo '1')
 DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || echo stable)
