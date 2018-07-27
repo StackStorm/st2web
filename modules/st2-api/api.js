@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import url from 'url';
 import axios from 'axios';
+import buildURL from 'axios/lib/helpers/buildURL';
 
 let _source;
 
@@ -169,6 +170,17 @@ export class API {
       transformResponse: [],
       data,
       withCredentials: true,
+      paramsSerializer: params => {
+        params = _.mapValues(params, param => {
+          if (_.isArray(param)) {
+            return param.join(',');
+          }
+          
+          return param;
+        });
+
+        return buildURL('', params).substr(1);
+      },
     };
   
     if (this.rejectUnauthorized === false) {
