@@ -84,7 +84,12 @@ export default class ActionsPanel extends React.Component {
       promise: api.request({ 
         path: '/actions', 
         query: {
-          exclude_attributes: 'parameters,notify',
+          include_attributes: [
+            'ref',
+            'name',
+            'description',
+            'runner_type',
+          ],
         },
       })
         .catch((err) => {
