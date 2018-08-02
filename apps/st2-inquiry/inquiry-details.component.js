@@ -8,6 +8,7 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import { Link } from '@stackstorm/module-router';
+import AutoForm from '@stackstorm/module-auto-form';
 import Highlight from '@stackstorm/module-highlight';
 import {
   PanelDetails,
@@ -16,16 +17,46 @@ import {
   DetailsBody,
   DetailsPanel,
   DetailsPanelBody,
-  DetailsPanelBodyLine,
+  DetailsToolbar,
+  DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
+import Button from '@stackstorm/module-forms/button.component';
 
-@connect((state) => {
-  const { inquiry } = state;
-  return { inquiry };
-})
+@connect(
+  (state) => {
+    const { inquiry } = state;
+    return { inquiry };
+  }, 
+  (dispatch, props) => {
+    return {
+      handleResponse: (inquiry, response) => dispatch({
+        type: 'RESPOND_INQUIRY',
+        promise: api.request({
+          version: 'exp',
+          method: 'put',
+          path: `/inquiries/${inquiry.id}`,
+        }, {
+          ...inquiry,
+          response,
+        })
+          .then((execution) => {
+            notification.success(`Inquiry "${inquiry.id}" has been responded successfully.`);
+            return execution;
+          })
+          .catch((err) => {
+            notification.error(`Unable to respond to inquiry "${inquiry.id}".`, {
+              err,
+            });
+            throw err;
+          }),
+      }),
+    };
+  }
+)
 export default class InquiryDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
+    handleResponse: PropTypes.func,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -34,6 +65,11 @@ export default class InquiryDetails extends React.Component {
 
   static defaultProps = {
     displayUTC: false,
+  }
+
+  state = {
+    responsePreview: false,
+    responseValue: {},
   }
 
   componentDidMount() {
@@ -72,6 +108,20 @@ export default class InquiryDetails extends React.Component {
     return this.props.handleNavigate({ id, section });
   }
 
+  handleToggleResponsePreview() {
+    let { responsePreview } = this.state;
+
+    responsePreview = !responsePreview;
+
+    this.setState({ responsePreview });
+  }
+
+  handleResponse(e, ...args) {
+    e.preventDefault();
+
+    return this.props.handleResponse(...args);
+  }
+
   render() {
     const { section, inquiry } = this.props;
 
@@ -94,14 +144,24 @@ export default class InquiryDetails extends React.Component {
           current={section}
           onChange={({ path }) => this.handleSection(path)}
         />
+        <DetailsToolbar key="toolbar">
+          <Button value="Respond" data-test="run_response" onClick={(e) => this.handleResponse(e, inquiry, this.state.responseValue)} />
+          <Button flat value="Preview" onClick={() => this.handleToggleResponsePreview()} />
+          <DetailsToolbarSeparator />
+        </DetailsToolbar>
+        { this.state.responsePreview && <Highlight key="preview" well data-test="response_preview" code={this.state.responseValue} /> }
         <DetailsBody>
           { section === 'general' ? (
             <div>
-              <DetailsPanel>
+              <DetailsPanel key="panel" data-test="inquiry_parameters">
                 <DetailsPanelBody>
-                  <DetailsPanelBodyLine label="Status">
-                    { inquiry.id }
-                  </DetailsPanelBodyLine>
+                  <form>
+                    <AutoForm
+                      spec={inquiry.schema}
+                      data={this.state.responseValue}
+                      onChange={responseValue => this.setState({ responseValue })}
+                    />
+                  </form>
                 </DetailsPanelBody>
               </DetailsPanel>
             </div>

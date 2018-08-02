@@ -48,6 +48,26 @@ const inquiryReducer = (state = {}, input) => {
         inquiry,
       };
     }
+
+    case 'RESPOND_INQUIRY': {
+      switch(input.status) {
+        case 'success':
+          const { id, response } = input.payload;
+          if (inquiry.id === id) {
+            inquiry.response = response;
+          }
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        inquiry,
+      };
+    }
   }
 
   return state;
