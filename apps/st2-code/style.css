@@ -8,3 +8,15 @@
 
   overflow: auto;
 }
+
+.warning {
+  background-color: #FFEAA8;
+  border: 1px solid #FFC237;
+
+  color: #826200;
+
+  padding: 5px;
+  border-radius: 3px;
+
+  display: inline-block;
+}

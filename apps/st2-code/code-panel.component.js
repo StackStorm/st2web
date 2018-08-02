@@ -105,7 +105,7 @@ export default class CodePanel extends React.Component {
   render() {
     return (
       <div className={style.component}>
-        <div className={style.warning}>{this.state.warning}</div>
+        { this.state.warning && <div className={style.warning}>{this.state.warning}</div>}
         <Highlight code={this.state.code} expanded />
       </div>
     );
