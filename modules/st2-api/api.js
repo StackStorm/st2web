@@ -47,13 +47,18 @@ export class API {
   }
 
   async connect(server, username, password, remember) {
-    const { token } = server || {};
+    const { token, url, api=url, stream } = server || {};
+    let { auth } = server || {};
 
-    if (server && server.url) {
+    if (auth === true) {
+      auth = api;
+    }
+
+    if (api) {
       this.server = {
-        api: localize(server.url),
-        auth: server.auth && _.isString(server.auth) && localize(server.auth),
-        stream: server.stream && _.isString(server.stream) && localize(server.stream),
+        api: localize(api),
+        auth: localize(auth),
+        stream: stream && localize(stream),
         token: !_.isEmpty(token) ? token : undefined,
       };
     }
@@ -214,6 +219,17 @@ export class API {
     for (const eventName of events) {
       stream.addEventListener(eventName, callback);
     }
+
+    return stream;
+  }
+
+  async listenResults(executionId, callback) {
+    const streamUrl = `${this.server.stream}/executions/${executionId}/output`;
+
+    const stream = await this.createStream(streamUrl);
+
+    stream.addEventListener('st2.execution.output__create', callback);
+    stream.addEventListener('EOF', () => stream.close());
 
     return stream;
   }

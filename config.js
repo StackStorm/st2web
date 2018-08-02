@@ -9,6 +9,7 @@ angular.module('main')
     //     name: 'Dev Env',
     //     url: 'https://:443/api',
     //     auth: 'https://:443/auth',
+    //     stream: 'https://:443/stream',
     //   },
     //   {
     //     name: 'Express',
