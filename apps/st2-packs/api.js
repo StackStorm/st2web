@@ -122,7 +122,7 @@ export default {
   save(id, pack) {
     return api.request({
       method: 'put',
-      path: `/packs/configs/${id}`,
+      path: `/configs/${id}`,
       query: {
         show_secrets: true,
       },
