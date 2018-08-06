@@ -60,6 +60,10 @@ export default class HistoryFlexCard extends React.Component {
       handleToggleUTC,
     } = this.props;
 
+    if (!execution || !view.meta) {
+      return false;
+    }
+
     const expanded = !!childExecutions[execution.id];
 
     return [
