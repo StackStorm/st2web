@@ -80,7 +80,10 @@ export class API {
           url: `${this.server.auth || this.server.api}/tokens`,
           headers: {
             'Authorization': `Basic ${toBase64(`${username}:${password}`)}`,
+            'content-type': 'application/json',
           },
+          // You need to define data field for axios to set content-type header
+          data: null,
         });
 
         if (res.status !== 201) {
@@ -155,12 +158,14 @@ export class API {
       raw = false,
     } = opts;
 
-    const headers = {};
+    const headers = {
+      'content-type': 'application/json',
+    };
 
     if (this.token && this.token.token) {
       headers['x-auth-token'] = this.token.token;
     }
-
+    
     const config = {
       method,
       url: this.route(opts),
