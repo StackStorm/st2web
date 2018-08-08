@@ -115,6 +115,7 @@ export default class Highlight extends React.Component {
     expanded: PropTypes.bool,
     type: PropTypes.string,
     id: PropTypes.string,
+    handle: PropTypes.string,
   };
 
   constructor(props) {
@@ -204,7 +205,7 @@ export default class Highlight extends React.Component {
   }
 
   render() {
-    const { className, code, language, lines, well, expanded, type, id, ...props } = this.props;
+    const { className, code, language, lines, well, expanded, type, id, handle='expand', ...props } = this.props;
     language; lines;
 
     if (!code) {
@@ -222,7 +223,7 @@ export default class Highlight extends React.Component {
               <code ref={(ref) => this.onRefShort(ref)} />
               { type && id ? (
                 <Link to={`/code/${type}/${id}`} className={style.more}>
-                  { this.state.more > 0 ? `+ ${this.state.more} more lines` : 'expand' }
+                  { this.state.more > 0 ? `+ ${this.state.more} more lines` : handle }
                 </Link>
               ) : null }
             </pre>
