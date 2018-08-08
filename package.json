@@ -55,6 +55,7 @@
   ],
   "dependencies": {
     "@stackstorm/app-actions": "^2.0.0",
+    "@stackstorm/app-code": "^2.0.0",
     "@stackstorm/app-history": "^2.0.0",
     "@stackstorm/app-packs": "^2.0.0",
     "@stackstorm/app-rules": "^2.0.0",

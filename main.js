@@ -9,6 +9,7 @@ import store from '@stackstorm/module-store';
 import { Router } from '@stackstorm/module-router';
 
 import Actions from '@stackstorm/app-actions';
+import Code from '@stackstorm/app-code';
 import Triggers from '@stackstorm/app-triggers';
 import History from '@stackstorm/app-history';
 import Packs from '@stackstorm/app-packs';
@@ -17,6 +18,7 @@ import Inquiry from '@stackstorm/app-inquiry';
 
 const routes = [
   Actions,
+  Code,
   Triggers,
   History,
   Packs,

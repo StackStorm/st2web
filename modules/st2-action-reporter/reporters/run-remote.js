@@ -19,17 +19,17 @@ export default function runRemote(execution) {
 
       result && result.stdout ? [
         <div key="output" className={style.source}>Output</div>,
-        <Highlight well className={style.highlight} key="output-code" code={result.stdout} />,
+        <Highlight well lines={20} className={style.highlight} key="output-code" code={result.stdout} type="result" id={execution.id} />,
       ] : null,
 
       result && result.stderr ? [
         <div key="error" className={style.source}>Error</div>,
-        <Highlight well className={style.highlight} key="error-code" code={result.stderr} />,
+        <Highlight well lines={20} className={style.highlight} key="error-code" code={result.stderr} type="result" id={execution.id} />,
       ] : null,
 
       result && result.traceback ? [
         <div key="traceback" className={style.source}>Traceback</div>,
-        <Highlight well className={style.highlight} key="traceback-code" code={[ result.error, result.traceback ].join('\n')} />,
+        <Highlight well lines={20} className={style.highlight} key="traceback-code" code={[ result.error, result.traceback ].join('\n')} type="result" id={execution.id} />,
       ] : null,
 
       !result || (!result.result && !result.stderr && !result.stdout && !result.traceback) ? (

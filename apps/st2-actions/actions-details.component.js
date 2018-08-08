@@ -254,7 +254,7 @@ export default class ActionsDetails extends React.Component {
         { section === 'code' ? (
           <DetailsBody>
             <DetailsPanel data-test="action_code">
-              <Highlight code={action} />
+              <Highlight code={action} type="action" id={action.ref} />
             </DetailsPanel>
           </DetailsBody>
         ) : null }
