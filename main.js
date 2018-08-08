@@ -24,6 +24,6 @@ const routes = [
   Inquiry,
 ];
 
-
+window.fp = require('lodash/fp');
 
 ReactDOM.render(<Provider store={store}><Router routes={routes} /></Provider>, document.querySelector('#container'));

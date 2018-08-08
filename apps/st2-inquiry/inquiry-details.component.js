@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
+import fp from 'lodash/fp';
 
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
@@ -21,6 +22,18 @@ import {
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
 import Button from '@stackstorm/module-forms/button.component';
+
+function getDeepestKey(fallback, key, context) {
+  if (!fp.get(key, context)) {
+    return fp.get(fallback, context);
+  }
+
+  return getDeepestKey(fp.get(key, context));
+}
+
+function getDeepestParentId(context) {
+  return getDeepestKey('execution_id', 'parent', context);
+}
 
 @connect(
   (state) => {
@@ -81,10 +94,14 @@ export default class InquiryDetails extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id } = this.props;
+    const { id, inquiry } = this.props;
 
     if (id && id !== prevProps.id) {
       this.fetchInquiry(id);
+    }
+
+    if (inquiry && inquiry !== prevProps.inquiry) {
+      this.setState({ responseValue: inquiry.response || {}});
     }
   }
 
@@ -92,8 +109,15 @@ export default class InquiryDetails extends React.Component {
     store.dispatch({
       type: 'FETCH_INQUIRY',
       promise: api.request({
-        version: 'exp',
-        path: `/inquiries/${id}`,
+        path: `/executions/${id}`,
+      }).then(execution => {
+        const { id, status, result, context } = execution;
+        return {
+          ...result,
+          id,
+          status,
+          initial: getDeepestParentId(context),
+        };
       }),
     })
       .catch((err) => {

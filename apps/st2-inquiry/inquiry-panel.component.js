@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
+import fp from 'lodash/fp';
 
 import get from 'lodash/fp/get';
 import isEqual from 'lodash/fp/isEqual';
@@ -101,9 +102,9 @@ export default class InquiryPanel extends React.Component {
     return store.dispatch({
       type: 'FETCH_INQUIRIES',
       promise: api.request({
-        version: 'exp',
-        path: '/inquiries',
+        path: '/executions',
         query: {
+          runner: 'inquirer',
           limit: PER_PAGE,
           offset: PER_PAGE * (page - 1),
         },
@@ -117,6 +118,16 @@ export default class InquiryPanel extends React.Component {
           });
 
           return res.data;
+        })
+        .then(res => {
+          return res.map(execution => {
+            const { id, status, result } = execution;
+            return {
+              ...result,
+              id,
+              status,
+            };
+          });
         })
         .catch((err) => {
           notification.error('Unable to retrieve inquiries.', { err });
@@ -222,18 +233,24 @@ export default class InquiryPanel extends React.Component {
             <ToggleButton collapsed={collapsed} onClick={() => this.handleToggleAll()} />
           </Toolbar>
           <Content>
-            <FlexTableWrapper uid="main" title="some">
-              { inquiries && inquiries.map((inquiry) => (
-                <InquiryFlexCard
-                  key={inquiry.id}
-                  inquiry={inquiry}
-                  selected={id}
-                  view={view}
-                  onSelect={(id) => this.handleSelect(id)}
-                />
-              )) }
-            </FlexTableWrapper>
-
+            { inquiries && fp.flow(
+              fp.groupBy('status'),
+              fp.entries,
+              fp.map(([ name, values ]) => (
+                <FlexTableWrapper key={name} uid={name} title={name}>
+                  { values && values.map((inquiry) => (
+                    <InquiryFlexCard
+                      key={inquiry.id}
+                      inquiry={inquiry}
+                      selected={id}
+                      view={view}
+                      onSelect={(id) => this.handleSelect(id)}
+                    />
+                  )) }
+                </FlexTableWrapper>
+              ))
+            )(inquiries)}
+            
             { inquiries ? ( inquiries.length > 0 ? (
               <PanelNavigation>
                 <Button
