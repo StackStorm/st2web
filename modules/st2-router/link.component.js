@@ -59,7 +59,7 @@ export default class Link extends React.Component {
         ? createLocation(to, null, null, location)
         : to;
 
-    const href = createPath(targetLocation);
+    const href = `#${createPath(targetLocation)}`;
     
     return (
       <a {...props} onClick={this.handleClick} href={href} ref={innerRef} />
