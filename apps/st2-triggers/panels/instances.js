@@ -102,7 +102,7 @@ export default class InstancePanel extends DetailsPanel {
                     }
                   </FlexTableInsertColumn>
                   <FlexTableInsertColumn>
-                    <Highlight well lines={20} code={instance.payload} />
+                    <Highlight well lines={20} code={instance.payload} type="trigger_instance" id={instance.id} />
                   </FlexTableInsertColumn>
                 </FlexTableInsert>,
               ]) }

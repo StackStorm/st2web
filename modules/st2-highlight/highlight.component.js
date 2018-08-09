@@ -1,8 +1,9 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
-
 import Prism from 'prismjs';
+
+import Link from '@stackstorm/module-router/link.component';
 
 import './editor.css';
 import style from './style.pcss';
@@ -111,6 +112,10 @@ export default class Highlight extends React.Component {
     language: PropTypes.string,
     lines: PropTypes.number,
     well: PropTypes.bool,
+    expanded: PropTypes.bool,
+    type: PropTypes.string,
+    id: PropTypes.string,
+    handle: PropTypes.string,
   };
 
   constructor(props) {
@@ -119,7 +124,6 @@ export default class Highlight extends React.Component {
     const { wrap, newlines } = JSON.parse(localStorage.getItem('st2Highlight')) || { wrap: false, newlines: false };
 
     this.state = {
-      expanded: false,
       wrap,
       newlines,
     };
@@ -147,7 +151,7 @@ export default class Highlight extends React.Component {
   componentDidMount() {
     this._listener = (event) => {
       if (event.key === 'Escape') {
-        this.setState({ expanded: false });
+        // TODO: BACK?
       }
     };
 
@@ -201,7 +205,7 @@ export default class Highlight extends React.Component {
   }
 
   render() {
-    const { className, code, language, lines, well, ...props } = this.props;
+    const { className, code, language, lines, well, expanded, type, id, handle='expand', ...props } = this.props;
     language; lines;
 
     if (!code) {
@@ -212,39 +216,43 @@ export default class Highlight extends React.Component {
 
     return (
       <div {...props} className={cx(style.component, well && style.welled, className)}>
-        <div className={style.well}>
-          <pre>
-            <code ref={(ref) => this.onRefShort(ref)} />
-            <div className={style.more} onClick={() => this.setState({ expanded: true })}>
-              { this.state.more > 0 ? `+ ${this.state.more} more lines` : 'expand' }
-            </div>
-          </pre>
-        </div>
+        { !expanded ? (
 
-        { this.state.expanded ? (
-          <div className={style.fullscreen} onClick={() => this.setState({ expanded: false })}>
-            <div className={style.well} onClick={(e) => e.stopPropagation()}>
-              <div className={style.buttons}>
-                <input
-                  type="button"
-                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.wrap && style.inputActive)}
-                  onClick={() => this.toggleWrap()}
-                  value="WRAP LINES"
-                />
-                <input
-                  type="button"
-                  className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.newlines && style.inputActive)}
-                  onClick={() => this.toggleNewlines()}
-                  value="SHOW NEWLINES"
-                />
-              </div>
-
-              <pre key={whiteSpace} style={{ whiteSpace }}>
-                <code ref={(ref) => this.onRefFull(ref)} />
-              </pre>
-            </div>
+          <div className={style.well}>
+            <pre>
+              <code ref={(ref) => this.onRefShort(ref)} />
+              { type && id ? (
+                <Link to={`/code/${type}/${id}`} className={style.more}>
+                  { this.state.more > 0 ? `+ ${this.state.more} more lines` : handle }
+                </Link>
+              ) : null }
+            </pre>
           </div>
-        ) : null }
+
+        ) : (
+
+          <div className={style.well}>
+            <div className={style.buttons}>
+              <input
+                type="button"
+                className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.wrap && style.inputActive)}
+                onClick={() => this.toggleWrap()}
+                value="WRAP LINES"
+              />
+              <input
+                type="button"
+                className={cx('st2-forms__button', 'st2-forms__button--small', 'st2-details__toolbar-button', this.state.newlines && style.inputActive)}
+                onClick={() => this.toggleNewlines()}
+                value="SHOW NEWLINES"
+              />
+            </div>
+
+            <pre key={whiteSpace} style={{ whiteSpace }}>
+              <code ref={(ref) => this.onRefFull(ref)} />
+            </pre>
+          </div>
+
+        ) }
       </div>
     );
   }

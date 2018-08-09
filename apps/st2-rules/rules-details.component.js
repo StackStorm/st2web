@@ -508,7 +508,7 @@ export default class RulesDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="rule_code">
-              <Highlight lines={20} code={rule} />
+              <Highlight code={rule} type="rule" id={rule.id} />
             </DetailsPanel>
           ) : null }
           { section === 'enforcements' ? (

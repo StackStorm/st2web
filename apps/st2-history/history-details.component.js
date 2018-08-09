@@ -163,7 +163,11 @@ export default class HistoryDetails extends React.Component {
                     </DetailsPanelBodyLine>
                   ) : null }
                 </DetailsPanelBody>
-                <DetailsPanelHeading title="Action Output" />
+                <DetailsPanelHeading title="Action Output">
+                  <Link to={`/code/live/${execution.id}`} className="st2-history__live-link">
+                    check live output
+                  </Link>
+                </DetailsPanelHeading>
                 <DetailsPanelBody data-test="action_output">
                   <ActionReporter runner={execution.runner.name} execution={execution} />
                 </DetailsPanelBody>
@@ -207,7 +211,7 @@ export default class HistoryDetails extends React.Component {
                   </DetailsPanelBody>
                   { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
                     <DetailsPanelBody>
-                      <Highlight code={execution.trigger_instance.payload} />
+                      <Highlight code={execution.trigger_instance.payload} lines={10} type="trigger_instance" id={execution.trigger_instance.id} well />
                     </DetailsPanelBody>
                   ) : null }
                 </DetailsPanel>
@@ -236,7 +240,7 @@ export default class HistoryDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="execution_code">
-              <Highlight lines={20} code={execution} />
+              <Highlight code={execution} type="execution" id={execution.id} />
             </DetailsPanel>
           ) : null }
         </DetailsBody>

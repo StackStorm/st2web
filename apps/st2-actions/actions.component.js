@@ -1,11 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Provider } from 'react-redux';
+
+import Menu from '@stackstorm/module-menu';
 import { Route } from '@stackstorm/module-router';
 
 import store from './store';
-
-import Menu from '@stackstorm/module-menu';
 import ActionsPanel from './actions-panel.component';
 
 export default class Actions extends React.Component {

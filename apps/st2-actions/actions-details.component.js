@@ -35,8 +35,8 @@ import {
 import Time from '@stackstorm/module-time';
 
 @connect((state) => {
-  const { action, executions } = state;
-  return { action, executions };
+  const { action, executions, entrypoint } = state;
+  return { action, executions, entrypoint };
 })
 export default class ActionsDetails extends React.Component {
   static propTypes = {
@@ -47,6 +47,7 @@ export default class ActionsDetails extends React.Component {
     section: PropTypes.string,
     action: PropTypes.object,
     executions: PropTypes.array,
+    entrypoint: PropTypes.string,
   }
 
   state = {
@@ -162,6 +163,19 @@ export default class ActionsDetails extends React.Component {
         throw err;
       })
     ;
+
+    store.dispatch({
+      type: 'FETCH_ENTRYPOINT',
+      promise: api.request({
+        path: `/actions/views/entry_point/${id}`,
+        raw: true,
+      }).then(res => res.data),
+    })
+      .catch((err) => {
+        notification.error(`Unable to retrieve entrypoint for action "${id}".`, { err });
+        throw err;
+      })
+    ;
   }
 
   handleSection(section) {
@@ -193,7 +207,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   render() {
-    const { section, action, executions } = this.props;
+    const { section, action, executions, entrypoint } = this.props;
 
     if (!action) {
       return null;
@@ -212,6 +226,7 @@ export default class ActionsDetails extends React.Component {
             { label: 'Parameters', path: 'general' },
             { label: 'executions', path: 'executions' },
             { label: 'Code', path: 'code', className: [ 'icon-code', 'st2-details__switch-button' ] },
+            { label: 'Entrypoint', path: 'entrypoint', className: [ 'icon-code2', 'st2-details__switch-button' ] },
           ]}
           current={section}
           onChange={({ path }) => this.handleSection(path)}
@@ -254,7 +269,15 @@ export default class ActionsDetails extends React.Component {
         { section === 'code' ? (
           <DetailsBody>
             <DetailsPanel data-test="action_code">
-              <Highlight code={action} />
+              <Highlight code={action} type="action" id={action.ref} />
+            </DetailsPanel>
+          </DetailsBody>
+        ) : null }
+
+        { section === 'entrypoint' ? (
+          <DetailsBody>
+            <DetailsPanel data-test="action_entrypoint">
+              <Highlight code={entrypoint} type="entrypoint" id={action.ref} />
             </DetailsPanel>
           </DetailsBody>
         ) : null }

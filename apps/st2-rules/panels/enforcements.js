@@ -125,7 +125,7 @@ export default class EnforcementPanel extends DetailsPanel {
                     }
                   </FlexTableInsertColumn>
                   <FlexTableInsertColumn>
-                    <Highlight well lines={20} code={get('trigger_instance.payload', enforcement)} />
+                    <Highlight well lines={20} code={get('trigger_instance.payload', enforcement)} type="trigger_instance" id={get('trigger_instance.id', enforcement)} />
                   </FlexTableInsertColumn>
                 </FlexTableInsert>,
               ]) }
