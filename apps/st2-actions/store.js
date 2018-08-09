@@ -10,6 +10,7 @@ const actionReducer = (state = {}, input) => {
     filter = '',
     action = undefined,
     executions = [],
+    entrypoint = '',
   } = state;
 
   state = {
@@ -19,6 +20,7 @@ const actionReducer = (state = {}, input) => {
     filter,
     action,
     executions,
+    entrypoint,
   };
 
   switch (input.type) {
@@ -72,6 +74,23 @@ const actionReducer = (state = {}, input) => {
       return {
         ...state,
         executions,
+      };
+    }
+
+    case 'FETCH_ENTRYPOINT': {
+      switch(input.status) {
+        case 'success':
+          entrypoint = input.payload;
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        entrypoint,
       };
     }
 

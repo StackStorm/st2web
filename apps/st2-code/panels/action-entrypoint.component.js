@@ -13,7 +13,7 @@ export default class EntrypointCode extends BaseCode {
 
   async fetch({ id }) {
     const def = {
-      backUrl: `/actions/${id}/code`,
+      backUrl: `/actions/${id}/entrypoint`,
     };
 
     try {
