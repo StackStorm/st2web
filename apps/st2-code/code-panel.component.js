@@ -7,6 +7,8 @@ import ExecutionCode from './panels/execution-code.component';
 import ExecutionResult from './panels/execution-result.component';
 import TriggerInstanceCode from './panels/trigger-instance-code.component';
 import LiveFeed from './panels/execution-live-feed.component';
+import RuleCode from './panels/rule-code.component';
+import TriggerTypeCode from './panels/trigger-type-code.component';
 import UnknownCode from './panels/unknown.component';
 
 export default class CodePanel extends React.Component {
@@ -27,6 +29,10 @@ export default class CodePanel extends React.Component {
         return <ExecutionResult {...this.props} />;
       case 'live':
         return <LiveFeed {...this.props} />;
+      case 'rule':
+        return <RuleCode {...this.props} />;
+      case 'trigger_type':
+        return <TriggerTypeCode {...this.props} />;
       case 'trigger_instance':
         return <TriggerInstanceCode {...this.props} />;
       default:
