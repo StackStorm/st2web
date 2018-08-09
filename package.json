@@ -97,7 +97,7 @@
     "gulp": "github:gulpjs/gulp#d8f5c90a0622d19ef1943a2a3d02dc50e3c853e7",
     "ignore-styles": "5.0.1",
     "lerna": "2.11.0",
-    "postcss": "6.0.22",
+    "postcss": "6.0.23",
     "postcss-import": "11.1.0",
     "postcss-nested": "3.0.0",
     "postcss-preset-env": "5.1.0",

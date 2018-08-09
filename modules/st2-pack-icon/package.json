@@ -62,7 +62,7 @@
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
     "babelify": "8.0.0",
-    "postcss": "6.0.22",
+    "postcss": "6.0.23",
     "postcss-import": "11.1.0",
     "postcss-nested": "3.0.0",
     "postcss-preset-env": "5.1.0"
