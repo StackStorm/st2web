@@ -14,6 +14,7 @@ import Triggers from '@stackstorm/app-triggers';
 import History from '@stackstorm/app-history';
 import Packs from '@stackstorm/app-packs';
 import Rules from '@stackstorm/app-rules';
+import Inquiry from '@stackstorm/app-inquiry';
 
 const routes = [
   Actions,
@@ -22,8 +23,9 @@ const routes = [
   History,
   Packs,
   Rules,
+  Inquiry,
 ];
 
-
+window.fp = require('lodash/fp');
 
 ReactDOM.render(<Provider store={store}><Router routes={routes} /></Provider>, document.querySelector('#container'));

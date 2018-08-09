@@ -1,0 +1,390 @@
+.table {
+  position: relative;
+
+  color: black;
+  background-color: transparent;
+
+  margin-left: 10px;
+
+  .caption {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    margin: 10px;
+    margin-left: 10px;
+
+    cursor: pointer;
+
+    &:before {
+      /* Calendar icon is missing in brocade pack */
+      font-family: "brocadeicons";
+      font-size: 20px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 42px;
+
+      display: inline-block;
+
+      padding: 0 5px;
+
+      vertical-align: top;
+    }
+
+    &:after {
+      font-family: "brocadeicons";
+      font-size: 10px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 42px;
+
+      display: block;
+
+      padding: 0 5px;
+
+      content: "\e95f";
+
+      color: rgba(0, 0, 0, .6);
+
+      order: -1;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 42px;
+
+      display: inline-block;
+
+      margin: 0;
+
+      letter-spacing: .6px;
+      text-transform: uppercase;
+
+      color: black;
+    }
+
+    .note {
+      margin: 0;
+    }
+
+    &.pack {
+      img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        padding: 5px;
+
+        vertical-align: top;
+
+        border-radius: 5px;
+        background: white;
+
+        overflow: hidden;
+
+        &:not([src]) {
+          display: none;
+        }
+      }
+
+      img:before {
+        /* Calendar icon is missing in brocade pack */
+        font-family: "brocadeicons";
+        font-size: 20px;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 20px;
+
+        display: inline-block;
+
+        padding-bottom: 10px;
+
+        vertical-align: top;
+
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+
+        content: "\e94d";
+        text-align: center;
+
+        color: black;
+        border-radius: 5px;
+        background: white;
+      }
+    }
+
+    &.date {
+      &:before {
+        content: "\e978";
+      }
+    }
+  }
+
+  .row,
+  .header {
+    display: flex;
+    overflow: hidden;
+
+    padding: 8px 0;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    border-bottom: 1px solid #ccc;
+
+    &--expanded {
+      border-bottom: none;
+    }
+  }
+
+  .header {
+    font-size: 13px;
+    font-weight: 400;
+
+    display: flex;
+
+    padding: 9px 0;
+
+    letter-spacing: .06px;
+    text-transform: uppercase;
+
+    color: #fff;
+  }
+
+  .column {
+    overflow: hidden;
+    flex: 1;
+
+    padding: 0 10px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &--fixed {
+      flex: initial;
+    }
+  }
+
+  .row:hover {
+    /* Specificity of 0020 */
+    cursor: pointer;
+  }
+
+  &.passive {
+    .row:hover {
+      cursor: default;
+    }
+
+    .row.even:hover {
+      background-color: rgba(255,255,255,.5);
+    }
+  }
+
+  &.collapsed {
+    .caption:after {
+      content: "\e972";
+    }
+
+    .card,
+    .row,
+    .header,
+    .st2-history-child {
+      display: none;
+    }
+  }
+}
+
+.insert {
+  flex: 1;
+
+  margin: 0;
+  padding: 10px;
+  padding-left: 0;
+
+  border-bottom: 1px solid #ccc;
+  
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  & > * {
+    grid-column-start: 1;
+    grid-column-end: -1;
+    overflow: hidden;
+  }
+
+  .column {
+    grid-column: initial;
+    overflow: hidden;
+  }
+}
+
+.card {
+  position: relative;
+
+  padding: 0;
+
+  &:hover {
+    cursor: pointer;
+
+    background: #DEEEFB;
+  }
+
+  .expand {
+    font-size: 10px;
+    line-height: 31px;
+
+    flex: initial;
+
+    box-sizing: content-box;
+    min-width: 10px;
+    padding-right: 0;
+  }
+
+  .timestamp {
+    line-height: 32px;
+
+    flex: initial;
+  }
+
+  .status {
+    font-size: 18px;
+    line-height: 32px;
+
+    flex: initial;
+
+    width: 31px;
+
+    text-align: right;
+
+    color: #929196;
+
+    padding-right: 0;
+  }
+
+  .header {
+    position: relative;
+
+    display: flex;
+
+    .primary {
+      font-size: 14px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    .secondary {
+      font-size: 12px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    /* increasing specificity for flex to propagate */
+    .status {
+      font-size: 21px;
+
+      display: flex;
+      flex: 0 0 52px;
+
+      color: #929196;
+
+      order: 99;
+      align-items: center;
+    }
+
+    .type {
+      line-height: 52px;
+
+      flex: 0 0 auto;
+
+      padding: 0;
+
+      color: #929196;
+    }
+
+    .version {
+      line-height: 52px;
+
+      flex: 0 0 auto;
+
+      padding-top: 0;
+      padding-bottom: 0;
+
+      color: #929196;
+
+      &.outdated {
+        color: #ff9e1b;
+      }
+    }
+
+    .expand {
+      font-size: 15px;
+
+      flex: initial;
+
+      padding-left: 20px;
+    }
+  }
+
+  .row {
+    display: flex;
+    overflow: hidden;
+
+    flex-wrap: wrap;
+  }
+
+  .column {
+    position: relative;
+
+    flex: 1;
+
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 52px;
+    padding: 10px 15px;
+
+    white-space: nowrap;
+
+    border-bottom: 1px solid #B3B0BA;
+  }
+
+  &.active {
+    background-color: #008CEB;
+
+    color: white;
+
+    &:hover {
+      background-color: #008CEB;
+    }
+
+    .header .type,
+    .header .status,
+    .status {
+      color: white;
+    }
+
+    .header .expand,
+    .expand {
+      /* padding-left: 25px; */
+    }
+  }
+
+  &.expanded .row {
+    border: 1px solid #ccc;
+    border-top: 0;
+    box-shadow: 0 1px 4px #ccc;
+
+    position: relative;
+  }
+
+  &.expanded .column {
+    border: 0;
+  }
+}

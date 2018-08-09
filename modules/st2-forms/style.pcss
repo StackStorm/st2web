@@ -1,0 +1,286 @@
+@import "@stackstorm/st2-style/colors.css";
+
+.matcher {
+  overflow: hidden;
+
+  margin: 0 20px 0 10px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.button {
+  &.prev,
+  &.next {
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 21px;
+
+    position: relative;
+
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-decoration: none;
+    letter-spacing: .02em;
+    word-spacing: normal;
+    text-transform: uppercase;
+
+    opacity: 1;
+    color: #fff;
+    border: 0;
+    outline: 0;
+    background-color: #008ceb;
+    border-radius: 2px;
+
+    &:before,
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      width: 0;
+      height: 1px;
+
+      content: "";
+      -moz-transform: scale(.9999); /* Fixes antialiasing in Firefox on OS X */
+
+      border: solid;
+      border-width: 16px 10px;
+      border-color: transparent;
+    }
+
+    &:link,
+    &:active,
+    &:visited {
+      color: #fff;
+    }
+
+    &:disabled,
+    &.disabled {
+      cursor: default;
+      pointer-events: none;
+
+      background-color: #b3b0ba;
+    }
+
+    &:focus {
+      background-color: #0076c6;
+    }
+
+    &:active {
+      background-color: #0076c6;
+    }
+
+    &.small {
+      font-size: 12px;
+
+      padding: 3px 6px;
+    }
+
+    i {
+      font-size: 120%;
+      font-weight: bold;
+    }
+  }
+
+  &.prev {
+    margin-left: 10px;
+
+    &:before {
+      right: 100%;
+
+      border-right-color: var(--aqua-base);
+    }
+
+    &.disabled:before {
+      border-right-color: var(--grey-lighten-2);
+    }
+
+    &:active:before {
+      border-right-color: var(--aqua-lighten-2);
+    }
+  }
+
+  &.next {
+    margin-right: 10px;
+
+    &:after {
+      left: 100%;
+
+      border-left-color: var(--aqua-base);
+    }
+
+    &.disabled:after {
+      border-left-color: var(--grey-lighten-2);
+    }
+
+    &:active:after {
+      border-left-color: var(--aqua-lighten-2);
+    }
+  }
+
+  &.flat {
+    color: #008ceb;
+    background-color: transparent;
+    box-shadow: none;
+
+    &:focus {
+      background-color: #e6f4fd;
+    }
+
+    &:active {
+      background-color: #cfe9fb;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: #b3b0ba;
+      background-color: transparent;
+    }
+
+    &.red {
+      color: #E63544;
+
+      &:active {
+        color: #E63544;
+        background-color: #FDEBED;
+      }
+    }
+  }
+
+  &.skeleton {
+    font-size: 12px;
+
+    padding: 3px 6px;
+
+    color: var(--gray-white);
+    border: 1px solid currentColor;
+    background: transparent;
+    box-shadow: none;
+
+    &:active {
+      background: color-mod(var(--gray-white) alpha(10%));
+    }
+  }
+
+  &.left {
+    float: left;
+  }
+
+  &.right {
+    float: right;
+  }
+
+  & + &,
+  .switch + & {
+    margin-left: 10px;
+  }
+
+}
+
+&.buttons-panel {
+  display: flex;
+
+  margin-bottom: 10px;
+
+  justify-content: flex-end;
+}
+
+&.switch {
+  display: flex;
+  align-items: center;
+
+  input[type=checkbox] {
+    display: none;
+
+    /* add default box-sizing for this scope */
+    &,
+    &:after,
+    &:before,
+    & *,
+    & *:after,
+    & *:before,
+    & + label {
+      box-sizing: border-box;
+      &::selection {
+        background: none;
+      }
+    }
+    
+    + label {
+      outline: 0;
+      display: block;
+      width: 28px;
+      height: 16px;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      &:after,
+      &:before {
+        position: relative;
+        display: block;
+        content: "";
+        width: 50%;
+        height: 100%;
+      }
+      
+      &:after {
+        left: 0;
+      }
+      
+      &:before {
+        display: none;
+      }
+    }
+    
+    &:checked + label:after {
+      left: 50%;
+    }
+
+    + label {
+      background: #818083;
+      border-radius: 8px;
+      padding: 2px;
+      transition: all .4s ease;
+      &:after {
+        border-radius: 50%;
+        background: #fff;
+        transition: all .2s ease;
+      }
+    }
+    
+    &:checked + label {
+      background: #008ceb;
+    }
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 21px;
+    position: relative;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-decoration: none;
+    letter-spacing: .02em;
+    word-spacing: normal;
+    text-transform: capitalize;
+    opacity: 1;
+    color: #222;
+    border: 0;
+    outline: 0;
+    background: transparent;
+  }
+}

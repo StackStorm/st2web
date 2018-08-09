@@ -60,6 +60,7 @@
     "@stackstorm/app-packs": "^2.0.0",
     "@stackstorm/app-rules": "^2.0.0",
     "@stackstorm/app-triggers": "^2.0.0",
+    "@stackstorm/app-inquiry": "^2.0.0",
     "@stackstorm/module-api": "^2.0.0",
     "@stackstorm/module-login": "^2.0.0",
     "@stackstorm/module-router": "^2.0.0",

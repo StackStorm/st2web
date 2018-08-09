@@ -44,6 +44,32 @@
             ]
           ]
         }
+      ],
+      [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".pcss"
+          ],
+          "inject": "insert-css",
+          "modularize": {
+            "camelCase": true
+          },
+          "plugin": [
+            "postcss-import",
+            "postcss-nested",
+            [
+              "postcss-preset-env",
+              {
+                "features": {
+                  "custom-properties": {
+                    "preserve": false
+                  }
+                }
+              }
+            ]
+          ]
+        }
       ]
     ]
   },
