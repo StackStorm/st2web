@@ -86,6 +86,7 @@ export default class ActionsPanel extends React.Component {
         query: {
           include_attributes: [
             'ref',
+            'pack',
             'name',
             'description',
             'runner_type',
