@@ -100,14 +100,6 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_TRIGGERS',
       promise: api.request({
         path: '/triggertypes',
-        query: {
-          include_attributes: [
-            'ref',
-            'description',
-            'parameters_schema',
-            'payload_schema',
-          ],
-        },
       })
         .catch((err) => {
           notification.error('Unable to retrieve trigger spec.', { err });
