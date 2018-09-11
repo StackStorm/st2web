@@ -122,7 +122,7 @@ export default class RulesPanel extends React.Component {
         },
       })
         .catch((err) => {
-          notification.error('Unable to retrievg e action spec.', { err });
+          notification.error('Unable to retrieve action spec.', { err });
           throw err;
         }),
     });
