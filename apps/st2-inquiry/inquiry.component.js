@@ -1,14 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Provider } from 'react-redux';
-
-import Menu from '@stackstorm/module-menu';
 import { Route } from '@stackstorm/module-router';
 
 import store from './store';
-import ActionsPanel from './actions-panel.component';
 
-export default class Actions extends React.Component {
+import Menu from '@stackstorm/module-menu';
+import InquiryPanel from './inquiry-panel.component';
+
+export default class Inquiry extends React.Component {
   static propTypes = {
     routes: PropTypes.arrayOf(PropTypes.shape({
       title: PropTypes.string.isRequired,
@@ -22,13 +22,13 @@ export default class Actions extends React.Component {
   render() {
     return (
       <Route
-        path='/actions/:ref?/:section?'
+        path='/inquiry/:ref?/:section?'
         render={({ match, location }) => {
           return (
             <Provider store={store}>
               <div className="wrapper">
                 <Menu location={location} routes={this.props.routes} />
-                <ActionsPanel routes={this.props.routes} location={location} match={match} />
+                <InquiryPanel routes={this.props.routes} location={location} match={match} />
               </div>
             </Provider>
           );

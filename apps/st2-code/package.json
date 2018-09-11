@@ -1,14 +1,8 @@
 {
-  "name": "@stackstorm/module-flex-table",
+  "name": "@stackstorm/app-code",
   "version": "2.0.0",
   "description": "",
-  "main": "flex-table.component.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -26,30 +20,6 @@
         {
           "extensions": [
             ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": false,
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            [
-              "postcss-preset-env",
-              {
-                "features": {
-                  "custom-properties": {
-                    "preserve": false
-                  }
-                }
-              }
-            ]
-          ]
-        }
-      ],
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".pcss"
           ],
           "inject": "insert-css",
           "modularize": {
@@ -77,13 +47,13 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0",
+    "@stackstorm/module-highlight": "^2.0.0",
+    "@stackstorm/module-router": "^2.0.0",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
-    "@stackstorm/module-store": "^2.0.0",
     "babelify": "8.0.0",
     "postcss": "6.0.22",
     "postcss-import": "11.1.0",

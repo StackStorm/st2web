@@ -159,4 +159,9 @@
     background: #151a1e;
   }
 
+  &__live-link:any-link {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #888;
+  }
 }

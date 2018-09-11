@@ -177,7 +177,7 @@ export default class TriggersDetails extends React.Component {
           ) : null }
           { section === 'code' ? (
             <DetailsPanel data-test="trigger_code">
-              <Highlight lines={20} code={trigger} />
+              <Highlight code={trigger} type="trigger_type" id={trigger.ref} />
             </DetailsPanel>
           ) : null }
           { section === 'instances' ? (

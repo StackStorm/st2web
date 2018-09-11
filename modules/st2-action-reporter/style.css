@@ -25,6 +25,6 @@
   color: var(--grey-base);
 }
 
-.highlight + .highlight {
-  margin-bottom: 20px;
+.source + .highlight {
+  margin-bottom: 5px;
 }

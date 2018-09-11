@@ -48,13 +48,18 @@ export class API {
   }
 
   async connect(server, username, password, remember) {
-    const { token } = server || {};
+    const { token, url, api=url, stream } = server || {};
+    let { auth } = server || {};
 
-    if (server && server.url) {
+    if (auth === true) {
+      auth = api;
+    }
+
+    if (api) {
       this.server = {
-        api: localize(server.url),
-        auth: server.auth && _.isString(server.auth) && localize(server.auth),
-        stream: server.stream && _.isString(server.stream) && localize(server.stream),
+        api: localize(api),
+        auth: localize(auth),
+        stream: stream && localize(stream),
         token: !_.isEmpty(token) ? token : undefined,
       };
     }
@@ -203,25 +208,53 @@ export class API {
       response.requestId = requestId;
     }
 
+    if (raw) {
+      return response;
+    }
+
     if (contentType.indexOf('application/json') !== -1) {
       if (typeof response.body === 'string' || response.body instanceof String) {
         response.body = JSON.parse(response.body);
       }
     }
 
-    if (raw) {
-      return response;
-    }
-
     return response.data;
   }
 
   listen() {
-    return new Promise((resolve, reject) => {
-      const streamUrl = `${this.server.stream || this.server.api}/stream`;
+    const streamUrl = `${this.server.stream || this.server.api}/stream`;
 
+    return _source = _source || this.createStream(streamUrl);
+  }
+
+  async listenEvents(eventnames, callback) {
+    const events = [].concat(eventnames);
+    const streamUrl = `${this.server.stream || this.server.api}/stream?events=${events.join(',')}`;
+
+    const stream = await this.createStream(streamUrl);
+
+    for (const eventName of events) {
+      stream.addEventListener(eventName, callback);
+    }
+
+    return stream;
+  }
+
+  async listenResults(executionId, callback) {
+    const streamUrl = `${this.server.stream}/executions/${executionId}/output`;
+
+    const stream = await this.createStream(streamUrl);
+
+    stream.addEventListener('st2.execution.output__create', callback);
+    stream.addEventListener('EOF', () => stream.close());
+
+    return stream;
+  }
+
+  createStream(streamUrl) {
+    return new Promise((resolve, reject) => {
       try {
-        const source = _source = _source || new EventSource(streamUrl, {
+        const source = new EventSource(streamUrl, {
           rejectUnauthorized: this.rejectUnauthorized,
           withCredentials: true,
         });

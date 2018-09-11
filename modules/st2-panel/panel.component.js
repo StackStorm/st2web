@@ -487,14 +487,16 @@ export class DetailsPanelHeading extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     title: PropTypes.string.isRequired,
+    children: PropTypes.node,
   }
 
   render() {
-    const { className, title, ...props } = this.props;
+    const { className, title, children, ...props } = this.props;
 
     return (
       <div {...props} className={cx('st2-details__panel-heading', className)}>
         <h2 className="st2-details__panel-title">{ title }</h2>
+        <div>{ children }</div>
       </div>
     );
   }

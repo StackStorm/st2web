@@ -6,8 +6,7 @@
   }
 }
 
-.welled .well,
-.fullscreen .well {
+.welled .well {
   min-height: 20px;
   padding: 4px;
 
@@ -52,80 +51,15 @@
   }
 }
 
-.fullscreen {
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  cursor: pointer;
-
-  color: #f4f4f4;
-  background-color: rgba(0,0,0,.8);
-
-  &:after {
-    font-family: "brocadeicons";
-    font-size: 18px;
-    font-weight: normal;
-    font-style: normal;
-
-    position: absolute;
-    top: 20px;
-    right: 20px;
-
-    display: block;
-
-    padding: 5px;
-
-    content: "\e940";
-
-    color: black;
-    border-radius: 50%;
-    background-color: white;
-  }
-
-  .well {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    bottom: 30px;
-    left: 30px;
-  
-    box-sizing: border-box;
-    margin: 0;
-  
-    cursor: text;
-  
-    pre,
-    code {
-      box-sizing: border-box;
-      height: 100%;
-    }
-
-    code {
-      overflow: auto;
-    }
-  }
-
-  .buttons {
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
-  
-    display: none;
-  }
-
-  &:hover {
-    .buttons {
-      display: block;
-    }
-  }
-
+.buttons {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
 }
 
-.more {
+a.more:any-link {
+  display: block;
+
   cursor: pointer;
   text-decoration: underline;
 
@@ -136,6 +70,6 @@
   }
 }
 
-.input-active {
+.buttons.input-active {
   background-color: #ff9e1b;
 }

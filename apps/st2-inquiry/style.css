@@ -1,0 +1,15 @@
+@import "@stackstorm/st2-style/colors.css";
+
+.component {
+
+}
+
+.action-name {
+  font-weight: bold;
+  line-height: normal;
+
+  display: block;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
