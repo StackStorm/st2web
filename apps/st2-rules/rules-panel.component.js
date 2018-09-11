@@ -105,6 +105,7 @@ export default class RulesPanel extends React.Component {
             'ref',
             'description',
             'parameters_schema',
+            'payload_schema',
           ],
         },
       })
@@ -121,13 +122,15 @@ export default class RulesPanel extends React.Component {
         query: {
           include_attributes: [
             'ref',
+            'pack',
+            'name',
             'description',
             'parameters',
           ],
         },
       })
         .catch((err) => {
-          notification.error('Unable to retrieve action spec.', { err });
+          notification.error('Unable to retrievg e action spec.', { err });
           throw err;
         }),
     });
@@ -138,6 +141,14 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_GROUPS',
       promise: api.request({
         path: '/rules/views',
+        query: {
+          include_attributes: [
+            'ref',
+            'pack',
+            'name',
+            'description',
+          ],
+        },
       })
         .catch((err) => {
           notification.error('Unable to retrieve rules.', { err });
