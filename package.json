@@ -1,6 +1,6 @@
 {
   "name": "st2web",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "st2_version": "2.9dev",
   "private": true,
   "scripts": {
@@ -54,16 +54,16 @@
     "."
   ],
   "dependencies": {
-    "@stackstorm/app-actions": "^2.0.0",
-    "@stackstorm/app-code": "^2.0.0",
-    "@stackstorm/app-history": "^2.0.0",
-    "@stackstorm/app-packs": "^2.0.0",
-    "@stackstorm/app-rules": "^2.0.0",
-    "@stackstorm/app-triggers": "^2.0.0",
-    "@stackstorm/app-inquiry": "^2.0.0",
-    "@stackstorm/module-api": "^2.0.0",
-    "@stackstorm/module-login": "^2.0.0",
-    "@stackstorm/module-router": "^2.0.0",
+    "@stackstorm/app-actions": "^2.1.0",
+    "@stackstorm/app-code": "^2.1.0",
+    "@stackstorm/app-history": "^2.1.0",
+    "@stackstorm/app-inquiry": "^2.1.0",
+    "@stackstorm/app-packs": "^2.1.0",
+    "@stackstorm/app-rules": "^2.1.0",
+    "@stackstorm/app-triggers": "^2.1.0",
+    "@stackstorm/module-api": "^2.1.0",
+    "@stackstorm/module-login": "^2.1.0",
+    "@stackstorm/module-router": "^2.1.0",
     "@stackstorm/st2-style": "^2.0.0",
     "classnames": "2.2.6",
     "insert-css": "2.0.0",
@@ -79,7 +79,7 @@
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
     "@stackstorm/module-test-utils": "^2.0.0",
-    "@stackstorm/st2-build": "^2.0.0",
+    "@stackstorm/st2-build": "^2.1.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.3",
     "babel-plugin-transform-class-properties": "6.24.1",
