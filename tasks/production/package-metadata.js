@@ -18,7 +18,7 @@ gulp.task('production-package-metadata', (done) => {
   data = '[st2web]\n'
   data += 'version = ' + pkg_version + '\n';
   data += 'git_sha = ' + git_sha + '\n';
-  data += 'circle_build_url = ' + process.env.ST2_CIRCLE_URL;
+  data += 'circle_build_url = ' + process.env.CIRCLE_BUILD_URL;
 
   file_path = path.join(path.resolve('./build'), 'package.meta');
 
