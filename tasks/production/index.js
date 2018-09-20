@@ -10,4 +10,5 @@ gulp.task('production', gulp.series([
   'production-scripts',
   'production-styles',
   'production-static',
+  'production-package-metadata',
 ]));
