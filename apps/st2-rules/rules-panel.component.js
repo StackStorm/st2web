@@ -100,13 +100,15 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_TRIGGERS',
       promise: api.request({
         path: '/triggertypes',
-        query: {
+        // NOTE: If we don't retrieve all the attributes, "TypeError: Cannot read property 'properties' of undefined"
+        // error is thrown
+        /*query: {
           include_attributes: [
             'ref',
             'description',
             'parameters_schema',
           ],
-        },
+        },*/
       })
         .catch((err) => {
           notification.error('Unable to retrieve trigger spec.', { err });
