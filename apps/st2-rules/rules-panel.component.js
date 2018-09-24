@@ -104,9 +104,13 @@ export default class RulesPanel extends React.Component {
         // error is thrown
         /*query: {
           include_attributes: [
+            'id',
             'ref',
+            'pack',
+            'name',
             'description',
             'parameters_schema',
+            'payload_schema',
           ],
         },*/
       })
