@@ -186,8 +186,8 @@ export class BooleanFieldWrapper extends React.Component {
     onReset: PropTypes.func,
   }
 
-  handleReset() {
-    return this.props.onReset && this.props.onReset();
+  handleReset(e) {
+    return this.props.onReset && this.props.onReset(e);
   }
 
   render() {
@@ -200,7 +200,7 @@ export class BooleanFieldWrapper extends React.Component {
     const buttonProps = {
       icon: 'cross',
       title: 'reset default',
-      onClick: () => this.handleReset(),
+      onClick: (e) => this.handleReset(e),
     };
 
     const labelProps = {
