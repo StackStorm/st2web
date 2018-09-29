@@ -126,18 +126,52 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
           destination: packages
-      - deploy:
-          name: Maybe Deploy
+      - persist_to_workspace:
+          root: /home/circleci/artifacts
+          paths:
+            - trusty
+            - xenial
+            - el6
+            - el7
+  deploy:
+    docker:
+      - image: ruby:2.4.4
+    environment:
+      ARTIFACTS: /home/circleci/artifacts
+      DISTROS: trusty xenial el6 el7
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/artifacts
+      - run:
+          name: List workspace files
+          command: find $ARTIFACTS | sed 's|[^/]*/|  |g'
+      - run:
+          name: Install dependencies
           command: |
-            if [[ "${CIRCLE_BRANCH}" == "master" || "${CIRCLE_BRANCH}" =~ v[0-9]+(\.[0-9]+)* || "${CIRCLE_BRANCH}" == "feature/circleci" ]]; then
-              for distro in ${RPM} ${DEB}; do
-                packagecloud.sh deploy $distro ~/artifacts/$distro
-              done
-            fi
-
-experimental:
-  notify:
-    branches:
-      only:
-        - master
-        - /v[0-9]+(\.[0-9]+)*/
+            set -x
+            apt-get -qq update
+            apt-get -y install jq
+            wget -qO - https://github.com/StackStorm/st2-packages/raw/master/.circle/packagecloud.sh > ~/packagecloud.sh
+            chmod 755 ~/packagecloud.sh
+            gem install package_cloud
+      - run:
+          name: Deploy to packagecloud
+          command: |
+            for distro in ${DISTROS}; do
+              ~/packagecloud.sh deploy $distro $ARTIFACTS/$distro
+            done
+workflows:
+  version: 2
+  build-deploy-workflow:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - /v[0-9]+\.[0-9]+/
+                - feature/circleci
