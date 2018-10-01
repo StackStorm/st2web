@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-auto-form",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "main": "auto-form.component.js",
   "directories": {
