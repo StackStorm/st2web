@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-remote-form",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "",
   "main": "remote-form.component.js",
   "directories": {
@@ -51,7 +51,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "^2.0.0",
+    "@stackstorm/module-auto-form": "^2.1.1",
     "@stackstorm/st2-style": "^2.0.0",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2"
