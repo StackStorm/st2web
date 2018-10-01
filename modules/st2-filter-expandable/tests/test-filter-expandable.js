@@ -19,8 +19,8 @@ describe('filter-expandable', () => {
     expect(filterExpandable({ action: { runner_type: 'mistral-v2' } })).to.equal(true);
   });
 
-  it('works for "orchestra"', () => {
-    expect(filterExpandable({ action: { runner_type: 'orchestra' } })).to.equal(true);
+  it('works for "orquesta"', () => {
+    expect(filterExpandable({ action: { runner_type: 'orquesta' } })).to.equal(true);
   });
 
   it('doesn\'t work for "foobar"', () => {
