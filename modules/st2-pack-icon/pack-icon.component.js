@@ -29,6 +29,12 @@ export default class PackIcon extends React.Component {
 
     iconPromise = iconPromise || api.request({
       path: '/packs',
+      query: {
+        include_attributes: [
+          'ref',
+          'files',
+        ],
+      },
     })
       .then((packs) => {
         packs.map(({ ref, files }) => {

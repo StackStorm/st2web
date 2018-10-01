@@ -83,6 +83,12 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_PACKS',
       promise: api.request({
         path: '/packs',
+        query: {
+          include_attributes: [
+            'name',
+            'description',
+          ],
+        },
       })
         .catch((err) => {
           notification.error('Unable to retrieve pack spec.', { err });
@@ -94,6 +100,19 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_TRIGGERS',
       promise: api.request({
         path: '/triggertypes',
+        // NOTE: If we don't retrieve all the attributes, "TypeError: Cannot read property 'properties' of undefined"
+        // error is thrown
+        /*query: {
+          include_attributes: [
+            'id',
+            'ref',
+            'pack',
+            'name',
+            'description',
+            'parameters_schema',
+            'payload_schema',
+          ],
+        },*/
       })
         .catch((err) => {
           notification.error('Unable to retrieve trigger spec.', { err });
@@ -105,6 +124,13 @@ export default class RulesPanel extends React.Component {
       type: 'FETCH_ACTIONS',
       promise: api.request({
         path: '/actions/views/overview',
+        query: {
+          include_attributes: [
+            'ref',
+            'description',
+            'parameters',
+          ],
+        },
       })
         .catch((err) => {
           notification.error('Unable to retrieve action spec.', { err });

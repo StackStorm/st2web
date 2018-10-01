@@ -188,7 +188,19 @@ export default class HistoryPanel extends React.Component {
           limit: PER_PAGE,
           offset: PER_PAGE * (page - 1),
           filter,
-          exclude_attributes: 'result,trigger_instance',
+          include_attributes: [
+            'id',
+            'status',
+            'start_timestamp',
+            'action.ref',
+            'action.name',
+            'action.runner_type',
+            'action.parameters',
+            'parameters',
+            'rule.ref',
+            'trigger.type',
+            'context.user',
+          ],
         },
         raw: true, // so we can extract headers
       })

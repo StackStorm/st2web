@@ -44,7 +44,7 @@ import EnforcementPanel from './panels/enforcements';
     packSpec,
   }, props) => ({
     rule,
-    
+
     enforcements,
 
     triggerParameters,
