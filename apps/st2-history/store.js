@@ -154,6 +154,16 @@ const historyReducer = (state = {}, input) => {
     case 'UPDATE_EXECUTION': {
       const { record } = input;
 
+      if (typeof execution === 'undefined') {
+        return {
+          state,
+          executions,
+          childExecutions,
+          groups,
+          execution,
+        };
+      }
+
       if (execution.id === record.id) {
         execution = record;
       }
