@@ -52,7 +52,7 @@ describe('AutoForm BooleanField', () => {
 
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
-    expect(c.fieldValue('checked')).to.be.equal('invalid');
+    expect(c.fieldValue('checked')).to.be.equal(false);
   });
 
   it('resets the value when reset button is pressed', () => {

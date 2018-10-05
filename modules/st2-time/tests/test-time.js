@@ -38,7 +38,8 @@ describe(`${Time.name} Component`, () => {
     );
 
     // note: this will only work in places with whole hour offsets
-    const hour = (24 - new Date().getTimezoneOffset() / 60);
+    // note2: we use january because it's outside of daylight savings time
+    const hour = (24 - new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset() / 60);
     if (hour >= 24) {
       expect(instance.text).to.equal(
         `Thu, 01 Jan 1970 ${(hour - 24).toFixed(0).padStart(2, '0')}:00:00`
@@ -69,7 +70,8 @@ describe(`${Time.name} Component`, () => {
     );
 
     // note: this will only work in places with whole hour offsets
-    const hour = (24 - new Date().getTimezoneOffset() / 60);
+    // note2: we use january because it's outside of daylight savings time
+    const hour = (24 - new Date(new Date().getFullYear(), 0, 1).getTimezoneOffset() / 60);
     if (hour >= 24) {
       expect(instance.text).to.equal(
         `January 1 1970 ${(hour - 24).toFixed(0).padStart(2, '0')}:00 AM`

@@ -24,7 +24,7 @@ export default class BooleanField extends BaseTextField {
     const inputProps = {
       className: 'st2-auto-form__checkbox',
       disabled: this.props.disabled,
-      checked: this.state.value,
+      checked: !this.validate(this.state.value) && this.state.value,
       onChange: (e) => this.handleChange(e, e.target.checked),
     };
 

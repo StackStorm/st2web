@@ -55,13 +55,11 @@
 
   &__button {
     font-size: 14px;
-    line-height: 34px;
 
     position: absolute;
     right: 0;
 
-    width: 36px;
-    height: 36px;
+    padding: 11px;
 
     cursor: pointer;
     user-select: none;
@@ -420,7 +418,7 @@
         }
       }
     }
-    
+
     &__description {
       display: none;
     }
