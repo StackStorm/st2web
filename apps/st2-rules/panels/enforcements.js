@@ -91,7 +91,7 @@ export default class EnforcementPanel extends DetailsPanel {
                       <DetailsPanelBodyLine label="Trigger Instance">
                         {enforcement.trigger_instance_id}
                       </DetailsPanelBodyLine>
-                      <DetailsPanelBodyLine label="Enforcement ID">
+                      <DetailsPanelBodyLine label="Execution ID">
                         {
                           enforcement.execution_id ? (
                             enforcement.execution_id

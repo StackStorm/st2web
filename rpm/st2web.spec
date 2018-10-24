@@ -23,7 +23,7 @@ Prefix:         /opt/stackstorm/static/webui
 
 
 %description
-  Angular-based HTML5 real-time Web UI interface for StackStorm open-source automation platform.
+  React-based HTML5 real-time Web UI interface for StackStorm open-source automation platform.
   Allows to control the whole process of execution, from running an action to seeing the results of the execution.
   It also helps to explore workflow executions up to the results of individual tasks.
 
