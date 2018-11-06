@@ -10,7 +10,7 @@ jobs:
     machine: true
     environment:
       DEPLOY_PACKAGES: 1
-      DEB: trusty xenial
+      DEB: trusty xenial bionic
       RPM: el6 el7
       ST2_HOST: localhost
       ST2_USERNAME: admin
@@ -131,6 +131,7 @@ jobs:
           paths:
             - trusty
             - xenial
+            - bionic
             - el6
             - el7
   deploy:
