@@ -139,7 +139,7 @@ jobs:
       - image: ruby:2.4.4
     environment:
       ARTIFACTS: /home/circleci/artifacts
-      DISTROS: trusty xenial el6 el7
+      DISTROS: trusty xenial bionic el6 el7
     steps:
       - checkout
       - attach_workspace:
