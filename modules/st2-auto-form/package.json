@@ -55,7 +55,7 @@
     "@stackstorm/st2-style": "^2.0.0",
     "insert-css": "2.0.0",
     "prop-types": "15.6.2",
-    "react-textarea-autosize": "5.2.1",
+    "react-textarea-autosize": "7.1.0",
     "validator": "5.7.0"
   },
   "devDependencies": {
