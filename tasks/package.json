@@ -29,7 +29,7 @@
     "css-extract": "1.3.0",
     "event-stream": "3.3.5",
     "express": "4.16.4",
-    "fancy-log": "1.3.2",
+    "fancy-log": "1.3.3",
     "fontello-update": "0.6.3",
     "git-rev-sync": "1.12.0",
     "gulp-concat": "2.6.1",
