@@ -92,7 +92,7 @@
     "babelify": "8.0.0",
     "browserify": "16.2.3",
     "chai": "4.1.2",
-    "eslint": "4.19.1",
+    "eslint": "5.10.0",
     "eslint-plugin-react": "7.9.1",
     "gulp": "github:gulpjs/gulp#d8f5c90a0622d19ef1943a2a3d02dc50e3c853e7",
     "ignore-styles": "5.0.1",
