@@ -91,7 +91,7 @@
     "babel-register": "6.26.0",
     "babelify": "8.0.0",
     "browserify": "16.2.3",
-    "chai": "4.1.2",
+    "chai": "4.2.0",
     "eslint": "5.10.0",
     "eslint-plugin-react": "7.9.1",
     "gulp": "github:gulpjs/gulp#ed27cbeb576111641a72a9a89b8c3e1eb443172b",
