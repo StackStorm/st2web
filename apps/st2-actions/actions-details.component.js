@@ -238,7 +238,7 @@ export default class ActionsDetails extends React.Component {
               <Button value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
-              { action.runner_type === 'mistral-v2' ? (
+              { action.runner_type === 'mistral-v2' || action.runner_type === "orquesta" ? (
                 <FlowLink action={action.ref} data-test="flow_link" />
               ) : null }
             </DetailsToolbar>
