@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-panel",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "",
   "main": "panel.component.js",
   "directories": {
@@ -51,9 +51,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-label": "^2.0.0",
-    "@stackstorm/module-scroll-into-view": "^2.0.0",
-    "@stackstorm/st2-style": "^2.0.0",
+    "@stackstorm/module-label": "^2.1.2",
+    "@stackstorm/module-scroll-into-view": "^2.1.2",
+    "@stackstorm/st2-style": "^2.1.2",
     "atob": "^2.1",
     "cached-path-relative": "^1.0.2",
     "cryptiles": "^4",

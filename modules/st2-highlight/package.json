@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-highlight",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "description": "",
   "main": "highlight.component.js",
   "directories": {
@@ -66,7 +66,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/st2-style": "^2.0.0",
+    "@stackstorm/st2-style": "^2.1.2",
     "atob": "^2.1",
     "cached-path-relative": "^1.0.2",
     "cryptiles": "^4",

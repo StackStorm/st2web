@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-criteria",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "",
   "main": "criteria.component.js",
   "directories": {
@@ -53,8 +53,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "^2.1.1",
-    "@stackstorm/st2-style": "^2.0.0",
+    "@stackstorm/module-auto-form": "^2.1.2",
+    "@stackstorm/st2-style": "^2.1.2",
     "atob": "^2.1",
     "cached-path-relative": "^1.0.2",
     "cryptiles": "^4",
