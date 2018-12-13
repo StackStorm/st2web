@@ -77,7 +77,7 @@
     "prop-types": "15.6.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-redux": "5.0.7",
+    "react-redux": "5.1.1",
     "redux": "4.0.1",
     "urijs": "1.19.1"
   },
