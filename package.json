@@ -15,7 +15,7 @@
   },
   "repository": "stackstorm/st2web",
   "engines": {
-    "node": "10.4.1",
+    "node": "10.14.0",
     "npm": "6.5.0"
   },
   "browserify": {
@@ -65,13 +65,18 @@
     "@stackstorm/module-login": "^2.1.1",
     "@stackstorm/module-router": "^2.1.0",
     "@stackstorm/st2-style": "^2.0.0",
+    "atob": "^2.1",
+    "cached-path-relative": "^1.0.2",
     "classnames": "2.2.6",
+    "cryptiles": "^4",
+    "deep-extend": "^0.5.1",
+    "growl": "^1.10.0",
     "insert-css": "2.0.0",
     "lodash": "4.17.10",
     "moment": "2.22.2",
     "prop-types": "15.6.2",
-    "react": "16.4.1",
-    "react-dom": "16.4.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-redux": "5.0.7",
     "redux": "4.0.1",
     "urijs": "1.19.1"
