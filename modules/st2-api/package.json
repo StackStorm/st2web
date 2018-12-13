@@ -34,7 +34,7 @@
     "deep-extend": "^0.5.1",
     "growl": "^1.10.0",
     "gulp": "github:gulpjs/gulp#ed27cbeb576111641a72a9a89b8c3e1eb443172b",
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
