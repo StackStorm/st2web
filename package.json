@@ -1,6 +1,6 @@
 {
   "name": "st2web",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "st2_version": "2.10dev",
   "private": true,
   "scripts": {
@@ -54,7 +54,7 @@
     "."
   ],
   "dependencies": {
-    "@stackstorm/app-actions": "^2.1.2",
+    "@stackstorm/app-actions": "^2.1.3",
     "@stackstorm/app-code": "^2.1.2",
     "@stackstorm/app-history": "^2.1.2",
     "@stackstorm/app-inquiry": "^2.1.2",
