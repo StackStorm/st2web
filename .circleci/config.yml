@@ -86,7 +86,7 @@ jobs:
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
       - run:
           name: Run functional tests
-          command: npm run test-functional || exit 0
+          command: npm run test-functional
       - run:
           name: Reset test containers
           command: |
