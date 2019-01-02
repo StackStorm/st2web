@@ -19,6 +19,12 @@ function getCode(execution) {
       `${execution.result.traceback}`,
     ].join('\n');
   }
+  
+  if (execution.status === 'timeout') {
+    return [
+      `${execution.result.error}`,
+    ].join('\n');
+  }
 
   const result = [];
 
