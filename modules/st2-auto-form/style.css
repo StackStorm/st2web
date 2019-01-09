@@ -74,7 +74,7 @@
 
   &__field {
     font-weight: normal;
-
+	font-family: Roboto, sans-serif;
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
             box-sizing: border-box;
