@@ -51,8 +51,6 @@
   &:after {
     content: "Event-driven automation";
     white-space: nowrap;
-	/* font-family: Roboto,sans-serif; */
-
     color: var(--gray-2);
   }
 }
