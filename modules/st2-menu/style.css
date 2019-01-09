@@ -51,7 +51,6 @@
   &:after {
     content: "Event-driven automation";
     white-space: nowrap;
-
     color: var(--gray-2);
   }
 }
