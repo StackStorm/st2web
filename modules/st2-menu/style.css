@@ -32,7 +32,7 @@
 .logo {
   /* We need to specify it here so the logo on login screen would match the menu one */
   font-size: 16px;
-
+  font-family: Roboto,sans-serif;
   display: flex;
 
   min-width: 200px;
@@ -51,7 +51,6 @@
   &:after {
     content: "Event-driven automation";
     white-space: nowrap;
-
     color: var(--gray-2);
   }
 }
