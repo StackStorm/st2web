@@ -45,7 +45,6 @@ function getDeepestParentId(context) {
       handleResponse: (inquiry, response) => dispatch({
         type: 'RESPOND_INQUIRY',
         promise: api.request({
-          version: 'exp',
           method: 'put',
           path: `/inquiries/${inquiry.id}`,
         }, {
