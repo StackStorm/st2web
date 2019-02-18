@@ -54,6 +54,7 @@
 
 .button {
   padding: 3px 12px;
+  font-family: Roboto, sans-serif;
 }
 
 .checkbox-wrapper {
@@ -104,7 +105,7 @@
 
   &-label {
     font-weight: 100;
-
+    font-family: Roboto, sans-serif;
     cursor: pointer;
     user-select: none;
     vertical-align: top;
