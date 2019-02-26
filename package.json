@@ -101,7 +101,7 @@
     "eslint-plugin-react": "7.11.1",
     "gulp": "github:gulpjs/gulp#ed27cbeb576111641a72a9a89b8c3e1eb443172b",
     "ignore-styles": "5.0.1",
-    "lerna": "2.11.0",
+    "lerna": "3.13.1",
     "postcss": "7.0.6",
     "postcss-import": "11.1.0",
     "postcss-nested": "3.0.0",
