@@ -136,7 +136,7 @@ jobs:
             - el7
   deploy:
     docker:
-      - image: ruby:2.4.4
+      - image: ruby:2.6.2
     environment:
       ARTIFACTS: /home/circleci/artifacts
       DISTROS: trusty xenial bionic el6 el7
