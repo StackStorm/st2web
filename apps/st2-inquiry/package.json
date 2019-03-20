@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/app-inquiry",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -47,16 +47,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-action-reporter": "^2.1.2",
+    "@stackstorm/module-action-reporter": "^2.2.0",
     "@stackstorm/module-api": "^2.1.2",
-    "@stackstorm/module-auto-form": "^2.1.2",
+    "@stackstorm/module-auto-form": "^2.2.0",
     "@stackstorm/module-filter": "^2.1.2",
     "@stackstorm/module-filter-expandable": "^2.1.2",
     "@stackstorm/module-flex-table": "^2.1.2",
     "@stackstorm/module-forms": "^2.1.2",
     "@stackstorm/module-highlight": "^2.1.2",
     "@stackstorm/module-label": "^2.1.2",
-    "@stackstorm/module-menu": "^2.1.2",
+    "@stackstorm/module-menu": "^2.2.0",
     "@stackstorm/module-notification": "^2.1.2",
     "@stackstorm/module-panel": "^2.1.2",
     "@stackstorm/module-popup": "^2.1.2",

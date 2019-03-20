@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-remote-form",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "",
   "main": "remote-form.component.js",
   "directories": {
@@ -51,7 +51,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "^2.1.2",
+    "@stackstorm/module-auto-form": "^2.2.0",
     "@stackstorm/st2-style": "^2.1.2",
     "atob": "^2.1",
     "cached-path-relative": "^1.0.2",

@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-action-reporter",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "",
   "main": "action-reporter.component.js",
   "directories": {

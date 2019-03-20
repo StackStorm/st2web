@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-login",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "",
   "main": "login.component.js",
   "directories": {
@@ -53,7 +53,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-menu": "^2.1.2",
+    "@stackstorm/module-menu": "^2.2.0",
     "@stackstorm/st2-style": "^2.1.2",
     "atob": "^2.1",
     "cached-path-relative": "^1.0.2",
