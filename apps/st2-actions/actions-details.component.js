@@ -153,7 +153,13 @@ export default class ActionsDetails extends React.Component {
         query: {
           action: id,
           limit: 5,
-          exclude_attributes: 'trigger_instance',
+          include_attributes: [
+            'status',
+            'start_timestamp',
+            'result',
+            'runner',
+            'parameters'
+          ],
           parent: 'null',
         },
       }),
