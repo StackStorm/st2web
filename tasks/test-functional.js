@@ -24,7 +24,7 @@ gulp.task('test-functional', gulp.series([ 'build' ], (done) => {
     .pipe(plugins.mocha({
       reporter: 'spec',
       require: [
-        'babel-register',
+        '@babel/register',
       ],
     }))
     .on('end', () => {

@@ -11,6 +11,7 @@ parserOptions:
   sourceType: module
   ecmaFeatures:
     jsx: true
+    legacyDecorators: true
 env:
   node: true
   mocha: true
