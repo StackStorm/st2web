@@ -16,7 +16,7 @@ export class ReactInstanceTester {
   get type() {
     return this._instance.type;
   }
-  
+
   get props() {
     return this._instance.props || {};
   }

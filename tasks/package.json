@@ -37,7 +37,7 @@
     "fontello-update": "0.6.3",
     "git-rev-sync": "1.12.0",
     "growl": "^1.10.0",
-    "gulp": "github:gulpjs/gulp#ed27cbeb576111641a72a9a89b8c3e1eb443172b",
+    "gulp": "4.0.0",
     "gulp-concat": "2.6.1",
     "gulp-csscomb": "3.0.8",
     "gulp-env": "0.4.0",
@@ -53,6 +53,7 @@
     "gulp-util": "3.0.8",
     "gulp-webserver": "0.9.1",
     "lodash": "4.17.10",
+    "mocha": "^6.0.2",
     "pathmodify": "0.5.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -64,7 +65,7 @@
     "yargs": "12.0.5"
   },
   "peerDependencies": {
-    "gulp": "github:gulpjs/gulp#ed27cbeb576111641a72a9a89b8c3e1eb443172b",
+    "gulp": "4.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   }
