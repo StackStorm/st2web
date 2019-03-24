@@ -30,7 +30,7 @@
     "chalk": "2.4.2",
     "cryptiles": "4.1.3",
     "css-extract": "1.3.0",
-    "deep-extend": "0.5.1",
+    "deep-extend": "0.6.0",
     "event-stream": "4.0.1",
     "express": "4.16.4",
     "fancy-log": "1.3.3",
