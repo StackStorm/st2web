@@ -15,7 +15,7 @@
   },
   "repository": "stackstorm/st2web",
   "engines": {
-    "node": "10.14.0",
+    "node": "11.12.0",
     "npm": "6.5.0"
   },
   "browserify": {
@@ -110,6 +110,6 @@
     "request": "2.88.0",
     "sinon": "7.3.0",
     "sinon-chai": "3.3.0",
-    "zombie": "6.1.4"
+    "zombie": "^5.0.8"
   }
 }

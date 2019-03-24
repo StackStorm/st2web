@@ -17,7 +17,7 @@ describe('User visits actions page', function () {
   before(() => browser.visit('/#/actions')
     .then(util.login)
     .then(() => {
-      const element = browser.query(util.name('toggle-all'));
+      const element = browser.query('[class~="toggle-all"]');
       if (element.classList.contains('st2-panel__toolbar-toggle-all--collapsed')) {
         return browser.click(util.name('toggle-all'));
       }
