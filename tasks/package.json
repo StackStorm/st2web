@@ -52,7 +52,7 @@
     "gulp-uglify": "3.0.0",
     "gulp-util": "3.0.8",
     "gulp-webserver": "0.9.1",
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
     "mocha": "^6.0.2",
     "pathmodify": "0.5.0",
     "react": "^16.0.0",
@@ -62,7 +62,8 @@
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "2.0.0",
     "watchify": "3.11.0",
-    "yargs": "12.0.5"
+    "yargs": "12.0.5",
+    "zombie": "5.0.8"
   },
   "peerDependencies": {
     "gulp": "4.0.0",
