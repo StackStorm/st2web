@@ -57,7 +57,7 @@
     "pathmodify": "0.5.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "require-dir": "1.0.0",
+    "require-dir": "1.2.0",
     "undertaker-forward-reference": "1.0.2",
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "2.0.0",
