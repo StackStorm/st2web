@@ -4152,16 +4152,7 @@ falafel@^2.1.0:
     isarray "0.0.1"
     object-keys "^1.0.6"
 
-fancy-log@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/fancy-log/-/fancy-log-1.3.2.tgz#f41125e3d84f2e7d89a43d06d958c8f78be16be1"
-  integrity sha1-9BEl49hPLn2JpD0G2VjI94vha+E=
-  dependencies:
-    ansi-gray "^0.1.1"
-    color-support "^1.1.3"
-    time-stamp "^1.0.0"
-
-fancy-log@^1.1.0, fancy-log@^1.2.0, fancy-log@^1.3.2:
+fancy-log@1.3.3, fancy-log@^1.1.0, fancy-log@^1.2.0, fancy-log@^1.3.2:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/fancy-log/-/fancy-log-1.3.3.tgz#dbc19154f558690150a23953a0adbd035be45fc7"
   integrity sha512-k9oEhlyc0FrVh25qYuSELjr8oxsCoc4/LEZfg2iJJrfEk/tZL9bCoJE47gqAvI2m/AUjluCS4+3I0eTx8n3AEw==
@@ -4975,10 +4966,10 @@ gulp-mocha@6.0.0:
     supports-color "^5.4.0"
     through2 "^2.0.3"
 
-gulp-plumber@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/gulp-plumber/-/gulp-plumber-1.2.0.tgz#18ea03912c9ee483f8a5499973b5954cd90f6ad8"
-  integrity sha512-L/LJftsbKoHbVj6dN5pvMsyJn9jYI0wT0nMg3G6VZhDac4NesezecYTi8/48rHi+yEic3sUpw6jlSc7qNWh32A==
+gulp-plumber@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/gulp-plumber/-/gulp-plumber-1.2.1.tgz#d38700755a300b9d372318e4ffb5ff7ced0b2c84"
+  integrity sha512-mctAi9msEAG7XzW5ytDVZ9PxWMzzi1pS2rBH7lA095DhMa6KEXjm+St0GOCc567pJKJ/oCvosVAZEpAey0q2eQ==
   dependencies:
     chalk "^1.1.3"
     fancy-log "^1.3.2"
@@ -5020,15 +5011,18 @@ gulp-sourcemaps@2.6.5:
     strip-bom-string "1.X"
     through2 "2.X"
 
-gulp-uglify@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/gulp-uglify/-/gulp-uglify-3.0.0.tgz#0df0331d72a0d302e3e37e109485dddf33c6d1ca"
-  integrity sha1-DfAzHXKg0wLj434QlIXd3zPG0co=
+gulp-uglify@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/gulp-uglify/-/gulp-uglify-3.0.2.tgz#5f5b2e8337f879ca9dec971feb1b82a5a87850b0"
+  integrity sha512-gk1dhB74AkV2kzqPMQBLA3jPoIAPd/nlNzP2XMDSG8XZrqnlCiDGAqC+rZOumzFvB5zOphlFh6yr3lgcAb/OOg==
   dependencies:
+    array-each "^1.0.1"
+    extend-shallow "^3.0.2"
     gulplog "^1.0.0"
     has-gulplog "^0.1.0"
-    lodash "^4.13.1"
+    isobject "^3.0.1"
     make-error-cause "^1.1.1"
+    safe-buffer "^5.1.2"
     through2 "^2.0.0"
     uglify-js "^3.0.5"
     vinyl-sourcemaps-apply "^0.2.0"
@@ -6542,7 +6536,7 @@ lodash.values@~2.4.1:
   dependencies:
     lodash.keys "~2.4.1"
 
-lodash@4.17.11, lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5, lodash@^4.2.1:
+lodash@4.17.11, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5, lodash@^4.2.1:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
