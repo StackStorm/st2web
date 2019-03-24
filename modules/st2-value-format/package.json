@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-value-format",
-  "version": "2.1.2",
+  "version": "2.3.0",
   "description": "",
   "main": "value-format.js",
   "directories": {

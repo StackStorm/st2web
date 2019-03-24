@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-action-reporter",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "",
   "main": "action-reporter.component.js",
   "directories": {
@@ -53,10 +53,10 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-flex-table": "^2.1.2",
-    "@stackstorm/module-highlight": "^2.1.2",
-    "@stackstorm/module-label": "^2.1.2",
-    "@stackstorm/st2-style": "^2.1.2",
+    "@stackstorm/module-flex-table": "^2.3.0",
+    "@stackstorm/module-highlight": "^2.3.0",
+    "@stackstorm/module-label": "^2.3.0",
+    "@stackstorm/st2-style": "^2.3.0",
     "atob": "^2.1",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",
