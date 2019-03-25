@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-pack-icon",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "",
   "main": "pack-icon.component.js",
   "directories": {
@@ -54,8 +54,8 @@
   },
   "dependencies": {
     "@stackstorm/module-api": "^2.3.1",
-    "@stackstorm/module-notification": "^2.3.1",
-    "@stackstorm/st2-style": "^2.3.1",
+    "@stackstorm/module-notification": "^2.3.2",
+    "@stackstorm/st2-style": "^2.3.2",
     "atob": "^2.1",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",

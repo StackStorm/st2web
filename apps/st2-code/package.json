@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/app-code",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "",
   "main": "index.js",
   "repository": {
@@ -47,8 +47,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-highlight": "^2.3.1",
-    "@stackstorm/module-router": "^2.3.1",
+    "@stackstorm/module-highlight": "^2.3.2",
+    "@stackstorm/module-router": "^2.3.2",
     "atob": "2.1.2",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",
