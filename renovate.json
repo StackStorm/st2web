@@ -9,5 +9,5 @@
       "extends": [":pinOnlyDevDependencies"]
     }
   ],
-  "node": false
+  "supportPolicy": ["lts_latest"]
 }
