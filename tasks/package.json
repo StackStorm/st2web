@@ -55,8 +55,8 @@
     "lodash": "4.17.11",
     "mocha": "6.0.2",
     "pathmodify": "0.5.0",
-    "react": "16.8.5",
-    "react-dom": "16.8.5",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "require-dir": "1.2.0",
     "undertaker-forward-reference": "1.0.2",
     "vinyl-buffer": "1.0.1",
@@ -67,7 +67,7 @@
   },
   "peerDependencies": {
     "gulp": "4.0.0",
-    "react": "16.8.5",
-    "react-dom": "16.8.5"
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
   }
 }
