@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/st2-style",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "",
   "main": "style.js",
   "directories": {
