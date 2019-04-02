@@ -82,13 +82,13 @@
     "urijs": "1.19.1"
   },
   "devDependencies": {
-    "@babel/core": "7.4.0",
+    "@babel/core": "7.4.3",
     "@babel/plugin-proposal-class-properties": "7.4.0",
     "@babel/plugin-proposal-decorators": "7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.4.0",
-    "@babel/plugin-transform-runtime": "7.4.0",
-    "@babel/polyfill": "7.4.0",
-    "@babel/preset-env": "7.4.2",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.3",
+    "@babel/plugin-transform-runtime": "7.4.3",
+    "@babel/polyfill": "7.4.3",
+    "@babel/preset-env": "7.4.3",
     "@babel/preset-react": "7.0.0",
     "@babel/register": "7.4.0",
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
