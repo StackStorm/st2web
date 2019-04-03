@@ -3,10 +3,11 @@
 const gulp = require('gulp');
 const settings = require('../settings.json');
 const plugins = require('gulp-load-plugins')(settings.plugins);
+const uglify = require('gulp-uglify-es').default;
 
 gulp.task('production-scripts', gulp.series([ 'browserify' ], () =>
   gulp.src(settings.production.scripts, { base: '.' })
-    .pipe(plugins.uglify({
+    .pipe(uglify({
       mangle: false,
       compress: {
         keep_fnames: true,
