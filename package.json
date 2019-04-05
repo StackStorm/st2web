@@ -1,6 +1,6 @@
 {
   "name": "st2web",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "st2_version": "3.0dev",
   "private": true,
   "scripts": {
@@ -93,7 +93,7 @@
     "@babel/register": "7.4.0",
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
     "@stackstorm/module-test-utils": "^2.4.1",
-    "@stackstorm/st2-build": "^2.4.1",
+    "@stackstorm/st2-build": "^2.4.2",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",
     "browserify": "16.2.3",
