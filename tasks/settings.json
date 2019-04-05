@@ -17,6 +17,7 @@
       "index.html",
       "img/*",
       "font/*",
+      "static/*",
       "config.js",
       "favicon.ico"
     ],
