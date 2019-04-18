@@ -2,6 +2,7 @@ import _ from 'lodash';
 import url from 'url';
 import axios from 'axios';
 import buildURL from 'axios/lib/helpers/buildURL';
+import EventSource from 'EventSource';
 
 let _source;
 
@@ -94,7 +95,7 @@ export class API {
             message: res.data.faultstring || res.data,
           };
         }
-  
+
         this.token = res.data;
       }
       catch (err) {
@@ -166,7 +167,7 @@ export class API {
     if (this.token && this.token.token) {
       headers['x-auth-token'] = this.token.token;
     }
-    
+
     const config = {
       method,
       url: this.route(opts),
@@ -180,21 +181,21 @@ export class API {
           if (_.isArray(param)) {
             return param.join(',');
           }
-          
+
           return param;
         });
 
         return buildURL('', params).substr(1);
       },
     };
-  
+
     if (this.rejectUnauthorized === false) {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     }
     else {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     }
-  
+
     const response = await axios(config);
 
     const contentType = (response.headers || {})['content-type'] || [];
@@ -255,8 +256,9 @@ export class API {
     return new Promise((resolve, reject) => {
       try {
         const source = new EventSource(streamUrl, {
-          rejectUnauthorized: this.rejectUnauthorized,
-          withCredentials: true,
+            https: {rejectUnauthorized: this.rejectUnauthorized},
+            headers: {'X-Auth-Token': this.token.token},
+            withCredentials: true,
         });
         return resolve(source);
       }
