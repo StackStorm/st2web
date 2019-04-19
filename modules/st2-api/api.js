@@ -256,9 +256,9 @@ export class API {
     return new Promise((resolve, reject) => {
       try {
         const source = new EventSource(streamUrl, {
-            https: {rejectUnauthorized: this.rejectUnauthorized},
-            headers: {'X-Auth-Token': this.token.token},
-            withCredentials: true,
+          https: {rejectUnauthorized: this.rejectUnauthorized},
+          headers: {'X-Auth-Token': this.token.token},
+          withCredentials: true,
         });
         return resolve(source);
       }
