@@ -2,7 +2,7 @@ import _ from 'lodash';
 import url from 'url';
 import axios from 'axios';
 import buildURL from 'axios/lib/helpers/buildURL';
-import EventSource from 'EventSource';
+import EventSource from 'eventsource';
 
 let _source;
 
