@@ -164,7 +164,7 @@ jobs:
             done
 workflows:
   version: 2
-  build-deploy-workflow:
+  build_test_deploy_on_push:
     jobs:
       - build
       - deploy:
@@ -176,3 +176,14 @@ workflows:
                 - master
                 - /v[0-9]+\.[0-9]+/
                 - feature/circleci
+  build_test_nightly:
+    jobs:
+        - build
+    triggers:
+      - schedule:
+          # NOTE: We run it at 1 am UTC every day
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master
