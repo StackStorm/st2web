@@ -17,11 +17,11 @@ const typeChecks = (type, value) => {
   const v = String(value);
   switch (type) {
     case 'number':
-      return !validator.isFloat(v) && `'${v}' is not a number`;
+      return !validator.isFloat(value) && `'${v}' is not a number`;
     case 'integer':
-      return !validator.isInt(v) && `'${v}' is not an integer`;
+      return !validator.isInt(value) && `'${v}' is not an integer`;
     case 'object':
-      return !_.isPlainObject(v) && `'${v}' is not an object`;
+      return !_.isPlainObject(value) && `'${v}' is not an object`;
     case 'string':
     default:
       return false;
@@ -71,7 +71,7 @@ export default class ArrayField extends BaseTextField {
   }
 
   toStateValue(v) {
-    if (jsonCheck(v)) {
+    if (jsonCheck(v) || Array.isArray(v)) {
       return JSON.stringify(v);
     }
 
