@@ -21,7 +21,7 @@ const typeChecks = (type, value) => {
     case 'integer':
       return !validator.isInt(v) && `'${v}' is not an integer`;
     case 'object':
-      return !_.isPlainObject(value) && `'${v}' is not an object`;
+      return !_.isPlainObject(v) && `'${v}' is not an object`;
     case 'string':
     default:
       return false;
@@ -77,10 +77,6 @@ export default class ArrayField extends BaseTextField {
 
     if (isJinja(v)) {
       return v;
-    }
-
-    if (Array.isArray(v) && this.props.spec.items.type === 'object') {
-      return JSON.stringify(v);
     }
 
     const { secret } = this.props.spec || {};
