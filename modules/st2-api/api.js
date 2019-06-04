@@ -65,9 +65,9 @@ export class API {
     }
     else {
       this.server = {
-        api: `https://${window.location.host}/api`,
-        auth: `https://${window.location.host}/auth`,
-        stream: `https://${window.location.host}/stream`,
+        api: `${window.location.protocol || 'https:'}//${window.location.host}/api`,
+        auth: `${window.location.protocol || 'https:'}//${window.location.host}/auth`,
+        stream: `${window.location.protocol || 'https:'}//${window.location.host}/stream`,
         token: !_.isEmpty(token) ? token : null,
       };
     }

@@ -24,6 +24,27 @@ describe('API', () => {
     window.location.host = host; // restore initial value
   });
 
+  describe('can work with http', () => {
+    // capture initial value
+    const host = window.location.host;
+    const protocol = window.location.protocol;
+
+    // set test value
+    window.location.host = 'www.example.net:1234';
+    window.location.protocol = 'http:';
+
+    const api = new API();
+    api.connect();
+
+    expect(api.server.api).to.equal('http://www.example.net:1234/api');
+    expect(api.server.auth).to.equal('http://www.example.net:1234/auth');
+    expect(api.server.stream).to.equal('http://www.example.net:1234/stream');
+
+    // restore initial value
+    window.location.host = host;
+    window.location.protocol = protocol;
+  });
+
   describe('connect', () => {
     before(() => moxios.install());
     after(() => moxios.uninstall());
