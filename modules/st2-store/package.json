@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-store",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "",
   "main": "store.js",
   "directories": {
@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-router": "^2.4.1",
+    "@stackstorm/module-router": "^2.4.3",
     "atob": "^2.1",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",

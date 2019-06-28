@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-select-on-click",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "",
   "main": "select-on-click.js",
   "directories": {

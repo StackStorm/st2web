@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-login",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "",
   "main": "login.component.js",
   "directories": {
@@ -53,8 +53,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-menu": "^2.4.1",
-    "@stackstorm/st2-style": "^2.4.1",
+    "@stackstorm/module-menu": "^2.4.3",
+    "@stackstorm/st2-style": "^2.4.3",
     "atob": "^2.1",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",

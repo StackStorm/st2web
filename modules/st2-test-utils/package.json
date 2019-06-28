@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-test-utils",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "",
   "main": "test-utils.js",
   "directories": {

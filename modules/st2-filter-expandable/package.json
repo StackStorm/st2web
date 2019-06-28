@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-filter-expandable",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "",
   "main": "filter-expandable.js",
   "directories": {

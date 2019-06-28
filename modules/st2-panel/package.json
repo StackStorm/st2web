@@ -1,6 +1,6 @@
 {
   "name": "@stackstorm/module-panel",
-  "version": "2.4.1",
+  "version": "2.4.3",
   "description": "",
   "main": "panel.component.js",
   "directories": {
@@ -51,9 +51,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-label": "^2.4.1",
-    "@stackstorm/module-scroll-into-view": "^2.4.1",
-    "@stackstorm/st2-style": "^2.4.1",
+    "@stackstorm/module-label": "^2.4.3",
+    "@stackstorm/module-scroll-into-view": "^2.4.3",
+    "@stackstorm/st2-style": "^2.4.3",
     "atob": "^2.1",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",
