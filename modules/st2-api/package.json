@@ -29,7 +29,7 @@
   "dependencies": {
     "atob": "^2.1",
     "axios": "0.18.0",
-    "babel-eslint": "10.0.1",
+    "babel-eslint": "10.0.2",
     "babelify": "10.0.0",
     "cached-path-relative": "^1.0.2",
     "cryptiles": "^4",

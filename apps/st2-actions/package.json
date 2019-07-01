@@ -64,7 +64,7 @@
     "@stackstorm/module-title": "^2.4.3",
     "@stackstorm/module-view": "^2.4.3",
     "atob": "2.1.2",
-    "babel-eslint": "10.0.1",
+    "babel-eslint": "10.0.2",
     "babelify": "10.0.0",
     "cached-path-relative": "1.0.2",
     "cryptiles": "4.1.3",
