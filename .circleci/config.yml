@@ -30,8 +30,8 @@ jobs:
             set +e
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm install 10.14.0
-            nvm alias default 10.14.0
+            nvm install 10.15.3
+            nvm alias default 10.15.3
 
             # Each step uses the same `$BASH_ENV`, so need to modify it
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
@@ -136,7 +136,7 @@ jobs:
             - el7
   deploy:
     docker:
-      - image: ruby:2.4.4
+      - image: ruby:2.6.3
     environment:
       ARTIFACTS: /home/circleci/artifacts
       DISTROS: trusty xenial bionic el6 el7
@@ -164,7 +164,7 @@ jobs:
             done
 workflows:
   version: 2
-  build-deploy-workflow:
+  build_test_deploy_on_push:
     jobs:
       - build
       - deploy:
@@ -176,3 +176,14 @@ workflows:
                 - master
                 - /v[0-9]+\.[0-9]+/
                 - feature/circleci
+  build_test_nightly:
+    jobs:
+        - build
+    triggers:
+      - schedule:
+          # NOTE: We run it at 1 am UTC every day
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master

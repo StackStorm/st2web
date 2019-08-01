@@ -12,14 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import History from './history.component';
+module.exports = function (api) {
+  api.cache(true);
 
-const route = {
-  title: 'History',
-  url: '/history',
-  icon: 'icon-history',
-  Component: History,
-  position: 1,
+  const presets = [
+    '@babel/preset-react',
+    '@babel/preset-env',
+  ];
+  const plugins = [
+    [ '@babel/plugin-proposal-decorators', { 'legacy': true }],
+    '@babel/plugin-proposal-class-properties',
+    [ '@babel/plugin-proposal-object-rest-spread', { 'legacy': true }],
+    '@babel/transform-runtime',
+  ];
+
+  return {
+    presets,
+    plugins,
+  };
 };
-
-export default route;
