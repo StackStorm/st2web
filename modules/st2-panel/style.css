@@ -754,8 +754,6 @@
 
     &-body {
       flex: 1;
-      display: table;
-
       border-spacing: 10px 0;
       width: 100%;
     }
