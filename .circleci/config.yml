@@ -11,7 +11,7 @@ jobs:
     environment:
       DEPLOY_PACKAGES: 1
       DEB: trusty xenial bionic
-      RPM: el6 el7
+      RPM: el6 el7 el8
       ST2_HOST: localhost
       ST2_USERNAME: admin
       ST2_PASSWORD: 123
@@ -139,7 +139,7 @@ jobs:
       - image: ruby:2.6.3
     environment:
       ARTIFACTS: /home/circleci/artifacts
-      DISTROS: trusty xenial bionic el6 el7
+      DISTROS: trusty xenial bionic el6 el7 el8
     steps:
       - checkout
       - attach_workspace:
