@@ -134,6 +134,7 @@ jobs:
             - bionic
             - el6
             - el7
+            - el8
   deploy:
     docker:
       - image: ruby:2.6.3
