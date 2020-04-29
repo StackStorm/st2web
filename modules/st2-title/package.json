@@ -40,7 +40,7 @@
     "cached-path-relative": "^1.0.2",
     "cryptiles": "^4",
     "deep-extend": "^0.6.0",
-    "eslint": "5.16.0",
+    "eslint": "6.8.0",
     "eslint-plugin-react": "7.12.4",
     "growl": "^1.10.0",
     "gulp": "4.0.1",
