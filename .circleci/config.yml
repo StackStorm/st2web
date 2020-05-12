@@ -43,6 +43,7 @@ jobs:
             if [ -n "$PACKAGECLOUD_TOKEN" ]; then
               PKG_RELEASE=$(packagecloud.sh next-revision xenial ${PKG_VERSION} st2web)
             else
+              # is fork
               PKG_RELEASE=1
             fi
             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
