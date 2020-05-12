@@ -40,7 +40,11 @@ jobs:
           name: Export package version
           command: |
             PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
-            PKG_RELEASE=$(packagecloud.sh next-revision xenial ${PKG_VERSION} st2web)
+            if [ -n "$PACKAGECLOUD_TOKEN" ]; then
+              PKG_RELEASE=$(packagecloud.sh next-revision xenial ${PKG_VERSION} st2web)
+            else
+              PKG_RELEASE=1
+            fi
             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
             echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
       - run:
