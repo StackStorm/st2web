@@ -79,7 +79,7 @@
     "request": "2.88.0",
     "sinon": "7.3.2",
     "sinon-chai": "3.3.0",
-    "zombie": "5.0.8"
+    "zombie": "6.1.4"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",

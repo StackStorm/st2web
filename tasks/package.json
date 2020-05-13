@@ -63,7 +63,7 @@
     "vinyl-source-stream": "2.0.0",
     "watchify": "3.11.1",
     "yargs": "13.2.2",
-    "zombie": "5.0.8"
+    "zombie": "6.1.4"
   },
   "peerDependencies": {
     "gulp": "4.0.1",
