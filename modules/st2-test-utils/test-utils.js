@@ -61,6 +61,11 @@ export class ReactInstanceTester {
       .join(' ')
     ;
   }
+
+
+  findTests(id) {
+    return this.findAllByProps({'data-test': id});
+  }
 }
 
 const methods = [ 'find', 'findByType', 'findByProps', 'findAll', 'findAllByType', 'findAllByProps' ];

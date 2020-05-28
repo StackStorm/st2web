@@ -1,0 +1,213 @@
+---
+# foo
+
+version:   1
+description: "hello"
+dedoo: multiline
+  string value
+"key in quotes": value not in quotes
+enabled: true
+double: 0.5
+explicit_string: !!str 0.5
+key.with.dot: is_valid
+nested:
+  key.with.dot: is_valid
+
+# { "foo1": "bar1" }
+this_example:
+  is:
+    # { "foo2": "bar2" }
+    a:
+      deep:
+        value: yay!!
+    b:
+      # { "foo3": "bar3" }
+      - some_array:
+          value: awesome
+
+# comment
+comments:
+  # deep comment
+  allowed:
+    # deep deep comment
+
+    # across multiple lines
+    at: any level
+    even:
+      # deep deep deep comment
+      - on array items
+
+nulls:
+- ~
+- null
+- Null
+- Null
+-
+
+integers:
+- 12345          # canonical
+- +12_345.00     # decimal
+- 3:25:45        # sexagecimal
+- 030071         # octal
+- 0x3039         # hexadecimal
+- 0b0011_0000_0011_1001   # binary
+
+floats:
+- 1.23015e3     # canonical
+- 12.3015e+02   # exponential
+- 123_015e-02   # exponential
+- 123,015e-02   # exponential
+- 20:30.15      # sexagecimal
+- 1_230.15      # fixed
+
+dates:
+- 2001-12-15T02:59:43.1Z
+- 2001-12-14t21:59:43.10-05:00
+- 2001-12-14 21:59:43.10 -5
+- 2001-12-15 2:59:43.10
+- 2002-12-14
+
+special:
+- .NaN
+- .inf
+- -.inf
+
+bools:
+- true
+- True
+- TRUE
+- y
+- Yes
+- on
+- false
+- False
+- FALSE
+- n
+- No
+- Off
+
+# After parsing, the left side should NOT equal the right
+specialKeys:
+  y: true
+  Yes: true
+  Off: true
+  n: false
+  no: false
+  off: false
+
+# The left side should equal the right
+quotedValues:
+  1.2: '1.2'
+  true: 'true'
+  y: 'y'
+  yes: 'yes'
+  n: 'n'
+  no: 'no'
+  null: 'null'
+  '~': '~'
+
+
+# Tests expect this object to contain these EXACT values (inlcuding whitespace)
+data:
+  foo: 'barbar'
+  bing: 222
+  booz: true
+  nothing:
+  scalar: firstline
+    secondline
+  # folded multiline strings
+  angle_clip: >
+    line 1
+    line 2
+
+  angle_strip: >-
+    line 3
+    line 4
+
+  angle_keep: >+
+    line 5
+    line 6
+
+
+  pipe_clip: |
+    line 1
+    line 2
+
+  pipe_strip: |-
+    line 3
+    line 4
+
+  pipe_keep: |+
+    line 5
+    line 6
+
+
+? multiline
+  scalar key
+: some value
+
+? - Manchester United
+  - Real Madrid
+: - foo # comment with [ { json-y } ] stuff
+  - bar
+  # comment
+  - [ # another comment
+  2001-01-01,
+2002-02-02 ]
+
+anchored_content: &anchor_name This is a referencable value.
+other_anchor: *anchor_name
+
+# Tests expect this array to contain these values in this order
+a_sequence:
+- Item 2
+- 0.5 # sequences can contain disparate types.
+- false
+- null
+- Null
+- NULL
+-
+- key: value
+  another_key: another_value
+-
+  - deep_key: value
+    # a comment
+    another_deep_key: another_value
+    and_even_deeper:
+    - # intentionally empty with less indentation
+    - we go
+          - with lots
+          - of indentation
+-
+  - This is a sequence
+  - inside another sequence
+- - - Nested sequence indicators
+    - can be collapsed
+    - *anchor_name
+
+json_map: { "key": "value"}
+json_seq: [3, 2, 1, "takeoff"]
+quotes are optional: {key: [3, 2, 1, takeoff]}
+
+base: &base
+  name: Everyone has same name
+
+base2: &base2
+  email: foo@bar.com
+
+foobase: &foo
+  <<: *base
+  age: 10
+
+foobarbase:
+  <<: *foo
+  height: 6.0
+
+multibase:
+  <<: [*base, *base2]
+
+set:
+  ? item1
+  ? item2
+  ? item3
+or: {item2-1, item2-2, "item2-3": [ "item2-4" ]}

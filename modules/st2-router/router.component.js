@@ -82,6 +82,20 @@ export default class Router extends React.Component {
     }
  
     for (const { url, Component } of routes) {
+      // TODO: use this ?
+      //     from st2flow/modules/st2-router/router.component.js
+      // const regex = url instanceof RegExp ? regex : new RegExp(`^${url}`);
+      // const match = location.pathname.match(regex);
+      // if (match) {
+      //   const [ , ...args ] = match;
+      //   return (
+      //     <Component
+      //       routes={routes}
+      //       args={args}
+      //     />
+      //   );
+      // }
+
       if (location.pathname.startsWith(url)) {
         return (
           <Component

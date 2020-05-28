@@ -1,0 +1,36 @@
+version: 1.0
+
+description: >
+  A sample workflow that demonstrates how to use conditions
+  to determine which path in the workflow to take.
+
+input:
+  - which
+
+tasks:
+  t1:
+    action: core.local
+    input:
+      cmd: printf <% $.which %>
+    next:
+      - when: <% succeeded() and result().stdout = 'a' %>
+        publish: path=<% result().stdout %>
+        do:
+          - a
+          - b
+      - when: <% succeeded() and result().stdout = 'b' %>
+        publish: path=<% result().stdout %>
+        do: b
+      - when: <% succeeded() and not result().stdout in list(a, b) %>
+        publish: path=<% result().stdout %>
+        do: c
+  a:
+    action: core.local cmd="echo 'Took path A.'"
+  b:
+    action: core.local cmd="echo 'Took path B.'"
+    next:
+      - do: 'foobar'
+  c:
+    action: core.local cmd="echo 'Took path C.'"
+  foobar:
+    action: core.local cmd="echo 'Took path foobar.'"

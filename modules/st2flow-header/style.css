@@ -1,0 +1,90 @@
+/*
+Copyright 2020 Extreme Networks, Inc.
+
+Unauthorized copying of this file, via any medium is strictly
+prohibited. Proprietary and confidential. See the LICENSE file
+included with this work for details.
+*/
+
+.component {
+  padding: 10px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  background: linear-gradient(90deg, #400099 0%, #a51890 100%);
+  color: white;
+
+  /* For collapse button */
+  padding-right: 40px;
+}
+
+.logo {
+  font-size: 24px;
+  line-height: 28px;
+
+  padding: 3px;
+}
+
+.subtitle {
+  font-size: 12px;
+  line-height: 28px;
+  padding-bottom: 4px;
+  padding-left: 3px;
+
+  vertical-align: middle;
+}
+
+.separator {
+  flex: 1;
+}
+
+.user {
+  white-space: nowrap;
+
+  position: relative;
+
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 19px;
+  vertical-align: -1px;
+}
+
+.dropdown {
+  font-size: 14px;
+  font-weight: normal;
+
+  position: absolute;
+  z-index: 1;
+  right: 0;
+
+  color: black;
+  background-color: white;
+
+  &-backdrop {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    cursor: default;
+  }
+
+  &-item {
+    line-height: 2em;
+
+    position: relative;
+    z-index: 11;
+
+    padding: 0 10px;
+
+    &:hover {
+      background-color: var(--yellow-lighten-5);
+    }
+  }
+}

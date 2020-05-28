@@ -1,0 +1,53 @@
+/*
+Copyright 2020 Extreme Networks, Inc.
+
+Unauthorized copying of this file, via any medium is strictly
+prohibited. Proprietary and confidential. See the LICENSE file
+included with this work for details.
+*/
+
+@import '@stackstorm/st2-style/style.css';
+
+
+.component {
+  display: flex;
+
+  flex-direction: column;
+
+  height: 100%;
+
+  &-row {
+    &-content {
+      flex: 1;
+
+      display: flex;
+
+      overflow: hidden;
+    }
+  }
+}
+
+.header {
+  width: 100%;
+  height: 50px;
+}
+
+.palette {
+  width: 250px;
+
+  overflow: hidden;
+}
+
+.canvas {
+  flex: 1;
+  height: 100%;
+}
+
+.details {
+  width: 360px;
+  height: 100%;
+
+  &.code {
+    width: 500px;
+  }
+}

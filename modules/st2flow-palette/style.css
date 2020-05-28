@@ -1,0 +1,87 @@
+/*
+Copyright 2020 Extreme Networks, Inc.
+
+Unauthorized copying of this file, via any medium is strictly
+prohibited. Proprietary and confidential. See the LICENSE file
+included with this work for details.
+*/
+
+.component {
+  background-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.action {
+  background: #ebebeb;
+  border-radius: 3px;
+  margin: 10px;
+  padding: 8px 10px;
+
+  user-select: none;
+
+  -webkit-user-drag: element;
+
+  position: relative;
+
+  &-name {
+    color: #2d2d2d;
+    font-size: 1.1em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-description {
+    color: #5b5b5b;
+  }
+}
+
+.search {
+  background-color: #444;
+
+  color: #888;
+
+  padding: 10px;
+
+  min-height: 30px;
+}
+
+.search-field {
+  box-sizing: border-box;
+  background-color: transparent;
+  border: 0;
+
+  padding: 5px;
+  border-bottom: 1px solid #888;
+  outline: none;
+  color: #ccc;
+  width: 100%;
+
+  &:focus {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.list {
+  overflow: auto;
+}
+
+.pack-name {
+  margin: 10px;
+  padding: 10px 0 10px 0;
+
+  font-size: 14px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+
+  & > div {
+    padding-left: 10px;
+  }
+}

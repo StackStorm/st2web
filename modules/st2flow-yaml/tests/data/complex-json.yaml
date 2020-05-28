@@ -1,0 +1,142 @@
+# this is valid yaml
+{
+  version: 1,
+  description: 'hello',
+  dedoo: 'multiline string value',
+  'key in quotes': 'value not in quotes',
+  enabled: true,
+  double: 0.5,
+  explicit_string: '0.5',
+  'key.with.dot': 'is_valid',
+  nested: {
+    'key.with.dot': 'is_valid'
+  },
+  this_example: {
+    is: {
+      a: {
+        deep: {
+          value: 'yay!!'
+        }
+      },
+      b: [{
+        some_array: {
+          value: 'awesome'
+        }
+      }]
+    }
+  },
+  nulls: [null, null, null, null, null],
+  integers: [12345, 12345, 12345, 12345, 12345, 12345],
+  floats: [1230.15, 1230.15, 1230.15, '123,015e-02', 1230.15, 1230.15],
+  dates: [2001-12-15T02:59:43.1Z,
+    2001-12-14t21:59:43.10-05:00,
+    2001-12-14 21:59:43.10 -5,
+    2001-12-15 2:59:43.10,
+    2002-12-14
+  ],
+  special: [NaN, Infinity, -Infinity],
+  bools: [true,
+    true,
+    true,
+    'y',
+    'Yes',
+    'on',
+    false,
+    false,
+    false,
+    'n',
+    'No',
+    'Off'
+  ],
+  specialKeys: {
+    y: true,
+    Yes: true,
+    Off: true,
+    n: false,
+    no: false,
+    off: false
+  },
+  data: {
+    foo: 'barbar',
+    bing: 222,
+    booz: true,
+    nothing: null,
+    scalar: 'firstline secondline',
+    angle_clip: 'line 1 line 2\n',
+    angle_strip: 'line 3 line 4',
+    angle_keep: 'line 5 line 6\n\n\n',
+    pipe_clip: 'line 1\nline 2\n',
+    pipe_strip: 'line 3\nline 4',
+    pipe_keep: 'line 5\nline 6\n\n\n'
+  },
+  'multiline scalar key': 'some value',
+  'Manchester United,Real Madrid': ['foo',
+    'bar',
+    [2001-01-01,
+      2002-02-02
+    ]
+  ],
+  anchored_content: 'This is a referencable value.',
+  other_anchor: 'This is a referencable value.',
+  a_sequence: ['Item 2',
+    0.5,
+    false,
+    null,
+    null,
+    null,
+    null,
+    {
+      key: 'value',
+      another_key: 'another_value'
+    },
+    ['This is a sequence', 'inside another sequence'],
+    [
+      ['Nested sequence indicators',
+        'can be collapsed',
+        'This is a referencable value arr.'
+      ]
+    ]
+  ],
+  json_map: {
+    key: 'value'
+  },
+  json_seq: [3, 2, 1, 'takeoff'],
+  'quotes are optional': {
+    key: [3, 2, 1, 'takeoff']
+  },
+  base: {
+    name: 'Everyone has same name'
+  },
+  base2: {
+    email: 'foo@bar.com'
+  },
+  foobase: {
+    name: 'Everyone has same name',
+    age: 10
+  },
+  foobarbase: {
+    name: 'Everyone has same name',
+    age: 10,
+    height: 6
+  },
+  multibase: {
+    name: 'Everyone has same name',
+    email: 'foo@bar.com'
+  },
+  set: {
+    item1: null,
+    item2: null,
+    item3: null
+  },
+  or: {
+    item1: null,
+    item2: null,
+    item3: ['item4']
+  },
+  empty_objects: {
+    foo: {},
+    bar: { baz: []}},
+  empty_arrays: [
+    [ { foo: [] } ]
+  ]
+}

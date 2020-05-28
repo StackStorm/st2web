@@ -1,0 +1,40 @@
+/*
+Copyright 2020 Extreme Networks, Inc.
+
+Unauthorized copying of this file, via any medium is strictly
+prohibited. Proprietary and confidential. See the LICENSE file
+included with this work for details.
+*/
+
+.component {
+  flex: 1;
+  position: relative;
+  border-left: 2px solid #f0f0f0;
+}
+
+.has-error {
+  border-left-color: var(--red-darken-1)
+}
+
+.notifications {
+  margin-left: 48px; /* editor gutter width */
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+}
+
+.active-task {
+  position: absolute;
+  z-index: 2;
+  background-color: var(--yellow-lighten-5);
+  border-left: 4px solid var(--yellow-base);
+}
+
+.error-line {
+  position: absolute;
+  z-index: 2;
+  background-color: var(--red-lighten-3);
+  border-left: 4px solid var(--red-darken-1);
+}

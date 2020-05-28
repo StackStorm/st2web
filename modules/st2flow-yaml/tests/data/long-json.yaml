@@ -1,0 +1,412 @@
+# this is valid yaml
+{
+  version: '2.0',
+  name: 'st2cd.st2_e2e_tests',
+  description: 'Run the suite of end to end tests on the st2 host',
+  workflows: {
+    main: {
+      type: 'direct',
+      input: ['host_ip',
+        'host_fqdn',
+        'protocol',
+        'st2_username',
+        'st2_password',
+        'windows_host_ip',
+        'windows_host_fqdn',
+        'windows_username',
+        'windows_password',
+        'version',
+        'enterprise'
+      ],
+      tasks: {
+        init: {
+          action: 'std.noop',
+          publish: {
+            st2_cli_env: {
+              ST2_BASE_URL: '<% $.protocol %>://<% $.host_fqdn %>',
+              ST2_AUTH_URL: '<% $.protocol %>://<% $.host_fqdn %>:9100',
+              ST2_API_URL: '<% $.protocol %>://<% $.host_fqdn %>:9101'
+            }
+          },
+          'on-success': ['get_st2_token']
+        },
+        get_st2_token: {
+          action: 'st2cd.get_st2_token',
+          input: {
+            hosts: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>',
+            st2_username: '<% $.st2_username %>',
+            st2_password: '<% $.st2_password %>'
+          },
+          publish: {
+            st2_cli_env: '<% $.st2_cli_env.set( ST2_AUTH_TOKEN, task(get_st2_token).result.get($.host_ip).stdout.get(token)) %>'
+          },
+          'on-success': ['setup_e2e_tests']
+        },
+        setup_e2e_tests: {
+          action: 'st2cd.setup_e2e_tests',
+          input: {
+            hosts: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>',
+            version: '<% $.version %>',
+            timeout: 220
+          },
+          'on-success': ['run_basic_tests', 'run_quickstart_tests']
+        },
+        run_basic_tests: {
+          workflow: 'test_basic',
+          input: {
+            host: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>'
+          }
+        },
+        run_quickstart_tests: {
+          workflow: 'test_quickstart_wf',
+          input: {
+            host: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>',
+            protocol: '<% $.protocol %>'
+          },
+          'on-success': ['run_mistral_tests']
+        },
+        run_mistral_tests: {
+          workflow: 'test_mistral',
+          input: {
+            host: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>'
+          },
+          'on-success': ['run_inquiry_tests']
+        },
+        run_inquiry_tests: {
+          workflow: 'test_inquiry',
+          input: {
+            host: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>',
+            protocol: '<% $.protocol %>'
+          },
+          'on-success': ['run_windows_tests']
+        },
+        run_windows_tests: {
+          workflow: 'test_windows',
+          input: {
+            host: '<% $.host_ip %>',
+            windows_host: '<% $.windows_host_ip %>',
+            windows_username: '<% $.windows_username %>',
+            windows_password: '<% $.windows_password %>',
+            env: '<% $.st2_cli_env %>',
+            protocol: '<% $.protocol %>'
+          },
+          'on-success': ['pabot_docs_tests']
+        },
+        pabot_docs_tests: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>',
+            cmd: 'cd /tmp/st2tests && . ./venv/bin/activate && bash /tmp/st2tests/robot_parallel_tests.sh ''--processes 1 robotfm_tests/docs/'' 0',
+            timeout: 300
+          },
+          retry: {
+            count: 2,
+            delay: 30
+          },
+          'on-success': ['pabot_chatops_CLI_tests']
+        },
+        pabot_chatops_CLI_tests: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host_ip %>',
+            env: '<% $.st2_cli_env %>',
+            cmd: 'cd /tmp/st2tests && . ./venv/bin/activate && bash /tmp/st2tests/robot_parallel_tests.sh ''--processes 1 robotfm_tests/cli/ robotfm_tests/chatopsCI/'' 0',
+            timeout: 300
+          },
+          retry: {
+            count: 2,
+            delay: 30
+          },
+          'on-success': [{
+            enterprise_tests: '<% $.enterprise %>'
+          }]
+        },
+        enterprise_tests: {
+          action: 'st2cd.st2_enterprise_tests',
+          input: {
+            host_ip: '<% $.host_ip %>'
+          }
+        }
+      }
+    },
+    test_basic: {
+      type: 'direct',
+      input: ['host', 'env'],
+      tasks: {
+        test_core_local: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run core.local date'
+          }
+        },
+        test_core_http: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run core.http url=https://www.google.com'
+          }
+        },
+        test_core_remote_single_host: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run core.remote hosts=<% $.host %> hostname'
+          }
+        }
+      }
+    },
+    test_quickstart_wf: {
+      type: 'direct',
+      input: ['host', 'env', 'protocol'],
+      tasks: {
+        init: {
+          action: 'std.noop',
+          publish: {
+            st2_cli_args: 'token=<% $.env.get(ST2_AUTH_TOKEN) %> protocol=<% $.protocol %>'
+          },
+          'on-success': ['test_quickstart',
+            'test_quickstart_key',
+            'test_quickstart_rules',
+            'test_quickstart_packs'
+          ]
+        },
+        test_quickstart: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart <% $.st2_cli_args %>',
+            timeout: 180
+          }
+        },
+        test_quickstart_key: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_key <% $.st2_cli_args %>'
+          }
+        },
+        test_quickstart_rules: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_rules <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        },
+        test_quickstart_packs: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_packs_pack <% $.st2_cli_args %>',
+            timeout: 600
+          },
+          'on-success': ['test_quickstart_local_script',
+            'test_quickstart_remote_script',
+            'test_quickstart_passive_sensor',
+            'test_quickstart_polling_sensor'
+          ]
+        },
+        test_quickstart_local_script: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_local_script_actions <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        },
+        test_quickstart_remote_script: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_remote_script_actions <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        },
+        test_quickstart_passive_sensor: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_passive_sensor <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        },
+        test_quickstart_polling_sensor: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_polling_sensor <% $.st2_cli_args %>',
+            timeout: 600
+          },
+          'on-success': ['test_quickstart_python',
+            'test_quickstart_trace',
+            'test_quickstart_run_pack_tests_tool'
+          ]
+        },
+        test_quickstart_python: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_python_actions <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        },
+        test_quickstart_trace: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_quickstart_trace <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        },
+        test_quickstart_run_pack_tests_tool: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 action get tests.test_run_pack_tests_tool ; if [ $? -eq 0 ]; then st2 run tests.test_run_pack_tests_tool <% $.st2_cli_args %>; else echo ''run_pack_tests_tool tests not available''; fi',
+            timeout: 600
+          },
+          'on-success': ['test_quickstart_pack_install_tool']
+        },
+        test_quickstart_pack_install_tool: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 action get tests.test_pack_install_tool ; if [ $? -eq 0 ]; then st2 run tests.test_pack_install_tool <% $.st2_cli_args %>; else echo ''pack_install_tool tests not available''; fi',
+            timeout: 600
+          },
+          'on-success': ['test_quickstart_key_triggers']
+        },
+        test_quickstart_key_triggers: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_key_triggers <% $.st2_cli_args %>',
+            timeout: 600
+          },
+          'on-success': ['test_quickstart_timer_rules']
+        },
+        test_quickstart_timer_rules: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_timer_rule <% $.st2_cli_args %>',
+            timeout: 600
+          }
+        }
+      }
+    },
+    test_mistral: {
+      type: 'direct',
+      input: ['host', 'env'],
+      tasks: {
+        test_mistral_examples: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run examples.mistral_examples',
+            timeout: 600
+          }
+        }
+      }
+    },
+    test_inquiry: {
+      type: 'direct',
+      input: ['host', 'env', 'protocol'],
+      tasks: {
+        init: {
+          action: 'std.noop',
+          publish: {
+            st2_cli_args: 'token=<% $.env.get(ST2_AUTH_TOKEN) %> protocol=<% $.protocol %>'
+          },
+          'on-success': ['test_inquiry_chain']
+        },
+        test_inquiry_chain: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_inquiry_chain <% $.st2_cli_args %>',
+            timeout: 180
+          },
+          'on-success': ['test_inquiry_mistral']
+        },
+        test_inquiry_mistral: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_inquiry_mistral <% $.st2_cli_args %>',
+            timeout: 180
+          }
+        }
+      }
+    },
+    test_windows: {
+      type: 'direct',
+      input: ['host',
+        'windows_host',
+        'windows_username',
+        'windows_password',
+        'env',
+        'protocol'
+      ],
+      tasks: {
+        init: {
+          action: 'std.noop',
+          publish: {
+            st2_cli_args: 'token=<% $.env.get(ST2_AUTH_TOKEN) %> protocol=<% $.protocol %>'
+          },
+          'on-success': ['test_winrm_runners_are_available']
+        },
+        test_winrm_runners_are_available: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 runner list -w 100; (st2 runner list -w 100 | grep winrm-) || (echo "WinRM runners not available (likely running under StackStorm < 2.9dev, skipping tests...)" ; exit 3)'
+          },
+          'on-success': ['test_winrm_runners'],
+          'on-error': ['skip_winrm_tests_due_to_winrm_runners_not_available']
+        },
+        test_winrm_runners: {
+          action: 'core.remote',
+          input: {
+            hosts: '<% $.host %>',
+            env: '<% $.env %>',
+            cmd: 'st2 run tests.test_winrm_runners winrm_host=<% $.windows_host %> winrm_username=<% $.windows_username %> winrm_password=''<% $.windows_password %>'' <% $.st2_cli_args %>',
+            timeout: 180
+          }
+        },
+        skip_winrm_tests_due_to_winrm_runners_not_available: {
+          action: 'core.noop'
+        }
+      }
+    }
+  }
+}

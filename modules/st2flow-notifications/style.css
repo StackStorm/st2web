@@ -1,0 +1,85 @@
+/*
+Copyright 2020 Extreme Networks, Inc.
+
+Unauthorized copying of this file, via any medium is strictly
+prohibited. Proprietary and confidential. See the LICENSE file
+included with this work for details.
+*/
+
+.component {
+  position: absolute;
+  z-index: 2147483600; /* there's a little room left above jik */
+
+  &.top {
+    top: 1em;
+    left: 1em;
+    right: 1em;
+  }
+
+  &.top-left {
+    top: 1em;
+    left: 1em;
+  }
+
+  &.top-right {
+    top: 1em;
+    right: 1em;
+  }
+
+  &.bottom {
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+  }
+
+  &.bottom-left {
+    bottom: 1em;
+    left: 1em;
+  }
+
+  &.bottom-right {
+    bottom: 1em;
+    right: 1em;
+  }
+}
+
+.notification {
+  border: 1px solid transparent;
+  padding: .5em 2em .5em .75em;
+  margin-bottom: .5em;
+  position: relative;
+
+  .close {
+    cursor: pointer;
+    position: absolute;
+    top: .5em;
+    right: .75em;
+    padding: .1em .2em;
+    border-color: inherit;
+    background-color: rgba(255, 255, 255, .3);
+  }
+
+  &.error {
+    background-color: #f2dede;
+    border-color: #ebcccc;
+    color: #a94442;
+  }
+
+  &.warning {
+    background-color: #fcf8e3;
+    border-color: #faf2cc;
+    color: #8a6d3b;
+  }
+
+  &.info {
+    background-color: #d9edf7;
+    border-color: #bcdff1;
+    color: #31708f;
+  }
+
+  &.success {
+    background-color: #dff0d8;
+    border-color: #d0e9c6;
+    color: #3c763d;
+  }
+}

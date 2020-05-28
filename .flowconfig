@@ -1,0 +1,13 @@
+[ignore]
+.*/module-deps/test/invalid_pkg/package.json
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+esproposal.decorators=ignore
+
+[strict]

@@ -20,6 +20,7 @@ module.exports = function (api) {
     '@babel/preset-env',
   ];
   const plugins = [
+    '@babel/plugin-transform-flow-strip-types',
     [ '@babel/plugin-proposal-decorators', { 'legacy': true }],
     '@babel/plugin-proposal-class-properties',
     [ '@babel/plugin-proposal-object-rest-spread', { 'legacy': true }],

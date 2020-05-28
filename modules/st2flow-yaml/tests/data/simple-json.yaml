@@ -1,0 +1,15 @@
+# this is valid yaml
+{
+  bools: {
+    trues: [true, true, true]
+  },
+  strings: {
+    string: 'string with spaces',
+    longstring1: 'a long string with an ignored newline\n',
+    longstring2: 'a long string with a maintained\nnewline\n'
+  },
+  lists: [{
+    foo: 'bar',
+    bar: ['foo', 'bar']
+  }]
+}
