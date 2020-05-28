@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "react": "^16.0.0",
+    "react": "16.8.6",
     "react-test-renderer": "16.8.6"
   }
 }
