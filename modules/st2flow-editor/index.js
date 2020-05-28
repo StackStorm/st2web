@@ -10,7 +10,7 @@ import type { TaskInterface, DeltaInterface } from '@stackstorm/st2flow-model';
 import type { GenericError } from '@stackstorm/st2flow-model';
 import type { NotificationInterface } from '@stackstorm/st2flow-notifications';
 
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
@@ -21,15 +21,15 @@ import 'brace/mode/yaml';
 
 import style from './style.css';
 
-const { Component } = React;
 const Range = ace.acequire('ace/range').Range;
 const editorId = 'editor_mount_point';
 const DELTA_DEBOUNCE = 300; // ms
 const DEFAULT_TAB_SIZE = 2;
 
-@connect(
-  ({ ranges, notifications }) => ({ ranges, notifications })
-)
+const editorConnect = ({ ranges, notifications }) => ({ ranges, notifications });
+
+export { editorConnect };
+
 export default class Editor extends Component<{
   className?: string,
   ranges?: Object,

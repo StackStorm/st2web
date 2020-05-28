@@ -14,6 +14,8 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import Editor from '@stackstorm/st2flow-editor';
+import { editorConnect } from '@stackstorm/st2flow-editor';
+
 import { Toolbar, ToolbarButton } from './layout';
 
 import Meta from './meta-panel';
@@ -22,6 +24,9 @@ import TaskList from './task-list';
 
 import style from './style.css';
 
+@connect(
+  editorConnect
+)
 @connect(
   ({ flow: { metaSource }}) => ({
     source: metaSource,
@@ -36,6 +41,9 @@ import style from './style.css';
 )
 class MetaEditor extends Editor {}
 
+@connect(
+  editorConnect
+)
 @connect(
   ({ flow: { workflowSource }}) => ({
     source: workflowSource,
