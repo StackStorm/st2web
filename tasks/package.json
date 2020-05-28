@@ -24,6 +24,18 @@
     "access": "public"
   },
   "dependencies": {
+    "@stackstorm/browserify-postcss": "0.3.4-patch.5",
+    "@babel/core": "7.4.3",
+    "@babel/plugin-proposal-class-properties": "7.4.0",
+    "@babel/plugin-proposal-decorators": "7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.3",
+    "@babel/plugin-transform-runtime": "7.4.3",
+    "@babel/polyfill": "7.4.3",
+    "@babel/preset-env": "7.4.3",
+    "@babel/preset-react": "7.0.0",
+    "@babel/register": "7.4.0",
+    "babel-eslint": "10.0.1",
+    "browserify": "16.2.3",
     "atob": "2.1.2",
     "babelify": "10.0.0",
     "cached-path-relative": "1.0.2",
@@ -55,8 +67,6 @@
     "lodash": "4.17.11",
     "mocha": "6.1.4",
     "pathmodify": "0.5.0",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
     "require-dir": "1.2.0",
     "undertaker-forward-reference": "1.0.2",
     "vinyl-buffer": "1.0.1",
@@ -64,10 +74,5 @@
     "watchify": "3.11.1",
     "yargs": "13.2.2",
     "zombie": "5.0.8"
-  },
-  "peerDependencies": {
-    "gulp": "4.0.1",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
   }
 }
