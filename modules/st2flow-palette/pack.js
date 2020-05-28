@@ -36,7 +36,7 @@ export default class Action extends Component<{
 
   handleImageError() {
     if (this.imgRef.current) {
-      this.imgRef.current.src = 'static/icon.png';
+      this.imgRef.current.src = 'img/icon.png';
     }
   }
 
