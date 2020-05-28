@@ -80,8 +80,8 @@
     "@stackstorm/module-store": "^2.4.3",
     "lodash": "4.17.11",
     "prop-types": "15.7.2",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "classnames": "^2.2.6"
   },
   "devDependencies": {
