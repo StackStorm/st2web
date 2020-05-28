@@ -6,15 +6,15 @@
 
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
-// import { Provider, connect } from 'react-redux';
-import { connect } from 'react-redux';
+import { Provider, connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
 import { pick, mapValues, get } from 'lodash';
 import cx from 'classnames';
 import url from 'url';
 
-import Header from '@stackstorm/st2flow-header';
+import Menu from '@stackstorm/module-menu';
 import Palette from '@stackstorm/st2flow-palette';
 import Canvas from '@stackstorm/st2flow-canvas';
 import Details from '@stackstorm/st2flow-details';
@@ -26,7 +26,7 @@ import { Toolbar, ToolbarButton, ToolbarDropdown } from '@stackstorm/st2flow-can
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
 
-// import { Router } from '@stackstorm/module-router';
+import { Route } from '@stackstorm/module-router';
 import globalStore from '@stackstorm/module-store';
 
 import store from './store';
@@ -114,6 +114,14 @@ export default class Workflows extends Component<{
     layout: PropTypes.func,
     sendSuccess: PropTypes.func,
     sendError: PropTypes.func,
+
+    routes: PropTypes.arrayOf(PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      href: PropTypes.string,
+      url: PropTypes.string,
+      target: PropTypes.string,
+      icon: PropTypes.string,
+    })).isRequired,
   }
 
   state = {
@@ -328,75 +336,80 @@ export default class Workflows extends Component<{
       return acc;
     }, {});
 
+
     return (
-      <div className="component">
-        <div className="component-row-header">
-          { !isCollapsed.header && <Header className="header" /> }
-          <CollapseButton position="top" state={isCollapsed.header} onClick={() => toggleCollapse('header')} />
-        </div>
-        <div className="component-row-content">
-          { !isCollapsed.palette && <Palette className="palette" actions={actions} /> }
-          <HotKeys
-            style={{ flex: 1 }}
-            keyMap={this.keyMap}
-            focused={true}
-            attach={document.body}
-            handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
-          >
-            <Canvas className="canvas">
-              <Toolbar>
-                <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
-                <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
-                <ToolbarButton
-                  key="rearrange"
-                  icon="icon-arrange"
-                  title="Rearrange tasks"
-                  successMessage="Rearrange complete."
-                  errorMessage="Error rearranging workflows."
-                  onClick={() => layout()}
-                />
-                <ToolbarButton
-                  key="save"
-                  className={cx(dirty && 'glow')}
-                  icon="icon-save"
-                  title="Save workflow"
-                  successMessage="Workflow saved."
-                  errorMessage="Error saving workflow."
-                  onClick={() => this.save()}
-                />
-                <ToolbarButton
-                  key="run"
-                  icon="icon-play"
-                  title={dirty ? 'Cannot run with unsaved changes' : 'Run workflow'}
-                  disabled={runningWorkflow || dirty}
-                  onClick={() => this.openForm()}
-                />
-                <ToolbarDropdown shown={showForm} pointerPosition='calc(50% + 85px)' onClose={() => this.closeForm()}>
-                  {
-                    meta.parameters && Object.keys(meta.parameters).length
-                      ? <h2>Run workflow with inputs</h2>
-                      : <h2>Run workflow</h2>
-                  }
-                  <AutoForm
-                    spec={{
-                      type: 'object',
-                      properties: meta.parameters,
-                    }}
-                    data={autoFormData}
-                    onChange={(runValue) => this.handleFormChange(runValue)}
-                    onError={(error, runValue) => this.handleFormChange(runValue)}
-                  />
-                  <div className='buttons' style={{marginTop: 15}}>
-                    <Button onClick={() => this.run()} disabled={!this.formIsValid} value="Execute Workflow" />
-                    <Button onClick={() => this.closeForm()} value="Close" />
-                  </div>
-                </ToolbarDropdown>
-              </Toolbar>
-            </Canvas>
-          </HotKeys>
-          { !isCollapsed.details && <Details className="details" actions={actions} /> }
-        </div>
-      </div>
+      <Route
+        path='/action/:ref?/:section?'
+        render={({ match, location }) => {
+          return (
+            <div className="component">
+              <Menu location={location} routes={this.props.routes} />
+              <div className="component-row-content">
+                { !isCollapsed.palette && <Palette className="palette" actions={actions} /> }
+                <HotKeys
+                  style={{ flex: 1 }}
+                  keyMap={this.keyMap}
+                  focused={true}
+                  attach={document.body}
+                  handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
+                >
+                  <Canvas className="canvas">
+                    <Toolbar>
+                      <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
+                      <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
+                      <ToolbarButton
+                        key="rearrange"
+                        icon="icon-arrange"
+                        title="Rearrange tasks"
+                        successMessage="Rearrange complete."
+                        errorMessage="Error rearranging workflows."
+                        onClick={() => layout()}
+                      />
+                      <ToolbarButton
+                        key="save"
+                        className={cx(dirty && 'glow')}
+                        icon="icon-save"
+                        title="Save workflow"
+                        successMessage="Workflow saved."
+                        errorMessage="Error saving workflow."
+                        onClick={() => this.save()}
+                      />
+                      <ToolbarButton
+                        key="run"
+                        icon="icon-play"
+                        title={dirty ? 'Cannot run with unsaved changes' : 'Run workflow'}
+                        disabled={runningWorkflow || dirty}
+                        onClick={() => this.openForm()}
+                      />
+                      <ToolbarDropdown shown={showForm} pointerPosition='calc(50% + 85px)' onClose={() => this.closeForm()}>
+                        {
+                          meta.parameters && Object.keys(meta.parameters).length
+                            ? <h2>Run workflow with inputs</h2>
+                            : <h2>Run workflow</h2>
+                        }
+                        <AutoForm
+                          spec={{
+                            type: 'object',
+                            properties: meta.parameters,
+                          }}
+                          data={autoFormData}
+                          onChange={(runValue) => this.handleFormChange(runValue)}
+                          onError={(error, runValue) => this.handleFormChange(runValue)}
+                        />
+                        <div className='buttons' style={{marginTop: 15}}>
+                          <Button onClick={() => this.run()} disabled={!this.formIsValid} value="Execute Workflow" />
+                          <Button onClick={() => this.closeForm()} value="Close" />
+                        </div>
+                      </ToolbarDropdown>
+                    </Toolbar>
+                  </Canvas>
+                </HotKeys>
+                { !isCollapsed.details && <Details className="details" actions={actions} /> }
+              </div>
+            </div>
+          );
+        }}
+      />
     );
   }
 }
