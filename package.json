@@ -54,6 +54,7 @@
     "."
   ],
   "dependencies": {
+    "@hapi/cryptiles": "^4.2.1",
     "@stackstorm/app-actions": "^2.4.3",
     "@stackstorm/app-code": "^2.4.3",
     "@stackstorm/app-history": "^2.4.3",
@@ -68,7 +69,6 @@
     "atob": "2.1.2",
     "cached-path-relative": "1.0.2",
     "classnames": "2.2.6",
-    "cryptiles": "4.1.3",
     "deep-extend": "0.6.0",
     "growl": "1.10.5",
     "insert-css": "2.0.0",

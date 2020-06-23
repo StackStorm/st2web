@@ -819,6 +819,25 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
+"@hapi/boom@7.x.x":
+  version "7.4.11"
+  resolved "https://registry.npmjs.org/@hapi/boom/-/boom-7.4.11.tgz#37af8417eb9416aef3367aa60fa04a1a9f1fc262"
+  integrity sha512-VSU/Cnj1DXouukYxxkes4nNJonCnlogHvIff1v1RVoN4xzkKhMXX+GRmb3NyH1iar10I9WFPDv2JPwfH3GaV0A==
+  dependencies:
+    "@hapi/hoek" "8.x.x"
+
+"@hapi/cryptiles@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.npmjs.org/@hapi/cryptiles/-/cryptiles-4.2.1.tgz#ff0f18d79074659838caedbb911851313ad1ffbc"
+  integrity sha512-XoqgKsHK0l/VpqPs+tr6j6vE+VQ3+2bkF2stvttmc7xAOf1oSAwHcJ0tlp/6MxMysktt1IEY0Csy3khKaP9/uQ==
+  dependencies:
+    "@hapi/boom" "7.x.x"
+
+"@hapi/hoek@8.x.x":
+  version "8.5.1"
+  resolved "https://registry.npmjs.org/@hapi/hoek/-/hoek-8.5.1.tgz#fde96064ca446dec8c55a8c2f130957b070c6e06"
+  integrity sha512-yN7kbciD87WzLGc5539Tn0sApjyiGHAJgKvG9W8C7O+6c7qmoQMfVs0W4bX17eqz6C78QJqqFrtgdK5EWf6Qow==
+
 "@lerna/add@3.13.1":
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/@lerna/add/-/add-3.13.1.tgz#2cd7838857edb3b43ed73e3c21f69a20beb9b702"
@@ -2188,13 +2207,6 @@ body-parser@~1.8.0:
     raw-body "1.3.0"
     type-is "~1.5.1"
 
-boom@7.x.x:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/boom/-/boom-7.3.0.tgz#733a6d956d33b0b1999da3fe6c12996950d017b9"
-  integrity sha512-Swpoyi2t5+GhOEGw8rEsKvTxFLIDiiKoUc2gsoV6Lyr43LHBIzch3k2MvYUs8RTROrIkVJ3Al0TkaOGjnb+B6A==
-  dependencies:
-    hoek "6.x.x"
-
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
@@ -3148,13 +3160,6 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
-
-cryptiles@4.1.3, cryptiles@^4:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-4.1.3.tgz#2461d3390ea0b82c643a6ba79f0ed491b0934c25"
-  integrity sha512-gT9nyTMSUC1JnziQpPbxKGBbUg8VL7Zn2NB4E1cJYvuXdElHrwxrV9bmltZGDzet45zSDGyYceueke1TjynGzw==
-  dependencies:
-    boom "7.x.x"
 
 crypto-browserify@^3.0.0:
   version "3.12.0"
@@ -5397,11 +5402,6 @@ hmac-drbg@^1.0.0:
     hash.js "^1.0.3"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
-
-hoek@6.x.x:
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/hoek/-/hoek-6.1.2.tgz#99e6d070561839de74ee427b61aa476bd6bddfd6"
-  integrity sha512-6qhh/wahGYZHFSFw12tBbJw5fsAhhwrrG/y3Cs0YMTv2WzMnL0oLPnQJjv1QJvEfylRSOFuP+xCu+tdx0tD16Q==
 
 hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0:
   version "3.3.0"
