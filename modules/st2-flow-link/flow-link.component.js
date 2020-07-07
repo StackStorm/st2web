@@ -16,7 +16,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
-import Link from '@stackstorm/module-router/link.component';
+import { Link } from '@stackstorm/module-router';
 
 import style from './style.css';
 
@@ -48,19 +48,18 @@ export default class FlowLink extends React.Component {
     return (
       <div {...props} className={cx(style.component, className)}>
         { action ? (
-          <Link 
+          <Link
             to={`/action/${this.props.action}`}
-            target="_blank"
             className="st2-forms__button st2-details__toolbar-button"
+            {...this.getUrlProps(action)}
           >
             Edit
           </Link>
         ) : (
           <Link
             to="/action"
-            target="_blank"
             replace={true}
-            className="st2-panel__toolbar-button"
+            className="st2-panel__toolbar-button" {...this.getUrlProps()}
           >
             <i className="icon-plus" />
           </Link>
