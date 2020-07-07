@@ -27,7 +27,7 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table';
-import FlowLink from '@stackstorm/module-flow-link';
+import Link from '@stackstorm/module-router/link.component';
 import PackIcon from '@stackstorm/module-pack-icon';
 import {
   Panel,
@@ -222,7 +222,14 @@ export default class ActionsPanel extends React.Component {
       <Panel data-test="actions_panel" detailed>
         <PanelView className="st2-actions">
           <div className="st2-panel__toolbar-actions">
-            <FlowLink />
+            <Link
+              target="_blank"
+              to="/action"
+              replace={true}
+              className="st2-panel__toolbar-button"
+            >
+              <i className="icon-plus" />
+            </Link>
           </div>
           <Toolbar title="Actions">
             <ToolbarSearch

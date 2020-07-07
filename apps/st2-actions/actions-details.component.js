@@ -31,7 +31,6 @@ import {
   FlexTableColumn,
   FlexTableInsert,
 } from '@stackstorm/module-flex-table';
-import FlowLink from '@stackstorm/module-flow-link';
 import Button from '@stackstorm/module-forms/button.component';
 import Highlight from '@stackstorm/module-highlight';
 import Label from '@stackstorm/module-label';
@@ -253,7 +252,13 @@ export default class ActionsDetails extends React.Component {
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
-                <FlowLink action={action.ref} data-test="flow_link" />
+                <Link
+                  target="_blank"
+                  to={`/action/${action.ref}`}
+                  className="st2-forms__button st2-details__toolbar-button"
+                >
+                  Edit
+                </Link>
               ) : null }
             </DetailsToolbar>
             { this.state.runPreview && <Highlight key="preview" well data-test="action_code" code={this.state.runValue} /> }
