@@ -29,7 +29,7 @@
   "dependencies": {
     "@hapi/cryptiles": "^4.2.1",
     "atob": "^2.1",
-    "axios": "0.18.0",
+    "axios": "0.18.1",
     "babel-eslint": "10.0.1",
     "babelify": "10.0.0",
     "cached-path-relative": "^1.0.2",
