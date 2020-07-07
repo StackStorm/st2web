@@ -14,8 +14,8 @@
 
 import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
-import { Provider, connect } from 'react-redux';
-// import { connect } from 'react-redux';
+// import { Provider, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
 import { pick, mapValues, get } from 'lodash';
@@ -29,7 +29,7 @@ import Details from '@stackstorm/st2flow-details';
 
 import api from '@stackstorm/module-api';
 
-import CollapseButton from '@stackstorm/st2flow-canvas/collapse-button';
+// import CollapseButton from '@stackstorm/st2flow-canvas/collapse-button';
 import { Toolbar, ToolbarButton, ToolbarDropdown } from '@stackstorm/st2flow-canvas/toolbar';
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
@@ -59,10 +59,10 @@ const POLL_INTERVAL = 5000;
     panels, actions, meta, metaSource, workflowSource, pack, input, dirty,
   } }) => ({ isCollapsed: panels, actions, meta, metaSource, workflowSource, pack, input, dirty }),
   (dispatch) => ({
-    toggleCollapse: name => dispatch({
-      type: 'PANEL_TOGGLE_COLLAPSE',
-      name,
-    }),
+    // toggleCollapse: name => dispatch({
+    //   type: 'PANEL_TOGGLE_COLLAPSE',
+    //   name,
+    // }),
     fetchActions: () => dispatch({
       type: 'FETCH_ACTIONS',
       promise: api.request({ path: '/actions/views/overview' })
@@ -86,7 +86,7 @@ export default class Workflows extends Component<{
   workflowSource: string,
 
   isCollapsed: Object,
-  toggleCollapse: Function,
+  // toggleCollapse: Function,
 
   actions: Array<Object>,
   fetchActions: Function,
@@ -112,7 +112,7 @@ export default class Workflows extends Component<{
     dirty: PropTypes.bool,
 
     isCollapsed: PropTypes.object,
-    toggleCollapse: PropTypes.func,
+    // toggleCollapse: PropTypes.func,
 
     actions: PropTypes.array,
     fetchActions: PropTypes.func,
@@ -334,7 +334,8 @@ export default class Workflows extends Component<{
   }
 
   render() {
-    const { isCollapsed = {}, toggleCollapse, actions, undo, redo, layout, meta, input, dirty } = this.props;
+    // const { isCollapsed = {}, toggleCollapse, actions, undo, redo, layout, meta, input, dirty } = this.props;
+    const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty } = this.props;
     const { runningWorkflow, showForm } = this.state;
 
     const autoFormData = input && input.reduce((acc, value) => {
