@@ -81,7 +81,7 @@
     "chai": "4.2.0",
     "eslint": "5.16.0",
     "eslint-plugin-notice": "0.7.8",
-    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-react": "7.20.3",
     "gulp": "4.0.1",
     "zombie": "5.0.8"
   }
