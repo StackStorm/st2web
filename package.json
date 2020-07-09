@@ -70,7 +70,7 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "7.0.2",
-    "redux": "^4.0.1"
+    "redux": "4.0.5"
   },
   "devDependencies": {
     "@stackstorm/module-test-utils": "^2.4.3",
