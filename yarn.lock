@@ -3920,13 +3920,15 @@ gulp-concat@2.6.1:
     through2 "^2.0.0"
     vinyl "^2.0.0"
 
-gulp-csscomb@3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/gulp-csscomb/-/gulp-csscomb-3.0.8.tgz#df34824a580a4c7d3351c1e8ebb6ad7a1d5a89b7"
-  integrity sha1-3zSCSlgKTH0zUcHo67ateh1aibc=
+gulp-csscomb@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/gulp-csscomb/-/gulp-csscomb-3.1.0.tgz#bab3e66ef71b087932e4ccead2a01883403545ad"
+  integrity sha512-DNg9GcnN1hHYCVP5nO+pKNL9BPW9ucD6DmyS36etPpLc4mMNPd+xjM8bf9o+wZdNZJok9a/Wxv3/PAQwlFAl4A==
   dependencies:
+    ansi-colors "^1.0.1"
     csscomb "^3.1.7"
-    gulp-util "^3.0.7"
+    fancy-log "^1.3.2"
+    plugin-error "^0.1.2"
     through2 "^2.0.1"
 
 gulp-env@0.4.0:
@@ -4038,7 +4040,7 @@ gulp-uglify-es@1.0.4:
     vinyl "^2.1.0"
     vinyl-sourcemaps-apply "^0.2.1"
 
-gulp-util@3.0.8, gulp-util@^3.0.7:
+gulp-util@3.0.8:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   integrity sha1-AFTh50RQLifATBh8PsxQXdVLu08=
