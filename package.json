@@ -75,7 +75,7 @@
   "devDependencies": {
     "@stackstorm/module-test-utils": "^2.4.3",
     "@stackstorm/st2-build": "^2.4.3",
-    "babel-eslint": "10.0.1",
+    "babel-eslint": "10.1.0",
     "insert-css": "2.0.0",
     "ignore-styles": "5.0.1",
     "chai": "4.2.0",
