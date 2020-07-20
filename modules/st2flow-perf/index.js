@@ -14,6 +14,7 @@
 
 const debug = require('debug')('st2flow.perf');
 const IS_NODE = typeof process === 'object' && Object.prototype.toString.call(process) === '[object process]';
+const {performance} = require('perf_hooks');
 
 if (IS_NODE) {
   module.exports = {
