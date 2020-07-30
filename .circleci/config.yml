@@ -73,12 +73,6 @@ jobs:
           name: Clone test containers
           command: git clone --depth 1 https://github.com/StackStorm/st2-docker ~/st2-docker
       - run:
-          name: Update env variables for test containers
-          command: |
-            make -C ~/st2-docker env
-            echo -e "ST2_USER=${ST2_USERNAME}\nST2_PASSWORD=${ST2_PASSWORD}" > ~/st2-docker/conf/stackstorm.env
-            cat ~/st2-docker/conf/stackstorm.env
-      - run:
           name: Start test containers
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
