@@ -65,6 +65,7 @@
     "@stackstorm/module-router": "^2.4.3",
     "@stackstorm/module-store": "^2.4.3",
     "lodash": "4.17.19",
+    "mixin-deep": "^1.3.2",
     "moment": "2.24.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
