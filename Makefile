@@ -9,7 +9,29 @@ DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || ec
 .PHONY: all build clean install deb rpm
 all: build
 
+lerna:
+	lerna bootstrap
+
+build-and-install:
+	make lerna
+	make build
+	make install
+
 build:
+	echo "npm install"
+	npm install -g gulp-cli gulp lerna yarn
+
+	echo "pwd"
+	pwd
+
+	echo "ls"
+	ls
+
+	echo "which gulp"
+	which gulp
+
+	echo "checking gulp tasks..."
+	gulp --tasks
 	npm run build
 
 clean:
