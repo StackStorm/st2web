@@ -8,9 +8,7 @@ COPY . /opt/stackstorm/static/webui/st2web
 RUN rm /opt/stackstorm/static/webui/st2web/yarn.lock
 
 # install dependencies
-RUN npm install -g gulp-cli lerna yarn && npm install gulp
-RUN make lerna
-RUN gulp --tasks
+RUN make build-dev
 
 # expose your ports
 EXPOSE 3000

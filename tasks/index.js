@@ -14,6 +14,7 @@
 
 'use strict';
 
+console.log("hello world");
 const gulp = require('gulp');
 const fwdRef = require('undertaker-forward-reference');
 

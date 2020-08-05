@@ -9,17 +9,31 @@ DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || ec
 .PHONY: all build clean install deb rpm
 all: build
 
+npm-install:
+	echo "npm install"
+	npm install -g gulp-cli gulp lerna yarn && npm install gulp
+
 lerna:
+	echo "lerna"
 	lerna bootstrap
 
-build-and-install:
+build-dev:
+	echo "build-dev"
+	make npm-install
 	make lerna
-	make build
-	make install
 
-build:
+# build-and-install:
+# 	echo "build-and-install"
+# 	make npm-install
+# 	make lerna
+# 	make build
+# 	make install
+build-and-install:
+	echo "build-and-install"
 	echo "npm install"
-	npm install -g gulp-cli gulp lerna yarn
+	npm install -g gulp-cli gulp lerna yarn && npm install gulp
+	echo "lerna"
+	lerna bootstrap
 
 	echo "pwd"
 	pwd
@@ -31,7 +45,37 @@ build:
 	which gulp
 
 	echo "checking gulp tasks..."
+	gulp --tasks --debug
+
+	# echo "npm run build"
+	# npm run build
+
+	sleep 3600
+	echo "run gulp production directly"
+	gulp production
+
+	echo "install"
+	mkdir -p $(DESTDIR)$(PREFIX)
+	cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)
+
+build:
+	make npm-install
+
+	echo "pwd"
+	pwd
+
+	echo "ls"
+	ls
+
+	echo "which gulp"
+	which gulp
+
+	echo "checking gulp tasks..."
+	sleep 600
 	gulp --tasks
+
+	echo "npm run build"
+
 	npm run build
 
 clean:
@@ -39,6 +83,7 @@ clean:
 	mkdir -p build/
 
 install:
+	echo "install"
 	mkdir -p $(DESTDIR)$(PREFIX)
 	cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)
 
