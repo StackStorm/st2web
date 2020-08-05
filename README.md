@@ -47,6 +47,18 @@ $ gulp
 
 At that point you should be able to point your browser to http://localhost:3000/ and see the the page.
 
+Quick start (docker-compose)
+-----------
+Production:
+```
+docker-compose  up
+```
+
+Dev:
+```
+docker-compose -f docker-compose.dev.yml up --build
+```
+
 Build system
 ------------
 
