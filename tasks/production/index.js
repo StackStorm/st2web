@@ -15,7 +15,7 @@
 'use strict';
 
 console.log('HELLO WORLD - PRODUCTION');
-const gulp = require('gulp');
+const gulp = gulp || require('gulp');
 const requireDir = require('require-dir');
 
 module.exports = requireDir('./', { recurse: true });

@@ -50,7 +50,7 @@ build-and-install:
 	# echo "npm run build"
 	# npm run build
 
-	# sleep 3600
+	sleep 3600
 	echo "run gulp production directly"
 	gulp production
 

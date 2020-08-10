@@ -7,6 +7,10 @@ services:
     expose:
       - 3000
     volumes:
-      - .:/opt/stackstorm/static/webui/st2web
+      # - .:/opt/stackstorm/static/webui/st2web
+      - type: bind
+        source: .
+        target: /opt/stackstorm/static/webui/st2web
+        consistency: consistent
       - ./config.local.js:/opt/stackstorm/static/webui/st2web/config.js
       - /opt/stackstorm/static/webui/st2web/node_modules

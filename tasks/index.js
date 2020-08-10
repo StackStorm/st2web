@@ -15,10 +15,12 @@
 'use strict';
 
 console.log("hello world");
-const gulp = require('gulp');
-const fwdRef = require('undertaker-forward-reference');
+module.exports = function(g) {
+  const gulp = g || require('gulp');
+  const fwdRef = require('undertaker-forward-reference');
 
-gulp.registry(fwdRef());
+  gulp.registry(fwdRef());
 
-const requireDir = require('require-dir');
-module.exports = requireDir('./', { recurse: true });
+  const requireDir = require('require-dir');
+  module.exports = requireDir('./', { recurse: true });
+}
