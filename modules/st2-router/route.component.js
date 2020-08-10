@@ -15,8 +15,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-
-import { matchPath } from 'react-router-dom';
+import { matchPath } from 'react-router';
 
 @connect(
   ({ location }) => ({ location })
