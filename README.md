@@ -49,6 +49,9 @@ At that point you should be able to point your browser to http://localhost:3000/
 
 Quick start (docker-compose)
 -----------
+
+> **Note:** docker-compose uses `config.local.js` which is gitignored and should be a copy of `config.js` with your specific values
+
 Production:
 ```
 docker-compose  up
