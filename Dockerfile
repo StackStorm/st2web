@@ -14,4 +14,4 @@ RUN make build-and-install
 EXPOSE 3000
 
 # start it up
-CMD [ "gulp serve-production" ]
+CMD [ "npm", "run", "serve" ]

@@ -14,21 +14,16 @@
 
 'use strict';
 
-console.log('HELLO WORLD - PRODUCTION');
-const gulp = gulp || require('gulp');
+// original
+const gulp = require('gulp');
 const requireDir = require('require-dir');
 
 module.exports = requireDir('./', { recurse: true });
-console.log("gulp - make production task")
-gulp.task('production', function(){
-  console.log("in production task")
-  const s = gulp.series([
-    'production-environment',
-    'production-scripts',
-    'production-styles',
-    'production-static',
-    'production-package-metadata',
-  ]);
-  console.log("s",s);
-  return s;
-});
+
+gulp.task('production', gulp.series([
+  'production-environment',
+  'production-scripts',
+  'production-styles',
+  'production-static',
+  'production-package-metadata',
+]));

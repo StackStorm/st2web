@@ -15,4 +15,4 @@
 /* jshint node: true */
 'use strict';
 const gulp = require('gulp');
-require('@stackstorm/st2-build')(gulp);
+require('@stackstorm/st2-build');

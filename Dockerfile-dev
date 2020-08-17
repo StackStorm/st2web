@@ -14,4 +14,4 @@ RUN make build-dev
 EXPOSE 3000
 
 # start it up
-CMD [ "gulp" ]
+CMD [ "npm", "run", "serve-dev" ]

@@ -11,7 +11,7 @@ all: build
 
 npm-install:
 	echo "npm install"
-	npm install -g gulp-cli gulp lerna yarn && npm install gulp
+	npm install -g lerna yarn
 
 lerna:
 	echo "lerna"
@@ -22,60 +22,19 @@ build-dev:
 	make npm-install
 	make lerna
 
-# build-and-install:
-# 	echo "build-and-install"
-# 	make npm-install
-# 	make lerna
-# 	make build
-# 	make install
 build-and-install:
-	echo "build-and-install"
-	echo "npm install"
-	npm install -g gulp-cli gulp lerna yarn && npm install gulp
-	echo "lerna"
-	lerna bootstrap
+	make build
 
-	echo "pwd"
-	pwd
-
-	echo "ls"
-	ls
-
-	echo "which gulp"
-	which gulp
-
-	echo "checking gulp tasks..."
-	gulp --tasks --debug
-
-	# echo "npm run build"
-	# npm run build
-
-	sleep 3600
-	echo "run gulp production directly"
-	gulp production
-
-	echo "install"
-	mkdir -p $(DESTDIR)$(PREFIX)
-	cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)
+	make install
 
 build:
+	echo "build-and-install"
+
 	make npm-install
 
-	echo "pwd"
-	pwd
+	make lerna
 
-	echo "ls"
-	ls
-
-	echo "which gulp"
-	which gulp
-
-	echo "checking gulp tasks..."
-	sleep 600
-	gulp --tasks
-
-	echo "npm run build"
-
+	echo "run gulp production directly"
 	npm run build
 
 clean:
