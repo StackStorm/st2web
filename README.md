@@ -62,6 +62,16 @@ Dev:
 docker-compose -f docker-compose.dev.yml up --build
 ```
 
+Production with NGINX:
+```
+docker-compose -f docker-compose.nginx.yml up --build
+```
+
+Dev with NGINX:
+```
+docker-compose -f docker-compose.nginx-dev.yml up --build
+```
+
 Build system
 ------------
 

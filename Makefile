@@ -42,8 +42,11 @@ clean:
 	mkdir -p build/
 
 install:
-	echo "install"
+	echo "make install"
+	echo "mkdir -p $(DESTDIR)$(PREFIX)"
 	mkdir -p $(DESTDIR)$(PREFIX)
+
+	echo "cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)"
 	cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)
 
 deb:
