@@ -2,15 +2,26 @@
   "name": "@stackstorm/st2flow-perf",
   "version": "1.0.0-pre.5",
   "description": "A small performance library using the performance API and some extra smartness",
-  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  },
+  "homepage": "https://github.com/stackstorm/st2web#readme",
   "browserify": {
     "transform": [
       "babelify"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "babelify": "^10.0.0"
