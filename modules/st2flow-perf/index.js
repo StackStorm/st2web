@@ -13,7 +13,7 @@
 // limitations under the License.
 
 const debug = require('debug')('st2flow.perf');
-const IS_NODE = typeof process === 'object' && Object.prototype.toString.call(process) === '[object process]';
+const IS_NODE = typeof process === 'object' && Object.prototype.toString.call(process) === '[object Object]';
 
 if (IS_NODE) {
   module.exports = {
