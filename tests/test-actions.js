@@ -101,8 +101,8 @@ describe('User visits actions page', function () {
 
     it('should make a call to actions endpoint', () => {
       // NOTE: expecting 3 calls because of filtering
-      expect(resource).to.have.length.at.least(1, 'Execution endpoint has not been called');
-      expect(resource).to.have.length.at.most(1, 'Execution endpoint called several times');
+      expect(resource).to.have.length.at.least(3, 'Execution endpoint has not been called');
+      expect(resource).to.have.length.at.most(3, 'Execution endpoint called several times');
     });
 
     it('should recieve a response containing an action', () => {
@@ -185,8 +185,8 @@ describe('User visits actions page', function () {
 
       it('should make a call to actions endpoint', () => {
         // NOTE: expecting 2 calls because of filtering
-        expect(resource).to.have.length.at.least(1, 'Actions endpoint has not been called');
-        expect(resource).to.have.length.at.most(1, 'Actions endpoint called several times');
+        expect(resource).to.have.length.at.least(2, 'Actions endpoint has not been called');
+        expect(resource).to.have.length.at.most(2, 'Actions endpoint called several times');
       });
 
       it('should recieve a response containing an action', () => {
