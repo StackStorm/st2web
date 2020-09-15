@@ -70,23 +70,19 @@ describe('st2flow-model: Orquesta Model', () => {
     describe('updates YAML', () => {
       it('for task deletions', () => {
         const lines = raw.split('\n');
-
         model.deleteTask(model.tasks[1]);
         lines.splice(18, 1);
         lines.splice(25, 2);
-
-        expect(model.toYAML()).to.equal(lines.join('\n'));
+        expect(JSON.stringify(model.toYAML())).to.equal(JSON.stringify(lines.join('\n')).replace(/\\r/g, ''));
       });
 
       it('for transition deletions', () => {
         const lines = raw.split('\n');
         model.deleteTransition(model.transitions[3]);
         lines.splice(30, 2);
-
         model.deleteTransition(model.transitions[0]);
         lines.splice(15, 5);
-
-        expect(model.toYAML()).to.equal(lines.join('\n'));
+        expect(JSON.stringify(model.toYAML())).to.equal(JSON.stringify(lines.join('\n')).replace(/\\r/g, ''));
       });
     });
   });
