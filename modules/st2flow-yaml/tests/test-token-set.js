@@ -18,6 +18,7 @@ import { expect } from 'chai';
 import TokenSet from '../token-set';
 import crawler from '../crawler';
 
+
 describe('TokenSet', () => {
   [ 'basic', 'simple', 'long', 'complex' ].forEach(file => {
     let yaml;
@@ -35,12 +36,12 @@ describe('TokenSet', () => {
       });
 
       it(`stringification maintains source identity with ${filename}`, () => {
-        expect(set.toYAML()).to.equal(yaml);
+        expect(JSON.stringify(set.toYAML())).to.equal((JSON.stringify(yaml)).replace(/\\r/g, ''));
       });
 
       it(`refining maintains source identity with ${filename}`, () => {
         set.refineTree();
-        expect(set.toYAML()).to.equal(yaml);
+        expect(JSON.stringify(set.toYAML())).to.equal((JSON.stringify(yaml)).replace(/\\r/g, ''));
       });
     });
 
@@ -56,12 +57,12 @@ describe('TokenSet', () => {
       });
 
       it(`stringification maintains source identity with ${filename}`, () => {
-        expect(set.toYAML()).to.equal(yaml);
+        expect(JSON.stringify(set.toYAML())).to.equal((JSON.stringify(yaml)).replace(/\\r/g, ''));
       });
 
       it(`refining maintains source identity with ${filename}`, () => {
         set.refineTree();
-        expect(set.toYAML()).to.equal(yaml);
+        expect(JSON.stringify(set.toYAML())).to.equal((JSON.stringify(yaml)).replace(/\\r/g, ''));
       });
     });
   });
@@ -70,7 +71,6 @@ describe('TokenSet', () => {
     it('set a key inside an empty mapping', () => {
       const set = new TokenSet('tasks: {}\n');
       crawler.set(set, 'tasks', { some: 'thing' });
-
       expect(set.toYAML()).to.equal('tasks:\n  some: thing\n');
     });
   });

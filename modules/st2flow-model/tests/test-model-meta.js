@@ -44,12 +44,11 @@ describe('st2flow-model: Meta Model', () => {
     });
 
     it('writes meta-basic.json', () => {
-      expect(model.toYAML()).to.equal(raw);
+      expect(JSON.stringify(model.toYAML())).to.equal((JSON.stringify(raw)).replace(/\\r/g, ''));
     });
 
     it('updates metadata', () => {
       model.set('runner_type', 'some');
-
       expect(model.get('runner_type')).to.equal('some');
     });
   });
