@@ -16,6 +16,7 @@ npm-install:
 lerna:
 	echo "lerna"
 	lerna bootstrap
+	rm -rf apps/st2-workflows/node_modules
 
 build-dev:
 	echo "build-dev"
@@ -24,16 +25,12 @@ build-dev:
 
 build-and-install:
 	make build
-
 	make install
 
 build:
 	echo "build-and-install"
-
 	make npm-install
-
 	make lerna
-
 	echo "run gulp production directly"
 	npm run build
 
@@ -45,7 +42,6 @@ install:
 	echo "make install"
 	echo "mkdir -p $(DESTDIR)$(PREFIX)"
 	mkdir -p $(DESTDIR)$(PREFIX)
-
 	echo "cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)"
 	cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)
 
