@@ -16,6 +16,7 @@ npm-install:
 lerna:
 	echo "lerna"
 	lerna bootstrap
+	rm -rf apps/st2-workflows/node_modules
 
 build-dev:
 	echo "build-dev"
@@ -24,12 +25,11 @@ build-dev:
 
 build-and-install:
 	make build
-
-	make install
+    make install
 
 build:
 	echo "build-and-install"
-
+	
 	make npm-install
 
 	make lerna
