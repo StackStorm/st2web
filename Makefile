@@ -25,15 +25,12 @@ build-dev:
 
 build-and-install:
 	make build
-    make install
+	make install
 
 build:
 	echo "build-and-install"
-	
 	make npm-install
-
 	make lerna
-
 	echo "run gulp production directly"
 	npm run build
 
