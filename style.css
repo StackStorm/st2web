@@ -11,39 +11,17 @@ html, body, .wrapper {
     background-color: var(--body-bg-color);
 }
 /*Workflow tab zoom icon Css*/
-[class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "brocadeicons";
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
-    /* opacity: .8; */
-    -webkit-font-feature-settings: normal;
-    font-feature-settings: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1em;
-    margin-left: .2em;
-    /* font-size: 120%; */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
-}
-._D_stackstorm_st2flow_canvas__toolbar-button.icon-zoom_out:before {
+.icon-zoom_out:before {
     font-family: 'st2';
     content: "\eb45" !important;
   
 }
-._D_stackstorm_st2flow_canvas__toolbar-button.icon-zoom_in:before {
+.icon-zoom_in:before {
     font-family: 'st2';
     content: "\eb43"  !important;
   
 }
-._D_stackstorm_st2flow_canvas__toolbar-button.icon-zoom_reset:before {
+.icon-zoom_reset:before {
      font-family: 'st2';
     content: '\ee65';
    
