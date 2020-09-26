@@ -223,7 +223,6 @@ export default class ActionsPanel extends React.Component {
         <PanelView className="st2-actions">
           <div className="st2-panel__toolbar-actions">
             <Link
-              target="_blank"
               to="/action"
               replace={true}
               className="st2-panel__toolbar-button"
