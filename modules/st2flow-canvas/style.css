@@ -18,6 +18,7 @@ limitations under the License.
   --transition-color: orange;
   --selected-bg: #fff3e6;
   --selected-border: #ffa256;
+  --gray-white: #f4f4f4;
 }
 
 .component {
@@ -96,10 +97,10 @@ limitations under the License.
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-
     pointer-events: none;
+ 
   }
-
+   
   &-action {
     width: 100%;
     overflow: hidden;
@@ -340,7 +341,7 @@ limitations under the License.
     transform: rotateZ(45deg);
     background-color: var(--gray-white);
   }
-
+    
   &-body {
     margin-left: auto;
     margin-right: auto;
@@ -359,7 +360,7 @@ limitations under the License.
 .collapse-button {
   position: absolute;
   width: 30px;
-  height: 40px;
+  height: 41px;
   padding: 5px 0;
 
   background-color: #444;

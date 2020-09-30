@@ -80,7 +80,7 @@ export default class Workflows extends Component {
    input: PropTypes.array,
    workflowSource: PropTypes.string,
    dirty: PropTypes.bool,
-    isCollapsed: PropTypes.object,
+   isCollapsed: PropTypes.object,
    actions: PropTypes.array,
    fetchActions: PropTypes.func,
    undo: PropTypes.func,
@@ -314,8 +314,8 @@ export default class Workflows extends Component {
         path='/action/:ref?/:section?'
         render={({ match, location }) => {
           return (
-          <Provider store={globalStore}>
-          <div className="component">
+            <Provider store={globalStore}>
+              <div className="component">
                 <Menu location={location} routes={this.props.routes} />
                 <div className="component-row-content">
                   { !isCollapsed.palette && <Palette className="palette" actions={actions} /> }
@@ -381,9 +381,9 @@ export default class Workflows extends Component {
                 </div>
               </div>
           
-          </Provider>
+            </Provider>
           
-        );
+          );
         }}
       />
     );
