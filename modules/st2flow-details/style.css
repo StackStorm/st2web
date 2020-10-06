@@ -244,8 +244,8 @@ limitations under the License.
 
   &-toggle {
     grid-area: toggle;
-
-    padding: 10px;
+    padding: 0px;
+    padding-top: 4px;
   }
 }
 
