@@ -17,7 +17,6 @@ import Workflows from './workflows.component';
 const route = {
   title: 'Workflows',
   url: '/action',
-  icon: 'icon-history',
   Component: Workflows,
   position: 7,
 };
