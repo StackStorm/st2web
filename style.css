@@ -26,4 +26,6 @@ html, body, .wrapper {
     content: '\ee65';
    
 }
-
+.palette-chevron-icon:before {
+    font-size: 10px;
+}

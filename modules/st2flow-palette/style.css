@@ -35,25 +35,34 @@ limitations under the License.
 
   &-name {
     color: #2d2d2d;
-    font-size: 1.1em;
-
+    font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
+   
   }
 
   &-description {
     color: #5b5b5b;
+    font-size: 12px !important;
   }
 }
-
+.palette-chevron-icon:before{
+    content: "\e972";
+    font-size:10px;
+  }
 .search {
-  background-color: #444;
-
-  color: #888;
-
-  padding: 10px;
-
-  min-height: 30px;
+   background-color: #444;
+    color: #888;
+    min-height: 32px;
+    font-size: 18px;
+    font-weight: 200;
+    display: flex;
+    height: 32px;
+    padding: 10px;
+    /* color: white; */
+    background-color: #4b4b4f;
+    justify-content: space-between;
+    flex-flow: row-reverse nowrap;
 }
 
 .search-field {
@@ -91,5 +100,15 @@ limitations under the License.
 
   & > div {
     padding-left: 10px;
+  }
+  img{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    padding: 5px;
+    vertical-align: top;
+    border-radius: 5px;
+    background: white;
+    overflow: hidden;
   }
 }
