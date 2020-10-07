@@ -51,7 +51,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "^2.4.3",
+    "@stackstorm/module-auto-form": "^2.4.4",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6"

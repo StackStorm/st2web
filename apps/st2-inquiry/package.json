@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@stackstorm/module-api": "^2.4.3",
-    "@stackstorm/module-auto-form": "^2.4.3",
+    "@stackstorm/module-auto-form": "^2.4.4",
     "@stackstorm/module-flex-table": "^2.4.3",
     "@stackstorm/module-forms": "^2.4.3",
     "@stackstorm/module-highlight": "^2.4.3",

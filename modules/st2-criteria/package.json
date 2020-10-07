@@ -53,7 +53,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "^2.4.3",
+    "@stackstorm/module-auto-form": "^2.4.4",
     "lodash": "4.17.19",
     "prop-types": "15.7.2",
     "react": "16.8.6",
