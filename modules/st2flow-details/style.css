@@ -16,6 +16,8 @@ limitations under the License.
 
 :root {
   --token-color: #eee;
+  --yellow-lighten-5: #fff5e9;
+  --yellow-base: #FF9E1B;
 }
 
 .component {
