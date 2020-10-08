@@ -214,7 +214,7 @@ export default class OrquestaTransition extends Component<TransitionProps, {
               </div>,
             ]);
           })}
-          <div className={this.style.transitionButton}>
+          <div className={`icon-plus-class ${this.style.transitionButton}`}>
             <i className="icon-plus2" />
           </div>
         </div>

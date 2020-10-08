@@ -20,6 +20,8 @@ import NumberField from './number';
 import ObjectField from './object';
 import PasswordField from './password';
 import StringField from './string';
+import SelectField from './select';
+import ColorStringField from './color-string';
 
 export {
   ArrayField,
@@ -30,4 +32,6 @@ export {
   ObjectField,
   PasswordField,
   StringField,
+  SelectField,
+  ColorStringField,
 };

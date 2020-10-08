@@ -29,3 +29,6 @@ html, body, .wrapper {
 .palette-chevron-icon:before {
     font-size: 10px;
 }
+.icon-plus-class i{
+  display: none !important;
+}
