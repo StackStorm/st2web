@@ -138,6 +138,7 @@ limitations under the License.
       &:before {
         margin: 0;
         font-weight: bold !important;
+        font-family: 'st2';
       }
     }
   }

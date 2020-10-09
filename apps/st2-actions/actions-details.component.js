@@ -253,6 +253,7 @@ export default class ActionsDetails extends React.Component {
               <DetailsToolbarSeparator />
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
+                  target="_blank"
                   to={`/action/${action.ref}`}
                   className="st2-forms__button st2-details__toolbar-button"
                 >

@@ -23,22 +23,22 @@ export default class BooleanField extends BaseTextField {
   }
 
   fromStateValue(v) {
-    return v !== void 0 ? !!v : void 0;
+    return v !== void 0 ? !!v : false;
   }
 
   validate(v) {
-    return v !== void 0 && typeof v !== 'boolean' && `'${v}' is not boolean`;
+    return v !== void 0 && typeof v !== 'boolean'  && `'${v}' is not boolean`;
   }
 
   render() {
     const wrapperProps = Object.assign({}, this.props, {
-      onReset: (e) => this.handleChange(e, void 0),
+      onReset: (e) => this.handleChange(e,false),
     });
 
     const inputProps = {
       className: 'st2-auto-form__checkbox',
       disabled: this.props.disabled,
-      checked: this.state.value,
+      checked: !this.validate(this.state.value) && this.state.value,
       onChange: (e) => this.handleChange(e, e.target.checked),
     };
 
