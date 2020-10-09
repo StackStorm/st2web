@@ -44,7 +44,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@stackstorm/module-auto-form": "2.4.4",
+    "@stackstorm/module-auto-form": "2.4.5",
     "@stackstorm/module-forms": "2.0.0",
     "@stackstorm/st2flow-editor": "1.0.0",
     "classnames": "^2.2.6",

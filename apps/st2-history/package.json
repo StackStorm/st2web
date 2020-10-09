@@ -47,7 +47,7 @@
   "dependencies": {
     "@stackstorm/module-action-reporter": "^2.4.3",
     "@stackstorm/module-api": "^2.4.3",
-    "@stackstorm/module-auto-form": "^2.4.4",
+    "@stackstorm/module-auto-form": "^2.4.5",
     "@stackstorm/module-filter": "^2.4.3",
     "@stackstorm/module-filter-expandable": "^2.4.3",
     "@stackstorm/module-flex-table": "^2.4.3",

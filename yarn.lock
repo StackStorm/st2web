@@ -1744,18 +1744,6 @@
   dependencies:
     axios "0.18.0"
 
-"@stackstorm/module-auto-form@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@stackstorm/module-auto-form/-/module-auto-form-2.0.0.tgz#8fcf9bcc4445905087eb6e0b3db3d37c9468c42a"
-  integrity sha1-j8+bzERFkFCH624LPbPTfJRoxCo=
-  dependencies:
-    "@stackstorm/module-value-format" "^2.0.0"
-    "@stackstorm/st2-style" "^2.0.0"
-    insert-css "2.0.0"
-    prop-types "15.6.2"
-    react-textarea-autosize "5.2.1"
-    validator "5.7.0"
-
 "@stackstorm/module-forms@2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@stackstorm/module-forms/-/module-forms-2.0.0.tgz#b1e7a4967f685c9b61a94975de3859b95db230d2"
@@ -12050,11 +12038,6 @@ validate-npm-package-name@^3.0.0:
   integrity sha1-X6kS2B630MdK/BQN5zF/DKffQ34=
   dependencies:
     builtins "^1.0.3"
-
-validator@5.7.0:
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-5.7.0.tgz#7a87a58146b695ac486071141c0c49d67da05e5c"
-  integrity sha1-eoelgUa2laxIYHEUHAxJ1n2gXlw=
 
 validator@^10.11.0:
   version "10.11.0"
