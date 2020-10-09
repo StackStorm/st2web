@@ -161,6 +161,9 @@ export default class Login extends React.Component {
       server,
       servers,
     };
+
+    api.setServer(server, true);
+    window.location.replace('https://192.168.1.1:3000/auth/sso/request');
   }
 
   docsLink = 'https://docs.stackstorm.com/'
@@ -180,89 +183,5 @@ export default class Login extends React.Component {
 
   render() {
     const { className, onConnect, style, ...props } = this.props;
-    onConnect;
-
-    return (
-      <div {...props} className={cx(style.component, className)}>
-        <LoginForm data-test="login" onSubmit={(e) => this.connect(e)} style={style} >
-          <LoginLogo style={style} />
-
-          { this.state.error ? (
-            <LoginError message={this.state.error} style={style} />
-          ) : null }
-
-          { this.state.servers && this.state.servers.length > 1 ? (
-            <LoginRow className={cx('st2-auto-form__select')} style={style} >
-              <select
-                className={cx('st2-auto-form__field', style.field)}
-                value={JSON.stringify(this.state.server)}
-                onChange={({ target: { value } }) => this.setState({ server: JSON.parse(value) })}
-              >
-                { this.state.servers.map((server) => {
-                  const stringified = JSON.stringify(server);
-
-                  return (
-                    <option key={stringified} value={stringified}>
-                      { server.auth ? `* ${server.name}` : server.name }
-                    </option>
-                  );
-                }) }
-              </select>
-            </LoginRow>
-          ) : null }
-
-          <LoginRow style={style} >
-            <input
-              className={cx('st2-auto-form__field', style.field)}
-              type="text"
-              name="username"
-              placeholder="Username"
-              required
-              value={this.state.username}
-              onChange={({ target: { value: username } }) => this.setState({ username })}
-            />
-          </LoginRow>
-          <LoginRow style={style} >
-            <input
-              className={cx('st2-auto-form__field', style.field)}
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-              value={this.state.password}
-              onChange={({ target: { value: password } }) => this.setState({ password })}
-            />
-          </LoginRow>
-          <LoginRow style={style} >
-            <input
-              className={cx('st2-forms__button', style.button)}
-              type="submit"
-              value="Connect"
-            />
-
-            <label className={style.checkboxWrapper}>
-              <input
-                className={style.checkbox}
-                type="checkbox"
-                checked={this.state.remember}
-                onChange={({ target: { checked: remember } }) => this.setState({ remember })}
-              />
-              <span className={style.checkboxLabel}>
-                remember
-              </span>
-            </label>
-          </LoginRow>
-
-          <LoginBottomRow style={style} >
-            <a target="_blank" rel="noopener noreferrer" href={this.docsLink}>
-              Documentation
-            </a>
-            <a target="_blank" rel="noopener noreferrer" href={this.supportLink}>
-              Support
-            </a>
-          </LoginBottomRow>
-        </LoginForm>
-      </div>
-    );
   }
 }

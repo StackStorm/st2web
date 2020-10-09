@@ -61,6 +61,40 @@ export class API {
     }
   }
 
+  setServer(server, remember) {
+    const { token, url, api=url, stream } = server || {};
+    let { auth } = server || {};
+
+    if (auth === true) {
+      auth = api;
+    }
+
+    if (api) {
+      this.server = {
+        api: localize(api),
+        auth: localize(auth),
+        stream: stream && localize(stream),
+        token: !_.isEmpty(token) ? token : undefined,
+      };
+    }
+    else {
+      this.server = {
+        api: `${window.location.protocol || 'https:'}//${window.location.host}/api`,
+        auth: `${window.location.protocol || 'https:'}//${window.location.host}/auth`,
+        stream: `${window.location.protocol || 'https:'}//${window.location.host}/stream`,
+        token: !_.isEmpty(token) ? token : null,
+      };
+    }
+
+    window.name = `st2web+${this.server.api}`;
+
+    if (remember) {
+      localStorage.setItem('st2Session', JSON.stringify({
+        server: this.server,
+      }));
+    }
+  }
+
   async connect(server, username, password, remember) {
     const { token, url, api=url, stream } = server || {};
     let { auth } = server || {};
