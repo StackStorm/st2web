@@ -62,6 +62,7 @@ const POLL_INTERVAL = 5000;
       promise: api.request({ path: '/actions/views/overview' })
         .catch(() => fetch('/actions.json').then(res => res.json())),
     }),
+   
     sendError: (message, link) => dispatch({ type: 'PUSH_ERROR', error: message, link }),
     sendSuccess: (message, link) => dispatch({ type: 'PUSH_SUCCESS', message, link }),
     undo: () => dispatch({ type: 'FLOW_UNDO' }),
@@ -104,6 +105,7 @@ export default class Workflows extends Component {
  };
 
  async componentDidMount() {
+
    this.props.fetchActions();
  }
 
@@ -135,11 +137,12 @@ export default class Workflows extends Component {
    const { meta: { parameters = {} } } = this.props;
    const { runFormData } = this.state;
    const paramNames = Object.keys(parameters);
+
    let valid = true;
 
    paramNames.forEach(name => {
      const { required } = parameters[name] || {};
-     if(required && runFormData[name] == null) {
+     if(required && runFormData[name] == null && parameters[name].default == null) {
        valid = false;
      }
    });
@@ -302,13 +305,14 @@ export default class Workflows extends Component {
     // const { isCollapsed = {}, toggleCollapse, actions, undo, redo, layout, meta, input, dirty } = this.props;
     const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty } = this.props;
     const { runningWorkflow, showForm } = this.state;
-
+    
     const autoFormData = input && input.reduce((acc, value) => {
       if(typeof value === 'object') {
         acc = { ...acc, ...value };
       }
       return acc;
     }, {});
+    // console.log("autoFormData*******",autoFormData);
     return (
       <Route
         path='/action/:ref?/:section?'
@@ -326,7 +330,7 @@ export default class Workflows extends Component {
                     attach={document.body}
                     handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
                   >
-                    <Canvas className="canvas">
+                    <Canvas className="canvas" location={location} match={match} >
                       <Toolbar>
                         <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
                         <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
@@ -415,9 +419,9 @@ globalStore.subscribe(() => {
   match = location.pathname.match('^/action/(.+)');
   if (match) {
     const [ , ref ] = match;
-
+  
     const { currentWorkflow } = store.getState();
-
+   
     if (currentWorkflow !== ref) {
       store.dispatch({
         type: 'LOAD_WORKFLOW',
