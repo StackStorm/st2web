@@ -21,8 +21,8 @@ limitations under the License.
   display: flex;
   align-items: center;
 
-  background: linear-gradient(90deg, #400099 0%, #a51890 100%);
-  color: white;
+  background:white;
+  color:#4B4A4F;
 
   /* For collapse button */
   padding-right: 40px;

@@ -47,7 +47,7 @@ import PoissonRectangleSampler from './poisson-rect';
 import { origin } from './const';
 
 import style from './style.css';
-
+import store from '../../apps/st2-workflows/store';
 type DOMMatrix = {
   m11: number,
   m22: number
@@ -212,37 +212,18 @@ function constructPathOrdering(
     }),
   })
 )
-export default class Canvas extends Component<{
-  children: Node,
-      className?: string,
-
-  navigation: Object,
-  navigate: Function,
-
-  tasks: Array<TaskInterface>,
-  transitions: Array<Object>,
-  notifications: Array<NotificationInterface>,
-  issueModelCommand: Function,
-  nextTask: string,
-
-  isCollapsed: Object,
-  toggleCollapse: Function,
-}, {
-      scale: number,
-}> {
+export default class Canvas extends Component {
+ 
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-
     navigation: PropTypes.object,
     navigate: PropTypes.func,
-
     tasks: PropTypes.array,
     transitions: PropTypes.array,
     notifications: PropTypes.array,
     issueModelCommand: PropTypes.func,
     nextTask: PropTypes.string,
-
     isCollapsed: PropTypes.object,
     toggleCollapse: PropTypes.func,
   }
@@ -592,6 +573,10 @@ export default class Canvas extends Component<{
 
   handleTaskMove = (task: TaskRefInterface, coords: CanvasPoint) => {
     this.props.issueModelCommand('updateTask', task, { coords });
+    store.dispatch({
+      type: 'SAVE_WORKFLOW',
+      status:'success',
+    });
   }
 
   handleTaskSelect = (task: TaskRefInterface) => {

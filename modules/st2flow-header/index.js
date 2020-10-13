@@ -58,7 +58,9 @@ export default class Header extends Component<{
 
     return (
       <div className={cx(this.props.className, this.style.component)}>
-        <div className={this.style.logo}><img src="static/logo-extreme.svg" width="101" height="25" /></div>
+        <div className={this.style.logo}>
+          <img src="../../img/logo.svg" width="101" height="25" /> 
+        </div>
         <div className={this.style.subtitle}>Workflow Designer</div>
         <div className={this.style.separator} />
         {
