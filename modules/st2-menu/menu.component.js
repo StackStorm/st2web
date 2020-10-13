@@ -64,6 +64,7 @@ export default class Menu extends React.Component {
 
   docsLink = 'https://docs.stackstorm.com/'
   supportLink = 'https://forum.stackstorm.com/'
+  donateLink = 'https://stackstorm.com/donate/'
 
   handleDisconnect() {
     api.disconnect();
@@ -147,6 +148,10 @@ export default class Menu extends React.Component {
 
         <a target="_blank" rel="noopener noreferrer" href={this.supportLink} className={style.side}>
           Support
+        </a>
+
+        <a target="_blank" rel="noopener noreferrer" href={this.donateLink} className={style.side}>
+          Donate
         </a>
       </header>
     );
