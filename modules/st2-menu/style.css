@@ -121,6 +121,14 @@
   color: inherit;
   text-decoration: none;
 
+  &-donate {
+    display: inline-block;
+    margin: 2px 5px 2px 0;
+    padding: .58em .9em;
+    color: #fff !important;
+    border-radius: .80rem;
+    background-color: #008CEB;
+  }
 
   &-item {
     position: relative;

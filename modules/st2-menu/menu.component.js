@@ -150,7 +150,7 @@ export default class Menu extends React.Component {
           Support
         </a>
 
-        <a target="_blank" rel="noopener noreferrer" href={this.donateLink} className={style.side}>
+        <a target="_blank" rel="noopener noreferrer" href={this.donateLink} className={style.side + ' ' + style.sideDonate}>
           Donate
         </a>
       </header>
