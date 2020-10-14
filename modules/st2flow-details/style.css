@@ -28,15 +28,13 @@ limitations under the License.
 
 .toolbar {
   background-color: #444;
-
   color: #bbb;
-
   display: flex;
   align-items: center;
-
-  /* For collapse button */
+ /* For collapse button */
   padding-right: 30px;
-
+  height: 31px;
+  padding: 10px;
   &.secondary {
     background-color: #d8d8d8;
     color: #222;
@@ -94,6 +92,7 @@ limitations under the License.
   &.selected {
     background-color: #333;
     color: #ff921a;
+    margin-left: -10px;
   }
 
   &.stretch {
@@ -109,14 +108,11 @@ limitations under the License.
 .code {
   margin: 10px;
   padding: 4px;
-
   margin-left: auto;
-
   border: 1px solid #888;
   border-radius: 3px;
-
   min-width: 23px;
-
+  margin-right: 20px;
   text-align: center;
 
   &.selected {
