@@ -157,7 +157,7 @@
     resize: none;
     cursor: text;
     word-wrap: break-word;
-
+    max-height:50px;
     &::-webkit-scrollbar {
       width: 13px;
       height: 13px;
