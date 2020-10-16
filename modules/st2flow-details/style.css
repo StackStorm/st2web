@@ -27,13 +27,13 @@ limitations under the License.
 }
 
 .toolbar {
-  background-color: #444;
+  background-color: #4b4b4f;
   color: #bbb;
   display: flex;
   align-items: center;
  /* For collapse button */
   padding-right: 30px;
-  height: 31px;
+  height: 38px;
   padding: 10px;
   &.secondary {
     background-color: #d8d8d8;
@@ -112,8 +112,7 @@ limitations under the License.
   border: 1px solid #888;
   border-radius: 3px;
   min-width: 23px;
-  margin-right: 20px;
-  text-align: center;
+ text-align: center;
 
   &.selected {
     background-color: #ff921a;
