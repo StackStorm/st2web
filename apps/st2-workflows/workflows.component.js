@@ -323,11 +323,7 @@ export default class Workflows extends Component {
           return (
             <Provider store={globalStore}>
               <div className="component">
-                <div className="component-row-header">
-                  { !isCollapsed.header && <Header className="header" /> }
-                  <CollapseButton position="top" state={isCollapsed.header} onClick={() => toggleCollapse('header')} />
-                </div> 
-                {/* <Menu location={location} routes={this.props.routes} /> */}
+                <Menu location={location} routes={this.props.routes} /> 
                 <div className="component-row-content">
                   { !isCollapsed.palette && <Palette className="palette" actions={actions} /> }
                   <HotKeys

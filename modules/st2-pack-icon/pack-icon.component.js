@@ -72,11 +72,15 @@ export default class PackIcon extends React.Component {
 
     if (naked) {
       if (icons[name]) {
-        return (
+         return (
           <img className={cx(style.image, small && style.imageSmall)} src={icons[name]} />
         );
       }
-
+      else{
+        return(
+          <img src="img/icon.png" width="32" height="32"/>
+        )
+      }
       return (
         <img className={cx(style.image, small && style.imageSmall)} src={icons[name]} />
       );

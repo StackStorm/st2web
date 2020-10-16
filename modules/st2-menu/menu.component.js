@@ -72,7 +72,7 @@ export default class Menu extends React.Component {
 
   render() {
     const { className, location, routes: allRoutes, style, ...props } = this.props;
-
+    
     const routes = _(allRoutes)
       .filter((e) => !!e.icon)
       .sortBy((e) => e.position)
@@ -88,6 +88,7 @@ export default class Menu extends React.Component {
 
         <div className={style.spacer} />
 
+     { (this.props.location.pathname).match('^/action') !== null && (this.props.location.pathname).match('^/actions') == null ? "" :
         <div className={style.nav}>
           { _.map(routes, ({ title, href, url, target, icon }) => {
             if (href) {
@@ -121,7 +122,7 @@ export default class Menu extends React.Component {
             return null;
           }) }
         </div>
-
+     }
         <div className={style.spacer} />
 
         <div className={style.side}>

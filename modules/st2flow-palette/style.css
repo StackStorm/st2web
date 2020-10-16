@@ -51,13 +51,12 @@ limitations under the License.
     font-size:10px;
   }
 .search {
-   background-color: #444;
     color: #888;
-    min-height: 32px;
+    min-height: 38px;
     font-size: 18px;
     font-weight: 200;
     display: flex;
-    height: 31px;
+    height: 38px;
     padding: 10px;
     /* color: white; */
     background-color: #4b4b4f;
