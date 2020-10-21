@@ -292,7 +292,7 @@
 
   &__description {
     margin-top: -5px;
-
+    white-space: pre-wrap;
     opacity: .7;
     color: var(--grey-darken-1);
   }
