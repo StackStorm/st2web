@@ -30,8 +30,6 @@ import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
 import { Route } from '@stackstorm/module-router';
 import globalStore from '@stackstorm/module-store';
-import Header from '@stackstorm/st2flow-header';
-import CollapseButton from '@stackstorm/st2flow-canvas/collapse-button';
 import store from './store';
 import style from './style.css';
 
@@ -54,14 +52,6 @@ const POLL_INTERVAL = 5000;
     panels, actions, meta, metaSource, workflowSource, pack, input, dirty,
   } }) => ({ isCollapsed: panels, actions, meta, metaSource, workflowSource, pack, input, dirty }),
   (dispatch) => ({
-    // toggleCollapse: name => dispatch({
-    //   type: 'PANEL_TOGGLE_COLLAPSE',
-    //   name,
-    // }),
-    toggleCollapse: name => dispatch({
-      type: 'PANEL_TOGGLE_COLLAPSE',
-      name,
-    }),
     fetchActions: () => dispatch({
       type: 'FETCH_ACTIONS',
       promise: api.request({ path: '/actions/views/overview' })
@@ -94,7 +84,6 @@ export default class Workflows extends Component {
    layout: PropTypes.func,
    sendSuccess: PropTypes.func,
    sendError: PropTypes.func,
-   toggleCollapse: PropTypes.func,
    routes: PropTypes.arrayOf(PropTypes.shape({
      title: PropTypes.string.isRequired,
      href: PropTypes.string,
@@ -114,6 +103,7 @@ export default class Workflows extends Component {
  }
 
  handleFormChange(data) {
+   
    if(!data) {
      data = {};
    }
@@ -253,19 +243,15 @@ export default class Workflows extends Component {
 
  save() {
    const { pack, meta, actions, workflowSource, metaSource, setMeta } = this.props;
-
    const existingAction = actions.find(e => e.name === meta.name && e.pack === pack);
 
    if (!meta.name) {
      throw { response: { data: { faultstring: 'You must provide a name of the workflow.'}}};
    }
-
-   if (typeof meta.entry_point === 'undefined' && typeof meta.name !== 'undefined') {
-     const entryPoint = `workflows/${meta.name}.yaml`;
-     meta.entry_point = entryPoint;
-     setMeta('entry_point', entryPoint);
+   
+   if (!meta.entry_point) {
+     throw { response: { data: { faultstring: 'You must provide a entry point of the workflow.'}}};
    }
-
 
    meta.pack = pack;
    meta.metadata_file = existingAction && existingAction.metadata_file && existingAction.metadata_file || `actions/${meta.name}.meta.yaml`;
@@ -306,7 +292,7 @@ export default class Workflows extends Component {
 
   render() {
     // const { isCollapsed = {}, toggleCollapse, actions, undo, redo, layout, meta, input, dirty } = this.props;
-    const { isCollapsed = {}, actions, toggleCollapse,undo, redo, layout, meta, input, dirty } = this.props;
+    const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty } = this.props;
     const { runningWorkflow, showForm } = this.state;
    
     const autoFormData = input && input.reduce((acc, value) => {

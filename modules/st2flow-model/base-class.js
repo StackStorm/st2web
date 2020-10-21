@@ -21,7 +21,7 @@ import { diff } from 'deep-diff';
 import EventEmitter from './event-emitter';
 
 import { TokenSet, crawler, util } from '@stackstorm/st2flow-yaml';
-
+import notification from '@stackstorm/module-notification';
 const ajv = new Ajv();
 const STR_ERROR_YAML = 'yaml-error';
 const STR_ERROR_SCHEMA = 'schema-error';
@@ -66,7 +66,6 @@ class BaseClass {
       // The parser is overly verbose on certain errors, so
       // just grab the relevant parts. Also normalize it to an array.
       const exception = Array.isArray(ex) ? (ex.length > 2 ? ex.slice(0, 2) : ex) : [ ex ];
-
       // Ensure every mark uses "row" instead of "line".
       // Replace "JS-YAML" with something more friendly.
       exception.forEach(err => {
@@ -75,12 +74,15 @@ class BaseClass {
         }
 
         err.message = err.message.replace('JS-YAML:', 'YAML Parser:');
+        notification.error(err.message);
+       
       });
 
       this.yaml = yaml;
+      
       this.emitError(exception, STR_ERROR_YAML);
-
-      return;
+       return;
+     
     }
 
     this.emitChange(oldTree);
@@ -141,6 +143,7 @@ class BaseClass {
 
   emitChange(oldTree: Object): void {
     const newTree = this.tokenSet.toObject();
+  
     this.errors = [];
 
     this.validate();

@@ -27,7 +27,7 @@ import { isJinja } from '@stackstorm/module-auto-form/fields/base';
 import { Panel, Toolbar, ToolbarButton } from './layout';
 import Parameters from './parameters-panel';
 import { StringPropertiesPanel } from './string-properties';
-
+import store from '../../apps/st2-workflows/store';
 const default_runner_type = 'orquesta';
 
 @connect(
@@ -80,20 +80,8 @@ const default_runner_type = 'orquesta';
     },
   })
 )
-export default class Meta extends Component<{
-  pack: string,
-  setPack: Function,
+export default class Meta extends Component {
 
-  meta: Object,
-  setMeta: Function,
-
-  navigation: Object,
-  navigate: Function,
-
-  actions: Array<Object>,
-  vars: Array<Object>,
-  setVars: Function,
-}> {
   static propTypes = {
     pack: PropTypes.string,
     setPack: PropTypes.func,
@@ -153,10 +141,33 @@ export default class Meta extends Component<{
     setVars((vars || []).concat([ newVal ]));
   }
 
+
+  setMetaNew(field,value) {
+    try{
+      store.dispatch({
+        type: 'META_ISSUE_COMMAND',
+        command: 'set',
+        args: [ field, value ],
+      });
+      const entryPoint = `workflows/${value}.yaml`;
+      store.dispatch({
+        type: 'META_ISSUE_COMMAND',
+        command: 'set',
+        args: [ 'entry_point',entryPoint ],
+      });
+    }
+    catch(error) {
+      store.dispatch({
+        type: 'PUSH_ERROR',
+        error,
+      });
+    }
+    
+  }
+
   render() {
     const { pack, setPack, meta, setMeta, navigation, actions, vars } = this.props;
     const { section = 'meta' } = navigation;
-
     const stringVars = vars && vars.map(kv => {
       const key = Object.keys(kv)[0];
       const val = kv[key];
@@ -181,10 +192,10 @@ export default class Meta extends Component<{
         <Panel key="meta">
           <EnumField name="Runner Type" value={meta.runner_type} spec={{enum: [ ...new Set([ 'mistral-v2', 'orquesta' ]) ], default: default_runner_type}} onChange={(v) => setMeta('runner_type', v)} />
           <EnumField name="Pack" value={pack} spec={{enum: packs}} onChange={(v) => setPack(v)} />
-          <StringField name="Name" value={meta.name} onChange={(v) => setMeta('name', v || '')} />
+          <StringField name="Name" value={meta.name} onChange={(v) => this.setMetaNew('name', v || '')} />
           <StringField name="Description" value={meta.description} onChange={(v) => setMeta('description', v)} />
           <BooleanField name="Enabled" value={meta.enabled} spec={{}} onChange={(v) => setMeta('enabled', v)} />
-          <StringField name="Entry point" value={meta.entry_point} onChange={(v) => setMeta('entry_point', v || '')} />
+          <StringField name="Entry point" value={meta.entry_point !=='undefined' ? meta.entry_point:`workflows/${meta.name}.yaml`}  onChange={(v) => setMeta('entry_point', v || '')} />
         </Panel>
       ),
       section === 'parameters' && (

@@ -88,41 +88,41 @@ export default class Menu extends React.Component {
 
         <div className={style.spacer} />
 
-     { (this.props.location.pathname).match('^/action') !== null && (this.props.location.pathname).match('^/actions') == null ? "" :
-        <div className={style.nav}>
-          { _.map(routes, ({ title, href, url, target, icon }) => {
-            if (href) {
-              return (
-                <a
-                  key={title}
-                  className={style.navItem}
-                  href={href}
-                  target={target}
-                >
-                  <Icon name={icon} style={style} />
-                  { title }
-                </a>
-              );
-            }
+        { (this.props.location.pathname).match('^/action') !== null && (this.props.location.pathname).match('^/actions') == null ? '' : (
+          <div className={style.nav}>
+            { _.map(routes, ({ title, href, url, target, icon }) => {
+              if (href) {
+                return (
+                  <a
+                    key={title}
+                    className={style.navItem}
+                    href={href}
+                    target={target}
+                  >
+                    <Icon name={icon} style={style} />
+                    { title }
+                  </a>
+                );
+              }
 
-            if (url) {
-              return (
-                <Link
-                  key={title}
-                  className={cx(style.navItem, location.pathname.indexOf(url) === 0 && style.navItemActive)}
-                  to={url}
-                  target={target}
-                >
-                  <Icon name={icon} style={style} />
-                  { title }
-                </Link>
-              );
-            }
+              if (url) {
+                return (
+                  <Link
+                    key={title}
+                    className={cx(style.navItem, location.pathname.indexOf(url) === 0 && style.navItemActive)}
+                    to={url}
+                    target={target}
+                  >
+                    <Icon name={icon} style={style} />
+                    { title }
+                  </Link>
+                );
+              }
 
-            return null;
-          }) }
-        </div>
-     }
+              return null;
+            }) }
+          </div>
+        )}
         <div className={style.spacer} />
 
         <div className={style.side}>
