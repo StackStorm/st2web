@@ -82,23 +82,31 @@ limitations under the License.
 
 .list {
   overflow: auto;
+  & > div {
+    margin-left: 10px;
+  }
 }
 
 .pack-name {
+  margin-left: 10px;
   margin: 10px;
-  padding: 10px 0 10px 0;
-
   font-size: 14px;
   text-transform: uppercase;
-
   cursor: pointer;
   user-select: none;
-
   display: flex;
   align-items: center;
 
-  & > div {
-    padding-left: 10px;
+  & > h2  {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 42px;
+    display: inline-block;
+    margin: 0;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: black;
+
   }
   img{
     width: 20px;

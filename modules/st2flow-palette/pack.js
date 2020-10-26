@@ -69,12 +69,9 @@ export default class Action extends Component<{
           <div>
             <i className={open ? 'icon-chevron_down palette-chevron-icon' : 'icon-chevron_right palette-chevron-icon'} />
           </div>
-          <div>
-            <img ref={this.imgRef} src={api.route({ path: `/packs/views/file/${name}/icon.png` })} width="32" height="32" onError={() => this.handleImageError()} />
-          </div>
-          <div>
-            { name }
-          </div>
+          <img ref={this.imgRef} src={api.route({ path: `/packs/views/file/${name}/icon.png` })} width="32" height="32" onError={() => this.handleImageError()} />
+           <h2 className="pack-name-heading"> { name }</h2>
+         
         </div>
         {
           open && children

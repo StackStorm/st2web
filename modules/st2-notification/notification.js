@@ -89,7 +89,7 @@ export class Notification {
       type,
       layout: 'bottomLeft',
       closeWith: [ 'click' ],
-      timeout: 3000,
+      timeout: 9000,
       buttons: buttons.map(({ text, className, onClick, ...attributes }) => Noty.button(
         text,
         `st2-forms__button st2-forms__button--skeleton ${className || ''}`,
