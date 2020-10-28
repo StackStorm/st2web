@@ -35,3 +35,6 @@ html, body, .wrapper {
 .icon-plus-class i{
   display: none !important;
 }
+.gearclass{
+  margin-left: -10px;
+}

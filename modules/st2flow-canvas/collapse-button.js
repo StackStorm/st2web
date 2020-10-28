@@ -20,11 +20,7 @@ import cx from 'classnames';
 
 import style from './style.css';
 
-export default class CollapseButton extends Component<{
-  state: bool,
-  position: string,
-  onClick: any,
-}> {
+export default class CollapseButton extends Component {
   static propTypes = {
     state: PropTypes.bool,
     position: PropTypes.string,
@@ -35,7 +31,6 @@ export default class CollapseButton extends Component<{
 
   handleClick(e: Event) {
     e.stopPropagation();
-
     this.props.onClick();
   }
 

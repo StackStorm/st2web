@@ -19,6 +19,7 @@ limitations under the License.
 
   display: flex;
   flex-direction: column;
+ 
 }
 
 .action {
@@ -58,7 +59,6 @@ limitations under the License.
     display: flex;
     height: 38px;
     padding: 10px;
-    /* color: white; */
     background-color: #4b4b4f;
     justify-content: space-between;
     flex-flow: row-reverse nowrap;
@@ -85,6 +85,7 @@ limitations under the License.
   & > div {
     margin-left: 10px;
   }
+  
 }
 
 .pack-name {

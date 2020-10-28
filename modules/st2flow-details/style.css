@@ -44,8 +44,7 @@ limitations under the License.
     .toolbar-button.selected {
       background-color: transparent;
       color: inherit;
-
-      border-color: #ff921a;
+     border-color: #ff921a;
     }
   }
 
@@ -83,17 +82,14 @@ limitations under the License.
 .toolbar-button {
   padding: 15px 10px 10px;
   border-bottom: 5px solid transparent;
-
   cursor: pointer;
   user-select: none;
-
-  text-transform: uppercase;
-
+ text-transform: uppercase;
+ 
   &.selected {
     background-color: #333;
     color: #ff921a;
-    margin-left: -10px;
-  }
+   }
 
   &.stretch {
     flex: 1;
