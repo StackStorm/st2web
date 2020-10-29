@@ -313,9 +313,8 @@ export default class Workflows extends Component {
                 <div className="component-row-content">
                   { !isCollapsed.palette && <Palette className="palette" actions={actions} /> }
                   <HotKeys
-                    style={{ flex: 1 }}
+                    style={{ flex: 1}}
                     keyMap={this.keyMap}
-                    focused={true}
                     attach={document.body}
                     handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
                   >

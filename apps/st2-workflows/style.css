@@ -42,8 +42,8 @@ limitations under the License.
 
 .palette {
   width: 250px;
-
   overflow: hidden;
+   
 }
 
 .canvas {
@@ -58,4 +58,7 @@ limitations under the License.
   &.code {
     width: 500px;
   }
+}
+div[tabindex="-1"]:focus {
+  outline: 0;
 }

@@ -94,7 +94,7 @@ export default class Details extends Component<{
 
   sections = [{
     title: 'metadata',
-    className: 'icon-gear',
+    className: 'icon-gear gearclass',
   }, {
     title: 'execution',
     className: 'icon-lan',
