@@ -27,11 +27,7 @@ export type NotificationInterface = {
   id: string,
 };
 
-class Notification extends Component<{
-  notification: Object
-}, {
-  hide: boolean
-}> {
+class Notification extends Component {
   static propTypes = {
     notification: PropTypes.object,
   }
@@ -48,6 +44,12 @@ class Notification extends Component<{
 
   style = style
 
+  redirectLinkToParent = (newlink) => {
+    opener.location.href = newlink;
+    close();
+  
+  }
+
   render() {
     const { notification } = this.props;
     const { hide } = this.state;
@@ -59,7 +61,7 @@ class Notification extends Component<{
         </button>
         { notification.message }
         { notification.link && (
-          <a href={notification.link} target="_top">
+          <a href={notification.link} onClick={e => this.redirectLinkToParent(notification.link)}>
             {notification.link}
           </a>
         ) }
@@ -68,11 +70,7 @@ class Notification extends Component<{
   }
 }
 
-class Notifications extends Component<{
-  className?: string,
-  position: 'top' | 'bottom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right',
-  notifications: Array<Object>
-}> {
+class Notifications extends Component {
   static propTypes = {
     className: PropTypes.string,
     position: PropTypes.oneOf([ 'top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right' ]),
