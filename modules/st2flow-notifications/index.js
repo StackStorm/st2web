@@ -44,10 +44,10 @@ class Notification extends Component {
 
   style = style
 
-  redirectLinkToParent = (newlink) => {
-    opener.location.href = newlink;
-    close();
-  
+  redirectLinkToParent = (e,newlink) => {
+     e.preventDefault();
+     var goBack = window.open(newlink, 'parent');
+     goBack.focus();
   }
 
   render() {
@@ -61,9 +61,10 @@ class Notification extends Component {
         </button>
         { notification.message }
         { notification.link && (
-          <a href={notification.link} onClick={e => this.redirectLinkToParent(notification.link)}>
+          <a href={notification.link} onClick={e => this.redirectLinkToParent(e,notification.link)}>
             {notification.link}
           </a>
+          
         ) }
       </div>
     );
