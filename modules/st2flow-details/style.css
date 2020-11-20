@@ -13,12 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
+@import "@stackstorm/st2-style/colors.css";
 :root {
   --token-color: #eee;
   --yellow-lighten-5: #fff5e9;
   --yellow-base: #FF9E1B;
-}
+ }
 
 .component {
   display: flex;
