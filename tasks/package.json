@@ -57,7 +57,7 @@
     "gulp-rename": "1.4.0",
     "gulp-size": "3.0.0",
     "gulp-sourcemaps": "2.6.5",
-    "gulp-uglify-es": "1.0.4",
+    "gulp-uglify-es": "2.0.0",
     "gulp-webserver": "0.9.1",
     "lodash": "4.17.19",
     "mocha": "6.1.4",
