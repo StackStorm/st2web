@@ -83,21 +83,24 @@ export class Notification {
         onClick: () => router.push({ pathname: `/history/${execution_id}` }),
       });
     }
-
-    return new Noty({
+    const notificationObj = new Noty({
       text,
       type,
       layout: 'bottomLeft',
-      closeWith: [ 'click' ],
-      timeout: 3000,
+      closeWith:[ 'click', 'button' ],
+      timeout: 9000,
       buttons: buttons.map(({ text, className, onClick, ...attributes }) => Noty.button(
         text,
         `st2-forms__button st2-forms__button--skeleton ${className || ''}`,
-        onClick,
+        () => {
+          onClick();
+          notificationObj.close();
+        },
         attributes,
       )),
       ...options,
-    }).show();
+    });
+    return notificationObj.show();
   }
 }
 
