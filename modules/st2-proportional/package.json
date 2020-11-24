@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "lodash": "4.17.19",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
   },
   "devDependencies": {
     "@stackstorm/module-test-utils": "^2.4.3",

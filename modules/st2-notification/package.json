@@ -42,8 +42,8 @@
   "dependencies": {
     "@stackstorm/st2-style": "2.4.3",
     "@stackstorm/module-router": "^2.4.3",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
     "noty": "^3.1.4"
   }
 }

@@ -64,8 +64,8 @@
     "@stackstorm/module-title": "^2.4.3",
     "lodash": "4.17.19",
     "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
     "react-redux": "7.0.2",
     "classnames": "^2.2.6"
   }

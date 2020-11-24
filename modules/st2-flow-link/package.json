@@ -55,8 +55,8 @@
   "dependencies": {
     "@stackstorm/module-api": "^2.4.3",
     "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
   },
   "devDependencies": {
     "@stackstorm/st2-style": "2.4.3",

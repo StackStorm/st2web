@@ -54,8 +54,8 @@
     "@stackstorm/module-value-format": "^2.4.3",
     "lodash": "4.17.19",
     "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
     "react-textarea-autosize": "5.2.1",
     "classnames": "^2.2.6",
     "validator": "^10.11.0"
