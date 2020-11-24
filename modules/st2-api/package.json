@@ -35,6 +35,6 @@
   },
   "devDependencies": {
     "@stackstorm/module-test-utils": "2.4.3",
-    "chai": "^4.2.0"
+    "chai": "4.2.0"
   }
 }

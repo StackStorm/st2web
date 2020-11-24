@@ -68,8 +68,8 @@
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "7.0.2",
-    "redux": "^4.0.1",
-    "classnames": "^2.2.6"
+    "redux": "4.0.5",
+    "classnames": "2.2.6"
   },
   "devDependencies": {
     "@stackstorm/st2-style": "2.4.3"
