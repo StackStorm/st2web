@@ -60,7 +60,7 @@
     "gulp-uglify-es": "1.0.4",
     "gulp-webserver": "0.9.1",
     "lodash": "4.17.19",
-    "mocha": "6.1.4",
+    "mocha": "6.2.3",
     "pathmodify": "0.5.0",
     "require-dir": "1.2.0",
     "undertaker-forward-reference": "1.0.2",
