@@ -81,7 +81,7 @@
     "react-redux": "7.0.2",
     "redux": "^4.0.1",
     "set-value": "^2.0.1",
-    "urijs": "1.19.1",
+    "urijs": "1.19.2",
     "websocket-extensions": "^0.1.4"
   },
   "devDependencies": {
