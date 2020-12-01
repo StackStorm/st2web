@@ -274,7 +274,7 @@ export default class Workflows extends Component {
      // don't need to return anything to the store. the handler will change dirty.
      return {};
    })();
-
+  
    store.dispatch({
      type: 'SAVE_WORKFLOW',
      promise,
@@ -318,7 +318,7 @@ export default class Workflows extends Component {
                     attach={document.body}
                     handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
                   >
-                    <Canvas className="canvas" location={location} match={match} >
+                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} saveData={e => this.save()}>
                       <Toolbar>
                         <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
                         <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
