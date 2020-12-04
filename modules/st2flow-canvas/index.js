@@ -14,14 +14,14 @@
 
 //@flow
 
-import type {
+import  {
   CanvasPoint,
   TaskInterface,
   TaskRefInterface,
   TransitionInterface,
 } from '@stackstorm/st2flow-model/interfaces';
-import type { NotificationInterface } from '@stackstorm/st2flow-notifications';
-import type { Node } from 'react';
+import  { NotificationInterface } from '@stackstorm/st2flow-notifications';
+import  { Node } from 'react';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -33,7 +33,7 @@ import { uniqueId, uniq } from 'lodash';
 import Notifications from '@stackstorm/st2flow-notifications';
 import {HotKeys} from 'react-hotkeys';
 
-import type { BoundingBox } from './routing-graph';
+import  { BoundingBox } from './routing-graph';
 import Task from './task';
 import TransitionGroup from './transition';
 import Vector from './vector';
@@ -43,11 +43,9 @@ import { ORBIT_DISTANCE } from './const';
 import { Toolbar, ToolbarButton } from './toolbar';
 import makeRoutingGraph from './routing-graph';
 import PoissonRectangleSampler from './poisson-rect';
-
 import { origin } from './const';
-
 import style from './style.css';
-import store from '../../apps/st2-workflows/store';
+
 type DOMMatrix = {
   m11: number,
   m22: number
@@ -82,7 +80,6 @@ function weightedOrderedTaskSort(a, b) {
     return 0;
   }
 }
-
 // given tasks and their undirected connections to other tasks,
 //  sort the tasks into buckets of connected tasks.
 // This helps layout because it ensures that connected tasks can be drawn
@@ -210,8 +207,10 @@ function constructPathOrdering(
       type: 'CHANGE_NAVIGATION',
       navigation,
     }),
+  
   })
 )
+
 export default class Canvas extends Component {
  
   static propTypes = {
@@ -286,9 +285,8 @@ export default class Canvas extends Component {
     const { transitions } = this.props;
     let tasks = this.props.tasks.slice(0);
     const { width, height } = canvasEl.getBoundingClientRect();
-
     const scale = Math.E ** this.state.scale;
-
+    
     this.size = tasks.reduce((acc, item) => {
       const coords = new Vector(item.coords);
       const size = new Vector(item.size);
@@ -381,7 +379,7 @@ export default class Canvas extends Component {
       // finally, place the unplaced tasks.  using handleTaskMove will also ensure
       //   that the placement gets set on the model and the YAML.
       needsCoords.forEach(({task, transitionsTo}) => {
-        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo));
+        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo),true);
       });
     }
   }
@@ -496,7 +494,7 @@ export default class Canvas extends Component {
 
     this.startx = e.clientX + el.scrollLeft;
     this.starty = e.clientY + el.scrollTop;
-
+    
     return false;
   }
 
@@ -559,9 +557,7 @@ export default class Canvas extends Component {
     }
 
     const { action, handle } = JSON.parse(e.dataTransfer.getData('application/json'));
-
     const coords = new Vector(e.offsetX, e.offsetY).subtract(new Vector(handle)).subtract(new Vector(origin));
-
     this.props.issueModelCommand('addTask', {
       name: this.props.nextTask,
       action: action.ref,
@@ -571,12 +567,16 @@ export default class Canvas extends Component {
     return false;
   }
 
-  handleTaskMove = (task: TaskRefInterface, coords: CanvasPoint) => {
-    this.props.issueModelCommand('updateTask', task, { coords });
-    store.dispatch({
-      type: 'SAVE_WORKFLOW',
-      status:'success',
-    });
+  handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint,autoSave) => {
+     let x = points.x;
+     let y = points.y;
+     const coords = {x, y};
+     this.props.issueModelCommand('updateTask', task, { coords });
+   
+     if(autoSave) {
+      await this.props.fetchActionscalled();
+      this.props.saveData();
+    }  
   }
 
   handleTaskSelect = (task: TaskRefInterface) => {
@@ -743,7 +743,7 @@ export default class Canvas extends Component {
                       task={task}
                       selected={task.name === navigation.task && !selectedTransitionGroups.length}
                       scale={scale}
-                      onMove={(...a) => this.handleTaskMove(task, ...a)}
+                      onMove={(...a) => this.handleTaskMove(task, ...a,false)}
                       onConnect={(...a) => this.handleTaskConnect(task, ...a)}
                       onClick={() => this.handleTaskSelect(task)}
                       onDelete={() => this.handleTaskDelete(task)}
