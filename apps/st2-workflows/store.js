@@ -129,8 +129,8 @@ const flowReducer = (state = {}, input) => {
     notifications = [],
 
     navigation = {},
-
     dirty = false,
+    rearrangeflag = false,
   } = state;
 
   state = {
@@ -151,8 +151,8 @@ const flowReducer = (state = {}, input) => {
     notifications,
 
     navigation,
-
     dirty,
+    rearrangeflag,
   };
 
   switch (input.type) {
@@ -199,6 +199,7 @@ const flowReducer = (state = {}, input) => {
         ...state,
         ...workflowModelGetter(workflowModel),
         dirty: true,
+        rearrangeflag:true,
       };
     }
 
