@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import createHashHistory from 'history/createHashHistory';
+import { createHashHistory } from 'history';
 
 const history = createHashHistory({});
 

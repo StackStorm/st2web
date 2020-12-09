@@ -10,11 +10,12 @@ jobs:
     machine: true
     environment:
       DEPLOY_PACKAGES: 1
-      DEB: trusty xenial bionic
-      RPM: el6 el7
+      DEB: xenial bionic
+      RPM: el7 el8
       ST2_HOST: localhost
       ST2_USERNAME: admin
       ST2_PASSWORD: 123
+      ST2_TEST_ENVIRONMENT: https://github.com/StackStorm/st2-docker
     steps:
       - checkout
       - run:
@@ -40,7 +41,12 @@ jobs:
           name: Export package version
           command: |
             PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
-            PKG_RELEASE=$(packagecloud.sh next-revision trusty ${PKG_VERSION} st2web)
+            if [ -n "$PACKAGECLOUD_TOKEN" ]; then
+              PKG_RELEASE=$(packagecloud.sh next-revision xenial ${PKG_VERSION} st2web)
+            else
+              # is fork
+              PKG_RELEASE=1
+            fi
             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
             echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
       - run:
@@ -66,7 +72,11 @@ jobs:
             sudo chmod +x /usr/local/bin/docker-compose
       - run:
           name: Clone test containers
-          command: git clone --depth 1 https://github.com/StackStorm/st2-docker ~/st2-docker
+          command: |
+            # Use DEPRECATED/all-in-one for now, we'll have to circle back around
+            # and fix this to use the master branch
+            echo "Cloning ${ST2_DOCKER_BRANCH:-DEPRECATED/all-in-one} branch of st2-docker"
+            git clone --branch ${ST2_DOCKER_BRANCH:-DEPRECATED/all-in-one} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
       - run:
           name: Update env variables for test containers
           command: |
@@ -129,17 +139,16 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/artifacts
           paths:
-            - trusty
             - xenial
             - bionic
-            - el6
             - el7
+            - el8
   deploy:
     docker:
       - image: ruby:2.6.3
     environment:
       ARTIFACTS: /home/circleci/artifacts
-      DISTROS: trusty xenial bionic el6 el7
+      DISTROS: xenial bionic el7 el8
     steps:
       - checkout
       - attach_workspace:
