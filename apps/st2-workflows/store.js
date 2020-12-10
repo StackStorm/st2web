@@ -123,14 +123,12 @@ const flowReducer = (state = {}, input) => {
     vars = [],
     ranges = {},
     nextTask = 'task1',
-
     panels = {},
     actions = [],
     notifications = [],
-
     navigation = {},
     dirty = false,
-    rearrangeflag = false,
+    
   } = state;
 
   state = {
@@ -149,10 +147,9 @@ const flowReducer = (state = {}, input) => {
     panels,
     actions,
     notifications,
-
     navigation,
     dirty,
-    rearrangeflag,
+   
   };
 
   switch (input.type) {
@@ -199,7 +196,6 @@ const flowReducer = (state = {}, input) => {
         ...state,
         ...workflowModelGetter(workflowModel),
         dirty: true,
-        rearrangeflag:true,
       };
     }
 

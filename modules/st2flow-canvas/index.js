@@ -575,8 +575,8 @@ export default class Canvas extends Component {
     const y = points.y;
     const coords = {x, y};
     this.props.issueModelCommand('updateTask', task, { coords });
-   
-    if(autoSave && !this.props.rearrangeTasks) {
+    
+    if(autoSave && !this.props.dirtyflag) {
       await this.props.fetchActionscalled();
       this.props.saveData();
     }  
