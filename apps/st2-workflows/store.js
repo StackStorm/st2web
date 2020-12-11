@@ -123,14 +123,12 @@ const flowReducer = (state = {}, input) => {
     vars = [],
     ranges = {},
     nextTask = 'task1',
-
     panels = {},
     actions = [],
     notifications = [],
-
     navigation = {},
-
     dirty = false,
+    
   } = state;
 
   state = {
@@ -149,10 +147,9 @@ const flowReducer = (state = {}, input) => {
     panels,
     actions,
     notifications,
-
     navigation,
-
     dirty,
+   
   };
 
   switch (input.type) {

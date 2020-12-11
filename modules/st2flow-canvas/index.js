@@ -43,9 +43,11 @@ import { ORBIT_DISTANCE } from './const';
 import { Toolbar, ToolbarButton } from './toolbar';
 import makeRoutingGraph from './routing-graph';
 import PoissonRectangleSampler from './poisson-rect';
-import { origin } from './const';
-import style from './style.css';
 
+import { origin } from './const';
+
+import style from './style.css';
+import store from '../../apps/st2-workflows/store';
 type DOMMatrix = {
   m11: number,
   m22: number
@@ -80,6 +82,7 @@ function weightedOrderedTaskSort(a, b) {
     return 0;
   }
 }
+
 // given tasks and their undirected connections to other tasks,
 //  sort the tasks into buckets of connected tasks.
 // This helps layout because it ensures that connected tasks can be drawn
@@ -207,7 +210,6 @@ function constructPathOrdering(
       type: 'CHANGE_NAVIGATION',
       navigation,
     }),
-  
   })
 )
 
@@ -557,7 +559,8 @@ export default class Canvas extends Component {
     }
 
     const { action, handle } = JSON.parse(e.dataTransfer.getData('application/json'));
-    const coords = new Vector(e.offsetX, e.offsetY).subtract(new Vector(handle)).subtract(new Vector(origin));
+    const coords = new Vector(e.offsetX , e.offsetY).subtract(new Vector(handle)).subtract(new Vector(origin));
+
     this.props.issueModelCommand('addTask', {
       name: this.props.nextTask,
       action: action.ref,
@@ -568,15 +571,16 @@ export default class Canvas extends Component {
   }
 
   handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint,autoSave) => {
-     let x = points.x;
-     let y = points.y;
-     const coords = {x, y};
-     this.props.issueModelCommand('updateTask', task, { coords });
-   
-     if(autoSave) {
+    const x = points.x;
+    const y = points.y;
+    const coords = {x, y};
+    this.props.issueModelCommand('updateTask', task, { coords });
+    
+    if(autoSave && !this.props.dirtyflag) {
       await this.props.fetchActionscalled();
       this.props.saveData();
     }  
+   
   }
 
   handleTaskSelect = (task: TaskRefInterface) => {

@@ -292,7 +292,7 @@ export default class Workflows extends Component {
 
   render() {
     // const { isCollapsed = {}, toggleCollapse, actions, undo, redo, layout, meta, input, dirty } = this.props;
-    const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty } = this.props;
+    const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty} = this.props;
     const { runningWorkflow, showForm } = this.state;
    
     const autoFormData = input && input.reduce((acc, value) => {
@@ -318,7 +318,7 @@ export default class Workflows extends Component {
                     attach={document.body}
                     handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
                   >
-                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} saveData={e => this.save()}>
+                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} saveData={e => this.save()} dirtyflag={this.props.dirty}>
                       <Toolbar>
                         <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
                         <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
