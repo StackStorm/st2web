@@ -82,7 +82,7 @@ export default class Parameters extends Component<{
   handleChange(oldName: string, { name, ...properties }: { name: string }) {
     const { ...parameters } = this.props.meta.parameters;
     if (oldName !== name) {
-      delete parameters[name];
+      delete parameters[oldName];
     }
     this.props.setMeta('parameters', sortParameters({ ...parameters, [name]: properties}));
     this.setState({ edit: false });
