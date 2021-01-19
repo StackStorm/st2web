@@ -37,6 +37,7 @@
     "react-dom": "16.8.6",
     "react-redux": "7.0.2",
     "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
     "history": "^4.9.0"
   }
 }

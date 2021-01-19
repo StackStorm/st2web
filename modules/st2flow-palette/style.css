@@ -1,0 +1,123 @@
+/*
+Copyright 2021 The StackStorm Authors.
+Copyright 2020 Extreme Networks, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.component {
+  background-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.action {
+  background: #ebebeb;
+  border-radius: 3px;
+  margin: 10px;
+  padding: 8px 10px;
+
+  user-select: none;
+
+  -webkit-user-drag: element;
+
+  position: relative;
+
+  &-name {
+    color: #2d2d2d;
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   
+  }
+
+  &-description {
+    color: #5b5b5b;
+    font-size: 12px !important;
+  }
+}
+.palette-chevron-icon:before{
+    content: "\e972";
+    font-size:10px;
+  }
+.search {
+    color: #888;
+    min-height: 38px;
+    font-size: 18px;
+    font-weight: 200;
+    display: flex;
+    height: 38px;
+    padding: 10px;
+    background-color: #4b4b4f;
+    justify-content: space-between;
+    flex-flow: row-reverse nowrap;
+}
+
+.search-field {
+  box-sizing: border-box;
+  background-color: transparent;
+  border: 0;
+
+  padding: 5px;
+  border-bottom: 1px solid #888;
+  outline: none;
+  color: #ccc;
+  width: 100%;
+
+  &:focus {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.list {
+  overflow: auto;
+  & > div {
+    margin-left: 10px;
+  }
+  
+}
+
+.pack-name {
+  margin-left: 10px;
+  margin: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+
+  & > h2  {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 42px;
+    display: inline-block;
+    margin: 0;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: black;
+
+  }
+  img{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    padding: 5px;
+    vertical-align: top;
+    border-radius: 5px;
+    background: white;
+    overflow: hidden;
+  }
+}

@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
+import { Link } from '@stackstorm/module-router';
 
 import style from './style.css';
 
@@ -33,9 +35,13 @@ export default class FlowLink extends React.Component {
     })).replace(/=/g, '');
   }
 
+
   render() {
     if (!this.getUrlProps) {
-      return false;
+      this.getUrlProps = () => {
+        return {};
+      };
+      // return false;
     }
 
     const { className, action, ...props } = this.props;
@@ -43,16 +49,21 @@ export default class FlowLink extends React.Component {
     return (
       <div {...props} className={cx(style.component, className)}>
         { action ? (
-          <a
+          <Link
+            to={`/action/${this.props.action}`}
             className="st2-forms__button st2-details__toolbar-button"
             {...this.getUrlProps(action)}
           >
             Edit
-          </a>
+          </Link>
         ) : (
-          <a className="st2-panel__toolbar-button" {...this.getUrlProps()} >
+          <Link
+            to="/action"
+            replace={true}
+            className="st2-panel__toolbar-button" {...this.getUrlProps()}
+          >
             <i className="icon-plus" />
-          </a>
+          </Link>
         ) }
       </div>
     );

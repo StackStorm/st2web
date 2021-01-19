@@ -1,0 +1,416 @@
+/*
+Copyright 2021 The StackStorm Authors.
+Copyright 2020 Extreme Networks, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+:root {
+  --transition-color: orange;
+  --selected-bg: #fff3e6;
+  --selected-border: #ffa256;
+  --gray-white: #f4f4f4;
+}
+
+.component {
+  background-color: white;
+  position: relative;
+}
+
+.canvas {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  position: relative;
+   
+}
+
+.task {
+  display: block;
+
+  position: absolute;
+
+  user-select: none;
+
+  &-body {
+    padding: 10px;
+    background-color: white;
+
+    border-radius: 3px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, .3);
+    box-sizing: border-box;
+
+    img {
+      float: left;
+    }
+    > div {
+      margin-left: 40px;
+    }
+  }
+
+  &.selected &-body {
+    border: 1px solid var(--selected-border);
+    background-color: var(--selected-bg);
+  }
+
+  &.selected &-button {
+    display: flex;
+  }
+
+  &-button {
+    position: absolute;
+
+    width: 24px;
+    height: 24px;
+
+    right: -36px;
+
+    border-radius: 50%;
+    border: 1px solid #ffa256;
+    background-color: #fff3e6;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    &:after {
+      content: ' ';
+    }
+
+    &.delete {
+      top: 12px;
+    }
+  }
+
+  &-name {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+ 
+  }
+   
+  &-action {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    pointer-events: none;
+  }
+
+  &-badges {
+    right: 0;
+    bottom: 1px;
+    position: absolute;
+  }
+
+  &-badge {
+    border: 1px solid black;
+    margin: 1px;
+    padding: 1px;
+    padding-right: 2px;
+    border-radius: 2px;
+
+    &-with-items {
+      composes: icon-repeat from global;
+      &:before {
+        margin: 0;
+        font-weight: bold !important;
+      }
+    }
+
+    &-join {
+      composes: icon-merge_type from global;
+      display: inline-block;
+      transform: rotateZ(180deg) translateY(1px);
+      &:before {
+        margin: 0;
+        font-weight: bold !important;
+        font-family: 'st2';
+      }
+    }
+  }
+
+  &-handle {
+    position: absolute;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+    border: 1px solid #ffa256;
+    background-color: white;
+
+    transform-origin: center center;
+    transform: translate(-50%, -50%);
+
+    display: none;
+
+    -webkit-user-drag: element;
+
+    &:hover {
+      background-color: #ffa256;
+    }
+  }
+
+  &.selected &-handle {
+    display: block;
+  }
+}
+
+.transition {
+  stroke: var(--transition-color);
+  stroke-width: 5;
+  fill: transparent;
+  pointer-events: none;
+
+  &-button {
+    position: absolute;
+    top: -13px;
+    left: -13px;
+
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+    border: 1px solid #ffa256;
+    background-color: #fff3e6;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    &:after {
+      content: ' ';
+    }
+  }
+}
+
+.transition-active {
+  stroke-width: 12;
+  fill: transparent;
+  stroke: transparent;
+  visibility: hidden;
+
+  &.selected {
+    visibility: visible;
+    stroke: var(--selected-bg);
+    pointer-events: none;
+  }
+}
+
+.transition-active-border {
+  stroke-width: 13;
+  fill: transparent;
+  stroke: transparent;
+  pointer-events: stroke;
+  visibility: hidden;
+
+  &.selected {
+    visibility: visible;
+    stroke: var(--transition-color);
+    pointer-events: none;
+  }
+}
+
+.transition-arrow {
+  fill: var(--transition-color);
+}
+
+.transition-arrow-active {
+  fill: var(--selected-bg);
+}
+
+.surface {
+  background-color: #ebebeb;
+  background-image: linear-gradient(#ddd 2px, transparent 2px),
+    linear-gradient(90deg, #ddd 2px, transparent 2px),
+    linear-gradient(color-mod(#ddd a(30%)) 1px, transparent 1px),
+    linear-gradient(90deg, color-mod(#ddd a(30%)) 1px, transparent 1px);
+  background-size:100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position:-2px -2px, -2px -2px, -1px -1px, -1px -1px;
+
+  box-shadow: inset 0px 0px 8px 0px rgba(0,0,0,0.32);
+  position: absolute;
+
+  transform-origin: 0 0;
+}
+
+.svg {
+  width: 100%;
+  height: 100%;
+
+  /* Chrome shows vertical scroll when svg canvas matches container exactly so we're subtracting 3 pixels at the bottom */
+  margin-bottom: -3px;
+
+  pointer-events: none;
+}
+
+.toolbar {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  right: 0;
+
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+
+  &-right {
+    right: 16px;
+    flex-flow: column;
+    width: 50px;
+    height: 140px;
+    left: auto;
+    top: 55px;
+  }
+}
+
+.toolbar-button {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+  background-color: white;
+
+  z-index: 1;
+  margin: 8px;
+
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--gray);
+  font-size: 20px;
+
+  &:after {
+    content: ' ';
+  }
+
+  &.success {
+    animation: ok .2s linear 3s forwards;
+    background-color: var(--green-base);
+    color: white;
+  }
+
+  &.error {
+    animation: fail .2s linear 3s forwards;
+    background-color: var(--red-base);
+    color: white;
+  }
+
+  &.disabled {
+    background-color: #dddddd;
+    cursor: not-allowed;
+  }
+
+  &-glow {
+    box-shadow: 0px 0px 5px red;
+  }
+}
+
+.dropdown {
+  width: 100%;
+  position: absolute;
+  top: 57px;
+  overflow-y: visible;
+  z-index: 1000;
+
+  &-pointer {
+    position: absolute;
+    top: -8px;
+    width: 20px;
+    height: 20px;
+    transform: rotateZ(45deg);
+    background-color: var(--gray-white);
+  }
+    
+  &-body {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--gray-white);
+    width: 250px;
+    padding: 15px;
+    padding-top: 1px;
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  h2 {
+    text-align: center;
+  }
+}
+
+.collapse-button {
+  position: absolute;
+  width: 30px;
+  height: 48px;
+  padding: 5px 0;
+
+  background-color: #444;
+  color: #eee;
+  font-size: 23px;
+
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+
+
+  &.left {
+    left: 0;
+    border-bottom-right-radius: 4px;
+    box-shadow: 2px 0px 7px 0px rgba(0,0,0,0.32);
+  }
+  &.right {
+    right: 0;
+    border-bottom-left-radius: 4px;
+    box-shadow: -2px 0px 7px 0px rgba(0,0,0,0.32);
+  }
+  &.top {
+    top: 0;
+    right: 0;
+    background-color: rgba(30, 29, 31, 0.22);
+    width: initial;
+    padding: 5px 0;
+    height: 44px;
+  }
+}
+
+@keyframes ok {
+  0% {
+    background-color: var(--green-base);
+    color: white;
+  }
+  100% {
+    background-color: white;
+    color: var(--gray);
+  }
+}
+
+@keyframes fail {
+  0% {
+    background-color: var(--red-base);
+    color: white;
+  }
+  100% {
+    background-color: white;
+    color: var(--gray);
+  }
+}

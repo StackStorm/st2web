@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +16,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-
 import { matchPath } from 'react-router';
 
 @connect(

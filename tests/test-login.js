@@ -43,7 +43,10 @@ describe('User visits login', () => {
   });
 
   describe('Submit', () => {
-    before(() => util.login());
+    before(function () {
+      this.timeout(20000);
+      return util.login();
+    });
 
     it('should be successful', () => {
       browser.assert.success();

@@ -1,1 +1,40 @@
 @import "node_modules/@stackstorm/st2-style/style.css";
+
+html, body, .wrapper {
+    font-size: 13px;
+    font-family: "Roboto", Arial, sans-serif;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fff;
+    background-color: var(--body-bg-color);
+}
+/*Workflow tab zoom icon Css*/
+.icon-zoom_out:before {
+    font-family: 'st2';
+    content: "\eb45" !important;
+  
+}
+.icon-zoom_in:before {
+    font-family: 'st2';
+    content: "\eb43"  !important;
+  
+}
+.icon-zoom_reset:before {
+     font-family: 'st2';
+    content: '\ee65';
+   
+}
+.palette-chevron-icon:before {
+    font-size: 10px;
+    padding: 0 5px;
+    line-height: 42px;
+    display: block;
+}
+.icon-plus-class i{
+  display: none !important;
+}
+.gearclass{
+  margin-left: -10px;
+}

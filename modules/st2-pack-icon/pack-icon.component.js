@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +77,11 @@ export default class PackIcon extends React.Component {
           <img className={cx(style.image, small && style.imageSmall)} src={icons[name]} />
         );
       }
-
+      else{
+        return(
+          <img src="img/icon.png" width="32" height="32" />
+        );
+      }
       return (
         <img className={cx(style.image, small && style.imageSmall)} src={icons[name]} />
       );

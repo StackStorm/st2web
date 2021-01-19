@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,6 +30,7 @@ import History from '@stackstorm/app-history';
 import Packs from '@stackstorm/app-packs';
 import Rules from '@stackstorm/app-rules';
 import Inquiry from '@stackstorm/app-inquiry';
+import Workflows from '@stackstorm/app-workflows';
 
 const routes = [
   Actions,
@@ -38,6 +40,7 @@ const routes = [
   Packs,
   Rules,
   Inquiry,
+  Workflows,
 ];
 
 window.fp = require('lodash/fp');

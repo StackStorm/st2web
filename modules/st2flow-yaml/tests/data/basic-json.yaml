@@ -1,0 +1,45 @@
+# this is a valid yaml file
+{
+  emptyArray: [],
+  emptyObject: {},
+  bools: {
+    true: [true, true, true],
+    false: [false, false, false]
+  },
+  floats: {
+    canonical: 685230.15,
+    exponential: 685230.15,
+    fixed: 685230.15
+  },
+  ints: {
+    decimal: 685230,
+    octal: '0o2472256',
+    hexadecimal: 685230
+  },
+  nulls: {
+    empty: null,
+    canonical: null,
+    english: null,
+    sparse: [null, '2nd entry', null, '4th entry', null]
+  },
+  strings: {
+    simpleString: 'hello world',
+    simpleStringComma: 'hello, world',
+    stackTrace: 'Error: foo\n    at repl:1:5\n    at REPLServer.defaultEval (repl.js:116:27)\n    at bound (domain.js:254:14)\n',    trailingSpace: 'hello space    ',
+    trailingTab: 'hello tab  \t',
+    trailingCR: 'hello newline\n',
+    simpleQuotes: 'won''t you be my neighbor\n',
+    unprintable: 'number 1 is \u0001 and the biggest byte is \uFFFF ok',
+    multiline: 'hello\nworld\n',
+    multilineChomp: 'hello\nworld\n',
+    multilineTrailingCR: 'hello\nworld\n'
+  },
+  timestamps: {
+    canonical: 2001-12-15T02:59:43.1Z,
+    'valid iso8601': 2001-12-14t21:59:43.10-05:00,
+    'space separated': 2001-12-14 21:59:43.10 -5,
+    'no time zone (Z)': 2001-12-15 2:59:43.10,
+    'date (00:00:00Z)': 2002-12-14,
+    'not a date': '2002-1-1'
+  }
+}

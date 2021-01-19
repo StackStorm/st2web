@@ -47,6 +47,31 @@ $ gulp
 
 At that point you should be able to point your browser to http://localhost:3000/ and see the the page.
 
+Quick start (docker-compose)
+-----------
+
+> **Note:** docker-compose uses `config.local.js` which is gitignored and should be a copy of `config.js` with your specific values
+
+Production:
+```
+docker-compose  up
+```
+
+Dev:
+```
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+Production with NGINX:
+```
+docker-compose -f docker-compose.nginx.yml up --build
+```
+
+Dev with NGINX:
+```
+docker-compose -f docker-compose.nginx-dev.yml up --build
+```
+
 Build system
 ------------
 

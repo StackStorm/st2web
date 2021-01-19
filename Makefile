@@ -9,7 +9,29 @@ DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || ec
 .PHONY: all build clean install deb rpm
 all: build
 
+npm-install:
+	echo "npm install"
+	npm install -g lerna yarn
+
+lerna:
+	echo "lerna"
+	lerna bootstrap
+	rm -rf apps/st2-workflows/node_modules
+
+build-dev:
+	echo "build-dev"
+	make npm-install
+	make lerna
+
+build-and-install:
+	make build
+	make install
+
 build:
+	echo "build-and-install"
+	make npm-install
+	make lerna
+	echo "run gulp production directly"
 	npm run build
 
 clean:
@@ -17,7 +39,10 @@ clean:
 	mkdir -p build/
 
 install:
+	echo "make install"
+	echo "mkdir -p $(DESTDIR)$(PREFIX)"
 	mkdir -p $(DESTDIR)$(PREFIX)
+	echo "cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)"
 	cp -R $(CURDIR)/build/* $(DESTDIR)$(PREFIX)
 
 deb:

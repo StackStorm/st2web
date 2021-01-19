@@ -1,0 +1,94 @@
+/*
+Copyright 2021 The StackStorm Authors.
+Copyright 2020 Extreme Networks, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.component {
+  position: absolute;
+  z-index: 2147483600; /* there's a little room left above jik */
+
+  &.top {
+    top: 1em;
+    left: 1em;
+    right: 1em;
+  }
+
+  &.top-left {
+    top: 1em;
+    left: 1em;
+  }
+
+  &.top-right {
+    top: 1em;
+    right: 1em;
+  }
+
+  &.bottom {
+    bottom: 1em;
+    left: 1em;
+    right: 1em;
+  }
+
+  &.bottom-left {
+    bottom: 1em;
+    left: 1em;
+  }
+
+  &.bottom-right {
+    bottom: 1em;
+    right: 1em;
+  }
+}
+
+.notification {
+  border: 1px solid transparent;
+  padding: .5em 2em .5em .75em;
+  margin-bottom: .5em;
+  position: relative;
+
+  .close {
+    cursor: pointer;
+    position: absolute;
+    top: .5em;
+    right: .75em;
+    padding: .1em .2em;
+    border-color: inherit;
+    background-color: rgba(255, 255, 255, .3);
+  }
+
+  &.error {
+    background-color: #f2dede;
+    border-color: #ebcccc;
+    color: #a94442;
+  }
+
+  &.warning {
+    background-color: #fcf8e3;
+    border-color: #faf2cc;
+    color: #8a6d3b;
+  }
+
+  &.info {
+    background-color: #d9edf7;
+    border-color: #bcdff1;
+    color: #31708f;
+  }
+
+  &.success {
+    background-color: #dff0d8;
+    border-color: #d0e9c6;
+    color: #3c763d;
+  }
+}
