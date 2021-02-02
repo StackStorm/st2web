@@ -172,7 +172,6 @@ export class API {
       query,
       raw = false,
     } = opts;
-
     const headers = {
       'content-type': 'application/json',
     };
@@ -200,6 +199,7 @@ export class API {
 
         return buildURL('', params).substr(1);
       },
+      responseType:'json',
     };
   
     if (this.rejectUnauthorized === false) {
@@ -210,7 +210,6 @@ export class API {
     }
   
     const response = await axios(config);
-
     const contentType = (response.headers || {})['content-type'] || [];
     const requestId = (response.headers || {})['X-Request-ID'] || null;
 
@@ -221,7 +220,6 @@ export class API {
     if (requestId) {
       response.requestId = requestId;
     }
-
     if (raw) {
       return response;
     }
