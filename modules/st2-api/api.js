@@ -175,6 +175,8 @@ export class API {
 
     const headers = {
       'content-type': 'application/json',
+      
+
     };
 
     if (this.token && this.token.token) {
@@ -196,9 +198,9 @@ export class API {
           }
           return param;
         });
-         return buildURL('', params).substr(1);
+        return buildURL('', params).substr(1);
       },
-          responseType: 'json',
+      responseType: 'json',
     };
   
     if (this.rejectUnauthorized === false) {
@@ -209,8 +211,6 @@ export class API {
     }
   
     const response = await axios(config);
-    console.log("responseeeeeeeeeeeeeeeeeee", typeof response);
-
     const contentType = (response.headers || {})['content-type'] || [];
     const requestId = (response.headers || {})['X-Request-ID'] || null;
 
