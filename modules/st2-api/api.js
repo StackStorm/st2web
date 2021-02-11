@@ -219,7 +219,6 @@ export class API {
     }
   
     const response = await axios(config);
-        // console.log('response===>',response);
     const contentType = (response.headers || {})['content-type'] || [];
     const requestId = (response.headers || {})['X-Request-ID'] || null;
 
