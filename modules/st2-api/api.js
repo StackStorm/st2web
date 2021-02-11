@@ -188,7 +188,15 @@ export class API {
       url: this.route(opts),
       params: query,
       headers,
-      transformResponse: [],
+      transformResponse: [function transformResponse(data, headers) {
+      if (typeof data === 'string' && headers["content-type"] === "application/json") {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+      }
+  ],
       data,
       withCredentials: true,
       paramsSerializer: params => {
@@ -200,7 +208,7 @@ export class API {
         });
         return buildURL('', params).substr(1);
       },
-      responseType: 'json',
+      // responseType: 'json',
     };
   
     if (this.rejectUnauthorized === false) {
@@ -211,6 +219,7 @@ export class API {
     }
   
     const response = await axios(config);
+        // console.log('response===>',response);
     const contentType = (response.headers || {})['content-type'] || [];
     const requestId = (response.headers || {})['X-Request-ID'] || null;
 
