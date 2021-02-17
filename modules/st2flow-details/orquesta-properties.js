@@ -100,6 +100,27 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
           )
         }
       </Property>,
+      <Property key="delay" name="Delay" description="Add delay before task execution" value={task.delay != null} onChange={value => this.handleTaskProperty('delay', value ? '10' : false)}>
+        {
+          task.delay != null && (
+            <div className={this.style.propertyChild}>
+              <label htmlFor="delay" >
+                delay
+                <input
+                  type="text"
+                  id="delayField"
+                  size="3"
+                  className={this.style.delayField}
+                  value={isNaN(task.delay) ? 10 : task.delay}
+                  onChange={e => this.handleTaskProperty('delay', parseInt(e.target.value, 10) || 0, true)}
+                  onBlur={e => this.handleTaskProperty('delay', parseInt(e.target.value, 10))}
+                />
+              seconds
+              </label>
+            </div>
+          )
+        }
+      </Property>,
       <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
         {
           task.with && (

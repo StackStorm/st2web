@@ -351,7 +351,19 @@ limitations under the License.
   background-color: white;
   box-shadow: 0 1px 0 #bbbbbc;
 }
-
+.delayField {
+  width: initial;
+  margin: 0 7px;
+  font-weight: normal;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 7;
+  color: black;
+  border: none;
+  outline: 0;
+  background-color: white;
+  box-shadow: 0 1px 0 #bbbbbc;
+}
 .string-properties {
   grid-column: 1 / -1;
   display: grid;

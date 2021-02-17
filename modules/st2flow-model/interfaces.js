@@ -41,6 +41,7 @@ export interface TaskInterface {
         concurrency?: string,
     };
     join?: ?string;
+    delay?:?string;
     ref?: any;
 }
 
