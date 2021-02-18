@@ -87,7 +87,8 @@ type RawTask = {
   input?: Object,
   next?: Array<NextItem>,
   with?: string | Object,
-  join?: string
+  join?: string,
+  retry?:string | Object
 };
 
 type RawTasks = {
@@ -140,7 +141,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
         }
       }
 
-      const { action = '', input, 'with': _with, join } = task;
+      const { action = '', input, 'with': _with,'retry': _retry, join } = task;
       const [ actionRef, ...inputPartials ] = `${action}`.split(' ');
 
       // if (inputPartials.length) {
@@ -162,6 +163,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
         },
         with: typeof _with === 'string' ? { items: _with } : _with,
         join,
+        retry: typeof _retry === 'string' ?{ when: _retry} : _retry,
       };
 
       return retVal;

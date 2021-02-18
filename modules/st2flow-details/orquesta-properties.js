@@ -100,6 +100,17 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
           )
         }
       </Property>,
+      <Property key="retry" name="Retry" description="Define the retry condition for the task execution." value={!!task.retry} onChange={value => this.handleTaskProperty('retry', value ? { when: 'x in <% ctx(y) %>' } : false)}>
+        {
+          task.retry && (
+            <div className={this.style.propertyChild}>
+              <StringField name="when" value={task.retry.when} onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} />
+              <StringField name="count" value={task.retry.count} onChange={value => this.handleTaskProperty([ 'retry', 'count' ], value)} />
+              <StringField name="delay" value={task.retry.delay} onChange={value => this.handleTaskProperty([ 'retry', 'delay' ], value)} />
+            </div>
+          )
+        }
+      </Property>,
       <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
         {
           task.with && (
