@@ -100,13 +100,13 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
           )
         }
       </Property>,
-      <Property key="retry" name="Retry" description="Define the retry condition for the task execution." value={!!task.retry} onChange={value => this.handleTaskProperty('retry', value ? { when: 'x in <% ctx(y) %>' } : false)}>
+      <Property key="retry" name="Retry" description="Define the retry condition for the task execution." value={!!task.retry} onChange={value => this.handleTaskProperty('retry', value ? { when: '<% failed() %>' } : false)}>
         {
           task.retry && (
             <div className={this.style.propertyChild}>
-              <StringField name="when" value={task.retry.when} onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} />
-              <StringField name="count" value={task.retry.count} onChange={value => this.handleTaskProperty([ 'retry', 'count' ], value)} />
-              <StringField name="delay" value={task.retry.delay} onChange={value => this.handleTaskProperty([ 'retry', 'delay' ], value)} />
+              <StringField name="when" value={task.retry.when} className="when-title" onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} />
+              <StringField name="count" value={task.retry.count} className="count-title" onChange={value => this.handleTaskProperty([ 'retry', 'count' ], value)} />
+              <StringField name="delay" value={task.retry.delay} className="delay-title" onChange={value => this.handleTaskProperty([ 'retry', 'delay(seconds)'], value)} />
             </div>
           )
         }
