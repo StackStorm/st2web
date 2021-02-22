@@ -480,22 +480,5 @@
     font-family: Garamond, Georgia, Times New Roman, serif !important;;
   }
 }
-.when-title{
- &:hover:after {
-   content:"enter expression";
-   margin-left:4px;
- }
-}
 
-.count-title{
- &:hover:after {
-   content:"enter integer value";
-   margin-left:4px;
- }
-}
-.delay-title{
- &:hover:after {
-   content:"enter integer value";
-   margin-left:4px;
- }
-}
+
