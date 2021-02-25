@@ -104,9 +104,9 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
         {
           task.retry && (
             <div className={this.style.propertyChild}>
-              <StringField name="when" value={task.retry.when} className="when-title" onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} />
+              <StringField name="when" value={task.retry.when} className="when-title" onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} spec={{'default':'enter expression'}}  />
               <StringField name="count" value={task.retry.count} className="count-title" onChange={value => this.handleTaskProperty([ 'retry', 'count' ], value)}  spec={{'default':'enter expression or integer'}} />
-              <StringField name="delay(seconds)" value={task.retry.delay} className="delay-title" onChange={value => this.handleTaskProperty([ 'retry', 'delay'], value)} spec={{'default':'enter expression or integer'}} />
+              <StringField name="delay (seconds)" value={task.retry.delay} className="delay-title" onChange={value => this.handleTaskProperty([ 'retry', 'delay'], value)} spec={{'default':'enter expression or integer'}} />
             </div>
           )
         }
