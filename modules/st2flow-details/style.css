@@ -352,7 +352,7 @@ limitations under the License.
   box-shadow: 0 1px 0 #bbbbbc;
 }
 .delayField {
-  width: initial;
+  width: 120px;
   margin: 0 7px;
   font-weight: normal;
   box-sizing: border-box;
@@ -390,4 +390,7 @@ limitations under the License.
     display: contents;
 
   }
+}
+.tooltip {
+  position: relative;
 }
