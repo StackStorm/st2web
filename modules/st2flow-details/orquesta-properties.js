@@ -52,98 +52,85 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
     issueModelCommand: PropTypes.func,
   }
 
-state = {
-  helpText :false,
-};
-
-handleTaskProperty(name: string | Array<string>, value: any, noDelete: boolean = false) {
-  const { task, issueModelCommand } = this.props;
-  if (value || noDelete) {
-    issueModelCommand && issueModelCommand('setTaskProperty', task, name, value);
+  handleTaskProperty(name: string | Array<string>, value: any, noDelete: boolean = false) {
+    const { task, issueModelCommand } = this.props;
+    if (value || noDelete) {
+      issueModelCommand && issueModelCommand('setTaskProperty', task, name, value);
+    }
+    else {
+      issueModelCommand && issueModelCommand('deleteTaskProperty', task, name);
+    }
   }
-  else {
-    issueModelCommand && issueModelCommand('deleteTaskProperty', task, name);
-  }
-}
 
   style = style
   joinFieldRef = React.createRef();
 
-showtext = () => {
-  this.setState({ helpText: true });
-}
-   
-hideText = () => {
-  this.setState({ helpText: false });
-}
-render() {
-  const { task } = this.props;
+  render() {
+    const { task } = this.props;
 
-  return [
-    <Property
-      key="join"
-      name="Join"
-      description="Allows to synchronize multiple parallel workflow branches and aggregate their data."
-      value={task.join != null}
-      onChange={value => this.handleTaskProperty('join', value ? 'all' : false)}
-    >
-      {
-        task.join != null && (
-          <div className={cx(this.style.propertyChild, this.style.radioGroup)}>
-            <div className={cx(this.style.radio, task.join === 'all' && this.style.checked)} onClick={() => this.handleTaskProperty('join', 'all')}>
+    return [
+      <Property
+        key="join"
+        name="Join"
+        description="Allows to synchronize multiple parallel workflow branches and aggregate their data."
+        value={task.join != null}
+        onChange={value => this.handleTaskProperty('join', value ? 'all' : false)}
+      >
+        {
+          task.join != null && (
+            <div className={cx(this.style.propertyChild, this.style.radioGroup)}>
+              <div className={cx(this.style.radio, task.join === 'all' && this.style.checked)} onClick={() => this.handleTaskProperty('join', 'all')}>
                 Join all tasks
-            </div>
-            <label htmlFor="joinField" className={cx(this.style.radio, task.join !== 'all' && this.style.checked)} onClick={(e) => this.handleTaskProperty('join', parseInt((this.joinFieldRef.current || {}).value, 10))} >
+              </div>
+              <label htmlFor="joinField" className={cx(this.style.radio, task.join !== 'all' && this.style.checked)} onClick={(e) => this.handleTaskProperty('join', parseInt((this.joinFieldRef.current || {}).value, 10))} >
                 Join
-              <input
-                type="text"
-                id="joinField"
-                size="3"
-                className={this.style.radioField}
-                ref={this.joinFieldRef}
-                value={isNaN(task.join) ? 10 : task.join}
-                onChange={e => this.handleTaskProperty('join', parseInt(e.target.value, 10) || 0, true)}
-                onBlur={e => this.handleTaskProperty('join', parseInt(e.target.value, 10))}
-              />
+                <input
+                  type="text"
+                  id="joinField"
+                  size="3"
+                  className={this.style.radioField}
+                  ref={this.joinFieldRef}
+                  value={isNaN(task.join) ? 10 : task.join}
+                  onChange={e => this.handleTaskProperty('join', parseInt(e.target.value, 10) || 0, true)}
+                  onBlur={e => this.handleTaskProperty('join', parseInt(e.target.value, 10))}
+                />
                 tasks
-            </label>
-          </div>
-        )
-      }
-    </Property>,
-    <Property key="delay" name="Delay" description="Add delay before task execution" value={task.delay != null} onChange={value => this.handleTaskProperty('delay', value ? '10' : false)}>
-      {
-        task.delay != null && (
-          <div className={`${this.style.propertyChild} tooltip`}>
+              </label>
+            </div>
+          )
+        }
+      </Property>,
+      <Property key="delay" name="Delay" description="Add delay before task execution" value={task.delay != null} onChange={value => this.handleTaskProperty('delay', value ? '10' : false)}>
+        {
+          task.delay != null && (
+           <div className={this.style.propertyChild}>
             <label htmlFor="delay" >
-                delay
-              <input
-                type="text"
-                id="delayField"
-                size="3"
-                className={this.style.delayField}
-                value={task.delay}
-                onChange={e => this.handleTaskProperty('delay',e.target.value, true)}
-                onClick={this.showtext}
-                onBlur={this.hideText} 
-              />
-              seconds
+                delay (seconds)
+                <input
+                  type="text"
+                  id="delayField"
+                  size="3"
+                  className={this.style.delayField}
+                  value={task.delay}
+                  placeholder ="enter expression or integer"
+                  onChange={e => this.handleTaskProperty('delay',e.target.value, true)}
+                  onBlur={ e => this.handleTaskProperty('delay',e.target.value, true)} 
+                />
             </label>
-            <span className={this.state.helpText ? 'showtooltiptext' :'tooltiptext'}>enter expression or integer</span>
-          </div>
-        )
-      }
-    </Property>,
-    <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
-      {
-        task.with && (
-          <div className={this.style.propertyChild}>
-            <StringField name="items" value={task.with.items} onChange={value => this.handleTaskProperty([ 'with', 'items' ], value)} />
-            <StringField name="concurrency" value={task.with.concurrency} onChange={value => this.handleTaskProperty([ 'with', 'concurrency' ], value)} />
-          </div>
-        )
-      }
-    </Property>,
-  ];
-}
+            </div>
+          )
+        }
+      </Property>,
+      <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
+        {
+          task.with && (
+            <div className={this.style.propertyChild}>
+              <StringField name="items" value={task.with.items} onChange={value => this.handleTaskProperty([ 'with', 'items' ], value)} />
+              <StringField name="concurrency" value={task.with.concurrency} onChange={value => this.handleTaskProperty([ 'with', 'concurrency' ], value)} />
+            </div>
+          )
+        }
+      </Property>,
+    ];
+  }
 }
