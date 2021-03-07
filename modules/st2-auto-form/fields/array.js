@@ -80,8 +80,15 @@ export default class ArrayField extends BaseTextField {
 
     const { items } = this.props.spec || {};
     return split(v)
-      .map((v) => typeConversions(items && items.type, v))
-    ;
+      .map((v) => {
+        const t = items && items.type;
+        if (t === 'object') {
+          try {
+            v = JSON.parse(v)
+          } catch (e) { }
+        }
+        return typeConversions(t, v)
+      });
   }
 
   toStateValue(v) {
@@ -114,7 +121,15 @@ export default class ArrayField extends BaseTextField {
         if (o && !_.isArray(o)) {
           return 'value is not an array';
         }
-        const invalidItem = o.find((v) => typeChecks(items && items.type, v));
+        const invalidItem = o.find((v) => {
+          const t = items && items.type;
+          if (t === 'object') {
+            try {
+              v = JSON.parse(v)
+            } catch (e) {}
+          }
+          return typeChecks(t, v)
+        });
         return invalidItem && typeChecks(items && items.type, invalidItem);
       }
       catch(e) {
