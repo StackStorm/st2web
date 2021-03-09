@@ -62,8 +62,16 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
     }
   }
 
+  isValidInput(value, returnvalue = '') {
+    if (!isNaN(value) && value < 0) {
+      return returnvalue;
+    }
+    return value;
+  }
+
   style = style
   joinFieldRef = React.createRef();
+  
 
   render() {
     const { task } = this.props;
@@ -111,10 +119,10 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
                   id="delayField"
                   size="3"
                   className={this.style.delayField}
-                  value={task.delay}
+                  value={this.isValidInput(task.delay)}
                   placeholder ="enter expression or integer"
                   onChange={e => this.handleTaskProperty('delay',e.target.value, true)}
-                  onBlur={ e => this.handleTaskProperty('delay',e.target.value, true)} 
+                  onBlur={ e => this.handleTaskProperty('delay', e.target.value, true)} 
                 />
             </label>
             </div>
