@@ -54,6 +54,7 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
 
   handleTaskProperty(name: string | Array<string>, value: any, noDelete: boolean = false) {
     const { task, issueModelCommand } = this.props;
+    
     if (value || noDelete) {
       issueModelCommand && issueModelCommand('setTaskProperty', task, name, value);
     }
@@ -62,10 +63,8 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
     }
   }
 
-  isValidInput(value, returnvalue = '') {
-    if (!isNaN(value) && value < 0) {
-      return returnvalue;
-    }
+  getValue(value) {
+    if(!isNaN(value) && value!== '') value = parseInt(value,10);
     return value;
   }
 
@@ -119,10 +118,10 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
                   id="delayField"
                   size="3"
                   className={this.style.delayField}
-                  value={this.isValidInput(task.delay)}
+                  value={(task.delay)}
                   placeholder ="enter expression or integer"
-                  onChange={e => this.handleTaskProperty('delay',e.target.value, true)}
-                  onBlur={ e => this.handleTaskProperty('delay', e.target.value, true)} 
+                  onChange={e => this.handleTaskProperty('delay',this.getValue(e.target.value), true)}
+                  onBlur={ e => this.handleTaskProperty('delay',this.getValue(e.target.value), true)} 
                 />
             </label>
             </div>
