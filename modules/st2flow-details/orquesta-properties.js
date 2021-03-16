@@ -62,6 +62,11 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
     }
   }
 
+  getValue(value) {
+    console.log("getValue called",value);
+    if(!isNaN(value) && value!== '') value = parseInt(value,10);
+    return value;
+  }
   style = style
   joinFieldRef = React.createRef();
 
@@ -105,11 +110,11 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
           task.retry && (
             <div className={this.style.propertyChild}>
               <StringField name="when" value={task.retry.when} className="when-title" onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} spec={{'default':'enter expression'}}  />
-              <StringField name="count" value={task.retry.count} className="count-title" onChange={value => this.handleTaskProperty([ 'retry', 'count' ], value)}  spec={{'default':'enter expression or integer'}} />
-              <StringField name="delay (seconds)" value={task.retry.delay} className="delay-title" onChange={value => this.handleTaskProperty([ 'retry', 'delay'], value)} spec={{'default':'enter expression or integer'}} />
+              <StringField name="count" value={task.retry.count} className="count-title" onChange={value => this.handleTaskProperty([ 'retry', 'count' ], this.getValue(value))}  spec={{'default':'enter expression or integer'}} />
+              <StringField name="delay (seconds)" value={task.retry.delay} className="delay-title" onChange={value => this.handleTaskProperty([ 'retry', 'delay'], this.getValue(value))} spec={{'default':'enter expression or integer'}} />
             </div>
           )
-        }
+}
       </Property>,
       <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
         {
