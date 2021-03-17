@@ -214,6 +214,7 @@ export default class HistoryPanel extends React.Component {
             'rule.ref',
             'trigger.type',
             'context.user',
+            'result_size',
           ],
         },
         raw: true, // so we can extract headers

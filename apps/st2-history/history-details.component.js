@@ -73,17 +73,36 @@ export default class HistoryDetails extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id } = this.props;
+    const { id, execution } = this.props;
+    var reFetchExecution = false;
 
-    if (id && id !== prevProps.id) {
-      this.fetchExecution(id);
+    if (execution && execution.FETCH_RESULT && !execution.result) {
+      reFetchExecution = true;
+    }
+
+    if ((id && id !== prevProps.id) || reFetchExecution) {
+      this.fetchExecution(id, reFetchExecution);
     }
   }
 
-  fetchExecution(id) {
+  fetchExecution(id, includeResult) {
+    includeResult = includeResult || false;
+
+    var path;
+
+    // NOTE: We don't retrieve result here by defualt because it may be very large. We only retrieve it later
+    // after we determine the result size. If the result size is too large, we won't display it in
+    // the output tab since that would freeze the browser, but we will display a link to the raw
+    // result output instead.
+    if (includeResult) {
+      path = `/executions/${id}`;
+    } else {
+      path = `/executions/${id}?exclude_attributes=result`;
+    }
+
     store.dispatch({
       type: 'FETCH_EXECUTION',
-      promise: api.request({ path: `/executions/${id}` }),
+      promise: api.request({ path: path }),
     })
       .catch((err) => {
         notification.error(`Unable to retrieve execution "${id}".`, { err });
@@ -183,7 +202,7 @@ export default class HistoryDetails extends React.Component {
                   </Link>
                 </DetailsPanelHeading>
                 <DetailsPanelBody data-test="action_output">
-                  <ActionReporter runner={execution.runner.name} execution={execution} />
+                  <ActionReporter runner={execution.runner.name} execution={execution} api={api} />
                 </DetailsPanelBody>
               </DetailsPanel>
               { execution.rule ? (
