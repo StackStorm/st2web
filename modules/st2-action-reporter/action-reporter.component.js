@@ -76,18 +76,26 @@ export default class ActionReporter extends React.Component {
       return null;
     }
 
-    // TODO: Add methods to the client to retrieve full correct URL?
-    const baseApiUrl = getBaseAPIUrl(api);
-    const viewRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?pretty_format=1`;
-    const downloadRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1`;
-    const downloadCompressedRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1&compress=1`;
-    const maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
-
     // For backward compatibility with older executions which may not have result_size attribute
     const resultSize = execution.result_size || JSON.stringify(execution.result || {}).length;
     const resultSizeMB = ((resultSize / 1024 / 1024)).toFixed(2);
 
     if (resultSize && resultSize > maxResultSizeForRender) {
+      // TODO: Add methods to the client to retrieve full correct URL?
+      const baseApiUrl = getBaseAPIUrl(api);
+      const viewRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?pretty_format=1`;
+      const downloadRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1`;
+      const downloadCompressedRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1&compress=1`;
+
+      var maxResultSizeForRender
+
+      try {
+        maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
+      }
+      catch (e) {
+        maxResultSizeForRender = DEFAULT_MAX_RESULT_SIZE;
+      }
+
       return (
         <div {...props} className={cx(style.component, className)}>
         <div key="output" className={style.source}>Output</div>
