@@ -23,9 +23,17 @@ import style from './style.css';
 // If action execution result is larger than this value (in bytes) we won't try to render it in
 // the code highlighter widget, but display a link to the raw result output instead directly to
 // st2api. This way we avoid large results freezing and blocking the browser window
-// Can be overriden in the config, but values over 200 KB are not recommended.
-// TODO: Do some more research and testing and come up with a good default value
-const DEFAULT_MAX_RESULT_SIZE = 200 * 1024;  // 200 KB
+// Can be overriden in the config, but values over 500 KB are not recommended.
+// Keep in mind that rendering time also depends on the result type (aka deeply
+// nested JSON object vs more flat one).
+// Based on testing, any larger and more nested JSON object over 100 KB will
+// take a while to render and consume a lot of memory (and in case of even
+// larger objects, free the whole browser window).
+// Technically we could still display and render results up to 300 KB, but the
+// whole code widget gets very lagy and slow.
+// Testing was also performed on relatively high end PC so on older ones, even
+// lower limit may be more appropriate.
+const DEFAULT_MAX_RESULT_SIZE = 100 * 1024;  // 100 KB
 
 
 function getBaseAPIUrl(api) {
