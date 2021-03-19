@@ -28,12 +28,36 @@ import style from './style.css';
 const DEFAULT_MAX_RESULT_SIZE = 200 * 1024;  // 200 KB
 
 
+function getBaseAPIUrl(api) {
+  // Return base URL to the api instance
+  if (!api.server) {
+    console.log("config.js is not correctlu configured - it's missing API server URL entry")
+    return null;
+  }
+
+  if (!api.server.api) {
+    console.log("config.js is not correctlu configured - it's missing API server URL entry")
+    return null;
+  }
+
+  var url = api.server.api;
+  var baseUrl;
+
+  if (!url.startsWith("http://") && !(url.startsWith("https://"))) {
+    baseUrl = `${window.location.protocol}${url}`;
+  }
+  else {
+    baseUrl = `${url}`;
+  }
+
+  return baseUrl;
+}
+
 export default class ActionReporter extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     runner: PropTypes.string.isRequired,
     execution: PropTypes.object.isRequired,
-    foo: PropTypes.string,
   }
 
   render() {
@@ -45,9 +69,10 @@ export default class ActionReporter extends React.Component {
     }
 
     // TODO: Add methods to the client to retrieve full correct URL?
-    const viewRawResultUrl = `${window.location.protocol}${api.server.api}/v1/executions/${execution.id}/result?pretty_format=1`;
-    const downloadRawResultUrl = `${window.location.protocol}${api.server.api}/v1/executions/${execution.id}/result?download=1&pretty_format=1`;
-    const downloadCompressedRawResultUrl = `${window.location.protocol}${api.server.api}/v1/executions/${execution.id}/result?download=1&pretty_format=1&compress=1`;
+    const baseApiUrl = getBaseAPIUrl(api);
+    const viewRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?pretty_format=1`;
+    const downloadRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1`;
+    const downloadCompressedRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1&compress=1`;
     const maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
 
     // For backward compatibility with older executions which may not have result_size attribute
@@ -59,7 +84,7 @@ export default class ActionReporter extends React.Component {
         <div {...props} className={cx(style.component, className)}>
         <div key="output" className={style.source}>Output</div>
           <p>
-          Action output is too large to be displayed here ({`${resultSizeMB}`} MB).<br /><br />You can view raw  execution output by clicking <a href={`${viewRawResultUrl}`} target="_blank">here</a> or you can download the output by clicking <a href={`${downloadRawResultUrl}`} target="_blank">here (uncompressed)</a> or <a href={`${downloadCompressedRawResultUrl}`} target="_blank">here (compressed)</a>.
+          Action output is too large to be displayed here ({`${resultSizeMB}`} MB).<br /><br />You can view raw execution output by clicking <a href={`${viewRawResultUrl}`} target="_blank">here</a> or you can download the output by clicking <a href={`${downloadRawResultUrl}`} target="_blank">here (uncompressed)</a> or <a href={`${downloadCompressedRawResultUrl}`} target="_blank">here (compressed)</a>.
           </p>
         </div>
         );
