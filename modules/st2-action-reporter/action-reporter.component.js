@@ -77,8 +77,19 @@ export default class ActionReporter extends React.Component {
     }
 
     // For backward compatibility with older executions which may not have result_size attribute
+    // we fall back to execution.result (if available - would only be available when using newer
+    // st2web with older version of other StackStorm components).
     const resultSize = execution.result_size || JSON.stringify(execution.result || {}).length;
     const resultSizeMB = ((resultSize / 1024 / 1024)).toFixed(2);
+
+    var maxResultSizeForRender
+
+    try {
+      maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
+    }
+    catch (e) {
+      maxResultSizeForRender = DEFAULT_MAX_RESULT_SIZE;
+    }
 
     if (resultSize && resultSize > maxResultSizeForRender) {
       // TODO: Add methods to the client to retrieve full correct URL?
@@ -86,15 +97,6 @@ export default class ActionReporter extends React.Component {
       const viewRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?pretty_format=1`;
       const downloadRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1`;
       const downloadCompressedRawResultUrl = `${baseApiUrl}/v1/executions/${execution.id}/result?download=1&pretty_format=1&compress=1`;
-
-      var maxResultSizeForRender
-
-      try {
-        maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
-      }
-      catch (e) {
-        maxResultSizeForRender = DEFAULT_MAX_RESULT_SIZE;
-      }
 
       return (
         <div {...props} className={cx(style.component, className)}>
