@@ -47,33 +47,31 @@ export default class ActionReporter extends React.Component {
     // TODO: Add methods to the client to retrieve full correct URL?
     const viewRawResultUrl = `${window.location.protocol}${api.server.api}/v1/executions/${execution.id}/result?pretty_format=1`;
     const downloadRawResultUrl = `${window.location.protocol}${api.server.api}/v1/executions/${execution.id}/result?download=1&pretty_format=1`;
-    const resultSizeMB = ((execution.result_size / 1024 / 1024)).toFixed(2);
+    const downloadCompressedRawResultUrl = `${window.location.protocol}${api.server.api}/v1/executions/${execution.id}/result?download=1&pretty_format=1&compress=1`;
     const maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
 
-    if (execution && execution.result_size && execution.result_size > maxResultSizeForRender) {
+    // For backward compatibility with older executions which may not have result_size attribute
+    const resultSize = execution.result_size || JSON.stringify(execution.result || {}).length;
+    const resultSizeMB = ((resultSize / 1024 / 1024)).toFixed(2);
+
+    if (resultSize && resultSize > maxResultSizeForRender) {
       return (
         <div {...props} className={cx(style.component, className)}>
         <div key="output" className={style.source}>Output</div>
           <p>
-          Action output is too large to be displayed here ({`${resultSizeMB}`} MB).<br /><br />You can view raw execution output by clicking <a href={`${viewRawResultUrl}`} target="_blank">here</a> or you can download the output by clicking <a href={`${downloadRawResultUrl}`} target="_blank">here</a>.
+          Action output is too large to be displayed here ({`${resultSizeMB}`} MB).<br /><br />You can view raw  execution output by clicking <a href={`${viewRawResultUrl}`} target="_blank">here</a> or you can download the output by clicking <a href={`${downloadRawResultUrl}`} target="_blank">here (uncompressed)</a> or <a href={`${downloadCompressedRawResultUrl}`} target="_blank">here (compressed)</a>.
           </p>
         </div>
         );
     }
 
-    // If execution is not too big, we update the attribute to indicate the component to re-fetch the
-    // execution with the result field
-    if (!execution.FETCH_RESULT && !execution.result) {
-      execution.FETCH_RESULT = true;
+    if (!execution.result) {
+      if (!execution.FETCH_RESULT) {
+        // If execution is not too big, we update the attribute to indicate the component to re-fetch the
+        // execution with the result field
+        execution.FETCH_RESULT = true;
+      }
 
-      return (
-        <div {...props} className={cx(style.component, className)}>
-          <div key="output" className={style.source}>Output</div>
-          <p>Loading execution result...</p>
-        </div>
-      );
-    }
-    else if (execution.FETCH_RESULT && !execution.result) {
       return (
         <div {...props} className={cx(style.component, className)}>
           <div key="output" className={style.source}>Output</div>

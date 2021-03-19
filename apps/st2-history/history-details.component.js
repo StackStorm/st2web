@@ -76,11 +76,16 @@ export default class HistoryDetails extends React.Component {
     const { id, execution } = this.props;
     var reFetchExecution = false;
 
-    if (execution && execution.FETCH_RESULT && !execution.result) {
+    if (execution && execution.FETCH_RESULT &&!execution.FETCHING_RESULT && !execution.result) {
       reFetchExecution = true;
     }
 
     if ((id && id !== prevProps.id) || reFetchExecution) {
+      if (execution) {
+        // Indicate we are fetching the result for this execution
+        execution.FETCHING_RESULT = true;
+      }
+
       this.fetchExecution(id, reFetchExecution);
     }
   }
