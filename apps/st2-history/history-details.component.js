@@ -47,6 +47,7 @@ import HistoryPopup from './history-popup.component';
   const { execution } = state;
   return { execution };
 })
+
 export default class HistoryDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
@@ -74,36 +75,19 @@ export default class HistoryDetails extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { id, execution } = this.props;
-    var reFetchExecution = false;
 
-    if (execution && execution.FETCH_RESULT &&!execution.FETCHING_RESULT && !execution.result) {
-      reFetchExecution = true;
-    }
-
-    if ((id && id !== prevProps.id) || reFetchExecution) {
-      if (execution) {
-        // Indicate we are fetching the result for this execution
-        execution.FETCHING_RESULT = true;
-      }
-
-      this.fetchExecution(id, reFetchExecution);
+    if ((id && id !== prevProps.id)) {
+      this.fetchExecution(id);
     }
   }
 
-  fetchExecution(id, includeResult) {
-    includeResult = includeResult || false;
+  fetchExecution(id) {
+    // We utilize ?max_result_size query parameter filter so we don't retrieve
+    // large results which we don't render due to that being very slow and
+    // freezing the browser window
+    const maxResultSizeForRender = ActionReporter.utils.getMaxExecutionResultSizeForRender();
+    const path = `/executions/${id}?max_result_size=${maxResultSizeForRender}`;
 
-    var path;
-
-    // NOTE: We don't retrieve result here by defualt because it may be very large. We only retrieve it later
-    // after we determine the result size. If the result size is too large, we won't display it in
-    // the output tab since that would freeze the browser, but we will display a link to the raw
-    // result output instead.
-    if (includeResult) {
-      path = `/executions/${id}`;
-    } else {
-      path = `/executions/${id}?exclude_attributes=result`;
-    }
 
     store.dispatch({
       type: 'FETCH_EXECUTION',

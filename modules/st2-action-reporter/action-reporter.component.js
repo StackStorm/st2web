@@ -21,23 +21,26 @@ import reporters from './reporters';
 import style from './style.css';
 
 // If action execution result is larger than this value (in bytes) we won't try to render it in
-// the code highlighter widget, but display a link to the raw result output instead directly to
-// st2api. This way we avoid large results freezing and blocking the browser window
-// Can be overriden in the config, but values over 500 KB are not recommended.
+// the code highlighter widget, but display a link to the raw result output instead.
+// This way we avoid large results freezing and blocking the browser window.
 // Keep in mind that rendering time also depends on the result type (aka deeply
-// nested JSON object vs more flat one).
+// nested JSON object vs a more flat one).
 // Based on testing, any larger and more nested JSON object over 100 KB will
 // take a while to render and consume a lot of memory (and in case of even
-// larger objects, free the whole browser window).
+// larger objects, freeze / block the whole browser window).
 // Technically we could still display and render results up to 300 KB, but the
-// whole code widget gets very lagy and slow.
+// whole code widget and browser window gets lagy and slow.
 // Testing was also performed on relatively high end PC so on older ones, even
 // lower limit may be more appropriate.
+// Can be overriden in the config, but values over 50-100 KB (depending on the client
+// resources and how nested the result objects are) are not recommended.
 const DEFAULT_MAX_RESULT_SIZE = 100 * 1024;  // 100 KB
 
 
+/**
+ * Return base URL to the API service based on the config value.
+ */
 function getBaseAPIUrl(api) {
-  // Return base URL to the api instance
   if (!api.server) {
     console.log("config.js is not correctlu configured - it's missing API server URL entry")
     return null;
@@ -61,11 +64,35 @@ function getBaseAPIUrl(api) {
   return baseUrl;
 }
 
+/**
+ * Return value for the ?max_result_size query parameter aka the maximum number
+ * for the result size (in bytes) we will still try to render and display.
+ *
+ * We specify a default value which can be overriden inside the config.
+ */
+function getMaxExecutionResultSizeForRender() {
+  var maxResultSizeForRender;
+
+  try {
+    maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
+  }
+  catch (e) {
+    maxResultSizeForRender = DEFAULT_MAX_RESULT_SIZE;
+  }
+
+  return maxResultSizeForRender;
+}
+
 export default class ActionReporter extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     runner: PropTypes.string.isRequired,
     execution: PropTypes.object.isRequired,
+  }
+
+  static utils = {
+    getMaxExecutionResultSizeForRender: getMaxExecutionResultSizeForRender,
+    getBaseAPIUrl: getBaseAPIUrl,
   }
 
   render() {
@@ -81,15 +108,7 @@ export default class ActionReporter extends React.Component {
     // st2web with older version of other StackStorm components).
     const resultSize = execution.result_size || JSON.stringify(execution.result || {}).length;
     const resultSizeMB = ((resultSize / 1024 / 1024)).toFixed(2);
-
-    var maxResultSizeForRender
-
-    try {
-      maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
-    }
-    catch (e) {
-      maxResultSizeForRender = DEFAULT_MAX_RESULT_SIZE;
-    }
+    const maxResultSizeForRender = getMaxExecutionResultSizeForRender();
 
     if (resultSize && resultSize > maxResultSizeForRender) {
       // TODO: Add methods to the client to retrieve full correct URL?
@@ -106,21 +125,6 @@ export default class ActionReporter extends React.Component {
           </p>
         </div>
         );
-    }
-
-    if (!execution.result) {
-      if (!execution.FETCH_RESULT) {
-        // If execution is not too big, we update the attribute to indicate the component to re-fetch the
-        // execution with the result field
-        execution.FETCH_RESULT = true;
-      }
-
-      return (
-        <div {...props} className={cx(style.component, className)}>
-          <div key="output" className={style.source}>Output</div>
-          <p>Loading execution result...</p>
-        </div>
-      );
     }
 
     return (
