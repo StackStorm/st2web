@@ -88,7 +88,6 @@ export default class HistoryDetails extends React.Component {
     const maxResultSizeForRender = ActionReporter.utils.getMaxExecutionResultSizeForRender();
     const path = `/executions/${id}?max_result_size=${maxResultSizeForRender}`;
 
-
     store.dispatch({
       type: 'FETCH_EXECUTION',
       promise: api.request({ path: path }),
