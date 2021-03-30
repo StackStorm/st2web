@@ -46,6 +46,7 @@ export interface TaskInterface {
         delay?: string,
     };
     join?: ?string;
+    delay?:?string;
     ref?: any;
 }
 
