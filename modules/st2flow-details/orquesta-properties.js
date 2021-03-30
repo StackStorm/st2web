@@ -54,7 +54,7 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
 
   handleTaskProperty(name: string | Array<string>, value: any, noDelete: boolean = false) {
     const { task, issueModelCommand } = this.props;
-    
+
     if (value || noDelete) {
       issueModelCommand && issueModelCommand('setTaskProperty', task, name, value);
     }
@@ -70,7 +70,6 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
 
   style = style
   joinFieldRef = React.createRef();
-  
 
   render() {
     const { task } = this.props;
@@ -107,6 +106,16 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
           )
         }
       </Property>,
+      <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
+        {
+          task.with && (
+            <div className={this.style.propertyChild}>
+              <StringField name="items" value={task.with.items} onChange={value => this.handleTaskProperty([ 'with', 'items' ], value)} />
+              <StringField name="concurrency" value={task.with.concurrency} onChange={value => this.handleTaskProperty([ 'with', 'concurrency' ], value)} />
+            </div>
+          )
+        }
+      </Property>,
       <Property key="delay" name="Delay" description="Add delay before task execution" value={task.delay != null} onChange={value => this.handleTaskProperty('delay', value ? '10' : false)}>
         {
           task.delay != null && (
@@ -128,12 +137,13 @@ export default class OrquestaTransition extends Component<TransitionProps, {}> {
           )
         }
       </Property>,
-      <Property key="with" name="With Items" description="Run an action or workflow associated with a task multiple times." value={!!task.with} onChange={value => this.handleTaskProperty('with', value ? { items: 'x in <% ctx(y) %>' } : false)}>
+      <Property key="retry" name="Retry" description="Define the retry condition for the task execution." value={!!task.retry} onChange={value => this.handleTaskProperty('retry', value ? { when: '<% failed() %>' } : false)}>
         {
-          task.with && (
+          task.retry && (
             <div className={this.style.propertyChild}>
-              <StringField name="items" value={task.with.items} onChange={value => this.handleTaskProperty([ 'with', 'items' ], value)} />
-              <StringField name="concurrency" value={task.with.concurrency} onChange={value => this.handleTaskProperty([ 'with', 'concurrency' ], value)} />
+              <StringField name="when" value={task.retry.when} className="when-title" onChange={value => this.handleTaskProperty([ 'retry', 'when' ], value)} spec={{'default':'enter expression'}}  />
+              <StringField name="count" value={task.retry.count} className="count-title" onChange={value => this.handleTaskProperty([ 'retry', 'count' ], this.getValue(value))}  spec={{'default':'enter expression or integer'}} />
+              <StringField name="delay (seconds)" value={task.retry.delay} className="delay-title" onChange={value => this.handleTaskProperty([ 'retry', 'delay'], this.getValue(value))} spec={{'default':'enter expression or integer'}} />
             </div>
           )
         }
