@@ -40,7 +40,13 @@ export interface TaskInterface {
         items: string,
         concurrency?: string,
     };
+    retry?: ?{
+        when: string,
+        count?: string,
+        delay?: string,
+    };
     join?: ?string;
+    delay?:?string;
     ref?: any;
 }
 
