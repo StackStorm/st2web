@@ -70,7 +70,9 @@ module.exports = function (browser) {
     }
 
     if (url.host() === process.env.ST2_HOST) {
-      response._url = url.host('example.com').toString();
+      // All the tests expect https:// so we just hack that and replace http with https in case
+      // https is not used
+      response._url = url.host('example.com').toString().replace("http://", "https://");
       request.url = response.url;
     }
 
