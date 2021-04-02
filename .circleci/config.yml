@@ -78,7 +78,7 @@ jobs:
             echo "Cloning ${ST2_DOCKER_BRANCH:-master} branch of st2-docker"
             git clone --branch ${ST2_DOCKER_BRANCH:-master} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
       - run:
-          name: Configufe docker compsoe config
+          name: Configufe docker compose config
           command: |
             # Configure allow origin in the user config
             echo "[api]" > ~/st2-docker/files/st2.user.conf
