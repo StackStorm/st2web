@@ -106,7 +106,6 @@ jobs:
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml exec st2client st2 run core.noop
             docker-compose -f ~/st2-docker/docker-compose.yml exec st2client st2 execution list
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
       - run:
           name: Run tests on production version
           command: npm run test-production
