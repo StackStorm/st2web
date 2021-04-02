@@ -99,6 +99,8 @@ jobs:
           command: npm run test-functional
       - run:
           name: Reset test containers
+          environment:
+            ST2_IMAGE_TAG: "3.5dev"
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml down
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
@@ -107,6 +109,8 @@ jobs:
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
       - run:
           name: Recheck test containers
+          environment:
+            ST2_IMAGE_TAG: "3.5dev"
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
