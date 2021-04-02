@@ -75,16 +75,17 @@ jobs:
       - run:
           name: Clone test containers
           command: |
-            # Use DEPRECATED/all-in-one for now, we'll have to circle back around
-            # and fix this to use the master branch
             echo "Cloning ${ST2_DOCKER_BRANCH:-master} branch of st2-docker"
             git clone --branch ${ST2_DOCKER_BRANCH:-master} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
       - run:
-          name: Start test containers
+          name: Configufe docker compsoe config
           command: |
+            # Configure allow origin in the user config
             echo "[api]" > ~/st2-docker/files/st2.user.conf
             echo "allow_origin = *" >> ~/st2-docker/files/st2.user.conf
-
+      - run:
+          name: Start test containers
+          command: |
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
             sleep 60
       - run:
