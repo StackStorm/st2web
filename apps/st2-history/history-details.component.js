@@ -76,7 +76,7 @@ export default class HistoryDetails extends React.Component {
   componentDidUpdate(prevProps) {
     const { id, execution } = this.props;
 
-    if ((id && id !== prevProps.id)) {
+    if (id && id !== prevProps.id) {
       this.fetchExecution(id);
     }
   }

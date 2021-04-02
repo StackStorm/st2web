@@ -42,12 +42,12 @@ const DEFAULT_MAX_RESULT_SIZE = 100 * 1024;  // 100 KB
  */
 function getBaseAPIUrl(api) {
   if (!api.server) {
-    console.log("config.js is not correctlu configured - it's missing API server URL entry")
+    console.log("config.js is not correctly configured - it's missing API server URL entry")
     return null;
   }
 
   if (!api.server.api) {
-    console.log("config.js is not correctlu configured - it's missing API server URL entry")
+    console.log("config.js is not correctly configured - it's missing API server URL entry")
     return null;
   }
 
@@ -65,8 +65,8 @@ function getBaseAPIUrl(api) {
 }
 
 /**
- * Return value for the ?max_result_size query parameter aka the maximum number
- * for the result size (in bytes) we will still try to render and display.
+ * Return value for the ?max_result_size query parameter aka the maximum number for the result size
+ * (in bytes) we will still try to render and display.
  *
  * We specify a default value which can be overriden inside the config.
  */
