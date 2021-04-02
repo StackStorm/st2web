@@ -59,10 +59,10 @@ module.exports = function (browser) {
       return new zombie.Response(`angular.module('main').constant('st2Config', {
         hosts: [{
           name: 'Test',
-          url: 'https://${process.env.ST2_HOST}/api',
-          auth: 'https://${process.env.ST2_HOST}/auth',
+          url: '${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/api',
+          auth: '${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/auth',
         }],
-      });`);
+        });`);
     }
 
     if (url.path().indexOf('/reamaze.js') >= 0) {
@@ -103,11 +103,11 @@ module.exports = function (browser) {
         const api = new API();
 
         client = api.connect({
-          url: `https://${process.env.ST2_HOST}/api`,
-          auth: `https://${process.env.ST2_HOST}/auth`,
+          url: `${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/api`,
+          auth: `${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/auth`,
         }, process.env.ST2_USERNAME, process.env.ST2_PASSWORD)
           .then(() => api);
-      }
+        }
 
       return client;
     },

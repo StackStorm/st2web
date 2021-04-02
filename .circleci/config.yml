@@ -12,9 +12,11 @@ jobs:
       DEPLOY_PACKAGES: 1
       DEB: xenial bionic
       RPM: el7 el8
+      ST2_VERSION: "3.5dev"
       ST2_HOST: localhost
-      ST2_USERNAME: admin
-      ST2_PASSWORD: 123
+      ST2_PROTOCOL: http
+      ST2_USERNAME: st2admin
+      ST2_PASSWORD: Ch@ngeMe
       ST2_TEST_ENVIRONMENT: https://github.com/StackStorm/st2-docker
     steps:
       - checkout
@@ -75,46 +77,34 @@ jobs:
           command: |
             # Use DEPRECATED/all-in-one for now, we'll have to circle back around
             # and fix this to use the master branch
-            echo "Cloning ${ST2_DOCKER_BRANCH:-DEPRECATED/all-in-one} branch of st2-docker"
-            git clone --branch ${ST2_DOCKER_BRANCH:-DEPRECATED/all-in-one} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
-      - run:
-          name: Update env variables for test containers
-          command: |
-            make -C ~/st2-docker env
-            echo -e "ST2_USER=${ST2_USERNAME}\nST2_PASSWORD=${ST2_PASSWORD}" > ~/st2-docker/conf/stackstorm.env
-            cat ~/st2-docker/conf/stackstorm.env
+            echo "Cloning ${ST2_DOCKER_BRANCH:-master} branch of st2-docker"
+            git clone --branch ${ST2_DOCKER_BRANCH:-master} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
       - run:
           name: Start test containers
-          environment:
-            ST2_IMAGE_TAG: "latest"
           command: |
+            echo "[api]" > ~/st2-docker/files/st2.user.conf
+            echo "allow_origin = *" >> ~/st2-docker/files/st2.user.conf
+
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
             sleep 60
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
       - run:
           name: Check test containers
           command: |
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
+            docker-compose -f ~/st2-docker/docker-compose.yml exec st2client st2 run core.noop
       - run:
           name: Run functional tests
           command: npm run test-functional
       - run:
           name: Reset test containers
-          environment:
-            ST2_IMAGE_TAG: "latest"
           command: |
-            docker-compose -f ~/st2-docker/docker-compose.yml down
+            docker-compose -f ~/st2-docker/docker-compose.yml down -v --rmi
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
             sleep 60
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm crudini --set /etc/st2/st2.conf api allow_origin "*"
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2ctl restart
       - run:
           name: Recheck test containers
-          environment:
-            ST2_IMAGE_TAG: "latest"
           command: |
-            docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 run core.noop
+            docker-compose -f ~/st2-docker/docker-compose.yml exec st2client st2 run core.noop
+            docker-compose -f ~/st2-docker/docker-compose.yml exec st2client st2 execution list
             docker-compose -f ~/st2-docker/docker-compose.yml exec stackstorm st2 execution list
       - run:
           name: Run tests on production version

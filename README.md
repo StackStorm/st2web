@@ -123,9 +123,9 @@ We're using [zombie](https://github.com/assaf/zombie) as our headless browser fo
 
 First of all, you need to make sure you have a running copy of st2 to run tests against. We're using [official docker images](https://github.com/stackstorm/st2-docker) for our automated tests, but the [AIO](https://docs.stackstorm.com/install/index.html) deployment will work just as good (though will take more time to deploy).
 
-To let test runner know the details of your st2 installation, you need to set ST2_HOST, ST2_USERNAME and ST2_PASSWORD env variables, then call `gulp test`.
+To let test runner know the details of your st2 installation, you need to set ST2_PROTOCOL, ST2_HOST, ST2_USERNAME and ST2_PASSWORD env variables, then call `gulp test`.
 
-    $ ST2_HOST=localhost ST2_USERNAME=admin ST2_PASSWORD=123 gulp test
+    $ ST2_PROTOCOL=http ST2_HOST=localhost ST2_USERNAME=admin ST2_PASSWORD=123 gulp test
 
 Copyright, License, and Contributors Agreement
 ----------------------------------------------
