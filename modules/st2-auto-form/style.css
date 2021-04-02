@@ -481,6 +481,17 @@
   }
 }
 
-
-
+.tooltiptext {
+  visibility: hidden;
+} 
+.showtooltiptext {
+   visibility: visible; 
+   width: auto;
+   padding: 0;
+   color: #6c6c6c;
+   background: none;
+   display: inline-block;
+   margin-top: 4px;
+   margin-left: 35px;
+} 
 
