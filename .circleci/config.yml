@@ -98,7 +98,7 @@ jobs:
       - run:
           name: Reset test containers
           command: |
-            docker-compose -f ~/st2-docker/docker-compose.yml down -v --rmi
+            docker-compose -f ~/st2-docker/docker-compose.yml down --rmi
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
             sleep 100
       - run:
