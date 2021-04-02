@@ -18,6 +18,12 @@
 angular.module('main')
   .constant('st2Config', {
 
+    // In case you want to override default value for the result sizes we still render in the
+    // history details widget. Keep in mind that anything above 200-500 KB will take a long time to
+    // render and likely freeze the browser window for deeply nested JSON object results.
+    // Value is in bytes.
+    // max_execution_result_size_for_render: 200 * 1024;
+
     // hosts: [
     //   {
     //     name: 'Dev Env',
