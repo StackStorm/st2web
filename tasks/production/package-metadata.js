@@ -25,13 +25,17 @@ gulp.task('production-package-metadata', (done) => {
 
   const result = child_process.spawnSync('git', [ 'rev-parse', '--short', 'HEAD' ]);
   const git_sha = result.stdout.toString().trim();
-
   const pkg_version = require(path.resolve('./package.json')).st2_version;
 
-  const data = `[st2web]\nversion = ${pkg_version}\ngit_sha = ${git_sha}\ncircle_build_url = ${circle_build_url}\n`;
+  // Write it to ini style file
+  const data_1 = `[st2web]\nversion = ${pkg_version}\ngit_sha = ${git_sha}\ncircle_build_url = ${circle_build_url}\n`;
+  const file_path_1 = path.join(path.resolve('./build'), 'package.meta');
+  fs.writeFileSync(file_path_1, data_1);
 
-  const file_path = path.join(path.resolve('./build'), 'package.meta');
+  // Write it to .js file
+  const data_2 = `angular.module('main').constant('st2PackageMeta', { version: "${pkg_version}", git_sha: "${git_sha}"});\n`
+  const file_path_2 = path.join(path.resolve('./build'), 'package.meta.js');
+  fs.writeFileSync(file_path_2, data_2);
 
-  fs.writeFileSync(file_path, data);
   done();
 });

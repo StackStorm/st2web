@@ -19,12 +19,18 @@
             throw new Error('The st2web angular-config-polyfill only supports the "main" module.');
           }
 
-          if (constant !== 'st2Config') {
-            throw new Error('The st2web angular-config-polyfill only supports the "st2Config" constant.');
+          if (constant !== 'st2Config' && constant !== 'st2PackageMeta') {
+            throw new Error('The st2web angular-config-polyfill only supports the "st2Config" and "st2PackageMeta" constant.');
           }
 
           window.st2constants = window.st2constants || {};
-          window.st2constants.st2Config = value;
+
+          if (constant === 'st2Config') {
+            window.st2constants.st2Config = value;
+          }
+          else if (constant === 'st2PackageMeta') {
+            window.st2constants.st2PackageMeta = value;
+          }
         },
         run: (fn) => {
           if (module !== 'main') {
@@ -33,6 +39,7 @@
 
           window.st2constants = window.st2constants || {};
           window.st2constants.st2Config = window.st2constants.st2Config || {};
+          window.st2constants.st2PackageMeta = window.st2constants.st2PackageMeta || {};
 
           fn(window.st2constants.st2Config);
         },
@@ -44,6 +51,7 @@
 <body>
   <div class="wrapper" id="container"></div>
   <script src="config.js"></script>
+  <script src="package.meta.js"></script>
   <script src="js/main.js"></script>
 </body>
 

@@ -22,7 +22,10 @@ angular.module('main')
     // history details widget. Keep in mind that anything above 200-500 KB will take a long time to
     // render and likely freeze the browser window for deeply nested JSON object results.
     // Value is in bytes.
-    // max_execution_result_size_for_render: 200 * 1024;
+    // max_execution_result_size_for_render: 200 * 1024,
+    //
+    // Set to true to display StackStorm and st2web version in the header
+    //show_version_in_header: false;
 
     // hosts: [
     //   {
