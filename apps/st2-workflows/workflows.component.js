@@ -73,7 +73,7 @@ export default class Workflows extends Component {
    pack: PropTypes.string,
    meta: PropTypes.object,
    metaSource: PropTypes.string,
-   setMeta: PropTypes.func,
+   setMeta: PropTypes.func,  // eslint-disable-line react/no-unused-prop-types
    input: PropTypes.array,
    workflowSource: PropTypes.string,
    dirty: PropTypes.bool,
@@ -243,7 +243,7 @@ export default class Workflows extends Component {
  }
 
  save() {
-   const { pack, meta, actions, workflowSource, metaSource, setMeta } = this.props;
+   const { pack, meta, actions, workflowSource, metaSource } = this.props;
    const existingAction = actions.find(e => e.name === meta.name && e.pack === pack);
 
    if (!meta.name) {

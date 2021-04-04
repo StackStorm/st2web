@@ -33,7 +33,7 @@ gulp.task('production-package-metadata', (done) => {
   fs.writeFileSync(file_path_1, data_1);
 
   // Write it to .js file
-  const data_2 = `angular.module('main').constant('st2PackageMeta', { version: "${pkg_version}", git_sha: "${git_sha}"});\n`
+  const data_2 = `/* global angular */\nangular.module('main').constant('st2PackageMeta', { version: "${pkg_version}", git_sha: "${git_sha}"});\n`;
   const file_path_2 = path.join(path.resolve('./build'), 'package.meta.js');
   fs.writeFileSync(file_path_2, data_2);
 

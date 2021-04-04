@@ -56,7 +56,7 @@ export default class HistoryDetails extends React.Component {
 
     id: PropTypes.string,
     section: PropTypes.string,
-    execution: PropTypes.object,
+    execution: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
     displayUTC: PropTypes.bool.isRequired,
     handleToggleUTC: PropTypes.func,
   }
@@ -74,7 +74,7 @@ export default class HistoryDetails extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { id, execution } = this.props;
+    const { id } = this.props;
 
     if (id && id !== prevProps.id) {
       this.fetchExecution(id);

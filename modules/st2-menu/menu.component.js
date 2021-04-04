@@ -84,11 +84,11 @@ export default class Menu extends React.Component {
     const server = api.server;
     const showVersion = window.st2constants.st2Config.show_version_in_header || false;
     const hasPackageMeta = (window.st2constants.st2PackageMeta !== undefined);
-    const st2webCommitsUrl = (showVersion && hasPackageMeta) ? "https://github.com/StackStorm/st2web/commit/" + window.st2constants.st2PackageMeta.git_sha : ""
+    const st2webCommitsUrl = (showVersion && hasPackageMeta) ? `https://github.com/StackStorm/st2web/commit/${window.st2constants.st2PackageMeta.git_sha}` : '';
 
     return (
       <header {...props} className={cx(style.component, className)}>
-        <a href="#" className={style.logo} /> { (showVersion && hasPackageMeta) ? <span style={{ fontSize: 15, marginTop: 30 }}>st2: v{window.st2constants.st2PackageMeta.version}, st2web: <a href={st2webCommitsUrl} target="_blank">{window.st2constants.st2PackageMeta.git_sha}</a></span> : '' }
+        <a href="#" className={style.logo} /> { (showVersion && hasPackageMeta) ? <span style={{ fontSize: 15, marginTop: 30 }}>st2: v{window.st2constants.st2PackageMeta.version}, st2web: <a href={st2webCommitsUrl} target="_blank" rel="noopener noreferrer">{window.st2constants.st2PackageMeta.git_sha}</a></span> : '' }
 
         <div className={style.spacer} />
 

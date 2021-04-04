@@ -42,19 +42,19 @@ const DEFAULT_MAX_RESULT_SIZE = 100 * 1024;  // 100 KB
  */
 function getBaseAPIUrl(api) {
   if (!api.server) {
-    console.log("config.js is not correctly configured - it's missing API server URL entry")
+    console.log('config.js is not correctly configured - it\'s missing API server URL entry');
     return null;
   }
 
   if (!api.server.api) {
-    console.log("config.js is not correctly configured - it's missing API server URL entry")
+    console.log('config.js is not correctly configured - it\'s missing API server URL entry');
     return null;
   }
 
-  var url = api.server.api;
-  var baseUrl;
+  const url = api.server.api;
+  let baseUrl;
 
-  if (!url.startsWith("http://") && !(url.startsWith("https://"))) {
+  if (!url.startsWith('http://') && !(url.startsWith('https://'))) {
     baseUrl = `${window.location.protocol}${url}`;
   }
   else {
@@ -71,7 +71,7 @@ function getBaseAPIUrl(api) {
  * We specify a default value which can be overriden inside the config.
  */
 function getMaxExecutionResultSizeForRender() {
-  var maxResultSizeForRender;
+  let maxResultSizeForRender;
 
   try {
     maxResultSizeForRender = window.st2constants.st2Config.max_execution_result_size_for_render || DEFAULT_MAX_RESULT_SIZE;
@@ -88,6 +88,7 @@ export default class ActionReporter extends React.Component {
     className: PropTypes.string,
     runner: PropTypes.string.isRequired,
     execution: PropTypes.object.isRequired,
+    api: PropTypes.object.isRequired,
   }
 
   static utils = {
@@ -119,12 +120,12 @@ export default class ActionReporter extends React.Component {
 
       return (
         <div {...props} className={cx(style.component, className)}>
-        <div key="output" className={style.source}>Output</div>
+          <div key="output" className={style.source}>Output</div>
           <p>
-          Action output is too large to be displayed here ({`${resultSizeMB}`} MB).<br /><br />You can view raw execution output by clicking <a href={`${viewRawResultUrl}`} target="_blank">here</a> or you can download the output by clicking <a href={`${downloadRawResultUrl}`} target="_blank">here (uncompressed)</a> or <a href={`${downloadCompressedRawResultUrl}`} target="_blank">here (compressed)</a>.
+            Action output is too large to be displayed here ({`${resultSizeMB}`} MB).<br /><br />You can view raw execution output by clicking <a href={`${viewRawResultUrl}`} target="_blank" rel="noopener noreferrer">here</a> or you can download the output by clicking <a href={`${downloadRawResultUrl}`} target="_blank" rel="noopener noreferrer">here (uncompressed)</a> or <a href={`${downloadCompressedRawResultUrl}`} target="_blank" rel="noopener noreferrer">here (compressed)</a>.
           </p>
         </div>
-        );
+      );
     }
 
     return (
