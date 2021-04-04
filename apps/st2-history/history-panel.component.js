@@ -94,7 +94,7 @@ export default class HistoryPanel extends React.Component {
     }).isRequired,
 
     filter: PropTypes.string,
-    filters: PropTypes.object,
+    filters: PropTypes.array,
     childExecutions: PropTypes.object,
     groups: PropTypes.array,
     collapsed: PropTypes.bool,

@@ -22,7 +22,6 @@ import  {
   TransitionInterface,
 } from '@stackstorm/st2flow-model/interfaces';
 import  { NotificationInterface } from '@stackstorm/st2flow-notifications';
-import  { Node } from 'react';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -48,7 +47,6 @@ import PoissonRectangleSampler from './poisson-rect';
 import { origin } from './const';
 
 import style from './style.css';
-import store from '../../apps/st2-workflows/store';
 type DOMMatrix = {
   m11: number,
   m22: number
@@ -228,6 +226,9 @@ export default class Canvas extends Component {
     nextTask: PropTypes.string,
     isCollapsed: PropTypes.object,
     toggleCollapse: PropTypes.func,
+    dirtyflag: PropTypes.bool,
+    fetchActionscalled: PropTypes.func,
+    saveData: PropTypes.func,
   }
 
   state = {
