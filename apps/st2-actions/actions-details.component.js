@@ -47,6 +47,8 @@ import {
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
 import Time from '@stackstorm/module-time';
+import validator from 'validator';
+
 
 @connect((state) => {
   const { action, executions, entrypoint } = state;
@@ -125,6 +127,8 @@ export default class ActionsDetails extends React.Component {
       this.fetchAction(id);
     }
   }
+
+  
 
   componentDidUpdate(prevProps) {
     const { id } = this.props;
@@ -213,9 +217,9 @@ export default class ActionsDetails extends React.Component {
       },
     });
   }
-setWindowName(e){
-   window.name="parent"
-}
+  setWindowName(e){
+    window.name="parent"
+  }
   handleRun(e, ...args) {
     e.preventDefault();
 
@@ -224,7 +228,6 @@ setWindowName(e){
 
   render() {
     const { section, action, executions, entrypoint } = this.props;
-
     if (!action) {
       return null;
     }
@@ -251,7 +254,8 @@ setWindowName(e){
         { section === 'general' ? (
           <DetailsBody>
             <DetailsToolbar key="toolbar">
-              <Button value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
+              <Button  disabled={ (this.state.runValue && this.state.runValue.limit  && !validator.isInt(this.state.runValue.limit.toString()) || (this.state.runValue && this.state.runValue.timeout &&  !validator.isInt(this.state.runValue.timeout.toString())))}
+                value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
