@@ -86,6 +86,18 @@ export class BaseTextField extends React.Component {
   handleChange(e, value) {
     e.stopPropagation();
 
+    if(this.props.name === "timeout" || this.props.name === "limit"){
+    
+      for (var n = 0; n < value.length; n++) {
+        var digit = (value.charCodeAt(n) >= 48 && value.charCodeAt(n) <= 57)  || value.charCodeAt(n) == 45 || value.charCodeAt(n) == 8;
+            if(!digit){
+              value = value.replace(/\D/g, "");
+            }else{
+              value =  value 
+            }
+      } 
+    }
+    
     const invalid = this.validate(value, this.props.spec);
 
     this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
