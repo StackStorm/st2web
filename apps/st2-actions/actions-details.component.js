@@ -130,7 +130,7 @@ export default class ActionsDetails extends React.Component {
 
   
 
-  componentDidUpdate(prevProps,prevState) {
+  componentDidUpdate(prevProps) {
     const { id } = this.props;
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
