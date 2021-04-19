@@ -121,7 +121,6 @@ export default class ActionsDetails extends React.Component {
       this._source.addEventListener('st2.execution__delete', this._executionDeleteListener);
     });
 
-
     const { id } = this.props;
 
     if (id) {
@@ -131,7 +130,7 @@ export default class ActionsDetails extends React.Component {
 
   
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps,prevState) {
     const { id } = this.props;
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
@@ -200,6 +199,7 @@ export default class ActionsDetails extends React.Component {
     if(value < 0 || value > 2492000){
       return true
     }
+
   }
 
   handleSection(section) {
@@ -260,11 +260,10 @@ export default class ActionsDetails extends React.Component {
         { section === 'general' ? (
           <DetailsBody>
             <DetailsToolbar key="toolbar">
-              <Button  disabled={ (this.state.runValue && this.state.runValue.limit  && !validator.isInt(this.state.runValue.limit.toString())) || 
-              (this.state.runValue && this.state.runValue.timeout &&  !validator.isInt(this.state.runValue.timeout.toString())) || 
+              <Button  disabled={ 
               (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
               (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  
-            }
+              }
                 value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />

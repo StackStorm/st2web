@@ -41,6 +41,21 @@ export default class IntegerField extends BaseTextField {
       return invalid;
     }
 
+     if(spec._name === "timeout" || spec._name === "limit"){
+      for (var n = 0; n < v.length; n++) {
+          var digit = (v.charCodeAt(n) >= 48 && v.charCodeAt(n) <= 57)   || v.charCodeAt(n) == 8;
+            if(!digit){
+            return `'${v}'is non integer value`
+           }else{
+            if(v > 2492000){
+              return `Entered value is not in valid range`
+            }else{
+            v =  v 
+            }
+          }
+      } 
+    }
+
     return v && !validator.isInt(v) && `'${v}' is not an integer`;
   }
 }
