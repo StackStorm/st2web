@@ -24,7 +24,11 @@ export default class IntegerField extends BaseTextField {
       return v;
     }
 
-    return v !== '' ? validator.toInt(v, 10) : void 0;
+    if(this.props.name === 'timeout' || this.props.name === "limit"){
+      return v 
+    }else{
+      return v  !== '' ? validator.toInt(v, 10) : void 0;
+    }
   }
 
   toStateValue(v) {
@@ -43,12 +47,15 @@ export default class IntegerField extends BaseTextField {
 
      if(spec._name === "timeout" || spec._name === "limit"){
       for (var n = 0; n < v.length; n++) {
-          var digit = (v.charCodeAt(n) >= 48 && v.charCodeAt(n) <= 57)   || v.charCodeAt(n) == 8;
+          var digit = (v.charCodeAt(n) >= 48 && v.charCodeAt(n) <= 57) || v.charCodeAt(n) == 45  || v.charCodeAt(n) == 8;
             if(!digit){
             return `'${v}'is non integer value`
            }else{
-            if(v > 2492000){
-              return `Entered value is not in valid range`
+             if(v < 0){
+              return `Entered value should be Min 0`
+             }
+            else if(v > 2492000){
+              return `Entered value should be Max 2492000`
             }else{
             v =  v 
             }
