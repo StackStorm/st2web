@@ -49,13 +49,13 @@ export default class IntegerField extends BaseTextField {
       for (var n = 0; n < v.length; n++) {
           var digit = (v.charCodeAt(n) >= 48 && v.charCodeAt(n) <= 57) || v.charCodeAt(n) == 45  || v.charCodeAt(n) == 8;
             if(!digit){
-            return `'${v}'is non integer value`
+            return `'${v}' must be a positive integer`
            }else{
              if(v < 0){
-              return `Entered value should be Min 0`
+              return `Value must be > 0`
              }
-            else if(v > 2492000){
-              return `Entered value should be Max 2492000`
+            else if(v > 2592000){
+              return `Value must be <= 2592000`
             }else{
             v =  v 
             }
