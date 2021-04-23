@@ -76,14 +76,11 @@ class BaseClass {
 
         err.message = err.message.replace('JS-YAML:', 'YAML Parser:');
         notification.error(err.message);
-       
       });
 
       this.yaml = yaml;
-      
       this.emitError(exception, STR_ERROR_YAML);
-       return;
-     
+      return;
     }
 
     this.emitChange(oldTree);

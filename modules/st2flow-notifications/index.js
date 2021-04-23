@@ -46,9 +46,9 @@ class Notification extends Component {
   style = style
 
   redirectLinkToParent = (e,newlink) => {
-     e.preventDefault();
-     var goBack = window.open(newlink, 'parent');
-     goBack.focus();
+    e.preventDefault();
+    const goBack = window.open(newlink, 'parent');
+    goBack.focus();
   }
 
   render() {

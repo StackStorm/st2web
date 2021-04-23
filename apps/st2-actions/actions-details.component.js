@@ -232,9 +232,11 @@ export default class ActionsDetails extends React.Component {
       },
     });
   }
-  setWindowName(e){
-    window.name="parent"
+
+  setWindowName(e) {
+    window.name = 'parent';
   }
+
   handleRun(e, ...args) {
     e.preventDefault();
     return this.props.handleRun(...args);
@@ -282,7 +284,7 @@ export default class ActionsDetails extends React.Component {
                   target="_blank"
                   to={`/action/${action.ref}`}
                   className="st2-forms__button st2-details__toolbar-button"
-                  onClick ={e => this.setWindowName(e)}
+                  onClick={e => this.setWindowName(e)}
                 >
                   Edit
                 </Link>

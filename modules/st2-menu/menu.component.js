@@ -73,7 +73,7 @@ export default class Menu extends React.Component {
 
   render() {
     const { className, location, routes: allRoutes, style, ...props } = this.props;
-    
+
     const routes = _(allRoutes)
       .filter((e) => !!e.icon)
       .sortBy((e) => e.position)
@@ -82,10 +82,13 @@ export default class Menu extends React.Component {
 
     const user = api.token && api.token.user;
     const server = api.server;
+    const showVersion = window.st2constants.st2Config.show_version_in_header || false;
+    const hasPackageMeta = (window.st2constants.st2PackageMeta !== undefined);
+    const st2webCommitsUrl = (showVersion && hasPackageMeta) ? `https://github.com/StackStorm/st2web/commit/${window.st2constants.st2PackageMeta.git_sha}` : '';
 
     return (
       <header {...props} className={cx(style.component, className)}>
-        <a href="#" className={style.logo} />
+        <a href="#" className={style.logo} /> { (showVersion && hasPackageMeta) ? <span style={{ fontSize: 15, marginTop: 30 }}>st2: v{window.st2constants.st2PackageMeta.version}, st2web: <a href={st2webCommitsUrl} target="_blank" rel="noopener noreferrer">{window.st2constants.st2PackageMeta.git_sha}</a></span> : '' }
 
         <div className={style.spacer} />
 

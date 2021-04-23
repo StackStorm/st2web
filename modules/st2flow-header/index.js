@@ -59,8 +59,8 @@ export default class Header extends Component<{
 
     return (
       <div className={cx(this.props.className, this.style.component)}>
-       <a href="#" className={style.logo} />
-       
+        <a href="#" className={style.logo} />
+
         <div className={this.style.separator} />
         {
           api.token && api.server && (
