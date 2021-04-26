@@ -24,9 +24,10 @@ export default class IntegerField extends BaseTextField {
       return v;
     }
 
-    if(this.props.name === 'timeout' || this.props.name === "limit"){
-      return v 
-    }else{
+    if (this.props.name === 'timeout' || this.props.name === 'limit') {
+      return v ;
+    }
+    else {
       return v  !== '' ? validator.toInt(v, 10) : void 0;
     }
   }
@@ -45,21 +46,21 @@ export default class IntegerField extends BaseTextField {
       return invalid;
     }
 
-     if(spec._name === "timeout" || spec._name === "limit"){
-      for (var n = 0; n < v.length; n++) {
-          var digit = (v.charCodeAt(n) >= 48 && v.charCodeAt(n) <= 57) || v.charCodeAt(n) == 45  || v.charCodeAt(n) == 8;
-            if(!digit){
-            return `'${v}' must be a positive integer`
-           }else{
-             if(v < 0){
-              return `Value must be > 0`
-             }
-            else if(v > 2592000){
-              return `Value must be <= 2592000`
-            }else{
-            v =  v 
-            }
+    if (spec._name === 'timeout' || spec._name === 'limit') {
+      for (let n = 0; n < v.length; n += 1) {
+        const digit = (v.charCodeAt(n) >= 48 && v.charCodeAt(n) <= 57) || v.charCodeAt(n) === 45  || v.charCodeAt(n) === 8;
+        if (!digit) {
+          return `'${v}' must be a positive integer`;
+        }
+        else {
+          if (v < 0) {
+            return 'Value must be > 0';
           }
+          else if (v > 2592000) {
+            return 'Value must be <= 2592000';
+          } 
+          
+        }
       } 
     }
 

@@ -47,7 +47,6 @@ import {
   DetailsToolbarSeparator,
 } from '@stackstorm/module-panel';
 import Time from '@stackstorm/module-time';
-import validator from 'validator';
 
 
 @connect((state) => {
@@ -195,20 +194,21 @@ export default class ActionsDetails extends React.Component {
     ;
   }
 
-  minMax(value){
-    if(value < 0 || value > 2492000){
-      return true
+  minMax (value) {
+    if (value < 0 || value > 2492000) {
+      return true;
     }
+    return false;
   }
 
-  isValidInt(value){
-        for (var n = 0; n < value.length; n++) {
-          var digit = (value.charCodeAt(n) >= 48 && value.charCodeAt(n) <= 57)   || value.charCodeAt(n) == 8;
-            if(!digit){
-               return true
-          }
-        }
-        return false
+  isValidInt (value) {
+    for ( let n = 0; n < value.length; n += 1) {
+      const digit = (value.charCodeAt(n) >= 48 && value.charCodeAt(n) <= 57)  || value.charCodeAt(n) === 45 || value.charCodeAt(n) === 8;
+      if (!digit) {
+        return true;
+      }
+    }
+    return false;
   }
 
   handleSection(section) {
@@ -270,13 +270,15 @@ export default class ActionsDetails extends React.Component {
         { section === 'general' ? (
           <DetailsBody>
             <DetailsToolbar key="toolbar">
-              <Button  disabled={ 
-              (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
-              (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  || 
-              (this.state.runValue && this.state.runValue.timeout &&  this.isValidInt(this.state.runValue.timeout))  ||
-              (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit))  
-            }
-                value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
+              <Button  
+                disabled={ 
+                  (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
+                  (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  || 
+                  (this.state.runValue && this.state.runValue.timeout &&  this.isValidInt(this.state.runValue.timeout))  ||
+                  (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit))  
+                }
+                value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} 
+              />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
