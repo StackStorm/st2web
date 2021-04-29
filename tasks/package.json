@@ -67,6 +67,6 @@
     "vinyl-buffer": "1.0.1",
     "vinyl-source-stream": "2.0.0",
     "watchify": "3.11.1",
-    "yargs": "13.2.2"
+    "yargs": "16.2.0"
   }
 }
