@@ -211,6 +211,19 @@ export default class ActionsDetails extends React.Component {
     return false;
   }
 
+  checkString(obj){
+    if(obj !== null){
+        for (const [key, value] of Object.entries(obj)) {
+          if(typeof value === 'string'){
+            let lowerCase = value.toLowerCase()
+              if(lowerCase.startsWith('select')){
+                return true
+              }
+          }
+        }
+    }
+  }
+
   handleSection(section) {
     const { id } = this.props;
     return this.props.handleNavigate({ id, section });
@@ -275,7 +288,8 @@ export default class ActionsDetails extends React.Component {
                   (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
                   (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  || 
                   (this.state.runValue && this.state.runValue.timeout &&  this.isValidInt(this.state.runValue.timeout))  ||
-                  (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit))  
+                  (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit)) || 
+                  this.checkString(this.state.runValue)
                 }
                 value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} 
               />

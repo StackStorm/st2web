@@ -24,4 +24,19 @@ export default class StringField extends BaseTextareaField {
   toStateValue(v) {
     return v || '';
   }
+
+  validate(v,spec={}){
+    const invalid = super.validate(v, spec);
+    if (invalid !== void 0) {
+      return invalid;
+    }
+
+    if(spec.type === 'string'){
+      let lowerCase = v.toLowerCase()
+
+      if(lowerCase.startsWith('select')){
+        return v && 'parameter is not valid'
+      }
+    }
+  }
 }
