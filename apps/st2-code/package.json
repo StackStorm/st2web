@@ -52,7 +52,7 @@
     "@stackstorm/module-store": "^2.4.3",
     "@stackstorm/module-flex-table": "^2.4.3",
     "@stackstorm/module-api": "^2.4.3",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "7.0.2",
