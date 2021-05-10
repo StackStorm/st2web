@@ -135,6 +135,10 @@ export class API {
         server: this.server,
         token: this.token,
       }));
+
+      sessionStorage.setItem('ref',JSON.stringify({
+        ref:1,
+      }));
     }
   }
 
@@ -145,14 +149,20 @@ export class API {
   }
 
   isConnected() {
-    if (!this.token || !this.server) {
+    const session = sessionStorage.getItem('ref');
+    if (session === null ) {
       return false;
+    } 
+    else {
+      if (!this.token || !this.server) {
+        return false;
+      }
+
+      const expiry = this.token.expiry && new Date(this.token.expiry);
+      const now = new Date();
+
+      return now < expiry;
     }
-
-    const expiry = this.token.expiry && new Date(this.token.expiry);
-    const now = new Date();
-
-    return now < expiry;
   }
 
   route(opts) {
