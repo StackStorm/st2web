@@ -135,6 +135,9 @@ export class API {
         server: this.server,
         token: this.token,
       }));
+      localStorage.setItem('logged_in',JSON.stringify({
+        loggedIn: true,
+      }));
     }
   }
 
@@ -142,6 +145,8 @@ export class API {
     this.token = null;
     this.server = null;
     localStorage.removeItem('st2Session');
+    localStorage.removeItem('logged_in');
+
   }
 
   isConnected() {
