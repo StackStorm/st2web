@@ -55,14 +55,14 @@
   "dependencies": {
     "@stackstorm/module-api": "^2.4.3",
     "@stackstorm/module-router": "^2.4.3",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   },
   "devDependencies": {
-    "@stackstorm/st2-style": "2.4.3",
     "@stackstorm/module-test-utils": "^2.4.3",
+    "@stackstorm/st2-style": "2.4.3",
     "chai": "4.2.0",
     "classnames": "^2.2.6"
   }

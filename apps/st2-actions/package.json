@@ -63,13 +63,13 @@
     "@stackstorm/module-time": "^2.4.3",
     "@stackstorm/module-title": "^2.4.3",
     "@stackstorm/module-view": "^2.4.3",
-    "lodash": "4.17.19",
+    "classnames": "^2.2.6",
+    "lodash": "4.17.21",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-redux": "7.0.2",
-    "redux": "^4.0.1",
-    "classnames": "^2.2.6"
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@stackstorm/st2-style": "2.4.3"
