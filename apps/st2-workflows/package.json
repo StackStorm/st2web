@@ -62,7 +62,7 @@
     "eventemitter3": "^3.1.0",
     "gulp-uglify-es": "^1.0.4",
     "insert-css": "^2.0.0",
-    "lodash": "^4.17.4",
+    "lodash": "4.17.21",
     "moment": "^2.18.1",
     "prop-types": "^15.6.0",
     "react": "^16.8.4",
