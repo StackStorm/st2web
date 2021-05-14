@@ -80,7 +80,7 @@ describe('User visits history page', function () {
     let resource;
 
     before(() => {
-      resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/executions/\\w+$').test(e.url));
+      resource = browser.resources.filter((e) => new RegExp('^https://example.com/api/v1/executions/\\w+\\?max_result_size=102400$').test(e.url));
     });
 
     it('should make a call to execution endpoint once', () => {

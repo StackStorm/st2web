@@ -135,6 +135,9 @@ export class API {
         server: this.server,
         token: this.token,
       }));
+      localStorage.setItem('logged_in',JSON.stringify({
+        loggedIn: true,
+      }));
     }
   }
 
@@ -142,6 +145,8 @@ export class API {
     this.token = null;
     this.server = null;
     localStorage.removeItem('st2Session');
+    localStorage.removeItem('logged_in');
+
   }
 
   isConnected() {
@@ -175,28 +180,29 @@ export class API {
 
     const headers = {
       'content-type': 'application/json',
-      
-
     };
 
     if (this.token && this.token.token) {
       headers['x-auth-token'] = this.token.token;
     }
-    
+
     const config = {
       method,
       url: this.route(opts),
       params: query,
       headers,
-      transformResponse: [function transformResponse(data, headers) {
-      if (typeof data === 'string' && headers["content-type"] === "application/json") {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-      }
-  ],
+      transformResponse: [ function transformResponse(data, headers) {
+        if (typeof data === 'string' && headers['content-type'] === 'application/json') {
+          try {
+            data = JSON.parse(data);
+          }
+          catch (e) {
+            /* Ignore */
+          }
+        }
+
+        return data;
+      } ],
       data,
       withCredentials: true,
       paramsSerializer: params => {

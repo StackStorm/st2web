@@ -48,6 +48,7 @@ import {
 } from '@stackstorm/module-panel';
 import Time from '@stackstorm/module-time';
 
+
 @connect((state) => {
   const { action, executions, entrypoint } = state;
   return { action, executions, entrypoint };
@@ -126,9 +127,10 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
+  
+
   componentDidUpdate(prevProps) {
     const { id } = this.props;
-
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
     }
@@ -192,6 +194,23 @@ export default class ActionsDetails extends React.Component {
     ;
   }
 
+  minMax (value) {
+    if (value < 0 || value > 2492000) {
+      return true;
+    }
+    return false;
+  }
+
+  isValidInt (value) {
+    for ( let n = 0; n < value.length; n += 1) {
+      const digit = (value.charCodeAt(n) >= 48 && value.charCodeAt(n) <= 57)  || value.charCodeAt(n) === 45 || value.charCodeAt(n) === 8;
+      if (!digit) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   handleSection(section) {
     const { id } = this.props;
     return this.props.handleNavigate({ id, section });
@@ -213,18 +232,18 @@ export default class ActionsDetails extends React.Component {
       },
     });
   }
-setWindowName(e){
-   window.name="parent"
-}
+
+  setWindowName(e) {
+    window.name = 'parent';
+  }
+
   handleRun(e, ...args) {
     e.preventDefault();
-
     return this.props.handleRun(...args);
   }
 
   render() {
     const { section, action, executions, entrypoint } = this.props;
-
     if (!action) {
       return null;
     }
@@ -251,7 +270,15 @@ setWindowName(e){
         { section === 'general' ? (
           <DetailsBody>
             <DetailsToolbar key="toolbar">
-              <Button value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} />
+              <Button  
+                disabled={ 
+                  (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
+                  (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  || 
+                  (this.state.runValue && this.state.runValue.timeout &&  this.isValidInt(this.state.runValue.timeout))  ||
+                  (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit))  
+                }
+                value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} 
+              />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
@@ -259,7 +286,7 @@ setWindowName(e){
                   target="_blank"
                   to={`/action/${action.ref}`}
                   className="st2-forms__button st2-details__toolbar-button"
-                  onClick ={e => this.setWindowName(e)}
+                  onClick={e => this.setWindowName(e)}
                 >
                   Edit
                 </Link>

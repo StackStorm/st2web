@@ -85,10 +85,15 @@ export class BaseTextField extends React.Component {
 
   handleChange(e, value) {
     e.stopPropagation();
-
+    
     const invalid = this.validate(value, this.props.spec);
-
-    this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
+    
+    if (this.props.name === 'timeout' || this.props.name === 'limit') {
+      this.setState({ value, invalid }, this.props.onChange ? this.emitChange : undefined);
+    } 
+    else {
+      this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
+    }
   }
 
   emitChange() {
