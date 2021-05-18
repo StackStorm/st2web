@@ -63,8 +63,34 @@ export default class Menu extends React.Component {
     style: componentStyle,
   }
 
+  componentDidMount () {
+    this.idleLogout();
+  }
+
   docsLink = 'https://docs.stackstorm.com/'
   supportLink = 'https://forum.stackstorm.com/'
+
+  idleLogout() {
+    let t;
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;  // catches touchscreen presses as well      
+    window.ontouchstart = resetTimer; // catches touchscreen swipes as well 
+    window.onclick = resetTimer;      // catches touchpad clicks as well
+    window.onkeydown = resetTimer;   
+    window.addEventListener('scroll', resetTimer, true); 
+
+    function yourFunction() {
+      // your logout code for too long inactivity goes here
+      api.disconnect();
+      window.location.reload();
+    }
+
+    function resetTimer() {
+      window.clearTimeout(t);
+      t = window.setTimeout(yourFunction, 1200000);  // time is in milliseconds application will logout after 20 min. We can set whatever time we want.
+    }
+  }
 
   handleDisconnect() {
     api.disconnect();
