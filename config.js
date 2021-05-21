@@ -23,7 +23,7 @@ angular.module('main')
     // render and likely freeze the browser window for deeply nested JSON object results.
     // Value is in bytes.
     // max_execution_result_size_for_render: 200 * 1024,
-    //
+    application_inactivity_time : 1800000,
     // Set to true to display StackStorm and st2web version in the header
     //show_version_in_header: false;
 
