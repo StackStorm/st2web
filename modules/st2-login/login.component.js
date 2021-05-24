@@ -231,7 +231,7 @@ export default class Login extends React.Component {
               placeholder="Password"
               required
               value={this.state.password}
-              maxLength="16"
+              maxLength="120"
               onChange={({ target: { value: password } }) => this.setState({ password })}
             />
           </LoginRow>
