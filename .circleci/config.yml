@@ -10,7 +10,7 @@ jobs:
     machine: true
     environment:
       DEPLOY_PACKAGES: 1
-      DEB: xenial bionic
+      DEB: xenial bionic focal
       RPM: el7 el8
       ST2_VERSION: "3.5dev"
       ST2_HOST: localhost
@@ -137,6 +137,7 @@ jobs:
           paths:
             - xenial
             - bionic
+            - focal
             - el7
             - el8
   deploy:
@@ -144,7 +145,7 @@ jobs:
       - image: ruby:2.6.3
     environment:
       ARTIFACTS: /home/circleci/artifacts
-      DISTROS: xenial bionic el7 el8
+      DISTROS: xenial bionic focal el7 el8
     steps:
       - checkout
       - attach_workspace:
