@@ -22,6 +22,7 @@ import api from '@stackstorm/module-api';
 import Link from '@stackstorm/module-router/link.component';
 
 import componentStyle from './style.css';
+const APPLICATION_INACTIVITY_TIME = 1800000; // 30 min
 
 class Icon extends React.Component {
   static propTypes = {
@@ -80,7 +81,7 @@ export default class Menu extends React.Component {
     window.onkeydown = resetTimer;   
     window.addEventListener('scroll', resetTimer, true); 
 
-    function yourFunction() {
+    function logoutFunction() {
       // your logout code for too long inactivity goes here
       api.disconnect();
       window.location.reload();
@@ -88,7 +89,7 @@ export default class Menu extends React.Component {
 
     function resetTimer() {
       window.clearTimeout(t);
-      t = window.setTimeout(yourFunction, window.st2constants.st2Config.application_inactivity_time);  // time is in milliseconds,application will logout after 30 min. We can set whatever time we want.
+      t = window.setTimeout(logoutFunction, window.st2constants.st2Config.application_inactivity_time || APPLICATION_INACTIVITY_TIME);  // time is in milliseconds,application will logout after 30 min. We can set whatever time we want.
     }
   }
 
