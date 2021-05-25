@@ -18,25 +18,10 @@ export default class StringField extends BaseTextareaField {
   static icon = 'T'
 
   fromStateValue(v) {
-    return v !== '' ? v : void 0;
+    return v !== '' ? v.replace(/[&\\#()$~'":*?<>{}]/g, '') : void 0;
   }
 
   toStateValue(v) {
     return v || '';
-  }
-
-  validate(v,spec={}){
-    const invalid = super.validate(v, spec);
-    if (invalid !== void 0) {
-      return invalid;
-    }
-
-    if(spec.type === 'string'){
-      let lowerCase = v.toLowerCase()
-
-      if(lowerCase.startsWith('select')){
-        return v && 'parameter is not valid'
-      }
-    }
   }
 }
