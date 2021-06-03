@@ -219,7 +219,7 @@ export default class Login extends React.Component {
               placeholder="Username"
               required
               value={this.state.username}
-              maxLength="32"
+              maxLength="120"
               onChange={({ target: { value: username } }) => this.setState({ username })}
             />
           </LoginRow>
