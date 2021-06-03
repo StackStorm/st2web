@@ -123,7 +123,6 @@ export default class HistoryDetails extends React.Component {
     }
     actionArr.map((data) => {
       if (data.type === 'integer') {
-        for (const [ key, value ] of Object.entries(parameters)) {
           const hasValue = Object.keys(parameters).includes(data.name);
           if (hasValue === false) {
             const objKey = data.name;
@@ -131,14 +130,11 @@ export default class HistoryDetails extends React.Component {
             object[objKey] = data.default;
             parameters = {...parameters, ...object};
           }
-        }
       }
 
       if ('secret' in data) {
         delete parameters[data.name];
-        
       }
-
     });
     return (
       <PanelDetails data-test="details">
