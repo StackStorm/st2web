@@ -66,6 +66,12 @@ export default class Menu extends React.Component {
 
   componentDidMount () {
     this.idleLogout();
+    window.addEventListener('storage', this.storageChange());
+
+  }
+ 
+  componentWillUnmount() {
+    window.removeEventListener('storage',this.storageChange());
   }
 
   docsLink = 'https://docs.stackstorm.com/'
@@ -93,6 +99,15 @@ export default class Menu extends React.Component {
     }
   }
 
+  storageChange () {
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'logged_in' && (event.oldValue !== event.newValue)) {
+        api.disconnect();
+        window.location.reload();
+      }
+    });
+  }
+  
   handleDisconnect() {
     api.disconnect();
     window.location.reload();
