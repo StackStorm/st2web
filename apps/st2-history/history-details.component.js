@@ -123,13 +123,13 @@ export default class HistoryDetails extends React.Component {
     }
     actionArr.map((data) => {
       if (data.type === 'integer') {
-          const hasValue = Object.keys(parameters).includes(data.name);
-          if (hasValue === false) {
-            const objKey = data.name;
-            const object = {};
-            object[objKey] = data.default;
-            parameters = {...parameters, ...object};
-          }
+        const hasValue = Object.keys(parameters).includes(data.name);
+        if (hasValue === false) {
+          const objKey = data.name;
+          const object = {};
+          object[objKey] = data.default;
+          parameters = {...parameters, ...object};
+        }
       }
 
       if ('secret' in data) {
