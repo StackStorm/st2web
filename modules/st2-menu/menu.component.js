@@ -63,9 +63,26 @@ export default class Menu extends React.Component {
     style: componentStyle,
   }
 
+  componentDidMount() {
+    window.addEventListener('storage', this.storageChange());
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('storage',this.storageChange());
+  }
+
   docsLink = 'https://docs.stackstorm.com/'
   supportLink = 'https://forum.stackstorm.com/'
 
+  storageChange () {
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'logged_in' && (event.oldValue !== event.newValue)) {
+        api.disconnect();
+        window.location.reload();
+      }
+    });
+  }
+  
   handleDisconnect() {
     api.disconnect();
     window.location.reload();

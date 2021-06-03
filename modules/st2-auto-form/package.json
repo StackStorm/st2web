@@ -52,17 +52,17 @@
   },
   "dependencies": {
     "@stackstorm/module-value-format": "^2.4.3",
-    "lodash": "4.17.19",
+    "classnames": "^2.2.6",
+    "lodash": "4.17.21",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-textarea-autosize": "5.2.1",
-    "classnames": "^2.2.6",
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "@stackstorm/st2-style": "2.4.3",
     "@stackstorm/module-test-utils": "^2.4.3",
+    "@stackstorm/st2-style": "2.4.3",
     "chai": "4.2.0",
     "sinon": "7.3.2",
     "sinon-chai": "^3.3.0"
