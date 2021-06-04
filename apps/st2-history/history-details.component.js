@@ -131,10 +131,6 @@ export default class HistoryDetails extends React.Component {
           parameters = {...parameters, ...object};
         }
       }
-
-      if ('secret' in data) {
-        delete parameters[data.name];
-      }
     });
     return (
       <PanelDetails data-test="details">
