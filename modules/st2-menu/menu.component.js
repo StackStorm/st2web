@@ -95,7 +95,7 @@ export default class Menu extends React.Component {
 
     function resetTimer() {
       window.clearTimeout(t);
-      let millisecondTime =  window.st2constants.st2Config.application_inactivity_time * 1000 || APPLICATION_INACTIVITY_TIME * 1000;
+      const millisecondTime =  window.st2constants.st2Config.application_inactivity_time * 1000 || APPLICATION_INACTIVITY_TIME * 1000;
       t = window.setTimeout(logoutFunction, millisecondTime);  // time is in milliseconds,application will logout after 2 hr. We can set whatever time we want.
     }
   }
