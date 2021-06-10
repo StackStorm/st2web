@@ -23,8 +23,8 @@ angular.module('main')
     // render and likely freeze the browser window for deeply nested JSON object results.
     // Value is in bytes.
     // max_execution_result_size_for_render: 200 * 1024,
-    // set application inactivity time default for 30 min, here it is in milliseconds.
-    // application_inactivity_time : 1800000,
+    // set application inactivity time default for 2 hr, here it is in seconds.
+    // application_inactivity_time : 7200,
     // Set to true to display StackStorm and st2web version in the header
     //show_version_in_header: false;
 

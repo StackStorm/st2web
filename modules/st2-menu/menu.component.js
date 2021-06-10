@@ -22,7 +22,7 @@ import api from '@stackstorm/module-api';
 import Link from '@stackstorm/module-router/link.component';
 
 import componentStyle from './style.css';
-const APPLICATION_INACTIVITY_TIME = 1800000; // 30 min
+const APPLICATION_INACTIVITY_TIME = 7200; // 2 hr time here it is in seconds
 
 class Icon extends React.Component {
   static propTypes = {
@@ -95,7 +95,8 @@ export default class Menu extends React.Component {
 
     function resetTimer() {
       window.clearTimeout(t);
-      t = window.setTimeout(logoutFunction, window.st2constants.st2Config.application_inactivity_time || APPLICATION_INACTIVITY_TIME);  // time is in milliseconds,application will logout after 30 min. We can set whatever time we want.
+      let millisecondTime =  window.st2constants.st2Config.application_inactivity_time * 1000 || APPLICATION_INACTIVITY_TIME * 1000;
+      t = window.setTimeout(logoutFunction, millisecondTime);  // time is in milliseconds,application will logout after 2 hr. We can set whatever time we want.
     }
   }
 
