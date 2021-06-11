@@ -219,6 +219,7 @@ export default class Login extends React.Component {
               placeholder="Username"
               required
               value={this.state.username}
+              maxLength="256"
               onChange={({ target: { value: username } }) => this.setState({ username })}
             />
           </LoginRow>
@@ -230,6 +231,7 @@ export default class Login extends React.Component {
               placeholder="Password"
               required
               value={this.state.password}
+              maxLength="256"
               onChange={({ target: { value: password } }) => this.setState({ password })}
             />
           </LoginRow>
