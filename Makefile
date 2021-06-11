@@ -9,9 +9,10 @@ DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || ec
 .PHONY: all build clean install deb rpm
 all: build
 
+# yarn now included in later node images
 npm-install:
 	echo "npm install"
-	npm install -g lerna yarn
+	npm install -g lerna
 
 lerna:
 	echo "lerna"
