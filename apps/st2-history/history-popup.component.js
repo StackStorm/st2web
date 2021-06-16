@@ -46,6 +46,9 @@ export default class HistoryPopup extends React.Component {
       payload: {
         ...props.payload,
       },
+      payloadCopy: {
+        ...props.payload,
+      },
       ...state,
     };
   }
@@ -60,7 +63,21 @@ export default class HistoryPopup extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    const hasValue = Object.values(this.state.payload).includes('********');
+    let payLoadKey;
+    if (hasValue === true) {
+      payLoadKey =  Object.keys(this.state.payload).find(key => this.state.payload[key] === '********');
+    }
 
+    const isValue = Object.values(this.state.payloadCopy).includes('********');
+    let payloadCopyKey ;
+    if (isValue === true) {
+      payloadCopyKey =  Object.keys(this.state.payloadCopy).find(key => this.state.payloadCopy[key] === '********');
+    }
+    
+    if (this.state.payload[payLoadKey] === this.state.payloadCopy[payloadCopyKey]) {
+      delete this.state.payload[payLoadKey];
+    }
     this.props.onSubmit(this.state.payload);
   }
 

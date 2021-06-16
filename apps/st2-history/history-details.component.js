@@ -113,25 +113,25 @@ export default class HistoryDetails extends React.Component {
 
     setTitle([ execution.action.ref, 'History' ]);
     
-    let parameters = execution.parameters;
-    const actionParameters = {...execution.action.parameters, ...execution.runner.runner_parameters};
-    let obj;
-    const actionArr = [];
-    for (const [ key, value ] of Object.entries(actionParameters)) {
-      obj = { ...value, name:key };
-      actionArr.push(obj);
-    }
-    actionArr.map((data) => {
-      if (data.type === 'integer') {
-        const hasValue = Object.keys(parameters).includes(data.name);
-        if (hasValue === false) {
-          const objKey = data.name;
-          const object = {};
-          object[objKey] = data.default;
-          parameters = {...parameters, ...object};
-        }
-      }
-    });
+    // let parameters = execution.parameters;
+    // const actionParameters = {...execution.action.parameters, ...execution.runner.runner_parameters};
+    // let obj;
+    // const actionArr = [];
+    // for (const [ key, value ] of Object.entries(actionParameters)) {
+    //   obj = { ...value, name:key };
+    //   actionArr.push(obj);
+    // }
+    // actionArr.map((data) => {
+    //   if (data.type === 'integer') {
+    //     const hasValue = Object.keys(parameters).includes(data.name);
+    //     if (hasValue === false) {
+    //       const objKey = data.name;
+    //       const object = {};
+    //       object[objKey] = data.default;
+    //       parameters = {...parameters, ...object};
+    //     }
+    //   }
+    // });
     return (
       <PanelDetails data-test="details">
         <DetailsHeader
@@ -288,7 +288,7 @@ export default class HistoryDetails extends React.Component {
         { section === 'rerun' ? (
           <HistoryPopup
             action={execution.action.ref}
-            payload={parameters}
+            payload={execution.parameters}
             spec={{
               type: 'object',
               properties: {
