@@ -22,6 +22,7 @@ import api from '@stackstorm/module-api';
 import Link from '@stackstorm/module-router/link.component';
 
 import componentStyle from './style.css';
+const APPLICATION_INACTIVITY_TIME = 7200; // 2 hr time here it is in seconds
 
 class Icon extends React.Component {
   static propTypes = {
@@ -63,9 +64,51 @@ export default class Menu extends React.Component {
     style: componentStyle,
   }
 
+  componentDidMount () {
+    this.idleLogout();
+    window.addEventListener('storage', this.storageChange());
+
+  }
+ 
+  componentWillUnmount() {
+    window.removeEventListener('storage',this.storageChange());
+  }
+
   docsLink = 'https://docs.stackstorm.com/'
   supportLink = 'https://forum.stackstorm.com/'
 
+  idleLogout() {
+    let t;
+    window.onload = resetTimer;
+    window.onmousemove = resetTimer;
+    window.onmousedown = resetTimer;  // catches touchscreen presses as well      
+    window.ontouchstart = resetTimer; // catches touchscreen swipes as well 
+    window.onclick = resetTimer;      // catches touchpad clicks as well
+    window.onkeydown = resetTimer;   
+    window.addEventListener('scroll', resetTimer, true); 
+
+    function logoutFunction() {
+      // your logout code for too long inactivity goes here
+      api.disconnect();
+      window.location.reload();
+    }
+
+    function resetTimer() {
+      window.clearTimeout(t);
+      const millisecondTime =  window.st2constants.st2Config.application_inactivity_time * 1000 || APPLICATION_INACTIVITY_TIME * 1000;
+      t = window.setTimeout(logoutFunction, millisecondTime);  // time is in milliseconds,application will logout after 2 hr. We can set whatever time we want.
+    }
+  }
+
+  storageChange () {
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'logged_in' && (event.oldValue !== event.newValue)) {
+        api.disconnect();
+        window.location.reload();
+      }
+    });
+  }
+  
   handleDisconnect() {
     api.disconnect();
     window.location.reload();
