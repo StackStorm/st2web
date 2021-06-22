@@ -47,7 +47,7 @@ export default class HistoryPopup extends React.Component {
         ...props.payload,
       },
       payloadCopy: {
-        ...props.payload,
+        ...props.payload,       // Here first made copy of data for later comparison
       },
       ...state,
     };
@@ -62,6 +62,13 @@ export default class HistoryPopup extends React.Component {
   }
 
   handleSubmit(e) {
+    // whenever user changes any parameter, it is stored into payload. So we get changed data into payload. 
+    // We have copy of original data without any parameter change in payloadCopy object on line no 49.
+    // Here we are first identifying key name of secret parameter, payloadKey is key variable name for payload object and payloadCopyKey variable name for payloadCopy object.
+    // once we get both key, we are checking value of that key in both object.
+    // So if user change secret parameter data, it will get in payload.
+    // When user does not change secret parameter, in payload secret parameter value is **** and in payloadCopyKey object it is always **** because we are getting changed value in payload object only.
+    // If data in both key same , then there is no any change and if data is not same in both key i.e payloadKey and payloadCopyKey, data is changed and we will send changed data to API.
     e.preventDefault();
     const hasValue = Object.values(this.state.payload).includes('********');
     let payLoadKey;
