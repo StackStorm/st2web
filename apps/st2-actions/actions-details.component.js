@@ -57,6 +57,7 @@ export default class ActionsDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -127,10 +128,10 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
-  
-
   componentDidUpdate(prevProps) {
+    console.log('inside did update prevprops',prevProps);
     const { id } = this.props;
+    console.log('id',id);
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
     }
@@ -242,8 +243,22 @@ export default class ActionsDetails extends React.Component {
     return this.props.handleRun(...args);
   }
 
+  handleDelete (ref) {
+    const { id } = this.props;
+
+    console.log('id',id);
+
+    if (!window.confirm('Do you really want to delete this item?')) {
+      return undefined;
+    }
+    const res = this.props.handleDelete(id);
+    
+    return res;
+  }
+
   render() {
     const { section, action, executions, entrypoint } = this.props;
+    console.log('action',action);
     if (!action) {
       return null;
     }
@@ -281,6 +296,8 @@ export default class ActionsDetails extends React.Component {
               />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
+              <Button className="st2-forms__button st2-details__toolbar-button"  value="Delete" onClick={() => this.handleDelete()}  />
+
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
                   target="_blank"
