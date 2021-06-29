@@ -129,9 +129,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('inside did update prevprops',prevProps);
     const { id } = this.props;
-    console.log('id',id);
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
     }
@@ -246,19 +244,14 @@ export default class ActionsDetails extends React.Component {
   handleDelete (ref) {
     const { id } = this.props;
 
-    console.log('id',id);
-
     if (!window.confirm('Do you really want to delete this item?')) {
       return undefined;
     }
-    const res = this.props.handleDelete(id);
-    
-    return res;
+    return this.props.handleDelete(id);
   }
 
   render() {
     const { section, action, executions, entrypoint } = this.props;
-    console.log('action',action);
     if (!action) {
       return null;
     }
