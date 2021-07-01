@@ -59,7 +59,7 @@
     "babel-eslint": "^10.0.1",
     "classnames": "^2.2.5",
     "eslint-plugin-flowtype": "^3.5.1",
-    "eventemitter3": "^3.1.0",
+    "eventemitter3": "4.0.7",
     "gulp-uglify-es": "^1.0.4",
     "insert-css": "^2.0.0",
     "lodash": "^4.17.21",
