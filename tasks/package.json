@@ -56,7 +56,7 @@
     "gulp-plumber": "1.2.1",
     "gulp-rename": "1.4.0",
     "gulp-size": "3.0.0",
-    "gulp-sourcemaps": "2.6.5",
+    "gulp-sourcemaps": "3.0.0",
     "gulp-uglify-es": "1.0.4",
     "gulp-webserver": "0.9.1",
     "lodash": "4.17.21",
