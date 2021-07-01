@@ -88,7 +88,7 @@
     "@stackstorm/st2-build": "^2.4.2",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
-    "chai": "^4.1.2",
+    "chai": "4.3.4",
     "eslint": "^5.16.0",
     "eslint-plugin-notice": "0.7.8",
     "eslint-plugin-react": "^7.12.4",
