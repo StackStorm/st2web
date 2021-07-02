@@ -161,10 +161,10 @@ const actionReducer = (state = {}, input) => {
 
       switch(input.status) {
         case 'success':
-          action = [ ...actions ]
+          actions = [ ...actions ]
             .filter(action => action.ref !== ref)
           ;
-          groups = makeGroups( action, filter);
+          groups = makeGroups( actions, filter);
 
           break;
         case 'error':
@@ -175,7 +175,7 @@ const actionReducer = (state = {}, input) => {
 
       return {
         ...state,
-        action,
+        actions,
         groups,
       };
     }

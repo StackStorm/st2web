@@ -244,7 +244,7 @@ export default class ActionsDetails extends React.Component {
   handleDelete (ref) {
     const { id } = this.props;
 
-    if (!window.confirm('Do you really want to delete this item?')) {
+    if (!window.confirm(`You are about to delete the action "${id}". This operation is irreversible. Are you sure?`)) {
       return undefined;
     }
     return this.props.handleDelete(id);
