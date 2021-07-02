@@ -116,7 +116,6 @@ export default class ActionsPanel extends React.Component {
       .then(() => {
         const { id } = this.urlParams;
         const { groups } = this.props;
-
         if (id && groups && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
           this.navigate({ id: false });
         }
@@ -128,8 +127,7 @@ export default class ActionsPanel extends React.Component {
     const {
       ref = get('groups[0].actions[0].ref', this.props),
       section = 'general',
-    } = this.props.match.params;
-
+    } = this.props.match.params;  
     return {
       id: ref,
       section,
@@ -211,6 +209,28 @@ export default class ActionsPanel extends React.Component {
     });
   }
 
+  handleDelete (ref) {
+    return store.dispatch({
+      type: 'DELETE_ACTION',
+      ref,
+      promise: api.request({
+        method: 'delete',
+        path: `/actions/${ref}`,
+      })
+        .then((res) => {
+          notification.success(`Action "${ref}" has been deleted successfully.`);
+          return res;
+        })
+        .catch((err) => {
+          notification.error(`Unable to delete action "${ref}".`, {
+            err,
+            
+          });
+          throw err;
+        }),
+    });
+  }
+
   render() {
     const { groups, filter, collapsed } = this.props;
     const { id, section } = this.urlParams;
@@ -282,6 +302,7 @@ export default class ActionsPanel extends React.Component {
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
+          handleDelete={(...arg) => this.handleDelete(...arg)}
 
           id={id}
           section={section}

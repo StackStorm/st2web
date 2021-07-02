@@ -154,6 +154,32 @@ const actionReducer = (state = {}, input) => {
       };
     }
 
+    case 'DELETE_ACTION': {
+      const { ref } = input;
+
+      
+
+      switch(input.status) {
+        case 'success':
+          actions = [ ...actions ]
+            .filter(action => action.ref !== ref)
+          ;
+          groups = makeGroups( actions, filter);
+
+          break;
+        case 'error':
+          break;
+        default:
+          break;
+      }
+
+      return {
+        ...state,
+        actions,
+        groups,
+      };
+    }
+
     case 'SET_FILTER': {
       filter = input.filter;
       groups = makeGroups(actions, filter);
