@@ -91,7 +91,7 @@
   "devDependencies": {
     "@stackstorm/module-test-utils": "^2.4.3",
     "@stackstorm/st2-build": "^2.4.3",
-    "babel-eslint": "10.0.1",
+    "babel-eslint": "10.1.0",
     "chai": "4.2.0",
     "eslint": "^6.2.1",
     "eslint-plugin-flowtype": "^3.5.1",
