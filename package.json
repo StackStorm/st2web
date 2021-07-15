@@ -20,7 +20,7 @@
   "repository": "stackstorm/st2web",
   "engines": {
     "node": "10.15.3",
-    "npm": "6.9.0"
+    "npm": "7.20.0"
   },
   "browserify": {
     "transform": [
