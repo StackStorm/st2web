@@ -15,7 +15,7 @@
 import _ from 'lodash';
 import validator from 'validator';
 
-import { BaseTextField, isJinja } from './base';
+import { BaseTextField, isJinja, isYaql } from './base';
 
 const jsonCheck = (value) => {
   try {
@@ -78,6 +78,10 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
+    if (isYaql(v)) {
+      return v;
+    }
+
     const { items } = this.props.spec || {};
     return split(v)
       .map((v) => typeConversions(items && items.type, v))
@@ -93,7 +97,12 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
+    if (isYaql(v)) {
+      return v;
+    }
+
     const { secret } = this.props.spec || {};
+
     if (secret && v && !Array.isArray(v)) {
       return v;
     }
