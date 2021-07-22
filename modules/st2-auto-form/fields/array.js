@@ -78,11 +78,18 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
-    if (isYaql(v)) {
+    /* YAQL parameter without , assume is array parameter */
+    if (isYaql(v) && !v.includes(",")) {
       return v;
     }
 
     const { items } = this.props.spec || {};
+
+    /* Trim [], required for when kept [] around YAQL parameter */
+    if (v && v.startsWith("[") && v.endsWith("]")) {
+      v = v.substring(1, v.length-1).trim()
+    }
+
     return split(v)
       .map((v) => typeConversions(items && items.type, v))
     ;
@@ -97,6 +104,7 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
+    /* YAQL parameter without , assume is array parameter */
     if (isYaql(v)) {
       return v;
     }
@@ -105,6 +113,15 @@ export default class ArrayField extends BaseTextField {
 
     if (secret && v && !Array.isArray(v)) {
       return v;
+    }
+
+    /* 
+     * Keep [] if after converting to comma separated string would be treated
+     * as YAQL, as need to distingish between when pass an array parameter or
+     * an array of string parameters.
+     */
+    if (v && isYaql(v.join(', '))) {
+      return '['.concat(v.join(', '),']');
     }
 
     return v ? v.join(', ') : '';
