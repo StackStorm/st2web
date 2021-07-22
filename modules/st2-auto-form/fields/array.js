@@ -79,15 +79,15 @@ export default class ArrayField extends BaseTextField {
     }
 
     /* YAQL parameter without , assume is array parameter */
-    if (isYaql(v) && !v.includes(",")) {
+    if (isYaql(v) && !v.includes(',')) {
       return v;
     }
 
     const { items } = this.props.spec || {};
 
     /* Trim [], required for when kept [] around YAQL parameter */
-    if (v && v.startsWith("[") && v.endsWith("]")) {
-      v = v.substring(1, v.length-1).trim()
+    if (v && v.startsWith('[') && v.endsWith(']')) {
+      v = v.substring(1, v.length-1).trim();
     }
 
     return split(v)
