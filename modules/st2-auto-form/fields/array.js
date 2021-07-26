@@ -104,7 +104,7 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
-    /* YAQL parameter without , assume is array parameter */
+    /* string which is YAQL */
     if (isYaql(v)) {
       return v;
     }
@@ -121,7 +121,7 @@ export default class ArrayField extends BaseTextField {
      * an array of string parameters.
      */
     if (v && isYaql(v.join(', '))) {
-      return '['.concat(v.join(', '),']');
+      return '[ '.concat(v.join(', '),' ]');
     }
 
     return v ? v.join(', ') : '';
