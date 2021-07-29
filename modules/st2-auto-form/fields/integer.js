@@ -14,17 +14,13 @@
 
 import validator from 'validator';
 
-import { BaseTextField, isJinja, isYaql } from './base';
+import { BaseTextField, isJinja } from './base';
 
 export default class IntegerField extends BaseTextField {
   static icon = '12'
 
   fromStateValue(v) {
     if (isJinja(v)) {
-      return v;
-    }
-
-    if (isYaql(v)) {
       return v;
     }
 
@@ -38,10 +34,6 @@ export default class IntegerField extends BaseTextField {
 
   toStateValue(v) {
     if (isJinja(v)) {
-      return v;
-    }
-
-    if (isYaql(v)) {
       return v;
     }
 
