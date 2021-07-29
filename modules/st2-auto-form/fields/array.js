@@ -78,24 +78,26 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
-    /* YAQL parameter without , assume is array parameter */
+    /* YAQL parameter that came input as single yaql */
     if (isYaql(v) && !v.includes(',')) {
       return v;
     }
 
     const { items } = this.props.spec || {};
 
+    let t = v;
     /* Trim [], required for when kept [] around YAQL parameter */
     if (v && v.startsWith('[') && v.endsWith(']')) {
-      v = v.substring(1, v.length-1).trim();
+      t = v.substring(1, v.length-1).trim();
     }
 
-    return split(v)
-      .map((v) => typeConversions(items && items.type, v))
+    return split(t)
+      .map((t) => typeConversions(items && items.type, t))
     ;
   }
 
   toStateValue(v) {
+
     if (jsonCheck(v)) {
       return JSON.stringify(v);
     }
@@ -120,9 +122,10 @@ export default class ArrayField extends BaseTextField {
      * as YAQL, as need to distingish between when pass an array parameter or
      * an array of string parameters.
      */
-    if (v && isYaql(v.join(', '))) {
+    if (v && Array.isArray(v) && isYaql(v.join(', ')) && v.length === 1) {
       return '[ '.concat(v.join(', '),' ]');
     }
+
 
     return v ? v.join(', ') : '';
   }
