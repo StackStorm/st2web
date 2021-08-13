@@ -112,7 +112,7 @@ export default class HistoryDetails extends React.Component {
     }
 
     setTitle([ execution.action.ref, 'History' ]);
-
+    
     return (
       <PanelDetails data-test="details">
         <DetailsHeader
