@@ -55,7 +55,6 @@ import './style.css';
   return { collapsed, ...props };
 }, (dispatch, props) => {
   const { uid } = props;
-
   return {
     onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
@@ -219,6 +218,8 @@ export default class ActionsPanel extends React.Component {
       })
         .then((res) => {
           notification.success(`Action "${ref}" has been deleted successfully.`);
+          this.navigate({ id: null });
+          store.dispatch(flexActions.toggleAll());
           return res;
         })
         .catch((err) => {
