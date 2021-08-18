@@ -28,6 +28,9 @@ export default function runLocal(execution) {
     execution.result && execution.result.stderr ? [
       <div key="error" className={style.source}>Error</div>,
       <Highlight well lines={20} className={style.highlight} key="error-code" code={execution.result.stderr} type="result" id={execution.id} />,
+    ] : execution.result && execution.result.error ? [ 
+      <div key="error" className={style.source}>Error</div>,
+      <Highlight well lines={20} className={style.highlight} key="error-code" code={execution.result.error} type="result" id={execution.id} />,
     ] : null,
 
     execution.result && execution.result.traceback ? [
@@ -35,7 +38,7 @@ export default function runLocal(execution) {
       <Highlight well lines={20} className={style.highlight} key="traceback-code" code={[ execution.result.error, execution.result.traceback ].join('\n')} type="result" id={execution.id} />,
     ] : null,
 
-    !execution.result || (!execution.result.stdout && !execution.result.stderr && !execution.result.traceback) ? (
+    !execution.result || (!execution.result.stdout && !execution.result.stderr && !execution.result.error && !execution.result.traceback) ? (
       <Highlight well className={style.highlight} key="none" code="// Action produced no data" type="result" id={execution.id} />
     ) : null,
   ];
