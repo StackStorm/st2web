@@ -12,7 +12,7 @@ jobs:
       DEPLOY_PACKAGES: 1
       DEB: bionic focal
       RPM: el7 el8
-      ST2_VERSION: "3.5dev"
+      ST2_VERSION: "3.6dev"
       ST2_HOST: localhost
       ST2_PROTOCOL: http
       ST2_USERNAME: st2admin
