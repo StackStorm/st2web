@@ -39,6 +39,9 @@ export default function runRemote(execution) {
       result && result.stderr ? [
         <div key="error" className={style.source}>Error</div>,
         <Highlight well lines={20} className={style.highlight} key="error-code" code={result.stderr} type="result" id={execution.id} />,
+      ] :result && result.error ? [
+        <div key="error" className={style.source}>Error</div>,
+        <Highlight well lines={20} className={style.highlight} key="error-code" code={result.error} type="result" id={execution.id} />,
       ] : null,
 
       result && result.traceback ? [
@@ -46,7 +49,7 @@ export default function runRemote(execution) {
         <Highlight well lines={20} className={style.highlight} key="traceback-code" code={[ result.error, result.traceback ].join('\n')} type="result" id={execution.id} />,
       ] : null,
 
-      !result || (!result.result && !result.stderr && !result.stdout && !result.traceback) ? (
+      !result || (!result.result && !result.stderr &&  !result.stdout && !result.error  && !result.traceback) ? (
         <Highlight well className={style.highlight} key="none" code="// Action produced no data" />
       ) : null,
     ];

@@ -57,6 +57,7 @@ export default class ActionsDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -126,8 +127,6 @@ export default class ActionsDetails extends React.Component {
       this.fetchAction(id);
     }
   }
-
-  
 
   componentDidUpdate(prevProps) {
     const { id } = this.props;
@@ -242,6 +241,15 @@ export default class ActionsDetails extends React.Component {
     return this.props.handleRun(...args);
   }
 
+  handleDelete (ref) {
+    const { id } = this.props;
+
+    if (!window.confirm(`You are about to delete the action "${id}". This operation is irreversible. Are you sure?`)) {
+      return undefined;
+    }
+    return this.props.handleDelete(id);
+  }
+
   render() {
     const { section, action, executions, entrypoint } = this.props;
     if (!action) {
@@ -281,6 +289,8 @@ export default class ActionsDetails extends React.Component {
               />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
+              <Button className="st2-forms__button st2-details__toolbar-button"  value="Delete" onClick={() => this.handleDelete()}  />
+
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
                   target="_blank"
