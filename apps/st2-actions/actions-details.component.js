@@ -26,6 +26,8 @@ import { Link } from '@stackstorm/module-router';
 import ActionReporter from '@stackstorm/module-action-reporter';
 import AutoForm from '@stackstorm/module-auto-form';
 import StringField from '@stackstorm/module-auto-form/fields/string';
+import EnumField from '@stackstorm/module-auto-form/fields/enum';
+
 import {
   FlexTable,
   FlexTableRow,
@@ -48,7 +50,6 @@ import {
 } from '@stackstorm/module-panel';
 import Time from '@stackstorm/module-time';
 
-
 @connect((state) => {
   const { action, executions, entrypoint } = state;
   return { action, executions, entrypoint };
@@ -57,12 +58,16 @@ export default class ActionsDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
+    handleClone: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
     action: PropTypes.object,
     executions: PropTypes.array,
     entrypoint: PropTypes.string,
+    groups: PropTypes.array,
+
+
   }
 
   state = {
@@ -70,6 +75,10 @@ export default class ActionsDetails extends React.Component {
     runValue: null,
     runTrace: null,
     executionsVisible: {},
+    openModel: false,
+    isChecked: false,
+    destinationPack:'',
+    destinationAction:'',
   }
 
   componentDidMount() {
@@ -127,7 +136,17 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
-  
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const {action,groups} = nextProps;
+    const packs = [];
+
+    groups && groups.map(data => {
+      packs.push(data.pack);
+    });
+
+    action && action ? packs.splice(packs.findIndex(v => v === action.pack), 1) : '';
+    this.setState({packs : packs});
+  }
 
   componentDidUpdate(prevProps) {
     const { id } = this.props;
@@ -242,8 +261,43 @@ export default class ActionsDetails extends React.Component {
     return this.props.handleRun(...args);
   }
 
+  handleClone(e, ...args) {
+    e.preventDefault();
+    document.getElementById('overlay').style.display = 'none';
+    return this.props.handleClone(...args);
+  }
+
+  openModel (e) {
+    const el =  document.getElementById('overlay');
+    el.style.display = 'block'; 
+    this.setState({destinationPack: this.state.packs[0],  destinationAction:''});
+  }
+
+  closeModel() {
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  handleDropdown(e) {
+    this.setState({destinationPack:e});
+  }
+
+  handleInput(e) {
+    this.setState({destinationAction:e});
+  }
+
+  handleChange(e) {
+    const isChecked = document.getElementById('checkbox').checked;
+    if(isChecked) {
+      this.setState({isChecked:true});
+    } 
+    else {
+      this.setState({isChecked:false});
+    }
+  }
+
   render() {
-    const { section, action, executions, entrypoint } = this.props;
+    const { section, action, executions, entrypoint} = this.props;
+    
     if (!action) {
       return null;
     }
@@ -281,6 +335,8 @@ export default class ActionsDetails extends React.Component {
               />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
+              <Button className="st2-forms__button st2-details__toolbar-button"  value="Clone" onClick={(e) => this.openModel(e)}   />
+
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
                   target="_blank"
@@ -379,6 +435,21 @@ export default class ActionsDetails extends React.Component {
             </DetailsPanel>
           </DetailsBody>
         ) : null }
+        
+        {/* Written pop-up box code here  */}
+        <div id="overlay" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', height: '100%', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
+          <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '24%' ,height:'50%' }}> 
+            <EnumField name="Destination Pack Name *" value={this.state.destinationPack ? this.state.destinationPack : action.pack} spec={{enum: this.state.packs}}  onChange={(e) => this.handleDropdown(e)} /><br /><br />
+            <StringField  style={{height:'30%'}} name="Destination Action Name *" value={this.state.destinationAction} onChange={(e) => this.handleInput(e)} required /><br /><br />
+
+            <input id="checkbox" name="checkbox" type="checkbox" checked={this.state.isChecked} value={this.state.isChecked} onChange={(e) => this.handleChange(e)}  /> Overwrite <br /><br /><br />
+
+            <div style={{width:'100%', display:'inline-block'}}>
+              <button  onClick={(e) => this.handleClone(e, action.pack,action.name,this.state.destinationAction,this.state.destinationPack, this.state.isChecked )}  type="submit" className="btn" style={{backgroundColor: '#04AA6D' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8',float:'left'}}>Submit</button>
+              <button onClick={(e) => this.closeModel(e)} type="close" className="btn cancel" style={{backgroundColor: 'red' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8', float:'right'}}>Close</button>
+            </div>
+          </div>
+        </div>
 
       </PanelDetails>
     );
