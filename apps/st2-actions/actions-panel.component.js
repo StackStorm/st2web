@@ -216,7 +216,12 @@ export default class ActionsPanel extends React.Component {
       type: 'CLONE_ACTION',
       promise: api.request({
         method: 'post',
-        path: overwrite === true ? `/actions/${srcPack}/${srcAction}/${destPack}/${destAction}?overwrite=True`: `/actions/${srcPack}/${srcAction}/${destPack}/${destAction}`,    
+        path: `/actions/${srcPack}.${srcAction}/clone`,    
+      },{
+        'dest_pack': destPack, 
+        'dest_action': destAction, 
+        'overwrite': overwrite,
+      
       })
         .then((execution) => {
           notification.success(`Action "${srcAction}" has been cloned  successfully.`);
