@@ -88,6 +88,8 @@ export class BaseTextField extends React.Component {
       return false;
     }
 
+    return undefined;
+
   }
 
   handleChange(e, value) {
