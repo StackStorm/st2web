@@ -270,7 +270,7 @@ export default class ActionsDetails extends React.Component {
   openModel (e) {
     const el =  document.getElementById('overlay');
     el.style.display = 'block'; 
-    this.setState({destinationPack: this.state.packs[0],  destinationAction:''});
+    this.setState({destinationPack: this.state.packs[0],  destinationAction:'', isChecked: false});
   }
 
   closeModel() {
@@ -437,7 +437,7 @@ export default class ActionsDetails extends React.Component {
         ) : null }
         
         {/* Written pop-up box code here  */}
-        <div id="overlay" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', height: '100%', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
+        <div id="overlay" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', minHeight: '-webkit-fill-available', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
           <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '24%' ,height:'50%' }}> 
             <EnumField name="Destination Pack Name *" value={this.state.destinationPack ? this.state.destinationPack : action.pack} spec={{enum: this.state.packs}}  onChange={(e) => this.handleDropdown(e)} /><br /><br />
             <StringField  style={{height:'30%'}} name="Destination Action Name *" value={this.state.destinationAction} onChange={(e) => this.handleInput(e)} required /><br /><br />
