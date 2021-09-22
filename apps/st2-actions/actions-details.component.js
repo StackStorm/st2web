@@ -253,6 +253,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   openModel (e) {
+    this.setState({isChecked: false});
     const el =  document.getElementById('overlay');
     el.style.display = 'block'; 
   }
@@ -266,6 +267,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   closeModel() {
+   
     document.getElementById('overlay').style.display = 'none';
   }
   
