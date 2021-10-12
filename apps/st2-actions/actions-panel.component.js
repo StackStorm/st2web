@@ -211,38 +211,6 @@ export default class ActionsPanel extends React.Component {
     });
   }
 
-  handleClone(srcPack,srcAction, destAction,destPack, overwrite ) {
-    return store.dispatch({
-      type: 'CLONE_ACTION',
-      promise: api.request({
-        method: 'post',
-        path: `/actions/${srcPack}.${srcAction}/clone`,    
-      },{
-        'dest_pack': destPack, 
-        'dest_action': destAction, 
-        'overwrite': overwrite,
-      
-      })
-        .then((execution) => {
-          notification.success(`Action "${srcAction}" has been cloned  successfully.`);
-
-          this.navigate({
-            id: execution.id,
-            section: 'general',
-          });
-
-          return execution;
-        })
-        .catch((err) => {
-          notification.error('Unable to clone action.', {
-            err,
-            execution_id: err.id,
-          });
-          throw err;
-        }),
-    });
-  }
-
   render() {
     const { groups, filter, collapsed } = this.props;
     const { id, section } = this.urlParams;
@@ -314,11 +282,11 @@ export default class ActionsPanel extends React.Component {
           ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
-          handleClone={(...args) => this.handleClone(...args)}
 
           id={id}
           section={section}
           groups={groups}
+          filter={filter}
         />
       </Panel>
     );

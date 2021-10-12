@@ -58,7 +58,6 @@ export default class ActionsDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
-    handleClone: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -66,7 +65,7 @@ export default class ActionsDetails extends React.Component {
     executions: PropTypes.array,
     entrypoint: PropTypes.string,
     groups: PropTypes.array,
-
+    filter: PropTypes.string,
 
   }
 
@@ -79,6 +78,7 @@ export default class ActionsDetails extends React.Component {
     isChecked: false,
     destinationPack:'',
     destinationAction:'',
+    packs:[],
   }
 
   componentDidMount() {
@@ -137,21 +137,28 @@ export default class ActionsDetails extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const {action,groups} = nextProps;
+    const {action,groups, filter} = nextProps;
+
     const packs = [];
+    if(!filter) {
+      groups && groups.map(data => {
+        packs.push(data.pack);
+      });
 
-    groups && groups.map(data => {
-      packs.push(data.pack);
-    });
-
-    action && action ? packs.splice(packs.findIndex(v => v === action.pack), 1) : '';
-    this.setState({packs : packs});
+      action && action ? packs.splice(packs.findIndex(v => v === action.pack), 1) : '';
+      this.setState({packs : packs});
+    }
   }
 
-  componentDidUpdate(prevProps) {
-    const { id } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { id , filter} = this.props;
+ 
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
+    }
+
+    if(filter && filter !== prevProps.filter) {
+      this.setState({packs: prevState.packs});
     }
   }
 
@@ -261,10 +268,41 @@ export default class ActionsDetails extends React.Component {
     return this.props.handleRun(...args);
   }
 
-  handleClone(e, ...args) {
+  handleClone(e, srcPack,srcAction, destAction,destPack, overwrite) {
     e.preventDefault();
-    document.getElementById('overlay').style.display = 'none';
-    return this.props.handleClone(...args);
+    return store.dispatch({
+      type: 'CLONE_ACTION',
+      promise: api.request({
+        method: 'post',
+        path: `/actions/${srcPack}.${srcAction}/clone`,    
+      },{
+        'dest_pack': destPack, 
+        'dest_action': destAction, 
+        'overwrite': overwrite,
+      
+      })
+        .then((execution) => {
+          document.getElementById('overlay').style.display = 'none';
+
+          notification.success(`Action "${srcAction}" has been cloned  successfully.`);
+
+          this.navigate({
+            id: execution.id,
+            section: 'general',
+          });
+
+          return execution;
+        })
+        .catch((err) => {
+          if (err.response) {
+            const error = document.getElementById('error');
+            error.textContent = err.response.data.faultstring;
+            error.style.color = 'red';
+          }
+          notification.error('Unable to clone action.');
+          throw err;
+        }),
+    });
   }
 
   openModel (e) {
@@ -278,10 +316,14 @@ export default class ActionsDetails extends React.Component {
   }
 
   handleDropdown(e) {
+    const error = document.getElementById('error');
+    error.textContent = '';
     this.setState({destinationPack:e});
   }
 
   handleInput(e) {
+    const error = document.getElementById('error');
+    error.textContent = '';
     this.setState({destinationAction:e});
   }
 
@@ -297,7 +339,6 @@ export default class ActionsDetails extends React.Component {
 
   render() {
     const { section, action, executions, entrypoint} = this.props;
-    
     if (!action) {
       return null;
     }
@@ -438,12 +479,12 @@ export default class ActionsDetails extends React.Component {
         
         {/* Written pop-up box code here  */}
         <div id="overlay" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', minHeight: '-webkit-fill-available', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
-          <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '24%' ,height:'50%' }}> 
+          <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '28%' ,height:'50%' }}> 
             <EnumField name="Destination Pack Name *" value={this.state.destinationPack ? this.state.destinationPack : action.pack} spec={{enum: this.state.packs}}  onChange={(e) => this.handleDropdown(e)} /><br /><br />
             <StringField  style={{height:'30%'}} name="Destination Action Name *" value={this.state.destinationAction} onChange={(e) => this.handleInput(e)} required /><br /><br />
 
             <input id="checkbox" name="checkbox" type="checkbox" checked={this.state.isChecked} value={this.state.isChecked} onChange={(e) => this.handleChange(e)}  /> Overwrite <br /><br /><br />
-
+            <span id="error" /><br /><br />
             <div style={{width:'100%', display:'inline-block'}}>
               <button  onClick={(e) => this.handleClone(e, action.pack,action.name,this.state.destinationAction,this.state.destinationPack, this.state.isChecked )}  type="submit" className="btn" style={{backgroundColor: '#04AA6D' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8',float:'left'}}>Submit</button>
               <button onClick={(e) => this.closeModel(e)} type="close" className="btn cancel" style={{backgroundColor: 'red' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8', float:'right'}}>Close</button>
