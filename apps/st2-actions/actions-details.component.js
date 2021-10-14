@@ -27,6 +27,7 @@ import ActionReporter from '@stackstorm/module-action-reporter';
 import AutoForm from '@stackstorm/module-auto-form';
 import StringField from '@stackstorm/module-auto-form/fields/string';
 import EnumField from '@stackstorm/module-auto-form/fields/enum';
+import get from 'lodash/fp/get';
 
 import {
   FlexTable,
@@ -66,7 +67,12 @@ export default class ActionsDetails extends React.Component {
     entrypoint: PropTypes.string,
     groups: PropTypes.array,
     filter: PropTypes.string,
-
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        ref: PropTypes.string,
+        section: PropTypes.string,
+      }),
+    }),
   }
 
   state = {
@@ -283,14 +289,8 @@ export default class ActionsDetails extends React.Component {
       })
         .then((execution) => {
           document.getElementById('overlay').style.display = 'none';
-
-          notification.success(`Action "${srcAction}" has been cloned  successfully.`);
-
-          this.navigate({
-            id: execution.id,
-            section: 'general',
-          });
-
+          notification.success(`Action "${srcAction}" has been cloned successfully.`);
+          this.getActions();
           return execution;
         })
         .catch((err) => {
@@ -299,10 +299,51 @@ export default class ActionsDetails extends React.Component {
             error.textContent = err.response.data.faultstring;
             error.style.color = 'red';
           }
-          notification.error('Unable to clone action.');
-          throw err;
         }),
     });
+  }
+
+  getActions() {
+    return store.dispatch({
+      type: 'FETCH_GROUPS',
+      promise: api.request({ 
+        path: '/actions', 
+        query: {
+          include_attributes: [
+            'ref',
+            'pack',
+            'name',
+            'description',
+            'runner_type',
+          ],
+        },
+      })
+        .catch((err) => {
+          notification.error('Unable to retrieve actions.', { err });
+          throw err;
+        }),
+    })
+      .then(() => {
+        const { id } = this.urlParams;
+        const { groups } = this.props;
+
+        if (id && groups && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
+          this.navigate({ id: false });
+        }
+      })
+    ;
+  }
+
+  get urlParams() {
+    const {
+      ref = get('groups[0].actions[0].ref', this.props),
+      section = 'general',
+    } = this.props.match.params;
+
+    return {
+      id: ref,
+      section,
+    };
   }
 
   openModel (e) {
