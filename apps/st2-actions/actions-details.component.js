@@ -143,7 +143,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const {action,groups, filter} = nextProps;
+    const {groups, filter} = nextProps;
 
     const packs = [];
     if(!filter) {
@@ -151,7 +151,6 @@ export default class ActionsDetails extends React.Component {
         packs.push(data.pack);
       });
 
-      action && action ? packs.splice(packs.findIndex(v => v === action.pack), 1) : '';
       this.setState({packs : packs});
     }
   }
