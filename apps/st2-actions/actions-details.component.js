@@ -88,6 +88,7 @@ export default class ActionsDetails extends React.Component {
   }
 
   componentDidMount() {
+    const {action, executions} = this.props;
     api.listen().then((source) => {
       this._source = source;
 
@@ -144,7 +145,11 @@ export default class ActionsDetails extends React.Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const {groups, filter} = nextProps;
-
+    const {action} = this.props;
+    if(action && action) {
+      this.setState({destinationPack:action.pack});
+    }
+    
     const packs = [];
     if(!filter) {
       groups && groups.map(data => {
@@ -348,7 +353,7 @@ export default class ActionsDetails extends React.Component {
   openModel (e) {
     const el =  document.getElementById('overlay');
     el.style.display = 'block'; 
-    this.setState({destinationPack: this.state.packs[0],  destinationAction:'', isChecked: false});
+    this.setState({  destinationPack:this.state.destinationPack, destinationAction:'', isChecked: false});
   }
 
   closeModel() {
