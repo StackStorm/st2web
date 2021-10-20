@@ -88,7 +88,6 @@ export default class ActionsDetails extends React.Component {
   }
 
   componentDidMount() {
-    const {action, executions} = this.props;
     api.listen().then((source) => {
       this._source = source;
 
@@ -149,7 +148,7 @@ export default class ActionsDetails extends React.Component {
     if(action && action) {
       this.setState({destinationPack:action.pack});
     }
-    
+
     const packs = [];
     if(!filter) {
       groups && groups.map(data => {
@@ -162,7 +161,7 @@ export default class ActionsDetails extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { id , filter} = this.props;
- 
+
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
     }
@@ -384,6 +383,7 @@ export default class ActionsDetails extends React.Component {
 
   render() {
     const { section, action, executions, entrypoint} = this.props;
+
     if (!action) {
       return null;
     }
@@ -421,7 +421,7 @@ export default class ActionsDetails extends React.Component {
               />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
-              <Button className="st2-forms__button st2-details__toolbar-button"  value="Clone" onClick={(e) => this.openModel(e)}   />
+              <Button disabled={this.props.id !== action.ref} className="st2-forms__button st2-details__toolbar-button"  value="Clone" onClick={(e) => this.openModel(e)}   />
 
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
