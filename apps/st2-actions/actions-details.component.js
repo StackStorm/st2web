@@ -201,6 +201,18 @@ export default class ActionsDetails extends React.Component {
     return false;
   }
 
+  isExpression (value) {
+    if (value.startsWith('{{') && value.endsWith('}}')) {
+      return true;
+    } 
+    else if (value.startsWith('<%') && value.endsWith('%>')) {
+      return true;
+    } 
+    else {
+      return false;
+    }
+  }
+
   isValidInt (value) {
     for ( let n = 0; n < value.length; n += 1) {
       const digit = (value.charCodeAt(n) >= 48 && value.charCodeAt(n) <= 57)  || value.charCodeAt(n) === 45 || value.charCodeAt(n) === 8;
@@ -302,10 +314,12 @@ export default class ActionsDetails extends React.Component {
             <DetailsToolbar key="toolbar">
               <Button  
                 disabled={ 
-                  (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
-                  (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  || 
-                  (this.state.runValue && this.state.runValue.timeout &&  this.isValidInt(this.state.runValue.timeout))  ||
-                  (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit))  
+                  (this.state.runValue && this.state.runValue.timeout && !this.isExpression(this.state.runValue.timeout) && 
+                     (this.isValidInt(this.state.runValue.timeout) ||
+                      this.minMax(this.state.runValue.timeout))) || 
+                  (this.state.runValue && this.state.runValue.limit && !this.isExpression(this.state.runValue.limit) && 
+                     (this.isValidInt(this.state.runValue.limit) ||
+                      this.minMax(this.state.runValue.limit)))
                 }
                 value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} 
               />

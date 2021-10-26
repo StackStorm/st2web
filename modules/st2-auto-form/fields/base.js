@@ -84,7 +84,12 @@ export class BaseTextField extends React.Component {
       return false;
     }
 
+    if (isYaql(v)) {
+      return false;
+    }
+
     return undefined;
+
   }
 
   handleChange(e, value) {
