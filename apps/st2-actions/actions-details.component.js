@@ -392,7 +392,7 @@ export default class ActionsDetails extends React.Component {
     }
   }
   
-   handleDeleteChange(e) {
+  handleDeleteChange(e) {
     const isChecked = document.getElementById('deletecheckbox').checked;
     if(isChecked) {
       this.setState({isRemoveFiles:true});
