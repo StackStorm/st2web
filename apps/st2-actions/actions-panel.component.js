@@ -208,13 +208,16 @@ export default class ActionsPanel extends React.Component {
     });
   }
 
-  handleDelete (ref) {
+  handleDelete (ref,flag) {
     return store.dispatch({
       type: 'DELETE_ACTION',
       ref,
       promise: api.request({
         method: 'delete',
         path: `/actions/${ref}`,
+      },{
+        'remove_files' : flag,
+
       })
         .then((res) => {
           notification.success(`Action "${ref}" has been deleted successfully.`);
