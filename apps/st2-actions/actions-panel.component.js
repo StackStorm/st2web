@@ -223,6 +223,7 @@ export default class ActionsPanel extends React.Component {
           notification.success(`Action "${ref}" has been deleted successfully.`);
           this.navigate({ id: null });
           store.dispatch(flexActions.toggleAll());
+          this.fetchGroups();
           return res;
         })
         .catch((err) => {
