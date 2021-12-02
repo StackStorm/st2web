@@ -34,6 +34,10 @@ export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
 }
 
+export function isYaql(v) {
+  return _.isString(v) && v.startsWith('<%') && v.endsWith('%>');
+}
+
 // TODO: make controlled
 export class BaseTextField extends React.Component {
   static propTypes = {
@@ -80,7 +84,12 @@ export class BaseTextField extends React.Component {
       return false;
     }
 
+    if (isYaql(v)) {
+      return false;
+    }
+
     return undefined;
+
   }
 
   handleChange(e, value) {

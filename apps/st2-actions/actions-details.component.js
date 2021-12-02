@@ -59,6 +59,7 @@ export default class ActionsDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
     handleRun: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
 
     id: PropTypes.string,
     section: PropTypes.string,
@@ -85,6 +86,8 @@ export default class ActionsDetails extends React.Component {
     destinationPack:'',
     destinationAction:'',
     packs:[],
+    isRemoveFiles : false,
+    
   }
 
   componentDidMount() {
@@ -157,6 +160,7 @@ export default class ActionsDetails extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { id , filter} = this.props;
 
+ 
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
     }
@@ -229,6 +233,18 @@ export default class ActionsDetails extends React.Component {
       return true;
     }
     return false;
+  }
+
+  isExpression (value) {
+    if (value.startsWith('{{') && value.endsWith('}}')) {
+      return true;
+    } 
+    else if (value.startsWith('<%') && value.endsWith('%>')) {
+      return true;
+    } 
+    else {
+      return false;
+    }
   }
 
   isValidInt (value) {
@@ -377,6 +393,34 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
+  handleDeleteChange(e) {
+    const isChecked = document.getElementById('deletecheckbox').checked;
+    if(isChecked) {
+      this.setState({isRemoveFiles:true});
+    } 
+    else {
+      this.setState({isRemoveFiles:false});
+    }
+  }
+ 
+  openDeleteModel (e) {
+    this.setState({isRemoveFiles: false});
+    const el =  document.getElementById('delete');
+    el.style.display = 'block'; 
+  }
+
+  handleDelete (e) {
+    e.preventDefault();
+    const { id } = this.props;
+    const {isRemoveFiles}  = this.state;
+    document.getElementById('delete').style.display = 'none';
+    return this.props.handleDelete(id, isRemoveFiles);
+  }
+
+  closeDeleteModel() {
+    document.getElementById('delete').style.display = 'none';
+  }
+
   render() {
     const { section, action, executions, entrypoint} = this.props;
 
@@ -408,16 +452,19 @@ export default class ActionsDetails extends React.Component {
             <DetailsToolbar key="toolbar">
               <Button  
                 disabled={ 
-                  (this.state.runValue && this.state.runValue.timeout &&  this.minMax(this.state.runValue.timeout)) || 
-                  (this.state.runValue && this.state.runValue.limit &&  this.minMax(this.state.runValue.limit))  || 
-                  (this.state.runValue && this.state.runValue.timeout &&  this.isValidInt(this.state.runValue.timeout))  ||
-                  (this.state.runValue && this.state.runValue.limit &&  this.isValidInt(this.state.runValue.limit))  
+                  (this.state.runValue && this.state.runValue.timeout && !this.isExpression(this.state.runValue.timeout) && 
+                     (this.isValidInt(this.state.runValue.timeout) ||
+                      this.minMax(this.state.runValue.timeout))) || 
+                  (this.state.runValue && this.state.runValue.limit && !this.isExpression(this.state.runValue.limit) && 
+                     (this.isValidInt(this.state.runValue.limit) ||
+                      this.minMax(this.state.runValue.limit)))
                 }
                 value="Run" data-test="run_submit" onClick={(e) => this.handleRun(e, action.ref, this.state.runValue, this.state.runTrace || undefined)} 
               />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
               <Button disabled={this.props.id !== action.ref} className="st2-forms__button st2-details__toolbar-button"  value="Clone" onClick={(e) => this.openModel(e)}   />
+              <Button className="st2-forms__button st2-details__toolbar-button"  value="Delete"  onClick={(e) => this.openDeleteModel(e)}  />
 
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
@@ -533,6 +580,17 @@ export default class ActionsDetails extends React.Component {
           </div>
         </div>
 
+
+        <div id="delete" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', minHeight: '-webkit-fill-available', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
+          <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '24%' ,height:'20%' }}>
+            <p> You are about to delete the action. Are you sure? </p>
+            <input id="deletecheckbox" name="checkbox" type="checkbox" checked={this.state.isRemoveFiles} value={this.state.isRemoveFiles} onChange={(e) => this.handleDeleteChange(e)}  /> Remove Files (This operation is irreversible.) <br /><br /><br />
+            <div style={{width:'100%', display:'inline-block'}}>
+              <button  onClick={(e) => this.handleDelete(e)}  type="submit" className="btn" style={{backgroundColor: '#04AA6D' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8',float:'left'}}>Submit</button>
+              <button onClick={(e) => this.closeDeleteModel(e)} type="close" className="btn cancel" style={{backgroundColor: 'red' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8', float:'right'}}>Close</button>
+            </div>
+          </div>
+        </div>
       </PanelDetails>
     );
   }

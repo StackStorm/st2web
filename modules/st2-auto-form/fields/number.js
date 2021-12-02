@@ -14,7 +14,7 @@
 
 import validator from 'validator';
 
-import { BaseTextField, isJinja } from './base';
+import { BaseTextField, isJinja, isYaql } from './base';
 
 export default class NumberField extends BaseTextField {
   static icon = '.5'
@@ -24,11 +24,19 @@ export default class NumberField extends BaseTextField {
       return v;
     }
 
+    if (isYaql(v)) {
+      return v;
+    }
+
     return v !== '' ? validator.toFloat(v) : void 0;
   }
 
   toStateValue(v) {
     if (isJinja(v)) {
+      return v;
+    }
+
+    if (isYaql(v)) {
       return v;
     }
 

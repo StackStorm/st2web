@@ -12,7 +12,7 @@ jobs:
       DEPLOY_PACKAGES: 1
       DEB: bionic focal
       RPM: el7 el8
-      ST2_VERSION: "3.5dev"
+      ST2_VERSION: "3.6dev"
       ST2_HOST: localhost
       ST2_PROTOCOL: http
       ST2_USERNAME: st2admin
@@ -33,8 +33,8 @@ jobs:
             set +e
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm install 10.15.3
-            nvm alias default 10.15.3
+            nvm install 14.16.1
+            nvm alias default 14.16.1
 
             # Each step uses the same `$BASH_ENV`, so need to modify it
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
