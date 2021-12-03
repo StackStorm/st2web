@@ -310,6 +310,8 @@ export default class ActionsPanel extends React.Component {
 
           id={id}
           section={section}
+          groups={groups}
+          filter={filter}
         />
       </Panel>
     );
