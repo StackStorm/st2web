@@ -75,7 +75,7 @@ export default class Menu extends React.Component {
   }
 
   docsLink = 'https://docs.stackstorm.com/'
-  supportLink = 'https://forum.stackstorm.com/'
+  supportLink = 'https://github.com/StackStorm/st2/discussions'
 
   idleLogout() {
     let t;
