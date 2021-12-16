@@ -69,6 +69,7 @@
     "@stackstorm/module-router": "^2.4.3",
     "@stackstorm/module-store": "^2.4.3",
     "acorn": "^6.4.1",
+    "axios": "^0.24.0",
     "elliptic": "^6.5.4",
     "js-yaml": "^3.13.1",
     "kind-of": "^6.0.3",
