@@ -26,6 +26,9 @@ import { Link } from '@stackstorm/module-router';
 import ActionReporter from '@stackstorm/module-action-reporter';
 import AutoForm from '@stackstorm/module-auto-form';
 import StringField from '@stackstorm/module-auto-form/fields/string';
+import EnumField from '@stackstorm/module-auto-form/fields/enum';
+import get from 'lodash/fp/get';
+
 import {
   FlexTable,
   FlexTableRow,
@@ -48,7 +51,6 @@ import {
 } from '@stackstorm/module-panel';
 import Time from '@stackstorm/module-time';
 
-
 @connect((state) => {
   const { action, executions, entrypoint } = state;
   return { action, executions, entrypoint };
@@ -64,6 +66,14 @@ export default class ActionsDetails extends React.Component {
     action: PropTypes.object,
     executions: PropTypes.array,
     entrypoint: PropTypes.string,
+    groups: PropTypes.array,
+    filter: PropTypes.string,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        ref: PropTypes.string,
+        section: PropTypes.string,
+      }),
+    }),
   }
 
   state = {
@@ -71,7 +81,13 @@ export default class ActionsDetails extends React.Component {
     runValue: null,
     runTrace: null,
     executionsVisible: {},
-    isChecked:false,
+    openModel: false,
+    isChecked: false,
+    destinationPack:'',
+    destinationAction:'',
+    packs:[],
+    isRemoveFiles : false,
+    
   }
 
   componentDidMount() {
@@ -129,10 +145,28 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { id } = this.props;
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const {groups, filter} = nextProps;
+    const packs = [];
+    if(!filter) {
+      groups && groups.map(data => {
+        packs.push(data.pack);
+      });
+
+      this.setState({packs : packs});
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { id , filter} = this.props;
+
+ 
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
+    }
+
+    if(filter && filter !== prevProps.filter) {
+      this.setState({packs: prevState.packs});
     }
   }
 
@@ -254,6 +288,101 @@ export default class ActionsDetails extends React.Component {
     return this.props.handleRun(...args);
   }
 
+  handleClone(e, srcPack,srcAction, destAction,destPack, overwrite) {
+    e.preventDefault();
+    return store.dispatch({
+      type: 'CLONE_ACTION',
+      promise: api.request({
+        method: 'post',
+        path: `/actions/${srcPack}.${srcAction}/clone`,    
+      },{
+        'dest_pack': destPack, 
+        'dest_action': destAction, 
+        'overwrite': overwrite,
+      
+      })
+        .then((execution) => {
+          document.getElementById('overlay').style.display = 'none';
+          notification.success(`Action "${srcAction}" has been cloned successfully.`);
+          this.getActions();
+          return execution;
+        })
+        .catch((err) => {
+          if (err.response) {
+            const error = document.getElementById('error');
+            error.textContent = err.response.data.faultstring;
+            error.style.color = 'red';
+          }
+        }),
+    });
+  }
+
+  getActions() {
+    return store.dispatch({
+      type: 'FETCH_GROUPS',
+      promise: api.request({ 
+        path: '/actions', 
+        query: {
+          include_attributes: [
+            'ref',
+            'pack',
+            'name',
+            'description',
+            'runner_type',
+          ],
+        },
+      })
+        .catch((err) => {
+          notification.error('Unable to retrieve actions.', { err });
+          throw err;
+        }),
+    })
+      .then(() => {
+        const { id } = this.urlParams;
+        const { groups } = this.props;
+
+        if (id && groups && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
+          this.navigate({ id: false });
+        }
+      })
+    ;
+  }
+
+  get urlParams() {
+    const {
+      ref = get('groups[0].actions[0].ref', this.props),
+      section = 'general',
+    } = this.props.match.params;
+
+    return {
+      id: ref,
+      section,
+    };
+  }
+
+  openModel (e) {
+    const {action} = this.props;
+    const el =  document.getElementById('overlay');
+    el.style.display = 'block'; 
+    this.setState({ destinationPack:action.pack, destinationAction:'', isChecked: false});
+  }
+
+  closeModel() {
+    document.getElementById('overlay').style.display = 'none';
+  }
+
+  handleDropdown(e) {
+    const error = document.getElementById('error');
+    error.textContent = '';
+    this.setState({destinationPack:e});
+  }
+
+  handleInput(e) {
+    const error = document.getElementById('error');
+    error.textContent = '';
+    this.setState({destinationAction:e});
+  }
+
   handleChange(e) {
     const isChecked = document.getElementById('checkbox').checked;
     if(isChecked) {
@@ -264,28 +393,37 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
-  openModel (e) {
-    this.setState({isChecked: false});
-    const el =  document.getElementById('overlay');
+  handleDeleteChange(e) {
+    const isChecked = document.getElementById('deletecheckbox').checked;
+    if(isChecked) {
+      this.setState({isRemoveFiles:true});
+    } 
+    else {
+      this.setState({isRemoveFiles:false});
+    }
+  }
+ 
+  openDeleteModel (e) {
+    this.setState({isRemoveFiles: false});
+    const el =  document.getElementById('delete');
     el.style.display = 'block'; 
   }
 
   handleDelete (e) {
     e.preventDefault();
     const { id } = this.props;
-    const {isChecked}  = this.state;
-    document.getElementById('overlay').style.display = 'none';
-    return this.props.handleDelete(id, isChecked);
+    const {isRemoveFiles}  = this.state;
+    document.getElementById('delete').style.display = 'none';
+    return this.props.handleDelete(id, isRemoveFiles);
   }
 
-  closeModel() {
-   
-    document.getElementById('overlay').style.display = 'none';
+  closeDeleteModel() {
+    document.getElementById('delete').style.display = 'none';
   }
-  
 
   render() {
-    const { section, action, executions, entrypoint } = this.props;
+    const { section, action, executions, entrypoint} = this.props;
+
     if (!action) {
       return null;
     }
@@ -325,7 +463,8 @@ export default class ActionsDetails extends React.Component {
               />
               <Button flat value="Preview" onClick={() => this.handleToggleRunPreview()} />
               <DetailsToolbarSeparator />
-              <Button className="st2-forms__button st2-details__toolbar-button"  value="Delete"  onClick={(e) => this.openModel(e)}  />
+              <Button disabled={this.props.id !== action.ref} className="st2-forms__button st2-details__toolbar-button"  value="Clone" onClick={(e) => this.openModel(e)}   />
+              <Button className="st2-forms__button st2-details__toolbar-button"  value="Delete" onClick={(e) => this.openDeleteModel(e)}  />
 
               { action.runner_type === 'mistral-v2' || action.runner_type === 'orquesta' ? (
                 <Link
@@ -425,15 +564,29 @@ export default class ActionsDetails extends React.Component {
             </DetailsPanel>
           </DetailsBody>
         ) : null }
-
-
+        
+        {/* Written pop-up box code here  */}
         <div id="overlay" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', minHeight: '-webkit-fill-available', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
+          <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '28%' ,height:'50%' }}> 
+            <EnumField name="Destination Pack Name *" value={this.state.destinationPack ? this.state.destinationPack : action.pack} spec={{enum: this.state.packs}}  onChange={(e) => this.handleDropdown(e)} /><br /><br />
+            <StringField  style={{height:'30%'}} name="Destination Action Name *" value={this.state.destinationAction} onChange={(e) => this.handleInput(e)} required /><br /><br />
+
+            <input id="checkbox" name="checkbox" type="checkbox" checked={this.state.isChecked} value={this.state.isChecked} onChange={(e) => this.handleChange(e)}  /> Overwrite <br /><br /><br />
+            <span id="error" /><br /><br />
+            <div style={{width:'100%', display:'inline-block'}}>
+              <button  onClick={(e) => this.handleClone(e, action.pack,action.name,this.state.destinationAction,this.state.destinationPack, this.state.isChecked )}  type="submit" className="btn" style={{backgroundColor: '#04AA6D' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8',float:'left'}}>Submit</button>
+              <button onClick={(e) => this.closeModel(e)} type="close" className="btn cancel" style={{backgroundColor: 'red' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8', float:'right'}}>Close</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="delete" className="web_dialog_overlay" style={{display: 'none', position: 'fixed', zIndex: '10', left: '0',top: '0',width: '100%', minHeight: '-webkit-fill-available', overflow: 'auto', backgroundColor: 'rgba(0,0,0,0.4)' }}> 
           <div id="dialog" className="web_dialog" style={{backgroundColor: '#fefefe' ,margin: '15% auto',padding: '20px', border: '1px solid #888' ,width: '24%' ,height:'20%' }}>
             <p> You are about to delete the action. Are you sure? </p>
-            <input id="checkbox" name="checkbox" type="checkbox" checked={this.state.isChecked} value={this.state.isChecked} onChange={(e) => this.handleChange(e)}  /> Remove Files (This operation is irreversible.) <br /><br /><br />
+            <input id="deletecheckbox" name="checkbox" type="checkbox" checked={this.state.isRemoveFiles} value={this.state.isRemoveFiles} onChange={(e) => this.handleDeleteChange(e)} /> Remove Files (This operation is irreversible.) <br /><br /><br />
             <div style={{width:'100%', display:'inline-block'}}>
               <button  onClick={(e) => this.handleDelete(e)}  type="submit" className="btn" style={{backgroundColor: '#04AA6D' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8',float:'left'}}>Submit</button>
-              <button onClick={(e) => this.closeModel(e)} type="close" className="btn cancel" style={{backgroundColor: 'red' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8', float:'right'}}>Close</button>
+              <button onClick={(e) => this.closeDeleteModel(e)} type="close" className="btn cancel" style={{backgroundColor: 'red' , color: 'white',padding: '16px 20px' ,border: 'none', cursor: 'pointer', width: '45%' ,marginBottom:'10px' , opacity: '0.8', float:'right'}}>Close</button>
             </div>
           </div>
         </div>
