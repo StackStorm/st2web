@@ -164,7 +164,7 @@ export default class Login extends React.Component {
   }
 
   docsLink = 'https://docs.stackstorm.com/'
-  supportLink = 'https://forum.stackstorm.com/'
+  supportLink = 'https://github.com/StackStorm/st2/discussions'
 
   connect(e) {
     e.preventDefault();
