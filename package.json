@@ -88,6 +88,7 @@
     "react-redux": "7.0.2",
     "redux": "^4.0.1",
     "set-value": "^4.1.0",
+    "trim-newlines": "^4.0.2",
     "tar": "^6.1.11",
     "urijs": "^1.19.7",
     "websocket-extensions": "^0.1.4"
