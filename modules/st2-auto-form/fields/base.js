@@ -122,10 +122,9 @@ export class BaseTextField extends React.Component {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
-    const isFromHistoryRerun = window.location.href.includes('rerun');
     const wrapperProps = Object.assign({}, this.props);
 
-    let isFromHistoryRerun = false;
+    let isFromHistoryRerun;
     if(document.URL.indexOf('rerun') === -1) {
       isFromHistoryRerun = false;
     }
@@ -164,10 +163,9 @@ export class BaseTextareaField extends BaseTextField {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
-    const isFromHistoryRerun = window.location.href.includes('rerun');
 
     const wrapperProps = Object.assign({}, this.props);
-    let isFromHistoryRerun = false;
+    let isFromHistoryRerun;
     if(document.URL.indexOf('rerun') === -1) {
       isFromHistoryRerun = false;
     }
