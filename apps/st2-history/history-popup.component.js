@@ -42,9 +42,90 @@ export default class HistoryPopup extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    const obj = props.spec.properties;
+    let updatepayload ;
+
+    for (const [ key, value ] of Object.entries(obj)) {
+
+      if (!(key in props.payload) &&  ('default' in value)) {
+        const objValue = value.default;
+        if(typeof (value.default) === 'string') {
+          if (objValue.startsWith('{{') && objValue.endsWith('}}')) {
+            const res = value.default.replace('{{',  '');
+            const res1 = res.replace('}}', '');
+            const keyname =  key;
+            const newobj = {};
+            newobj[keyname] = res1;
+            updatepayload =  Object.assign(props.payload, newobj);
+          }
+          else if(objValue.startsWith('<%') && objValue.endsWith('%>')) {            
+            const res = value.default.replace('<%',  '');
+            const res1 = res.replace('%>', '');
+            const keyname =  key;
+            const newobj = {};
+            newobj[keyname] = res1;
+            updatepayload =  Object.assign(props.payload, newobj);
+          }
+          else {
+            const keyname =  key;
+            const newobj = {};
+            newobj[keyname] = value.default;
+            updatepayload =  Object.assign(props.payload, newobj);
+          }
+        }
+        else {
+          const keyname =  key;
+          const newobj = {};
+          newobj[keyname] = value.default;
+          updatepayload =  Object.assign(props.payload, newobj);
+        }
+      }
+      else if((key in props.payload) &&  ('default' in value)) {
+        const objValue = value.default;
+        if('secret' in value) {
+          const newvalue = props.payload[key];
+          const keyname =  key;
+          const newobj = {};
+          newobj[keyname] = newvalue;
+          updatepayload =  Object.assign(props.payload, newobj);
+        }
+        else {
+          if(typeof (value.default) === 'string' ) {
+            if (objValue.startsWith('{{') && objValue.endsWith('}}')) {  
+              const res = value.default.replace('{{',  '');
+              const res1 = res.replace('}}', '');
+              const keyname =  key;
+              const newobj = {};
+              newobj[keyname] = res1;
+              updatepayload =  Object.assign(props.payload, newobj);
+            }
+            else if(objValue.startsWith('<%') && objValue.endsWith('%>')) {  
+              const res = value.default.replace('<%',  '');
+              const res1 = res.replace('%>', '');
+              const keyname =  key;
+              const newobj = {};
+              newobj[keyname] = res1;
+              updatepayload =  Object.assign(props.payload, newobj);
+            }
+            else{
+              const keyname =  key;
+              const newobj = {};
+              newobj[keyname] = value.default;
+              updatepayload =  Object.assign(props.payload, newobj);
+            }
+          }
+          else{
+            const keyname =  key;
+            const newobj = {};
+            newobj[keyname] = value.default;
+            updatepayload =  Object.assign(props.payload, newobj);
+          }
+        }
+      }
+    }
     return {
       payload: {
-        ...props.payload,
+        ...updatepayload,
       },
       payloadCopy: {
         ...props.payload,       // Here first made copy of data for later comparison
