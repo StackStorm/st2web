@@ -274,7 +274,7 @@ export default class HistoryDetails extends React.Component {
         { section === 'rerun' ? (
           <HistoryPopup
             action={execution.action.ref}
-            payload={execution.parameters}
+            payload={actionParameters}
             spec={{
               type: 'object',
               properties: {
