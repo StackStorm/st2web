@@ -156,6 +156,7 @@ export class BaseTextareaField extends BaseTextField {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
+    const isFromHistoryRerun = window.location.href.includes('rerun');
 
     const wrapperProps = Object.assign({}, this.props);
 
