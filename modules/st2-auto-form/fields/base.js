@@ -122,7 +122,7 @@ export class BaseTextField extends React.Component {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
-
+    const isFromHistoryRerun = window.location.href.includes('rerun');
     const wrapperProps = Object.assign({}, this.props);
 
     if (invalid) {
@@ -132,7 +132,7 @@ export class BaseTextField extends React.Component {
     const inputProps = {
       className: 'st2-auto-form__field',
       type: spec.secret ? 'password' : 'text',
-      placeholder: !window.location.href.includes('rerun') ? this.toStateValue(spec.default) :'',
+      placeholder: !isFromHistoryRerun ? this.toStateValue(spec.default) :'',
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
@@ -165,7 +165,7 @@ export class BaseTextareaField extends BaseTextField {
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: !window.location.href.includes('rerun') ? this.toStateValue(spec.default) : '',
+      placeholder: !isFromHistoryRerun ? this.toStateValue(spec.default) : '',
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
