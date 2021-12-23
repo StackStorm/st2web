@@ -95,7 +95,7 @@ export class BaseTextField extends React.Component {
   handleChange(e, value) {
     e.stopPropagation();
     let spec;
-    if(window.location.href.includes('rerun')) {
+    if(document.URL.indexOf('rerun') !== -1) {
       if(value === ''  || value === ' ' || value === undefined &&  'default' in this.props.spec) {
         const keyname =  'required';
         const newobj = {};
@@ -125,6 +125,14 @@ export class BaseTextField extends React.Component {
     const isFromHistoryRerun = window.location.href.includes('rerun');
     const wrapperProps = Object.assign({}, this.props);
 
+    let isFromHistoryRerun = false;
+    if(document.URL.indexOf('rerun') === -1) {
+      isFromHistoryRerun = false;
+    }
+    else {
+      isFromHistoryRerun = true;
+    }
+    
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
@@ -159,7 +167,14 @@ export class BaseTextareaField extends BaseTextField {
     const isFromHistoryRerun = window.location.href.includes('rerun');
 
     const wrapperProps = Object.assign({}, this.props);
-
+    let isFromHistoryRerun = false;
+    if(document.URL.indexOf('rerun') === -1) {
+      isFromHistoryRerun = false;
+    }
+    else {
+      isFromHistoryRerun = true;
+    }
+    
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
