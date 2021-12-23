@@ -94,8 +94,17 @@ export class BaseTextField extends React.Component {
 
   handleChange(e, value) {
     e.stopPropagation();
+    let spec;
+    if(window.location.href.includes('rerun')) {
+      if(value === ''  || value === ' ' || value === undefined &&  'default' in this.props.spec) {
+        const keyname =  'required';
+        const newobj = {};
+        newobj[keyname] = true;
+        spec = Object.assign(this.props.spec, newobj);
+      }
+    }
     
-    const invalid = this.validate(value, this.props.spec);
+    const invalid = this.validate(value, spec);
     
     if (this.props.name === 'timeout' || this.props.name === 'limit') {
       this.setState({ value, invalid }, this.props.onChange ? this.emitChange : undefined);
@@ -123,7 +132,7 @@ export class BaseTextField extends React.Component {
     const inputProps = {
       className: 'st2-auto-form__field',
       type: spec.secret ? 'password' : 'text',
-      placeholder: this.toStateValue(spec.default),
+      placeholder: !window.location.href.includes('rerun') ? this.toStateValue(spec.default) :'',
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
@@ -156,7 +165,7 @@ export class BaseTextareaField extends BaseTextField {
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: this.toStateValue(spec.default),
+      placeholder: !window.location.href.includes('rerun') ? this.toStateValue(spec.default) : '',
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
