@@ -106,7 +106,12 @@ export default class HistoryDetails extends React.Component {
 
   render() {
     const { section, execution, displayUTC, handleToggleUTC } = this.props;
-
+    
+    let actionParameters; 
+    if(execution) {
+      actionParameters = {...execution.parameters };  
+    } 
+    
     if (!execution) {
       return null;
     }
