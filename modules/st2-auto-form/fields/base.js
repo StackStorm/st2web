@@ -139,7 +139,7 @@ export class BaseTextField extends React.Component {
     const inputProps = {
       className: 'st2-auto-form__field',
       type: spec.secret ? 'password' : 'text',
-      placeholder: !isFromHistoryRerun ? this.toStateValue(spec.default) :'',
+      placeholder: !isFromHistoryRerun && this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
@@ -179,7 +179,7 @@ export class BaseTextareaField extends BaseTextField {
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: !isFromHistoryRerun ? this.toStateValue(spec.default) : '',
+      placeholder: !isFromHistoryRerun && this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
