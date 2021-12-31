@@ -47,7 +47,7 @@ export default class HistoryPopup extends React.Component {
 
     for (const [ key, value ] of Object.entries(obj)) {
 
-      if (!(key in props.payload) &&  ('default' in value)) {
+      if (!(key in props.payload) &&  ('default' in value) && !('immutable' in value)) {
         const objValue = value.default;
         if(typeof (value.default) === 'string') {
           if (objValue.startsWith('{{') && objValue.endsWith('}}')) {
