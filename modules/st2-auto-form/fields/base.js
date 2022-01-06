@@ -76,32 +76,10 @@ export class BaseTextField extends React.Component {
   }
 
   validate(v, spec={}) {
-    let newSpec;
-    if(document.URL && document.URL.indexOf('rerun') !== -1) {
-      v = v.split(' ').join('');
-      
-      if((v === '' || v === undefined) && 'default' in spec) {
-        const keyname =  'required';
-        const newobj = {};
-        newobj[keyname] = true;
-        newSpec = Object.assign(spec, newobj);
-        if ((v === '' || v === undefined) && newSpec.required) {
-          return 'parameter is required';
-        }
-      }
-      else {
-        if ((v === '' || v === undefined) && spec.required) {
-          return 'parameter is required';
-        }
-      }
-      
-    }
-    else {
+    if ((v === '' || v === undefined) && spec.required) {
+       return 'parameter is required';
+     }
     
-      if ((v === '' || v === undefined) && spec.required) {
-        return 'parameter is required';
-      }
-    }
 
     if (isJinja(v)) {
       return false;
@@ -136,14 +114,6 @@ export class BaseTextField extends React.Component {
     const { invalid } = this.state;
     const { spec={} } = this.props;
     const wrapperProps = Object.assign({}, this.props);
-
-    let isFromHistoryRerun;
-    if(document.URL && document.URL.indexOf('rerun') === -1) {
-      isFromHistoryRerun = false;
-    }
-    else {
-      isFromHistoryRerun = true;
-    }
     
     if (invalid) {
       wrapperProps.invalid = invalid;
@@ -152,7 +122,7 @@ export class BaseTextField extends React.Component {
     const inputProps = {
       className: 'st2-auto-form__field',
       type: spec.secret ? 'password' : 'text',
-      placeholder: !isFromHistoryRerun ? this.toStateValue(spec.default) : '',
+      placeholder:this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
@@ -178,13 +148,6 @@ export class BaseTextareaField extends BaseTextField {
     const { spec={} } = this.props;
 
     const wrapperProps = Object.assign({}, this.props);
-    let isFromHistoryRerun;
-    if(document.URL && document.URL.indexOf('rerun') === -1) {
-      isFromHistoryRerun = false;
-    }
-    else {
-      isFromHistoryRerun = true;
-    }
     
     if (invalid) {
       wrapperProps.invalid = invalid;
@@ -192,7 +155,7 @@ export class BaseTextareaField extends BaseTextField {
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: !isFromHistoryRerun ? this.toStateValue(spec.default) : this.toStateValue(undefined),
+      placeholder:  this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
