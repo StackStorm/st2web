@@ -91,13 +91,8 @@ describe('AutoForm ArrayField', () => {
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
-    if(c.field().props.placeholder === '') {  // this condition handles when in rerun action we remove value of fields having default value then default value will not display in placeholder so in that case we are sending empty string
-      expect(c.field().props.placeholder).to.be.equal('');
-
-    } 
-    else {
-      expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
-    }
+    expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
+    
   });
 
   it('allows you to put a jinja template in the field', () => {
