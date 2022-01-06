@@ -77,8 +77,8 @@ export class BaseTextField extends React.Component {
 
   validate(v, spec={}) {
     if ((v === '' || v === undefined) && spec.required) {
-       return 'parameter is required';
-     }
+      return 'parameter is required';
+    }
     
 
     if (isJinja(v)) {
