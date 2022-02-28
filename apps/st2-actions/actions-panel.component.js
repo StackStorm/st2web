@@ -303,7 +303,6 @@ export default class ActionsPanel extends React.Component {
         </PanelView>
 
         <ActionsDetails
-          ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
           handleDelete={(...arg) => this.handleDelete(...arg)}
