@@ -221,7 +221,7 @@ export default class HistoryDetails extends React.Component {
                   <DetailsPanelBody>
                     { execution.trigger.type ? (
                       <DetailsPanelBodyLine label="Trigger">
-                        { execution.trigger.type }
+                        <Link to={`/triggers/${execution.trigger.type}`}>{execution.trigger.type}</Link>
                       </DetailsPanelBodyLine>
                     ) : null }
                     { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
