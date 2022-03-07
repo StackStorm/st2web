@@ -51,6 +51,12 @@ const types = {
   'timediff_gt': 'Later Than',
   'exists': 'Exists',
   'nexists': 'Doesn\'t Exist',
+  'search': 'Search',
+};
+
+const searchConditions = {
+  'any': "Any",
+  'all': "All",
 };
 
 export default class Criteria extends React.Component {
@@ -65,6 +71,54 @@ export default class Criteria extends React.Component {
 
   static defaultProps = {
     disabled: false,
+  }
+
+  handleChangeSearchCondition(key, condition) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        condition
+      },
+    });
+  }
+
+  handleChangeSearchPattern(key, pattern) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...data[key]['pattern'],
+          ['item.data']: {
+            ...data[key]['pattern']['item.data'],
+            pattern,
+          }
+        }
+      },
+    });
+  }
+
+  handleChangeSearchType(key, type) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...data[key]['pattern'],
+          ['item.data']: {
+            ...data[key]['pattern']['item.data'],
+            type,
+          }
+        }
+      },
+    });
   }
 
   handleChangeKey(oldKey, key) {
@@ -131,7 +185,7 @@ export default class Criteria extends React.Component {
     return (
       <div {...props} className={cx(style.component, flat && [ 'st2-auto-form--flat', style.flat ], className)}>
         <div>
-          { _.map(data, ({ type, pattern }, key) => (
+          { _.map(data, ({ type, pattern, condition }, key) => (
             <div className={style.line} key={key}>
               <AutoFormCombobox
                 className={style.entity}
@@ -150,15 +204,52 @@ export default class Criteria extends React.Component {
                 }}
                 onChange={(value) => this.handleChangeType(key, value)}
               />
-              <AutoFormInput
-                className={style.entity}
-                disabled={disabled}
-                data={pattern}
-                spec={{
-                  required: true,
-                }}
-                onChange={(value) => this.handleChangePattern(key, value)}
-              />
+                            { type === 'search' ? (
+                <>
+                  <AutoFormSelect
+                    name="Condition"
+                    className={style.entity}
+                    disabled={disabled}
+                    data={condition}
+                    spec={{
+                      required: true,
+                      enum: searchConditions,
+                    }}
+                    onChange={(value) => this.handleChangeSearchCondition(key, value)}
+                  />
+                  <AutoFormInput
+                    name={"Pattern"}
+                    className={style.entity}
+                    disabled={disabled}
+                    data={pattern['item.data'] ? pattern['item.data'].pattern : ""}
+                    spec={{
+                      required: true,
+                    }}
+                    onChange={(value) => this.handleChangeSearchPattern(key, value)}
+                  />
+                  <AutoFormSelect
+                    name={"Type"}
+                    className={style.entity}
+                    disabled={disabled}
+                    data={pattern['item.data'] ? pattern['item.data'].type : ""}
+                    spec={{
+                      required: true,
+                      enum: types,
+                    }}
+                    onChange={(value) => this.handleChangeSearchType(key, value)}
+                  />
+                </>
+              ) : (
+                <AutoFormInput
+                  className={style.entity}
+                  disabled={disabled}
+                  data={pattern}
+                  spec={{
+                    required: true,
+                  }}
+                  onChange={(value) => this.handleChangePattern(key, value)}
+                />
+              )}
               { disabled ? null :
                 <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
               }

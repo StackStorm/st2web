@@ -370,11 +370,18 @@ export class DetailsCriteriaLine extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     type: PropTypes.string,
-    pattern: PropTypes.string,
+    pattern: PropTypes.any,
+    condition: PropTypes.string,
   }
 
   render() {
-    const { name, type, pattern } = this.props;
+    const { name, type, pattern, condition } = this.props;
+
+    const search = type !== "search" ? null : {
+      condition,
+      pattern: pattern["item.data"].pattern,
+      type: pattern["item.data"].type
+    };
 
     return (
       <div className="st2-details__line">
@@ -385,7 +392,15 @@ export class DetailsCriteriaLine extends React.Component {
           { type }
         </div>
         <div className="st2-details__line-value">
-          { pattern }
+          { search ? (
+            <>
+              Condition: <strong>{search.condition}</strong>
+              <br/>
+              Pattern: <strong>{search.pattern}</strong>
+              <br/>
+              Type: <strong>{search.type}</strong>
+            </>
+          ) : pattern }
         </div>
       </div>
     );
