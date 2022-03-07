@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import { Provider, connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
-import { pick, mapValues, get } from 'lodash';
+import { mapValues, get } from 'lodash';
 import cx from 'classnames';
 import url from 'url';
 import Menu from '@stackstorm/module-menu';
