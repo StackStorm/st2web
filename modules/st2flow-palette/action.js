@@ -67,11 +67,22 @@ export default class Action extends Component<{
 
   render() {
     const { action } = this.props;
+    const supportedRunnerTypes = {
+      'orquesta': href,
+      'mistral-v2': href
+    };
+
     return (
-      <div className={this.style.action} ref={this.actionRef} draggable>
+      <a
+        draggable
+        className={this.style.action}
+        ref={this.actionRef}
+        href={supportedRunnerTypes[action.runner_type]}
+        target="_blank"
+        rel="noopener noreferrer">
         <div className={this.style.actionName}>{ action.ref }</div>
         <div className={this.style.actionDescription}>{ action.description }</div>
-      </div>
+      </a>
     );
   }
 }

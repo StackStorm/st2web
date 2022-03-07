@@ -34,18 +34,6 @@ import globalStore from '@stackstorm/module-store';
 import store from './store';
 import style from './style.css';
 
-function guardKeyHandlers(obj, names) {
-  const filteredObj = pick(obj, names);
-  return mapValues(filteredObj, fn => {
-    return e => {
-      if(e.target === document.body) {
-        e.preventDefault();
-        fn.call(obj);
-      }
-    };
-  });
-}
-
 const POLL_INTERVAL = 5000;
 
 @connect(
@@ -286,9 +274,37 @@ export default class Workflows extends Component {
   style = style
 
   keyMap = {
-    undo: [ 'ctrl+z', 'meta+z' ],
-    redo: [ 'ctrl+shift+z', 'meta+shift+z' ],
+    copy: [ 'ctrl+c', 'command+c', 'meta+c' ],
+    cut: [ 'ctrl+x', 'command+x', 'meta+x' ],
+    paste: [ 'ctrl+v', 'command+v', 'meta+v' ],
+    open: [ 'ctrl+o', 'command+o', 'meta+o' ],
+    undo: [ 'ctrl+z', 'command+z', 'meta+z' ],
+    redo: [ 'ctrl+shift+z', 'command+shift+z', 'meta+shift+z' ],
+    save: [ 'ctrl+s', 'command+s', 'meta+s' ],
     handleTaskDelete: [ 'del', 'backspace' ],
+  }
+
+  keyHandlers = {
+    undo: () => {
+      store.dispatch({ type: 'FLOW_UNDO' });
+    },
+    redo: () => {
+      store.dispatch({ type: 'FLOW_REDO' });
+    },
+    save: (x) => {
+      x.preventDefault();
+      x.stopPropagation();
+      this.save().then(() => null);
+    },
+    copy: () => {
+      store.dispatch({ type: 'PUSH_WARNING', source: 'icon-save', message: 'Select a task to copy' });
+    },
+    cut: () => {
+      store.dispatch({ type: 'PUSH_WARNING', source: 'icon-save', message: 'Nothing to cut' });
+    },
+    paste: () => {
+      store.dispatch({ type: 'PUSH_WARNING', source: 'icon-save', message: 'Nothing to paste' });
+    },
   }
 
   render() {
@@ -316,8 +332,7 @@ export default class Workflows extends Component {
                   <HotKeys
                     style={{ flex: 1}}
                     keyMap={this.keyMap}
-                    attach={document.body}
-                    handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
+                    handlers={this.keyHandlers}
                   >
                     <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} saveData={e => this.save()} dirtyflag={this.props.dirty}>
                       <Toolbar>
