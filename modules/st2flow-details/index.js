@@ -91,6 +91,8 @@ export default class Details extends Component<{
     navigate: PropTypes.func,
 
     actions: PropTypes.array,
+
+    onChange: PropTypes.func,
   }
 
   sections = [{
