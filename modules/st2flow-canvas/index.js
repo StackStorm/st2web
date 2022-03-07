@@ -383,7 +383,7 @@ export default class Canvas extends Component {
       // finally, place the unplaced tasks.  using handleTaskMove will also ensure
       //   that the placement gets set on the model and the YAML.
       needsCoords.forEach(({task, transitionsTo}) => {
-        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo),true);
+        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo), true);
       });
     }
   }
@@ -572,15 +572,15 @@ export default class Canvas extends Component {
     return false;
   }
 
-  handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint,autoSave) => {
+  handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint, autoSave = true) => {
     const x = points.x;
     const y = points.y;
     const coords = {x, y};
     this.props.issueModelCommand('updateTask', task, { coords });
     
-    if(autoSave && !this.props.dirtyflag) {
-      await this.props.fetchActionscalled();
+    if (autoSave && this.props.dirtyflag) {
       this.props.saveData();
+      await this.props.fetchActionscalled();
     }  
    
   }
@@ -603,16 +603,25 @@ export default class Canvas extends Component {
     this.props.navigate({ toTasks: undefined, task: task.name });
   }
 
-  handleTaskDelete = (task: TaskRefInterface) => {
+  handleTaskDelete = (task: TaskRefInterface, autosave = true) => {
     this.props.issueModelCommand('deleteTask', task);
+    if (autosave) {
+      this.props.saveData();
+    }
   }
 
-  handleTaskConnect = (to: TaskRefInterface, from: TaskRefInterface) => {
+  handleTaskConnect = (to: TaskRefInterface, from: TaskRefInterface, autosave = true) => {
     this.props.issueModelCommand('addTransition', { from, to: [ to ] });
+    if (autosave) {
+      this.props.saveData();
+    }
   }
 
-  handleTransitionDelete = (transition: TransitionInterface) => {
+  handleTransitionDelete = (transition: TransitionInterface, autosave = true) => {
     this.props.issueModelCommand('deleteTransition', transition);
+    if (autosave) {
+      this.props.saveData();
+    }
   }
 
   get notifications() : Array<NotificationInterface> {
@@ -749,7 +758,7 @@ export default class Canvas extends Component {
                       task={task}
                       selected={task.name === navigation.task && !selectedTransitionGroups.length}
                       scale={scale}
-                      onMove={(...a) => this.handleTaskMove(task, ...a,false)}
+                      onMove={(...a) => this.handleTaskMove(task, ...a, true)}
                       onConnect={(...a) => this.handleTaskConnect(task, ...a)}
                       onClick={() => this.handleTaskSelect(task)}
                       onDelete={() => this.handleTaskDelete(task)}

@@ -243,7 +243,7 @@ export default class Workflows extends Component {
  }
 
  save() {
-   const { pack, meta, actions, workflowSource, metaSource } = this.props;
+   const { pack, meta, actions, workflowSource, metaSource, sendSuccess, sendError } = this.props;
    const existingAction = actions.find(e => e.name === meta.name && e.pack === pack);
 
    if (!meta.name) {
@@ -276,12 +276,25 @@ export default class Workflows extends Component {
      return {};
    })();
   
-   store.dispatch({
+   const saveRes = store.dispatch({
      type: 'SAVE_WORKFLOW',
      promise,
    });
+
+   saveRes.then(({ status }) => status === 'success' ? sendSuccess('Workflow saved.') : sendError('Error saving workflow.'));
+
    return promise;
  }
+
+  timer;
+
+  autosave(func) {
+    func.apply(this);
+    clearTimeout(timer);
+    this.timer = setTimeout(() => {
+      this.save();
+    }, 2500);
+  }
 
   style = style
 
@@ -319,24 +332,32 @@ export default class Workflows extends Component {
                     attach={document.body}
                     handlers={guardKeyHandlers(this.props, [ 'undo', 'redo' ])}
                   >
-                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} saveData={e => this.save()} dirtyflag={this.props.dirty}>
+                    <Canvas
+                      className="canvas"
+                      location={location}
+                      match={match}
+                      dirtyflag={this.props.dirty}
+                      fetchActionscalled={e => this.props.fetchActions()}
+                      saveData={e => this.autosave(() => null)}
+                      undo={() => this.autosave(() => undo())}
+                      redo={() => this.autosave(() => redo())}
+                    >
                       <Toolbar>
-                        <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
-                        <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
+                        <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => this.autosave(() => undo())} />
+                        <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => this.autosave(() => redo())} />
                         <ToolbarButton
                           key="rearrange"
                           icon="icon-arrange"
                           title="Rearrange tasks"
                           successMessage="Rearrange complete."
                           errorMessage="Error rearranging workflows."
-                          onClick={() => layout()}
+                          onClick={() => this.autosave(() => layout())}
                         />
                         <ToolbarButton
                           key="save"
                           className={cx(dirty && 'glow')}
                           icon="icon-save"
                           title="Save workflow"
-                          successMessage="Workflow saved."
                           errorMessage="Error saving workflow."
                           onClick={() => this.save()}
                         />
@@ -370,7 +391,7 @@ export default class Workflows extends Component {
                       </Toolbar>
                     </Canvas>
                   </HotKeys>
-                  { !isCollapsed.details && <Details className="details" actions={actions} /> }
+                  { !isCollapsed.details && <Details className="details" actions={actions} onChange={() => this.autosave(() => null)} /> }
                 </div>
               </div>
           

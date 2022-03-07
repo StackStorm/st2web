@@ -112,7 +112,7 @@ export default class Details extends Component<{
   }
 
   render() {
-    const { actions, navigation, navigate } = this.props;
+    const { actions, navigation, navigate, onChange } = this.props;
 
     const { type = 'metadata', asCode } = navigation;
 
@@ -138,7 +138,7 @@ export default class Details extends Component<{
             asCode
               && <MetaEditor />
               // $FlowFixMe Model is populated via decorator
-              || <Meta />
+              || <Meta onChange={() => onChange()} />
           )
         }
         {
