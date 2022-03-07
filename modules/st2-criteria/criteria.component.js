@@ -1,13 +1,13 @@
 // Copyright 2019 Extreme Networks, Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
+// Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
+// distributed under the License is distributed on an 'AS IS' BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
@@ -55,8 +55,8 @@ const types = {
 };
 
 const searchConditions = {
-  'any': "Any",
-  'all': "All",
+  'any': 'Any',
+  'all': 'All',
 };
 
 export default class Criteria extends React.Component {
@@ -80,7 +80,7 @@ export default class Criteria extends React.Component {
       ...data,
       [key]: {
         ...data[key],
-        condition
+        condition,
       },
     });
   }
@@ -93,12 +93,12 @@ export default class Criteria extends React.Component {
       [key]: {
         ...data[key],
         pattern: {
-          ...data[key]['pattern'],
+          ...data[key].pattern,
           ['item.data']: {
-            ...data[key]['pattern']['item.data'],
+            ...data[key].pattern['item.data'],
             pattern,
-          }
-        }
+          },
+        },
       },
     });
   }
@@ -111,12 +111,12 @@ export default class Criteria extends React.Component {
       [key]: {
         ...data[key],
         pattern: {
-          ...data[key]['pattern'],
+          ...data[key].pattern,
           ['item.data']: {
-            ...data[key]['pattern']['item.data'],
+            ...data[key].pattern['item.data'],
             type,
-          }
-        }
+          },
+        },
       },
     });
   }
@@ -204,10 +204,10 @@ export default class Criteria extends React.Component {
                 }}
                 onChange={(value) => this.handleChangeType(key, value)}
               />
-                            { type === 'search' ? (
+              { type === 'search' ? (
                 <>
                   <AutoFormSelect
-                    name="Condition"
+                    name='Condition'
                     className={style.entity}
                     disabled={disabled}
                     data={condition}
@@ -218,20 +218,20 @@ export default class Criteria extends React.Component {
                     onChange={(value) => this.handleChangeSearchCondition(key, value)}
                   />
                   <AutoFormInput
-                    name={"Pattern"}
+                    name={'Pattern'}
                     className={style.entity}
                     disabled={disabled}
-                    data={pattern['item.data'] ? pattern['item.data'].pattern : ""}
+                    data={pattern['item.data'] ? pattern['item.data'].pattern : ''}
                     spec={{
                       required: true,
                     }}
                     onChange={(value) => this.handleChangeSearchPattern(key, value)}
                   />
                   <AutoFormSelect
-                    name={"Type"}
+                    name={'Type'}
                     className={style.entity}
                     disabled={disabled}
-                    data={pattern['item.data'] ? pattern['item.data'].type : ""}
+                    data={pattern['item.data'] ? pattern['item.data'].type : ''}
                     spec={{
                       required: true,
                       enum: types,
@@ -259,10 +259,10 @@ export default class Criteria extends React.Component {
         { disabled ? null : (
           <div className={style.buttons}>
             <input
-              type="button"
-              className="st2-forms__button st2-forms__button--small"
+              type='button'
+              className='st2-forms__button st2-forms__button--small'
               onClick={() => this.handleAdd()}
-              value="Add criteria"
+              value='Add criteria'
             />
           </div>
         ) }

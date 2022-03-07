@@ -1,13 +1,13 @@
 // Copyright 2019 Extreme Networks, Inc.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
+// Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
+// distributed under the License is distributed on an 'AS IS' BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
@@ -174,9 +174,9 @@ export class ToolbarSearch extends React.Component {
       <div {...props} className={cx('st2-panel__toolbar-search', className)}>
         <form>
           <input
-            type="search"
+            type='search'
             className={cx('st2-panel__search-bar', { 'st2-panel__search-bar--hidden': hidden })}
-            data-test="filter"
+            data-test='filter'
             placeholder={title}
             value={value}
             onChange={(e) => onChange && onChange(e)}
@@ -250,7 +250,7 @@ export class Content extends React.Component {
 
     return (
       <div {...props} className={cx('st2-panel__content', className)}>
-        <div className="st2-panel__scroller" ref={(ref) => this._scroller = ref}>
+        <div className='st2-panel__scroller' ref={(ref) => this._scroller = ref}>
           { children }
         </div>
       </div>
@@ -289,15 +289,15 @@ export class DetailsHeader extends React.Component {
 
     return (
       <div {...props} className={cx('st2-details__header', className)}>
-        <div className="st2-details__header-name">
+        <div className='st2-details__header-name'>
           { status ? (
-            <Label className="st2-details__header-label" status={status} short data-test="status" />
+            <Label className='st2-details__header-label' status={status} short data-test='status' />
           ) : null }
-          <div data-test="header_name">
+          <div data-test='header_name'>
             { title }
           </div>
         </div>
-        <div className="st2-details__header-description" data-test="header_description">
+        <div className='st2-details__header-description' data-test='header_description'>
           { subtitle }
         </div>
         { children }
@@ -358,7 +358,7 @@ export class DetailsBody extends React.Component {
 
     return (
       <div {...props} className={cx('st2-details__body', 'st2-details__body--active', className)}>
-        <div className="st2-panel__scroller">
+        <div className='st2-panel__scroller'>
           { children }
         </div>
       </div>
@@ -377,21 +377,21 @@ export class DetailsCriteriaLine extends React.Component {
   render() {
     const { name, type, pattern, condition } = this.props;
 
-    const search = type !== "search" ? null : {
+    const search = type !== 'search' ? null : {
       condition,
-      pattern: pattern["item.data"].pattern,
-      type: pattern["item.data"].type
+      pattern: pattern['item.data'].pattern,
+      type: pattern['item.data'].type
     };
 
     return (
-      <div className="st2-details__line">
-        <div className="st2-details__line-key">
+      <div className='st2-details__line'>
+        <div className='st2-details__line-key'>
           { name }
         </div>
-        <div className="st2-details__line-type">
+        <div className='st2-details__line-type'>
           { type }
         </div>
-        <div className="st2-details__line-value">
+        <div className='st2-details__line-value'>
           { search ? (
             <>
               Condition: <strong>{search.condition}</strong>
@@ -447,11 +447,11 @@ export class DetailsLine extends React.Component {
     }
 
     return (
-      <div className="st2-details__line">
-        <div className="st2-details__line-name">
+      <div className='st2-details__line'>
+        <div className='st2-details__line-name'>
           { name }
         </div>
-        <div className="st2-details__line-value">
+        <div className='st2-details__line-value'>
           { value }
         </div>
       </div>
@@ -466,7 +466,7 @@ export class DetailsLineNote extends React.Component {
 
   render() {
     return (
-      <div className="st2-details__line-note">
+      <div className='st2-details__line-note'>
         { this.props.children }
       </div>
     );
@@ -524,7 +524,7 @@ export class DetailsPanelHeading extends React.Component {
 
     return (
       <div {...props} className={cx('st2-details__panel-heading', className)}>
-        <h2 className="st2-details__panel-title">{ title }</h2>
+        <h2 className='st2-details__panel-title'>{ title }</h2>
         <div>{ children }</div>
       </div>
     );
@@ -560,8 +560,8 @@ export class DetailsPanelBodyLine extends React.Component {
 
     return (
       <dl {...props} className={cx('st2-details__panel-body-line', className)}>
-        <dt className="st2-details__panel-body-label">{ label }</dt>
-        <dd className="st2-details__panel-body-value">{ children }</dd>
+        <dt className='st2-details__panel-body-label'>{ label }</dt>
+        <dd className='st2-details__panel-body-value'>{ children }</dd>
       </dl>
     );
   }
@@ -636,7 +636,7 @@ export class ToggleButton extends React.Component {
           'st2-panel__toolbar-toggle-all--collapsed': collapsed,
         })}
         onClick={(e) => onClick(e)}
-        data-test="toggle-all"
+        data-test='toggle-all'
       />
     );
   }
