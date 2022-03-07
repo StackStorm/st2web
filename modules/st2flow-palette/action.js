@@ -67,6 +67,9 @@ export default class Action extends Component<{
 
   render() {
     const { action } = this.props;
+
+    const href = `${location.origin}/#/action/${action.ref}`;
+
     const supportedRunnerTypes = {
       'orquesta': href,
       'mistral-v2': href
