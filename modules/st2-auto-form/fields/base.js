@@ -79,6 +79,7 @@ export class BaseTextField extends React.Component {
     if ((v === '' || v === undefined) && spec.required) {
       return 'parameter is required';
     }
+    
 
     if (isJinja(v)) {
       return false;
@@ -94,7 +95,6 @@ export class BaseTextField extends React.Component {
 
   handleChange(e, value) {
     e.stopPropagation();
-    
     const invalid = this.validate(value, this.props.spec);
     
     if (this.props.name === 'timeout' || this.props.name === 'limit') {
@@ -113,9 +113,8 @@ export class BaseTextField extends React.Component {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
-
     const wrapperProps = Object.assign({}, this.props);
-
+    
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
@@ -123,7 +122,7 @@ export class BaseTextField extends React.Component {
     const inputProps = {
       className: 'st2-auto-form__field',
       type: spec.secret ? 'password' : 'text',
-      placeholder: this.toStateValue(spec.default),
+      placeholder:this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
@@ -149,14 +148,14 @@ export class BaseTextareaField extends BaseTextField {
     const { spec={} } = this.props;
 
     const wrapperProps = Object.assign({}, this.props);
-
+    
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: this.toStateValue(spec.default),
+      placeholder:  this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
