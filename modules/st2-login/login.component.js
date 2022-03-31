@@ -254,6 +254,14 @@ export default class Login extends React.Component {
               </span>
             </label>
           </LoginRow>
+          <LoginRow>
+            <div style={{padding: '0.5em 0em', textAlign: 'center', width: '100%'}}>Or</div>
+          </LoginRow>
+          <LoginRow style={style} >
+            <a href="/auth/sso/request" className={cx('st2-forms__button', style.button)} style={{color: '#ffffff', width: '100%'}}>
+              Login with SSO
+            </a>
+          </LoginRow>
 
           <LoginBottomRow style={style} >
             <a target="_blank" rel="noopener noreferrer" href={this.docsLink}>
