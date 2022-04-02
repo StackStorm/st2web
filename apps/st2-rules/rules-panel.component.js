@@ -281,7 +281,6 @@ export default class RulesPanel extends React.Component {
         </PanelView>
 
         <RulesDetails
-          ref={(ref) => this._details = ref}
           onNavigate={(...args) => this.navigate(...args)}
 
           id={id}

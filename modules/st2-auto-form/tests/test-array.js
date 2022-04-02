@@ -91,8 +91,8 @@ describe('AutoForm ArrayField', () => {
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
-
     expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
+    
   });
 
   it('allows you to put a jinja template in the field', () => {
