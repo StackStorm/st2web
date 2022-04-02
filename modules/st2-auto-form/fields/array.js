@@ -113,6 +113,7 @@ export default class ArrayField extends BaseTextField {
     /* string which is YAQL */
     if (isYaql(v)) {
       return v;
+    }
 
     if (Array.isArray(v) && jsonInArrayCheck(v)) {
       return JSON.stringify(v);
