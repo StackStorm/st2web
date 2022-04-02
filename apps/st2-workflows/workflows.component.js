@@ -266,6 +266,16 @@ export default class Workflows extends Component {
 
    const promise = (async () => {
      if (existingAction) {
+
+       // remove "_name" key from parameter keys for successful request
+       if (meta.parameters) {
+         Object.keys(meta.parameters).forEach(key => {
+           if (meta.parameters[key]._name) {
+             delete meta.parameters[key]._name;
+           }
+         });
+       }
+
        await api.request({ method: 'put', path: `/actions/${pack}.${meta.name}` }, meta);
      }
      else {

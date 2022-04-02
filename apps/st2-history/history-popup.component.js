@@ -99,6 +99,8 @@ export default class HistoryPopup extends React.Component {
     return (
       <div className="st2-rerun">
         <Popup title="Rerun an execution" onCancel={onCancel} data-test="rerun_popup">
+          <h4 style={{ padding:'20px 20px 0', fontSize: '20px', fontWeight: 'normal', marginBlockStart: 'auto' }}>The input values from the previous run are applied by default and displayed in black. The original default values of the action parameters are displayed in grey.</h4>
+
           <form>
             <DetailsPanel>
               <DetailsPanelBody>
