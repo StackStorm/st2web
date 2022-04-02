@@ -15,7 +15,7 @@
 import _ from 'lodash';
 import validator from 'validator';
 
-import { BaseTextField, isJinja } from './base';
+import { BaseTextField, isJinja, isYaql } from './base';
 
 const jsonCheck = (value) => {
   try {
@@ -82,13 +82,26 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
+    /* YAQL parameter that came input as single yaql */
+    if (isYaql(v) && !v.includes(',')) {
+      return v;
+    }
+
     const { items } = this.props.spec || {};
-    return split(v)
-      .map((v) => typeConversions(items && items.type, v))
+
+    let t = v;
+    /* Trim [], required for when kept [] around YAQL parameter */
+    if (v && v.startsWith('[') && v.endsWith(']')) {
+      t = v.substring(1, v.length-1).trim();
+    }
+
+    return split(t)
+      .map((t) => typeConversions(items && items.type, t))
     ;
   }
 
   toStateValue(v) {
+
     if (jsonCheck(v)) {
       return JSON.stringify(v);
     }
@@ -97,14 +110,29 @@ export default class ArrayField extends BaseTextField {
       return v;
     }
 
+    /* string which is YAQL */
+    if (isYaql(v)) {
+      return v;
+
     if (Array.isArray(v) && jsonInArrayCheck(v)) {
       return JSON.stringify(v);
     }
 
     const { secret } = this.props.spec || {};
+
     if (secret && v && !Array.isArray(v)) {
       return v;
     }
+
+    /* 
+     * Keep [] if after converting to comma separated string would be treated
+     * as YAQL, as need to distingish between when pass an array parameter or
+     * an array of string parameters.
+     */
+    if (v && Array.isArray(v) && isYaql(v.join(', ')) && v.length === 1) {
+      return '[ '.concat(v.join(', '),' ]');
+    }
+
 
     return v ? v.join(', ') : '';
   }

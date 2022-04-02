@@ -1,0 +1,44 @@
+{
+  "name": "@stackstorm/st2flow-notifications",
+  "version": "1.0.0",
+  "description": "A package for displaying notifications and errors in the st2flow UI",
+  "author": "Ryan Wheale <ryan.wheale@gmail.com>",
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "browserify": {
+    "transform": [
+      "babelify",
+      [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".css"
+          ],
+          "inject": "insert-css",
+          "modularize": {
+            "camelCase": true
+          },
+          "plugin": [
+            "postcss-import",
+            "postcss-nested",
+            "postcss-preset-env"
+          ]
+        }
+      ]
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  }
+}

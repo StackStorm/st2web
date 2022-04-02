@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +21,7 @@ module.exports = function (api) {
     '@babel/preset-env',
   ];
   const plugins = [
+    '@babel/plugin-transform-flow-strip-types',
     [ '@babel/plugin-proposal-decorators', { 'legacy': true }],
     '@babel/plugin-proposal-class-properties',
     [ '@babel/plugin-proposal-object-rest-spread', { 'legacy': true }],

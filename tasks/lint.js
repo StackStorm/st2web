@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,8 +19,11 @@ const gulp = require('gulp');
 const settings = require('./settings.json');
 const plugins = require('gulp-load-plugins')(settings.plugins);
 
-gulp.task('lint', () => gulp.src(settings.lint, { cwd: settings.dev })
+gulp.task('lint', (done) => gulp.src(settings.lint, { cwd: settings.dev })
   .pipe(plugins.plumber())
   .pipe(plugins.eslint())
   .pipe(plugins.eslint.format())
+  .pipe(plugins.eslint.failAfterError())
+  .on('end', () => done())
+  .on('error', (err) => done(err))
 );

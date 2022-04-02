@@ -94,7 +94,7 @@ export default class HistoryPanel extends React.Component {
     }).isRequired,
 
     filter: PropTypes.string,
-    filters: PropTypes.object,
+    filters: PropTypes.array,
     childExecutions: PropTypes.object,
     groups: PropTypes.array,
     collapsed: PropTypes.bool,
@@ -531,7 +531,6 @@ export default class HistoryPanel extends React.Component {
         </PanelView>
 
         <HistoryDetails
-          ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
           handleCancel={(...args) => this.handleCancel(...args)}

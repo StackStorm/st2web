@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import _ from 'lodash';
-import { BaseTextareaField, isJinja } from './base';
+import { BaseTextareaField, isJinja, isYaql } from './base';
 
 export default class ObjectField extends BaseTextareaField {
   static icon = '{ }'
@@ -23,11 +23,19 @@ export default class ObjectField extends BaseTextareaField {
       return v;
     }
 
+    if (isYaql(v)) {
+      return v;
+    }
+
     return v !== '' && v !== undefined ? JSON.parse(v) : void 0;
   }
 
   toStateValue(v) {
     if (isJinja(v)) {
+      return v;
+    }
+
+    if (isYaql(v)) {
       return v;
     }
 

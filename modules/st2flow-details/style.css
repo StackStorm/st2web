@@ -1,0 +1,399 @@
+/*
+Copyright 2021 The StackStorm Authors.
+Copyright 2020 Extreme Networks, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+@import "@stackstorm/st2-style/colors.css";
+:root {
+  --token-color: #eee;
+  --yellow-lighten-5: #fff5e9;
+  --yellow-base: #FF9E1B;
+ }
+
+.component {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toolbar {
+  background-color: #4b4b4f;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+ /* For collapse button */
+  padding-right: 30px;
+  height: 38px;
+  padding: 10px;
+  &.secondary {
+    background-color: #d8d8d8;
+    color: #222;
+    border-bottom: 1px solid #f8f8f8;
+    padding-right: initial;
+
+    .toolbar-button.selected {
+      background-color: transparent;
+      color: inherit;
+     border-color: #ff921a;
+    }
+  }
+
+  .task {
+    border-bottom: none;
+    flex: 1;
+
+    &:hover {
+      background-color: initial;
+    }
+
+    &-arrow {
+      display: none;
+    }
+  }
+
+  .edit {
+    padding: 5px;
+  }
+
+  .input {
+
+  }
+
+  .button {
+    margin-right: -5px;
+    padding: 5px;
+
+    &:last-of-type {
+      margin-right: initial;
+    }
+  }
+}
+
+.toolbar-button {
+  padding: 15px 10px 10px;
+  border-bottom: 5px solid transparent;
+  cursor: pointer;
+  user-select: none;
+ text-transform: uppercase;
+ 
+  &.selected {
+    background-color: #333;
+    color: #ff921a;
+   }
+
+  &.stretch {
+    flex: 1;
+    text-align: center;
+  }
+
+  &:before {
+    font-size: 20px;
+  }
+}
+
+.code {
+  margin: 10px;
+  padding: 4px;
+  margin-left: auto;
+  border: 1px solid #888;
+  border-radius: 3px;
+  min-width: 23px;
+ text-align: center;
+
+  &.selected {
+    background-color: #ff921a;
+    border-color: #ff921a;
+    color: #444;
+  }
+}
+
+.panel {
+  background-color: var(--gray-white);
+  padding: 10px;
+
+  overflow: auto;
+
+  flex: 1;
+}
+
+.task-list-title {
+  margin: 12px;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+.taskPanel {
+  padding: 10px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+
+  &:hover {
+    background-color: #eee;
+  }
+
+  &-info {
+    flex-grow: 1;
+  }
+
+  &-name {
+    font-weight: bold;
+  }
+
+  &-arrow {
+    flex-grow: 0;
+    font-size: 1.3em;
+  }
+}
+
+.parameter {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin: 10px 0;
+}
+
+.parameter-buttons {
+  float: right;
+}
+
+.parameter-button {
+  padding: 5px;
+
+  cursor: pointer;
+}
+
+.parameter-name {
+  font-size: 15px;
+  margin: 10px 0;
+}
+
+.parameter-description {
+  margin: 5px;
+}
+
+.parameter-tokens {
+  margin: -5px;
+}
+
+.parameter-token {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #888;
+
+  padding: 4px;
+  margin: 5px;
+
+  display: inline-block;
+
+  border-radius: 2px;
+
+  &.active {
+    background-color: #ccc;
+    color: white
+  }
+}
+
+.property {
+  display: grid;
+
+  grid-template-columns: auto 50px;
+  grid-template-rows: auto auto auto;
+
+  grid-template-areas:
+    "name toggle"
+    "description toggle"
+    "content content";
+
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+
+  &-name {
+    grid-area: name;
+
+    font-size: 15px;
+    padding-bottom: 5px;
+  }
+
+  &-description {
+    grid-area: description;
+    color: var(--gray);
+    line-height: 16px;
+  }
+
+  &-toggle {
+    grid-area: toggle;
+    padding: 0px;
+    padding-top: 4px;
+  }
+}
+
+.transition {
+  border-bottom: 1px solid #ccc;
+  margin-top: 15px;
+  padding-bottom: 15px;
+
+  display: grid;
+
+  grid-template-columns: auto 1fr auto;
+  grid-auto-rows: auto;
+  grid-gap: 12px 0;
+
+  align-items: center;
+
+  & + & {
+    margin-top: 20px;
+  }
+
+  &-selected {
+    background-color: var(--yellow-lighten-5);
+    border-left: 4px solid var(--yellow-base);
+    margin-left: -4px;
+    padding-left: 10px;
+    padding-top: 15px;
+  }
+
+  &-line {
+    display: contents;
+  }
+
+  &-label {
+    grid-column: 1;
+    color: var(--gray-dull);
+    padding-right: 10px;
+  }
+
+  &-field {
+    grid-column: 2;
+  }
+
+  &-button {
+    grid-column: 3;
+
+    font-size: 17px;
+  }
+
+  &-info {
+    color: #888;
+    margin-top: 20px;
+  }
+}
+
+.editor {
+  &-title {
+    font-size: 20px;
+    margin: 0 0 20px;
+  }
+
+  &-footer {
+    margin: 20px 0;
+  }
+}
+
+.property-child {
+  margin: 10px 0;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  padding-top: 3px;
+
+  &:before {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    content: '';
+    box-shadow: inset 0 0 0 2px var(--gray-light);
+    border-radius: 50%;
+    background-color: #f8f8f8;
+    margin-right: 5px;
+    vertical-align: bottom;
+  }
+
+  &.checked:before {
+    background-color: var(--green-base);
+    box-shadow: inset 0 0 0 2px var(--green-base), inset 0 0 0 4px #f8f8f8;
+  }
+}
+
+.radioField {
+  width: initial;
+  margin: 0 7px;
+  font-weight: normal;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 7;
+  color: black;
+  border: none;
+  outline: 0;
+  background-color: white;
+  box-shadow: 0 1px 0 #bbbbbc;
+}
+.delayField {
+  width: 100%;
+  margin: 0 7px;
+  display: block;
+  font-weight: normal;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 7;
+  color: black;
+  border: none;
+  outline: 0;
+  background-color: white;
+  box-shadow: 0 1px 0 #bbbbbc;
+  margin-top: 7px;
+  margin-left: 0px;
+}
+.string-properties {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  grid-auto-rows: auto;
+  align-items: center;
+  grid-gap: 12px;
+
+  &-key-field {
+    grid-column: 1;
+  }
+
+  &-value-field {
+    grid-column: 2;
+  }
+
+  &-buttons {
+    grid-column: 3;
+
+    font-size: 17px;
+  }
+
+  &-line {
+    display: contents;
+
+  }
+}
+.tooltip {
+  position: relative;
+}

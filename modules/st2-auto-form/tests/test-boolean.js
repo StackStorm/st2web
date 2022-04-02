@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,12 +62,11 @@ describe('AutoForm BooleanField', () => {
     };
 
     const c = new TestComponent(<BooleanField {...props} />);
-
     c.makeChange('invalid', 'checked');
 
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
-    expect(c.fieldValue('checked')).to.be.equal('invalid');
+    expect(c.fieldValue('checked')).to.be.equal(false);
   });
 
   it('resets the value when reset button is pressed', () => {
@@ -86,10 +86,10 @@ describe('AutoForm BooleanField', () => {
     const stopPropagation = sinon.spy();
     c._instance.node.props.onReset({ stopPropagation });
 
-    expect(onChange.withArgs(undefined)).to.be.calledOnce;
+    expect(onChange.withArgs(false)).to.be.calledOnce;
     expect(stopPropagation).to.be.calledOnce;
-    expect(c.fieldValue('checked')).to.be.equal(undefined);
-    expect(c.value()).to.be.deep.equal(undefined);
+    expect(c.fieldValue('checked')).to.be.equal(false);
+    expect(c.value()).to.be.deep.equal(false);
   });
 
   it('shows default value when no value is set', () => {

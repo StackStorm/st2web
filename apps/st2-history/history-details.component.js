@@ -47,6 +47,7 @@ import HistoryPopup from './history-popup.component';
   const { execution } = state;
   return { execution };
 })
+
 export default class HistoryDetails extends React.Component {
   static propTypes = {
     handleNavigate: PropTypes.func.isRequired,
@@ -55,7 +56,7 @@ export default class HistoryDetails extends React.Component {
 
     id: PropTypes.string,
     section: PropTypes.string,
-    execution: PropTypes.object,
+    execution: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
     displayUTC: PropTypes.bool.isRequired,
     handleToggleUTC: PropTypes.func,
   }
@@ -81,9 +82,15 @@ export default class HistoryDetails extends React.Component {
   }
 
   fetchExecution(id) {
+    // We utilize ?max_result_size query parameter filter so we don't retrieve
+    // large results which we don't render due to that being very slow and
+    // freezing the browser window
+    const maxResultSizeForRender = ActionReporter.utils.getMaxExecutionResultSizeForRender();
+    const path = `/executions/${id}?max_result_size=${maxResultSizeForRender}`;
+
     store.dispatch({
       type: 'FETCH_EXECUTION',
-      promise: api.request({ path: `/executions/${id}` }),
+      promise: api.request({ path: path }),
     })
       .catch((err) => {
         notification.error(`Unable to retrieve execution "${id}".`, { err });
@@ -99,13 +106,18 @@ export default class HistoryDetails extends React.Component {
 
   render() {
     const { section, execution, displayUTC, handleToggleUTC } = this.props;
-
+    
+    let actionParameters; 
+    if(execution) {
+      actionParameters = {...execution.parameters };  
+    } 
+    
     if (!execution) {
       return null;
     }
 
     setTitle([ execution.action.ref, 'History' ]);
-
+    
     return (
       <PanelDetails data-test="details">
         <DetailsHeader
@@ -183,7 +195,7 @@ export default class HistoryDetails extends React.Component {
                   </Link>
                 </DetailsPanelHeading>
                 <DetailsPanelBody data-test="action_output">
-                  <ActionReporter runner={execution.runner.name} execution={execution} />
+                  <ActionReporter runner={execution.runner.name} execution={execution} api={api} />
                 </DetailsPanelBody>
               </DetailsPanel>
               { execution.rule ? (
@@ -209,7 +221,7 @@ export default class HistoryDetails extends React.Component {
                   <DetailsPanelBody>
                     { execution.trigger.type ? (
                       <DetailsPanelBodyLine label="Trigger">
-                        { execution.trigger.type }
+                        <Link to={`/triggers/${execution.trigger.type}`}>{execution.trigger.type}</Link>
                       </DetailsPanelBodyLine>
                     ) : null }
                     { execution.trigger_instance && execution.trigger_instance.occurrence_time ? (
@@ -262,7 +274,7 @@ export default class HistoryDetails extends React.Component {
         { section === 'rerun' ? (
           <HistoryPopup
             action={execution.action.ref}
-            payload={execution.parameters}
+            payload={actionParameters}
             spec={{
               type: 'object',
               properties: {

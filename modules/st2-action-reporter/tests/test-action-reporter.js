@@ -25,9 +25,10 @@ describe(`${ActionReporter.name} Component`, () => {
     it('proxies className', () => {
       const instance = ReactTester.create(
         <ActionReporter
-          className="foobar"
-          runner="noop"
+          className='foobar'
+          runner='noop'
           execution={{}}
+          api={{server: {api: 'https://example.com:3000/v1'}}}
         />
       );
 
@@ -37,13 +38,29 @@ describe(`${ActionReporter.name} Component`, () => {
     it('proxies extra props', () => {
       const instance = ReactTester.create(
         <ActionReporter
-          foo="bar"
-          runner="noop"
+          foo='bar'
+          runner='noop'
           execution={{}}
+          api={{server: {api: 'https://example.com:3000/v1'}}}
         />
       );
 
       expect(instance.node.props.foo).to.equal('bar');
+    });
+
+    it('returns correct message on large result', () => {
+      const instance = ReactTester.create(
+        <ActionReporter
+          foo='bar'
+          runner='noop'
+          execution={{id: 'id1', result_size: 500 * 10244}}
+          api={{server: {api: 'https://example.com:3000/v1'}}}
+        />
+      );
+
+      const pElem = instance.toJSON().children[1].children.join('');
+      expect(pElem).to.contain('Action output is too large to be displayed here');
+      expect(pElem).to.contain('You can view raw');
     });
   });
 });

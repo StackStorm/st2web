@@ -18,3 +18,7 @@ debian/files
 
 # VIM Swap
 .*.swp
+
+
+# local stuff
+config.local.js

@@ -1,3 +1,4 @@
+// Copyright 2021 The StackStorm Authors.
 // Copyright 2019 Extreme Networks, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +28,7 @@ import notification from '@stackstorm/module-notification';
 import setTitle from '@stackstorm/module-title';
 
 import FlexTable from '@stackstorm/module-flex-table';
-import FlowLink from '@stackstorm/module-flow-link';
+import Link from '@stackstorm/module-router/link.component';
 import PackIcon from '@stackstorm/module-pack-icon';
 import {
   Panel,
@@ -54,7 +55,6 @@ import './style.css';
   return { collapsed, ...props };
 }, (dispatch, props) => {
   const { uid } = props;
-
   return {
     onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
@@ -115,7 +115,6 @@ export default class ActionsPanel extends React.Component {
       .then(() => {
         const { id } = this.urlParams;
         const { groups } = this.props;
-
         if (id && groups && !groups.some(({ actions }) => actions.some(({ ref }) => ref === id))) {
           this.navigate({ id: false });
         }
@@ -127,8 +126,7 @@ export default class ActionsPanel extends React.Component {
     const {
       ref = get('groups[0].actions[0].ref', this.props),
       section = 'general',
-    } = this.props.match.params;
-
+    } = this.props.match.params;  
     return {
       id: ref,
       section,
@@ -210,6 +208,33 @@ export default class ActionsPanel extends React.Component {
     });
   }
 
+  handleDelete (ref,flag) {
+    return store.dispatch({
+      type: 'DELETE_ACTION',
+      ref,
+      promise: api.request({
+        method: 'delete',
+        path: `/actions/${ref}`,
+      },{
+        'remove_files' : flag,
+
+      })
+        .then((res) => {
+          notification.success(`Action "${ref}" has been deleted successfully.`);
+          this.navigate({ id: null });
+          this.fetchGroups();
+          return res;
+        })
+        .catch((err) => {
+          notification.error(`Unable to delete action "${ref}".`, {
+            err,
+            
+          });
+          throw err;
+        }),
+    });
+  }
+
   render() {
     const { groups, filter, collapsed } = this.props;
     const { id, section } = this.urlParams;
@@ -222,7 +247,14 @@ export default class ActionsPanel extends React.Component {
       <Panel data-test="actions_panel" detailed>
         <PanelView className="st2-actions">
           <div className="st2-panel__toolbar-actions">
-            <FlowLink />
+            <Link
+              target="_blank"
+              to="/action"
+              replace={true}
+              className="st2-panel__toolbar-button"
+            >
+              <i className="icon-plus" />
+            </Link>
           </div>
           <Toolbar title="Actions">
             <ToolbarSearch
@@ -271,12 +303,14 @@ export default class ActionsPanel extends React.Component {
         </PanelView>
 
         <ActionsDetails
-          ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRun={(...args) => this.handleRun(...args)}
+          handleDelete={(...arg) => this.handleDelete(...arg)}
 
           id={id}
           section={section}
+          groups={groups}
+          filter={filter}
         />
       </Panel>
     );

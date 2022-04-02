@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Metadata Schema",
+  "description": "A schema describing the metadata for individual workflows.",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "uid": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entry_point": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runner_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object",
+      "patternProperties": {
+        "^\\w+$": {
+          "anyOf": [
+            {"type": "null"},
+            {"type": "array"},
+            {"type": "boolean"},
+            {"type": "integer"},
+            {"type": "number"},
+            {"type": "object"},
+            {"type": "string"}
+          ]
+        }
+      }
+    }
+  }
+}

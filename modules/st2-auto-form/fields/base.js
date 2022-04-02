@@ -34,6 +34,10 @@ export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
 }
 
+export function isYaql(v) {
+  return _.isString(v) && v.startsWith('<%') && v.endsWith('%>');
+}
+
 // TODO: make controlled
 export class BaseTextField extends React.Component {
   static propTypes = {
@@ -75,20 +79,30 @@ export class BaseTextField extends React.Component {
     if ((v === '' || v === undefined) && spec.required) {
       return 'parameter is required';
     }
+    
 
     if (isJinja(v)) {
       return false;
     }
 
+    if (isYaql(v)) {
+      return false;
+    }
+
     return undefined;
+
   }
 
   handleChange(e, value) {
     e.stopPropagation();
-
     const invalid = this.validate(value, this.props.spec);
-
-    this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
+    
+    if (this.props.name === 'timeout' || this.props.name === 'limit') {
+      this.setState({ value, invalid }, this.props.onChange ? this.emitChange : undefined);
+    } 
+    else {
+      this.setState({ value, invalid }, this.props.onChange && !invalid ? this.emitChange : undefined);
+    }
   }
 
   emitChange() {
@@ -99,9 +113,8 @@ export class BaseTextField extends React.Component {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
-
     const wrapperProps = Object.assign({}, this.props);
-
+    
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
@@ -109,7 +122,7 @@ export class BaseTextField extends React.Component {
     const inputProps = {
       className: 'st2-auto-form__field',
       type: spec.secret ? 'password' : 'text',
-      placeholder: this.toStateValue(spec.default),
+      placeholder:this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),
@@ -135,14 +148,14 @@ export class BaseTextareaField extends BaseTextField {
     const { spec={} } = this.props;
 
     const wrapperProps = Object.assign({}, this.props);
-
+    
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
 
     const inputProps = {
       className: 'st2-auto-form__field',
-      placeholder: this.toStateValue(spec.default),
+      placeholder:  this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
       onChange: (e) => this.handleChange(e, e.target.value),

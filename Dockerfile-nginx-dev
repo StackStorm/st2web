@@ -1,0 +1,20 @@
+FROM node:14.16.1 as build
+
+# Create app directory
+WORKDIR /opt/stackstorm/static/webui/st2web
+
+# get files
+COPY . /opt/stackstorm/static/webui/st2web
+RUN rm /opt/stackstorm/static/webui/st2web/yarn.lock
+
+# install dependencies
+RUN make build-dev
+
+# expose your ports
+EXPOSE 3000
+
+
+FROM nginx
+RUN rm -f /etc/nginx/conf.d/default.conf
+COPY ./nginx.local-dev.conf /etc/nginx/conf.d/st2.conf
+COPY --from=build /opt/stackstorm/static/webui /opt/stackstorm/static/webui

@@ -1,0 +1,15 @@
+version: '3.2'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx-dev
+    ports:
+      - "3000:80"
+    expose:
+      - 3000
+    volumes:
+      - .:/opt/stackstorm/static/webui/st2web
+      - ./config.local.js:/opt/stackstorm/static/webui/st2web/config.js
+      - ./nginx.local-dev.conf:/etc/nginx/conf.d/st2.conf
+      - /opt/stackstorm/static/webui/st2web/node_modules

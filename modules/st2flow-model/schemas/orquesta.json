@@ -1,0 +1,379 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "tasks"
+  ],
+  "type": "object",
+  "properties": {
+    "tasks": {
+      "type": "object",
+      "patternProperties": {
+        "^\\w+$": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "action": {
+              "minLength": 1,
+              "type": "string"
+            },
+             "delay": {
+                            "oneOf": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                {
+                                    "type": "integer",
+                                    "minimum": 0
+                                }
+                            ]
+                        },
+            "join": {
+              "oneOf": [
+                {
+                  "enum": [
+                    "all"
+                  ]
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ]
+            },
+            "with": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string",
+                  "pattern": "^(\\s+)?({{.*?}}|<%.*?%>)(\\s+)?$|^(\\s+)?((\\w+,\\s?|\\s+)+)?(\\w+)\\s+in\\s+({{.*?}}|<%.*?%>)(\\s+)?$"
+                },
+                "concurrency": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                }
+              }
+            },
+            "retry": {
+              "type": "object",
+              "properties": {
+                "when": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "count": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  ]
+                },
+                "delay": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "count"
+              ],
+              "additionalProperties": false
+            },
+            "input": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    "^\\w+$": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "minProperties": 1
+                }
+              ]
+            },
+            "next": {
+              "items": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "do": {
+                    "oneOf": [
+                      {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "uniqueItems": true,
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array",
+                        "minItems": 1
+                      }
+                    ]
+                  },
+                  "when": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "publish": {
+                    "oneOf": [
+                      {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "uniqueItems": true,
+                        "items": {
+                          "patternProperties": {
+                            "^\\w+$": {
+                              "anyOf": [
+                                {
+                                  "type": "null"
+                                },
+                                {
+                                  "type": "array"
+                                },
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          },
+                          "maxProperties": 1,
+                          "minProperties": 1,
+                          "type": "object"
+                        },
+                        "type": "array",
+                        "minItems": 1
+                      }
+                    ]
+                  }
+                }
+              },
+              "type": "array"
+            }
+          }
+        }
+      },
+      "minProperties": 1
+    },
+    "description": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "vars": {
+      "uniqueItems": true,
+      "items": {
+        "maxProperties": 1,
+        "patternProperties": {
+          "^\\w+$": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "minProperties": 1,
+        "type": "object"
+      },
+      "type": "array",
+      "minItems": 1
+    },
+    "tags": {
+      "uniqueItems": true,
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "minItems": 1
+    },
+    "version": {
+      "enum": [
+        "1.0",
+        1.0
+      ],
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "minimum": 0.0,
+          "type": "number"
+        }
+      ]
+    },
+    "output": {
+      "uniqueItems": true,
+      "items": {
+        "maxProperties": 1,
+        "patternProperties": {
+          "^\\w+$": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "array"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "object"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "minProperties": 1,
+        "type": "object"
+      },
+      "type": "array",
+      "minItems": 1
+    },
+    "input": {
+      "uniqueItems": true,
+      "items": {
+        "oneOf": [
+          {
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "maxProperties": 1,
+            "patternProperties": {
+              "^\\w+$": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "array"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "object"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "minProperties": 1,
+            "type": "object"
+          }
+        ]
+      },
+      "type": "array",
+      "minItems": 1
+    },
+    "name": {
+      "minLength": 1,
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "@stackstorm/app-workflows",
+  "version": "0.3.1",
+  "description": "StackStorm Workflow Editor",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  },
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "browserify": {
+    "transform": [
+      "babelify",
+      [
+        "@stackstorm/browserify-postcss",
+        {
+          "extensions": [
+            ".css"
+          ],
+          "inject": "insert-css",
+          "modularize": false,
+          "plugin": [
+            "postcss-import",
+            "postcss-nested",
+            [
+              "postcss-preset-env",
+              {
+                "features": {
+                  "custom-properties": {
+                    "preserve": false
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      ]
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-async-to-generator": "^7.4.0",
+    "@babel/plugin-transform-flow-strip-types": "^7.4.0",
+    "@stackstorm/module-api": "^2.4.3",
+    "@stackstorm/module-router": "^2.4.3",
+    "@stackstorm/module-store": "^2.4.3",
+    "@stackstorm/st2-style": "^2.4.3",
+    "@stackstorm/st2flow-canvas": "1.0.0",
+    "@stackstorm/st2flow-details": "1.0.0",
+    "@stackstorm/st2flow-header": "1.0.0",
+    "@stackstorm/st2flow-model": "1.0.0-pre.5",
+    "@stackstorm/st2flow-palette": "1.0.0",
+    "babel-eslint": "^10.0.1",
+    "classnames": "^2.2.5",
+    "eslint-plugin-flowtype": "^3.5.1",
+    "eventemitter3": "^3.1.0",
+    "gulp-uglify-es": "^1.0.4",
+    "insert-css": "^2.0.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.18.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-hotkeys": "^1.1.4",
+    "react-redux": "^6.0.1",
+    "react-router-dom": "^5.0.0",
+    "redux": "^4.0.1",
+    "urijs": "^1.19.7"
+  },
+  "devDependencies": {
+    "@babel/core": "7.4.3",
+    "@babel/plugin-proposal-class-properties": "7.4.0",
+    "@babel/plugin-proposal-decorators": "7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.3",
+    "@babel/plugin-transform-runtime": "7.4.3",
+    "@babel/polyfill": "7.4.3",
+    "@babel/preset-env": "7.4.3",
+    "@babel/preset-react": "7.0.0",
+    "@babel/register": "7.4.0",
+    "@stackstorm/browserify-postcss": "0.3.4-patch.5",
+    "@stackstorm/module-test-utils": "^2.4.3",
+    "@stackstorm/st2-build": "^2.4.2",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "chai": "^4.1.2",
+    "eslint": "^5.16.0",
+    "eslint-plugin-notice": "0.7.8",
+    "eslint-plugin-react": "^7.12.4",
+    "flow-bin": "^0.96.0",
+    "ignore-styles": "^5.0.1",
+    "lerna": "^3.4.3",
+    "less": "^3.9.0",
+    "postcss": "^7.0.14",
+    "postcss-import": "12.0.1",
+    "postcss-nested": "4.1.2",
+    "postcss-preset-env": "6.6.0",
+    "request": "^2.69.0",
+    "sinon": "^7.3.1",
+    "sinon-chai": "^3.3.0",
+    "zombie": "^6.1.4"
+  }
+}

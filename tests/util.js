@@ -59,10 +59,10 @@ module.exports = function (browser) {
       return new zombie.Response(`angular.module('main').constant('st2Config', {
         hosts: [{
           name: 'Test',
-          url: 'https://${process.env.ST2_HOST}/api',
-          auth: 'https://${process.env.ST2_HOST}/auth',
+          url: '${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/api',
+          auth: '${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/auth',
         }],
-      });`);
+        });`);
     }
 
     if (url.path().indexOf('/reamaze.js') >= 0) {
@@ -70,7 +70,9 @@ module.exports = function (browser) {
     }
 
     if (url.host() === process.env.ST2_HOST) {
-      response._url = url.host('example.com').toString();
+      // All the tests expect https:// so we just hack that and replace http with https in case
+      // https is not used
+      response._url = url.host('example.com').toString().replace("http://", "https://");
       request.url = response.url;
     }
 
@@ -103,11 +105,11 @@ module.exports = function (browser) {
         const api = new API();
 
         client = api.connect({
-          url: `https://${process.env.ST2_HOST}/api`,
-          auth: `https://${process.env.ST2_HOST}/auth`,
+          url: `${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/api`,
+          auth: `${process.env.ST2_PROTOCOL}://${process.env.ST2_HOST}/auth`,
         }, process.env.ST2_USERNAME, process.env.ST2_PASSWORD)
           .then(() => api);
-      }
+        }
 
       return client;
     },

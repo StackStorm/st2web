@@ -46,6 +46,9 @@ export default class HistoryPopup extends React.Component {
       payload: {
         ...props.payload,
       },
+      payloadCopy: {
+        ...props.payload,       // Here first made copy of data for later comparison
+      },
       ...state,
     };
   }
@@ -59,8 +62,32 @@ export default class HistoryPopup extends React.Component {
   }
 
   handleSubmit(e) {
+    // 1. Whenever user changes any parameter,it is stored into payload.So we get changed data into payload. 
+    // 2. We have copy of original data without any parameter change in payloadCopy object on line no 49.
+    // 3. Here we are first identifying key name of secret parameter, payloadKey is key variable name for 
+    //    payload object and payloadCopyKey is variable name for payloadCopy object.
+    // 4. Once we get both key, we are checking value of that key in both object.
+    // 5. So if user change secret parameter data, it will get in payload.
+    // 6. When user does not change secret parameter,in payload secret parameter value is *** and in 
+    //    payloadCopyKey object it is always *** because we are getting changed value in payload object only.
+    // 7. If data in both key same, then there is no any change and if data is not same in both key 
+    //    i.e payloadKey and payloadCopyKey, data is changed and we will send changed data to API.
     e.preventDefault();
+    const hasValue = Object.values(this.state.payload).includes('********');
+    let payLoadKey;
+    if (hasValue === true) {
+      payLoadKey =  Object.keys(this.state.payload).find(key => this.state.payload[key] === '********');
+    }
 
+    const isValue = Object.values(this.state.payloadCopy).includes('********');
+    let payloadCopyKey ;
+    if (isValue === true) {
+      payloadCopyKey =  Object.keys(this.state.payloadCopy).find(key => this.state.payloadCopy[key] === '********');
+    }
+    
+    if (this.state.payload[payLoadKey] === this.state.payloadCopy[payloadCopyKey]) {
+      delete this.state.payload[payLoadKey];
+    }
     this.props.onSubmit(this.state.payload);
   }
 
@@ -72,6 +99,8 @@ export default class HistoryPopup extends React.Component {
     return (
       <div className="st2-rerun">
         <Popup title="Rerun an execution" onCancel={onCancel} data-test="rerun_popup">
+          <h4 style={{ padding:'20px 20px 0', fontSize: '20px', fontWeight: 'normal', marginBlockStart: 'auto' }}>The input values from the previous run are applied by default and displayed in black. The original default values of the action parameters are displayed in grey.</h4>
+
           <form>
             <DetailsPanel>
               <DetailsPanelBody>

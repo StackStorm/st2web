@@ -1,0 +1,971 @@
+{
+  "$$NOTE$$": "READ THIS FIRST!!! This schema is *mostly* generated. The generated part lives under the 'definitions.workflow' key. If a new schema is generated from the source python code, please copy it to the 'definitions.workflow' section and leave the rest in tact.",
+
+
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mistral Schema",
+  "description": "A schema describing Mistral workflows and workbooks.",
+  "type": "object",
+  "patternProperties": {
+    "^(?!version|name|description|workflows)\\w+$": {
+      "$ref": "#/definitions/workflow"
+    }
+  },
+  "properties": {
+    "version": {
+      "enum": [
+        "2.0",
+        2.0
+      ]
+    },
+    "workflows": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^(?!version)\\w+$": {
+          "$ref": "#/definitions/workflow"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tasks"
+      ],
+      "properties":  {
+        "type": {
+          "enum": [
+            "reverse",
+            "direct"
+          ]
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "tasks": {
+          "type": "object",
+          "patternProperties": {
+            "^\\w+$": {
+              "additionalProperties": false,
+              "type": "object",
+              "anyOf": [
+                {
+                  "not": {
+                    "required": [
+                      "action",
+                      "workflow"
+                    ],
+                    "type": "object"
+                  }
+                },
+                {
+                  "oneOf": [
+                    {
+                      "required": [
+                        "action"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "required": [
+                        "workflow"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                }
+              ],
+              "properties": {
+                "with-items": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "uniqueItems": true,
+                      "items": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "retry": {
+                  "additionalProperties": false,
+                  "required": [
+                    "delay",
+                    "count"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "oneOf": [
+                        {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "delay": {
+                      "oneOf": [
+                        {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "continue-on": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "break-on": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  }
+                },
+                "join": {
+                  "oneOf": [
+                    {
+                      "enum": [
+                        "all"
+                      ]
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "target": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "on-error": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "uniqueItems": true,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "patternProperties": {
+                              "^\\w+$": {
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "array"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  },
+                                  {
+                                    "type": "integer"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "object"
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            },
+                            "maxProperties": 1,
+                            "minProperties": 1,
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "workflow": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "concurrency": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "on-success": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "uniqueItems": true,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "patternProperties": {
+                              "^\\w+$": {
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "array"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  },
+                                  {
+                                    "type": "integer"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "object"
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            },
+                            "maxProperties": 1,
+                            "minProperties": 1,
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "publish-on-error": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^\\w+$": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "minProperties": 1
+                },
+                "publish": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^\\w+$": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "minProperties": 1
+                },
+                "wait-after": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "action": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "keep-result": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "wait-before": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "timeout": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "safe-rerun": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                },
+                "input": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^\\w+$": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "array"
+                        },
+                        {
+                          "type": "boolean"
+                        },
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "object"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "minProperties": 1
+                },
+                "on-complete": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "uniqueItems": true,
+                      "items": {
+                        "oneOf": [
+                          {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          {
+                            "patternProperties": {
+                              "^\\w+$": {
+                                "anyOf": [
+                                  {
+                                    "type": "null"
+                                  },
+                                  {
+                                    "type": "array"
+                                  },
+                                  {
+                                    "type": "boolean"
+                                  },
+                                  {
+                                    "type": "integer"
+                                  },
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "object"
+                                  },
+                                  {
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            },
+                            "maxProperties": 1,
+                            "minProperties": 1,
+                            "type": "object"
+                          }
+                        ]
+                      },
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "pause-before": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "minProperties": 1
+        },
+        "description": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "vars": {
+          "patternProperties": {
+            "^\\w+$": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "array"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "minProperties": 1
+        },
+        "tags": {
+          "uniqueItems": true,
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "minItems": 1
+        },
+        "task-defaults": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "retry": {
+              "additionalProperties": false,
+              "required": [
+                "delay",
+                "count"
+              ],
+              "type": "object",
+              "properties": {
+                "count": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "delay": {
+                  "oneOf": [
+                    {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  ]
+                },
+                "continue-on": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "break-on": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              }
+            },
+            "target": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "on-error": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "uniqueItems": true,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "patternProperties": {
+                          "^\\w+$": {
+                            "anyOf": [
+                              {
+                                "type": "null"
+                              },
+                              {
+                                "type": "array"
+                              },
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "object"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "maxProperties": 1,
+                        "minProperties": 1,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "minItems": 1
+                }
+              ]
+            },
+            "on-success": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "uniqueItems": true,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "patternProperties": {
+                          "^\\w+$": {
+                            "anyOf": [
+                              {
+                                "type": "null"
+                              },
+                              {
+                                "type": "array"
+                              },
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "object"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "maxProperties": 1,
+                        "minProperties": 1,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "minItems": 1
+                }
+              ]
+            },
+            "timeout": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ]
+            },
+            "wait-after": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ]
+            },
+            "keep-result": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "pause-before": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "concurrency": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ]
+            },
+            "safe-rerun": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "on-complete": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "uniqueItems": true,
+                  "items": {
+                    "oneOf": [
+                      {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "patternProperties": {
+                          "^\\w+$": {
+                            "anyOf": [
+                              {
+                                "type": "null"
+                              },
+                              {
+                                "type": "array"
+                              },
+                              {
+                                "type": "boolean"
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "object"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        },
+                        "maxProperties": 1,
+                        "minProperties": 1,
+                        "type": "object"
+                      }
+                    ]
+                  },
+                  "type": "array",
+                  "minItems": 1
+                }
+              ]
+            },
+            "wait-before": {
+              "oneOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "output-on-error": {
+          "patternProperties": {
+            "^\\w+$": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "array"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "minProperties": 1
+        },
+        "version": {
+          "enum": [
+            "2.0",
+            2.0
+          ],
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "minimum": 0.0,
+              "type": "number"
+            }
+          ]
+        },
+        "output": {
+          "patternProperties": {
+            "^\\w+$": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "array"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "minProperties": 1
+        },
+        "input": {
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "maxProperties": 1,
+                "patternProperties": {
+                  "^\\w+$": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "array"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "object"
+                      },
+                      {
+                        "type": "string"
+                      }
+                    ]
+                  }
+                },
+                "minProperties": 1,
+                "type": "object"
+              }
+            ]
+          },
+          "type": "array",
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

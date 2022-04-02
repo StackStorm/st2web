@@ -1,0 +1,36 @@
+{
+  "name": "@stackstorm/st2flow-yaml",
+  "version": "1.0.0-pre.5",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackstorm/st2web.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stackstorm/st2web/issues"
+  },
+  "homepage": "https://github.com/stackstorm/st2web#readme",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "babelify": "^10.0.0"
+  },
+  "dependencies": {
+    "@stackstorm/st2flow-perf": "1.0.0-pre.5",
+    "yaml-ast-parser": "0.0.43"
+  }
+}
