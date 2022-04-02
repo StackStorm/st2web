@@ -531,7 +531,6 @@ export default class HistoryPanel extends React.Component {
         </PanelView>
 
         <HistoryDetails
-          ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
           handleRerun={(...args) => this.handleRerun(...args)}
           handleCancel={(...args) => this.handleCancel(...args)}
