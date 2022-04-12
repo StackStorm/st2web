@@ -302,9 +302,14 @@ export default class Workflows extends Component {
       store.dispatch({ type: 'FLOW_REDO' });
     },
     save: (x) => {
-      x.preventDefault();
-      x.stopPropagation();
-      this.save().then(() => null);
+      if (x) {
+        x.preventDefault();
+        x.stopPropagation();
+      }
+
+      this.save()
+        .then(() => store.dispatch({ type: 'PUSH_SUCCESS', source: 'icon-save', message: 'Workflow saved.' }))
+        .catch(() => store.dispatch({ type: 'PUSH_SUCCESS', source: 'icon-save', message: 'Error saving workflow.' }));
     },
     copy: () => {
       store.dispatch({ type: 'PUSH_WARNING', source: 'icon-save', message: 'Select a task to copy' });
@@ -344,7 +349,7 @@ export default class Workflows extends Component {
                     keyMap={this.keyMap}
                     handlers={this.keyHandlers}
                   >
-                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} saveData={e => this.save()} dirtyflag={this.props.dirty} undo={this.keyHandlers.undo} redo={this.keyHandlers.redo}>
+                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} save={this.keyHandlers.save} dirtyflag={this.props.dirty} undo={this.keyHandlers.undo} redo={this.keyHandlers.redo}>
                       <Toolbar>
                         <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
                         <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
