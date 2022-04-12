@@ -136,13 +136,35 @@ export default class Criteria extends React.Component {
   handleChangeType(key, type) {
     const { data, onChange } = this.props;
 
-    return onChange({
-      ...data,
-      [key]: {
-        ...data[key],
-        type,
-      },
-    });
+    if (type === 'search') {
+      // save default values for search criteria
+      return onChange({
+        ...data,
+        [key]: {
+          ...data[key],
+          type,
+          condition: 'all',
+          pattern: {
+            ...data[key]['pattern'],
+            ['item.data']: {
+              ...data[key]['pattern']['item.data'],
+              type: Object.keys(types)[0],
+            }
+          }
+        },
+      });
+    } else {
+      // reset pattern from object to empty string if type != 'search'
+      this.handleChangePattern(key, '');
+      return onChange({
+        ...data,
+        [key]: {
+          ...data[key],
+          type,
+          pattern: '',
+        },
+      });
+    }
   }
 
   handleChangePattern(key, pattern) {

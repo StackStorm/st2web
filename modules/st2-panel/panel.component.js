@@ -380,7 +380,7 @@ export class DetailsCriteriaLine extends React.Component {
     const search = type !== 'search' ? null : {
       condition,
       pattern: pattern['item.data'].pattern,
-      type: pattern['item.data'].type
+      type: pattern['item.data'].type,
     };
 
     return (
@@ -395,9 +395,9 @@ export class DetailsCriteriaLine extends React.Component {
           { search ? (
             <>
               Condition: <strong>{search.condition}</strong>
-              <br/>
+              <br />
               Pattern: <strong>{search.pattern}</strong>
-              <br/>
+              <br />
               Type: <strong>{search.type}</strong>
             </>
           ) : pattern }
