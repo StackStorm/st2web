@@ -397,3 +397,8 @@ limitations under the License.
 .tooltip {
   position: relative;
 }
+
+.autosave {
+  cursor: pointer;
+  margin-left: 4px;
+}

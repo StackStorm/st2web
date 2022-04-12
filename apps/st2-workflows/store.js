@@ -403,6 +403,15 @@ const flowReducer = (state = {}, input) => {
       };
     }
 
+    case 'TOGGLE_AUTOSAVE': {
+      const { autosaveEnabled } = input;
+
+      return {
+        ...state,
+        autosaveEnabled,
+      };
+    }
+
     default:
       return state;
   }

@@ -31,7 +31,7 @@ import fp from 'lodash/fp';
 import { uniqueId, uniq } from 'lodash';
 
 import Notifications from '@stackstorm/st2flow-notifications';
-import {HotKeys} from 'react-hotkeys';
+import { HotKeys } from 'react-hotkeys';
 
 import  { BoundingBox } from './routing-graph';
 import Task from './task';
@@ -45,6 +45,8 @@ import makeRoutingGraph from './routing-graph';
 import PoissonRectangleSampler from './poisson-rect';
 
 import { origin } from './const';
+
+import store from '../../apps/st2-workflows/store';
 
 import style from './style.css';
 type DOMMatrix = {
@@ -383,7 +385,7 @@ export default class Canvas extends Component {
       // finally, place the unplaced tasks.  using handleTaskMove will also ensure
       //   that the placement gets set on the model and the YAML.
       needsCoords.forEach(({task, transitionsTo}) => {
-        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo), true);
+        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo));
       });
     }
   }
@@ -572,13 +574,15 @@ export default class Canvas extends Component {
     return false;
   }
 
-  handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint, autoSave = true) => {
+  handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint) => {
     const x = points.x;
     const y = points.y;
     const coords = {x, y};
     this.props.issueModelCommand('updateTask', task, { coords });
+
+    const { autosaveEnabled } = store.getState();
     
-    if (autoSave && this.props.dirtyflag) {
+    if (autosaveEnabled && this.props.dirtyflag) {
       this.props.saveData();
       await this.props.fetchActionscalled();
     }  
@@ -603,23 +607,32 @@ export default class Canvas extends Component {
     this.props.navigate({ toTasks: undefined, task: task.name });
   }
 
-  handleTaskDelete = (task: TaskRefInterface, autosave = true) => {
+  handleTaskDelete = (task: TaskRefInterface) => {
     this.props.issueModelCommand('deleteTask', task);
-    if (autosave) {
+
+    const { autosaveEnabled } = store.getState();
+
+    if (autosaveEnabled) {
       this.props.saveData();
     }
   }
 
-  handleTaskConnect = (to: TaskRefInterface, from: TaskRefInterface, autosave = true) => {
+  handleTaskConnect = (to: TaskRefInterface, from: TaskRefInterface) => {
     this.props.issueModelCommand('addTransition', { from, to: [ to ] });
-    if (autosave) {
+
+    const { autosaveEnabled } = store.getState();
+
+    if (autosaveEnabled) {
       this.props.saveData();
     }
   }
 
-  handleTransitionDelete = (transition: TransitionInterface, autosave = true) => {
+  handleTransitionDelete = (transition: TransitionInterface) => {
     this.props.issueModelCommand('deleteTransition', transition);
-    if (autosave) {
+
+    const { autosaveEnabled } = store.getState();
+
+    if (autosaveEnabled) {
       this.props.saveData();
     }
   }
@@ -758,7 +771,7 @@ export default class Canvas extends Component {
                       task={task}
                       selected={task.name === navigation.task && !selectedTransitionGroups.length}
                       scale={scale}
-                      onMove={(...a) => this.handleTaskMove(task, ...a, true)}
+                      onMove={(...a) => this.handleTaskMove(task, ...a)}
                       onConnect={(...a) => this.handleTaskConnect(task, ...a)}
                       onClick={() => this.handleTaskSelect(task)}
                       onDelete={() => this.handleTaskDelete(task)}

@@ -302,8 +302,12 @@ export default class Workflows extends Component {
     func.apply(this);
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
-      this.save();
-    }, 2500);
+      const { autosaveEnabled } = store.getState();
+
+      if (autosaveEnabled) {
+        this.save();
+      }
+    }, 3000);
   }
 
   style = style

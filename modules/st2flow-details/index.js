@@ -32,6 +32,7 @@ import TaskDetails from './task-details';
 import TaskList from './task-list';
 
 import style from './style.css';
+import store from '../../apps/st2-workflows/store';
 
 @connect(
   editorConnect
@@ -113,6 +114,13 @@ export default class Details extends Component<{
     this.props.navigate({ toTasks: undefined, task: undefined });
   }
 
+  toggleAutosave = (autosaveEnabled) => {
+    store.dispatch({
+      type: 'TOGGLE_AUTOSAVE',
+      autosaveEnabled,
+    });
+  }
+
   render() {
     const { actions, navigation, navigate, onChange } = this.props;
 
@@ -133,6 +141,8 @@ export default class Details extends Component<{
               );
             })
           }
+          <input id='autosave-checkbox' name='autosave-checkbox' type='checkbox' onChange={(e) => this.toggleAutosave(e.target.checked)} className={cx(style.autosave)} />
+          <label id='autosave-checkbox__label' htmlFor='autosave-checkbox' className={cx(style.autosave)}>Autosave</label>
           <ToolbarButton className={cx(style.code, 'icon-code')} selected={asCode} onClick={() => navigate({ asCode: !asCode })} />
         </Toolbar>
         {
