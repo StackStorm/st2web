@@ -231,6 +231,7 @@ export default class Canvas extends Component {
     saveData: PropTypes.func,
     undo: PropTypes.func,
     redo: PropTypes.func,
+    save: PropTypes.func,
   }
 
   state = {
@@ -724,6 +725,7 @@ export default class Canvas extends Component {
           open: [ 'ctrl+o', 'command+o', 'meta+o' ],
           undo: [ 'ctrl+z', 'command+z', 'meta+z' ],
           redo: [ 'ctrl+shift+z', 'command+shift+z', 'meta+shift+z' ],
+          save: [ 'ctrl+s', 'command+s', 'meta+s' ],
         }}
         handlers={{
           copy: () => {
@@ -775,6 +777,11 @@ export default class Canvas extends Component {
           redo: () => {
             this.props.redo();
           },
+          save: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.props.save();
+          }
         }}
       >
         <div
