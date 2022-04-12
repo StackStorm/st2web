@@ -145,15 +145,16 @@ export default class Criteria extends React.Component {
           type,
           condition: 'all',
           pattern: {
-            ...data[key]['pattern'],
+            ...data[key].pattern,
             ['item.data']: {
-              ...data[key]['pattern']['item.data'],
+              ...data[key].pattern['item.data'],
               type: Object.keys(types)[0],
-            }
-          }
+            },
+          },
         },
       });
-    } else {
+    }
+    else {
       // reset pattern from object to empty string if type != 'search'
       this.handleChangePattern(key, '');
       return onChange({
