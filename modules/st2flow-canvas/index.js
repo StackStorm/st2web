@@ -738,6 +738,11 @@ export default class Canvas extends Component {
             }
           },
           paste: () => {
+            if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
+              // allow regular copy/paste from clipboard when inputs or textareas are focused
+              return;
+            }
+
             const { copiedTask } = this.state;
             if (copiedTask) {
               const taskHeight = copiedTask.size.y;
