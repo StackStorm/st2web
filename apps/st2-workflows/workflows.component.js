@@ -307,7 +307,7 @@ export default class Workflows extends Component {
       if (autosaveEnabled) {
         this.save();
       }
-    }, 3000);
+    }, 1000);
   }
 
   style = style
