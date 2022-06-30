@@ -108,7 +108,7 @@ export class API {
             message: res.data.faultstring || res.data,
           };
         }
-  
+
         this.token = res.data;
       }
       catch (err) {
@@ -192,7 +192,8 @@ export class API {
       params: query,
       headers,
       transformResponse: [ function transformResponse(data, headers) {
-        if (typeof data === 'string' && headers['content-type'] === 'application/json') {
+        if (typeof data === 'string' && headers['content-type'] &&
+            headers['content-type'].indexOf('application/json') >-1) {
           try {
             data = JSON.parse(data);
           }
@@ -216,14 +217,14 @@ export class API {
       },
       // responseType: 'json',
     };
-  
+
     if (this.rejectUnauthorized === false) {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     }
     else {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     }
-  
+
     const response = await axios(config);
     const contentType = (response.headers || {})['content-type'] || [];
     const requestId = (response.headers || {})['X-Request-ID'] || null;
