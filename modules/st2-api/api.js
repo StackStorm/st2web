@@ -193,7 +193,7 @@ export class API {
       headers,
       transformResponse: [ function transformResponse(data, headers) {
         if (typeof data === 'string' && headers['content-type'] &&
-            headers['content-type'].indexOf('application/json') >-1) {
+            headers['content-type'].indexOf('application/json') > -1) {
           try {
             data = JSON.parse(data);
           }
