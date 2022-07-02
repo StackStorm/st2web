@@ -157,6 +157,7 @@ export default class Login extends React.Component {
       username: '',
       password: '',
       remember: true,
+      disabled: false,
   
       server,
       servers,
@@ -168,13 +169,13 @@ export default class Login extends React.Component {
 
   connect(e) {
     e.preventDefault();
-
+    this.setState({ disabled: true });
     this.setState({ error: null });
 
     const { server, username, password, remember } = this.state;
     return api.connect(server, username, password, remember)
       .then(() => this.props.onConnect())
-      .catch((err) => this.setState({ error: err.message }))
+      .catch((err) => this.setState({ error: err.message, disabled: false }))
     ;
   }
 
@@ -240,6 +241,7 @@ export default class Login extends React.Component {
               className={cx('st2-forms__button', style.button)}
               type="submit"
               value="Connect"
+              disabled={this.state.disabled}
             />
 
             <label className={style.checkboxWrapper}>

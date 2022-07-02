@@ -27,6 +27,10 @@ const jsonCheck = (value) => {
   return true;
 };
 
+const jsonInArrayCheck = (value) => {
+  return value.every(item => typeof(item) === 'object' );
+};
+
 const typeChecks = (type, value) => {
   const v = String(value);
   switch (type) {
@@ -35,7 +39,7 @@ const typeChecks = (type, value) => {
     case 'integer':
       return !validator.isInt(v) && `'${v}' is not an integer`;
     case 'object':
-      return !_.isPlainObject(v) && `'${v}' is not an object`;
+      return !_.isPlainObject(value) && `'${v}' is not an object`;
     case 'string':
     default:
       return false;
@@ -109,6 +113,10 @@ export default class ArrayField extends BaseTextField {
     /* string which is YAQL */
     if (isYaql(v)) {
       return v;
+    }
+
+    if (Array.isArray(v) && jsonInArrayCheck(v)) {
+      return JSON.stringify(v);
     }
 
     const { secret } = this.props.spec || {};

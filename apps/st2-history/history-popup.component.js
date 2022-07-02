@@ -39,6 +39,7 @@ export default class HistoryPopup extends React.Component {
 
   state = {
     preview: false,
+    disabled: false,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -89,6 +90,7 @@ export default class HistoryPopup extends React.Component {
       delete this.state.payload[payLoadKey];
     }
     this.props.onSubmit(this.state.payload);
+    this.setState({ disabled: true });
   }
 
   render() {
@@ -136,6 +138,7 @@ export default class HistoryPopup extends React.Component {
                     submit
                     className="st2-details__toolbar-button"
                     value="Submit"
+                    disabled={this.state.disabled}
                     onClick={(e) => this.handleSubmit(e)}
                     data-test="rerun_submit"
                   />
