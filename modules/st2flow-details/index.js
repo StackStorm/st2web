@@ -141,7 +141,7 @@ export default class Details extends Component<{
               );
             })
           }
-          <input id='autosave-checkbox' name='autosave-checkbox' type='checkbox' onChange={(e) => this.toggleAutosave(e.target.checked)} className={cx(style.autosave)} />
+          <input id='autosave-checkbox' name='autosave-checkbox' type='checkbox' onChange={(e) => { this.toggleAutosave(e.target.checked); onChange();}} className={cx(style.autosave)} />
           <label id='autosave-checkbox__label' htmlFor='autosave-checkbox' className={cx(style.autosave)}>Autosave</label>
           <ToolbarButton className={cx(style.code, 'icon-code')} selected={asCode} onClick={() => navigate({ asCode: !asCode })} />
         </Toolbar>
