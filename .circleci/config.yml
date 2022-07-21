@@ -44,7 +44,9 @@ jobs:
             node -v
       - run:
           name: Check node version at start
-          command: node -v
+          command: |
+            node -v
+            nvm ls
       - run:
           name: Export package version
           command: |
