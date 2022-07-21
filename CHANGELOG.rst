@@ -4,6 +4,8 @@ Changelog
 in development
 --------------
 
+* Added SSO login button and relative configuration to config.json (`ssoEnabled`)
+
 Added
 ~~~~~
 

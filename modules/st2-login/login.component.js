@@ -148,17 +148,18 @@ export default class Login extends React.Component {
     super(props);
 
     const servers = window.st2constants.st2Config.hosts;
-
     const server = servers && servers.length > 0 ? servers[0] : { auth: true };
 
     this.state = {
       error: null,
-      
+
+      ssoEnabled: !!window.st2constants.st2Config.ssoEnabled,
+
       username: '',
       password: '',
       remember: true,
       disabled: false,
-  
+
       server,
       servers,
     };
@@ -176,7 +177,7 @@ export default class Login extends React.Component {
     return api.connect(server, username, password, remember)
       .then(() => this.props.onConnect())
       .catch((err) => this.setState({ error: err.message, disabled: false }))
-    ;
+      ;
   }
 
   render() {
@@ -256,14 +257,19 @@ export default class Login extends React.Component {
               </span>
             </label>
           </LoginRow>
-          <LoginRow>
-            <div style={{padding: '0.5em 0em', textAlign: 'center', width: '100%'}}>Or</div>
-          </LoginRow>
-          <LoginRow style={style} >
-            <a href="/auth/sso/request" className={cx('st2-forms__button', style.button)} style={{color: '#ffffff', width: '100%'}}>
-              Login with SSO
-            </a>
-          </LoginRow>
+          {
+            this.state.ssoEnabled &&
+            <React.Fragment>
+              <LoginRow>
+                <div className={style.rowDivider}>Or</div>
+              </LoginRow>
+              <LoginRow style={style} >
+                <a href="/auth/sso/request/web" className={cx('st2-forms__button', style.ssoButton)}>
+                  Login with SSO
+                </a>
+              </LoginRow>
+            </React.Fragment>
+          }
 
           <LoginBottomRow style={style} >
             <a target="_blank" rel="noopener noreferrer" href={this.docsLink}>

@@ -52,9 +52,22 @@
   align-items: center;
 }
 
+.row-divider {
+  padding: 0.5em 0em;
+  text-align: center;
+  width: 100%
+}
+
 .button {
   padding: 3px 12px;
   font-family: Roboto, sans-serif;
+}
+
+.sso-button {
+  padding: 3px 12px;
+  font-family: Roboto, sans-serif;
+  color: #ffffff !important;
+  width: 100% !important
 }
 
 .checkbox-wrapper {
@@ -111,7 +124,7 @@
     vertical-align: top;
   }
 
-  & + &-label:before {
+  &+&-label:before {
     font-family: "brocadeicons";
     font-size: 12px;
     font-weight: normal;
@@ -132,7 +145,7 @@
     background-color: transparent;
   }
 
-  &:not(:checked) + &-label:before {
+  &:not(:checked)+&-label:before {
     color: transparent;
   }
 }
