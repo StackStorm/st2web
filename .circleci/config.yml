@@ -35,21 +35,10 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 14.16.1
             nvm alias default v14.16.1
-            nvm use 14.16.1
 
             # Each step uses the same `$BASH_ENV`, so need to modify it
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
             echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
-
-            # Check node version
-            node -v
-      - run:
-          name: Check node version at start
-          command: |
-            node -v
-            nvm ls
-            nvm use 14.16.1
-            node -v
       - run:
           name: Export package version
           command: |
@@ -63,9 +52,6 @@ jobs:
             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
             echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
       - run:
-          name: Change node version
-          command: node -v
-      - run:
           name: Install system dependencies
           command: |
             sudo apt-get update
@@ -73,15 +59,16 @@ jobs:
             gem install package_cloud
             npm install --global lerna yarn
       - run:
-          name: Check node version after install of system dependencies
-          command: node -v
-      - run:
           name: Install package dependencies
-          command: lerna bootstrap
+          command: |
+            nvm use 14.6.1
+            lerna bootstrap
 
       - run:
           name: Run unit tests
-          command: npm run test-unit
+          command: |
+            nvm use 14.6.1
+            npm run test-unit
 
       - run:
           name: Update Docker Compose
