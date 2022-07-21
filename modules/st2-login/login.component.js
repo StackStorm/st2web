@@ -177,7 +177,7 @@ export default class Login extends React.Component {
     return api.connect(server, username, password, remember)
       .then(() => this.props.onConnect())
       .catch((err) => this.setState({ error: err.message, disabled: false }))
-      ;
+    ;
   }
 
   render() {
@@ -258,17 +258,18 @@ export default class Login extends React.Component {
             </label>
           </LoginRow>
           {
-            this.state.ssoEnabled &&
-            <React.Fragment>
-              <LoginRow>
-                <div className={style.rowDivider}>Or</div>
-              </LoginRow>
-              <LoginRow style={style} >
-                <a href="/auth/sso/request/web" className={cx('st2-forms__button', style.ssoButton)}>
-                  Login with SSO
-                </a>
-              </LoginRow>
-            </React.Fragment>
+            this.state.ssoEnabled && (
+              <React.Fragment>
+                <LoginRow>
+                  <div className={style.rowDivider}>Or</div>
+                </LoginRow>
+                <LoginRow style={style} >
+                  <a href="/auth/sso/request/web" className={cx('st2-forms__button', style.ssoButton)}>
+                    Login with SSO
+                  </a>
+                </LoginRow>
+              </React.Fragment>
+            )
           }
 
           <LoginBottomRow style={style} >
