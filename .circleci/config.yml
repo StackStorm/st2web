@@ -127,11 +127,13 @@ jobs:
       - run:
           name: Make deb packages
           command: |
+            nvm use 14.16.1
             make deb
             echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} ~/artifacts/{}
       - run:
           name: Make RPM packages
           command: |
+            nvm use 14.16.1
             make rpm
             echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm ~/artifacts/{}
       - store_artifacts:
