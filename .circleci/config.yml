@@ -34,7 +34,7 @@ jobs:
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 14.16.1
-            nvm alias default 14.16.1
+            nvm alias default v14.16.1
             nvm use 14.16.1
 
             # Each step uses the same `$BASH_ENV`, so need to modify it
