@@ -92,6 +92,9 @@ describe(`${Login.name} Component`, () => {
     expect(instance.node.children[0].props.children[3].props.children.type).to.equal('input');
     expect(instance.node.children[0].props.children[3].props.children.props.name).to.equal('username');
 
+    expect(instance.node.children[0].props.children[6]).to.equal(null);
+
+
     window.st2constants.st2Config = {};
   });
 
@@ -128,4 +131,38 @@ describe(`${Login.name} Component`, () => {
 
     window.st2constants.st2Config = {};
   });
+
+  it('works with sso enabled', () => {
+    window.st2constants.st2Config = {
+      hosts: [
+        {
+          name: 'Dev Env',
+          url: '//172.168.50.50:9101/api',
+          auth: '//172.168.50.50:9101/auth',
+        },
+      ],
+      ssoEnabled: true,
+    };
+
+    const instance = ReactTester.create(
+      <Login
+        onConnect={() => { }}
+      />
+    );
+
+    expect(instance.node.children[0].type.name).to.equal('LoginForm');
+    expect(instance.node.children[0].props.children[1]).to.equal(null);
+    expect(instance.node.children[0].props.children[2]).to.equal(null);
+    expect(instance.node.children[0].props.children[3].type.name).to.equal('LoginRow');
+    expect(instance.node.children[0].props.children[3].props.children.type).to.equal('input');
+    expect(instance.node.children[0].props.children[3].props.children.props.name).to.equal('username');
+
+    expect(instance.node.children[0].props.children[6].props.children[0].type.name).to.equal('LoginRow');
+    expect(instance.node.children[0].props.children[6].props.children[1].type.name).to.equal('LoginRow');
+    expect(instance.node.children[0].props.children[6].props.children[1].props.children.type).to.equal('a');
+    expect(instance.node.children[0].props.children[6].props.children[1].props.children.props.href).to.equal('/auth/sso/request/web');
+
+    window.st2constants.st2Config = {};
+  });
+
 });

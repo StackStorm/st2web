@@ -258,7 +258,7 @@ export default class Login extends React.Component {
             </label>
           </LoginRow>
           {
-            this.state.ssoEnabled && (
+            this.state.ssoEnabled ? (
               <React.Fragment>
                 <LoginRow>
                   <div className={style.rowDivider}>Or</div>
@@ -269,7 +269,7 @@ export default class Login extends React.Component {
                   </a>
                 </LoginRow>
               </React.Fragment>
-            )
+            ) : null
           }
 
           <LoginBottomRow style={style} >

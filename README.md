@@ -112,6 +112,11 @@ If for some reason st2web is served from another domain, edit [`config.js`](./co
       auth: true
     }]
 
+SSO Support
+-----------
+
+To enable SSO on the web gui (which basically means showing the SSO login button and redirecting to the SSO endpoint on click), use the configuration `ssoEnabled` to `true` on the `config.json` file. The heavy lift of SSO logic is done at the backend. Upon successful login, the user gets redirected to an intermediary callback endpoint which then sets up cookies with authenticated tokens, and then the web gui usage is the same as with local login.
+
 Production
 ----------
 While `gulp serve` is ideal for development purposes and quick preview, it requires browser to make lots and lots of requests downloading every single project file separately thus wasting a lot of time on making a request and waiting for response. Production version minimizes the number of files by concatenating them together and minifies some of the most heavy files reducing their size up to 5 times. It also makes compiled version completely independent of the rest of code allowing you to deploy it everywhere: static apache\nginx server, AWS, Heroku, Github Pages.
