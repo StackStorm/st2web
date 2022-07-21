@@ -61,13 +61,13 @@ jobs:
       - run:
           name: Install package dependencies
           command: |
-            nvm use 14.6.1
+            nvm use 14.16.1
             lerna bootstrap
 
       - run:
           name: Run unit tests
           command: |
-            nvm use 14.6.1
+            nvm use 14.16.1
             npm run test-unit
 
       - run:
