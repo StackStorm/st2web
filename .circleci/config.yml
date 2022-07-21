@@ -35,6 +35,7 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 14.16.1
             nvm alias default 14.16.1
+            nvm use 14.16.1
 
             # Each step uses the same `$BASH_ENV`, so need to modify it
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
@@ -60,7 +61,7 @@ jobs:
             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
             echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
       - run:
-          name: Check node version
+          name: Change node version
           command: node -v
       - run:
           name: Install system dependencies
