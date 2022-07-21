@@ -52,12 +52,18 @@ jobs:
             echo "export PKG_VERSION=${PKG_VERSION}" >> $BASH_ENV
             echo "export PKG_RELEASE=${PKG_RELEASE}" >> $BASH_ENV
       - run:
+          name: Check node version
+          command: node -v
+      - run:
           name: Install system dependencies
           command: |
             sudo apt-get update
             sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
             npm install --global lerna yarn
+      - run:
+          name: Check node version after install of system dependencies
+          command: node -v
       - run:
           name: Install package dependencies
           command: lerna bootstrap
@@ -78,7 +84,7 @@ jobs:
             echo "Cloning ${ST2_DOCKER_BRANCH:-master} branch of st2-docker"
             git clone --branch ${ST2_DOCKER_BRANCH:-master} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
       - run:
-          name: Configufe docker compose config
+          name: Configure docker compose config
           command: |
             # Configure allow origin in the user config
             echo "[api]" > ~/st2-docker/files/st2.user.conf
