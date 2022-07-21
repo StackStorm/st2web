@@ -48,6 +48,8 @@ jobs:
           command: |
             node -v
             nvm ls
+            nvm use 14.16.1
+            node -v
       - run:
           name: Export package version
           command: |
