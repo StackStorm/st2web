@@ -57,6 +57,7 @@ jobs:
             sudo apt-get update
             sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
+            nvm use 14.16.1
             npm install --global lerna yarn
       - run:
           name: Install package dependencies
