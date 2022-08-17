@@ -145,7 +145,7 @@ export default class Details extends Component<{
             id='autosave-checkbox' 
             name='autosave-checkbox' 
             type='checkbox' 
-            onChange={ (e) => { 
+            onChange={(e) => {
               this.toggleAutosave(e.target.checked);
               onChange();
             }} 
