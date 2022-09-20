@@ -34,7 +34,7 @@ jobs:
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 14.16.1
-            nvm alias default 14.16.1
+            nvm alias default v14.16.1
 
             # Each step uses the same `$BASH_ENV`, so need to modify it
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
@@ -57,14 +57,19 @@ jobs:
             sudo apt-get update
             sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
+            nvm use 14.16.1
             npm install --global lerna yarn
       - run:
           name: Install package dependencies
-          command: lerna bootstrap
+          command: |
+            nvm use 14.16.1
+            lerna bootstrap
 
       - run:
           name: Run unit tests
-          command: npm run test-unit
+          command: |
+            nvm use 14.16.1
+            npm run test-unit
 
       - run:
           name: Update Docker Compose
@@ -78,7 +83,7 @@ jobs:
             echo "Cloning ${ST2_DOCKER_BRANCH:-master} branch of st2-docker"
             git clone --branch ${ST2_DOCKER_BRANCH:-master} --depth 1 ${ST2_TEST_ENVIRONMENT} ~/st2-docker
       - run:
-          name: Configufe docker compose config
+          name: Configure docker compose config
           command: |
             # Configure allow origin in the user config
             echo "[api]" > ~/st2-docker/files/st2.user.conf
@@ -122,11 +127,13 @@ jobs:
       - run:
           name: Make deb packages
           command: |
+            nvm use 14.16.1
             make deb
             echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} ~/artifacts/{}
       - run:
           name: Make RPM packages
           command: |
+            nvm use 14.16.1
             make rpm
             echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm ~/artifacts/{}
       - store_artifacts:
