@@ -11,3 +11,8 @@ Added
     - Button gets disabled onClick on `Connect` and `Submit` in st2-login and st2-history module respectively
 
     Contributed by @ParthS007
+
+Changed
+~~~~~~~
+
+* Updated nodejs from `14.16.1` to `14.20.0`, fixing the build under ARM processor architecture (#880)
