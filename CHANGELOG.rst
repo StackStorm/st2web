@@ -17,6 +17,10 @@ Changed
     
   Reported by @cded from @Bitovi
 
+* Escaped text in notifications
+
+  Contributed by @cded from @Bitovi
+
 Fixed
 ~~~~~
 * Fixed CircleCI tests
