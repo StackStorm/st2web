@@ -76,7 +76,7 @@ export default class Action extends Component<{
     };
 
     return (
-      <a
+      <div
         draggable
         className={this.style.action}
         ref={this.actionRef}
@@ -85,7 +85,7 @@ export default class Action extends Component<{
         rel="noopener noreferrer">
         <div className={this.style.actionName}>{ action.ref }</div>
         <div className={this.style.actionDescription}>{ action.description }</div>
-      </a>
+      </div>
     );
   }
 }
