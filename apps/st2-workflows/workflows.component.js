@@ -273,7 +273,7 @@ export default class Workflows extends Component {
      // don't need to return anything to the store. the handler will change dirty.
      return {};
    })();
-  
+
    store.dispatch({
      type: 'SAVE_WORKFLOW',
      promise,
@@ -301,15 +301,20 @@ export default class Workflows extends Component {
     redo: () => {
       store.dispatch({ type: 'FLOW_REDO' });
     },
-    save: (x) => {
+    save: async (x) => {
       if (x) {
         x.preventDefault();
         x.stopPropagation();
       }
 
-      this.save()
-        .then(() => store.dispatch({ type: 'PUSH_SUCCESS', source: 'icon-save', message: 'Workflow saved.' }))
-        .catch(() => store.dispatch({ type: 'PUSH_SUCCESS', source: 'icon-save', message: 'Error saving workflow.' }));
+      try {
+        await this.save();
+        store.dispatch({ type: 'PUSH_SUCCESS', source: 'icon-save', message: 'Workflow saved.' });
+      }
+      catch(e) {
+        const faultString = get(e, 'response.data.faultstring');
+        store.dispatch({ type: 'PUSH_ERROR', source: 'icon-save', error: `Error saving workflow: ${faultString}` });
+      }
     },
     copy: () => {
       store.dispatch({ type: 'PUSH_WARNING', source: 'icon-save', message: 'Select a task to copy' });
