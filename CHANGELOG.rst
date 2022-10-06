@@ -17,6 +17,7 @@ Changed
     
   Reported by @cded from @Bitovi
 
+
 Fixed
 ~~~~~
 * Fixed CircleCI tests
@@ -26,6 +27,10 @@ Fixed
 * Handle cases where content-type is not only application/json
 
   Contributed by @luislobo
+
+* Escaped text in notifications. #990
+
+  Contributed by @cded from @Bitovi
 
 
 v2.4.3
