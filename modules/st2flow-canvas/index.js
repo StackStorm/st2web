@@ -719,13 +719,13 @@ export default class Canvas extends Component {
         focused={true}
         attach={document.body}
         keyMap={{
-          copy: [ 'ctrl+c', 'command+c', 'meta+c' ],
-          cut: [ 'ctrl+x', 'command+x', 'meta+x' ],
-          paste: [ 'ctrl+v', 'command+v', 'meta+v' ],
-          open: [ 'ctrl+o', 'command+o', 'meta+o' ],
-          undo: [ 'ctrl+z', 'command+z', 'meta+z' ],
-          redo: [ 'ctrl+shift+z', 'command+shift+z', 'meta+shift+z' ],
-          save: [ 'ctrl+s', 'command+s', 'meta+s' ],
+          copy: [ 'ctrl+c', 'command+c' ],
+          cut: [ 'ctrl+x', 'command+x' ],
+          paste: [ 'ctrl+v', 'command+v' ],
+          open: [ 'ctrl+o', 'command+o' ],
+          undo: [ 'ctrl+z', 'command+z' ],
+          redo: [ 'ctrl+shift+z', 'command+shift+z' ],
+          save: [ 'ctrl+s', 'command+s' ],
         }}
         handlers={{
           copy: () => {
@@ -752,7 +752,7 @@ export default class Canvas extends Component {
 
               const newCoords = {
                 x: taskCoords.x,
-                y: taskCoords.y + taskHeight + 10
+                y: taskCoords.y + taskHeight + 10,
               };
 
               const lastIndex = tasks
@@ -781,7 +781,7 @@ export default class Canvas extends Component {
             e.preventDefault();
             e.stopPropagation();
             this.props.save();
-          }
+          },
         }}
       >
         <div

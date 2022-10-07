@@ -17,7 +17,6 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { HotKeys } from 'react-hotkeys';
 import { mapValues, get } from 'lodash';
 import cx from 'classnames';
 import url from 'url';
@@ -283,17 +282,6 @@ export default class Workflows extends Component {
 
   style = style
 
-  keyMap = {
-    copy: [ 'ctrl+c', 'command+c', 'meta+c' ],
-    cut: [ 'ctrl+x', 'command+x', 'meta+x' ],
-    paste: [ 'ctrl+v', 'command+v', 'meta+v' ],
-    open: [ 'ctrl+o', 'command+o', 'meta+o' ],
-    undo: [ 'ctrl+z', 'command+z', 'meta+z' ],
-    redo: [ 'ctrl+shift+z', 'command+shift+z', 'meta+shift+z' ],
-    save: [ 'ctrl+s', 'command+s', 'meta+s' ],
-    handleTaskDelete: [ 'del', 'backspace' ],
-  }
-
   keyHandlers = {
     undo: () => {
       store.dispatch({ type: 'FLOW_UNDO' });
@@ -349,10 +337,8 @@ export default class Workflows extends Component {
                 <Menu location={location} routes={this.props.routes} /> 
                 <div className="component-row-content">
                   { !isCollapsed.palette && <Palette className="palette" actions={actions} /> }
-                  <HotKeys
+                  <div
                     style={{ flex: 1}}
-                    keyMap={this.keyMap}
-                    handlers={this.keyHandlers}
                   >
                     <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} save={this.keyHandlers.save} dirtyflag={this.props.dirty} undo={this.keyHandlers.undo} redo={this.keyHandlers.redo}>
                       <Toolbar>
@@ -404,7 +390,7 @@ export default class Workflows extends Component {
                         </ToolbarDropdown>
                       </Toolbar>
                     </Canvas>
-                  </HotKeys>
+                  </div>
                   { !isCollapsed.details && <Details className="details" actions={actions} /> }
                 </div>
               </div>
