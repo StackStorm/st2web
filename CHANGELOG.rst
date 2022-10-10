@@ -11,6 +11,11 @@ Added
 
   Contributed by @ParthS007
 
+* Added new Hotkey Shortcuts for Workflow Designer: Save (ctrl/cmd + s), Open (ctrl/cmd + o),
+  Undo/Redo (ctrl/cmd + z, shift + z), Copy/Cut/Paste (ctrl/cmd + c/x/v). #963, #991
+
+  Contributed by @Jappzy and @cded from @Bitovi
+
 Changed
 ~~~~~~~
 * Updated nodejs from `14.16.1` to `14.20.1`, fixing the local build under ARM processor architecture. #880
