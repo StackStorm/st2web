@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+const escapeHtml = require('escape-html');
 
 const Noty = (function() {
   // don't include this during testing
@@ -43,6 +44,7 @@ export class Notification {
   }
 
   notify(type, text, { buttons = [], err, execution_id, ...options } = {}) {
+    text = escapeHtml(text);
     if (err) {
       let expanded = !!execution_id;
       let stack = null;
