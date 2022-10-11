@@ -379,8 +379,9 @@ export class DetailsCriteriaLine extends React.Component {
 
     const search = type !== 'search' ? null : {
       condition,
-      pattern: pattern['item.data'].pattern,
-      type: pattern['item.data'].type,
+      patterns: Object.entries(pattern).map(([ key, value ]) => (
+        {key, pattern: value.pattern, type: value.type}
+      )),
     };
 
     return (
@@ -396,9 +397,18 @@ export class DetailsCriteriaLine extends React.Component {
             <>
               Condition: <strong>{search.condition}</strong>
               <br />
-              Pattern: <strong>{search.pattern}</strong>
-              <br />
-              Type: <strong>{search.type}</strong>
+              Pattern:
+              <ul className='st2-details__line-search-patterns-list'>
+                {search.patterns.map(patternItem => (
+                  <li key={patternItem.key}>
+                    <strong>{patternItem.key}:</strong>
+                    <div className='st2-details__line-search-patterns-list-details'>
+                      <p>Type: {patternItem.type}</p>
+                      <p>Pattern: {patternItem.pattern}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </>
           ) : pattern }
         </div>
