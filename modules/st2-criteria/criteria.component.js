@@ -57,6 +57,8 @@ const types = {
 const searchConditions = {
   'any': 'Any',
   'all': 'All',
+  'any2any': 'Any2Any',
+  'all2any': 'All2Any',
 };
 
 export default class Criteria extends React.Component {
@@ -85,7 +87,33 @@ export default class Criteria extends React.Component {
     });
   }
 
-  handleChangeSearchPattern(key, pattern) {
+
+  handleChangeSearchItemKey(key, oldItemKey, itemKey) {
+    const { onChange } = this.props;
+
+    if(oldItemKey !== itemKey) {
+      const data = { ...this.props.data };
+      const dataItem = { ...data[key].pattern };
+      delete dataItem[oldItemKey];
+
+      return onChange({
+        ...data,
+        [key]: {
+          ...data[key],
+          pattern: {
+            ...dataItem,
+            [itemKey]: {
+              ...data[key].pattern[oldItemKey],
+            },
+          },
+        },
+      });
+    }
+    return onChange(this.props.data);
+    
+  }
+
+  handleChangeSearchPattern(key, itemKey, pattern) {
     const { data, onChange } = this.props;
 
     return onChange({
@@ -94,8 +122,8 @@ export default class Criteria extends React.Component {
         ...data[key],
         pattern: {
           ...data[key].pattern,
-          ['item.data']: {
-            ...data[key].pattern['item.data'],
+          [itemKey]: {
+            ...data[key].pattern[itemKey],
             pattern,
           },
         },
@@ -103,7 +131,7 @@ export default class Criteria extends React.Component {
     });
   }
 
-  handleChangeSearchType(key, type) {
+  handleChangeSearchType(key, itemKey, type) {
     const { data, onChange } = this.props;
 
     return onChange({
@@ -112,10 +140,45 @@ export default class Criteria extends React.Component {
         ...data[key],
         pattern: {
           ...data[key].pattern,
-          ['item.data']: {
-            ...data[key].pattern['item.data'],
+          [itemKey]: {
+            ...data[key].pattern[itemKey],
             type,
           },
+        },
+      },
+    });
+  }
+
+  handleAddSearchPatternItem(key) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...data[key].pattern,
+          ['']: {
+            type: Object.keys(types)[0],
+          },
+        },
+      },
+    });
+  }
+
+  handleRemoveSearchPatternItem(key, itemKey) {
+    const { onChange } = this.props;
+
+    const data = { ...this.props.data };
+    const dataPattern = {...this.props.data[key].pattern};
+    delete dataPattern[itemKey];
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...dataPattern,
         },
       },
     });
@@ -124,13 +187,16 @@ export default class Criteria extends React.Component {
   handleChangeKey(oldKey, key) {
     const { onChange } = this.props;
 
-    const data = { ...this.props.data };
-    delete data[oldKey];
-
-    return onChange({
-      ...data,
-      [key]: this.props.data[oldKey],
-    });
+    if(oldKey!== key) {
+      const data = { ...this.props.data };
+      delete data[oldKey];
+  
+      return onChange({
+        ...data,
+        [key]: this.props.data[oldKey],
+      });
+    }
+    return onChange(this.props.data);
   }
 
   handleChangeType(key, type) {
@@ -145,9 +211,7 @@ export default class Criteria extends React.Component {
           type,
           condition: 'all',
           pattern: {
-            ...data[key].pattern,
-            ['item.data']: {
-              ...data[key].pattern['item.data'],
+            ['']: {
               type: Object.keys(types)[0],
             },
           },
@@ -211,6 +275,7 @@ export default class Criteria extends React.Component {
           { _.map(data, ({ type, pattern, condition }, key) => (
             <div className={style.line} key={key}>
               <AutoFormCombobox
+                name='Key'
                 className={style.entity}
                 disabled={disabled}
                 data={key}
@@ -218,6 +283,7 @@ export default class Criteria extends React.Component {
                 onChange={(value) => this.handleChangeKey(key, value)}
               />
               <AutoFormSelect
+                name='Type'
                 className={style.entity}
                 disabled={disabled}
                 data={type}
@@ -240,30 +306,47 @@ export default class Criteria extends React.Component {
                     }}
                     onChange={(value) => this.handleChangeSearchCondition(key, value)}
                   />
-                  <AutoFormInput
-                    name={'Pattern'}
-                    className={style.entity}
-                    disabled={disabled}
-                    data={pattern['item.data'] ? pattern['item.data'].pattern : ''}
-                    spec={{
-                      required: true,
-                    }}
-                    onChange={(value) => this.handleChangeSearchPattern(key, value)}
-                  />
-                  <AutoFormSelect
-                    name={'Type'}
-                    className={style.entity}
-                    disabled={disabled}
-                    data={pattern['item.data'] ? pattern['item.data'].type : ''}
-                    spec={{
-                      required: true,
-                      enum: types,
-                    }}
-                    onChange={(value) => this.handleChangeSearchType(key, value)}
-                  />
+                  <div className={style.break} />
+                  <h5>Search Patterns <i className={cx('icon-plus', style.remove)} onClick={() => this.handleAddSearchPatternItem(key)} /></h5>
+                  <div className={style.break} />
+                  { _.map(pattern, ({ type, pattern }, itemKey) => (
+                    <div style={{display: 'flex'}} key={itemKey}>
+                      <AutoFormCombobox
+                        name={'Item name'}
+                        className={style.entity}
+                        disabled={disabled}
+                        data={itemKey}
+                        spec={spec}
+                        onChange={(value) => this.handleChangeSearchItemKey(key, itemKey, value)}
+                      />
+                      <AutoFormSelect
+                        name={'Type'}
+                        className={style.entity}
+                        disabled={disabled}
+                        data={type}
+                        spec={{
+                          required: true,
+                          enum: types,
+                        }}
+                        onChange={(value) => this.handleChangeSearchType(key, itemKey, value)}
+                      />
+                      <AutoFormInput
+                        name={'Pattern'}
+                        className={style.entity}
+                        disabled={disabled}
+                        data={pattern || ''}
+                        spec={{
+                          required: true,
+                        }}
+                        onChange={(value) => this.handleChangeSearchPattern(key, itemKey, value)}
+                      />
+                      <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemoveSearchPatternItem(key, itemKey)} />
+                    </div>
+                  ))}
                 </>
               ) : (
                 <AutoFormInput
+                  name={'Pattern'}
                   className={style.entity}
                   disabled={disabled}
                   data={pattern}
@@ -273,6 +356,7 @@ export default class Criteria extends React.Component {
                   onChange={(value) => this.handleChangePattern(key, value)}
                 />
               )}
+              <div className={style.break} />
               { disabled ? null :
                 <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
               }
