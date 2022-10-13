@@ -68,3 +68,18 @@
   flex-basis: 100%;
   height: 0;
 }
+
+.criteriaLabel {
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 2px;
+    left: -25px;
+  }
+}
+
+.subPatternRemove {
+  margin-top: 20px;
+  margin-left: 5px;
+}

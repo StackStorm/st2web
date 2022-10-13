@@ -274,14 +274,19 @@ export default class Criteria extends React.Component {
         <div>
           { _.map(data, ({ type, pattern, condition }, key) => (
             <div className={style.line} key={key}>
-              <AutoFormCombobox
-                name='Key'
-                className={style.entity}
-                disabled={disabled}
-                data={key}
-                spec={spec}
-                onChange={(value) => this.handleChangeKey(key, value)}
-              />
+              <div className={style.criteriaLabel}>
+                <AutoFormCombobox
+                  name='Key'
+                  className={style.entity}
+                  disabled={disabled}
+                  data={key}
+                  spec={spec}
+                  onChange={(value) => this.handleChangeKey(key, value)}
+                />
+                { disabled ? null :
+                  <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
+                }
+              </div>
               <AutoFormSelect
                 name='Type'
                 className={style.entity}
@@ -316,7 +321,10 @@ export default class Criteria extends React.Component {
                         className={style.entity}
                         disabled={disabled}
                         data={itemKey}
-                        spec={spec}
+                        spec={{
+                          required: true,
+                          enum: [],
+                        }}
                         onChange={(value) => this.handleChangeSearchItemKey(key, itemKey, value)}
                       />
                       <AutoFormSelect
@@ -340,7 +348,9 @@ export default class Criteria extends React.Component {
                         }}
                         onChange={(value) => this.handleChangeSearchPattern(key, itemKey, value)}
                       />
-                      <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemoveSearchPatternItem(key, itemKey)} />
+                      <i
+                        className={cx('icon-cross', style.remove, style.subPatternRemove)} onClick={() => this.handleRemoveSearchPatternItem(key, itemKey)}
+                      />
                     </div>
                   ))}
                 </>
@@ -355,11 +365,7 @@ export default class Criteria extends React.Component {
                   }}
                   onChange={(value) => this.handleChangePattern(key, value)}
                 />
-              )}
-              <div className={style.break} />
-              { disabled ? null :
-                <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
-              }
+              )}              
             </div>
           )) }
         </div>
