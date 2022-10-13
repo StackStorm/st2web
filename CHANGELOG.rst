@@ -16,6 +16,10 @@ Added
 
   Contributed by @Jappzy and @cded from @Bitovi
 
+* Added the search rule criteria in the UI with the possibility of multiple patterns. #992, #964, #492
+
+  Contributed by @Jappzy and @cded from @Bitovi
+
 Changed
 ~~~~~~~
 * Updated nodejs from `14.16.1` to `14.20.1`, fixing the local build under ARM processor architecture. #880
