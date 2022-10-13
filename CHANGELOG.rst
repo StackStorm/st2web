@@ -16,7 +16,7 @@ Added
 
   Contributed by @Jappzy and @cded from @Bitovi
 
-* Added the search rule criteria in the UI with the possibility of multiple patterns. #992
+* Added the search rule criteria in the UI with the possibility of multiple patterns. #992, #964, #492
 
   Contributed by @Jappzy and @cded from @Bitovi
 
