@@ -231,10 +231,14 @@ export default class Canvas extends Component {
     dirtyflag: PropTypes.bool,
     fetchActionscalled: PropTypes.func,
     saveData: PropTypes.func,
+    undo: PropTypes.func,
+    redo: PropTypes.func,
+    save: PropTypes.func,
   }
 
   state = {
     scale: 0,
+    copiedTask: null,
   }
 
   componentDidMount() {
@@ -736,17 +740,71 @@ export default class Canvas extends Component {
         style={{height: '100%'}}
         focused={true}
         attach={document.body}
-        handlers={{handleTaskDelete: e => {
-          // This will break if canvas elements (tasks/transitions) become focus targets with
-          //  tabindex or automatically focusing elements.  But in that case, the Task already
-          //  has a handler for delete waiting.
-          if(e.target === document.body) {
-            e.preventDefault();
-            if(selectedTask) {
+        keyMap={{
+          copy: [ 'ctrl+c', 'command+c' ],
+          cut: [ 'ctrl+x', 'command+x' ],
+          paste: [ 'ctrl+v', 'command+v' ],
+          open: [ 'ctrl+o', 'command+o' ],
+          undo: [ 'ctrl+z', 'command+z' ],
+          redo: [ 'ctrl+shift+z', 'command+shift+z' ],
+          save: [ 'ctrl+s', 'command+s' ],
+        }}
+        handlers={{
+          copy: () => {
+            if (selectedTask) {
+              this.setState({ copiedTask: selectedTask });
+            }
+          },
+          cut: () => {
+            if (selectedTask) {
+              this.setState({ copiedTask: selectedTask });
               this.handleTaskDelete(selectedTask);
             }
-          }
-        }}}
+          },
+          paste: () => {
+            if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') {
+              // allow regular copy/paste from clipboard when inputs or textareas are focused
+              return;
+            }
+
+            const { copiedTask } = this.state;
+            if (copiedTask) {
+              const taskHeight = copiedTask.size.y;
+              const taskCoords = copiedTask.coords;
+
+              const newCoords = {
+                x: taskCoords.x,
+                y: taskCoords.y + taskHeight + 10,
+              };
+
+              const lastIndex = tasks
+                .map(task => (task.name.match(/task(\d+)/) || [])[1])
+                .reduce((acc, item) => Math.max(acc, item || 0), 0);
+
+              this.props.issueModelCommand('addTask', {
+                name: `task${lastIndex + 1}`,
+                action: copiedTask.action,
+                coords: Vector.max(newCoords, new Vector(0, 0)),
+              });
+            }
+          },
+          open: () => {
+            if (selectedTask) {
+              window.open(`${location.origin}/#/action/${selectedTask.action}`, '_blank');
+            }
+          },
+          undo: () => {
+            this.props.undo();
+          },
+          redo: () => {
+            this.props.redo();
+          },
+          save: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.props.save();
+          },
+        }}
       >
         <div
           className={cx(this.props.className, this.style.component)}

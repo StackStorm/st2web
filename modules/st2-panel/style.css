@@ -778,5 +778,14 @@
       &-value {
         width: 100%;
       }
+
+      &-search-patterns-list {
+        list-style-type: none;
+        padding-inline-start: 10px;
+        padding-left: 10px;
+        &-details {
+          margin-left: 5px;
+        }
+      }
   }
 }

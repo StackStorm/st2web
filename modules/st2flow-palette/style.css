@@ -35,6 +35,8 @@ limitations under the License.
 
   position: relative;
 
+  display: block;
+
   &-name {
     color: #2d2d2d;
     font-size: 14px;

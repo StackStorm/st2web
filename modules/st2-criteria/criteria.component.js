@@ -51,6 +51,14 @@ const types = {
   'timediff_gt': 'Later Than',
   'exists': 'Exists',
   'nexists': 'Doesn\'t Exist',
+  'search': 'Search',
+};
+
+const searchConditions = {
+  'any': 'Any',
+  'all': 'All',
+  'any2any': 'Any2Any',
+  'all2any': 'All2Any',
 };
 
 export default class Criteria extends React.Component {
@@ -67,28 +75,161 @@ export default class Criteria extends React.Component {
     disabled: false,
   }
 
-  handleChangeKey(oldKey, key) {
-    const { onChange } = this.props;
-
-    const data = { ...this.props.data };
-    delete data[oldKey];
-
-    return onChange({
-      ...data,
-      [key]: this.props.data[oldKey],
-    });
-  }
-
-  handleChangeType(key, type) {
+  handleChangeSearchCondition(key, condition) {
     const { data, onChange } = this.props;
 
     return onChange({
       ...data,
       [key]: {
         ...data[key],
-        type,
+        condition,
       },
     });
+  }
+
+
+  handleChangeSearchItemKey(key, oldItemKey, itemKey) {
+    const { onChange } = this.props;
+
+    if(oldItemKey !== itemKey) {
+      const data = { ...this.props.data };
+      const dataItem = { ...data[key].pattern };
+      delete dataItem[oldItemKey];
+
+      return onChange({
+        ...data,
+        [key]: {
+          ...data[key],
+          pattern: {
+            ...dataItem,
+            [itemKey]: {
+              ...data[key].pattern[oldItemKey],
+            },
+          },
+        },
+      });
+    }
+    return onChange(this.props.data);
+    
+  }
+
+  handleChangeSearchPattern(key, itemKey, pattern) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...data[key].pattern,
+          [itemKey]: {
+            ...data[key].pattern[itemKey],
+            pattern,
+          },
+        },
+      },
+    });
+  }
+
+  handleChangeSearchType(key, itemKey, type) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...data[key].pattern,
+          [itemKey]: {
+            ...data[key].pattern[itemKey],
+            type,
+          },
+        },
+      },
+    });
+  }
+
+  handleAddSearchPatternItem(key) {
+    const { data, onChange } = this.props;
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...data[key].pattern,
+          ['']: {
+            type: Object.keys(types)[0],
+          },
+        },
+      },
+    });
+  }
+
+  handleRemoveSearchPatternItem(key, itemKey) {
+    const { onChange } = this.props;
+
+    const data = { ...this.props.data };
+    const dataPattern = {...this.props.data[key].pattern};
+    delete dataPattern[itemKey];
+
+    return onChange({
+      ...data,
+      [key]: {
+        ...data[key],
+        pattern: {
+          ...dataPattern,
+        },
+      },
+    });
+  }
+
+  handleChangeKey(oldKey, key) {
+    const { onChange } = this.props;
+
+    if(oldKey!== key) {
+      const data = { ...this.props.data };
+      delete data[oldKey];
+  
+      return onChange({
+        ...data,
+        [key]: this.props.data[oldKey],
+      });
+    }
+    return onChange(this.props.data);
+  }
+
+  handleChangeType(key, type) {
+    const { data, onChange } = this.props;
+
+    if (type === 'search') {
+      // save default values for search criteria
+      return onChange({
+        ...data,
+        [key]: {
+          ...data[key],
+          type,
+          condition: 'all',
+          pattern: {
+            ['']: {
+              type: Object.keys(types)[0],
+            },
+          },
+        },
+      });
+    }
+    else {
+      // reset pattern from object to empty string if type != 'search'
+      this.handleChangePattern(key, '');
+      return onChange({
+        ...data,
+        [key]: {
+          ...data[key],
+          type,
+          pattern: '',
+        },
+      });
+    }
   }
 
   handleChangePattern(key, pattern) {
@@ -131,16 +272,23 @@ export default class Criteria extends React.Component {
     return (
       <div {...props} className={cx(style.component, flat && [ 'st2-auto-form--flat', style.flat ], className)}>
         <div>
-          { _.map(data, ({ type, pattern }, key) => (
+          { _.map(data, ({ type, pattern, condition }, key) => (
             <div className={style.line} key={key}>
-              <AutoFormCombobox
-                className={style.entity}
-                disabled={disabled}
-                data={key}
-                spec={spec}
-                onChange={(value) => this.handleChangeKey(key, value)}
-              />
+              <div className={style.criteriaLabel}>
+                <AutoFormCombobox
+                  name='Key'
+                  className={style.entity}
+                  disabled={disabled}
+                  data={key}
+                  spec={spec}
+                  onChange={(value) => this.handleChangeKey(key, value)}
+                />
+                { disabled ? null :
+                  <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
+                }
+              </div>
               <AutoFormSelect
+                name='Type'
                 className={style.entity}
                 disabled={disabled}
                 data={type}
@@ -150,28 +298,84 @@ export default class Criteria extends React.Component {
                 }}
                 onChange={(value) => this.handleChangeType(key, value)}
               />
-              <AutoFormInput
-                className={style.entity}
-                disabled={disabled}
-                data={pattern}
-                spec={{
-                  required: true,
-                }}
-                onChange={(value) => this.handleChangePattern(key, value)}
-              />
-              { disabled ? null :
-                <i className={cx('icon-cross', style.remove)} onClick={() => this.handleRemove(key)} />
-              }
+              { type === 'search' ? (
+                <>
+                  <AutoFormSelect
+                    name='Condition'
+                    className={style.entity}
+                    disabled={disabled}
+                    data={condition}
+                    spec={{
+                      required: true,
+                      enum: searchConditions,
+                    }}
+                    onChange={(value) => this.handleChangeSearchCondition(key, value)}
+                  />
+                  <div className={style.break} />
+                  <h5>Search Patterns <i className={cx('icon-plus', style.remove)} onClick={() => this.handleAddSearchPatternItem(key)} /></h5>
+                  <div className={style.break} />
+                  { _.map(pattern, ({ type, pattern }, itemKey) => (
+                    <div style={{display: 'flex'}} key={itemKey}>
+                      <AutoFormCombobox
+                        name={'Item name'}
+                        className={style.entity}
+                        disabled={disabled}
+                        data={itemKey}
+                        spec={{
+                          required: true,
+                          enum: [],
+                        }}
+                        onChange={(value) => this.handleChangeSearchItemKey(key, itemKey, value)}
+                      />
+                      <AutoFormSelect
+                        name={'Type'}
+                        className={style.entity}
+                        disabled={disabled}
+                        data={type}
+                        spec={{
+                          required: true,
+                          enum: types,
+                        }}
+                        onChange={(value) => this.handleChangeSearchType(key, itemKey, value)}
+                      />
+                      <AutoFormInput
+                        name={'Pattern'}
+                        className={style.entity}
+                        disabled={disabled}
+                        data={pattern || ''}
+                        spec={{
+                          required: true,
+                        }}
+                        onChange={(value) => this.handleChangeSearchPattern(key, itemKey, value)}
+                      />
+                      <i
+                        className={cx('icon-cross', style.remove, style.subPatternRemove)} onClick={() => this.handleRemoveSearchPatternItem(key, itemKey)}
+                      />
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <AutoFormInput
+                  name={'Pattern'}
+                  className={style.entity}
+                  disabled={disabled}
+                  data={pattern}
+                  spec={{
+                    required: true,
+                  }}
+                  onChange={(value) => this.handleChangePattern(key, value)}
+                />
+              )}              
             </div>
           )) }
         </div>
         { disabled ? null : (
           <div className={style.buttons}>
             <input
-              type="button"
-              className="st2-forms__button st2-forms__button--small"
+              type='button'
+              className='st2-forms__button st2-forms__button--small'
               onClick={() => this.handleAdd()}
-              value="Add criteria"
+              value='Add criteria'
             />
           </div>
         ) }
