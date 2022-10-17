@@ -29,6 +29,7 @@ import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import fp from 'lodash/fp';
 import { uniqueId, uniq } from 'lodash';
+import isEqual from 'lodash/isEqual';
 
 import Notifications from '@stackstorm/st2flow-notifications';
 import { HotKeys } from 'react-hotkeys';
@@ -259,8 +260,10 @@ export default class Canvas extends Component {
     this.handleUpdate();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.handleUpdate();
+
+    this.handleAutoSaveUpdates(prevProps);
   }
 
   componentWillUnmount() {
@@ -391,6 +394,21 @@ export default class Canvas extends Component {
       needsCoords.forEach(({task, transitionsTo}) => {
         this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo));
       });
+    }
+  }
+
+  handleAutoSaveUpdates(prevProps) {
+    const {saveData, transitions, tasks} = this.props;
+    const { autosaveEnabled } = store.getState();
+
+    if (autosaveEnabled) {
+      if(!isEqual(prevProps.transitions, transitions)) {
+        saveData();
+      }
+
+      if(!isEqual(prevProps.tasks, tasks)) {
+        this.props.saveData();
+      }
     }
   }
 
@@ -589,7 +607,7 @@ export default class Canvas extends Component {
     if (autosaveEnabled && this.props.dirtyflag) {
       this.props.saveData();
       await this.props.fetchActionscalled();
-    }  
+    }
    
   }
 
@@ -613,32 +631,14 @@ export default class Canvas extends Component {
 
   handleTaskDelete = (task: TaskRefInterface) => {
     this.props.issueModelCommand('deleteTask', task);
-
-    const { autosaveEnabled } = store.getState();
-
-    if (autosaveEnabled) {
-      this.props.saveData();
-    }
   }
 
   handleTaskConnect = (to: TaskRefInterface, from: TaskRefInterface) => {
     this.props.issueModelCommand('addTransition', { from, to: [ to ] });
-
-    const { autosaveEnabled } = store.getState();
-
-    if (autosaveEnabled) {
-      this.props.saveData();
-    }
   }
 
   handleTransitionDelete = (transition: TransitionInterface) => {
     this.props.issueModelCommand('deleteTransition', transition);
-
-    const { autosaveEnabled } = store.getState();
-
-    if (autosaveEnabled) {
-      this.props.saveData();
-    }
   }
 
   get notifications() : Array<NotificationInterface> {
