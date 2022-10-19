@@ -21,7 +21,7 @@ const plugins = require('gulp-load-plugins')(settings.plugins);
 
 gulp.task('lint', (done) => gulp.src(settings.lint, { cwd: settings.dev })
   .pipe(plugins.plumber())
-  .pipe(plugins.eslint())
+  .pipe(plugins.eslint({ fix: true }))
   .pipe(plugins.eslint.format())
   .pipe(plugins.eslint.failAfterError())
   .on('end', () => done())

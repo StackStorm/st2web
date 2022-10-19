@@ -207,6 +207,8 @@ export default class RulesDetails extends React.Component {
     }
 
     this.props.onComponentUpdate && this.props.onComponentUpdate();
+
+    this.setState({ editing: null });
   }
 
   handleSection(section) {
@@ -440,8 +442,8 @@ export default class RulesDetails extends React.Component {
                         ? (
                           Object.keys(rule.criteria || {})
                             .map(name => {
-                              const { type, pattern } = rule.criteria[name];
-                              return <DetailsCriteriaLine key={`${name}//${type}//${pattern}`} name={name} type={type} pattern={pattern} />;
+                              const { type, pattern, condition } = rule.criteria[name];
+                              return <DetailsCriteriaLine key={`${name}//${type}//${pattern}`} name={name} type={type} pattern={pattern} condition={condition} />;
                             })
                         ) : (
                           <DetailsLineNote>
