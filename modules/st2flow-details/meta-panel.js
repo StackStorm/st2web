@@ -183,7 +183,7 @@ export default class Meta extends Component {
   }
 
   render() {
-    const { pack, setPack, meta, setMeta, navigation, actions, vars, onChange } = this.props;
+    const { pack, setPack, meta, setMeta, navigation, actions, vars } = this.props;
     const { section = 'meta' } = navigation;
     const stringVars = vars && vars.map(kv => {
       const key = Object.keys(kv)[0];
