@@ -100,11 +100,25 @@ export default class Meta extends Component {
     onChange: PropTypes.func,
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { meta, setMeta } = this.props;
 
     if (!meta.runner_type) {
       setMeta('runner_type', default_runner_type);
+    }
+
+    this.handleAutoSaveUpdates(prevProps);
+  }
+
+  handleAutoSaveUpdates(prevProps) {
+    const { meta, vars, onChange } = this.props;
+
+    if(prevProps.meta !== meta) {
+      onChange();
+    }
+
+    if(prevProps.vars !== vars) {
+      onChange();
     }
   }
 
@@ -113,7 +127,7 @@ export default class Meta extends Component {
   }
 
   handleVarsChange(publish: Array<{}>) {
-    const { setVars, onChange } = this.props;
+    const { setVars } = this.props;
     const val = (publish ? publish.slice(0) : []).map(kv => {
       const key = Object.keys(kv)[0];
       const val = kv[key];
@@ -136,7 +150,6 @@ export default class Meta extends Component {
 
     // Make sure to mutate the copy
     setVars(val);
-    onChange();
   }
 
   addVar() {
@@ -159,7 +172,6 @@ export default class Meta extends Component {
         command: 'set',
         args: [ 'entry_point',entryPoint ],
       });
-      this.props.onChange();
     }
     catch(error) {
       store.dispatch({
@@ -199,19 +211,13 @@ export default class Meta extends Component {
             name="Runner Type"
             value={meta.runner_type}
             spec={{enum: [ ...new Set([ 'mistral-v2', 'orquesta' ]) ], default: default_runner_type}}
-            onChange={(v) => {
-              setMeta('runner_type', v);
-              onChange();
-            }}
+            onChange={(v) => setMeta('runner_type', v)}
           />
           <EnumField
             name="Pack"
             value={pack}
             spec={{enum: packs}}
-            onChange={(v) => {
-              setPack(v);
-              onChange();
-            }}
+            onChange={(v) => setPack(v)}
           />
           <StringField
             name="Name"
@@ -221,27 +227,18 @@ export default class Meta extends Component {
           <StringField
             name="Description"
             value={meta.description}
-            onChange={(v) => {
-              setMeta('description', v);
-              onChange();
-            }}
+            onChange={(v) => setMeta('description', v)}
           />
           <BooleanField
             name="Enabled"
             value={meta.enabled}
             spec={{}}
-            onChange={(v) => {
-              setMeta('enabled', v);
-              onChange();
-            }}
+            onChange={(v) => setMeta('enabled', v)}
           />
           <StringField
             name="Entry point"
             value={meta.entry_point !=='undefined' ? meta.entry_point:`workflows/${meta.name}.yaml`}
-            onChange={(v) => {
-              setMeta('entry_point', v || '');
-              onChange();
-            }}
+            onChange={(v) => setMeta('entry_point', v || '')}
           />
         </Panel>
       ),
