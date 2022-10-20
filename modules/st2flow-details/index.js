@@ -126,6 +126,8 @@ export default class Details extends Component<{
 
     const { type = 'metadata', asCode } = navigation;
 
+    const { autosaveEnabled } = store.getState();
+
     return (
       <div className={cx(this.props.className, this.style.component, asCode && 'code')}>
         <Toolbar>
@@ -147,12 +149,13 @@ export default class Details extends Component<{
             <input
               id='autosave-checkbox' 
               name='autosave-checkbox' 
-              type='checkbox' 
+              type='checkbox'
               onChange={(e) => {
                 this.toggleAutosave(e.target.checked);
                 onChange();
               }} 
               className={cx(style.autosave)}
+              defaultChecked={autosaveEnabled}
             />
             <label id='autosave-checkbox__label' htmlFor='autosave-checkbox' className={cx(style.autosave)}>Autosave</label>
           </div>
