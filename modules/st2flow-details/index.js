@@ -32,6 +32,7 @@ import TaskDetails from './task-details';
 import TaskList from './task-list';
 
 import style from './style.css';
+import store from '../../apps/st2-workflows/store';
 
 @connect(
   editorConnect
@@ -91,6 +92,8 @@ export default class Details extends Component<{
     navigate: PropTypes.func,
 
     actions: PropTypes.array,
+
+    onChange: PropTypes.func,
   }
 
   sections = [{
@@ -111,10 +114,19 @@ export default class Details extends Component<{
     this.props.navigate({ toTasks: undefined, task: undefined });
   }
 
+  toggleAutosave = (autosaveEnabled) => {
+    store.dispatch({
+      type: 'TOGGLE_AUTOSAVE',
+      autosaveEnabled,
+    });
+  }
+
   render() {
-    const { actions, navigation, navigate } = this.props;
+    const { actions, navigation, navigate, onChange } = this.props;
 
     const { type = 'metadata', asCode } = navigation;
+
+    const { autosaveEnabled } = store.getState();
 
     return (
       <div className={cx(this.props.className, this.style.component, asCode && 'code')}>
@@ -131,20 +143,36 @@ export default class Details extends Component<{
               );
             })
           }
+          <div
+            style={{display: 'flex'}} title="Automatically save the workflow on every change"
+          >
+            <input
+              id='autosave-checkbox' 
+              name='autosave-checkbox' 
+              type='checkbox'
+              onChange={(e) => {
+                this.toggleAutosave(e.target.checked);
+                onChange();
+              }} 
+              className={cx(style.autosave)}
+              defaultChecked={autosaveEnabled}
+            />
+            <label id='autosave-checkbox__label' htmlFor='autosave-checkbox' className={cx(style.autosave)}>Autosave</label>
+          </div>
           <ToolbarButton className={cx(style.code, 'icon-code')} selected={asCode} onClick={() => navigate({ asCode: !asCode })} />
         </Toolbar>
         {
           type === 'metadata' && (
             asCode
-              && <MetaEditor />
+              && <MetaEditor onChange={() => onChange()} />
               // $FlowFixMe Model is populated via decorator
-              || <Meta />
+              || <Meta onChange={() => onChange()} />
           )
         }
         {
           type === 'execution' && (
             asCode
-              && <WorkflowEditor selectedTaskName={navigation.task} onTaskSelect={this.handleTaskSelect} />
+              && <WorkflowEditor selectedTaskName={navigation.task} onTaskSelect={this.handleTaskSelect} onChange={() => onChange()} />
               || navigation.task
                 // $FlowFixMe ^^
                 && <TaskDetails onBack={this.handleBack} selected={navigation.task} actions={actions} />

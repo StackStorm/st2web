@@ -230,7 +230,7 @@ export default class Workflows extends Component {
  }
 
  save() {
-   const { pack, meta, actions, workflowSource, metaSource } = this.props;
+   const { pack, meta, actions, workflowSource, metaSource, sendSuccess, sendError } = this.props;
    const existingAction = actions.find(e => e.name === meta.name && e.pack === pack);
 
    if (!meta.name) {
@@ -272,13 +272,30 @@ export default class Workflows extends Component {
      // don't need to return anything to the store. the handler will change dirty.
      return {};
    })();
-
-   store.dispatch({
+  
+   const saveRes = store.dispatch({
      type: 'SAVE_WORKFLOW',
      promise,
    });
+
+   saveRes.then(({ status }) => status === 'success' ? sendSuccess('Workflow saved.') : sendError('Error saving workflow.'));
+
    return promise;
  }
+
+  timer;
+
+  autosave(func) {
+    func.apply(this);
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      const { autosaveEnabled } = store.getState();
+
+      if (autosaveEnabled) {
+        this.save();
+      }
+    }, 1000);
+  }
 
   style = style
 
@@ -340,24 +357,33 @@ export default class Workflows extends Component {
                   <div
                     style={{ flex: 1}}
                   >
-                    <Canvas className="canvas" location={location} match={match} fetchActionscalled={e => this.props.fetchActions()} save={this.keyHandlers.save} dirtyflag={this.props.dirty} undo={this.keyHandlers.undo} redo={this.keyHandlers.redo}>
+                    <Canvas
+                      className="canvas"
+                      location={location}
+                      match={match}
+                      dirtyflag={this.props.dirty}
+                      fetchActionscalled={e => this.props.fetchActions()}
+                      saveData={e => this.autosave(() => null)}
+                      save={this.keyHandlers.save}
+                      undo={() => this.autosave(() => this.keyHandlers.undo())}
+                      redo={() => this.autosave(() => this.keyHandlers.redo())}
+                    >
                       <Toolbar>
-                        <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => undo()} />
-                        <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => redo()} />
+                        <ToolbarButton key="undo" icon="icon-redirect" title="Undo" errorMessage="Could not undo." onClick={() => this.autosave(() => undo())} />
+                        <ToolbarButton key="redo" icon="icon-redirect2" title="Redo" errorMessage="Could not redo." onClick={() => this.autosave(() => redo())} />
                         <ToolbarButton
                           key="rearrange"
                           icon="icon-arrange"
                           title="Rearrange tasks"
                           successMessage="Rearrange complete."
                           errorMessage="Error rearranging workflows."
-                          onClick={() => layout()}
+                          onClick={() => this.autosave(() => layout())}
                         />
                         <ToolbarButton
                           key="save"
                           className={cx(dirty && 'glow')}
                           icon="icon-save"
                           title="Save workflow"
-                          successMessage="Workflow saved."
                           errorMessage="Error saving workflow."
                           onClick={() => this.save()}
                         />
@@ -391,7 +417,7 @@ export default class Workflows extends Component {
                       </Toolbar>
                     </Canvas>
                   </div>
-                  { !isCollapsed.details && <Details className="details" actions={actions} /> }
+                  { !isCollapsed.details && <Details className="details" actions={actions} onChange={() => this.autosave(() => null)} /> }
                 </div>
               </div>
           
