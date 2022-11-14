@@ -56,6 +56,7 @@ export default class Editor extends Component<{
     onTaskSelect: PropTypes.func,
     source: PropTypes.string,
     onEditorChange: PropTypes.func,
+    onChange: PropTypes.func,
   }
 
   componentDidMount() {
@@ -142,6 +143,7 @@ export default class Editor extends Component<{
   }
 
   handleEditorChange = (delta: DeltaInterface) => {
+    const { onChange } = this.props;
     window.clearTimeout(this.deltaTimer);
 
     // Only if the user is actually typing
@@ -149,6 +151,7 @@ export default class Editor extends Component<{
       this.deltaTimer = window.setTimeout(() => {
         if (this.props.onEditorChange) {
           this.props.onEditorChange(this.editor.getValue());
+          onChange();
         }
       }, DELTA_DEBOUNCE);
     }

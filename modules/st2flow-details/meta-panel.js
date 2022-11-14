@@ -96,13 +96,29 @@ export default class Meta extends Component {
     actions: PropTypes.array,
     vars: PropTypes.array,
     setVars: PropTypes.func,
+
+    onChange: PropTypes.func,
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { meta, setMeta } = this.props;
 
     if (!meta.runner_type) {
       setMeta('runner_type', default_runner_type);
+    }
+
+    this.handleAutoSaveUpdates(prevProps);
+  }
+
+  handleAutoSaveUpdates(prevProps) {
+    const { meta, vars, onChange } = this.props;
+
+    if(prevProps.meta !== meta) {
+      onChange();
+    }
+
+    if(prevProps.vars !== vars) {
+      onChange();
     }
   }
 
@@ -191,12 +207,39 @@ export default class Meta extends Component {
       </Toolbar>,
       section === 'meta' && (
         <Panel key="meta">
-          <EnumField name="Runner Type" value={meta.runner_type} spec={{enum: [ ...new Set([ 'mistral-v2', 'orquesta' ]) ], default: default_runner_type}} onChange={(v) => setMeta('runner_type', v)} />
-          <EnumField name="Pack" value={pack} spec={{enum: packs}} onChange={(v) => setPack(v)} />
-          <StringField name="Name" value={meta.name} onChange={(v) => this.setMetaNew('name', v || '')} />
-          <StringField name="Description" value={meta.description} onChange={(v) => setMeta('description', v)} />
-          <BooleanField name="Enabled" value={meta.enabled} spec={{}} onChange={(v) => setMeta('enabled', v)} />
-          <StringField name="Entry point" value={meta.entry_point !=='undefined' ? meta.entry_point:`workflows/${meta.name}.yaml`}  onChange={(v) => setMeta('entry_point', v || '')} />
+          <EnumField
+            name="Runner Type"
+            value={meta.runner_type}
+            spec={{enum: [ ...new Set([ 'mistral-v2', 'orquesta' ]) ], default: default_runner_type}}
+            onChange={(v) => setMeta('runner_type', v)}
+          />
+          <EnumField
+            name="Pack"
+            value={pack}
+            spec={{enum: packs}}
+            onChange={(v) => setPack(v)}
+          />
+          <StringField
+            name="Name"
+            value={meta.name}
+            onChange={(v) => this.setMetaNew('name', v || '')}
+          />
+          <StringField
+            name="Description"
+            value={meta.description}
+            onChange={(v) => setMeta('description', v)}
+          />
+          <BooleanField
+            name="Enabled"
+            value={meta.enabled}
+            spec={{}}
+            onChange={(v) => setMeta('enabled', v)}
+          />
+          <StringField
+            name="Entry point"
+            value={meta.entry_point !=='undefined' ? meta.entry_point:`workflows/${meta.name}.yaml`}
+            onChange={(v) => setMeta('entry_point', v || '')}
+          />
         </Panel>
       ),
       section === 'parameters' && (
