@@ -148,17 +148,18 @@ export default class Login extends React.Component {
     super(props);
 
     const servers = window.st2constants.st2Config.hosts;
-
     const server = servers && servers.length > 0 ? servers[0] : { auth: true };
 
     this.state = {
       error: null,
-      
+
+      ssoEnabled: !!window.st2constants.st2Config.ssoEnabled,
+
       username: '',
       password: '',
       remember: true,
       disabled: false,
-  
+
       server,
       servers,
     };
@@ -256,6 +257,20 @@ export default class Login extends React.Component {
               </span>
             </label>
           </LoginRow>
+          {
+            this.state.ssoEnabled ? (
+              <React.Fragment>
+                <LoginRow>
+                  <div className={style.rowDivider}>Or</div>
+                </LoginRow>
+                <LoginRow style={style} >
+                  <a href="/auth/sso/request/web" className={cx('st2-forms__button', style.ssoButton)}>
+                    Login with SSO
+                  </a>
+                </LoginRow>
+              </React.Fragment>
+            ) : null
+          }
 
           <LoginBottomRow style={style} >
             <a target="_blank" rel="noopener noreferrer" href={this.docsLink}>

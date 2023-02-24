@@ -4,7 +4,6 @@ Changelog
 in development
 --------------
 
-
 Added
 ~~~~~
 * Added feature for disabling button for synchronous responses. Button gets disabled onClick on `Connect` and `Submit` in st2-login and st2-history module respectively.
@@ -20,6 +19,10 @@ Added
 
   Contributed by @Jappzy and @cded from @Bitovi
 
+* Added SSO login button and relative configuration to config.json (`ssoEnabled`)
+
+  Contributed by @pimguilherme
+  
 * Added an optional auto-save capability in the workflow composer. #965, #993
 
   Contributed by @Jappzy and @cded from @Bitovi

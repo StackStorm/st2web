@@ -42,4 +42,6 @@ angular.module('main')
     //   },
     // ],
 
+    // ssoEnabled: false (controls whether SSO login button should be visible)
+
   });
