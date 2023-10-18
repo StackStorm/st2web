@@ -92,7 +92,7 @@ jobs:
           name: Start test containers
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
-            sleep 600
+            sleep 300
       - run:
           name: Check test containers
           command: |
@@ -105,7 +105,7 @@ jobs:
           command: |
             docker-compose -f ~/st2-docker/docker-compose.yml down --rmi
             docker-compose -f ~/st2-docker/docker-compose.yml up -d
-            sleep 600
+            sleep 300
       - run:
           name: Recheck test containers
           command: |
