@@ -7,12 +7,14 @@
 version: 2
 jobs:
   build:
-    machine: true
+    machine:
+      # pin image to older version as "ubuntu-2204:2023.10.1" breaks on "nvm" step
+      image: ubuntu-2204:2023.04.2
     environment:
       DEPLOY_PACKAGES: 1
       DEB: bionic focal
       RPM: el7 el8
-      ST2_VERSION: "3.6dev"
+      ST2_VERSION: "3.9dev"
       ST2_HOST: localhost
       ST2_PROTOCOL: http
       ST2_USERNAME: st2admin
@@ -58,7 +60,7 @@ jobs:
             sudo apt-get install rpm jq devscripts debhelper
             gem install package_cloud
             nvm use 14.20.1
-            npm install --global lerna yarn
+            npm install --global lerna@6.0.0 yarn
       - run:
           name: Install package dependencies
           command: |
