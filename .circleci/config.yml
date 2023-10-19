@@ -7,7 +7,9 @@
 version: 2
 jobs:
   build:
-    machine: true
+    machine:
+      # pin image to older version as "ubuntu-2204:2023.10.1" breaks on "nvm" step
+      image: ubuntu-2204:2023.04.2
     environment:
       DEPLOY_PACKAGES: 1
       DEB: bionic focal
@@ -30,9 +32,8 @@ jobs:
       - run:
           name: Switch to supported version of Node
           command: |
-            whereis nvm
+            set +e
             export NVM_DIR="/opt/circleci/.nvm"
-            ls $NVM_DIR
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 14.20.1
             nvm alias default v14.20.1
