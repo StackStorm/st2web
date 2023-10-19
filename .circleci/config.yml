@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Switch to supported version of Node
           command: |
-            set +e
+            set +ex
             whereis nvm
             export NVM_DIR="/opt/circleci/.nvm"
             ls $NVM_DIR
