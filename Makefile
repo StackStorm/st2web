@@ -12,7 +12,7 @@ all: build
 # yarn now included in later node images
 npm-install:
 	echo "npm install"
-	npm install -g lerna
+	npm install -g lerna@6.0.0
 
 lerna:
 	echo "lerna"
