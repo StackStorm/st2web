@@ -33,6 +33,8 @@ jobs:
             set +e
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            ls $NVM_DIR
+            whereis nvm
             nvm install 14.20.1
             nvm alias default v14.20.1
 
