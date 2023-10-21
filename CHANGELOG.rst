@@ -4,6 +4,12 @@ Changelog
 in development
 --------------
 
+Changed
+~~~~~~~
+* Updated various dependencies. #1009
+
+  Contributed by @enykeev
+
 Fixed
 ~~~~~
 * Fixed CircleCI tests by pinning lerna@6.0.0. #1008
