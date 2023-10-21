@@ -6,7 +6,7 @@ in development
 
 Changed
 ~~~~~~~
-* Updated various dependencies. #1009
+* Updated various dependencies (security). #1009
 
   Contributed by @enykeev
 
