@@ -8798,10 +8798,10 @@ node.extend@^1.0.10:
     has "^1.0.3"
     is "^3.2.1"
 
-node@14.20.1:
-  version "14.20.1"
-  resolved "https://registry.yarnpkg.com/node/-/node-14.20.1.tgz#09e5d4a06d48fdcbeca1ec1ae10bbe02901d36b9"
-  integrity sha512-X+ds8FIkd5O+o6uuZKjP8ONH64PN8B+bsR2atkyx5anwruCPRyqHQRFQzG80Ymxv/lptRm3emXvvVpiMLl2qLg==
+node@20.8.1:
+  version "20.8.1"
+  resolved "https://registry.yarnpkg.com/node/-/node-20.8.1.tgz#fc2da9cbe07986a67c753072b258d139de1e4d0f"
+  integrity sha512-gG+nhijBgjTNjgPB4BxKaBKnFS49bngOuxw1/jVh4vlscg/6K+00n+2Q4LEnklTZJXFUQM+AqyGdfvh9h1JknA==
   dependencies:
     node-bin-setup "^1.0.0"
 
