@@ -97,8 +97,6 @@ export class API {
             'Authorization': `Basic ${toBase64(`${username}:${password}`)}`,
             'content-type': 'application/json',
           },
-          // You need to define data field for axios to set content-type header
-          data: null,
         });
 
         if (res.status !== 201) {

@@ -106,5 +106,8 @@
     "ignore-styles": "5.0.1",
     "insert-css": "2.0.0",
     "zombie": "5.0.8"
+  },
+  "resolutions": {
+    "open": "^8.4.0"
   }
 }
