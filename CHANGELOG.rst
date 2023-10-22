@@ -10,6 +10,10 @@ Changed
 
   Contributed by @enykeev
 
+* Updated NodeJS to v20 current (security). #1010
+
+  Contributed by @enykeev
+
 Fixed
 ~~~~~
 * Fixed CircleCI tests by pinning lerna@6.0.0. #1008
