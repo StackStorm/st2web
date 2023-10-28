@@ -57,7 +57,7 @@
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-textarea-autosize": "5.2.1",
+    "react-textarea-autosize": "7.1.2",
     "validator": "^13.0.0"
   },
   "devDependencies": {
