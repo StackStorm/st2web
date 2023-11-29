@@ -4,6 +4,25 @@ Changelog
 in development
 --------------
 
+Changed
+~~~~~~~
+* Updated various dependencies (security). #1009, #1020
+
+  Contributed by @enykeev
+
+* Updated NodeJS to v20 current (security). #1010
+
+  Contributed by @enykeev
+
+Fixed
+~~~~~
+* Fixed CircleCI tests by pinning lerna@6.0.0. #1008
+
+  Contributed by @guzzijones
+
+
+st2 v3.8.0
+------
 
 Added
 ~~~~~
@@ -30,7 +49,6 @@ Changed
     
   Reported by @cded from @Bitovi
 
-
 Fixed
 ~~~~~
 * Fixed CircleCI tests
@@ -44,7 +62,3 @@ Fixed
 * Escaped text in notifications. #990
 
   Contributed by @cded from @Bitovi
-
-
-v2.4.3
-------

@@ -12,19 +12,18 @@ Quick start
 First of all, you need to make sure you have `node` and `npm` packages installed. Currently, we consider Node v14.x.x to be our stable.
 
 ```shell
-$ n 14
-
-install : node-v14.17.0
-  mkdir : /usr/local/n/versions/node/14.17.0
-  fetch : https://nodejs.org/dist/v14.17.0/node-v14.17.0-darwin-x64.tar.gz
-######################################################################## 100.0%
-installed : v14.17.0
+$ n 20
+  installing : node-v20.8.1
+       mkdir : /home/enykeev/n/n/versions/node/20.8.1
+       fetch : https://nodejs.org/dist/v20.8.1/node-v20.8.1-linux-x64.tar.xz
+     copying : node/20.8.1
+   installed : v20.8.1 (with npm 10.1.0)
 
 $ node -v
-v14.17.0
+v20.8.1
 
 $ npm -v
-6.14.13
+10.1.0
 ```
 
 then you need to globally install `gulp`, `lerna` and `yarn`

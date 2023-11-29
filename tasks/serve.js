@@ -34,15 +34,15 @@ gulp.task('serve', () => {
       https: true,
       proxies: [{
         source: '/api',
-        target: `https://${st2host}/api`,
+        target: `${process.env.ST2_PROTOCOL || 'https'}://${st2host}/api`,
         options,
       }, {
         source: '/auth',
-        target: `https://${st2host}/auth`,
+        target: `${process.env.ST2_PROTOCOL || 'https'}://${st2host}/auth`,
         options,
       }, {
         source: '/stream',
-        target: `https://${st2host}/stream`,
+        target: `${process.env.ST2_PROTOCOL || 'https'}://${st2host}/stream`,
         options,
       }],
     }));
