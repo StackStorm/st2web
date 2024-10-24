@@ -14,6 +14,9 @@ Changed
 
   Contributed by @enykeev
 
+* Add support for EL9. Removed support for bionic and el7. #1027
+  Contributed by @amanda11
+
 Fixed
 ~~~~~
 * Fixed CircleCI tests by pinning lerna@6.0.0. #1008

@@ -12,8 +12,8 @@ jobs:
       image: ubuntu-2204:2023.04.2
     environment:
       DEPLOY_PACKAGES: 1
-      DEB: bionic focal
-      RPM: el7 el8
+      DEB: focal
+      RPM: el8 el9
       ST2_VERSION: "3.9dev"
       ST2_HOST: localhost
       ST2_PROTOCOL: http
@@ -153,7 +153,7 @@ jobs:
       - image: ruby:2.7
     environment:
       ARTIFACTS: /home/circleci/artifacts
-      DISTROS: bionic focal el7 el8
+      DISTROS: focal el8 el9
     steps:
       - checkout
       - attach_workspace:
