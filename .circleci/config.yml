@@ -12,7 +12,7 @@ jobs:
       image: ubuntu-2204:2023.04.2
     environment:
       DEPLOY_PACKAGES: 1
-      DEB: focal
+      DEB: focal jammy
       RPM: el8 el9
       ST2_VERSION: "3.9dev"
       ST2_HOST: localhost
@@ -144,16 +144,16 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/artifacts
           paths:
-            - bionic
             - focal
-            - el7
+            - jammy
             - el8
+            - el9
   deploy:
     docker:
       - image: ruby:2.7
     environment:
       ARTIFACTS: /home/circleci/artifacts
-      DISTROS: focal el8 el9
+      DISTROS: focal jammy el8 el9
     steps:
       - checkout
       - attach_workspace:
