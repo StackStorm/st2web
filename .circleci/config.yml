@@ -44,9 +44,10 @@ jobs:
       - run:
           name: Export package version
           command: |
+            export DISTROS=( $DEB $RPM )
             PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")
             if [ -n "$PACKAGECLOUD_TOKEN" ]; then
-              PKG_RELEASE=$(packagecloud.sh next-revision bionic ${PKG_VERSION} st2web)
+              PKG_RELEASE=$(packagecloud.sh next-revision ${DISTROS[0]} ${PKG_VERSION} st2web)
             else
               # is fork
               PKG_RELEASE=1
@@ -131,13 +132,19 @@ jobs:
           command: |
             nvm use 20.8.1
             make deb
-            echo $DEB | tr ' ' '\n' | xargs -I{} cp -vr ../st2web_*.{deb,changes} ~/artifacts/{}
+            for i in $DEB
+            do
+              cp -vr ../st2web_*.{deb,changes} ~/artifacts/"${i}"
+            done
       - run:
           name: Make RPM packages
           command: |
             nvm use 20.8.1
             make rpm
-            echo $RPM | tr ' ' '\n' | xargs -I{} cp -vr ../st2web-*.rpm ~/artifacts/{}
+            for i in $RPM
+            do
+              cp -vr ../st2web-*.rpm ~/artifacts/"${i}"
+            done
       - store_artifacts:
           path: ~/artifacts
           destination: packages
