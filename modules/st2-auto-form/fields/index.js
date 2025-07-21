@@ -19,7 +19,6 @@ import EnumField from './enum';
 import IntegerField from './integer';
 import NumberField from './number';
 import ObjectField from './object';
-import PasswordField from './password';
 import StringField from './string';
 import SelectField from './select';
 import ColorStringField from './color-string';
@@ -31,7 +30,6 @@ export {
   IntegerField,
   NumberField,
   ObjectField,
-  PasswordField,
   StringField,
   SelectField,
   ColorStringField,

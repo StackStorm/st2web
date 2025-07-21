@@ -180,6 +180,10 @@
     color: black;
   }
 
+  &__wrapper-block &__button {
+    right: 16px;
+  }
+
   &__text-field &__field,
   &__text-field &__field--secret {
     font-size: 13px;
@@ -198,7 +202,7 @@
     &::-webkit-scrollbar {
       width: 13px;
       height: 13px;
-
+      
       background-color: transparent;
     }
 
@@ -207,6 +211,7 @@
       border-radius: 11px;
       background-color: rgba(117, 117, 117, .3);
       background-clip: padding-box;
+
 
       &:hover {
         background-color: rgba(117, 117, 117, .7);
