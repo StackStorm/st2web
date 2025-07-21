@@ -48,7 +48,7 @@ export default class NumberField extends BaseTextField {
     if (invalid !== void 0) {
       return invalid;
     }
-
-    return v && !validator.isFloat(v) && `'${v}' is not a number`;
+    
+    return v && !validator.isFloat(v) && `'${spec.secret ? "*".repeat(v.length) : v}' is not a number`;
   }
 }

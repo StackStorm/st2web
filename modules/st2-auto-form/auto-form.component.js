@@ -23,7 +23,6 @@ import IntegerField from './fields/integer';
 import BooleanField from './fields/boolean';
 import StringField from './fields/string';
 import ObjectField from './fields/object';
-import PasswordField from './fields/password';
 import EnumField from './fields/enum';
 
 import './style.css';
@@ -57,10 +56,6 @@ export default class AutoForm extends React.Component {
       case 'boolean':
         return BooleanField;
       case 'string':
-        if (field.secret) {
-          return PasswordField;
-        }
-
         return StringField;
       case 'object':
         return ObjectField;

@@ -72,6 +72,6 @@ export default class IntegerField extends BaseTextField {
       } 
     }
 
-    return v && !validator.isInt(v) && `'${v}' is not an integer`;
+    return v && !validator.isInt(v) && `'${spec.secret ? "*".repeat(v.length) : v}' is not an integer`;
   }
 }

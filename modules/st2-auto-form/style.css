@@ -17,6 +17,11 @@
     margin-bottom: 12px;
   }
 
+  &__wrapper-block {
+    display: flex;
+    align-items: center;
+  }
+
   &__title {
     font-size: 15px;
     line-height: 18px;
@@ -70,6 +75,21 @@
     &:hover {
       color: var(--aqua-base);
     }
+
+    &:before {
+      font-family: "brocadeicons";
+      font-size: 18px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 36px;
+
+      display: flex;
+
+      vertical-align: middle;
+      pointer-events: none;
+
+      color: var(--grey-base);
+    }
   }
 
   &__field {
@@ -87,6 +107,22 @@
     outline: 0;
     background-color: white;
     box-shadow: 0 1px 0 var(--grey-lighten-2);
+
+    &--secret {
+      font-weight: normal;
+      font-family: Roboto, sans-serif;
+      -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      width: 100%;
+      padding: 0 12px;
+
+      color: black;
+      border: none;
+      outline: 0;
+      box-shadow: 0 1px 0 var(--grey-lighten-2);
+      -webkit-text-security: disc;
+    }
 
     &&[disabled] {
       cursor: default;
@@ -144,7 +180,8 @@
     color: black;
   }
 
-  &__text-field &__field {
+  &__text-field &__field,
+  &__text-field &__field--secret {
     font-size: 13px;
     line-height: 18px;
 
@@ -249,7 +286,6 @@
       padding: 0 10px 0 0;
 
       content: "\e91c";
-      vertical-align: middle;
       pointer-events: none;
 
       color: black;
