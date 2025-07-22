@@ -17,6 +17,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
+import _ from 'lodash';
 
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
@@ -270,6 +271,16 @@ export default class ActionsDetails extends React.Component {
     this.setState({ runPreview });
   }
 
+  sanitizePreview(code) {
+    return _.mapValues(code, (value, key) => {
+      if (value && this.props.action.parameters[key] && this.props.action.parameters[key].secret) {
+        return '*'.repeat(value.length);
+      }
+
+      return value;
+    });
+  }
+
   handleToggleExecution(id) {
     this.setState({
       executionsVisible: {
@@ -477,7 +488,7 @@ export default class ActionsDetails extends React.Component {
                 </Link>
               ) : null }
             </DetailsToolbar>
-            { this.state.runPreview && <Highlight key="preview" well data-test="action_code" code={this.state.runValue} /> }
+            { this.state.runPreview && <Highlight key="preview" well data-test="action_code" code={this.sanitizePreview(this.state.runValue)} /> }
             <DetailsPanel key="panel" data-test="action_parameters">
               <DetailsPanelBody>
                 <form>
