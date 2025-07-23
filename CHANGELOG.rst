@@ -6,6 +6,11 @@ in development
 
 Changed
 ~~~~~~~
+* Changed how secrets are handled in the UI from type=password
+  to using CSS webkit-text-security.
+
+  Contributed by @fdrab
+
 * Updated various dependencies (security). #1009, #1020
 
   Contributed by @enykeev
