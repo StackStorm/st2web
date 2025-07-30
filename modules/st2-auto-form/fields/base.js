@@ -16,7 +16,7 @@ import _ from 'lodash';
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-import { TextFieldWrapper, Button } from '../wrappers';
+import { TextFieldWrapper } from '../wrappers';
 import TextareaAutosize from 'react-textarea-autosize';
 
 export class Textarea extends TextareaAutosize {
@@ -45,6 +45,7 @@ export class BaseTextField extends React.Component {
     spec: PropTypes.object,
     value: PropTypes.any,
     disabled: PropTypes.bool,
+    visible: PropTypes.bool,
     onChange: PropTypes.func,
     'data-test': PropTypes.string,
   }
@@ -54,6 +55,7 @@ export class BaseTextField extends React.Component {
 
     this.state = {
       value: this.toStateValue(this.props.value),
+      visible: false,
     };
   }
 
@@ -73,10 +75,6 @@ export class BaseTextField extends React.Component {
 
   toStateValue() {
     throw new Error('not implemented');
-  }
-
-  toggleVisibility() {
-    this.setState({ visible: !this.state.visible });
   }
 
   validate(v, spec={}) {
@@ -109,33 +107,34 @@ export class BaseTextField extends React.Component {
     }
   }
 
+  visibilityToggle() {
+    this.setState({visible: !this.state.visible})
+  }
+
   emitChange() {
     return this.props.onChange(this.fromStateValue(this.state.value));
   }
 
   render() {
     const { icon } = this.constructor;
-    const { invalid, visible } = this.state;
+    const { invalid } = this.state;
     const { spec={} } = this.props;
-    const wrapperProps = Object.assign({}, this.props);
+    const wrapperProps = Object.assign({}, this.props, {
+      visibilityToggle: () => this.visibilityToggle(),
+      visible: this.state.visible,
+    });
     
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
 
-    const buttonProps = {
-      icon: visible ? 'view2' : 'view',
-      title: visible ? 'hide value' : 'see value',
-      onClick: () => this.toggleVisibility(),
-    };
-
     const inputProps = {
-      className: spec.secret && !visible ? 'st2-auto-form__field--secret' : 'st2-auto-form__field',
+      className: spec.secret && !this.state.visible ? 'st2-auto-form__field--secret' : 'st2-auto-form__field',
       type: 'text',
       placeholder:this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
-      spellCheck: spec.secret && !visible ? false : true,
+      spellCheck: spec.secret && !this.state.visible ? false : true,
       onChange: (e) => this.handleChange(e, e.target.value),
       'data-test': this.props['data-test'],
     };
@@ -146,10 +145,7 @@ export class BaseTextField extends React.Component {
 
     return (
       <TextFieldWrapper icon={icon} {...wrapperProps}>
-          <div >
-            { !this.props.disabled && spec.secret && <Button {...buttonProps} /> }
             <input {...inputProps} />
-          </div>
       </TextFieldWrapper>
     );
   }
@@ -158,31 +154,24 @@ export class BaseTextField extends React.Component {
 export class BaseTextareaField extends BaseTextField {
   render() {
     const { icon } = this.constructor;
-    const { invalid, visible } = this.state;
+    const { invalid } = this.state;
     const { spec = {} } = this.props;
 
-    const wrapperProps = Object.assign({}, this.props);
+    const wrapperProps = Object.assign({}, this.props, {
+      visibilityToggle: () => this.visibilityToggle(),
+      visible: this.state.visible,
+    });
     
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
 
-    const buttonProps = {
-      icon: visible ? 'view2' : 'view',
-      title: visible ? 'hide value' : 'see value',
-      onClick: () => this.toggleVisibility(),
-    };
-
-    const wrapperBlockProps = {
-      className: 'st2-auto-form__wrapper-block',
-    };
-
     const inputProps = {
-      className: spec.secret && !visible ? 'st2-auto-form__field--secret' : 'st2-auto-form__field',
+      className: spec.secret && !this.state.visible ? 'st2-auto-form__field--secret' : 'st2-auto-form__field',
       placeholder:  this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
-      spellCheck: spec.secret && !visible ? false : true,
+      spellCheck: spec.secret && !this.state.visible ? false : true,
       onChange: (e) => this.handleChange(e, e.target.value),
       minRows: 1,
       maxRows: 10,
@@ -195,10 +184,7 @@ export class BaseTextareaField extends BaseTextField {
 
     return (
       <TextFieldWrapper icon={icon} {...wrapperProps}>
-        <div {...wrapperBlockProps}>
-          { !this.props.disabled && spec.secret && <Button {...buttonProps} /> }
           <Textarea {...inputProps} />
-        </div>
       </TextFieldWrapper>
     );
   }

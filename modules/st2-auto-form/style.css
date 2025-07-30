@@ -180,10 +180,6 @@
     color: black;
   }
 
-  &__wrapper-block &__button {
-    right: 16px;
-  }
-
   &__text-field &__field,
   &__text-field &__field--secret {
     font-size: 13px;
