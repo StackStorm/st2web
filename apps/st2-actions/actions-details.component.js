@@ -274,7 +274,14 @@ export default class ActionsDetails extends React.Component {
   sanitizePreview(code) {
     return _.mapValues(code, (value, key) => {
       if (value && this.props.action.parameters[key] && this.props.action.parameters[key].secret) {
-        return '*'.repeat(value.length);
+        switch (this.props.action.parameters[key].type) {
+          case "object":
+            return `{${'*'.repeat(Math.max(0, JSON.stringify(value).length -2))}}`;
+          case "array":
+            return `[${'*'.repeat(Math.max(0, JSON.stringify(value).length -2))}]`;
+          default:
+            return '*'.repeat(value.length);
+        }
       }
 
       return value;
