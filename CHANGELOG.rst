@@ -6,6 +6,10 @@ in development
 
 Changed
 ~~~~~~~
+* Re-introduced preview sanitization for secrets. #1005
+
+  Contributed by @fdrab
+
 * Updated various dependencies (security). #1009, #1020
 
   Contributed by @enykeev
