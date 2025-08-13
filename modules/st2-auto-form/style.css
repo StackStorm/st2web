@@ -115,7 +115,6 @@
         -moz-box-sizing: border-box;
               box-sizing: border-box;
       width: 100%;
-      padding: 0 12px;
 
       color: black;
       border: none;
@@ -189,7 +188,7 @@
     overflow-x: hidden;
     overflow-y: scroll;
 
-    padding: 9px 12px;
+    padding: 9px 36px 9px 9px;
 
     resize: none;
     cursor: text;
