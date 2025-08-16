@@ -188,12 +188,12 @@
     overflow-x: hidden;
     overflow-y: scroll;
 
-    padding: 9px 36px 9px 9px;
+    padding: 9px 40px 9px 9px;
 
     resize: none;
     cursor: text;
     word-wrap: break-word;
-    max-height:50px;
+    max-height:100px;
     &::-webkit-scrollbar {
       width: 13px;
       height: 13px;
