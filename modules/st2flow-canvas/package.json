@@ -47,7 +47,7 @@
   "dependencies": {
     "@stackstorm/st2flow-notifications": "^1.0.0",
     "insert-css": "2.0.0",
-    "react-hotkeys": "^1.1.4"
+    "react-hotkeys": "^2.0.0"
   },
   "devDependencies": {
     "@stackstorm/browserify-postcss": "0.3.4-patch.5",
