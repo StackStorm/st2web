@@ -171,15 +171,41 @@ export class TextFieldWrapper extends React.Component {
     children: PropTypes.element.isRequired,
     icon: PropTypes.string,
     labelClass: PropTypes.string,
+    visible: PropTypes.bool,
+    visibilityToggle: PropTypes.func,
   }
 
+  handleVisibilityToggle() {
+    this.props.visibilityToggle && this.props.visibilityToggle()
+  }
+
+
   render() {
+    const buttonProps = {
+      icon: this.props.visible ? 'view2' : 'view',
+      title: this.props.visible ? 'hide value' : 'see value',
+      onClick: () => this.handleVisibilityToggle(),
+    };
+
+    const blockProps = {
+      className: 'st2-auto-form__wrapper-block',
+    };
+
     const line = (
       <div className='st2-auto-form__line'>
         <Label className={this.props.labelClass || 'st2-auto-form__text-field'}>
           <Icon name={this.props.icon} />
           <Title {...this.props} />
-          { this.props.children }
+          { 
+            this.props.spec && this.props.spec.secret 
+            ? 
+            <div {...blockProps}>
+              <Button {...buttonProps} />
+              { this.props.children }
+            </div> 
+            :
+            this.props.children
+          }
           <ErrorMessage>{ this.props.invalid }</ErrorMessage>
         </Label>
         <Description {...this.props} />

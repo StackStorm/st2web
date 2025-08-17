@@ -45,6 +45,7 @@ export class BaseTextField extends React.Component {
     spec: PropTypes.object,
     value: PropTypes.any,
     disabled: PropTypes.bool,
+    visible: PropTypes.bool,
     onChange: PropTypes.func,
     'data-test': PropTypes.string,
   }
@@ -54,6 +55,7 @@ export class BaseTextField extends React.Component {
 
     this.state = {
       value: this.toStateValue(this.props.value),
+      visible: false,
     };
   }
 
@@ -105,6 +107,10 @@ export class BaseTextField extends React.Component {
     }
   }
 
+  visibilityToggle() {
+    this.setState({visible: !this.state.visible})
+  }
+
   emitChange() {
     return this.props.onChange(this.fromStateValue(this.state.value));
   }
@@ -113,18 +119,22 @@ export class BaseTextField extends React.Component {
     const { icon } = this.constructor;
     const { invalid } = this.state;
     const { spec={} } = this.props;
-    const wrapperProps = Object.assign({}, this.props);
+    const wrapperProps = Object.assign({}, this.props, {
+      visibilityToggle: () => this.visibilityToggle(),
+      visible: this.state.visible,
+    });
     
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
 
     const inputProps = {
-      className: 'st2-auto-form__field',
-      type: spec.secret ? 'password' : 'text',
+      className: spec.secret && !this.state.visible ? 'st2-auto-form__field--secret' : 'st2-auto-form__field',
+      type: 'text',
       placeholder:this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
+      spellCheck: spec.secret && !this.state.visible ? false : true,
       onChange: (e) => this.handleChange(e, e.target.value),
       'data-test': this.props['data-test'],
     };
@@ -135,7 +145,7 @@ export class BaseTextField extends React.Component {
 
     return (
       <TextFieldWrapper icon={icon} {...wrapperProps}>
-        <input {...inputProps} />
+            <input {...inputProps} />
       </TextFieldWrapper>
     );
   }
@@ -145,19 +155,23 @@ export class BaseTextareaField extends BaseTextField {
   render() {
     const { icon } = this.constructor;
     const { invalid } = this.state;
-    const { spec={} } = this.props;
+    const { spec = {} } = this.props;
 
-    const wrapperProps = Object.assign({}, this.props);
+    const wrapperProps = Object.assign({}, this.props, {
+      visibilityToggle: () => this.visibilityToggle(),
+      visible: this.state.visible,
+    });
     
     if (invalid) {
       wrapperProps.invalid = invalid;
     }
 
     const inputProps = {
-      className: 'st2-auto-form__field',
+      className: spec.secret && !this.state.visible ? 'st2-auto-form__field--secret' : 'st2-auto-form__field',
       placeholder:  this.toStateValue(spec.default),
       disabled: this.props.disabled,
       value: this.state.value,
+      spellCheck: spec.secret && !this.state.visible ? false : true,
       onChange: (e) => this.handleChange(e, e.target.value),
       minRows: 1,
       maxRows: 10,
@@ -170,7 +184,7 @@ export class BaseTextareaField extends BaseTextField {
 
     return (
       <TextFieldWrapper icon={icon} {...wrapperProps}>
-        <Textarea {...inputProps} />
+          <Textarea {...inputProps} />
       </TextFieldWrapper>
     );
   }

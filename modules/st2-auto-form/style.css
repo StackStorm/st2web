@@ -17,6 +17,11 @@
     margin-bottom: 12px;
   }
 
+  &__wrapper-block {
+    display: flex;
+    align-items: center;
+  }
+
   &__title {
     font-size: 15px;
     line-height: 18px;
@@ -70,6 +75,21 @@
     &:hover {
       color: var(--aqua-base);
     }
+
+    &:before {
+      font-family: "brocadeicons";
+      font-size: 18px;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 36px;
+
+      display: flex;
+
+      vertical-align: middle;
+      pointer-events: none;
+
+      color: var(--grey-base);
+    }
   }
 
   &__field {
@@ -87,6 +107,21 @@
     outline: 0;
     background-color: white;
     box-shadow: 0 1px 0 var(--grey-lighten-2);
+
+    &--secret {
+      font-weight: normal;
+      font-family: Roboto, sans-serif;
+      -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+              box-sizing: border-box;
+      width: 100%;
+
+      color: black;
+      border: none;
+      outline: 0;
+      box-shadow: 0 1px 0 var(--grey-lighten-2);
+      -webkit-text-security: disc;
+    }
 
     &&[disabled] {
       cursor: default;
@@ -144,7 +179,8 @@
     color: black;
   }
 
-  &__text-field &__field {
+  &__text-field &__field,
+  &__text-field &__field--secret {
     font-size: 13px;
     line-height: 18px;
 
@@ -152,16 +188,16 @@
     overflow-x: hidden;
     overflow-y: scroll;
 
-    padding: 9px 12px;
+    padding: 9px 40px 9px 9px;
 
     resize: none;
     cursor: text;
     word-wrap: break-word;
-    max-height:50px;
+    max-height:100px;
     &::-webkit-scrollbar {
       width: 13px;
       height: 13px;
-
+      
       background-color: transparent;
     }
 
@@ -170,6 +206,7 @@
       border-radius: 11px;
       background-color: rgba(117, 117, 117, .3);
       background-clip: padding-box;
+
 
       &:hover {
         background-color: rgba(117, 117, 117, .7);
@@ -249,7 +286,6 @@
       padding: 0 10px 0 0;
 
       content: "\e91c";
-      vertical-align: middle;
       pointer-events: none;
 
       color: black;
