@@ -1,7 +1,7 @@
 {
   "name": "st2web",
   "version": "2.4.3",
-  "st2_version": "3.9dev",
+  "st2_version": "3.10dev",
   "private": true,
   "scripts": {
     "eslint": "eslint .",
