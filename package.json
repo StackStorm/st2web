@@ -84,7 +84,7 @@
     "qs": "^6.10.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-redux": "7.0.2",
+    "react-redux": "7.2.9",
     "redux": "^4.0.1",
     "set-value": "^4.1.0",
     "tar": "^6.1.11",
