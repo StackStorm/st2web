@@ -8229,6 +8229,13 @@ minimatch@^3.0.4, minimatch@^3.1.1, minimatch@^3.1.2:
   dependencies:
     brace-expansion "^1.1.7"
 
+minimatch@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-4.0.0.tgz#befe49964c07e98a5eb7c5191be997b2aaffacc8"
+  integrity sha512-nUXi6viDR8DREKfJTnzZLh1amprrt6Hepx/WUngirNdiNEDmfkW2DLfiTeXWcMkMY0bRkuQ8eyCSbG3W4D0Qcg==
+  dependencies:
+    brace-expansion "^1.1.7"
+
 minimatch@~0.2.11:
   version "0.2.14"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-0.2.14.tgz#c74e780574f63c6f9a090e90efbe6ef53a6a756a"
