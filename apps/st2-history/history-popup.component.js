@@ -61,37 +61,43 @@ export default class HistoryPopup extends React.Component {
   handleChange(payload) {
     this.setState({ payload });
   }
-
+  
+  // Fix for issue #364 (https://github.com/StackStorm/st2web/issues/364)
+  // Instead of checking each input parameter for '********' (as in earlier
+  // implementation), we create a copy of the *entire* payload, then iterate
+  // over each element of the payload. If the parameter is *NOT* '********',
+  // then simply use that value; otherwise, if the original value was
+  // blank/null, then use that value or delete that parameter altogether.
   handleSubmit(e) {
-    // 1. Whenever user changes any parameter,it is stored into payload.So we get changed data into payload. 
-    // 2. We have copy of original data without any parameter change in payloadCopy object on line no 49.
-    // 3. Here we are first identifying key name of secret parameter, payloadKey is key variable name for 
-    //    payload object and payloadCopyKey is variable name for payloadCopy object.
-    // 4. Once we get both key, we are checking value of that key in both object.
-    // 5. So if user change secret parameter data, it will get in payload.
-    // 6. When user does not change secret parameter,in payload secret parameter value is *** and in 
-    //    payloadCopyKey object it is always *** because we are getting changed value in payload object only.
-    // 7. If data in both key same, then there is no any change and if data is not same in both key 
-    //    i.e payloadKey and payloadCopyKey, data is changed and we will send changed data to API.
     e.preventDefault();
-    const hasValue = Object.values(this.state.payload).includes('********');
-    let payLoadKey;
-    if (hasValue === true) {
-      payLoadKey =  Object.keys(this.state.payload).find(key => this.state.payload[key] === '********');
-    }
 
-    const isValue = Object.values(this.state.payloadCopy).includes('********');
-    let payloadCopyKey ;
-    if (isValue === true) {
-      payloadCopyKey =  Object.keys(this.state.payloadCopy).find(key => this.state.payloadCopy[key] === '********');
-    }
-    
-    if (this.state.payload[payLoadKey] === this.state.payloadCopy[payloadCopyKey]) {
-      delete this.state.payload[payLoadKey];
-    }
-    this.props.onSubmit(this.state.payload);
+    const MASKED_SECRET = '********';
+    const payload = {
+      ...this.state.payload,
+    };
+    const originalPayload = this.state.payloadCopy || {};
+
+    Object.keys(payload).forEach((key) => {
+      if (payload[key] !== MASKED_SECRET) {
+        return;
+      }
+
+      const originalValue = originalPayload[key];
+
+      if (
+        originalValue === null ||
+        originalValue === undefined ||
+        originalValue === ''
+      ) {
+        payload[key] = originalValue;
+      } else if (originalValue === MASKED_SECRET) {
+        delete payload[key];
+      }
+    });
+
+    this.props.onSubmit(payload);
     this.setState({ disabled: true });
-  }
+  }  
 
   render() {
     const { action, spec, onCancel } = this.props;
