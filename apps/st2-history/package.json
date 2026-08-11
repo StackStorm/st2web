@@ -70,7 +70,7 @@
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-redux": "7.0.2"
+    "react-redux": "7.2.9"
   },
   "devDependencies": {
     "@stackstorm/st2-style": "2.4.3"
