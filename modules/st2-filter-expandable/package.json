@@ -27,7 +27,7 @@
     "access": "public"
   },
   "dependencies": {
-    "lodash": "4.17.21"
+    "lodash": "4.18.1"
   },
   "devDependencies": {
     "@stackstorm/st2-style": "2.4.3",
