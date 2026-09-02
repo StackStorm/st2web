@@ -24,7 +24,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/core": "7.4.3",
+    "@babel/core": "7.29.6",
     "@babel/plugin-proposal-class-properties": "7.4.0",
     "@babel/plugin-proposal-decorators": "7.4.0",
     "@babel/plugin-proposal-object-rest-spread": "7.4.3",
