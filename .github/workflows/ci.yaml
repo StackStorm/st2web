@@ -1,0 +1,124 @@
+# Build & Test st2web.
+# Mirrors the "build" job in .circleci/config.yml (build + test + packages, no deploy).
+
+name: CI
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      ST2_HOST: localhost
+      ST2_PROTOCOL: http
+      ST2_USERNAME: st2admin
+      ST2_PASSWORD: Ch@ngeMe
+      ST2_TEST_ENVIRONMENT: https://github.com/StackStorm/st2-docker
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          # engines.node in package.json
+          node-version-file: package.json
+
+      - name: Export package version
+        run: |
+          echo "PKG_VERSION=$(node -e "console.log(require('./package.json').st2_version);")" >> "$GITHUB_ENV"
+          echo "PKG_RELEASE=1" >> "$GITHUB_ENV"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rpm devscripts debhelper
+          npm install --global lerna@6.0.0 yarn
+
+      - name: Install package dependencies
+        run: lerna bootstrap
+
+      - name: Run unit tests
+        run: npm run test-unit
+
+      - name: Clone test containers
+        run: |
+          echo "Cloning ${ST2_DOCKER_BRANCH:-master} branch of st2-docker"
+          git clone --branch "${ST2_DOCKER_BRANCH:-master}" --depth 1 "${ST2_TEST_ENVIRONMENT}" ~/st2-docker
+          # Configure allow origin in the user config
+          printf '[api]\nallow_origin = *\n' > ~/st2-docker/files/st2.user.conf
+
+      - name: Start test containers
+        run: |
+          docker compose -f ~/st2-docker/docker-compose.yml up -d
+          sleep 100
+          docker compose -f ~/st2-docker/docker-compose.yml exec -T st2client st2 run core.noop
+
+      - name: Run functional tests
+        run: npm run test-functional
+
+      - name: Reset test containers
+        run: |
+          docker compose -f ~/st2-docker/docker-compose.yml down --rmi all
+          docker compose -f ~/st2-docker/docker-compose.yml up -d
+          sleep 100
+          docker compose -f ~/st2-docker/docker-compose.yml exec -T st2client st2 run core.noop
+          docker compose -f ~/st2-docker/docker-compose.yml exec -T st2client st2 execution list
+
+      - name: Run tests on production version
+        run: npm run test-production
+
+      - name: Fetch container logs
+        if: always()
+        run: |
+          mkdir -p ~/artifacts/logs
+          for container in $(docker ps -a --format "{{.Names}}"); do
+            docker logs "${container}" > ~/artifacts/logs/"${container}".log 2>&1
+          done
+
+      - name: Make deb package
+        run: |
+          make deb
+          mkdir -p ~/artifacts/deb
+          cp -v ../st2web_*.deb ../st2web_*.changes ~/artifacts/deb/
+
+      - name: Make RPM package
+        run: |
+          make rpm
+          mkdir -p ~/artifacts/rpm
+          cp -v ../st2web-*.rpm ~/artifacts/rpm/
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: packages
+          path: ~/artifacts
+
+  docker:
+    name: 'docker (${{ matrix.dockerfile }})'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile: [Dockerfile, Dockerfile-dev, Dockerfile-nginx, Dockerfile-nginx-dev]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -f ${{ matrix.dockerfile }} -t st2web-test .
+
+      - name: Check the nginx image
+        if: startsWith(matrix.dockerfile, 'Dockerfile-nginx')
+        run: |
+          docker run --rm st2web-test nginx -t
+          docker run --rm st2web-test test -f /opt/stackstorm/static/webui/index.html
+          docker run --rm st2web-test sh -c 'apk info -v | grep -E "^(nginx|libexpat|pcre2|libuuid|zlib|libssl3)-[0-9]"; ! apk info -e libxml2'
