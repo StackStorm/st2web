@@ -14,7 +14,12 @@ RUN make build-and-install
 EXPOSE 3000
 
 
-FROM nginx
+FROM nginx:1.31-alpine
+# Pick up the Alpine security updates released after the image was built. The xslt and njs
+# modules are not used by st2web; removing them also removes libxml2 and libxslt.
+RUN apk upgrade --no-cache \
+    && apk add --no-cache openssl \
+    && apk del --no-cache nginx-module-xslt nginx-module-njs
 RUN rm -f /etc/nginx/conf.d/default.conf
 # COPY ./nginx.local.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx.local.conf /etc/nginx/conf.d/st2.conf
