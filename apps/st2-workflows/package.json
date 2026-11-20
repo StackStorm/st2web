@@ -91,7 +91,7 @@
     "chai": "^4.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-notice": "0.7.8",
-    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react": "^7.33.2",
     "flow-bin": "^0.96.0",
     "ignore-styles": "^5.0.1",
     "lerna": "^3.4.3",
