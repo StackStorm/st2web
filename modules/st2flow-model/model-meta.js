@@ -13,43 +13,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
 import BaseClass from './base-class';
 import schema from './schemas/metadata.json';
 
 class MetaModel extends BaseClass {
-  constructor(yaml: ?string) {
+  constructor(yaml) {
     super(schema, yaml);
   }
 
   static minimum = 'pack: default\nenabled: true\n';
 
-  get name(): string {
+  get name() {
     return this.get('name');
   }
 
-  get description(): string {
+  get description() {
     return this.get('description');
   }
 
-  get enabled(): string {
+  get enabled() {
     return this.get('enabled');
   }
 
-  get entry_point(): string {
+  get entry_point() {
     return this.get('entry_point');
   }
 
-  get pack(): string {
+  get pack() {
     return this.get('pack');
   }
 
-  get runner_type(): string {
+  get runner_type() {
     return this.get('runner_type');
   }
 
-  get parameters(): Object {
+  get parameters() {
     return this.get('parameters');
   }
 }

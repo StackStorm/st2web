@@ -14,11 +14,10 @@
 // limitations under the License.
 
 import _ from 'lodash';
-import React from 'react';
 import { BaseTextField } from './base';
 
 export default class SelectField extends BaseTextField {
-  static icon = 'V'
+  static icon = 'V';
 
   fromStateValue(v) {
     return v !== '' ? v : void 0;

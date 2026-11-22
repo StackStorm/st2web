@@ -12,16 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import chai, { expect } from 'chai';
+import { describe, it } from '@rstest/core';
+import { expect, use as chaiUse } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 import { TestComponent } from './utils';
 import StringField from '../fields/string';
-import { Textarea } from '../fields/base';
 
 describe('AutoForm StringField', () => {
   it('produces an element with textarea as a child', () => {
@@ -32,7 +31,7 @@ describe('AutoForm StringField', () => {
 
     const c = new TestComponent(<StringField {...props} />);
 
-    expect(c.fieldType()).to.be.equal(Textarea);
+    expect(c.fieldType()).to.be.equal('textarea');
   });
 
   it('calls the callback if value is valid', () => {

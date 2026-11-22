@@ -13,23 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
 // Some lodashy (and other) functions without all the dashy
 const REG_KEY_DELIM = /[.[\]'"]/g;
 
-function isPlainObject(data: any) {
+function isPlainObject(data) {
   return Object.prototype.toString.call(data) === '[object Object]';
 }
 
-function pick(obj: Object, ...keys: Array<string| number>): Object {
+function pick(obj, ...keys) {
   return keys.reduce((o, key) => {
     o[key] = obj[key];
     return o;
   }, {});
 }
 
-function omit(obj: Object, ...keys: Array<string| number>): Object {
+function omit(obj, ...keys) {
   return Object.keys(obj).reduce((o, key) => {
     if (!keys.includes(key)) {
       o[key] = obj[key];
@@ -38,18 +36,18 @@ function omit(obj: Object, ...keys: Array<string| number>): Object {
   }, {});
 }
 
-function get(obj: Object, key: string | Array<string | number>) {
+function get(obj, key) {
   const arrKey = typeof key === 'string' ? splitKey(key) : key;
 
   return arrKey.reduce((o, key) => o[key], obj);
 }
 
-function splitKey(key: string | Array<string | number>): Array<any> {
+function splitKey(key) {
   const arr = typeof key === 'string' ? key.split(REG_KEY_DELIM).filter(Boolean) : key.slice(0);
   return arr.length === 1 && arr[0] === '' ? [] : arr;
 }
 
-function defineExpando(obj: Object | Array<any>, key: string, value: any): void {
+function defineExpando(obj, key, value) {
   Object.defineProperty(obj, key, {
     value,
     writable: false,
@@ -58,7 +56,7 @@ function defineExpando(obj: Object | Array<any>, key: string, value: any): void 
   });
 }
 
-function deepClone(obj: Object): Object {
+function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj));
 }
 

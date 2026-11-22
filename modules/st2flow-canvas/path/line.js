@@ -16,11 +16,10 @@
 import Vector from '../vector';
 import { ORBIT_DISTANCE } from '../const';
 
-export type Direction = 'up' | 'down' | 'left' | 'right';
 export class Line {
-  px: number;
-  direction: Direction;
-  constructor(px: number, dir: Direction) {
+  px;
+  direction;
+  constructor(px, dir) {
     Object.defineProperties(this, {
       direction: {
         value: dir,
@@ -30,7 +29,7 @@ export class Line {
       },
     });
   }
-  calcNewPosition(origin: Vector): Vector {
+  calcNewPosition(origin) {
     const point = new Vector(origin.x, origin.y);
     switch(this.direction) {
       case 'up':
@@ -48,7 +47,7 @@ export class Line {
     }
     return point;
   }
-  toPathString(origin: Vector, next: Line): string {
+  toPathString(origin, next) {
     const newPoint = this.calcNewPosition(origin);
 
     // does the next line segment curve out?
@@ -81,7 +80,7 @@ export class Line {
 
     return `L ${newPoint.x} ${newPoint.y}${curvePath}`;
   }
-  toString(): string {
+  toString() {
     return `${this.px} ${this.direction}`;
   }
 }

@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/module-login",
   "version": "2.4.3",
-  "description": "",
+  "private": true,
   "main": "login.component.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,51 +12,11 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify",
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": {
-            "camelCase": true
-          },
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            [
-              "postcss-preset-env",
-              {
-                "features": {
-                  "custom-properties": {
-                    "preserve": false
-                  }
-                }
-              }
-            ]
-          ]
-        }
-      ]
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "@stackstorm/module-menu": "^2.4.3",
-    "@stackstorm/module-api": "^2.4.3",
-    "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
-    "classnames": "^2.2.6"
-  },
-  "devDependencies": {
-    "@stackstorm/st2-style": "2.4.3",
-    "@stackstorm/module-test-utils": "^2.4.3",
-    "chai": "4.2.0"
+    "@stackstorm/module-api": "*",
+    "@stackstorm/module-menu": "*",
+    "@stackstorm/st2-style": "*",
+    "classnames": "2.5.1",
+    "react": "19.3.1"
   }
 }

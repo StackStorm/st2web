@@ -13,10 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import { Component } from 'react';
 
 import ArrayField from '@stackstorm/module-auto-form/fields/array';
 import IntegerField from '@stackstorm/module-auto-form/fields/integer';
@@ -27,22 +24,10 @@ import Button from '@stackstorm/module-forms/button.component';
 import Property from './property';
 import { specialProperties } from './parameter';
 
-import style from './style.css';
+import style from './style.module.css';
 
-export default class ParameterEditor extends Component<{
-  parameter: Object,
-  onChange: Function,
-  onCancel: Function,
-}, {
-  parameter: Object,
-}> {
-  static propTypes = {
-    parameter: PropTypes.object,
-    onChange: PropTypes.func,
-    onCancel: PropTypes.func,
-  }
-
-  constructor(props: Object) {
+export default class ParameterEditor extends Component {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -50,7 +35,7 @@ export default class ParameterEditor extends Component<{
     };
   }
 
-  handleChange(key: string, value: string) {
+  handleChange(key, value) {
     const { parameter } = this.state;
 
     parameter[key] = value;
@@ -58,7 +43,7 @@ export default class ParameterEditor extends Component<{
     this.setState({ parameter });
   }
 
-  style = style
+  style = style;
 
   render() {
     const { onChange, onCancel } = this.props;

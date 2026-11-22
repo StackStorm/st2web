@@ -9,30 +9,19 @@ DEB_DISTRO := $(shell (echo $(PKG_VERSION) | grep -q dev) && echo unstable || ec
 .PHONY: all build clean install deb rpm
 all: build
 
-# yarn now included in later node images
+# dependencies come from package-lock.json; .npmrc applies the supply-chain guardrails
 npm-install:
-	echo "npm install"
-	npm install -g lerna@6.0.0
-
-lerna:
-	echo "lerna"
-	lerna bootstrap
-	rm -rf apps/st2-workflows/node_modules
+	npm ci --no-audit --no-fund
 
 build-dev:
-	echo "build-dev"
 	make npm-install
-	make lerna
 
 build-and-install:
 	make build
 	make install
 
 build:
-	echo "build-and-install"
 	make npm-install
-	make lerna
-	echo "run gulp production directly"
 	npm run build
 
 clean:

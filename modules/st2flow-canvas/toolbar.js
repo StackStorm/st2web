@@ -13,17 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import _ from 'lodash';
 
-import style from './style.css';
+import style from './style.module.css';
 
-@connect(
+export const ToolbarButton = connect(
   null,
   dispatch => ({
     pushError: (error, source) =>
@@ -39,35 +36,7 @@ import style from './style.css';
         message,
       }),
   })
-)
-export class ToolbarButton extends Component<
-  {
-    icon: string,
-    errorMessage?: string,
-    successMessage?: string,
-    onClick: Function,
-    pushError: Function,
-    pushSuccess: Function,
-    disabled?: boolean,
-    title: string,
-    className: string,
-  },
-  {
-    status: "initial" | "pending" | "success" | "error"
-  }
-> {
-  static propTypes = {
-    icon: PropTypes.string,
-    errorMessage: PropTypes.string,
-    successMessage: PropTypes.string,
-    onClick: PropTypes.func,
-    pushError: PropTypes.func,
-    pushSuccess: PropTypes.func,
-    disabled: PropTypes.bool,
-    title: PropTypes.string,
-    className: PropTypes.string,
-  };
-
+)(class ToolbarButton extends Component {
   static defaultProps = {
     errorMessage: '',
   };
@@ -76,7 +45,7 @@ export class ToolbarButton extends Component<
     status: 'initial',
   };
 
-  async handleClick(e: Event) {
+  async handleClick(e) {
     e.stopPropagation();
 
     const { onClick, errorMessage, successMessage, pushError, pushSuccess, disabled, icon } = this.props;
@@ -130,30 +99,19 @@ export class ToolbarButton extends Component<
           icon,
           this.style[status],
           disabled && this.style.disabled,
-          ...(this.props.className ? this.props.className.split(' ').map(c => `${this.style.toolbarButton}-${c}`) : [])
+          // CSS modules hash every class separately, so modifiers are looked up, not appended
+          ...(this.props.className ? this.props.className.split(' ').map(c => this.style[`toolbar-button-${c}`]) : [])
         )}
         onClick={e => this.handleClick(e)}
         title={title}
       />
     );
   }
-}
+});
 
-export class ToolbarDropdown extends Component<{
-  children: any,
-  shown: boolean,
-  pointerPosition: string,
-  onClose?: Function,
-}> {
-  static propTypes = {
-    children: PropTypes.node,
-    shown: PropTypes.bool,
-    pointerPosition: PropTypes.string,
-    onClose: PropTypes.func,
-  };
-
+export class ToolbarDropdown extends Component {
   componentDidMount() {
-    this.boundClickListener = (function(ev: Event) {
+    this.boundClickListener = (function(ev) {
       if(ev.target instanceof HTMLElement
           && !ev.target.matches(`.${this.style.dropdown} *`)
           && this.props.onClose
@@ -170,7 +128,7 @@ export class ToolbarDropdown extends Component<{
 
   style = style;
 
-  boundClickListener: (Event) => void;
+  boundClickListener;
 
   render() {
     const { children, pointerPosition, shown } = this.props;
@@ -185,18 +143,10 @@ export class ToolbarDropdown extends Component<{
   }
 }
 
-export class Toolbar extends Component<{
-  children: any,
-  position?: string
-}> {
-  static propTypes = {
-    children: PropTypes.node,
-    position: PropTypes.string,
-  };
-
+export class Toolbar extends Component {
   style = style;
 
   render() {
-    return <div className={cx(this.style.toolbar, this.props.position && `${this.style.toolbar}-${this.props.position}`)}>{this.props.children}</div>;
+    return <div className={cx(this.style.toolbar, this.props.position && this.style[`toolbar-${this.props.position}`])}>{this.props.children}</div>;
   }
 }

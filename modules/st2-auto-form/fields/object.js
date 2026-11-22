@@ -16,7 +16,7 @@ import _ from 'lodash';
 import { BaseTextareaField, isJinja, isYaql } from './base';
 
 export default class ObjectField extends BaseTextareaField {
-  static icon = '{ }'
+  static icon = '{ }';
 
   fromStateValue(v) {
     if (isJinja(v)) {

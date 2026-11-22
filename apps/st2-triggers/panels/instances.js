@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import update from 'lodash/fp/update';
@@ -37,30 +35,10 @@ import Highlight from '@stackstorm/module-highlight';
 
 import api from '@stackstorm/module-api';
 
-@connect(
-  ({ instances }) => ({ instances }),
-  (dispatch) => ({
-    onToggle: (id) => dispatch({
-      type: 'FETCH_ENFORCEMENTS',
-      id,
-      promise: api.request({
-        path: '/ruleenforcements/',
-        query: {
-          'trigger_instance': id,
-        },
-      }),
-    }),
-  })
-)
-export default class InstancePanel extends DetailsPanel {
-  static propTypes = {
-    instances: PropTypes.array,
-    onToggle: PropTypes.func,
-  }
-
+class InstancePanel extends DetailsPanel {
   state = {
     visible: {},
-  }
+  };
 
   async handleToggle(id) {
     const { visible } = this.state;
@@ -129,3 +107,19 @@ export default class InstancePanel extends DetailsPanel {
     );
   }
 }
+
+export default connect(
+  ({ instances }) => ({ instances }),
+  (dispatch) => ({
+    onToggle: (id) => dispatch({
+      type: 'FETCH_ENFORCEMENTS',
+      id,
+      promise: api.request({
+        path: '/ruleenforcements/',
+        query: {
+          'trigger_instance': id,
+        },
+      }),
+    }),
+  })
+)(InstancePanel);

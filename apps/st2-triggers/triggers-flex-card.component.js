@@ -13,36 +13,18 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
 import Label from '@stackstorm/module-label';
+import { ScrollIntoViewContext } from '@stackstorm/module-panel';
 
-@connect(
-  ({ id, sensors }, props) => ({
-    ...props,
-    sensor: sensors[props.trigger.ref],
-  })
-)
-export default class TriggersFlexCard extends React.Component {
-  static get contextTypes() {
-    return {
-      ...super.contextTypes,
-      scrollIntoView: PropTypes.func,
-    };
-  }
-
-  static propTypes = {
-    trigger: PropTypes.object.isRequired,
-    sensor: PropTypes.object,
-    selected: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
-  }
-
+class TriggersFlexCard extends React.Component {
   static defaultProps = {
     selected: false,
-  }
+  };
+
+  static contextType = ScrollIntoViewContext;
 
   render() {
     const { trigger, sensor, selected, onClick } = this.props;
@@ -73,3 +55,10 @@ export default class TriggersFlexCard extends React.Component {
     );
   }
 }
+
+export default connect(
+  ({ id, sensors }, props) => ({
+    ...props,
+    sensor: sensors[props.trigger.ref],
+  })
+)(TriggersFlexCard);

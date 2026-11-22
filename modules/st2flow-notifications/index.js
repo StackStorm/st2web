@@ -13,43 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import { Component } from 'react';
 import cx from 'classnames';
 
-import style from './style.css';
-
-export type NotificationInterface = {
-  type: 'error' | 'warning' | 'info' | 'success',
-  message: string,
-  source?: string,
-  id: string,
-};
+import style from './style.module.css';
 
 class Notification extends Component {
-  static propTypes = {
-    notification: PropTypes.object,
-  }
-
   state = {
     hide: false,
-  }
+  };
 
-  handleRemove = (e: Event) => {
+  handleRemove = (e) => {
     e.stopPropagation();
 
     this.setState({ hide: true });
-  }
+  };
 
-  style = style
+  style = style;
 
   redirectLinkToParent = (e,newlink) => {
     e.preventDefault();
     const goBack = window.open(newlink, 'parent');
     goBack.focus();
-  }
+  };
 
   render() {
     const { notification } = this.props;
@@ -65,7 +51,7 @@ class Notification extends Component {
           <a href={notification.link} onClick={e => this.redirectLinkToParent(e,notification.link)}>
             {notification.link}
           </a>
-          
+
         ) }
       </div>
     );
@@ -73,22 +59,9 @@ class Notification extends Component {
 }
 
 class Notifications extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    position: PropTypes.oneOf([ 'top', 'bottom', 'top-left', 'top-right', 'bottom-left', 'bottom-right' ]),
-    notifications: PropTypes.arrayOf(
-      PropTypes.shape({
-        type: PropTypes.oneOf([ 'error', 'warning', 'info', 'success' ]).isRequired,
-        message: PropTypes.string.isRequired,
-      })
-    ),
-  }
-
   static defaultProps = {
     position: 'top',
-  }
-
-  style = style
+  };
 
   render() {
     return (

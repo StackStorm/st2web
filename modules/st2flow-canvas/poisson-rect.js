@@ -13,35 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-export interface Sampler {
-  getNext(taskName: string, transitionsTo: Array<string>): {| x: number, y: number |};
-  prefillPoint(x: number, y: number, transitionsTo: Array<string>): {| x: number, y: number |};
-}
-
-export class PoissonRectangleSampler implements Sampler {
+export class PoissonRectangleSampler {
   k = 30; // maximum number of samples before rejection
-  width: number;
-  height: number;
-  radiusX: number;
-  radiusY: number;
-  gridWidth: number;
-  gridHeight: number;
-  grid: Array<{ x: number, y: number, transitionsTo: Array<string>}>;
-  queue: Array<{ x: number, y: number, transitionsTo: Array<string> }> = [];
+  width;
+  height;
+  radiusX;
+  radiusY;
+  gridWidth;
+  gridHeight;
+  grid;
+  queue = [];
   queueSize = 0;
   sampleSize = 0;
-  prandSeed: number;
-  snapDistance: number;
+  prandSeed;
+  snapDistance;
 
-  constructor(width: number, height: number, radiusX: number, radiusY: number, snapDistance: number = 20) {
+  constructor(width, height, radiusX, radiusY, snapDistance = 20) {
     Object.assign(this, { width, height, radiusX, radiusY, snapDistance});
     this.gridWidth = Math.ceil(width / radiusX);
     this.gridHeight = Math.ceil(height / radiusY);
     this.grid = new Array(this.gridWidth * this.gridHeight);
   }
 
-  getNext(taskName: string, transitionsTo: Array<string>): {| x: number, y:number |} {
+  getNext(taskName, transitionsTo) {
     this.prandSeed = parseInt(taskName.replace(/[^A-Z0-9]/ig, ''), 36) % 2147483647;
     if (!this.sampleSize) {
       // for placing the first item, put it near the upper left.
@@ -128,7 +122,7 @@ export class PoissonRectangleSampler implements Sampler {
     return true;
   }
 
-  sample(x: number, y: number, transitionsTo: Array<string>): {| x: number, y: number |} {
+  sample(x, y, transitionsTo) {
     const s = { x, y };
     const t = { x, y, transitionsTo };
     this.queue.push(t);
@@ -138,7 +132,7 @@ export class PoissonRectangleSampler implements Sampler {
     return s;
   }
 
-  prefillPoint(x: number, y: number, transitionsTo: Array<string>): {| x: number, y: number |} {
+  prefillPoint(x, y, transitionsTo) {
     if(x > this.width || y > this.height) {
       // resize the grid to handle the larger size.
       const oldGrid = this.grid;

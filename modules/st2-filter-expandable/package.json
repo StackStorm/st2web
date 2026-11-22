@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/module-filter-expandable",
   "version": "2.4.3",
-  "description": "",
+  "private": true,
   "main": "filter-expandable.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,19 +12,7 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "lodash": "4.17.21"
-  },
-  "devDependencies": {
-    "@stackstorm/st2-style": "2.4.3",
-    "chai": "^4.2.0"
+    "lodash": "4.18.1"
   }
 }

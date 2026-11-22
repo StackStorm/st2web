@@ -1,4 +1,4 @@
-@import "node_modules/@stackstorm/st2-style/style.css";
+@import "@stackstorm/st2-style/style.css";
 
 html, body, .wrapper {
     font-size: 13px;

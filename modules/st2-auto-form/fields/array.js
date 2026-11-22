@@ -67,7 +67,7 @@ function split(value) {
 }
 
 export default class ArrayField extends BaseTextField {
-  static icon = '[ ]'
+  static icon = '[ ]';
 
   fromStateValue(v) {
     if (v === '') {

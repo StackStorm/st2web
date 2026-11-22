@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it } from '@rstest/core';
 import { expect } from 'chai';
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { renderNode } from '@stackstorm/module-test-utils';
 
 import { ToolbarSearch } from '..';
 
 describe(`${ToolbarSearch.name} Component`, () => {
   describe('common functionality', () => {
     it('proxies className', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <ToolbarSearch
           className="foobar"
           title="Title"
@@ -30,11 +30,11 @@ describe(`${ToolbarSearch.name} Component`, () => {
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
     it('proxies extra props', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <ToolbarSearch
           foo="bar"
           title="Title"
@@ -42,7 +42,7 @@ describe(`${ToolbarSearch.name} Component`, () => {
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
   });
 });

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import {
@@ -26,18 +25,9 @@ import {
 import st2ValueFormat from '@stackstorm/module-value-format';
 
 export default class TextFieldModule extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    spec: PropTypes.object,
-    data: PropTypes.string,
-    onChange: PropTypes.func,
-  }
-
   state = {
     error: null,
-  }
+  };
 
   componentDidUpdate() {
     if (!this._textarea) {

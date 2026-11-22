@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it } from '@rstest/core';
 import { expect } from 'chai';
 
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { renderNode } from '@stackstorm/module-test-utils';
 
 import '@stackstorm/module-test-utils/bootstrap/storage';
 import reporter from '../reporters/run-python';
 
 describe(`ActionReporter: ${reporter.name}`, () => {
   it('works with empty object', () => {
-    const instance = ReactTester.create(
+    const instance = renderNode(
       reporter({})
     );
 
-    expect(instance.node.children.length).to.equal(1);
+    expect(instance.children.length).to.equal(1);
   });
 });

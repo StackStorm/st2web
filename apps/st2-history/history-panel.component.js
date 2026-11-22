@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
@@ -22,7 +21,6 @@ import isEqual from 'lodash/fp/isEqual';
 import mapValues from 'lodash/fp/mapValues';
 
 import cx from 'classnames';
-import qs from 'querystring';
 import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
@@ -56,7 +54,7 @@ import './style.css';
 
 const PER_PAGE = 50;
 
-@connect((state, props) => {
+const FlexTableWrapper = connect((state, props) => {
   const { uid } = props;
   const { collapsed = state.collapsed } = state.tables[uid] || {};
 
@@ -67,44 +65,20 @@ const PER_PAGE = 50;
   return {
     onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
-})
-class FlexTableWrapper extends FlexTable {
+})(class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
     store.dispatch(flexActions.register(uid, false));
   }
-}
+});
 
-@connect((state) => {
-  const { filter, filters, childExecutions, groups, collapsed } = state;
-  return { filter, filters, childExecutions, groups, collapsed };
-})
-export default class HistoryPanel extends React.Component {
-  static propTypes = {
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-      search: PropTypes.string,
-    }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        ref: PropTypes.string,
-        section: PropTypes.string,
-      }).isRequired,
-    }).isRequired,
-
-    filter: PropTypes.string,
-    filters: PropTypes.array,
-    childExecutions: PropTypes.object,
-    groups: PropTypes.array,
-    collapsed: PropTypes.bool,
-  }
-
+class HistoryPanel extends React.Component {
   state = {
     maxPages: 0,
     displayUTC: false,
     advanced: false,
-  }
+  };
 
   componentDidMount() {
     api.listen().then((source) => {
@@ -545,8 +519,13 @@ export default class HistoryPanel extends React.Component {
   }
 }
 
+export default connect((state) => {
+  const { filter, filters, childExecutions, groups, collapsed } = state;
+  return { filter, filters, childExecutions, groups, collapsed };
+})(HistoryPanel);
+
 function parseSearch(search='') {
-  const { page, ...activeFilters } = qs.parse(search.slice(1));
+  const { page, ...activeFilters } = Object.fromEntries(new URLSearchParams(search.slice(1)));
 
   for (const key in activeFilters) {
     activeFilters[key] = activeFilters[key].split(',').map(v => v.trim()).filter(v => v);
@@ -580,5 +559,5 @@ function stringifySearch(page, activeFilters) {
     return undefined;
   }
 
-  return qs.stringify(query);
+  return new URLSearchParams(query).toString();
 }

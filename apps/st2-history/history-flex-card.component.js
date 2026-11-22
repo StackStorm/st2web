@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
 import cx from 'classnames';
 import isExpandable from '@stackstorm/module-filter-expandable';
@@ -24,26 +23,10 @@ import Label from '@stackstorm/module-label';
 import Time from '@stackstorm/module-time';
 
 export default class HistoryFlexCard extends React.Component {
-  static propTypes = {
-    isChild: PropTypes.bool.isRequired,
-    execution: PropTypes.object.isRequired,
-    childExecutions: PropTypes.object.isRequired,
-    selected: PropTypes.string,
-    view: PropTypes.object.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    onToggleExpand: PropTypes.func.isRequired,
-    displayUTC: PropTypes.bool.isRequired,
-    handleToggleUTC: PropTypes.func,
-  }
-
-  static contextTypes = {
-    scrollIntoView: PropTypes.func.isRequired,
-  }
-
   static defaultProps = {
     isChild: false,
     displayUTC: false,
-  }
+  };
 
   handleToggleExpand(e) {
     e && e.preventDefault();

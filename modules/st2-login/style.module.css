@@ -1,0 +1,143 @@
+@import "@stackstorm/st2-style/colors.css";
+
+.component {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+
+  color: #1E1D1F;
+  background-color: var(--gray-white);
+
+  align-items: center;
+  justify-content: center;
+
+  a,
+  a:link,
+  a:active,
+  a:visited,
+  a:hover {
+    color: var(--gray-light);
+  }
+
+  .field {
+    background-color: #F6F6F9;
+  }
+}
+
+.logo {
+  display: block;
+
+  width: 50px;
+  margin: 20px auto;
+
+  img {
+    width: 50px;
+  }
+}
+
+.form {
+  display: block;
+
+  width: 240px;
+  padding: 10px 20px 20px;
+
+  border: 1px solid var(--box-border-color);
+  border-radius: 6px;
+  background-color: var(--box-bg-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+}
+
+.row {
+  display: flex;
+
+  margin: 10px;
+
+  align-items: center;
+}
+
+.button {
+  padding: 3px 12px;
+  font-family: Roboto, sans-serif;
+}
+
+.checkbox-wrapper {
+  flex: 1;
+
+  text-align: right;
+}
+
+.error {
+  margin: 10px;
+  padding: 10px;
+
+  color: #ff4500;
+  border: 1px solid #ff4500;
+  border-radius: 4px;
+}
+
+.error::selection {
+  color: #151a1e;
+  background-color: #ff4500;
+}
+
+.links {
+  display: flex;
+
+  margin: 20px 10px 0;
+  padding-top: 10px;
+
+  text-align: center;
+
+  border-top: 1px solid var(--box-border-color);
+
+  justify-content: space-between;
+}
+
+.checkbox {
+  display: none;
+
+  margin: 0;
+  padding: 0;
+
+  &-block {
+    font-size: 15px;
+    line-height: 36px;
+  }
+
+  &-label {
+    font-weight: 100;
+    font-family: Roboto, sans-serif;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: top;
+  }
+
+  & + &-label:before {
+    font-family: "brocadeicons";
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 10px;
+
+    display: inline-block;
+
+    width: 10px;
+    height: 10px;
+    margin-right: .3em;
+
+    content: "\e968";
+    text-decoration: inherit;
+
+    color: #1E1D1F;
+    border: 1px solid #1E1D1F;
+    background-color: transparent;
+  }
+
+  &:not(:checked) + &-label:before {
+    color: transparent;
+  }
+}

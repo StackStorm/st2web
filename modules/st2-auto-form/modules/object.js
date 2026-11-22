@@ -13,21 +13,11 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import TextFieldModule from './text-field';
 
 export default class ObjectModule extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    spec: PropTypes.object,
-    data: PropTypes.string,
-    onChange: PropTypes.func,
-  }
-
   onChange(value) {
     try {
       value = JSON.parse(value);

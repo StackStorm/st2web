@@ -13,16 +13,10 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
 import methods from './methods';
 
 export default class Redirect extends React.Component {
-  static propTypes = {
-    push: PropTypes.bool,
-    to: PropTypes.oneOfType([ PropTypes.string, PropTypes.object ]).isRequired,
-  };
-
   componentDidMount() {
     this.perform();
   }

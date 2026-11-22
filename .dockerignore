@@ -1,0 +1,7 @@
+# installed per-platform inside the image; never copy the host's
+node_modules
+**/node_modules
+build
+coverage
+test-results
+playwright-report

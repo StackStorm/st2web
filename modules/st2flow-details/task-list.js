@@ -13,39 +13,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 
 import { Panel, Toolbar } from './layout';
 
 import Task from './task';
 
-import style from './style.css';
+import style from './style.module.css';
 
-@connect(
-  ({ flow: { tasks }}) => ({ tasks }),
-  (dispatch) => ({
-    navigate: (navigation) => dispatch({
-      type: 'CHANGE_NAVIGATION',
-      navigation,
-    }),
-  })
-)
-export default class TaskList extends Component<{
-  tasks: Array<Object>,
-
-  navigate: Function,
-}> {
-  static propTypes = {
-    tasks: PropTypes.array,
-
-    navigate: PropTypes.func,
-  }
-
-  style = style
+class TaskList extends Component {
+  style = style;
 
   render() {
     const { tasks, navigate } = this.props;
@@ -68,3 +46,13 @@ export default class TaskList extends Component<{
     ]);
   }
 }
+
+export default connect(
+  ({ flow: { tasks }}) => ({ tasks }),
+  (dispatch) => ({
+    navigate: (navigation) => dispatch({
+      type: 'CHANGE_NAVIGATION',
+      navigation,
+    }),
+  })
+)(TaskList);

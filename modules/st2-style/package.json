@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/st2-style",
   "version": "2.4.3",
-  "description": "",
+  "private": true,
   "main": "style.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,39 +12,7 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify",
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": false,
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            "postcss-preset-env"
-          ]
-        }
-      ]
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-  },
-  "devDependencies": {
-    "@stackstorm/st2-style": "2.4.3",
-    "@stackstorm/browserify-postcss": "0.3.4-patch.5",
-    "normalize.css": "8.0.1",
-    "babelify": "10.0.0",
-    "postcss": "8.4.31",
-    "postcss-import": "12.0.1",
-    "postcss-nested": "4.1.2",
-    "postcss-preset-env": "6.6.0"
+    "normalize.css": "8.0.1"
   }
 }

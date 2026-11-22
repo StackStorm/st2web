@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it, beforeAll } from '@rstest/core';
 import { expect } from 'chai';
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { renderNode } from '@stackstorm/module-test-utils';
 
 import '@stackstorm/module-test-utils/bootstrap/st2constants';
 import '@stackstorm/module-test-utils/bootstrap/location';
@@ -24,13 +24,13 @@ import api from '@stackstorm/module-api';
 import Menu from '..';
 
 describe(`${Menu.name} Component`, () => {
-  before(() => {
+  beforeAll(() => {
     api.client = api.connect();
   });
 
   describe('common functionality', () => {
     it('proxies className', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <Menu
           className="foobar"
           routes={[]}
@@ -38,11 +38,11 @@ describe(`${Menu.name} Component`, () => {
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
     it('proxies extra props', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <Menu
           foo="bar"
           routes={[]}
@@ -50,7 +50,7 @@ describe(`${Menu.name} Component`, () => {
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
   });
 });

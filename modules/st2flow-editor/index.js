@@ -13,24 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import type { TaskInterface, DeltaInterface } from '@stackstorm/st2flow-model';
-import type { GenericError } from '@stackstorm/st2flow-model';
-import type { NotificationInterface } from '@stackstorm/st2flow-notifications';
-
-import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
+import { Component } from 'react';
 import cx from 'classnames';
 
-import ace from 'brace';
-import 'brace/ext/language_tools';
-import 'brace/mode/yaml';
+import ace from 'ace-builds';
+import 'ace-builds/src-noconflict/ext-language_tools';
+import 'ace-builds/src-noconflict/mode-yaml';
 
-import style from './style.css';
+import style from './style.module.css';
 
-const Range = ace.acequire('ace/range').Range;
+const Range = ace.require('ace/range').Range;
 const editorId = 'editor_mount_point';
 const DELTA_DEBOUNCE = 300; // ms
 const DEFAULT_TAB_SIZE = 2;
@@ -39,34 +31,16 @@ const editorConnect = ({ ranges, notifications }) => ({ ranges, notifications })
 
 export { editorConnect };
 
-export default class Editor extends Component<{
-  className?: string,
-  ranges?: Object,
-  notifications?: Array<NotificationInterface>,
-  selectedTaskName?: string,
-  onTaskSelect?: Function,
-  source?: string,
-  onEditorChange?: Function,
-}> {
-  static propTypes = {
-    className: PropTypes.string,
-    ranges: PropTypes.object,
-    notifications: PropTypes.array,
-    selectedTaskName: PropTypes.string,
-    onTaskSelect: PropTypes.func,
-    source: PropTypes.string,
-    onEditorChange: PropTypes.func,
-    onChange: PropTypes.func,
-  }
-
+export default class Editor extends Component {
   componentDidMount() {
     const { source } = this.props;
-    ace.acequire('ace/ext/language_tools');
+    ace.require('ace/ext/language_tools');
 
     this.editor = ace.edit(editorId);
-    this.editor.$blockScrolling = Infinity;
     this.editor.setOptions({
       mode: 'ace/mode/yaml',
+      // Ace would load its YAML linter from a worker script we don't ship; the model validates instead.
+      useWorker: false,
       useSoftTabs: true,
       showPrintMargin: false,
       highlightActiveLine: false,
@@ -84,7 +58,7 @@ export default class Editor extends Component<{
     }
   }
 
-  componentDidUpdate(prevProps: Object) {
+  componentDidUpdate(prevProps) {
     const { selectedTaskName, source, notifications } = this.props;
     if (selectedTaskName !== prevProps.selectedTaskName) {
       this.handleTaskSelect({ name: selectedTaskName });
@@ -115,7 +89,7 @@ export default class Editor extends Component<{
     this.editor.session.setTabSize(tokenSet ? tokenSet.indent.length : DEFAULT_TAB_SIZE);
   }
 
-  handleTaskSelect(task: TaskInterface) {
+  handleTaskSelect(task) {
     if(this.selectMarker) {
       this.editor.session.removeMarker(this.selectMarker);
     }
@@ -142,7 +116,7 @@ export default class Editor extends Component<{
     }
   }
 
-  handleEditorChange = (delta: DeltaInterface) => {
+  handleEditorChange = (delta) => {
     const { onChange } = this.props;
     window.clearTimeout(this.deltaTimer);
 
@@ -155,9 +129,9 @@ export default class Editor extends Component<{
         }
       }, DELTA_DEBOUNCE);
     }
-  }
+  };
 
-  handleModelChange = (deltas: Array<DeltaInterface>, yaml: string) => {
+  handleModelChange = (deltas, yaml) => {
     this.clearErrorMarkers();
     this.editor.session.setAnnotations([]);
 
@@ -167,9 +141,9 @@ export default class Editor extends Component<{
     }
 
     this.setTabSize();
-  }
+  };
 
-  handleModelError = (err: Array<GenericError>) => {
+  handleModelError = (err) => {
     const { session } = this.editor;
     const annotations = [];
 
@@ -190,7 +164,7 @@ export default class Editor extends Component<{
     });
 
     session.setAnnotations(annotations);
-  }
+  };
 
   clearErrorMarkers() {
     if(this.errorMarkers && this.errorMarkers.length) {
@@ -205,12 +179,11 @@ export default class Editor extends Component<{
     return this.props.notifications ? this.props.notifications.filter(n => n.type === 'error') : [];
   }
 
-
-  editor: any;
-  selectMarker: any;
-  errorMarkers: Array<any>;   // array of error markers
+  editor;
+  selectMarker;
+  errorMarkers;   // array of error markers
   deltaTimer = 0; // debounce timer
-  mountCallback: any;
+  mountCallback;
 
   style = style;
 

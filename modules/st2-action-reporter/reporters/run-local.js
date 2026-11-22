@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 
 import Highlight from '@stackstorm/module-highlight';
 
-import style from '../style.css';
+import style from '../style.module.css';
 
 export default function runLocal(execution) {
   return [

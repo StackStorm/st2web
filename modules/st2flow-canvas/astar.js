@@ -37,12 +37,10 @@ function getHeap() {
   });
 }
 
-
 /*
 Notes from B. Momberger on 2018-11-21: the following is an exceprt from
 https://pdfs.semanticscholar.org/9f60/6a3b611e6ab7c2bcd4c1f79fb8585dda8be2.pdf
 and
-
 
 [E]ntries in the priority queue have form (v, D, lv, bv, p, cv) where:
  v is the node in the orthogonal visibility graph;
@@ -109,9 +107,9 @@ export const astar = {
   *          astar.heuristics).
   */
   search: function(
-    graph: Graph,
-    _start: {x: number, y: number},
-    _end: {x: number, y: number}) {
+    graph,
+    _start,
+    _end) {
     const start = graph.nodes[`${_start.x}|${_start.y}|S`];
     let end = graph.nodes[`${_end.x}|${_end.y}|S`];
     if(!start || !end) {
@@ -266,7 +264,7 @@ export const astar = {
 
     return h;
   },
-  cleanNode: function(node: GridNode) {
+  cleanNode: function(node) {
     node.f = 0;
     node.g = 0;
     node.h = 0;
@@ -276,13 +274,12 @@ export const astar = {
   },
 };
 
-
 export class Graph {
-  nodes: {[string]: GridNode};  // map x|y coords to GridNodes
-  grid: {[string]: Array<string>} = {}; // map x|y coords to nearest-neighbor x|y coords
-  dirtyNodes: Array<GridNode> = []; // hold nodes which are dirty
+  nodes;  // map x|y coords to GridNodes
+  grid = {}; // map x|y coords to nearest-neighbor x|y coords
+  dirtyNodes = []; // hold nodes which are dirty
 
-  constructor(vertices: Array<{x: number, y: number}>, edges: { [string]: Array<{x: number, y: number}> }) {
+  constructor(vertices, edges) {
     this.nodes = vertices.reduce((nodes, v) => {
       [ 'N', 'S', 'E', 'W' ].forEach(dir => {
         const gn = new GridNode(v.x, v.y, dir, 1);
@@ -316,32 +313,31 @@ export class Graph {
     this.dirtyNodes = [];
   }
 
-  markDirty(node: GridNode) {
+  markDirty(node) {
     this.dirtyNodes.push(node);
   }
 
-  neighbors(node: GridNode) {
+  neighbors(node) {
     return this.grid[`${node.toString()}|${node.dir}`].map(vStr => this.nodes[vStr]).filter(node => node);
   }
 }
 
-
 export class GridNode {
   // grid coordinates
-  x: number;
-  y: number;
+  x;
+  y;
   // inbound direction of node.
-  dir: string;
+  dir;
   // weight of node itself
-  weight: number;
+  weight;
   // calculated forms
-  f: number = 0;
-  g: number = 0; // cost of node plus cost of parent?
-  h: number = 0;
+  f = 0;
+  g = 0; // cost of node plus cost of parent?
+  h = 0;
   // traversal state
-  visited: boolean = false;
-  closed: boolean = false;
-  parent: GridNode = null;
+  visited = false;
+  closed = false;
+  parent = null;
   // direction: Direction = null;
 
   constructor(x, y, dir, weight) {
@@ -351,11 +347,11 @@ export class GridNode {
     this.weight = weight;
   }
 
-  toString(): string {
+  toString() {
     return `${this.x}|${this.y}`;
   }
 
-  getCost(fromNeighbor: GridNode): number {
+  getCost(fromNeighbor) {
     let weight = this.weight;
     const length = (Math.abs(fromNeighbor.x - this.x) + Math.abs(fromNeighbor.y - this.y));
 
@@ -369,22 +365,22 @@ export class GridNode {
 }
 
 class BinaryHeap {
-  scoreFunction: Function;
-  content: Array<GridNode>;
+  scoreFunction;
+  content;
 
-  constructor(scoreFunction: Function) {
+  constructor(scoreFunction) {
     this.content = [];
     this.scoreFunction = scoreFunction;
   }
 
-  push(element: GridNode) {
+  push(element) {
     // Add the new element to the end of the array.
     this.content.push(element);
 
     // Allow it to sink down.
     this.sinkDown(this.content.length - 1);
   }
-  pop(): GridNode {
+  pop() {
     // Store the first element so we can return it later.
     const result = this.content[0];
     // Get the element at the end of the array.
@@ -397,7 +393,7 @@ class BinaryHeap {
     }
     return result;
   }
-  remove(node: GridNode) {
+  remove(node) {
     const i = this.content.indexOf(node);
 
     // When it is found, the process seen in 'pop' is repeated
@@ -415,13 +411,13 @@ class BinaryHeap {
       }
     }
   }
-  size(): number {
+  size() {
     return this.content.length;
   }
-  rescoreElement(node: GridNode) {
+  rescoreElement(node) {
     this.sinkDown(this.content.indexOf(node));
   }
-  sinkDown(n: number) {
+  sinkDown(n) {
     // Fetch the element that has to be sunk.
     const element = this.content[n];
 
@@ -444,14 +440,14 @@ class BinaryHeap {
       }
     }
   }
-  bubbleUp(n: number) {
+  bubbleUp(n) {
     // Look up the target element and its score.
     const length = this.content.length;
     const element = this.content[n];
     const elemScore = this.scoreFunction(element);
 
     // This is used to store the new position of the element, if any.
-    let swap = null;
+    let swap;
     do {
       swap = null;
       // Compute the indices of the child elements.

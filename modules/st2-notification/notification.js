@@ -11,20 +11,121 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-const escapeHtml = require('escape-html');
-
-const Noty = (function() {
-  // don't include this during testing
-  if (typeof window === 'undefined' || global !== window) {
-    return function() {};
-  }
-
-  return require('noty');
-})();
 
 import router from '@stackstorm/module-router/methods';
 
 import './style.css';
+
+const TIMEOUT = 9000; // ms
+
+let layout = null;
+
+function getLayout() {
+  if (!layout || !layout.isConnected) {
+    layout = document.createElement('div');
+    layout.className = 'st2-notification';
+    layout.setAttribute('aria-live', 'polite');
+    document.body.appendChild(layout);
+  }
+
+  return layout;
+}
+
+/**
+ * A toast in the bottom-left corner. Text is set as text, never parsed as HTML. It closes on
+ * click, on any of its buttons, or after `timeout` ms (paused while the pointer is over it).
+ */
+export class Toast {
+  constructor({ text, type, buttons = [], timeout = TIMEOUT }) {
+    this.timeout = timeout;
+    this.remaining = timeout;
+    this.timer = null;
+    this.closed = false;
+
+    const bar = this.element = document.createElement('div');
+    bar.className = `st2-notification__bar st2-notification__bar--${type}`;
+    bar.setAttribute('role', type === 'error' ? 'alert' : 'status');
+
+    const body = document.createElement('div');
+    body.className = 'st2-notification__body';
+    body.textContent = text;
+    bar.appendChild(body);
+
+    if (buttons.length) {
+      const container = document.createElement('div');
+      container.className = 'st2-notification__buttons';
+
+      for (const { text, className, onClick, ...attributes } of buttons) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `st2-forms__button st2-forms__button--skeleton ${className || ''}`.trim();
+        button.textContent = text;
+        for (const [ name, value ] of Object.entries(attributes)) {
+          button.setAttribute(name, value);
+        }
+        button.addEventListener('click', () => {
+          onClick && onClick();
+          this.close();
+        });
+        container.appendChild(button);
+      }
+
+      bar.appendChild(container);
+    }
+
+    if (timeout) {
+      const progress = document.createElement('div');
+      progress.className = 'st2-notification__progress';
+      progress.style.animationDuration = `${timeout}ms`;
+      bar.appendChild(progress);
+
+      bar.addEventListener('mouseenter', () => this.pause());
+      bar.addEventListener('mouseleave', () => this.resume());
+    }
+
+    bar.addEventListener('click', () => this.close());
+  }
+
+  show() {
+    getLayout().appendChild(this.element);
+    this.resume();
+    return this;
+  }
+
+  pause() {
+    if (!this.timer) {
+      return;
+    }
+
+    clearTimeout(this.timer);
+    this.timer = null;
+    this.remaining -= Date.now() - this.started;
+    this.element.classList.add('st2-notification__bar--paused');
+  }
+
+  resume() {
+    if (!this.timeout || this.timer || this.closed) {
+      return;
+    }
+
+    this.started = Date.now();
+    this.timer = setTimeout(() => this.close(), this.remaining);
+    this.element.classList.remove('st2-notification__bar--paused');
+  }
+
+  close() {
+    if (this.closed) {
+      return;
+    }
+
+    this.closed = true;
+    clearTimeout(this.timer);
+    this.element.classList.add('st2-notification__bar--closing');
+    this.element.addEventListener('animationend', () => this.element.remove(), { once: true });
+    // animationend never fires when animations are off (or in tests).
+    setTimeout(() => this.element.remove(), 600);
+  }
+}
 
 export class Notification {
   success(...args) {
@@ -43,8 +144,7 @@ export class Notification {
     return this.notify('info', ...args);
   }
 
-  notify(type, text, { buttons = [], err, execution_id, ...options } = {}) {
-    text = escapeHtml(text);
+  notify(type, text, { buttons = [], err, execution_id, timeout } = {}) {
     if (err) {
       let expanded = !!execution_id;
       let stack = null;
@@ -80,29 +180,13 @@ export class Notification {
     }
 
     if (execution_id) {
-      buttons.push({
+      buttons = buttons.concat({
         text: 'Show execution',
         onClick: () => router.push({ pathname: `/history/${execution_id}` }),
       });
     }
-    const notificationObj = new Noty({
-      text,
-      type,
-      layout: 'bottomLeft',
-      closeWith:[ 'click', 'button' ],
-      timeout: 9000,
-      buttons: buttons.map(({ text, className, onClick, ...attributes }) => Noty.button(
-        text,
-        `st2-forms__button st2-forms__button--skeleton ${className || ''}`,
-        () => {
-          onClick();
-          notificationObj.close();
-        },
-        attributes,
-      )),
-      ...options,
-    });
-    return notificationObj.show();
+
+    return new Toast({ text, type, buttons, timeout }).show();
   }
 }
 

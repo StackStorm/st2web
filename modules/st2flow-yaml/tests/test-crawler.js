@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it, beforeAll, beforeEach } from '@rstest/core';
 import fs from 'fs';
 import path from 'path';
 import { expect } from 'chai';
@@ -24,7 +25,7 @@ describe('Token Set Crawler', () => {
   let yaml;
   let set;
 
-  before(() => {
+  beforeAll(() => {
     yaml = fs.readFileSync(path.join(__dirname, 'data/complex.yaml'), 'utf-8');
   });
 
@@ -119,8 +120,8 @@ describe('Token Set Crawler', () => {
 
     [ obj, arr ].forEach(o => {
       expect(typeof o.__meta).to.equal('object');
-      expect(o.__meta.hasOwnProperty('comments')).to.equal(true);
-      expect(o.__meta.hasOwnProperty('jpath')).to.equal(true);
+      expect(Object.hasOwn(o.__meta, 'comments')).to.equal(true);
+      expect(Object.hasOwn(o.__meta, 'jpath')).to.equal(true);
     });
   });
 
@@ -157,10 +158,11 @@ describe('Token Set Crawler', () => {
     expect(obj.scalar).to.equal('firstline secondline');
     expect(obj.angle_clip).to.equal('line 1 line 2\n');
     expect(obj.angle_strip).to.equal('line 3 line 4');
-    expect(obj.angle_keep).to.equal('line 5 line 6\n\n');
+    // keep chomping (+) preserves the trailing blank lines (the old parser dropped one; PyYAML agrees)
+    expect(obj.angle_keep).to.equal('line 5 line 6\n\n\n');
     expect(obj.pipe_clip).to.equal('line 1\nline 2\n');
     expect(obj.pipe_strip).to.equal('line 3\nline 4');
-    expect(obj.pipe_keep).to.equal('line 5\nline 6\n\n');
+    expect(obj.pipe_keep).to.equal('line 5\nline 6\n\n\n');
   });
 
   it('returns array with expected value types', () => {
@@ -347,22 +349,22 @@ describe('Token Set Crawler', () => {
 
     it('removes items by key', () => {
       let data = crawler.getValueByKey(set, 'data');
-      expect(data.hasOwnProperty('bing')).to.equal(true);
+      expect(Object.hasOwn(data, 'bing')).to.equal(true);
 
       crawler.deleteMappingItem(set, 'data.bing');
 
       data = crawler.getValueByKey(set, 'data');
-      expect(data.hasOwnProperty('bing')).to.equal(false);
+      expect(Object.hasOwn(data, 'bing')).to.equal(false);
     });
 
     it('can remove root level items', () => {
       let data = set.toObject();
-      expect(data.hasOwnProperty('version')).to.equal(true);
+      expect(Object.hasOwn(data, 'version')).to.equal(true);
 
       crawler.deleteMappingItem(set, 'version');
 
       data = set.toObject();
-      expect(data.hasOwnProperty('version')).to.equal(false);
+      expect(Object.hasOwn(data, 'version')).to.equal(false);
     });
   });
 

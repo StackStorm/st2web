@@ -12,14 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-global.document = {
-  ...global.document,
+import hasDom from './has-dom';
 
-  _title: 'My App Title',
-  get title() {
-    return this._title;
-  },
-  set title(title) {
-    this._title = title;
-  },
-};
+if (hasDom) {
+  document.title = 'My App Title';
+}
+else {
+  global.document = {
+    ...global.document,
+
+    _title: 'My App Title',
+    get title() {
+      return this._title;
+    },
+    set title(title) {
+      this._title = title;
+    },
+  };
+}

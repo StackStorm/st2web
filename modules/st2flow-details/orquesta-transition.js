@@ -13,12 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import type { TaskRefInterface } from '@stackstorm/st2flow-model/interfaces';
-
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 
@@ -26,59 +21,10 @@ import { StringField, SelectField, ColorStringField } from '@stackstorm/module-a
 import { Toggle } from '@stackstorm/module-forms/button.component';
 import { StringPropertiesPanel } from './string-properties';
 
-import style from './style.css';
+import style from './style.module.css';
 
-type TransitionProps = {
-  transition: {
-    to: Array<TaskRefInterface>,
-    condition?: string,
-    publish?: Array<{}>,
-    color: string,
-  },
-  taskNames: Array<string>,
-  selected: boolean,
-  onChange?: Function,
-};
-
-@connect(
-  null,
-  (dispatch, { transition }) => ({
-    onChange: (name: string, value: any) => {
-      if (value !== null && value !== void 0) {
-        dispatch({
-          type: 'MODEL_ISSUE_COMMAND',
-          command: 'setTransitionProperty',
-          args: [
-            transition,
-            name,
-            value,
-          ],
-        });
-      }
-      else {
-        dispatch({
-          type: 'MODEL_ISSUE_COMMAND',
-          command: 'deleteTransitionProperty',
-          args: [
-            transition,
-            name,
-          ],
-        });
-      }
-    },
-  })
-)
-export default class OrquestaTransition extends Component<TransitionProps, {
-  publishOn: boolean,
-}> {
-  static propTypes = {
-    transition: PropTypes.object.isRequired,
-    taskNames: PropTypes.arrayOf(PropTypes.string),
-    selected: PropTypes.bool,
-    onChange: PropTypes.func,
-  }
-
-  constructor(props: TransitionProps) {
+class OrquestaTransition extends Component {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -86,10 +32,10 @@ export default class OrquestaTransition extends Component<TransitionProps, {
     };
   }
 
-  style = style
-  cache = {} // used to cache togglable data
+  style = style;
+  cache = {}; // used to cache togglable data
 
-  onPublishToggle = (val: boolean) => {
+  onPublishToggle = (val) => {
     const { onChange } = this.props;
     if(val) {
       if(this.cache.publish) {
@@ -110,9 +56,9 @@ export default class OrquestaTransition extends Component<TransitionProps, {
     }
 
     this.setState({ publishOn: val });
-  }
+  };
 
-  handlePublishChange(publish: Array<{}>) {
+  handlePublishChange(publish) {
     const { onChange } = this.props;
     const val = publish ? publish.slice(0) : [];
 
@@ -122,7 +68,7 @@ export default class OrquestaTransition extends Component<TransitionProps, {
     onChange && onChange('publish', val);
   }
 
-  handleDoChange(index: number, value: string | Array<string>) {
+  handleDoChange(index, value) {
     const { transition: { to }, onChange } = this.props;
     const val = to.map(t => t.name);
 
@@ -137,22 +83,22 @@ export default class OrquestaTransition extends Component<TransitionProps, {
     const val = publish && this.state.publishOn ? publish.concat(newVal) : [ newVal ];
 
     onChange && onChange('publish', val);
-  }
+  };
 
-  addDoItem = (value: string) => {
+  addDoItem = (value) => {
     const { transition: { to }, onChange } = this.props;
     const val = (to || []).map(t => t.name).concat(value);
     onChange && onChange('do', val);
-  }
+  };
 
-  removeDoItem = (index: number) => {
+  removeDoItem = (index) => {
     const { transition: { to }, onChange } = this.props;
     const val = to.map(t => t.name);
 
     // make sure to splice the copy!
     val.splice(index, 1);
     onChange && onChange('do', val);
-  }
+  };
 
   render() {
     const { transition, taskNames, selected, onChange } = this.props;
@@ -235,3 +181,32 @@ export default class OrquestaTransition extends Component<TransitionProps, {
     );
   }
 }
+
+export default connect(
+  null,
+  (dispatch, { transition }) => ({
+    onChange: (name, value) => {
+      if (value !== null && value !== void 0) {
+        dispatch({
+          type: 'MODEL_ISSUE_COMMAND',
+          command: 'setTransitionProperty',
+          args: [
+            transition,
+            name,
+            value,
+          ],
+        });
+      }
+      else {
+        dispatch({
+          type: 'MODEL_ISSUE_COMMAND',
+          command: 'deleteTransitionProperty',
+          args: [
+            transition,
+            name,
+          ],
+        });
+      }
+    },
+  })
+)(OrquestaTransition);

@@ -13,12 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
 import EventEmitter3 from 'eventemitter3';
-
-type EventName = string;
-
 
 /**
  * This EventEmitter class extends the base event emitter functionality
@@ -27,9 +22,9 @@ type EventName = string;
  * is registered, the stack is flushed to that listener.
  */
 class EventEmitter extends EventEmitter3 {
-  stack: { [EventName]: Array<any> } = {};
+  stack = {};
 
-  on(event: EventName, listener: Function): EventEmitter {
+  on(event, listener) {
     super.on.call(this, event, listener);
 
     if(this.stack[event] && this.stack[event].length) {
@@ -42,7 +37,7 @@ class EventEmitter extends EventEmitter3 {
     return this;
   }
 
-  emit(event: EventName, ...data: Array<any>): EventEmitter {
+  emit(event, ...data) {
     if(this.listenerCount(event) === 0) {
       if(!this.stack[event]) {
         this.stack[event] = [];

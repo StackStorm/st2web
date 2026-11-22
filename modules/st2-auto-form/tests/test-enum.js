@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import chai, { expect } from 'chai';
+import { describe, it } from '@rstest/core';
+import { expect, use as chaiUse } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 import { TestComponent } from './utils';
 import EnumField from '../fields/enum';
@@ -69,7 +69,8 @@ describe('AutoForm EnumField', () => {
 
     expect(onChange.withArgs('invalid')).to.not.be.called;
 
-    expect(c.fieldValue()).to.be.equal('invalid');
+    // a select can't show a value it has no option for
+    expect(c.fieldValue()).to.be.equal('');
 
     expect(c.fieldClass()).to.have.string('st2-auto-form__field--invalid');
   });

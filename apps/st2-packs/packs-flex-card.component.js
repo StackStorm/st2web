@@ -13,23 +13,16 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
+import { ScrollIntoViewContext } from '@stackstorm/module-panel';
+
 export default class PacksFlexCard extends React.Component {
-  static propTypes = {
-    pack: PropTypes.object.isRequired,
-    selected: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
-  }
-
-  static contextTypes = {
-    scrollIntoView: PropTypes.func,
-  }
-
   static defaultProps = {
     selected: false,
-  }
+  };
+
+  static contextType = ScrollIntoViewContext;
 
   render() {
     const { pack, selected, onClick } = this.props;

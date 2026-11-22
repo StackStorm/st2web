@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it } from '@rstest/core';
 import { expect } from 'chai';
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { renderNode } from '@stackstorm/module-test-utils';
 
 import '@stackstorm/module-test-utils/bootstrap/storage';
 import View from '..';
@@ -23,7 +23,7 @@ import View from '..';
 describe(`${View.name} Component`, () => {
   describe('common functionality', () => {
     it('proxies className', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <View
           className="foobar"
           name="name"
@@ -32,11 +32,11 @@ describe(`${View.name} Component`, () => {
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
     it('proxies extra props', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <View
           foo="bar"
           name="name"
@@ -45,7 +45,7 @@ describe(`${View.name} Component`, () => {
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
   });
 });

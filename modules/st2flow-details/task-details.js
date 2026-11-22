@@ -13,11 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import _ from 'lodash';
 
@@ -34,7 +31,7 @@ import MistralTransition from './mistral-transition';
 import OrquestaProperties from './orquesta-properties';
 import OrquestaTransition from './orquesta-transition';
 
-import style from './style.css';
+import style from './style.module.css';
 
 function makePanels(runnerType) {
   const model = models[runnerType];
@@ -42,81 +39,30 @@ function makePanels(runnerType) {
   switch (model) {
     case models.mistral:
       return {
-        properties: MistralProperties,
-        transition: MistralTransition,
+        Properties: MistralProperties,
+        Transition: MistralTransition,
       };
     case models.orquesta:
       return {
-        properties: OrquestaProperties,
-        transition: OrquestaTransition,
+        Properties: OrquestaProperties,
+        Transition: OrquestaTransition,
       };
     default:
       return {
-        properties: EmptyPanel,
-        transition: EmptyPanel,
+        Properties: EmptyPanel,
+        Transition: EmptyPanel,
       };
   }
 }
 
-class EmptyPanel extends Component<{},{}> {
+class EmptyPanel extends Component {
   render() {
     return false;
   }
 }
 
-type TaskDetailsProps = {
-  meta: Object,
-
-  tasks: Array<Object>,
-  transitions: Array<Object>,
-  issueModelCommand: Function,
-
-  navigation: Object,
-  navigate: Function,
-
-  actions: Array<Object>,
-
-  selected: string,
-  onBack: Function,
-};
-
-@connect(
-  ({ flow: { actions, navigation, tasks, transitions, meta }}) => ({ actions, navigation, tasks, transitions, meta }),
-  (dispatch) => ({
-    issueModelCommand: (command, ...args) => {
-      dispatch({
-        type: 'MODEL_ISSUE_COMMAND',
-        command,
-        args,
-      });
-    },
-    navigate: (navigation) => dispatch({
-      type: 'CHANGE_NAVIGATION',
-      navigation,
-    }),
-  })
-)
-export default class TaskDetails extends Component<TaskDetailsProps, {
-  rename: bool,
-  name: string,
-}> {
-  static propTypes = {
-    meta: PropTypes.object,
-
-    tasks: PropTypes.array,
-    transitions: PropTypes.array,
-    issueModelCommand: PropTypes.func,
-
-    navigation: PropTypes.object,
-    navigate: PropTypes.func,
-
-    actions: PropTypes.array,
-
-    selected: PropTypes.string,
-    onBack: PropTypes.func.isRequired,
-  }
-
-  constructor(props: TaskDetailsProps) {
+class TaskDetails extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       rename: false,
@@ -124,7 +70,7 @@ export default class TaskDetails extends Component<TaskDetailsProps, {
     };
   }
 
-  handleNameChange(name: string) {
+  handleNameChange(name) {
     this.setState({ name });
   }
 
@@ -134,7 +80,7 @@ export default class TaskDetails extends Component<TaskDetailsProps, {
     this.setState({ rename: !rename, name: selected });
   }
 
-  handleTaskRename(ref: string, name: string) {
+  handleTaskRename(ref, name) {
     const { selected, issueModelCommand } = this.props;
 
     issueModelCommand('updateTask', { name: ref }, { name });
@@ -145,27 +91,16 @@ export default class TaskDetails extends Component<TaskDetailsProps, {
     this.setState({ rename: false });
   }
 
-  handleTaskFieldChange(field: string, value: Object) {
+  handleTaskFieldChange(field, value) {
     const { selected, issueModelCommand } = this.props;
     issueModelCommand('updateTask', { name: selected }, { [field]: value });
   }
 
-  handleTaskProperty(name: string | Array<string>, value: any) {
-    const { selected, issueModelCommand } = this.props;
-
-    if (value) {
-      issueModelCommand('setTaskProperty', { name: selected }, name, value);
-    }
-    else {
-      issueModelCommand('deleteTaskProperty', { name: selected }, name);
-    }
-  }
-
-  handleSectionSwitch(section: string) {
+  handleSectionSwitch(section) {
     this.props.navigate({ section });
   }
 
-  style = style
+  style = style;
 
   render() {
     const { selected, onBack, actions, navigation, tasks, transitions, meta } = this.props;
@@ -232,7 +167,7 @@ export default class TaskDetails extends Component<TaskDetailsProps, {
       ),
       section === 'properties' && (
         <Panel key="properties">
-          <Panels.properties task={task} />
+          <Panels.Properties task={task} />
         </Panel>
       ),
       section === 'transitions' && (
@@ -241,7 +176,7 @@ export default class TaskDetails extends Component<TaskDetailsProps, {
             (trans || []).map((transition, index) => {
               // TODO: this logic could result in false positives - we need to compare conidtions too
               const selected = toTasks && toTasks.length === transition.to.length && transition.to.every((t, i) => toTasks[i] === t.name);
-              return <Panels.transition key={index} selected={selected} transition={transition} taskNames={taskNames} />;
+              return <Panels.Transition key={index} selected={selected} transition={transition} taskNames={taskNames} />;
             })
           }
           <div className={this.style.transitionInfo}>
@@ -252,3 +187,20 @@ export default class TaskDetails extends Component<TaskDetailsProps, {
     ]);
   }
 }
+
+export default connect(
+  ({ flow: { actions, navigation, tasks, transitions, meta }}) => ({ actions, navigation, tasks, transitions, meta }),
+  (dispatch) => ({
+    issueModelCommand: (command, ...args) => {
+      dispatch({
+        type: 'MODEL_ISSUE_COMMAND',
+        command,
+        args,
+      });
+    },
+    navigate: (navigation) => dispatch({
+      type: 'CHANGE_NAVIGATION',
+      navigation,
+    }),
+  })
+)(TaskDetails);

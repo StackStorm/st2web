@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 import fp from 'lodash/fp';
@@ -22,7 +21,6 @@ import get from 'lodash/fp/get';
 import isEqual from 'lodash/fp/isEqual';
 
 import cx from 'classnames';
-import qs from 'querystring';
 import api from '@stackstorm/module-api';
 import {
   actions as flexActions,
@@ -40,18 +38,18 @@ import {
   ContentEmpty,
   ToggleButton,
 } from '@stackstorm/module-panel';
-import formStyle from '@stackstorm/module-forms/style.pcss';
+import formStyle from '@stackstorm/module-forms/style.module.css';
 
 import InquiryDetails from './inquiry-details.component';
 import InquiryFlexCard from './inquiry-flex-card.component';
 
 import router from '@stackstorm/module-router';
 
-import './style.css';
+import './style.module.css';
 
 const PER_PAGE = 50;
 
-@connect((state, props) => {
+const FlexTableWrapper = connect((state, props) => {
   const { uid } = props;
   const { collapsed = state.collapsed } = state.tables[uid] || {};
 
@@ -62,39 +60,18 @@ const PER_PAGE = 50;
   return {
     onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
-})
-class FlexTableWrapper extends FlexTable {
+})(class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
     store.dispatch(flexActions.register(uid, false));
   }
-}
+});
 
-@connect((state) => {
-  const { inquiries, collapsed } = state;
-  return { inquiries, collapsed };
-})
-export default class InquiryPanel extends React.Component {
-  static propTypes = {
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-      search: PropTypes.string,
-    }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        ref: PropTypes.string,
-        section: PropTypes.string,
-      }).isRequired,
-    }).isRequired,
-
-    inquiries: PropTypes.array,
-    collapsed: PropTypes.bool,
-  }
-
+class InquiryPanel extends React.Component {
   state = {
     maxPages: 0,
-  }
+  };
 
   componentDidMount() {
     const { page } = this.urlParams;
@@ -287,7 +264,6 @@ export default class InquiryPanel extends React.Component {
         </PanelView>
 
         <InquiryDetails
-          ref={(ref) => this._details = ref}
           handleNavigate={(...args) => this.navigate(...args)}
 
           id={id}
@@ -298,8 +274,13 @@ export default class InquiryPanel extends React.Component {
   }
 }
 
+export default connect((state) => {
+  const { inquiries, collapsed } = state;
+  return { inquiries, collapsed };
+})(InquiryPanel);
+
 function parseSearch(search='') {
-  const { page, ...activeFilters } = qs.parse(search.slice(1));
+  const { page, ...activeFilters } = Object.fromEntries(new URLSearchParams(search.slice(1)));
 
   for (const key in activeFilters) {
     activeFilters[key] = activeFilters[key].split(',').map(v => v.trim()).filter(v => v);
@@ -333,5 +314,5 @@ function stringifySearch(page, activeFilters) {
     return undefined;
   }
 
-  return qs.stringify(query);
+  return new URLSearchParams(query).toString();
 }

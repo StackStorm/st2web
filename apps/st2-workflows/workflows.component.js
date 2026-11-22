@@ -13,13 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 import { mapValues, get } from 'lodash';
 import cx from 'classnames';
-import url from 'url';
 import Menu from '@stackstorm/module-menu';
 import Palette from '@stackstorm/st2flow-palette';
 import Canvas from '@stackstorm/st2flow-canvas';
@@ -29,259 +27,216 @@ import { Toolbar, ToolbarButton, ToolbarDropdown } from '@stackstorm/st2flow-can
 import AutoForm from '@stackstorm/module-auto-form';
 import Button from '@stackstorm/module-forms/button.component';
 import { Route } from '@stackstorm/module-router';
+import setTitle from '@stackstorm/module-title';
 import globalStore from '@stackstorm/module-store';
 import store from './store';
-import style from './style.css';
+import './style.css';
 
 const POLL_INTERVAL = 5000;
 
-@connect(
-  ({ flow: {
-    panels, actions, meta, metaSource, workflowSource, pack, input, dirty,
-  } }) => ({ isCollapsed: panels, actions, meta, metaSource, workflowSource, pack, input, dirty }),
-  (dispatch) => ({
-    fetchActions: () => dispatch({
-      type: 'FETCH_ACTIONS',
-      promise: api.request({ path: '/actions/views/overview' })
-        .catch(() => fetch('/actions.json').then(res => res.json())),
-    }),
+class Workflows extends Component {
+  state = {
+    runningWorkflow: false,
+    showForm: false,
+    runFormData: {},
+  };
+
+  async componentDidMount() {
+    this.props.fetchActions();
+  }
+
+  handleFormChange(data) {
    
-    sendError: (message, link) => dispatch({ type: 'PUSH_ERROR', error: message, link }),
-    sendSuccess: (message, link) => dispatch({ type: 'PUSH_SUCCESS', message, link }),
-    undo: () => dispatch({ type: 'FLOW_UNDO' }),
-    redo: () => dispatch({ type: 'FLOW_REDO' }),
-    layout: () => dispatch({ type: 'MODEL_LAYOUT' }),
-    setMeta: (attribute, value) => dispatch({ type: 'META_ISSUE_COMMAND', command: 'set', args: [ attribute, value ] }),
-  })
-)
-// class Window extends Component<{
-export default class Workflows extends Component {  
- static propTypes = {
-   pack: PropTypes.string,
-   meta: PropTypes.object,
-   metaSource: PropTypes.string,
-   setMeta: PropTypes.func,  // eslint-disable-line react/no-unused-prop-types
-   input: PropTypes.array,
-   workflowSource: PropTypes.string,
-   dirty: PropTypes.bool,
-   isCollapsed: PropTypes.object,
-   actions: PropTypes.array,
-   fetchActions: PropTypes.func,
-   undo: PropTypes.func,
-   redo: PropTypes.func,
-   layout: PropTypes.func,
-   sendSuccess: PropTypes.func,
-   sendError: PropTypes.func,
-   routes: PropTypes.arrayOf(PropTypes.shape({
-     title: PropTypes.string.isRequired,
-     href: PropTypes.string,
-     url: PropTypes.string,
-     target: PropTypes.string,
-     icon: PropTypes.string,
-   })).isRequired,
- }
- state = {
-   runningWorkflow: false,
-   showForm: false,
-   runFormData: {},
- };
+    if(!data) {
+      data = {};
+    }
+    this.setState(({ runFormData }) => ({
+      runFormData: {
+        ...runFormData,
+        ...data,
+      },
+    }));
+  }
 
- async componentDidMount() {
-   this.props.fetchActions();
- }
+  openForm() {
+    this.setState({
+      showForm: true,
+    });
+  }
 
- handleFormChange(data) {
-   
-   if(!data) {
-     data = {};
-   }
-   this.setState({
-     runFormData: {
-       ...this.state.runFormData,
-       ...data,
-     },
-   });
- }
+  closeForm() {
+    this.setState({
+      showForm: false,
+    });
+  }
 
- openForm() {
-   this.setState({
-     showForm: true,
-   });
- }
+  get formIsValid() {
+    const { meta: { parameters = {} } } = this.props;
+    const { runFormData } = this.state;
+    const paramNames = Object.keys(parameters);
 
- closeForm() {
-   this.setState({
-     showForm: false,
-   });
- }
+    let valid = true;
 
- get formIsValid() {
-   const { meta: { parameters = {} } } = this.props;
-   const { runFormData } = this.state;
-   const paramNames = Object.keys(parameters);
+    paramNames.forEach(name => {
+      const { required } = parameters[name] || {};
+      if(required && runFormData[name] == null && parameters[name].default == null) {
+        valid = false;
+      }
+    });
+    Object.keys(runFormData).forEach(formKey => {
+      if(!paramNames.includes(formKey) && runFormData[formKey] == null) {
+        valid = false;
+      }
+    });
 
-   let valid = true;
+    return valid;
+  }
 
-   paramNames.forEach(name => {
-     const { required } = parameters[name] || {};
-     if(required && runFormData[name] == null && parameters[name].default == null) {
-       valid = false;
-     }
-   });
-   Object.keys(runFormData).forEach(formKey => {
-     if(!paramNames.includes(formKey) && runFormData[formKey] == null) {
-       valid = false;
-     }
-   });
+  run() {
+    const { meta, input, sendSuccess, sendError } = this.props;
+    const { runningWorkflow, runFormData } = this.state;
 
-   return valid;
- }
+    if(runningWorkflow) {
+      return Promise.reject('Workflow already started');
+    }
+    this.setState({ runningWorkflow: true });
 
- run() {
-   const { meta, input, sendSuccess, sendError } = this.props;
-   const { runningWorkflow, runFormData } = this.state;
+    const inputValues = input.reduce((acc, maybeInputValue) => {
+      if(typeof maybeInputValue === 'string') {
+        return acc;
+      }
+      else {
+        const key = Object.keys(maybeInputValue)[0];
+        return {
+          ...acc,
+          [key]: maybeInputValue[key],
+        };
+      }
+    }, {});
 
-   if(runningWorkflow) {
-     return Promise.reject('Workflow already started');
-   }
-   this.setState({ runningWorkflow: true });
-
-   const inputValues = input.reduce((acc, maybeInputValue) => {
-     if(typeof maybeInputValue === 'string') {
-       return acc;
-     }
-     else {
-       const key = Object.keys(maybeInputValue)[0];
-       return {
-         ...acc,
-         [key]: maybeInputValue[key],
-       };
-     }
-   }, {});
-
-   let parameters = mapValues(meta.parameters || {}, (param, paramName) => {
-     if(inputValues.hasOwnProperty(paramName)) {
-       return inputValues[paramName];
-     }
-     else {
-       return param.default;
-     }
-   }, {});
-   parameters = {
-     ...parameters,
-     ...runFormData,
-   };
+    let parameters = mapValues(meta.parameters || {}, (param, paramName) => {
+      if(Object.hasOwn(inputValues, paramName)) {
+        return inputValues[paramName];
+      }
+      else {
+        return param.default;
+      }
+    }, {});
+    parameters = {
+      ...parameters,
+      ...runFormData,
+    };
 
     
-   return api.request({
-     method: 'post',
-     path: '/executions',
-   }, {
-     action: `${meta.pack}.${meta.name}`,
-     action_is_workflow: true,
-     parameters,
-   }).then(resp => {
-     const executionUrl = url.parse(resp.web_url);
+    return api.request({
+      method: 'post',
+      path: '/executions',
+    }, {
+      action: `${meta.pack}.${meta.name}`,
+      action_is_workflow: true,
+      parameters,
+    }).then(resp => {
+      const executionUrl = new URL(resp.web_url);
 
-     sendSuccess(
-       `Workflow ${resp.liveaction.action} submitted for execution. Details at `,
-       `${executionUrl.path}${executionUrl.hash}`
-     );
-     setTimeout(this.poll.bind(this), POLL_INTERVAL, resp.id);
-     this.closeForm();
-   }, err => {
-     this.setState({ runningWorkflow: false });
-     sendError(`Submitting workflow ${meta.name} failed: ${get(err, 'response.data.faultstring') || err.message}`);
-     throw err;
-   });
- }
+      sendSuccess(
+        `Workflow ${resp.liveaction.action} submitted for execution. Details at `,
+        `${executionUrl.pathname}${executionUrl.search}${executionUrl.hash}`
+      );
+      setTimeout(this.poll.bind(this), POLL_INTERVAL, resp.id);
+      this.closeForm();
+    }, err => {
+      this.setState({ runningWorkflow: false });
+      sendError(`Submitting workflow ${meta.name} failed: ${get(err, 'response.data.faultstring') || err.message}`);
+      throw err;
+    });
+  }
 
- poll(workflowId) {
-   const { sendSuccess, sendError } = this.props;
-   return api.request({
-     method: 'get',
-     path: `/executions?id=${workflowId}`,
-   }).then(([ execution ]) => {
-     const executionUrl = url.parse(execution.web_url);
-     switch(execution.status) {
-       case 'failed': {
-         sendError(
-           `Workflow ${execution.liveaction.action} failed. Details at `,
-           `${executionUrl.path}${executionUrl.hash}`
-         );
-         this.setState({ runningWorkflow: false });
-         break;
-       }
-       case 'succeeded': {
-         sendSuccess(
-           `Workflow ${execution.liveaction.action} succeeded in ${execution.elapsed_seconds}s. Details at `,
-           `${executionUrl.path}${executionUrl.hash}`
-         );
-         this.setState({ runningWorkflow: false });
-         break;
-       }
-       // requesting, scheduled, or running
-       default: {
-         setTimeout(this.poll.bind(this), POLL_INTERVAL, workflowId);
-         break;
-       }
-     }
-   });
- }
+  poll(workflowId) {
+    const { sendSuccess, sendError } = this.props;
+    return api.request({
+      method: 'get',
+      path: `/executions?id=${workflowId}`,
+    }).then(([ execution ]) => {
+      const executionUrl = new URL(execution.web_url);
+      switch(execution.status) {
+        case 'failed': {
+          sendError(
+            `Workflow ${execution.liveaction.action} failed. Details at `,
+            `${executionUrl.pathname}${executionUrl.search}${executionUrl.hash}`
+          );
+          this.setState({ runningWorkflow: false });
+          break;
+        }
+        case 'succeeded': {
+          sendSuccess(
+            `Workflow ${execution.liveaction.action} succeeded in ${execution.elapsed_seconds}s. Details at `,
+            `${executionUrl.pathname}${executionUrl.search}${executionUrl.hash}`
+          );
+          this.setState({ runningWorkflow: false });
+          break;
+        }
+        // requesting, scheduled, or running
+        default: {
+          setTimeout(this.poll.bind(this), POLL_INTERVAL, workflowId);
+          break;
+        }
+      }
+    });
+  }
 
- save() {
-   const { pack, meta, actions, workflowSource, metaSource, sendSuccess, sendError } = this.props;
-   const existingAction = actions.find(e => e.name === meta.name && e.pack === pack);
+  save() {
+    const { pack, meta, actions, workflowSource, metaSource, sendSuccess, sendError } = this.props;
+    const existingAction = actions.find(e => e.name === meta.name && e.pack === pack);
 
-   if (!meta.name) {
-     throw { response: { data: { faultstring: 'You must provide a name of the workflow.'}}};
-   }
+    if (!meta.name) {
+      throw { response: { data: { faultstring: 'You must provide a name of the workflow.'}}};
+    }
    
-   if (!meta.entry_point) {
-     throw { response: { data: { faultstring: 'You must provide a entry point of the workflow.'}}};
-   }
+    if (!meta.entry_point) {
+      throw { response: { data: { faultstring: 'You must provide a entry point of the workflow.'}}};
+    }
 
-   meta.pack = pack;
-   meta.metadata_file = existingAction && existingAction.metadata_file && existingAction.metadata_file || `actions/${meta.name}.meta.yaml`;
-   meta.data_files = [{
-     file_path: meta.entry_point,
-     content: workflowSource,
-   }, {
-     file_path: existingAction && existingAction.metadata_file && existingAction.metadata_file.replace(/^actions\//, '') || `${meta.name}.meta.yaml`,
-     content: metaSource,
-   }];
+    meta.pack = pack;
+    meta.metadata_file = existingAction && existingAction.metadata_file && existingAction.metadata_file || `actions/${meta.name}.meta.yaml`;
+    meta.data_files = [{
+      file_path: meta.entry_point,
+      content: workflowSource,
+    }, {
+      file_path: existingAction && existingAction.metadata_file && existingAction.metadata_file.replace(/^actions\//, '') || `${meta.name}.meta.yaml`,
+      content: metaSource,
+    }];
 
-   const promise = (async () => {
-     if (existingAction) {
+    const promise = (async () => {
+      if (existingAction) {
 
-       // remove "_name" key from parameter keys for successful request
-       if (meta.parameters) {
-         Object.keys(meta.parameters).forEach(key => {
-           if (meta.parameters[key]._name) {
-             delete meta.parameters[key]._name;
-           }
-         });
-       }
+        // remove "_name" key from parameter keys for successful request
+        if (meta.parameters) {
+          Object.keys(meta.parameters).forEach(key => {
+            if (meta.parameters[key]._name) {
+              delete meta.parameters[key]._name;
+            }
+          });
+        }
 
-       await api.request({ method: 'put', path: `/actions/${pack}.${meta.name}` }, meta);
-     }
-     else {
-       await api.request({ method: 'post', path: '/actions' }, meta);
-       this.props.fetchActions();
-     }
-     // don't need to return anything to the store. the handler will change dirty.
-     return {};
-   })();
+        await api.request({ method: 'put', path: `/actions/${pack}.${meta.name}` }, meta);
+      }
+      else {
+        await api.request({ method: 'post', path: '/actions' }, meta);
+        this.props.fetchActions();
+      }
+      // don't need to return anything to the store. the handler will change dirty.
+      return {};
+    })();
   
-   const saveRes = store.dispatch({
-     type: 'SAVE_WORKFLOW',
-     promise,
-   });
+    const saveRes = store.dispatch({
+      type: 'SAVE_WORKFLOW',
+      promise,
+    });
 
-   saveRes.then(({ status }) => status === 'success' ? sendSuccess('Workflow saved.') : sendError('Error saving workflow.'));
+    saveRes.then(({ status }) => status === 'success' ? sendSuccess('Workflow saved.') : sendError('Error saving workflow.'));
 
-   return promise;
- }
+    return promise;
+  }
 
   timer;
 
@@ -290,14 +245,14 @@ export default class Workflows extends Component {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       const { autosaveEnabled } = store.getState();
+      const { dirty, layoutDirty } = this.props;
 
-      if (autosaveEnabled) {
+      // the canvas asks for this on any task change, including loading a workflow
+      if (autosaveEnabled && (dirty || layoutDirty)) {
         this.save();
       }
     }, 1000);
   }
-
-  style = style
 
   keyHandlers = {
     undo: () => {
@@ -330,11 +285,11 @@ export default class Workflows extends Component {
     paste: () => {
       store.dispatch({ type: 'PUSH_WARNING', source: 'icon-save', message: 'Nothing to paste' });
     },
-  }
+  };
 
   render() {
     // const { isCollapsed = {}, toggleCollapse, actions, undo, redo, layout, meta, input, dirty } = this.props;
-    const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty} = this.props;
+    const { isCollapsed = {}, actions, undo, redo, layout, meta, input, dirty, layoutDirty } = this.props;
     const { runningWorkflow, showForm } = this.state;
    
     const autoFormData = input && input.reduce((acc, value) => {
@@ -348,6 +303,9 @@ export default class Workflows extends Component {
       <Route
         path='/action/:ref?/:section?'
         render={({ match, location }) => {
+          // like the other pages ("<item> - <section>"), with a mark while there are unsaved changes
+          setTitle([ `${dirty ? '* ' : ''}${match.params.ref || 'New workflow'}`, 'Workflow Designer' ]);
+
           return (
             <Provider store={globalStore}>
               <div className="component">
@@ -361,7 +319,7 @@ export default class Workflows extends Component {
                       className="canvas"
                       location={location}
                       match={match}
-                      dirtyflag={this.props.dirty}
+                      dirtyflag={dirty || layoutDirty}
                       fetchActionscalled={e => this.props.fetchActions()}
                       saveData={e => this.autosave(() => null)}
                       save={this.keyHandlers.save}
@@ -381,7 +339,7 @@ export default class Workflows extends Component {
                         />
                         <ToolbarButton
                           key="save"
-                          className={cx(dirty && 'glow')}
+                          className={cx((dirty || layoutDirty) && 'glow')}
                           icon="icon-save"
                           title="Save workflow"
                           errorMessage="Error saving workflow."
@@ -431,6 +389,26 @@ export default class Workflows extends Component {
    
   }
 }
+
+export default connect(
+  ({ flow: {
+    panels, actions, meta, metaSource, workflowSource, pack, input, dirty, layoutDirty,
+  } }) => ({ isCollapsed: panels, actions, meta, metaSource, workflowSource, pack, input, dirty, layoutDirty }),
+  (dispatch) => ({
+    fetchActions: () => dispatch({
+      type: 'FETCH_ACTIONS',
+      promise: api.request({ path: '/actions/views/overview' })
+        .catch(() => fetch('/actions.json').then(res => res.json())),
+    }),
+   
+    sendError: (message, link) => dispatch({ type: 'PUSH_ERROR', error: message, link }),
+    sendSuccess: (message, link) => dispatch({ type: 'PUSH_SUCCESS', message, link }),
+    undo: () => dispatch({ type: 'FLOW_UNDO' }),
+    redo: () => dispatch({ type: 'FLOW_REDO' }),
+    layout: () => dispatch({ type: 'MODEL_LAYOUT' }),
+    setMeta: (attribute, value) => dispatch({ type: 'META_ISSUE_COMMAND', command: 'set', args: [ attribute, value ] }),
+  })
+)(Workflows);
 
 globalStore.subscribe(() => {
  

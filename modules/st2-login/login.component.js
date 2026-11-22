@@ -13,29 +13,22 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
-import componentStyle from './style.css';
-import menuStyle from '@stackstorm/module-menu/style.css';
+import componentStyle from './style.module.css';
+import menuStyle from '@stackstorm/module-menu/style.module.css';
 
 class LoginForm extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   render() {
     const { className, children, style, ...props } = this.props;
 
     return (
-      <form {...props} className={cx(style.from, className)}>
+      <form {...props} className={cx(style.form, className)}>
         { children }
       </form>
     );
@@ -43,15 +36,9 @@ class LoginForm extends React.Component {
 }
 
 class LoginLogo extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   render() {
     const { className, children, style, ...props } = this.props;
@@ -65,15 +52,9 @@ class LoginLogo extends React.Component {
 }
 
 class LoginError extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    message: PropTypes.string,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   render() {
     const { className, message, style, ...props } = this.props;
@@ -87,15 +68,9 @@ class LoginError extends React.Component {
 }
 
 class LoginRow extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   render() {
     const { className, children, style, ...props } = this.props;
@@ -109,15 +84,9 @@ class LoginRow extends React.Component {
 }
 
 class LoginBottomRow extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   render() {
     const { className, children, style, ...props } = this.props;
@@ -131,18 +100,12 @@ class LoginBottomRow extends React.Component {
 }
 
 export default class Login extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    onConnect: PropTypes.func.isRequired,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: {
       ...componentStyle,
       logo: menuStyle.logo,
     },
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -164,8 +127,8 @@ export default class Login extends React.Component {
     };
   }
 
-  docsLink = 'https://docs.stackstorm.com/'
-  supportLink = 'https://github.com/StackStorm/st2/discussions'
+  docsLink = 'https://docs.stackstorm.com/';
+  supportLink = 'https://github.com/StackStorm/st2/discussions';
 
   connect(e) {
     e.preventDefault();

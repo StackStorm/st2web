@@ -14,7 +14,6 @@
 
 import _ from 'lodash';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import ArrayField from './fields/array';
@@ -28,18 +27,9 @@ import EnumField from './fields/enum';
 import './style.css';
 
 export default class AutoForm extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    spec: PropTypes.object,
-    data: PropTypes.object,
-    disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func,
-    flat: PropTypes.bool,
-  }
-
   static defaultProps = {
     disabled: false,
-  }
+  };
 
   getElementByField(field) {
     if (field.enum) {
@@ -115,6 +105,8 @@ export default class AutoForm extends React.Component {
         { fields.map((field) => {
           const name = field._name;
 
+          // One of the field classes imported above, looked up rather than created here.
+          /* eslint-disable @eslint-react/static-components */
           const FieldElement = this.getElementByField(field);
 
           return (
@@ -128,6 +120,7 @@ export default class AutoForm extends React.Component {
               data-test={`field:${name}`}
             />
           );
+          /* eslint-enable @eslint-react/static-components */
         }) }
       </div>
     );

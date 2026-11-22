@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
 
 import Highlight from '@stackstorm/module-highlight';
 
-import style from '../style.css';
+import style from '../style.module.css';
 
 export default function runRemote(execution) {
   if (!execution.result) {
@@ -50,6 +49,8 @@ export default function runRemote(execution) {
       ] : null,
 
       !result || (!result.result && !result.stderr &&  !result.stdout && !result.error  && !result.traceback) ? (
+        // no other element in this list uses the key; the rule misreads the conditional
+        // eslint-disable-next-line @eslint-react/no-duplicate-key
         <Highlight well className={style.highlight} key="none" code="// Action produced no data" />
       ) : null,
     ];

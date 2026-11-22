@@ -14,7 +14,6 @@
 
 import _ from 'lodash';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
@@ -41,25 +40,11 @@ import {
 import St2PortionBar from '@stackstorm/module-portion-bar';
 import Table from './table.component';
 
-@connect((state) => {
-  const { pack } = state;
-  return { pack };
-})
-export default class PacksPanel extends React.Component {
-  static propTypes = {
-    handleInstall: PropTypes.func.isRequired,
-    handleRemove: PropTypes.func.isRequired,
-    handleSave: PropTypes.func.isRequired,
-    handleFilterChange: PropTypes.func.isRequired,
-
-    id: PropTypes.string,
-    pack: PropTypes.object,
-  }
-
+class PacksPanel extends React.Component {
   state = {
     config: null,
     configPreview: false,
-  }
+  };
 
   componentDidMount() {
     const { id } = this.props;
@@ -75,12 +60,6 @@ export default class PacksPanel extends React.Component {
     if (id && id !== prevProps.id) {
       this.fetchPack(id);
     }
-  }
-
-  refresh() {
-    const { id } = this.props;
-
-    this.fetchPack(id);
   }
 
   fetchPack(id) {
@@ -238,3 +217,8 @@ export default class PacksPanel extends React.Component {
     );
   }
 }
+
+export default connect((state) => {
+  const { pack } = state;
+  return { pack };
+})(PacksPanel);

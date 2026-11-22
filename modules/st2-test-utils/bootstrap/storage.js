@@ -12,18 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-global.localStorage = {
-  ...global.localStorage,
+import hasDom from './has-dom';
 
-  getItem: () => null,
-  setItem: () => null,
-  removeItem: () => null,
-};
+if (!hasDom) {
+  global.localStorage = {
+    ...global.localStorage,
 
-global.sessionStorage = {
-  ...global.sessionStorage,
+    getItem: () => null,
+    setItem: () => null,
+    removeItem: () => null,
+  };
 
-  getItem: () => null,
-  setItem: () => null,
-  removeItem: () => null,
-};
+  global.sessionStorage = {
+    ...global.sessionStorage,
+
+    getItem: () => null,
+    setItem: () => null,
+    removeItem: () => null,
+  };
+}

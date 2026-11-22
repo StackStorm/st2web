@@ -13,14 +13,13 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import Prism from 'prismjs';
 
 import Link from '@stackstorm/module-router/link.component';
 
 import './editor.css';
-import style from './style.pcss';
+import style from './style.module.css';
 
 (function() {
   // don't include this during testing
@@ -59,8 +58,7 @@ function getType(string) {
 function replaceNewlines(str) {
   return str
     .replace(/\\r/g, '\r')
-    .replace(/\\n/g, '\n')
-  ;
+    .replace(/\\n/g, '\n');
 }
 
 function getFullOutput(language, code) {
@@ -120,18 +118,6 @@ function trimToLines(str, length) {
 }
 
 export default class Highlight extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    code: PropTypes.any,
-    language: PropTypes.string,
-    lines: PropTypes.number,
-    well: PropTypes.bool,
-    expanded: PropTypes.bool,
-    type: PropTypes.string,
-    id: PropTypes.string,
-    handle: PropTypes.string,
-  };
-
   constructor(props) {
     super(props);
 

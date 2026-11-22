@@ -13,33 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import type { Node } from 'react';
-
-import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import { Component } from 'react';
 
 import { Toggle } from '@stackstorm/module-forms/button.component';
 
-import style from './style.css';
+import style from './style.module.css';
 
-export default class Property extends Component<{
-  name: string,
-  description: string,
-  value: bool,
-  onChange: Function,
-  children?: Node
-}> {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    value: PropTypes.bool,
-    onChange: PropTypes.func,
-    children: PropTypes.node,
-  }
-
-  style = style
+export default class Property extends Component {
+  style = style;
 
   render() {
     const { name, description, value, onChange, children } = this.props;

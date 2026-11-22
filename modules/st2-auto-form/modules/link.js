@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import {
@@ -21,14 +20,6 @@ import {
 } from '../wrappers';
 
 export default class TextModule extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    spec: PropTypes.object,
-    data: PropTypes.string,
-    href: PropTypes.string,
-  }
-
   render() {
     const { className = '', name, spec, data, href } = this.props;
 

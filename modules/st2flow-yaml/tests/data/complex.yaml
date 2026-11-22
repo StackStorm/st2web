@@ -152,8 +152,8 @@ data:
   - bar
   # comment
   - [ # another comment
-  2001-01-01,
-2002-02-02 ]
+    2001-01-01,
+    2002-02-02 ]
 
 anchored_content: &anchor_name This is a referencable value.
 other_anchor: *anchor_name

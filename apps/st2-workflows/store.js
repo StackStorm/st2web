@@ -18,7 +18,7 @@ import { createScopedStore } from '@stackstorm/module-store';
 import { models, OrquestaModel } from '@stackstorm/st2flow-model';
 import { layout } from '@stackstorm/st2flow-model/layout';
 import MetaModel from '@stackstorm/st2flow-model/model-meta';
-import { debounce, difference, get, uniqueId } from 'lodash';
+import { debounce, difference, get, isEqual, uniqueId } from 'lodash';
 
 let workflowModel = new OrquestaModel();
 const metaModel = new MetaModel();
@@ -72,7 +72,7 @@ function metaModelGetter(model) {
 
   return {
     metaSource,
-    notifications: errors.map(e => ({ type: 'error', message: e.message, source: 'meta-yaml-error' })),
+    notifications: errors.map(e => ({ type: 'error', message: e.message, source: 'meta-yaml-error', id: uniqueId() })),
     meta: model.tokenSet.toObject(),
   };
 }
@@ -128,8 +128,10 @@ const flowReducer = (state = {}, input) => {
     actions = [],
     notifications = [],
     navigation = {},
+    // dirty: the workflow or its metadata changed. layoutDirty: only task positions changed (the
+    // "# [x, y]" comments), which is worth saving but doesn't change what runs.
     dirty = false,
-    
+    layoutDirty = false,
   } = state;
 
   state = {
@@ -150,7 +152,7 @@ const flowReducer = (state = {}, input) => {
     notifications,
     navigation,
     dirty,
-   
+    layoutDirty,
   };
 
   switch (input.type) {
@@ -167,6 +169,9 @@ const flowReducer = (state = {}, input) => {
       }
 
       workflowModel[command](...args);
+
+      // moving a task (dragging it) changes only its coords
+      const layoutOnly = command === 'updateTask' && isEqual(Object.keys(args[1] || {}), [ 'coords' ]);
 
       const extendedNotifications = [];
       if(command === 'applyDelta') {
@@ -186,7 +191,9 @@ const flowReducer = (state = {}, input) => {
         ...state,
         ...modelState,
         notifications: modelState.notifications.concat(extendedNotifications),
-        dirty: true,
+        // `automatic` commands are the designer's own (placing tasks the YAML has no position for)
+        dirty: input.automatic || layoutOnly ? state.dirty : true,
+        layoutDirty: !input.automatic && layoutOnly ? true : state.layoutDirty,
       };
     }
 
@@ -196,7 +203,7 @@ const flowReducer = (state = {}, input) => {
       return {
         ...state,
         ...workflowModelGetter(workflowModel),
-        dirty: true,
+        layoutDirty: true,
       };
     }
 
@@ -374,6 +381,7 @@ const flowReducer = (state = {}, input) => {
           ...metaModelGetter(metaModel),
           ...workflowModelGetter(workflowModel),
           dirty: false,
+          layoutDirty: false,
         };
       }
 
@@ -387,6 +395,7 @@ const flowReducer = (state = {}, input) => {
         return {
           ...state,
           dirty: false,
+          layoutDirty: false,
         };
       }
 
@@ -443,7 +452,9 @@ const undoReducer = (prevState = {}, state = {}, input) => {
     case 'META_ISSUE_COMMAND':
     case 'MODEL_LAYOUT':
     case 'MODEL_ISSUE_COMMAND': {
-      handleModelCommand(prevState, state, input);
+      if (!input.automatic) {
+        handleModelCommand(prevState, state, input);
+      }
       return state;
     }
 

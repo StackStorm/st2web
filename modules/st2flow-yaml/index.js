@@ -13,11 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
 import * as util from './util';
 
 export { default as TokenSet } from './token-set';
 export { default as crawler } from './crawler';
 export { util };
-export type { TokenMeta, JPath, JpathKey, Range } from './types';

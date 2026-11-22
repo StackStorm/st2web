@@ -14,19 +14,13 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 import { Link } from '@stackstorm/module-router';
 
-import style from './style.css';
+import style from './style.module.css';
 
 export default class FlowLink extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    action: PropTypes.string,
-  }
-
   get token() {
     return btoa(JSON.stringify({
       api: api.server.api,

@@ -13,22 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { TokenRawValue, TokenMapping, TokenCollection, TokenReference, AnyToken, TokenMeta } from './types';
 import crawler from './crawler';
 import { isPlainObject, defineExpando } from './util';
 
 const STR_BACKREF = '<<';
 
 class Objectifier {
-  anchors: Object;
+  anchors;
 
-  constructor(anchors: Object) {
+  constructor(anchors) {
     this.anchors = anchors;
   }
 
-  getTokenValue(token: ?AnyToken, raw: boolean = false): any {
+  getTokenValue(token, raw = false) {
     if (token === null || typeof token === 'undefined') {
       return null;
     }
@@ -38,7 +35,7 @@ class Objectifier {
         return raw === true ? token.rawValue :
           // The valueObject (if present) always contains the most primitive form
           // of the value (boolean, number, etc) - so use it first.
-          token.hasOwnProperty('valueObject') ?
+          Object.hasOwn(token, 'valueObject') ?
             token.valueObject : token.value;
 
       case 2:
@@ -58,7 +55,7 @@ class Objectifier {
   /**
    * Mapping keys can be either single line or multiline.
    */
-  getMappingKey(token: TokenRawValue | TokenCollection): string {
+  getMappingKey(token) {
     switch(token.kind) {
       case 0: // single line key
         return this.getTokenValue(token);
@@ -76,9 +73,9 @@ class Objectifier {
    * the original order of the keys in the YAML file. Consumers should use
    * the __keys property when order matters.
    */
-  getMapping(token: TokenMapping): Object {
-    const keys: Array<string> = [];
-    const meta: TokenMeta = {
+  getMapping(token) {
+    const keys = [];
+    const meta = {
       keys,
       jpath: token.jpath,
       comments: '',
@@ -116,7 +113,7 @@ class Objectifier {
     return result;
   }
 
-  getCollection(token: TokenCollection): Array<any> {
+  getCollection(token) {
     const result = token.items.map(t => this.getTokenValue(t));
 
     // Expand some useful info
@@ -128,7 +125,7 @@ class Objectifier {
     return result;
   }
 
-  getReference(token: TokenReference): any {
+  getReference(token) {
     const refToken = this.anchors[token.referencesAnchor];
     return this.getTokenValue(refToken);
   }

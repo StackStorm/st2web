@@ -13,10 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { AnyToken } from './types';
-
 const strReducer = (str, token) => str + token.rawValue;
 
 const buildString = (value, prefix = [], suffix = []) => {
@@ -29,7 +25,7 @@ const stringifier = {
   /**
    * Recursively stringifies tokens into YAML.
    */
-  stringifyToken(token: AnyToken, str: string = ''): string {
+  stringifyToken(token, str = '') {
     if(!token) {
       return str;
     }

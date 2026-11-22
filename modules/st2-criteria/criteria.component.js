@@ -14,14 +14,13 @@
 
 import _ from 'lodash';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 import AutoFormSelect from '@stackstorm/module-auto-form/modules/select';
 import AutoFormInput from '@stackstorm/module-auto-form/modules/input';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const types = {
   'regex': 'Regular expression match',
@@ -62,18 +61,9 @@ const searchConditions = {
 };
 
 export default class Criteria extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    spec: PropTypes.object,
-    data: PropTypes.object,
-    disabled: PropTypes.bool.isRequired,
-    onChange: PropTypes.func.isRequired,
-    flat: PropTypes.bool,
-  }
-
   static defaultProps = {
     disabled: false,
-  }
+  };
 
   handleChangeSearchCondition(key, condition) {
     const { data, onChange } = this.props;

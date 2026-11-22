@@ -13,20 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
 import { Graph } from './astar';
 import { ORBIT_DISTANCE } from './const';
 
-export type BoundingBox = {|
-  left: number,
-  right: number,
-  top: number,
-  bottom: number,
-  midpointX: number,
-  midpointY: number,
-|};
-
-export function makeRoutingGraph(boundingBoxes: Array<BoundingBox>): Graph {
+export function makeRoutingGraph(boundingBoxes) {
   if (boundingBoxes.length < 1) {
     return new Graph([], {});
   }

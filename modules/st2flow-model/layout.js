@@ -13,11 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { ModelInterface } from './interfaces';
-
-export function layout(model: ModelInterface) {
+export function layout(model) {
   model.tasks.forEach(task => {
     const { name } = task;
     model.updateTask({ name }, { coords: { x: -1, y: -1 }});

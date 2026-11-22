@@ -15,24 +15,18 @@
 
 import _ from 'lodash';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 
 import Link from '@stackstorm/module-router/link.component';
 
-import componentStyle from './style.css';
+import componentStyle from './style.module.css';
 const APPLICATION_INACTIVITY_TIME = 7200; // 2 hr time here it is in seconds
 
 class Icon extends React.Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   render() {
     const { style, name } = this.props;
@@ -44,38 +38,22 @@ class Icon extends React.Component {
 }
 
 export default class Menu extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    location: PropTypes.shape({
-      pathname: PropTypes.string.isRequired,
-    }).isRequired,
-    routes: PropTypes.arrayOf(PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      href: PropTypes.string,
-      url: PropTypes.string,
-      target: PropTypes.string,
-      icon: PropTypes.string,
-      position: PropTypes.number,
-    })).isRequired,
-    style: PropTypes.object,
-  }
-
   static defaultProps = {
     style: componentStyle,
-  }
+  };
 
   componentDidMount () {
     this.idleLogout();
     window.addEventListener('storage', this.storageChange());
 
   }
- 
+
   componentWillUnmount() {
     window.removeEventListener('storage',this.storageChange());
   }
 
-  docsLink = 'https://docs.stackstorm.com/'
-  supportLink = 'https://github.com/StackStorm/st2/discussions'
+  docsLink = 'https://docs.stackstorm.com/';
+  supportLink = 'https://github.com/StackStorm/st2/discussions';
 
   idleLogout() {
     let t;
@@ -108,7 +86,7 @@ export default class Menu extends React.Component {
       }
     });
   }
-  
+
   handleDisconnect() {
     api.disconnect();
     window.location.reload();

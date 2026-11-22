@@ -13,33 +13,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import  {
-  CanvasPoint,
-  TaskInterface,
-  TaskRefInterface,
-  TransitionInterface,
-} from '@stackstorm/st2flow-model/interfaces';
-import  { NotificationInterface } from '@stackstorm/st2flow-notifications';
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import fp from 'lodash/fp';
 import { uniqueId, uniq } from 'lodash';
 import isEqual from 'lodash/isEqual';
 
 import Notifications from '@stackstorm/st2flow-notifications';
-import { HotKeys } from 'react-hotkeys';
 
-import  { BoundingBox } from './routing-graph';
+import HotKeys from './hotkeys';
 import Task from './task';
 import TransitionGroup from './transition';
 import Vector from './vector';
 import CollapseButton from './collapse-button';
-import { Graph } from './astar';
 import { ORBIT_DISTANCE } from './const';
 import { Toolbar, ToolbarButton } from './toolbar';
 import makeRoutingGraph from './routing-graph';
@@ -49,15 +36,7 @@ import { origin } from './const';
 
 import store from '../../apps/st2-workflows/store';
 
-import style from './style.css';
-type DOMMatrix = {
-  m11: number,
-  m22: number
-};
-
-type Wheel = WheelEvent & {
-  wheelDelta: number
-}
+import style from './style.module.css';
 
 // Order tasks before placement based on "weight" (bucket size)
 //  and "order" (longest non-looping transition path to task)
@@ -90,9 +69,9 @@ function weightedOrderedTaskSort(a, b) {
 // This helps layout because it ensures that connected tasks can be drawn
 // near each other.
 function constructTaskBuckets(
-  tasks: Array<TaskInterface>,
-  transitionsByTaskBidi: {[string]: Array<string>}
-): Array<Array<string>> {
+  tasks,
+  transitionsByTaskBidi
+) {
   // start by creating buckets of connected tasks.
   const taskBuckets = tasks.map(task => [ task.name ]);
   let foundChange = true;
@@ -131,15 +110,11 @@ function constructTaskBuckets(
 //   a->b, a should be placed before b so b can be placed south of a.  also size the buckets for
 //   each task so the larget bucket gets placed first.
 function constructPathOrdering(
-  tasks: Array<TaskInterface>,
-  taskBuckets: Array<Array<string>>,
-  transitionsByTask: { [string]: Array<string> }
-): {
-  taskInDegree: {[string]: number},
-  taskBucketSize: {[string]: number},
-  taskBucketPriority: {[string]: number},
-} {
-  const taskBucketSize: {[string]: number} = tasks.reduce((tbs, task: TaskInterface) => {
+  tasks,
+  taskBuckets,
+  transitionsByTask
+) {
+  const taskBucketSize = tasks.reduce((tbs, task) => {
     tbs[task.name] = 0;
     return tbs;
   }, {});
@@ -194,53 +169,11 @@ function constructPathOrdering(
   };
 }
 
-@connect(
-  ({ flow: { tasks, transitions, notifications, nextTask, panels, navigation }}) => ({ tasks, transitions, notifications, nextTask, isCollapsed: panels, navigation }),
-  (dispatch) => ({
-    issueModelCommand: (command, ...args) => {
-      dispatch({
-        type: 'MODEL_ISSUE_COMMAND',
-        command,
-        args,
-      });
-    },
-    toggleCollapse: name => dispatch({
-      type: 'PANEL_TOGGLE_COLLAPSE',
-      name,
-    }),
-    navigate: (navigation) => dispatch({
-      type: 'CHANGE_NAVIGATION',
-      navigation,
-    }),
-  })
-)
-
-export default class Canvas extends Component {
- 
-  static propTypes = {
-    children: PropTypes.node,
-    className: PropTypes.string,
-    navigation: PropTypes.object,
-    navigate: PropTypes.func,
-    tasks: PropTypes.array,
-    transitions: PropTypes.array,
-    notifications: PropTypes.array,
-    issueModelCommand: PropTypes.func,
-    nextTask: PropTypes.string,
-    isCollapsed: PropTypes.object,
-    toggleCollapse: PropTypes.func,
-    dirtyflag: PropTypes.bool,
-    fetchActionscalled: PropTypes.func,
-    saveData: PropTypes.func,
-    undo: PropTypes.func,
-    redo: PropTypes.func,
-    save: PropTypes.func,
-  }
-
+class Canvas extends Component {
   state = {
     scale: 0,
     copiedTask: null,
-  }
+  };
 
   componentDidMount() {
     const el = this.canvasRef.current;
@@ -282,10 +215,10 @@ export default class Canvas extends Component {
     el.removeEventListener('drop', this.handleDrop);
   }
 
-  size: CanvasPoint
-  drag: boolean
-  startx: number
-  starty: number
+  size;
+  drag;
+  startx;
+  starty;
 
   handleUpdate = () => {
     const canvasEl = this.canvasRef.current;
@@ -299,7 +232,7 @@ export default class Canvas extends Component {
     let tasks = this.props.tasks.slice(0);
     const { width, height } = canvasEl.getBoundingClientRect();
     const scale = Math.E ** this.state.scale;
-    
+
     this.size = tasks.reduce((acc, item) => {
       const coords = new Vector(item.coords);
       const size = new Vector(item.size);
@@ -389,13 +322,15 @@ export default class Canvas extends Component {
           sampler.prefillPoint(x, y, transitionsTo);
         }
       });
-      // finally, place the unplaced tasks.  using handleTaskMove will also ensure
-      //   that the placement gets set on the model and the YAML.
+      // finally, place the unplaced tasks, which sets the placement on the model and the YAML.
+      //   It isn't the user's edit: opening a workflow saved without positions must not mark it
+      //   changed (or autosave it, or add an undo step).
       needsCoords.forEach(({task, transitionsTo}) => {
-        this.handleTaskMove(task, sampler.getNext(task.name, transitionsTo));
+        const { x, y } = sampler.getNext(task.name, transitionsTo);
+        this.props.placeTask(task, { x, y });
       });
     }
-  }
+  };
 
   handleAutoSaveUpdates(prevProps) {
     const {saveData, transitions, tasks} = this.props;
@@ -412,7 +347,7 @@ export default class Canvas extends Component {
     }
   }
 
-  handleMouseWheel = (e: Wheel): ?false => {
+  handleMouseWheel = (e) => {
     // considerations on scale factor (BM, 2019-02-07)
     // on Chrome Mac and Safari Mac:
     // For Mac trackpads with continuous scroll, wheelDelta is reported in multiples of 3,
@@ -458,7 +393,7 @@ export default class Canvas extends Component {
       e.preventDefault();
       e.stopPropagation();
 
-      const { scale }: { scale: number } = this.state;
+      const { scale } = this.state;
       const delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.deltaY));
 
       // Zoom around the mouse pointer, by finding it's position normalized to the
@@ -477,7 +412,7 @@ export default class Canvas extends Component {
           }
           canvasParentEl = canvasParentEl.parentNode;
         } while (canvasParentEl && canvasParentEl !== document);
-        const surfaceScaleBefore: DOMMatrix = new window.DOMMatrix(getComputedStyle(surfaceEl).transform);
+        const surfaceScaleBefore = new window.DOMMatrix(getComputedStyle(surfaceEl).transform);
         const mousePosCanvasX = (e.clientX - canvasOffsetLeft) / canvasEl.clientWidth;
         const mousePosCanvasY = (e.clientY - canvasOffsetTop) / canvasEl.clientHeight;
         const mousePosSurfaceX = (e.clientX - canvasOffsetLeft + canvasEl.scrollLeft) /
@@ -488,7 +423,7 @@ export default class Canvas extends Component {
           scale: scale + delta * (e.wheelDelta && Math.abs(e.wheelDelta) < 120 ? SCALE_FACTOR_MAC_TRACKPAD: SCALE_FACTOR_DEFAULT),
         });
 
-        const surfaceScaleAfter: DOMMatrix = new window.DOMMatrix(getComputedStyle(surfaceEl).transform);
+        const surfaceScaleAfter = new window.DOMMatrix(getComputedStyle(surfaceEl).transform);
         canvasEl.scrollLeft = surfaceEl.clientWidth * surfaceScaleAfter.m11 * mousePosSurfaceX -
                                 canvasEl.clientWidth * mousePosCanvasX;
         canvasEl.scrollTop = surfaceEl.clientHeight * surfaceScaleAfter.m22 * mousePosSurfaceY -
@@ -502,9 +437,9 @@ export default class Canvas extends Component {
     else {
       return undefined;
     }
-  }
+  };
 
-  handleMouseDown = (e: MouseEvent) => {
+  handleMouseDown = (e) => {
     if (e.target !== this.surfaceRef.current) {
       return true;
     }
@@ -522,11 +457,11 @@ export default class Canvas extends Component {
 
     this.startx = e.clientX + el.scrollLeft;
     this.starty = e.clientY + el.scrollTop;
-    
-    return false;
-  }
 
-  handleMouseUp = (e: MouseEvent) => {
+    return false;
+  };
+
+  handleMouseUp = (e) => {
     if (!this.drag) {
       return true;
     }
@@ -537,9 +472,9 @@ export default class Canvas extends Component {
     this.drag = false;
 
     return false;
-  }
+  };
 
-  handleMouseMove = (e: MouseEvent) => {
+  handleMouseMove = (e) => {
     if (!this.drag) {
       return true;
     }
@@ -557,9 +492,9 @@ export default class Canvas extends Component {
     el.scrollTop += (this.starty - (e.clientY + el.scrollTop));
 
     return false;
-  }
+  };
 
-  handleDragOver = (e: DragEvent) => {
+  handleDragOver = (e) => {
     if (e.target !== this.surfaceRef.current) {
       return true;
     }
@@ -573,9 +508,9 @@ export default class Canvas extends Component {
     }
 
     return false;
-  }
+  };
 
-  handleDrop = (e: DragEvent) => {
+  handleDrop = (e) => {
     if (e.stopPropagation) {
       e.stopPropagation();
     }
@@ -594,72 +529,61 @@ export default class Canvas extends Component {
     });
 
     return false;
-  }
+  };
 
-  handleTaskMove = async (task: TaskRefInterface, points: CanvasPoint) => {
+  handleTaskMove = async (task, points) => {
     const x = points.x;
     const y = points.y;
     const coords = {x, y};
     this.props.issueModelCommand('updateTask', task, { coords });
 
     const { autosaveEnabled } = store.getState();
-    
+
     if (autosaveEnabled && this.props.dirtyflag) {
       this.props.saveData();
       await this.props.fetchActionscalled();
     }
-   
-  }
 
-  handleTaskSelect = (task: TaskRefInterface) => {
+  };
+
+  handleTaskSelect = (task) => {
     this.props.navigate({ task: task.name, toTasks: undefined, type: 'execution', section: 'input' });
-  }
+  };
 
-  handleTransitionSelect = (e: MouseEvent, transition: TransitionInterface) => {
+  handleTransitionSelect = (e, transition) => {
     e.stopPropagation();
     this.props.navigate({ task: transition.from.name, toTasks: transition.to.map(t => t.name), type: 'execution', section: 'transitions' });
-  }
+  };
 
-  handleCanvasClick = (e: MouseEvent) => {
+  handleCanvasClick = (e) => {
     e.stopPropagation();
     this.props.navigate({ task: undefined, toTasks: undefined, section: undefined, type: 'metadata' });
-  }
+  };
 
-  handleTaskEdit = (task: TaskRefInterface) => {
-    this.props.navigate({ toTasks: undefined, task: task.name });
-  }
-
-  handleTaskDelete = (task: TaskRefInterface) => {
+  handleTaskDelete = (task) => {
     this.props.issueModelCommand('deleteTask', task);
-  }
+  };
 
-  handleTaskConnect = (to: TaskRefInterface, from: TaskRefInterface) => {
+  handleTaskConnect = (to, from) => {
     this.props.issueModelCommand('addTransition', { from, to: [ to ] });
-  }
+  };
 
-  handleTransitionDelete = (transition: TransitionInterface) => {
+  handleTransitionDelete = (transition) => {
     this.props.issueModelCommand('deleteTransition', transition);
-  }
+  };
 
-  get notifications() : Array<NotificationInterface> {
-    return this.props.notifications;
-  }
-  get errors() : Array<NotificationInterface> {
-    return this.props.notifications.filter(n => n.type === 'error');
-  }
-
-  style = style
+  style = style;
   canvasRef = React.createRef();
   surfaceRef = React.createRef();
   taskRefs = {};
 
-  get transitionRoutingGraph(): Graph {
+  get transitionRoutingGraph() {
     const { taskRefs } = this;
 
-    const boundingBoxes: Array<BoundingBox> = Object.keys(taskRefs).map((key: string): BoundingBox => {
+    const boundingBoxes = Object.keys(taskRefs).map((key) => {
 
       if(taskRefs[key].current) {
-        const task: TaskInterface = taskRefs[key].current.props.task;
+        const task = taskRefs[key].current.props.task;
 
         const coords = new Vector(task.coords).add(origin);
         const size = new Vector(task.size);
@@ -738,8 +662,6 @@ export default class Canvas extends Component {
     return (
       <HotKeys
         style={{height: '100%'}}
-        focused={true}
-        attach={document.body}
         keyMap={{
           copy: [ 'ctrl+c', 'command+c' ],
           cut: [ 'ctrl+x', 'command+x' ],
@@ -812,9 +734,9 @@ export default class Canvas extends Component {
         >
           { children }
           <Toolbar position="right">
-            <ToolbarButton key="zoomIn" icon="icon-zoom_in" title="Zoom in" onClick={() => this.setState({ scale: this.state.scale + .1 })} />
+            <ToolbarButton key="zoomIn" icon="icon-zoom_in" title="Zoom in" onClick={() => this.setState(({ scale }) => ({ scale: scale + .1 }))} />
             <ToolbarButton key="zoomReset" icon="icon-zoom_reset" title="Reset zoom" onClick={() => this.setState({ scale: 0 })} />
-            <ToolbarButton key="zoomOut" icon="icon-zoom_out" title="Zoom out" onClick={() => this.setState({ scale: this.state.scale - .1 })} />
+            <ToolbarButton key="zoomOut" icon="icon-zoom_out" title="Zoom out" onClick={() => this.setState(({ scale }) => ({ scale: scale - .1 }))} />
           </Toolbar>
           <CollapseButton position="left" state={isCollapsed.palette} onClick={() => toggleCollapse('palette')} />
           <CollapseButton position="right" state={isCollapsed.details} onClick={() => toggleCollapse('details')} />
@@ -851,8 +773,8 @@ export default class Canvas extends Component {
                       ;
 
                     const fromPoint = [ transition.from ]
-                      .map((task: TaskRefInterface): any => tasks.find(({ name }) => name === task.name))
-                      .map((task: TaskInterface) => new Vector(task.size).multiply(new Vector(.5, 1)).add(new Vector(task.coords)))
+                      .map((task) => tasks.find(({ name }) => name === task.name))
+                      .map((task) => new Vector(task.size).multiply(new Vector(.5, 1)).add(new Vector(task.coords)))
                       ;
 
                     const point = fromPoint.concat(toPoint)
@@ -908,3 +830,32 @@ export default class Canvas extends Component {
     );
   }
 }
+
+export default connect(
+  ({ flow: { tasks, transitions, notifications, nextTask, panels, navigation }}) => ({ tasks, transitions, notifications, nextTask, isCollapsed: panels, navigation }),
+  (dispatch) => ({
+    issueModelCommand: (command, ...args) => {
+      dispatch({
+        type: 'MODEL_ISSUE_COMMAND',
+        command,
+        args,
+      });
+    },
+    placeTask: (task, coords) => {
+      dispatch({
+        type: 'MODEL_ISSUE_COMMAND',
+        command: 'updateTask',
+        args: [ task, { coords }],
+        automatic: true,
+      });
+    },
+    toggleCollapse: name => dispatch({
+      type: 'PANEL_TOGGLE_COLLAPSE',
+      name,
+    }),
+    navigate: (navigation) => dispatch({
+      type: 'CHANGE_NAVIGATION',
+      navigation,
+    }),
+  })
+)(Canvas);

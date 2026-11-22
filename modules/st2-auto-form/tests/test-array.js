@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import chai, { expect } from 'chai';
+import { describe, it } from '@rstest/core';
+import { expect, use as chaiUse } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 import { TestComponent } from './utils';
 import ArrayField from '../fields/array';
@@ -91,7 +91,7 @@ describe('AutoForm ArrayField', () => {
     };
 
     const c = new TestComponent(<ArrayField {...props} />);
-    expect(c.field().props.placeholder).to.be.equal('1, 2, 3');
+    expect(c.field().placeholder).to.be.equal('1, 2, 3');
     
   });
 

@@ -13,29 +13,19 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import style from './style.css';
+import style from './style.module.css';
 
 export default class Filter extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    label: PropTypes.string.isRequired,
-    multiple: PropTypes.bool.isRequired,
-    items: PropTypes.arrayOf(PropTypes.string).isRequired,
-    activeItems: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
-
   static defaultProps = {
     multiple: false,
-  }
+  };
 
   state = {
     visible: false,
     search: '',
-  }
+  };
 
   handleToggleItem(item) {
     const { multiple, activeItems, onChange } = this.props;
@@ -55,9 +45,9 @@ export default class Filter extends React.Component {
   }
 
   toggleVisible() {
-    this.setState({
-      visible: !this.state.visible,
-    });
+    this.setState(({ visible }) => ({
+      visible: !visible,
+    }));
   }
 
   get visibleItems() {
@@ -88,7 +78,7 @@ export default class Filter extends React.Component {
           { label }
           { activeItems.length > 0 ? (
             <span className={style.labelActiveItems}>
-            : { activeItems.join(', ') }
+              : { activeItems.join(', ') }
             </span>
           ) : null }
         </div>

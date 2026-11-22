@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/module-store",
   "version": "2.4.3",
-  "description": "",
+  "private": true,
   "main": "store.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,18 +12,8 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "@stackstorm/module-router": "^2.4.3",
-    "react": "16.8.6",
-    "redux": "4.0.1",
-    "react-dom": "16.8.6"
+    "@stackstorm/module-router": "*",
+    "redux": "5.0.1"
   }
 }

@@ -13,18 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { TokenRawValue, TokenKeyValue, TokenMapping, TokenCollection, TokenReference, ParentToken, ValueToken, AnyToken, JPath, JpathKey, Range } from './types';
-
 import factory from './token-factory';
-import TokenSet from './token-set';
 import { get, splitKey } from './util';
 
 const REG_COMMENT = /^\s*#/;
 
 const crawler = {
-  getValueByKey(tokenSet: TokenSet, key: JpathKey): any {
+  getValueByKey(tokenSet, key) {
     if(tokenSet) {
       return get(tokenSet.toObject(), key);
     }
@@ -37,16 +32,16 @@ const crawler = {
    *   - creates or replaces mappings values
    *   - pushes or splices collection values
    */
-  set(tokenSet: TokenSet, key: JpathKey, value: any) {
-    const keyArr: JPath = splitKey(key);
-    const token: ?ValueToken = getTokenByKey(tokenSet.tree, keyArr);
+  set(tokenSet, key, value) {
+    const keyArr = splitKey(key);
+    const token = getTokenByKey(tokenSet.tree, keyArr);
 
     if(token) {
       this.replaceTokenValue(tokenSet, keyArr, value);
     }
     else {
-      const parentPath: JPath = keyArr.slice(0, -1);
-      const parentValue: ?ValueToken = getTokenValueByKey(tokenSet.tree, parentPath);
+      const parentPath = keyArr.slice(0, -1);
+      const parentValue = getTokenValueByKey(tokenSet.tree, parentPath);
 
       if(!parentValue) {
         return;
@@ -76,16 +71,16 @@ const crawler = {
    *   - deletes keys from mappings
    *   - splices items out of collections
    */
-  delete(tokenSet: TokenSet, key: JpathKey) {
-    const keyArr: JPath = splitKey(key);
-    const token: ?ValueToken = getTokenByKey(tokenSet.tree, keyArr);
+  delete(tokenSet, key) {
+    const keyArr = splitKey(key);
+    const token = getTokenByKey(tokenSet.tree, keyArr);
 
     if(!token) {
       return;
     }
 
-    const parentPath: JPath = keyArr.slice(0, -1);
-    const parentToken: ParentToken = getTokenParent(tokenSet.tree, token);
+    const parentPath = keyArr.slice(0, -1);
+    const parentToken = getTokenParent(tokenSet.tree, token);
 
     switch(parentToken.kind) {
       case 1: {
@@ -113,7 +108,7 @@ const crawler = {
   /**
    * Moves a value from one key to another.
    */
-  moveTokenValue(tokenSet: TokenSet, fromKey: JpathKey, toKey: JpathKey) {
+  moveTokenValue(tokenSet, fromKey, toKey) {
     const sourceKey = getTokenByKey(tokenSet.tree, fromKey);
 
     if(!sourceKey) {
@@ -154,14 +149,14 @@ const crawler = {
    *   }
    * }
    */
-  replaceTokenValue(tokenSet: TokenSet, key: JpathKey, value: any) {
-    const keyToken: ?ValueToken = getTokenByKey(tokenSet.tree, key);
+  replaceTokenValue(tokenSet, key, value) {
+    const keyToken = getTokenByKey(tokenSet.tree, key);
 
     if(!keyToken) {
       throw new Error(`Could not find token for path: ${key.toString()}`);
     }
 
-    const parentToken: ParentToken = getTokenParent(tokenSet.tree, keyToken);
+    const parentToken = getTokenParent(tokenSet.tree, keyToken);
 
     // Make sure to copy the old prefix
     switch(parentToken.kind) {
@@ -223,22 +218,22 @@ const crawler = {
    *   }
    * }
    */
-  assignMappingItem(tokenSet: TokenSet, targetKey: JpathKey, val: any) {
-    const targKey: Array<string | number> = splitKey(targetKey);
+  assignMappingItem(tokenSet, targetKey, val) {
+    const targKey = splitKey(targetKey);
 
     if(!targKey.length) {
       throw new Error(`Cannot add a key to a blank target: ${targetKey.toString()}`);
     }
 
-    let token: TokenMapping;
-    let newKey: string | number;
+    let token;
+    let newKey;
 
     if(targKey.length === 1) {
       token = tokenSet.tree;
       newKey = targKey[0];
     }
     else {
-      const parentObjKey: Array<string | number> = targKey.slice(0, -1);
+      const parentObjKey = targKey.slice(0, -1);
       token = getMappingTokenByKey(tokenSet.tree, parentObjKey);
       newKey = targKey[targKey.length - 1];
     }
@@ -267,14 +262,14 @@ const crawler = {
    * }
    *
    */
-  renameMappingKey(tokenSet: TokenSet, targetKey: JpathKey, val: string) {
-    const targKey: Array<string | number> = splitKey(targetKey);
+  renameMappingKey(tokenSet, targetKey, val) {
+    const targKey = splitKey(targetKey);
 
     if(!targKey.length) {
       throw new Error(`Cannot rename a key on a blank target: ${targetKey.toString()}`);
     }
 
-    const token: ?TokenRawValue = getRawTokenByKey(tokenSet.tree, targKey);
+    const token = getRawTokenByKey(tokenSet.tree, targKey);
 
     if(!token) {
       throw new Error(`Could not find token: ${targetKey.toString()}`);
@@ -299,14 +294,14 @@ const crawler = {
    * crawler.deleteMappingItem(tokenSet, 'version');
    * crawler.deleteMappingItem(tokenSet, 'tasks.task1');
    */
-  deleteMappingItem(tokenSet: TokenSet, key: JpathKey) {
-    const token: ?ValueToken = getTokenByKey(tokenSet.tree, key);
+  deleteMappingItem(tokenSet, key) {
+    const token = getTokenByKey(tokenSet.tree, key);
 
     if (!token) {
       throw new Error(`Could not find token for path: ${key.toString()}`);
     }
 
-    const parentKvToken: TokenKeyValue = getParentKVToken(tokenSet, token);
+    const parentKvToken = getParentKVToken(tokenSet, token);
     const parentMappingToken = getParentMappingToken(tokenSet, parentKvToken);
 
     parentMappingToken.mappings.splice(+parentKvToken.jpath.slice(-1)[0], 1);
@@ -334,8 +329,8 @@ const crawler = {
    *     - item 3
    * }
    */
-  spliceCollection(tokenSet: TokenSet, targetKey: JpathKey, start: number, deleteCount: number, ...items: Array<ValueToken>) {
-    const token: TokenCollection = getCollectionTokenByKey(tokenSet.tree, targetKey);
+  spliceCollection(tokenSet, targetKey, start, deleteCount, ...items) {
+    const token = getCollectionTokenByKey(tokenSet.tree, targetKey);
     const tokens = items.map(item => factory.createToken(item, { escape: true }));
 
     token.items.splice(start, deleteCount, ...tokens);
@@ -358,8 +353,8 @@ const crawler = {
    * [123, 456]
    * foo bar
    */
-  getCommentsForKey(tokenSet: TokenSet, key: JpathKey): string {
-    const token: ?TokenRawValue = getRawTokenByKey(tokenSet.tree, key);
+  getCommentsForKey(tokenSet, key) {
+    const token = getRawTokenByKey(tokenSet.tree, key);
 
     if(!token) {
       throw new Error(`Could not find token for path: ${key.toString()}`);
@@ -371,8 +366,8 @@ const crawler = {
   /**
    * Sets comment tokens for the given key
    */
-  setCommentForKey(tokenSet: TokenSet, key: JpathKey, comments: string) {
-    const token: ?TokenRawValue = getRawTokenByKey(tokenSet.tree, key);
+  setCommentForKey(tokenSet, key, comments) {
+    const token = getRawTokenByKey(tokenSet.tree, key);
 
     if(!token) {
       throw new Error(`Could not find token for path: ${key.toString()}`);
@@ -388,8 +383,8 @@ const crawler = {
   /**
    * Gets the source range for a give key and its value
    */
-  getRangeForKey(tokenSet: TokenSet, key: JpathKey): Range {
-    const token: ?ValueToken = getTokenByKey(tokenSet.tree, key);
+  getRangeForKey(tokenSet, key) {
+    const token = getTokenByKey(tokenSet.tree, key);
 
     if(!token) {
       throw new Error(`Could not find token for path: ${key.toString()}`);
@@ -403,7 +398,7 @@ const crawler = {
   /**
    * Recursively finds the first token of type 0 or 4
    */
-  findFirstValueToken(token: AnyToken): ?TokenRawValue | ?TokenReference {
+  findFirstValueToken(token) {
     if(token === null || typeof token === 'undefined') {
       return null;
     }
@@ -430,7 +425,7 @@ const crawler = {
   /**
    * Recursively finds the last token of type 0 or 4
    */
-  findLastValueToken(token: AnyToken): ?TokenRawValue | ?TokenReference {
+  findLastValueToken(token) {
     if(token === null || typeof token === 'undefined') {
       return null;
     }
@@ -458,9 +453,9 @@ const crawler = {
   /**
    * Collection items can be null (no token), so crawl until we find one.
    */
-  findFirstCollectionItem(items: Array<ValueToken>, fromEnd: boolean = false): ?TokenRawValue | ?TokenReference {
+  findFirstCollectionItem(items, fromEnd = false) {
     let index = fromEnd ? items.length - 1 : 0;
-    let token: ?ValueToken;
+    let token;
 
     while(!token && ((fromEnd && index >= 0) || (!fromEnd && index < items.length))) {
       token = items[fromEnd ? index-- : index++];  // eslint-disable-line no-plusplus
@@ -473,15 +468,15 @@ const crawler = {
     return token;
   },
 
-  getTokenComments(token: AnyToken): string {
+  getTokenComments(token) {
     let comments = '';
-    const firstToken: TokenRawValue = this.findFirstValueToken(token);
+    const firstToken = this.findFirstValueToken(token);
 
     if(firstToken) {
       comments = firstToken.prefix.filter(
         t => REG_COMMENT.test(t.rawValue)
       ).reduce((str, token, i) => {
-        return str += `${i === 0 ? '' : '\n'}${token.rawValue.replace(REG_COMMENT, '').trim()}`;
+        return `${str}${i === 0 ? '' : '\n'}${token.rawValue.replace(REG_COMMENT, '').trim()}`;
       }, '');
     }
 
@@ -492,7 +487,7 @@ const crawler = {
    * YAML allows mapping keys to be constructed from a collection (array) of values.
    * The string version of the key is the result of Array.prototype.toString()
    */
-  buildArrayKey(token: TokenCollection): string {
+  buildArrayKey(token) {
     return token.items.reduce((keys, t) => {
       if(t.kind === 0) {
         keys.push(t.value);
@@ -520,12 +515,12 @@ const crawler = {
  * "task1" token within the given branch. This method is recursive, and generally
  * the starting branch should always be the root node: tokenSet.tree.
  */
-function getTokenByKey(branch: ?ValueToken, key: JpathKey): ?ValueToken {
+function getTokenByKey(branch, key) {
   if (!branch) {
     return undefined;
   }
 
-  const keyArr: Array<string | number> = splitKey(key);
+  const keyArr = splitKey(key);
 
   if(!keyArr.length) {
     return branch;
@@ -545,7 +540,7 @@ function getTokenByKey(branch: ?ValueToken, key: JpathKey): ?ValueToken {
 
   switch(branch.kind) {
     case 2: {
-      const kvToken: ?TokenKeyValue = branch.mappings.find(kvt =>
+      const kvToken = branch.mappings.find(kvt =>
         (kvt.key.kind === 0 ? kvt.key.value : crawler.buildArrayKey(kvt.key)) === segment
       );
 
@@ -564,8 +559,8 @@ function getTokenByKey(branch: ?ValueToken, key: JpathKey): ?ValueToken {
   }
 }
 
-function getRawTokenByKey(branch: ValueToken, key: JpathKey): ?TokenRawValue {
-  const token: ?ValueToken = getTokenByKey(branch, key);
+function getRawTokenByKey(branch, key) {
+  const token = getTokenByKey(branch, key);
 
   if(!token || token.kind !== 0) {
     return null;
@@ -578,21 +573,21 @@ function getRawTokenByKey(branch: ValueToken, key: JpathKey): ?TokenRawValue {
  * Given a key such as "tasks.foo", returns the value as a token and
  * verifies it's the expected kind.
  */
-function getTokenValueByKey(rootTree: TokenMapping, key: JpathKey): ?ValueToken {
-  const token: ?ValueToken = getTokenByKey(rootTree, key);
+function getTokenValueByKey(rootTree, key) {
+  const token = getTokenByKey(rootTree, key);
 
   if (!token) {
     throw new Error(`Could not find token for path: ${key.toString()}`);
   }
 
-  const parentToken: ParentToken = getTokenParent(rootTree, token);
-  const valueToken: ?ValueToken = parentToken.kind === 1 ? parentToken.value : token;
+  const parentToken = getTokenParent(rootTree, token);
+  const valueToken = parentToken.kind === 1 ? parentToken.value : token;
 
   return valueToken;
 }
 
-function getMappingTokenByKey(rootTree: TokenMapping, key: JpathKey): TokenMapping {
-  const token: ?ValueToken = getTokenValueByKey(rootTree, key);
+function getMappingTokenByKey(rootTree, key) {
+  const token = getTokenValueByKey(rootTree, key);
 
   if (!token || token.kind !== 2) {
     throw new Error(`Could not find mapping token (kind: 2) for path: ${key.toString()}`);
@@ -601,8 +596,8 @@ function getMappingTokenByKey(rootTree: TokenMapping, key: JpathKey): TokenMappi
   return token;
 }
 
-function getCollectionTokenByKey(rootTree: TokenMapping, key: JpathKey): TokenCollection {
-  const token: ?ValueToken = getTokenValueByKey(rootTree, key);
+function getCollectionTokenByKey(rootTree, key) {
+  const token = getTokenValueByKey(rootTree, key);
 
   if (!token || token.kind !== 3) {
     throw new Error(`Could not find collection token (kind: 3) for path: ${key.toString()}`);
@@ -614,18 +609,18 @@ function getCollectionTokenByKey(rootTree: TokenMapping, key: JpathKey): TokenCo
 /**
  * Given a token, returns the parent token from the AST.
  */
-function getTokenParent(rootTree: TokenMapping, token: AnyToken): ParentToken {
-  const result: ParentToken | Array<ParentToken> = get(rootTree, token.jpath.slice(0, -1));
+function getTokenParent(rootTree, token) {
+  const result = get(rootTree, token.jpath.slice(0, -1));
 
-  if(Array.isArray(result) || !result.hasOwnProperty('kind')) {
+  if(Array.isArray(result) || !Object.hasOwn(result, 'kind')) {
     return get(rootTree, token.jpath.slice(0, -2));
   }
 
   return result;
 }
 
-function getParentKVToken(tokenSet: TokenSet, token): TokenKeyValue {
-  const kvToken: ParentToken = getTokenParent(tokenSet.tree, token);
+function getParentKVToken(tokenSet, token) {
+  const kvToken = getTokenParent(tokenSet.tree, token);
 
   if(kvToken.kind !== 1) {
     throw new Error('The key must point to a valid mapping token.');
@@ -634,8 +629,8 @@ function getParentKVToken(tokenSet: TokenSet, token): TokenKeyValue {
   return kvToken;
 }
 
-function getParentMappingToken(tokenSet: TokenSet, token: TokenKeyValue): TokenMapping {
-  const mToken: ParentToken = getTokenParent(tokenSet.tree, token);
+function getParentMappingToken(tokenSet, token) {
+  const mToken = getTokenParent(tokenSet.tree, token);
 
   if(mToken.kind !== 2) {
     throw new Error('The key must point to a valid mapping token.');
@@ -647,7 +642,7 @@ function getParentMappingToken(tokenSet: TokenSet, token: TokenKeyValue): TokenM
 /**
  * Sets the token value and rawValue, preserving quotes when necessary
  */
-function updateTokenValue(token: TokenRawValue, value: string) {
+function updateTokenValue(token, value) {
   let rawValue = value;
 
   if(token.singleQuoted) {

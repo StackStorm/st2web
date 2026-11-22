@@ -13,12 +13,11 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import reporters from './reporters';
 
-import style from './style.css';
+import style from './style.module.css';
 
 // If action execution result is larger than this value (in bytes) we won't try to render it in
 // the code highlighter widget, but display a link to the raw result output instead.
@@ -84,17 +83,10 @@ function getMaxExecutionResultSizeForRender() {
 }
 
 export default class ActionReporter extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    runner: PropTypes.string.isRequired,
-    execution: PropTypes.object.isRequired,
-    api: PropTypes.object.isRequired,
-  }
-
   static utils = {
     getMaxExecutionResultSizeForRender: getMaxExecutionResultSizeForRender,
     getBaseAPIUrl: getBaseAPIUrl,
-  }
+  };
 
   render() {
     const { className, runner, execution, api, ...props } = this.props;

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
@@ -43,27 +42,10 @@ import selectOnClick from '@stackstorm/module-select-on-click';
 import Time from '@stackstorm/module-time';
 import HistoryPopup from './history-popup.component';
 
-@connect((state) => {
-  const { execution } = state;
-  return { execution };
-})
-
-export default class HistoryDetails extends React.Component {
-  static propTypes = {
-    handleNavigate: PropTypes.func.isRequired,
-    handleRerun: PropTypes.func.isRequired,
-    handleCancel: PropTypes.func.isRequired,
-
-    id: PropTypes.string,
-    section: PropTypes.string,
-    execution: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
-    displayUTC: PropTypes.bool.isRequired,
-    handleToggleUTC: PropTypes.func,
-  }
-
+class HistoryDetails extends React.Component {
   static defaultProps = {
     displayUTC: false,
-  }
+  };
 
   componentDidMount() {
     const { id } = this.props;
@@ -291,6 +273,11 @@ export default class HistoryDetails extends React.Component {
     );
   }
 }
+
+export default connect((state) => {
+  const { execution } = state;
+  return { execution };
+})(HistoryDetails);
 
 function getExecutionTime(execution) {
   return Math.ceil(
