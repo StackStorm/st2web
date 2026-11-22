@@ -13,17 +13,11 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import style from './style.css';
+import style from './style.module.css';
 
 export class PopupTitle extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.node,
-  }
-
   render() {
     const { className, children, ...props } = this.props;
 
@@ -36,13 +30,6 @@ export class PopupTitle extends React.Component {
 }
 
 export class Popup extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    title: PropTypes.string,
-    onCancel: PropTypes.func.isRequired,
-    children: PropTypes.node,
-  }
-
   componentDidMount() {
     this._listener = (event) => {
       if (event.key === 'Escape') {

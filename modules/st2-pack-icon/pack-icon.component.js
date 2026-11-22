@@ -14,28 +14,20 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 import api from '@stackstorm/module-api';
 import notification from '@stackstorm/module-notification';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const icons = {};
 let iconPromise = null;
 
 export default class PackIcon extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    small: PropTypes.bool.isRequired,
-    naked: PropTypes.bool.isRequired,
-  }
-
   static defaultProps = {
     small: false,
     naked: false,
-  }
+  };
 
   componentDidMount() {
     if (Object.keys(icons).length > 0) {

@@ -13,9 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { TokenRawValue, TokenKeyValue, TokenMapping, TokenCollection, ValueToken, AnyToken } from './types';
 import { isPlainObject } from './util';
 
 const REG_NEWLINE = /\n/;
@@ -25,10 +22,6 @@ const baseToken = {
   endPosition: 0,
   jpath: [],
   range: [{ row: 0, column: 0 }, { row: 0, column: 0 }],
-};
-
-type TokenOptions = {
-  escape?: boolean,
 };
 
 /**
@@ -42,7 +35,7 @@ const factory = {
   /**
    * Given any type of YAML compatable data, creates an AST token.
    */
-  createToken(data: any, options: TokenOptions = {}): ValueToken {
+  createToken(data, options = {}) {
     if(Array.isArray(data)) {
       return this.createCollectionToken(data);
     }
@@ -69,8 +62,8 @@ const factory = {
    * The startPosition, endPosition, prefix, and jpath should be set
    * by the token-refinery.
    */
-  createRawValueToken(val: string, valObj: any, options: TokenOptions = {}): TokenRawValue {
-    const token: TokenRawValue = Object.assign({}, this.baseToken, {
+  createRawValueToken(val, valObj, options = {}) {
+    const token = Object.assign({}, this.baseToken, {
       kind: 0,
       value: val,
       rawValue: val,
@@ -99,7 +92,7 @@ const factory = {
    * Given a key and a value, creates a key/value token (kind: 1).
    * The value can be any type.
    */
-  createKeyValueToken(key: string, val: any): TokenKeyValue {
+  createKeyValueToken(key, val) {
     const token = Object.assign({}, this.baseToken, {
       kind: 1,
       key: this.createRawValueToken(key),
@@ -117,7 +110,7 @@ const factory = {
    * Given a plain JS object, creates a mapping token (kind: 2).
    * The values can be a mix of types.
    */
-  createMappingToken(data: Object): TokenMapping {
+  createMappingToken(data) {
     const mappings = Object.keys(data).reduce((arr, key) => {
       arr.push(this.createKeyValueToken(key, data[key]));
       return arr;
@@ -133,7 +126,7 @@ const factory = {
    * Given an array of values, creates a collection token (kind: 3).
    * The data can be a mix of types of values.
    */
-  createCollectionToken(data: Array<any>): TokenCollection {
+  createCollectionToken(data) {
     const items = data.map(item => this.createToken(item));
 
     return Object.assign({}, baseToken, {
@@ -145,7 +138,7 @@ const factory = {
   /**
    * Adds comments to a token
    */
-  addTokenComments(token: TokenRawValue | TokenCollection, comments: string): void {
+  addTokenComments(token, comments) {
     if(token.kind === 3 && token.items.length && token.items[0].kind === 0) {
       token = token.items[0];
     }
@@ -158,7 +151,7 @@ const factory = {
   /**
    * Adds range (row/column) information to a token
    */
-  addRangeInfo(token: AnyToken, yaml: string): void {
+  addRangeInfo(token, yaml) {
     const start = yaml.slice(0, token.startPosition).split(REG_NEWLINE);
     const covers = yaml.slice(token.startPosition, token.endPosition).split(REG_NEWLINE);
 

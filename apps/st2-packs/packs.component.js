@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Provider } from 'react-redux';
 import { Route } from '@stackstorm/module-router';
 
@@ -23,16 +22,6 @@ import Menu from '@stackstorm/module-menu';
 import PacksPanel from './packs-panel.component';
 
 export default class Packs extends React.Component {
-  static propTypes = {
-    routes: PropTypes.arrayOf(PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      href: PropTypes.string,
-      url: PropTypes.string,
-      target: PropTypes.string,
-      icon: PropTypes.string,
-    })).isRequired,
-  }
-
   render() {
     return (
       <Route

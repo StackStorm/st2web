@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/st2flow-model",
   "version": "1.0.0-pre.5",
-  "description": "",
+  "private": true,
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,24 +12,11 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "@stackstorm/st2flow-yaml": "1.0.0-pre.5",
-    "ajv": "^6.5.4",
-    "dagre": "0.8.4",
-    "deep-diff": "^1.0.2",
-    "eventemitter3": "^3.1.0"
-  },
-  "devDependencies": {
-    "babelify": "^10.0.0",
-    "chai-subset": "^1.6.0",
-    "js-yaml": "^3.12.0"
+    "@stackstorm/module-notification": "*",
+    "@stackstorm/st2flow-yaml": "*",
+    "ajv": "8.20.0",
+    "eventemitter3": "5.0.4",
+    "lodash": "4.18.1"
   }
 }

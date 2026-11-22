@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import {
@@ -24,20 +23,11 @@ import {
 } from '../wrappers';
 
 export default class ComboboxModule extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    spec: PropTypes.object,
-    data: PropTypes.string,
-    onChange: PropTypes.func,
-  }
-
   state = {
     value: null,
     error: null,
     selected: null,
-  }
+  };
 
   componentDidMount() {
     this._listener = (event) => {
@@ -134,7 +124,7 @@ export default class ComboboxModule extends React.Component {
     const suggestions = this.getSuggestions(spec, value);
 
     return (
-      <div className={cx('st2-auto-form-combobox', className)} ref={(ref) => this.ref = ref}>
+      <div className={cx('st2-auto-form-combobox', className)}>
         <Label spec={spec}>
           <Title name={name} spec={spec} />
 

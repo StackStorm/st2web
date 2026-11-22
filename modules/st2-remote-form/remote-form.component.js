@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import AutoForm from '@stackstorm/module-auto-form';
@@ -23,24 +22,9 @@ import AutoFormCombobox from '@stackstorm/module-auto-form/modules/combobox';
 import './style.css';
 
 export default class RemoteForm extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    disabled: PropTypes.bool.isRequired,
-    spec: PropTypes.shape({
-      enum: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string,
-        spec: PropTypes.object,
-      })).isRequired,
-    }).isRequired,
-    data: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-    flat: PropTypes.bool,
-  }
-
   static defaultProps = {
     disabled: false,
-  }
+  };
 
   onChangeValue(value) {
     const { spec: { name } } = this.props;

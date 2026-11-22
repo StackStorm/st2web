@@ -13,20 +13,13 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import TimeComponent from 'react-time';
+import moment from 'moment';
 
 export default class Time extends React.Component {
-  static propTypes = {
-    timestamp: PropTypes.string.isRequired,
-    format: PropTypes.string.isRequired,
-    utc: PropTypes.bool.isRequired,
-  }
-
   static defaultProps = {
     format: 'ddd, DD MMM YYYY HH:mm:ss',
     utc: false,
-  }
+  };
 
   render() {
     const { timestamp, format, utc, ...props } = this.props;
@@ -36,13 +29,15 @@ export default class Time extends React.Component {
       dateFormat += ' UTC';
     }
 
+    let value = moment(new Date(timestamp));
+    if (utc) {
+      value = value.utc();
+    }
+
     return (
-      <TimeComponent
-        {...props}
-        value={new Date(timestamp)}
-        format={dateFormat}
-        utc={utc}
-      />
+      <time {...props} dateTime={value.format('YYYY-MM-DDTHH:mm:ssZ')}>
+        { value.format(dateFormat) }
+      </time>
     );
   }
 }

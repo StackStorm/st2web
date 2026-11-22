@@ -13,13 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
 import _ from 'lodash';
 
-import type { ModelInterface, TaskInterface, TaskRefInterface, TransitionInterface } from './interfaces';
-import type { TokenMeta, JPath, JpathKey } from '@stackstorm/st2flow-yaml';
-
-import diff from 'deep-diff';
 import { crawler } from '@stackstorm/st2flow-yaml';
 import BaseModel from './base-model';
 
@@ -54,7 +49,7 @@ const REGEX_INLINE_PARAM_VARIATIONS = [
 
 const REGEX_INLINE_PARAMS = new RegExp(`([\\w]+)=(${REGEX_INLINE_PARAM_VARIATIONS.join('|')})(.*)`);
 
-function matchAll(str: string, regexp: RegExp, accumulator: Object = {}) {
+function matchAll(str, regexp, accumulator = {}) {
   const match = str.match(regexp);
 
   if (!match) {
@@ -67,48 +62,33 @@ function matchAll(str: string, regexp: RegExp, accumulator: Object = {}) {
   return matchAll(rest, regexp, accumulator);
 }
 
-// The following types are specific to Orquesta
-type NextItem = {
-  do?: string | Array<string>,
-  when?: string,
-  publish?: string | Array<Object>,
-};
-
-type NextItemInfo = {
-  nextItem: NextItem,
-  nextIndex: number,
-  jpath: JPath,
-  error?: Error,
-};
-
-type RawTask = {
-  __meta: TokenMeta,
-  action: string,
-  input?: Object,
-  delay?: string,
-  next?: Array<NextItem>,
-  with?: string | Object,
-  join?: string,
-  retry?:string | Object
-};
-
-type RawTasks = {
-  __meta: TokenMeta,
-  [string]: RawTask,
-};
-
 const REG_COORDS = /\[\s*(-?\d+)\s*,\s*(-?\d+)\s*\]/;
 
-class OrquestaModel extends BaseModel implements ModelInterface {
+class OrquestaModel extends BaseModel {
   static runner_types = [
     'orquesta',
     'orchestra',
-  ]
+  ];
 
   static minimum = 'version: 1.0\ntasks: {}\n';
 
-  constructor(yaml: ?string) {
+  constructor(yaml) {
     super(schema, yaml);
+  }
+
+  // Orquesta accepts `with: <expression>` as shorthand for `with: { items: <expression> }` and
+  // expands it before validating (orquesta/specs/native/v1/models.py, WorkflowSpec); the
+  // generated schema only describes the long form.
+  toValidatable(obj) {
+    if (!obj || !obj.tasks || typeof obj.tasks !== 'object') {
+      return obj;
+    }
+
+    const tasks = _.mapValues(obj.tasks, task => (
+      task && typeof task.with === 'string' ? { ...task, with: { items: task.with } } : task
+    ));
+
+    return { ...obj, tasks };
   }
 
   get input() {
@@ -122,7 +102,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
   }
 
   get tasks() {
-    const tasks: RawTasks = crawler.getValueByKey(this.tokenSet, 'tasks');
+    const tasks = crawler.getValueByKey(this.tokenSet, 'tasks');
 
     if(!tasks || !tasks.__meta.keys) {
       return [];
@@ -173,7 +153,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
   }
 
   get transitions() {
-    const tasks: RawTasks = crawler.getValueByKey(this.tokenSet, 'tasks');
+    const tasks = crawler.getValueByKey(this.tokenSet, 'tasks');
 
     if(!tasks) {
       return [];
@@ -184,9 +164,9 @@ class OrquestaModel extends BaseModel implements ModelInterface {
         return arr;
       }
 
-      const task: RawTask = tasks[name];
-      const nextItems: Array<NextItem> = task.next || [];
-      const transitions: Array<TransitionInterface> = nextItems
+      const task = tasks[name];
+      const nextItems = task.next || [];
+      const transitions = nextItems
         .reduce(reduceTransitions, [])
         // remove transitions to tasks which don't exist
         // .filter(t => tasks.hasOwnProperty(t.to.name))
@@ -211,14 +191,14 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     return transitions;
   }
 
-  setInputs(inputs: Array<string>, deletions: Array<string>) {
+  setInputs(inputs, deletions) {
     const { oldTree } = this.startMutation();
     let oldVal = this.get('input') || [];
     const keys = oldVal.map(val => typeof val === 'string' ? val : Object.keys(val)[0]);
     // remove any deletions from params.
     deletions.forEach(del => {
       const matchingOldVals = oldVal.map((ov, idx) => {
-        if(ov === del || typeof ov === 'object' && ov.hasOwnProperty(del)) {
+        if(ov === del || typeof ov === 'object' && Object.hasOwn(ov, del)) {
           return idx;
         }
         else {
@@ -242,7 +222,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  setVars(vars: Array<Object>) {
+  setVars(vars) {
     const { oldTree } = this.startMutation();
 
     if (vars && vars.length) {
@@ -254,7 +234,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  addTask(task: TaskInterface) {
+  addTask(task) {
     const { oldTree } = this.startMutation();
     const { name, coords, ...data } = task;
     const parentKey = [ 'tasks' ];
@@ -273,7 +253,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  updateTransitions(ref: TaskRefInterface, name: string, updateType: string='rename') {
+  updateTransitions(ref, name, updateType='rename') {
     const tasks = crawler.getValueByKey(this.tokenSet, [ 'tasks' ]);
     Object.keys(tasks).map((taskKey) => {
       const nextElements = _.get(tasks[taskKey], 'next', []);
@@ -329,7 +309,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     });
   }
 
-  updateTask(ref: TaskRefInterface, newData: $Shape<TaskInterface>) {
+  updateTask(ref, newData) {
     const { oldTree } = this.startMutation();
     const { name, coords, ...data } = newData;
     const key = [ 'tasks', ref.name ];
@@ -357,7 +337,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  setTaskProperty(ref: TaskRefInterface, path: JpathKey , value: any) {
+  setTaskProperty(ref, path , value) {
     const { oldTree } = this.startMutation();
 
     crawler.set(this.tokenSet, [ 'tasks', ref.name ].concat(path), value);
@@ -365,14 +345,14 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  deleteTaskProperty(ref: TaskRefInterface, path: JpathKey) {
+  deleteTaskProperty(ref, path) {
     const { oldTree } = this.startMutation();
     crawler.deleteMappingItem(this.tokenSet, [ 'tasks', ref.name ].concat(path));
 
     this.endMutation(oldTree);
   }
 
-  deleteTask(ref: TaskRefInterface) {
+  deleteTask(ref) {
     const { oldTree } = this.startMutation();
     this.updateTransitions(ref, ref.name, 'delete');
     crawler.deleteMappingItem(this.tokenSet, [ 'tasks', ref.name ]);
@@ -380,12 +360,12 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  addTransition(transition: TransitionInterface) {
+  addTransition(transition) {
     const { oldTree } = this.startMutation();
     const { from, to } = transition;
     const key = [ 'tasks', from.name, 'next' ];
 
-    const next: NextItem = {
+    const next = {
       do: [].concat(to).map(t => t.name),
     };
 
@@ -405,7 +385,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  updateTransition(oldTransition: TransitionInterface, newData: $Shape<TransitionInterface>) {
+  updateTransition(oldTransition, newData) {
     const { oldData, oldTree } = this.startMutation();
     const { nextItem: oldNext, jpath: oldKey, error } = getRawTransitionInfo(oldTransition, oldData);
 
@@ -417,9 +397,9 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     const { condition: oldCondition, from: oldFrom } = oldTransition;
     const { publish: newPublish, condition: newCondition, from: newFrom, to: newTo } = newData;
     const newFromName = newFrom && newFrom.name || oldFrom.name;
-    const next: NextItem = {};
+    const next = {};
 
-    if(newData.hasOwnProperty('to')) {
+    if(Object.hasOwn(newData, 'to')) {
       if(newTo && newTo.length) {
         const names = newTo.map(t => t.name);
         next.do = getDoValue(names, oldNext);
@@ -430,7 +410,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
       }
     }
 
-    if(newData.hasOwnProperty('condition')) {
+    if(Object.hasOwn(newData, 'condition')) {
       if(newCondition) {
         next.when = newCondition;
       }
@@ -440,7 +420,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
       }
     }
 
-    if(newData.hasOwnProperty('publish')) {
+    if(Object.hasOwn(newData, 'publish')) {
       next.publish = getPublishValue(newPublish, oldNext);
     }
 
@@ -475,7 +455,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  setTransitionProperty(transition: TransitionInterface, path: JpathKey, value: any) {
+  setTransitionProperty(transition, path, value) {
     const { oldData, oldTree } = this.startMutation();
     const { nextItem, jpath, error } = getRawTransitionInfo(transition, oldData);
 
@@ -511,7 +491,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  deleteTransitionProperty(transition: TransitionInterface, path: JpathKey) {
+  deleteTransitionProperty(transition, path) {
     const { oldData, oldTree } = this.startMutation();
     const { jpath, error } = getRawTransitionInfo(transition, oldData);
 
@@ -530,7 +510,7 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  deleteTransition(transition: TransitionInterface) {
+  deleteTransition(transition) {
     const { oldData, oldTree } = this.startMutation();
     const key = [ 'tasks', transition.from.name, 'next' ];
     const { nextIndex, error } = getRawTransitionInfo(transition, oldData);
@@ -554,12 +534,12 @@ class OrquestaModel extends BaseModel implements ModelInterface {
     this.endMutation(oldTree);
   }
 
-  getRangeForTask(task: TaskInterface) {
+  getRangeForTask(task) {
     return crawler.getRangeForKey(this.tokenSet, [ 'tasks', task.name ]);
   }
 }
 
-function reduceTransitions(arr: Array<TransitionInterface>, nxt: NextItem): Array<TransitionInterface> {
+function reduceTransitions(arr, nxt) {
   if(!nxt) {
     return arr;
   }
@@ -578,7 +558,7 @@ function reduceTransitions(arr: Array<TransitionInterface>, nxt: NextItem): Arra
   return arr;
 }
 
-function publishToArray(publishItem: ?string | ?Array<Object>): Array<Object> {
+function publishToArray(publishItem) {
   if(publishItem === null || typeof publishItem === 'undefined') {
     return [];
   }
@@ -591,7 +571,7 @@ function publishToArray(publishItem: ?string | ?Array<Object>): Array<Object> {
   return publishItem;
 }
 
-function doToTaskRefArray(doItem: ?string | ?Array<string>): Array<TaskRefInterface> {
+function doToTaskRefArray(doItem) {
   if(doItem === null || typeof doItem === 'undefined') {
     return [];
   }
@@ -599,9 +579,9 @@ function doToTaskRefArray(doItem: ?string | ?Array<string>): Array<TaskRefInterf
   return (typeof doItem === 'string' ? doItem.split(',') : doItem).map(s => ({ name: s.trim() }));
 }
 
-function getRawTransitionInfo(transition: TransitionInterface, rawData: Object): $Shape<NextItemInfo> {
+function getRawTransitionInfo(transition, rawData) {
   const { from } = transition;
-  const task: RawTask = rawData.tasks[from.name];
+  const task = rawData.tasks[from.name];
 
   if(!task || !task.next || !task.next.length) {
     return {
@@ -624,9 +604,9 @@ function getRawTransitionInfo(transition: TransitionInterface, rawData: Object):
   };
 }
 
-function getNextItemInfo({ from, to, condition, publish }: TransitionInterface, next: Array<NextItem>): $Shape<NextItemInfo> {
+function getNextItemInfo({ from, to, condition, publish }, next) {
   const nextIndex = next.findIndex(tr => {
-    if(to && to.length && diff(doToTaskRefArray(tr.do), to)) {
+    if(to && to.length && !_.isEqual(doToTaskRefArray(tr.do), to)) {
       return false;
     }
 
@@ -640,8 +620,7 @@ function getNextItemInfo({ from, to, condition, publish }: TransitionInterface, 
   return { nextIndex, nextItem: next[nextIndex] };
 }
 
-
-function getDoValue(newDo: ?Array<string>, oldNext: NextItem) {
+function getDoValue(newDo, oldNext) {
   if(newDo && newDo.length) {
     if(oldNext.do && typeof oldNext.do === 'string') {
       return newDo.join(', ');
@@ -656,7 +635,7 @@ function getDoValue(newDo: ?Array<string>, oldNext: NextItem) {
   return undefined;
 }
 
-function getPublishValue(newPublish: ?Array<Object>, oldNext: NextItem) {
+function getPublishValue(newPublish, oldNext) {
   if(newPublish && newPublish.length) {
     if(oldNext.publish && typeof oldNext.publish === 'string') {
       return newPublish.reduce((str, obj) => {

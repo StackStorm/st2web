@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import _ from 'lodash';
-import React from 'react';
 import { BaseTextField } from './base';
 
 import { TextFieldWrapper } from '../wrappers';
 
 export default class EnumField extends BaseTextField {
-  static icon = 'V'
+  static icon = 'V';
 
   fromStateValue(v) {
     return v !== '' ? v : void 0;

@@ -14,7 +14,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
@@ -51,43 +50,27 @@ import {
 } from '@stackstorm/module-panel';
 import Time from '@stackstorm/module-time';
 
-@connect((state) => {
-  const { action, executions, entrypoint } = state;
-  return { action, executions, entrypoint };
-})
-export default class ActionsDetails extends React.Component {
-  static propTypes = {
-    handleNavigate: PropTypes.func.isRequired,
-    handleRun: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-
-    id: PropTypes.string,
-    section: PropTypes.string,
-    action: PropTypes.object,
-    executions: PropTypes.array,
-    entrypoint: PropTypes.string,
-    groups: PropTypes.array,
-    filter: PropTypes.string,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        ref: PropTypes.string,
-        section: PropTypes.string,
-      }),
-    }),
-  }
-
+class ActionsDetails extends React.Component {
   state = {
     runPreview: false,
     runValue: null,
     runTrace: null,
     executionsVisible: {},
-    openModel: false,
     isChecked: false,
     destinationPack:'',
     destinationAction:'',
     packs:[],
     isRemoveFiles : false,
     
+  };
+
+  // The clone dialog offers the packs of the unfiltered action list; keep the last one while a filter is applied.
+  static getDerivedStateFromProps({ groups, filter }) {
+    if (filter) {
+      return null;
+    }
+
+    return { packs: (groups || []).map(({ pack }) => pack) };
   }
 
   componentDidMount() {
@@ -145,28 +128,11 @@ export default class ActionsDetails extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const {groups, filter} = nextProps;
-    const packs = [];
-    if(!filter) {
-      groups && groups.map(data => {
-        packs.push(data.pack);
-      });
+  componentDidUpdate(prevProps) {
+    const { id } = this.props;
 
-      this.setState({packs : packs});
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { id , filter} = this.props;
-
- 
     if (id && id !== prevProps.id) {
       this.fetchAction(id);
-    }
-
-    if(filter && filter !== prevProps.filter) {
-      this.setState({packs: prevState.packs});
     }
   }
 
@@ -174,12 +140,6 @@ export default class ActionsDetails extends React.Component {
     this._source.removeEventListener('st2.execution__create', this._executionCreateListener);
     this._source.removeEventListener('st2.execution__update', this._executionUpdateListener);
     this._source.removeEventListener('st2.execution__delete', this._executionDeleteListener);
-  }
-
-  refresh() {
-    const { id } = this.props;
-
-    this.fetchAction(id);
   }
 
   fetchAction(id) {
@@ -271,12 +231,12 @@ export default class ActionsDetails extends React.Component {
   }
 
   handleToggleExecution(id) {
-    this.setState({
+    this.setState(({ executionsVisible }) => ({
       executionsVisible: {
-        ...this.state.executionsVisible,
-        [id]: !this.state.executionsVisible[id],
+        ...executionsVisible,
+        [id]: !executionsVisible[id],
       },
-    });
+    }));
   }
 
   setWindowName(e) {
@@ -402,7 +362,7 @@ export default class ActionsDetails extends React.Component {
       this.setState({isRemoveFiles:false});
     }
   }
- 
+
   openDeleteModel (e) {
     this.setState({isRemoveFiles: false});
     const el =  document.getElementById('delete');
@@ -594,3 +554,8 @@ export default class ActionsDetails extends React.Component {
     );
   }
 }
+
+export default connect((state) => {
+  const { action, executions, entrypoint } = state;
+  return { action, executions, entrypoint };
+})(ActionsDetails);

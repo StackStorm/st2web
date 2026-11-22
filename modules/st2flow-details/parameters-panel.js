@@ -13,11 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 
 import Parameter from './parameter';
 import ParameterEditor from './parameter-editor';
@@ -25,7 +22,7 @@ import Button from '@stackstorm/module-forms/button.component';
 
 import { Panel } from './layout';
 
-function sortParameters(params: {[string]: { position?: number }}): {[string]: {}} {
+function sortParameters(params) {
   const keys = Object.keys(params);
   keys.sort((a, b) => {
     const aPos = params[a].position;
@@ -49,38 +46,18 @@ function sortParameters(params: {[string]: { position?: number }}): {[string]: {
   return retVal;
 }
 
-@connect(
-  ({ flow: { meta }}) => ({ meta }),
-  (dispatch) => ({
-    setMeta: (field, value) => dispatch({
-      type: 'META_ISSUE_COMMAND',
-      command: 'set',
-      args: [ field, value ],
-    }),
-  })
-)
-export default class Parameters extends Component<{
-  meta: Object,
-  setMeta: Function,
-}, {
-  edit: bool,
-}> {
-  static propTypes = {
-    meta: PropTypes.object,
-    setMeta: PropTypes.func,
-  }
-
+class Parameters extends Component {
   state = {
     edit: false,
-  }
+  };
 
-  handleAdd({ name, ...properties }: { name: string }) {
+  handleAdd({ name, ...properties }) {
     const parameters = this.props.meta.parameters;
     this.props.setMeta('parameters', sortParameters({ ...parameters, [name]: properties}));
     this.setState({ edit: false });
   }
 
-  handleChange(oldName: string, { name, ...properties }: { name: string }) {
+  handleChange(oldName, { name, ...properties }) {
     const { ...parameters } = this.props.meta.parameters;
     if (oldName !== name) {
       delete parameters[oldName];
@@ -89,7 +66,7 @@ export default class Parameters extends Component<{
     this.setState({ edit: false });
   }
 
-  handleDelete(name: string) {
+  handleDelete(name) {
     const { ...parameters } = this.props.meta.parameters;
     delete parameters[name];
     this.props.setMeta('parameters', parameters);
@@ -133,3 +110,14 @@ export default class Parameters extends Component<{
     );
   }
 }
+
+export default connect(
+  ({ flow: { meta }}) => ({ meta }),
+  (dispatch) => ({
+    setMeta: (field, value) => dispatch({
+      type: 'META_ISSUE_COMMAND',
+      command: 'set',
+      args: [ field, value ],
+    }),
+  })
+)(Parameters);

@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it } from '@rstest/core';
 import { expect } from 'chai';
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { renderNode } from '@stackstorm/module-test-utils';
 
 import '@stackstorm/module-test-utils/bootstrap/storage';
 import ActionReporter from '..';
@@ -23,7 +23,7 @@ import ActionReporter from '..';
 describe(`${ActionReporter.name} Component`, () => {
   describe('common functionality', () => {
     it('proxies className', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <ActionReporter
           className='foobar'
           runner='noop'
@@ -32,11 +32,11 @@ describe(`${ActionReporter.name} Component`, () => {
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
     it('proxies extra props', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <ActionReporter
           foo='bar'
           runner='noop'
@@ -45,11 +45,11 @@ describe(`${ActionReporter.name} Component`, () => {
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
 
     it('returns correct message on large result', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <ActionReporter
           foo='bar'
           runner='noop'
@@ -58,7 +58,7 @@ describe(`${ActionReporter.name} Component`, () => {
         />
       );
 
-      const pElem = instance.toJSON().children[1].children.join('');
+      const pElem = instance.children[1].textContent;
       expect(pElem).to.contain('Action output is too large to be displayed here');
       expect(pElem).to.contain('You can view raw');
     });

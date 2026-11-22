@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { createStore, applyMiddleware, compose } from 'redux';
+// Redux Toolkit is the recommended path; this hand-rolled scoped store keeps the plain core API.
+import { legacy_createStore as createStore, applyMiddleware, compose } from 'redux';
 import routerReducer from '@stackstorm/module-router/reducer';
 
 const PATH_NAME = '__path';

@@ -1,6 +1,0 @@
-apps/*/node_modules
-modules/*/node_modules
-tasks/*/node_modules
-node_modules
-js
-package.meta.js

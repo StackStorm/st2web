@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/st2flow-palette",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,41 +12,10 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify",
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": {
-            "camelCase": true
-          },
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            "postcss-preset-env"
-          ]
-        }
-      ]
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "insert-css": "2.0.0"
-  },
-  "devDependencies": {
-    "@stackstorm/browserify-postcss": "0.3.4-patch.5",
-    "babelify": "10.0.0",
-    "classnames": "^2.2.6",
-    "postcss": "8.4.31",
-    "postcss-import": "12.0.1",
-    "postcss-nested": "4.1.2",
-    "postcss-preset-env": "6.6.0"
+    "@stackstorm/module-api": "*",
+    "classnames": "2.5.1",
+    "react": "19.3.1",
+    "react-redux": "9.3.0"
   }
 }

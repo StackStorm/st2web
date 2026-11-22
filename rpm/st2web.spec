@@ -16,6 +16,8 @@ URL:            https://github.com/stackstorm/st2web
 Source0:        st2web
 
 Prefix:         /opt/stackstorm/static/webui
+# static HTML, JS and CSS only
+BuildArch:      noarch
 
 %define _builddir %(pwd)
 %define _rpmdir %(pwd)/..

@@ -1,7 +1,7 @@
 {
   "name": "@stackstorm/app-code",
   "version": "2.4.3",
-  "description": "",
+  "private": true,
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -12,53 +12,15 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify",
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": {
-            "camelCase": true
-          },
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            [
-              "postcss-preset-env",
-              {
-                "features": {
-                  "custom-properties": {
-                    "preserve": false
-                  }
-                }
-              }
-            ]
-          ]
-        }
-      ]
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "@stackstorm/module-api": "^2.4.3",
-    "@stackstorm/module-flex-table": "^2.4.3",
-    "@stackstorm/module-highlight": "^2.4.3",
-    "@stackstorm/module-router": "^2.4.3",
-    "@stackstorm/module-store": "^2.4.3",
-    "lodash": "4.17.21",
-    "prop-types": "15.7.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
-    "react-redux": "7.0.2"
-  },
-  "devDependencies": {
-    "@stackstorm/st2-style": "2.4.3"
+    "@stackstorm/module-api": "*",
+    "@stackstorm/module-flex-table": "*",
+    "@stackstorm/module-highlight": "*",
+    "@stackstorm/module-router": "*",
+    "@stackstorm/module-store": "*",
+    "@stackstorm/st2-style": "*",
+    "lodash": "4.18.1",
+    "react": "19.3.1",
+    "react-redux": "9.3.0"
   }
 }

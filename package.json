@@ -4,109 +4,72 @@
   "st2_version": "3.10dev",
   "private": true,
   "scripts": {
+    "develop": "rsbuild dev",
+    "serve-dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "serve": "rsbuild preview",
+    "serve-prod": "rsbuild preview",
+    "clean": "rm -rf build",
     "eslint": "eslint .",
-    "develop": "gulp",
-    "build": "gulp production",
-    "serve": "gulp serve-production",
-    "serve-prod": "gulp serve-production",
-    "serve-dev": "gulp",
-    "gulp-tasks": "gulp --tasks",
-    "clean": "rm -rf js css build",
-    "test": "gulp test",
-    "test-unit": "gulp test-unit",
-    "test-functional": "gulp test-functional",
-    "test-production": "gulp test-production"
+    "lint": "eslint .",
+    "test": "npm run lint && npm run test-unit",
+    "test-unit": "rstest run",
+    "test-functional": "playwright test"
   },
   "repository": "stackstorm/st2web",
   "engines": {
-    "node": "20.8.1",
-    "npm": "10.1.0"
-  },
-  "browserify": {
-    "transform": [
-      "babelify",
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": false,
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            [
-              "postcss-preset-env",
-              {
-                "features": {
-                  "custom-properties": {
-                    "preserve": false
-                  }
-                }
-              }
-            ]
-          ]
-        }
-      ]
-    ]
+    "node": ">=24 <25",
+    "npm": ">=11"
   },
   "workspaces": [
     "apps/*",
-    "modules/*",
-    "tasks",
-    "."
+    "modules/*"
   ],
   "dependencies": {
-    "@stackstorm/app-actions": "^2.4.3",
-    "@stackstorm/app-code": "^2.4.3",
-    "@stackstorm/app-history": "^2.4.3",
-    "@stackstorm/app-inquiry": "^2.4.3",
-    "@stackstorm/app-packs": "^2.4.3",
-    "@stackstorm/app-rules": "^2.4.3",
-    "@stackstorm/app-triggers": "^2.4.3",
-    "@stackstorm/module-api": "^2.4.3",
-    "@stackstorm/module-router": "^2.4.3",
-    "@stackstorm/module-store": "^2.4.3",
-    "acorn": "^6.4.1",
-    "axios": "^0.24.0",
-    "elliptic": "^6.5.4",
-    "glob-parent": "^6.0.2",
-    "js-yaml": "^3.13.1",
-    "kind-of": "^6.0.3",
-    "lodash": "4.17.21",
-    "minimatch": "^3.0.4",
-    "mixin-deep": "^1.3.2",
-    "moment": "2.29.4",
-    "node": "20.8.1",
-    "node-uuid": "^1.4.8",
-    "open": "^8.4.0",
-    "qs": "^6.10.2",
-    "react": "16.8.6",
-    "react-dom": "16.8.6",
-    "react-redux": "7.0.2",
-    "redux": "^4.0.1",
-    "set-value": "^4.1.0",
-    "tar": "^6.1.11",
-    "trim-newlines": "^4.0.2",
-    "urijs": "^1.19.11",
-    "websocket-extensions": "^0.1.4"
+    "@stackstorm/app-actions": "*",
+    "@stackstorm/app-code": "*",
+    "@stackstorm/app-history": "*",
+    "@stackstorm/app-inquiry": "*",
+    "@stackstorm/app-packs": "*",
+    "@stackstorm/app-rules": "*",
+    "@stackstorm/app-triggers": "*",
+    "@stackstorm/app-workflows": "*",
+    "@stackstorm/module-router": "*",
+    "@stackstorm/module-store": "*",
+    "@stackstorm/st2-style": "*",
+    "lodash": "4.18.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-redux": "9.3.0"
   },
   "devDependencies": {
-    "@stackstorm/module-test-utils": "^2.4.3",
-    "@stackstorm/st2-build": "^2.4.3",
-    "babel-eslint": "10.0.1",
-    "chai": "4.2.0",
-    "eslint": "^6.2.1",
-    "eslint-plugin-flowtype": "^3.5.1",
-    "eslint-plugin-notice": "0.7.8",
-    "eslint-plugin-react": "7.12.4",
-    "gulp": "4.0.1",
-    "ignore-styles": "5.0.1",
-    "insert-css": "2.0.0",
-    "zombie": "5.0.8"
+    "@eslint-react/eslint-plugin": "5.28.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "@rsbuild/core": "2.2.13",
+    "@rsbuild/plugin-react": "2.1.1",
+    "@rstest/adapter-rsbuild": "0.12.3",
+    "@rstest/core": "0.12.3",
+    "@rstest/coverage-istanbul": "0.12.3",
+    "@stackstorm/module-test-utils": "*",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "axios-mock-adapter": "2.1.0",
+    "chai": "6.3.0",
+    "eslint": "10.13.0",
+    "globals": "17.13.0",
+    "jsdom": "30.1.3",
+    "postcss": "8.5.30",
+    "postcss-import": "17.0.1",
+    "postcss-nested": "9.0.0",
+    "postcss-preset-env": "11.6.1",
+    "sinon": "22.1.0",
+    "sinon-chai": "4.0.1",
+    "typescript": "6.0.3"
   },
-  "resolutions": {
-    "open": "^8.4.0"
+  "overrides": {
+    "fast-uri": "3.1.9",
+    "follow-redirects": "1.16.2"
   }
 }

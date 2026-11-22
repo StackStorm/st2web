@@ -13,9 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import chai, { expect } from 'chai';
-import chaiSubset from 'chai-subset';
-chai.use(chaiSubset);
+import { describe, it, beforeEach } from '@rstest/core';
+import { expect } from 'chai';
 
 import { tasks as testTasks, transitions as testTransitions, mistral, orquesta } from './data/common-data';
 

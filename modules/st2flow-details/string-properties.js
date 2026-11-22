@@ -13,17 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 import StringField from '@stackstorm/module-auto-form/fields/string';
 import { BaseTextField } from '@stackstorm/module-auto-form/fields/base';
 
-import style from './style.css';
+import style from './style.module.css';
 
 class OneLineStringField extends BaseTextField {
-  static icon = ''
+  static icon = '';
 
   fromStateValue(v) {
     return v !== '' ? v : void 0;
@@ -34,27 +32,10 @@ class OneLineStringField extends BaseTextField {
   }
 }
 
-
-export class StringPropertiesPanel extends React.Component <{
-  items: Array<{}>,
-  onChange: Array<{}> => void,
-  inlineAddButton?: boolean,
-  defaultKey?: string,
-  defaultValue?: string,
-}, {
-  publish: Array<{}>,
-}> {
-  static propTypes = {
-    items: PropTypes.array,
-    onChange: PropTypes.func,
-    inlineAddButton: PropTypes.bool,
-    defaultKey: PropTypes.string,
-    defaultValue: PropTypes.string,
-  };
-
+export class StringPropertiesPanel extends React.Component {
   style = style;
 
-  handleChange(index: number, key: string, value: string) {
+  handleChange(index, key, value) {
     const { items, onChange } = this.props;
     const val = items ? items.slice(0) : [];
 
@@ -69,23 +50,23 @@ export class StringPropertiesPanel extends React.Component <{
     const val = items ? items.concat(newVal) : [ newVal ];
 
     onChange && onChange(val);
-  }
+  };
 
-  removeField = (index: number) => {
+  removeField = (index) => {
     const { items, onChange } = this.props;
     const val = items ? items.slice(0) : [];
 
     // make sure to splice the copy!
     val.splice(index, 1);
     onChange && onChange(val);
-  }
+  };
   render() {
     const { items, inlineAddButton = false } = this.props;
 
     return (
       <div className={this.style.stringProperties}>
         {
-          items ? items.map((obj: {}, i): React.Node => {
+          items ? items.map((obj, i) => {
             const key = Object.keys(obj)[0];
             const val = obj[key];
 

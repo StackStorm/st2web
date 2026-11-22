@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
 import setTitle from '@stackstorm/module-title';
 
@@ -29,18 +28,10 @@ import {
 import Popup from '@stackstorm/module-popup';
 
 export default class HistoryPopup extends React.Component {
-  static propTypes = {
-    action: PropTypes.string,
-    spec: PropTypes.object,
-    payload: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
-    onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-  }
-
   state = {
     preview: false,
     disabled: false,
-  }
+  };
 
   static getDerivedStateFromProps(props, state) {
     return {
@@ -55,7 +46,7 @@ export default class HistoryPopup extends React.Component {
   }
 
   togglePreview() {
-    this.setState({ preview: !this.state.preview });
+    this.setState(({ preview }) => ({ preview: !preview }));
   }
 
   handleChange(payload) {

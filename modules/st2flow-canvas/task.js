@@ -13,48 +13,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import type { CanvasPoint, TaskInterface } from '@stackstorm/st2flow-model/interfaces';
-
 import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
-import {HotKeys} from 'react-hotkeys';
 
 import Vector from './vector';
 import { origin } from './const';
 
-import style from './style.css';
+import style from './style.module.css';
 import api from '@stackstorm/module-api';
 
-export class Task extends Component<{
-  task: TaskInterface,
-  scale: number,
-  selected: bool,
-  onMove: Function,
-  onConnect: Function,
-  onClick: Function,
-  onDelete: Function,
-}, {
-  delta: CanvasPoint
-}> {
-  static propTypes = {
-    task: PropTypes.object.isRequired,
-    scale: PropTypes.number.isRequired,
-    selected: PropTypes.bool,
-    onMove: PropTypes.func,
-    onConnect: PropTypes.func,
-    onClick: PropTypes.func,
-    onDelete: PropTypes.func,
-  }
-
+export class Task extends Component {
   state = {
     delta: {
       x: 0,
       y: 0,
     },
-  }
+  };
 
   componentDidMount() {
     const task = this.taskRef.current;
@@ -90,10 +64,10 @@ export class Task extends Component<{
     task.removeEventListener('drop', this.handleDrop);
   }
 
-  drag: bool
-  start: CanvasPoint
+  drag;
+  start;
 
-  handleMouseDown = (e: MouseEvent) => {
+  handleMouseDown = (e) => {
     // Drag should only work on left button press
     if (e.button !== 0) {
       return true;
@@ -110,9 +84,9 @@ export class Task extends Component<{
     };
 
     return false;
-  }
+  };
 
-  handleMouseUp = (e: MouseEvent) => {
+  handleMouseUp = (e) => {
     if (!this.drag) {
       return true;
     }
@@ -143,9 +117,9 @@ export class Task extends Component<{
     });
 
     return false;
-  }
+  };
 
-  handleMouseMove = (e: MouseEvent) => {
+  handleMouseMove = (e) => {
     if (!this.drag) {
       return true;
     }
@@ -161,17 +135,17 @@ export class Task extends Component<{
     });
 
     return false;
-  }
+  };
 
-  handleClick = (e: MouseEvent) => {
+  handleClick = (e) => {
     e.stopPropagation();
 
     if (this.props.onClick) {
       this.props.onClick();
     }
-  }
+  };
 
-  handleDragStartHandle = (e: DragEvent) => {
+  handleDragStartHandle = (e) => {
     e.stopPropagation();
 
     this.style.opacity = '0.4';
@@ -184,9 +158,9 @@ export class Task extends Component<{
         task,
       }));
     }
-  }
+  };
 
-  handleDragOver = (e: DragEvent) => {
+  handleDragOver = (e) => {
     if (e.preventDefault) {
       e.preventDefault();
     }
@@ -194,9 +168,9 @@ export class Task extends Component<{
     if (e.dataTransfer) {
       e.dataTransfer.dropEffect = 'move';
     }
-  }
+  };
 
-  handleDrop = (e: DragEvent) => {
+  handleDrop = (e) => {
     if (e.preventDefault) {
       e.preventDefault();
     }
@@ -213,7 +187,7 @@ export class Task extends Component<{
     }
 
     return false;
-  }
+  };
 
   handleImageError() {
     if (this.imgRef.current) {
@@ -221,7 +195,7 @@ export class Task extends Component<{
     }
   }
 
-  style = style
+  style = style;
   taskRef = React.createRef();
   handleRef = React.createRef();
   imgRef = React.createRef();
@@ -237,57 +211,55 @@ export class Task extends Component<{
     const coords = new Vector(delta).divide(scale).add(new Vector(task.coords)).add(origin);
 
     return (
-      <HotKeys handlers={{ handleTaskDelete: onDelete }}>
+      <div
+        className={cx(this.style.task, selected && this.style.selected)}
+        style={{
+          transform: `translate(${coords.x}px, ${coords.y}px)`,
+        }}
+        tabIndex='0'
+        onClick={e => this.handleClick(e)}
+      >
         <div
-          className={cx(this.style.task, selected && this.style.selected)}
+          className={cx(this.style.taskBody)}
           style={{
-            transform: `translate(${coords.x}px, ${coords.y}px)`,
+            width: task.size && task.size.x,
+            height: task.size && task.size.y,
           }}
-          tabIndex='0'
-          onClick={e => this.handleClick(e)}
+          ref={this.taskRef}
         >
-          <div
-            className={cx(this.style.taskBody)}
-            style={{
-              width: task.size && task.size.x,
-              height: task.size && task.size.y,
-            }}
-            ref={this.taskRef}
-          >
-            <img
-              ref={this.imgRef}
-              src={api.route({ path: `/packs/views/file/${packName}/icon.png` })}
-              onError={() => this.handleImageError()}
-              width="32"
-              height="32"
-            />
-            <div>
-              <div className={cx(this.style.taskName)}>{task.name}</div>
-              <div className={cx(this.style.taskAction)}>{task.action}</div>
-              <div className={cx(this.style.taskBadges)}>
-                {
-                  !!task.with && (
-                    <span className={cx(this.style.taskBadge)}>
-                      <i className={cx(this.style.taskBadgeWithItems)} />
-                      { task.with && +task.with.concurrency ? task.with.concurrency : ''}
-                    </span>
-                  )
-                }
-                {
-                  !!task.join && (
-                    <span className={cx(this.style.taskBadge)}>
-                      <i className={cx(this.style.taskBadgeJoin)} />
-                      {typeof task.join === 'number' ? task.join : '​\u200B'}
-                    </span>
-                  )
-                }
-              </div>
+          <img
+            ref={this.imgRef}
+            src={api.route({ path: `/packs/views/file/${packName}/icon.png` })}
+            onError={() => this.handleImageError()}
+            width="32"
+            height="32"
+          />
+          <div>
+            <div className={cx(this.style.taskName)}>{task.name}</div>
+            <div className={cx(this.style.taskAction)}>{task.action}</div>
+            <div className={cx(this.style.taskBadges)}>
+              {
+                !!task.with && (
+                  <span className={cx(this.style.taskBadge)}>
+                    <i className={cx(this.style.taskBadgeWithItems)} />
+                    { task.with && +task.with.concurrency ? task.with.concurrency : ''}
+                  </span>
+                )
+              }
+              {
+                !!task.join && (
+                  <span className={cx(this.style.taskBadge)}>
+                    <i className={cx(this.style.taskBadgeJoin)} />
+                    {typeof task.join === 'number' ? task.join : '​\u200B'}
+                  </span>
+                )
+              }
             </div>
           </div>
-          <div className={cx(this.style.taskButton, this.style.delete, 'icon-delete')} onClick={() => onDelete()} />
-          <div className={this.style.taskHandle} style={{ top: '100%', left: '50%' }}  draggable ref={this.handleRef} />
         </div>
-      </HotKeys>
+        <div className={cx(this.style.taskButton, this.style.delete, 'icon-delete')} onClick={() => onDelete()} />
+        <div className={this.style.taskHandle} style={{ top: '100%', left: '50%' }}  draggable ref={this.handleRef} />
+      </div>
     );
   }
 }

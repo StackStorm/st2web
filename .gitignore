@@ -1,18 +1,13 @@
 npm-debug.log
-lerna-debug.log
-yarn-error.log
-yarn-debug.log
 node_modules
-css
-js
 build
+coverage
 
 debian/st2web
 debian/*.debhelper.log
 debian/*.substvars
 debian/files
 
-.vagrant
 
 .DS_Store
 
@@ -22,3 +17,7 @@ debian/files
 
 # local stuff
 config.local.js
+
+# Playwright output
+test-results/
+playwright-report/

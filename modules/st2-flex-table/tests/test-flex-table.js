@@ -12,38 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it } from '@rstest/core';
 import { expect } from 'chai';
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { fireEvent } from '@testing-library/react';
+import { renderNode } from '@stackstorm/module-test-utils';
 import sinon from 'sinon';
 
 import { FlexTable } from '..';
 
-function render(component) {
-  return ReactTester.create(component).node;
-}
+const title = (node) => node.querySelector('.st2-flex-table__caption');
 
 describe(`${FlexTable.name} Component`, () => {
   describe('common functionality', () => {
     it('proxies className', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <FlexTable
           className="foobar"
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
     it('proxies extra props', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <FlexTable
           foo="bar"
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
   });
 
@@ -55,19 +54,18 @@ describe(`${FlexTable.name} Component`, () => {
       onToggle: sinon.spy(),
     };
 
-    const c = render(<FlexTable {...props}>some child node</FlexTable>);
+    const node = renderNode(<FlexTable {...props}>some child node</FlexTable>);
 
-    expect(c.props.className).to.be.equal('st2-flex-table');
+    expect(node.className).to.be.equal('st2-flex-table');
 
-    const [ titleComponent, ...restComponents ] = c.props.children;
-    expect(titleComponent.props.icon).to.be.equal(props.icon);
-    expect(titleComponent.props.title).to.be.equal(props.title);
+    expect(title(node).querySelector('img').getAttribute('src')).to.be.equal(props.icon);
+    expect(title(node).textContent).to.be.equal(props.title);
 
-    titleComponent.props.onToggle();
+    fireEvent.click(title(node));
     expect(props.onToggle.calledOnce).to.be.true;
 
-    expect(restComponents).to.have.length(1);
-    expect(restComponents[0]).to.be.equal('some child node');
+    expect(node.childNodes).to.have.length(2);
+    expect(node.lastChild.textContent).to.be.equal('some child node');
   });
 
   it('renders an element without icon', () => {
@@ -77,19 +75,18 @@ describe(`${FlexTable.name} Component`, () => {
       onToggle: sinon.spy(),
     };
 
-    const c = render(<FlexTable {...props}>some child node</FlexTable>);
+    const node = renderNode(<FlexTable {...props}>some child node</FlexTable>);
 
-    expect(c.props.className).to.be.equal('st2-flex-table');
+    expect(node.className).to.be.equal('st2-flex-table');
 
-    const [ titleComponent, ...restComponents ] = c.props.children;
-    expect(titleComponent.props.icon).to.be.undefined;
-    expect(titleComponent.props.title).to.be.equal(props.title);
+    expect(title(node).querySelector('img')).to.be.null;
+    expect(title(node).textContent).to.be.equal(props.title);
 
-    titleComponent.props.onToggle();
+    fireEvent.click(title(node));
     expect(props.onToggle.calledOnce).to.be.true;
 
-    expect(restComponents).to.have.length(1);
-    expect(restComponents[0]).to.be.equal('some child node');
+    expect(node.childNodes).to.have.length(2);
+    expect(node.lastChild.textContent).to.be.equal('some child node');
   });
 
   it('renders an element without title', () => {
@@ -99,15 +96,11 @@ describe(`${FlexTable.name} Component`, () => {
       onToggle: sinon.spy(),
     };
 
-    const c = render(<FlexTable {...props}>some child node</FlexTable>);
+    const node = renderNode(<FlexTable {...props}>some child node</FlexTable>);
 
-    expect(c.props.className).to.be.equal('st2-flex-table');
-
-    const [ titleComponent, ...restComponents ] = c.props.children;
-    expect(titleComponent).to.be.null;
-
-    expect(restComponents).to.have.length(1);
-    expect(restComponents[0]).to.be.equal('some child node');
+    expect(node.className).to.be.equal('st2-flex-table');
+    expect(title(node)).to.be.null;
+    expect(node.textContent).to.be.equal('some child node');
   });
 
   it('renders an element collapsed', () => {
@@ -118,18 +111,17 @@ describe(`${FlexTable.name} Component`, () => {
       onToggle: sinon.spy(),
     };
 
-    const c = render(<FlexTable {...props}>some child node</FlexTable>);
+    const node = renderNode(<FlexTable {...props}>some child node</FlexTable>);
 
-    expect(c.props.className).to.be.equal('st2-flex-table st2-flex-table--collapsed');
+    expect(node.className).to.be.equal('st2-flex-table st2-flex-table--collapsed');
 
-    const [ titleComponent, ...restComponents ] = c.props.children;
-    expect(titleComponent.props.icon).to.be.equal(props.icon);
-    expect(titleComponent.props.title).to.be.equal(props.title);
+    expect(title(node).querySelector('img').getAttribute('src')).to.be.equal(props.icon);
+    expect(title(node).textContent).to.be.equal(props.title);
 
-    titleComponent.props.onToggle();
+    fireEvent.click(title(node));
     expect(props.onToggle.calledOnce).to.be.true;
 
-    expect(restComponents).to.have.length(1);
-    expect(restComponents[0]).to.be.null;
+    // collapsed: only the title, not the children
+    expect(node.childNodes).to.have.length(1);
   });
 });

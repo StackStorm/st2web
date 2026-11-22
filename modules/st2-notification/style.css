@@ -1,1 +1,111 @@
-@import 'noty/lib/noty.css';
+/* Toasts in the bottom-left corner; colours follow the noty "mint" theme used previously. */
+
+.st2-notification {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999999;
+  width: 325px;
+  max-width: 90%;
+  margin: 0;
+  padding: 0;
+}
+
+.st2-notification__bar {
+  position: relative;
+  overflow: hidden;
+  margin: 4px 0;
+  border-radius: 2px;
+  cursor: pointer;
+  animation: st2-notification-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+
+  &--success {
+    background-color: #afc765;
+    border-bottom: 1px solid #a0b55c;
+    color: #fff;
+  }
+
+  &--info {
+    background-color: #7f7eff;
+    border-bottom: 1px solid #7473e8;
+    color: #fff;
+  }
+
+  &--warning {
+    background-color: #ffae42;
+    border-bottom: 1px solid #e89f3c;
+    color: #fff;
+  }
+
+  &--error {
+    background-color: #de636f;
+    border-bottom: 1px solid #ca5a65;
+    color: #fff;
+  }
+
+  &--closing {
+    animation: st2-notification-out 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  }
+
+  &--paused .st2-notification__progress {
+    animation-play-state: paused;
+  }
+}
+
+.st2-notification__body {
+  padding: 10px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.st2-notification__buttons {
+  padding: 10px;
+}
+
+.st2-notification__progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #646464;
+  opacity: 0.2;
+  transform-origin: left;
+  animation-name: st2-notification-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes st2-notification-in {
+  from {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes st2-notification-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes st2-notification-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}

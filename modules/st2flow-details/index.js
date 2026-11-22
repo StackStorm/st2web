@@ -13,13 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import type { TaskInterface } from '@stackstorm/st2flow-model/interfaces';
-
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import Editor from '@stackstorm/st2flow-editor';
@@ -31,13 +26,12 @@ import Meta from './meta-panel';
 import TaskDetails from './task-details';
 import TaskList from './task-list';
 
-import style from './style.css';
+import style from './style.module.css';
 import store from '../../apps/st2-workflows/store';
 
-@connect(
+const MetaEditor = connect(
   editorConnect
-)
-@connect(
+)(connect(
   ({ flow: { metaSource }}) => ({
     source: metaSource,
   }),
@@ -48,13 +42,11 @@ import store from '../../apps/st2-workflows/store';
       args: [ null, source ],
     }),
   })
-)
-class MetaEditor extends Editor {}
+)(class MetaEditor extends Editor {}));
 
-@connect(
+const WorkflowEditor = connect(
   editorConnect
-)
-@connect(
+)(connect(
   ({ flow: { workflowSource }}) => ({
     source: workflowSource,
   }),
@@ -65,61 +57,33 @@ class MetaEditor extends Editor {}
       args: [ null, source ],
     }),
   })
-)
-class WorkflowEditor extends Editor {}
+)(class WorkflowEditor extends Editor {}));
 
-@connect(
-  ({ flow: { actions, navigation }}) => ({ actions, navigation }),
-  (dispatch) => ({
-    navigate: (navigation) => dispatch({
-      type: 'CHANGE_NAVIGATION',
-      navigation,
-    }),
-  })
-)
-export default class Details extends Component<{
-  className?: string,
-
-  navigation: Object,
-  navigate: Function,
-
-  actions: Array<Object>,
-}> {
-  static propTypes = {
-    className: PropTypes.string,
-
-    navigation: PropTypes.object,
-    navigate: PropTypes.func,
-
-    actions: PropTypes.array,
-
-    onChange: PropTypes.func,
-  }
-
+class Details extends Component {
   sections = [{
     title: 'metadata',
     className: 'icon-gear gearclass',
   }, {
     title: 'execution',
     className: 'icon-lan',
-  }]
+  }];
 
-  style = style
+  style = style;
 
-  handleTaskSelect = (task: TaskInterface) => {
+  handleTaskSelect = (task) => {
     this.props.navigate({ toTasks: undefined, task: task.name });
-  }
+  };
 
   handleBack = () => {
     this.props.navigate({ toTasks: undefined, task: undefined });
-  }
+  };
 
   toggleAutosave = (autosaveEnabled) => {
     store.dispatch({
       type: 'TOGGLE_AUTOSAVE',
       autosaveEnabled,
     });
-  }
+  };
 
   render() {
     const { actions, navigation, navigate, onChange } = this.props;
@@ -147,13 +111,13 @@ export default class Details extends Component<{
             style={{display: 'flex'}} title="Automatically save the workflow on every change"
           >
             <input
-              id='autosave-checkbox' 
-              name='autosave-checkbox' 
+              id='autosave-checkbox'
+              name='autosave-checkbox'
               type='checkbox'
               onChange={(e) => {
                 this.toggleAutosave(e.target.checked);
                 onChange();
-              }} 
+              }}
               className={cx(style.autosave)}
               defaultChecked={autosaveEnabled}
             />
@@ -184,3 +148,13 @@ export default class Details extends Component<{
     );
   }
 }
+
+export default connect(
+  ({ flow: { actions, navigation }}) => ({ actions, navigation }),
+  (dispatch) => ({
+    navigate: (navigation) => dispatch({
+      type: 'CHANGE_NAVIGATION',
+      navigation,
+    }),
+  })
+)(Details);

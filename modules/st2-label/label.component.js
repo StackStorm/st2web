@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
-import style from './style.css';
+import style from './style.module.css';
 
 const states = {
   'enabled': style.success,
@@ -40,15 +39,9 @@ function capitalize(string) {
 }
 
 export default class Label extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    status: PropTypes.string.isRequired,
-    short: PropTypes.bool.isRequired,
-  }
-
   static defaultProps = {
     short: false,
-  }
+  };
 
   render() {
     const { className, status, short, ...props } = this.props;

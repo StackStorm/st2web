@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
@@ -47,7 +46,7 @@ import router from '@stackstorm/module-router';
 
 import './style.css';
 
-@connect((state, props) => {
+const FlexTableWrapper = connect((state, props) => {
   const { uid } = props;
   const { collapsed = state.collapsed } = state.tables[uid] || {};
 
@@ -58,38 +57,15 @@ import './style.css';
   return {
     onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
-})
-class FlexTableWrapper extends FlexTable {
+})(class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
     store.dispatch(flexActions.register(uid, false));
   }
-}
+});
 
-@connect(({
-  rules, groups, filter, collapsed,
-}) => ({
-  rules, groups, filter, collapsed,
-}))
-export default class RulesPanel extends React.Component {
-  static propTypes = {
-    location: PropTypes.shape({
-      search: PropTypes.string,
-    }),
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        ref: PropTypes.string,
-        section: PropTypes.string,
-      }),
-    }),
-
-    groups: PropTypes.array,
-    filter: PropTypes.string,
-
-    collapsed: PropTypes.bool,
-  }
-
+class RulesPanel extends React.Component {
   componentDidMount() {
     this.fetchGroups();
 
@@ -296,3 +272,9 @@ export default class RulesPanel extends React.Component {
     );
   }
 }
+
+export default connect(({
+  rules, groups, filter, collapsed,
+}) => ({
+  rules, groups, filter, collapsed,
+}))(RulesPanel);

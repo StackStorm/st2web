@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import cx from 'classnames';
 
 import {
@@ -23,18 +22,9 @@ import {
 } from '../wrappers';
 
 export default class CheckboxModule extends React.Component {
-  static propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
-    spec: PropTypes.object,
-    data: PropTypes.bool,
-    onChange: PropTypes.func,
-  }
-
   state = {
     error: null,
-  }
+  };
 
   onChange(value) {
     this.props.onChange(value);

@@ -14,25 +14,20 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { matchPath } from 'react-router';
 
-@connect(
-  ({ location }) => ({ location })
-)
-export default class Route extends React.Component {
-  static propTypes = {
-    location: PropTypes.object,
-    path: PropTypes.string.isRequired,
-    render: PropTypes.func.isRequired,
-  }
-
+class Route extends React.Component {
   render() {
     const { location, path, render } = this.props;
-    const match =  matchPath(location.pathname, { path });
+    // Prefix match, as in react-router 5: `/actions/:ref?` also matches `/actions/x/general`.
+    const match = matchPath({ path, end: false }, location.pathname);
     const props = { match, location };
 
     return match ? render(props) : null;
   }
 }
+
+export default connect(
+  ({ location }) => ({ location })
+)(Route);

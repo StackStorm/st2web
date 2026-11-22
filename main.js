@@ -13,8 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import './style.css';
@@ -45,4 +44,4 @@ const routes = [
 
 window.fp = require('lodash/fp');
 
-ReactDOM.render(<Provider store={store}><Router routes={routes} /></Provider>, document.querySelector('#container'));
+createRoot(document.querySelector('#container')).render(<Provider store={store}><Router routes={routes} /></Provider>);

@@ -12,18 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { PropTypes } from 'prop-types';
-
 import api from '@stackstorm/module-api';
 
 import BaseCode from './base.component';
 
 
 export default class ResultCode extends BaseCode {
-  static propTypes = {
-    id: PropTypes.string,
-  }
-
   async fetch({ id }) {
     const def = {
       backUrl: `/history/${id}/general`,

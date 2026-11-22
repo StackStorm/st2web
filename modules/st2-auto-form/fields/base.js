@@ -14,21 +14,11 @@
 
 import _ from 'lodash';
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
 import { TextFieldWrapper } from '../wrappers';
 import TextareaAutosize from 'react-textarea-autosize';
 
-export class Textarea extends TextareaAutosize {
-  constructor (...props) {
-    super(...props);
-
-    // don't attempt to resize the component during testing
-    if (typeof window === 'undefined' || global !== window || window.navigator.appName === 'Zombie') {
-      this._resizeComponent = () => {};
-    }
-  }
-}
+export const Textarea = TextareaAutosize;
 
 export function isJinja(v) {
   return _.isString(v) && v.startsWith('{{') && v.endsWith('}}');
@@ -40,16 +30,6 @@ export function isYaql(v) {
 
 // TODO: make controlled
 export class BaseTextField extends React.Component {
-  static propTypes = {
-    name: PropTypes.string,
-    spec: PropTypes.object,
-    value: PropTypes.any,
-    disabled: PropTypes.bool,
-    visible: PropTypes.bool,
-    onChange: PropTypes.func,
-    'data-test': PropTypes.string,
-  }
-
   constructor(props) {
     super(props);
 
@@ -59,13 +39,13 @@ export class BaseTextField extends React.Component {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    // I have a problem making it work via getDerivedStateFromProps because I see no way to figure out which of two values (from props or state) are the latest one which prevents fields to be externally updated. Moving to using them controlled should solve that for us.
-    let { value } = nextProps;
+  componentDidUpdate(prevProps) {
+    // Uncontrolled: the field keeps its own value and only resets it when the value prop itself changes.
+    // getDerivedStateFromProps can't tell which of props or state is newer. Making the fields controlled would fix that.
+    const { value } = this.props;
 
-    if (!_.isEqual(this.props.value, value)) {
-      value = this.toStateValue(value);
-      this.setState({ value });
+    if (!_.isEqual(prevProps.value, value)) {
+      this.setState({ value: this.toStateValue(value) });
     }
   }
 
@@ -108,7 +88,7 @@ export class BaseTextField extends React.Component {
   }
 
   visibilityToggle() {
-    this.setState({visible: !this.state.visible})
+    this.setState(({ visible }) => ({ visible: !visible }));
   }
 
   emitChange() {
@@ -145,7 +125,7 @@ export class BaseTextField extends React.Component {
 
     return (
       <TextFieldWrapper icon={icon} {...wrapperProps}>
-            <input {...inputProps} />
+        <input {...inputProps} />
       </TextFieldWrapper>
     );
   }
@@ -184,7 +164,7 @@ export class BaseTextareaField extends BaseTextField {
 
     return (
       <TextFieldWrapper icon={icon} {...wrapperProps}>
-          <Textarea {...inputProps} />
+        <Textarea {...inputProps} />
       </TextFieldWrapper>
     );
   }

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
 import ActionCode from './panels/action-code.component';
 import ActionEntrypoint from './panels/action-entrypoint.component';
@@ -26,10 +25,6 @@ import TriggerTypeCode from './panels/trigger-type-code.component';
 import UnknownCode from './panels/unknown.component';
 
 export default class CodePanel extends React.Component {
-  static propTypes = {
-    type: PropTypes.string,
-  }
-
   render() {
     const { type } = this.props;
     switch (type) {

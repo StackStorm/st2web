@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import chai, { expect } from 'chai';
+import { describe, it } from '@rstest/core';
+import { expect, use as chaiUse } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 import { TestComponent } from './utils';
-import { BaseTextareaField, Textarea } from '../fields/base';
+import { BaseTextareaField } from '../fields/base';
 
 class BaseTextareaFieldStub extends BaseTextareaField {
   fromStateValue(v) {
@@ -45,7 +45,7 @@ describe('AutoForm BaseTextareaField', () => {
 
     const c = new TestComponent(<BaseTextareaFieldStub {...props} />);
 
-    expect(c.fieldType()).to.be.equal(Textarea);
+    expect(c.fieldType()).to.be.equal('textarea');
   });
 
   it('invokes onChange callback the moment child\'s onChange callback is called', () => {

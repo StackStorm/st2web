@@ -12,16 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-global.document = {
-  ...global.document,
+import hasDom from './has-dom';
 
-  addEventListener: () => null,
-  removeEventListener: () => null,
-};
+if (!hasDom) {
+  global.document = {
+    ...global.document,
 
-global.window = {
-  ...global.window,
+    addEventListener: () => null,
+    removeEventListener: () => null,
+  };
 
-  addEventListener: () => null,
-  removeEventListener: () => null,
-};
+  global.window = {
+    ...global.window,
+
+    addEventListener: () => null,
+    removeEventListener: () => null,
+  };
+}

@@ -13,9 +13,7 @@
 // limitations under the License.
 
 import _ from 'lodash';
-import url from 'url';
 import axios from 'axios';
-import buildURL from 'axios/lib/helpers/buildURL';
 
 let _source;
 
@@ -28,16 +26,13 @@ function toBase64(str) {
   }
 }
 
+// Fill in the current hostname for URLs that only name a port, e.g. "https://:443/api".
+// Anything else (including protocol-relative "//host:port/api") is returned unchanged.
 function localize(urlString) {
-  const { hostname, port, ...rest } = url.parse(urlString);
-
-  delete rest.host;
-
-  return url.format({
-    hostname: hostname || port && window.location.hostname,
-    port,
-    ...rest,
-  });
+  return urlString.replace(
+    /^([a-z][a-z0-9+.-]*:)\/\/:(\d+)/i,
+    (match, protocol, port) => `${protocol}//${window.location.hostname}:${port}`
+  );
 }
 
 export class API {
@@ -187,7 +182,8 @@ export class API {
     const config = {
       method,
       url: this.route(opts),
-      params: query,
+      // The API takes list filters as comma-separated values (?status=failed,canceled).
+      params: query && _.mapValues(query, param => _.isArray(param) ? param.join(',') : param),
       headers,
       transformResponse: [ function transformResponse(data, headers) {
         if (typeof data === 'string' && headers['content-type'] &&
@@ -204,28 +200,18 @@ export class API {
       } ],
       data,
       withCredentials: true,
-      paramsSerializer: params => {
-        params = _.mapValues(params, param => {
-          if (_.isArray(param)) {
-            return param.join(',');
-          }
-          return param;
-        });
-        return buildURL('', params).substr(1);
-      },
       // responseType: 'json',
     };
 
-    if (this.rejectUnauthorized === false) {
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    }
-    else {
-      process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
+    // Node only (the client is also used outside the browser); browsers have no `process`.
+    if (typeof process !== 'undefined' && process.env) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = this.rejectUnauthorized === false ? '0' : '1';
     }
 
     const response = await axios(config);
     const contentType = (response.headers || {})['content-type'] || [];
-    const requestId = (response.headers || {})['X-Request-ID'] || null;
+    // axios lower-cases response header names.
+    const requestId = (response.headers || {})['x-request-id'] || null;
 
     response.headers = response.headers || {};
     response.statusCode = response.status;

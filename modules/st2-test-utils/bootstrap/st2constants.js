@@ -12,8 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-global.window = {
-  ...global.window,
+import hasDom from './has-dom';
 
-  st2constants: { st2Config: {} },
-};
+if (hasDom) {
+  window.st2constants = { st2Config: {} };
+}
+else {
+  global.window = {
+    ...global.window,
+
+    st2constants: { st2Config: {} },
+  };
+}

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import store from './store';
 
@@ -58,7 +57,7 @@ function waitExecution(execution_id, record) {
   return undefined;
 }
 
-@connect((state, props) => {
+const FlexTableWrapper = connect((state, props) => {
   const { uid } = props;
   const { collapsed = state.collapsed } = state.tables[uid] || {};
 
@@ -69,36 +68,15 @@ function waitExecution(execution_id, record) {
   return {
     onToggle: () => store.dispatch(flexActions.toggle(uid)),
   };
-})
-class FlexTableWrapper extends FlexTable {
+})(class FlexTableWrapper extends FlexTable {
   componentDidMount() {
     const { uid } = this.props;
 
     store.dispatch(flexActions.register(uid, false));
   }
-}
+});
 
-@connect((state) => {
-  const { groups, filter, collapsed } = state;
-  return { groups, filter, collapsed };
-})
-export default class PacksPanel extends React.Component {
-  static propTypes = {
-    location: PropTypes.shape({
-      pathname: PropTypes.string,
-    }).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        ref: PropTypes.string,
-        section: PropTypes.string,
-      }),
-    }),
-
-    groups: PropTypes.array,
-    filter: PropTypes.string,
-    collapsed: PropTypes.bool,
-  }
-
+class PacksPanel extends React.Component {
   componentDidMount() {
     this.fetchGroups();
   }
@@ -287,7 +265,6 @@ export default class PacksPanel extends React.Component {
 
         { groups && groups.length > 0 ? (
           <PacksDetails
-            ref={(ref) => this._details = ref}
             handleInstall={(...args) => this.handleInstall(...args)}
             handleRemove={(...args) => this.handleRemove(...args)}
             handleSave={(...args) => this.handleSave(...args)}
@@ -301,3 +278,8 @@ export default class PacksPanel extends React.Component {
     );
   }
 }
+
+export default connect((state) => {
+  const { groups, filter, collapsed } = state;
+  return { groups, filter, collapsed };
+})(PacksPanel);

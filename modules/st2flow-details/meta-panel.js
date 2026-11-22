@@ -13,11 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//@flow
-
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
-import { PropTypes } from 'prop-types';
 
 import BooleanField from '@stackstorm/module-auto-form/fields/boolean';
 import StringField from '@stackstorm/module-auto-form/fields/string';
@@ -31,75 +28,7 @@ import { StringPropertiesPanel } from './string-properties';
 import store from '../../apps/st2-workflows/store';
 const default_runner_type = 'orquesta';
 
-@connect(
-  ({ flow: { pack, actions, navigation, meta, input, vars }}) => ({ pack, actions, navigation, meta, input, vars }),
-  (dispatch) => ({
-    navigate: (navigation) => dispatch({
-      type: 'CHANGE_NAVIGATION',
-      navigation,
-    }),
-    setMeta: (field, value) => {
-      try{
-        dispatch({
-          type: 'META_ISSUE_COMMAND',
-          command: 'set',
-          args: [ field, value ],
-        });
-      }
-      catch(error) {
-        dispatch({
-          type: 'PUSH_ERROR',
-          error,
-        });
-      }
-    },
-    setVars: (value) => {
-      dispatch({
-        type: 'MODEL_ISSUE_COMMAND',
-        command: 'setVars',
-        args: [ value ],
-      });
-    },
-    setPack: (pack) => {
-      dispatch({
-        type: 'SET_PACK',
-        pack,
-      });
-      try{
-        dispatch({
-          type: 'META_ISSUE_COMMAND',
-          command: 'set',
-          args: [ 'pack', pack ],
-        });
-      }
-      catch(error) {
-        dispatch({
-          type: 'PUSH_ERROR',
-          error,
-        });
-      }
-    },
-  })
-)
-export default class Meta extends Component {
-
-  static propTypes = {
-    pack: PropTypes.string,
-    setPack: PropTypes.func,
-
-    meta: PropTypes.object,
-    setMeta: PropTypes.func,
-
-    navigation: PropTypes.object,
-    navigate: PropTypes.func,
-
-    actions: PropTypes.array,
-    vars: PropTypes.array,
-    setVars: PropTypes.func,
-
-    onChange: PropTypes.func,
-  }
-
+class Meta extends Component {
   componentDidUpdate(prevProps) {
     const { meta, setMeta } = this.props;
 
@@ -122,11 +51,11 @@ export default class Meta extends Component {
     }
   }
 
-  handleSectionSwitch(section: string) {
+  handleSectionSwitch(section) {
     this.props.navigate({ section });
   }
 
-  handleVarsChange(publish: Array<{}>) {
+  handleVarsChange(publish) {
     const { setVars } = this.props;
     const val = (publish ? publish.slice(0) : []).map(kv => {
       const key = Object.keys(kv)[0];
@@ -158,7 +87,6 @@ export default class Meta extends Component {
     setVars((vars || []).concat([ newVal ]));
   }
 
-
   setMetaNew(field,value) {
     try{
       store.dispatch({
@@ -179,7 +107,7 @@ export default class Meta extends Component {
         error,
       });
     }
-    
+
   }
 
   render() {
@@ -261,3 +189,54 @@ export default class Meta extends Component {
     ]);
   }
 }
+
+export default connect(
+  ({ flow: { pack, actions, navigation, meta, input, vars }}) => ({ pack, actions, navigation, meta, input, vars }),
+  (dispatch) => ({
+    navigate: (navigation) => dispatch({
+      type: 'CHANGE_NAVIGATION',
+      navigation,
+    }),
+    setMeta: (field, value) => {
+      try{
+        dispatch({
+          type: 'META_ISSUE_COMMAND',
+          command: 'set',
+          args: [ field, value ],
+        });
+      }
+      catch(error) {
+        dispatch({
+          type: 'PUSH_ERROR',
+          error,
+        });
+      }
+    },
+    setVars: (value) => {
+      dispatch({
+        type: 'MODEL_ISSUE_COMMAND',
+        command: 'setVars',
+        args: [ value ],
+      });
+    },
+    setPack: (pack) => {
+      dispatch({
+        type: 'SET_PACK',
+        pack,
+      });
+      try{
+        dispatch({
+          type: 'META_ISSUE_COMMAND',
+          command: 'set',
+          args: [ 'pack', pack ],
+        });
+      }
+      catch(error) {
+        dispatch({
+          type: 'PUSH_ERROR',
+          error,
+        });
+      }
+    },
+  })
+)(Meta);

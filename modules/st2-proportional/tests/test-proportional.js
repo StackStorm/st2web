@@ -12,23 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it, beforeAll, afterAll } from '@rstest/core';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-import '@stackstorm/module-test-utils/bootstrap/events';
 import proportional from '..';
+
+// jsdom exposes these as accessors on the global, which sinon.spy() cannot wrap,
+// so swap in plain spies and put the original descriptors back afterwards.
+function spyOnWindow(name) {
+  const original = Object.getOwnPropertyDescriptor(window, name);
+  const spy = sinon.spy();
+  Object.defineProperty(window, name, { value: spy, configurable: true, writable: true });
+  spy.restore = () => Object.defineProperty(window, name, original);
+  return spy;
+}
 
 describe('proportional', () => {
   let spyAdd;
   let spyRemove;
   let makeProportional;
-  before(() => {
-    spyAdd = sinon.spy(global.window, 'addEventListener');
-    spyRemove = sinon.spy(global.window, 'removeEventListener');
+  beforeAll(() => {
+    spyAdd = spyOnWindow('addEventListener');
+    spyRemove = spyOnWindow('removeEventListener');
 
     makeProportional = proportional();
   });
-  after(() => {
+  afterAll(() => {
     spyAdd.restore();
     spyRemove.restore();
   });

@@ -13,10 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { JPath, TokenRawValue, TokenKeyValue, TokenMapping, TokenCollection, TokenReference, ValueToken } from './types';
-import { load } from 'yaml-ast-parser';
+import { load } from './parser';
 import { pick, omit, get } from './util';
 import Objectifier from './objectifier';
 import stringifier from './stringifier';
@@ -36,24 +33,24 @@ const OMIT_FIELDS = [ 'errors', 'parent', 'mappings', 'items' ];
 const DEFAULT_INDENT = '  ';
 
 class TokenSet {
-  yaml: string;                 // The full YAML file
-  tree: TokenMapping;           // All of the parsed tokens
-  lastToken: ValueToken;        // The last "value" token (kind: 0) that was processed
-  anchors: Object;              // Map of anchor IDs to the original token
-  indent: string;               // The indentation used
-  objectified: ?Object;         // POJO representation of the token tree
-  stringified: ?string;         // Stringified YAML
+  yaml;                 // The full YAML file
+  tree;           // All of the parsed tokens
+  lastToken;        // The last "value" token (kind: 0) that was processed
+  anchors;              // Map of anchor IDs to the original token
+  indent;               // The indentation used
+  objectified;         // POJO representation of the token tree
+  stringified;         // Stringified YAML
 
   // After parsing the node tree, certain mapping and collection tokens
   // will need a suffix. The suffix is only used to close JS-like data
   // within YAML (closing curly and square braces).
-  tokensWithSuffix: Map<JPath, Array<TokenRawValue>> = new Map();
+  tokensWithSuffix = new Map();
 
-  constructor(yaml: string) {
+  constructor(yaml) {
     this.parseYAML(yaml);
   }
 
-  parseYAML(yaml: string) {
+  parseYAML(yaml) {
     perf.start('parseYAML');
 
     this.yaml = yaml.replace(REG_CARRIAGE, '');
@@ -86,7 +83,7 @@ class TokenSet {
     // console.log(JSON.stringify(this.tree, null, '  '));
   }
 
-  parseNode(node: Object, jpath: JPath = []): ?ValueToken {
+  parseNode(node, jpath = []) {
     if(node === null || typeof node === 'undefined') {
       return null;
     }
@@ -115,17 +112,17 @@ class TokenSet {
     }
   }
 
-  checkNodeErrors(node: Object) {
+  checkNodeErrors(node) {
     if(node && node.errors && node.errors.length) {
       throw node.errors;
     }
   }
 
   // kind: 0
-  parseValueNode(node: Object, jpath: JPath = []): TokenRawValue {
+  parseValueNode(node, jpath = []) {
     this.checkNodeErrors(node);
 
-    const token: TokenRawValue = omit(node, ...OMIT_FIELDS);
+    const token = omit(node, ...OMIT_FIELDS);
     token.jpath = jpath;
     token.prefix = this.parsePrefix(token);
     token.rawValue = this.yaml.slice(token.startPosition, token.endPosition);
@@ -151,7 +148,7 @@ class TokenSet {
   }
 
   // kind: 1
-  parseKeyValueNode(node: Object, jpath: JPath = []): TokenKeyValue {
+  parseKeyValueNode(node, jpath = []) {
     this.checkNodeErrors(node.key);
     this.checkNodeErrors(node.value);
 
@@ -161,7 +158,7 @@ class TokenSet {
       throw new Error(`Unexpected node key kind: ${node.key.kind}`);
     }
 
-    const token: TokenKeyValue = pick(node, 'kind', 'startPosition', 'endPosition');
+    const token = pick(node, 'kind', 'startPosition', 'endPosition');
     token.jpath = jpath;
 
     if(node.key.kind === 0) {
@@ -179,10 +176,10 @@ class TokenSet {
   }
 
   // kind: 2
-  parseMappingNode(node: Object, jpath: JPath = []): TokenMapping {
+  parseMappingNode(node, jpath = []) {
     this.checkNodeErrors(node);
 
-    const token: TokenMapping = omit(node, ...OMIT_FIELDS);
+    const token = omit(node, ...OMIT_FIELDS);
     token.jpath = jpath;
 
     if(token.anchorId) {
@@ -206,10 +203,10 @@ class TokenSet {
   }
 
   // kind: 3
-  parseCollectionNode(node: Object, jpath: JPath = []): TokenCollection {
+  parseCollectionNode(node, jpath = []) {
     this.checkNodeErrors(node.key);
 
-    const token: TokenCollection = omit(node, ...OMIT_FIELDS);
+    const token = omit(node, ...OMIT_FIELDS);
     token.jpath = jpath;
 
     token.items = node.items.map((item, i) => {
@@ -229,10 +226,10 @@ class TokenSet {
   }
 
   // kind: 4
-  parseReferenceNode(node: Object, jpath: JPath = []): TokenReference {
+  parseReferenceNode(node, jpath = []) {
     this.checkNodeErrors(node.key);
 
-    const token: TokenReference = omit(node, 'value', ...OMIT_FIELDS);
+    const token = omit(node, 'value', ...OMIT_FIELDS);
     token.jpath = jpath;
     token.prefix = this.parsePrefix(token);
     token.value = omit(this.anchors[token.referencesAnchor], ...OMIT_FIELDS);
@@ -247,7 +244,7 @@ class TokenSet {
    * This includes whitespace, comments, colons, and other
    * characters which are not part of the token value.
    */
-  parsePrefix(token: TokenRawValue | TokenReference): Array<TokenRawValue> {
+  parsePrefix(token) {
     const prev = this.lastToken;
     const startIdx  = prev ? prev.endPosition : 0;
     const gap = this.yaml.slice(startIdx, token.startPosition);
@@ -287,7 +284,7 @@ class TokenSet {
    * crawler is the "bridge" between this plain object and the AST and
    * should be used to make modifications to the AST.
    */
-  toObject(): Object {
+  toObject() {
     if (!this.objectified) {
       perf.start('tree.toObject()');
       const objectifier = new Objectifier(this.anchors);
@@ -301,7 +298,7 @@ class TokenSet {
   /**
    * Contructs a YAML string from the token tree.
    */
-  toYAML(): string {
+  toYAML() {
     if(!this.stringified) {
       perf.start('tree.toYAML()');
       this.stringified = stringifier.stringifyToken(this.tree);
@@ -331,7 +328,7 @@ class TokenSet {
  * stringifier and token refinery as well as maintaining original
  * source identity.
  */
-function tokenizeUnparsedData(str: string, lastToken: ValueToken, tokensWithSuffix): Array<TokenRawValue> {
+function tokenizeUnparsedData(str, lastToken, tokensWithSuffix) {
   const lines = str.split(REG_NEWLINE);
   const tokens = [];
   let startPos = lastToken ? lastToken.endPosition : 0;
@@ -345,8 +342,8 @@ function tokenizeUnparsedData(str: string, lastToken: ValueToken, tokensWithSuff
         const parentKey = match[match.length - 1] === '}' ? 'mappings' : 'items';
         lastParentIndex = lastToken.jpath.lastIndexOf(parentKey, lastParentIndex - 1);
 
-        const parentJpath: JPath = lastToken.jpath.slice(0, lastParentIndex);
-        const suffix: TokenRawValue = createToken(`${tokens.length && n === 0 ? '\n' : ''}${match}`, startPos);
+        const parentJpath = lastToken.jpath.slice(0, lastParentIndex);
+        const suffix = createToken(`${tokens.length && n === 0 ? '\n' : ''}${match}`, startPos);
 
         tokensWithSuffix.set(parentJpath, tokens.splice(0, tokens.length).concat(suffix));
         startPos = suffix.endPosition;
@@ -366,7 +363,7 @@ function tokenizeUnparsedData(str: string, lastToken: ValueToken, tokensWithSuff
 /**
  * Creates a token with start and end positions defined.
  */
-function createToken(str: string, startPos: number): TokenRawValue {
+function createToken(str, startPos) {
   const token = factory.createRawValueToken(str);
   token.startPosition = startPos;
   token.endPosition = startPos + str.length;
@@ -376,14 +373,14 @@ function createToken(str: string, startPos: number): TokenRawValue {
 
 /**
  * Parses special values that [appear to be] standard YAML but
- * not supported by the yaml-ast-parser for some reason.
+ * that the parser leaves as strings (YAML 1.1 booleans, numbers with separators).
  *   - If the value is quoted, ignore it - it's a deliberate string
  *   - If the value uses a !!tag, we ignore it.
  *   - If the value has the `valueObject` property, the parser
  *     already recognized it - no need to process it.
  */
-function parseSpecialValue(token: TokenRawValue): ?boolean | ?number {
-  if(!token.singleQuoted && !token.doubleQuoted && !token.isTag && !token.hasOwnProperty('valueObject')) {
+function parseSpecialValue(token) {
+  if(!token.singleQuoted && !token.doubleQuoted && !token.isTag && !Object.hasOwn(token, 'valueObject')) {
     if(REG_BOOL_TRUE.test(token.value)) {
       return true;
     }

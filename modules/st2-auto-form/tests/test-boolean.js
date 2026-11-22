@@ -13,12 +13,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import chai, { expect } from 'chai';
+import { describe, it } from '@rstest/core';
+import { fireEvent } from '@testing-library/react';
+import { expect, use as chaiUse } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
-chai.use(sinonChai);
+chaiUse(sinonChai);
 
 import { TestComponent } from './utils';
 import BooleanField from '../fields/boolean';
@@ -83,11 +84,14 @@ describe('AutoForm BooleanField', () => {
     expect(c.fieldValue('checked')).to.be.equal(false);
     expect(c.value()).to.be.deep.equal(false);
 
-    const stopPropagation = sinon.spy();
-    c._instance.node.props.onReset({ stopPropagation });
+    // the click on the reset button doesn't reach the rest of the page
+    const outside = sinon.spy();
+    document.body.addEventListener('click', outside);
+    fireEvent.click(c.container.querySelector('[title="reset default"]'));
+    document.body.removeEventListener('click', outside);
 
     expect(onChange.withArgs(false)).to.be.calledOnce;
-    expect(stopPropagation).to.be.calledOnce;
+    expect(outside).to.not.be.called;
     expect(c.fieldValue('checked')).to.be.equal(false);
     expect(c.value()).to.be.deep.equal(false);
   });

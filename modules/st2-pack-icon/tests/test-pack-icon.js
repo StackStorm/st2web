@@ -12,46 +12,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it, beforeAll, afterAll } from '@rstest/core';
 import { expect } from 'chai';
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { act } from 'react';
+import { renderNode } from '@stackstorm/module-test-utils';
 
-import moxios from 'moxios';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
-import '@stackstorm/module-test-utils/bootstrap/st2constants';
-import '@stackstorm/module-test-utils/bootstrap/location';
+import api from '@stackstorm/module-api';
 
 import PackIcon from '..';
 
 describe(`${PackIcon.name} Component`, () => {
-  before(() => moxios.install());
-  after(() => moxios.uninstall());
+  let mock;
+
+  beforeAll(async () => {
+    mock = new MockAdapter(axios);
+    mock.onGet('https://example.com/api/v1/packs').reply(200, []);
+    // the component loads pack icons from the API on mount
+    await api.connect();
+  });
+  afterAll(() => {
+    mock.restore();
+    api.disconnect();
+  });
+
+  // PackIcon re-renders once the shared /packs request settles; let that happen inside act().
+  const iconsLoaded = () => act(() => new Promise(resolve => setTimeout(resolve)));
 
   describe('common functionality', () => {
-    moxios.stubRequest('https://example.com/api/v1/packs', {
-      status: 200,
-      response: [],
-    });
 
-    it('proxies className', () => {
-      const instance = ReactTester.create(
+    it('proxies className', async () => {
+      const instance = renderNode(
         <PackIcon
           className="foobar"
         />
       );
+      await iconsLoaded();
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
-    it('proxies extra props', () => {
-      const instance = ReactTester.create(
+    it('proxies extra props', async () => {
+      const instance = renderNode(
         <PackIcon
           foo="bar"
         />
       );
+      await iconsLoaded();
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
   });
 });

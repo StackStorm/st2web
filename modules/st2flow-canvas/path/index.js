@@ -13,27 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Vector from '../vector';
-import type { Direction } from './line';
 import Line from './line';
 
 export class Path {
-  origin: Vector
-  elements: Array<Line> = [];
-  initialDir: Direction
-  constructor(origin: Vector, dir: Direction) {
+  origin;
+  elements = [];
+  initialDir;
+  constructor(origin, dir) {
     Object.assign(this, { origin, initialDir: dir });
   }
 
-  moveTo(newPosition: Vector) {
+  moveTo(newPosition) {
     const pos = this.currentPosition;
     const dir = this.currentDir;
 
     const yMove = newPosition.y !== pos.y;
     const xMove = newPosition.x !== pos.x;
 
-    let xLine: Line;
-    let yLine: Line;
+    let xLine;
+    let yLine;
     if(xMove) {
       if(this.elements.length && (dir === 'left' || dir === 'right')) {
         xLine = this.elements.pop();
@@ -68,7 +66,7 @@ export class Path {
     }
   }
 
-  addLine(line: Line) {
+  addLine(line) {
     this.elements.push(line);
   }
 
@@ -86,8 +84,8 @@ export class Path {
     return currentPoint;
   }
 
-  toString(): string {
-    let origin: Vector = this.origin;
+  toString() {
+    let origin = this.origin;
     const path = this.elements.map((el, idx) => {
       const next = this.elements[idx + 1];
       const str = el.toPathString(origin, next);

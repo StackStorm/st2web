@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import { describe, it, beforeAll, beforeEach } from '@rstest/core';
 import fs from 'fs';
 import path from 'path';
 import { expect } from 'chai';
@@ -28,7 +29,7 @@ describe('TokenSet', () => {
     describe('Conventional YAML', () => {
       const filename = `${file}.yaml`;
 
-      before(() => {
+      beforeAll(() => {
         yaml = fs.readFileSync(path.join(__dirname, 'data', filename), 'utf-8');
       });
 
@@ -49,7 +50,7 @@ describe('TokenSet', () => {
     describe('JSON-like YAML', () => {
       const filename = `${file}-json.yaml`;
 
-      before(() => {
+      beforeAll(() => {
         yaml = fs.readFileSync(path.join(__dirname, 'data', filename), 'utf-8');
       });
 

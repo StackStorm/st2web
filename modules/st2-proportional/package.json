@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/module-proportional",
   "version": "2.4.3",
-  "description": "",
+  "private": true,
   "main": "proportional.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,22 +12,7 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "lodash": "4.17.21",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
-  },
-  "devDependencies": {
-    "@stackstorm/module-test-utils": "^2.4.3",
-    "chai": "4.2.0",
-    "sinon": "7.3.2"
+    "lodash": "4.18.1"
   }
 }

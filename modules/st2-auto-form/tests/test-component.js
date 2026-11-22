@@ -12,34 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import { ReactTester } from '@stackstorm/module-test-utils';
+import { describe, it } from '@rstest/core';
+import { fireEvent } from '@testing-library/react';
+import { renderNode } from '@stackstorm/module-test-utils';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
 import AutoForm from '..';
-import StringField from '../fields/string';
+
+// the input (or textarea) of the field for a parameter
+const field = (form, name) => form.querySelector(`.st2-auto-form__field[data-test="field:${name}"]`);
 
 describe(`${AutoForm.name} Component`, () => {
   describe('common functionality', () => {
     it('proxies className', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <AutoForm
           className="foobar"
         />
       );
 
-      expect(instance.node.classList).to.contain('foobar');
+      expect(instance.classList.contains('foobar')).to.be.true;
     });
 
     it('proxies extra props', () => {
-      const instance = ReactTester.create(
+      const instance = renderNode(
         <AutoForm
           foo="bar"
         />
       );
 
-      expect(instance.node.props.foo).to.equal('bar');
+      expect(instance.getAttribute('foo')).to.equal('bar');
     });
   });
 
@@ -48,9 +51,9 @@ describe(`${AutoForm.name} Component`, () => {
       properties: {},
     };
 
-    const output = ReactTester.create(<AutoForm spec={spec} />);
+    const output = renderNode(<AutoForm spec={spec} />);
 
-    expect(output.node.props.children).to.be.an('array').of.length(0);
+    expect(output.children).to.have.length(0);
   });
 
   it('produces a form of single string field for spec of one empty property', () => {
@@ -60,10 +63,11 @@ describe(`${AutoForm.name} Component`, () => {
       },
     };
 
-    const output = ReactTester.create(<AutoForm spec={spec} />);
+    const output = renderNode(<AutoForm spec={spec} />);
 
-    expect(output.node.props.children).to.be.an('array').of.length(1)
-      .with.nested.property('[0].type', StringField);
+    expect(output.children).to.have.length(1);
+    // a string field edits its value in a textarea
+    expect(field(output, 'test').tagName).to.equal('TEXTAREA');
   });
 
   it('calls an onChange callback as soon as one on the child element gets called', () => {
@@ -75,10 +79,9 @@ describe(`${AutoForm.name} Component`, () => {
 
     const onChange = sinon.spy();
 
-    const output = ReactTester.create(<AutoForm spec={spec} onChange={onChange} />);
+    const output = renderNode(<AutoForm spec={spec} onChange={onChange} />);
 
-    const [ field ] = output.node.props.children;
-    field.props.onChange('test');
+    fireEvent.change(field(output, 'test'), { target: { value: 'test' } });
 
     expect(onChange.withArgs({ test: 'test' }).calledOnce).to.be.true;
   });
@@ -102,10 +105,9 @@ describe(`${AutoForm.name} Component`, () => {
 
     const onChange = sinon.spy();
 
-    const output = ReactTester.create(<AutoForm spec={spec} onChange={onChange} />);
+    const output = renderNode(<AutoForm spec={spec} onChange={onChange} />);
 
-    const [ , , other ] = output.node.props.children;
-    other.props.onChange('test');
+    fireEvent.change(field(output, 'other'), { target: { value: 'test' } });
 
     expect(onChange.withArgs({ enumed: 'world', other: 'test' }).calledOnce).to.be.true;
   });

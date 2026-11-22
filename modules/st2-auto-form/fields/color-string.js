@@ -13,23 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import React from 'react';
-import PropTypes from 'prop-types';
 import StringField from './string';
 import { Label, Icon, ErrorMessage, Description, Title } from '../wrappers';
 export default class ColorStringField extends StringField {
   static icon = 'V';
 
-  static propTypes = {
-    name: PropTypes.string,
-    spec: PropTypes.object,
-    value: PropTypes.any,
-    invalid: PropTypes.string,
-    disabled: PropTypes.bool,
-    icon: PropTypes.string,
-    labelClass: PropTypes.string,
-    options: PropTypes.array,
-  }
   render() {
     const { icon } = this.constructor;
     const { invalid, open, value } = this.state;

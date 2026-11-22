@@ -13,10 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// @flow
-
-import type { JPath, TokenRawValue, TokenKeyValue, TokenMapping, TokenCollection, TokenReference, ValueToken, AnyToken, Refinement } from './types';
-
 import { deepClone } from './util';
 import crawler from './crawler';
 import factory from './token-factory';
@@ -46,15 +42,15 @@ const EMPTY_TREE = Object.assign({}, factory.baseToken, {
  * Class for refining tokens whenever mutations are made to the AST.
  */
 class Refinery {
-  oldYaml: string = '';
-  newYaml: string = '';
-  indent: string;
-  tree: TokenMapping;
+  oldYaml = '';
+  newYaml = '';
+  indent;
+  tree;
 
   // used to determine whether or not we are refining JSON data
-  isJSON: boolean = false;
+  isJSON = false;
 
-  constructor(tree: TokenMapping, indent: string, oldYaml: string = '') {
+  constructor(tree, indent, oldYaml = '') {
     if(tree.kind !== 2) {
       throw new Error('Tree argument must be a mapping token');
     }
@@ -65,8 +61,8 @@ class Refinery {
   }
 
   // This is the only method anybody should care about
-  refineTree(): Refinement {
-    const newTree: AnyToken = this.prefixToken(this.tree, 0, this.tree.jpath || []);
+  refineTree() {
+    const newTree = this.prefixToken(this.tree, 0, this.tree.jpath || []);
 
     if(newTree.kind !== 2 ) {
       return {
@@ -75,8 +71,8 @@ class Refinery {
       };
     }
 
-    const firstToken: ?TokenRawValue | ?TokenReference = crawler.findFirstValueToken(newTree);
-    const startPos: number = firstToken ? firstToken.prefix.reduce((pos, prefix) => pos + prefix.rawValue.length, 0) : 0;
+    const firstToken = crawler.findFirstValueToken(newTree);
+    const startPos = firstToken ? firstToken.prefix.reduce((pos, prefix) => pos + prefix.rawValue.length, 0) : 0;
     this.reIndexToken(newTree, startPos);
 
     return {
@@ -88,7 +84,7 @@ class Refinery {
   /**
    * Given a token, refines the token
    */
-  prefixToken(startToken: AnyToken, depth: number, jpath: JPath): AnyToken {
+  prefixToken(startToken, depth, jpath) {
     startToken.jpath = jpath;
 
     switch(startToken.kind) {
@@ -121,14 +117,14 @@ class Refinery {
   /**
    * Adds the prefix to "key" tokens in a mapping. This is mostly whitespace.
    */
-  prefixKey(token: TokenRawValue | TokenCollection, depth: number, jpath: JPath): void {
+  prefixKey(token, depth, jpath) {
     this.prefixToken(token, depth + 1, jpath.concat('key'));
 
     if(jpath.join('.') === STR_FIRST_TOKEN) {
       return;
     }
 
-    const rawToken: ?TokenRawValue | ?TokenReference = crawler.findFirstValueToken(token);
+    const rawToken = crawler.findFirstValueToken(token);
     if(!rawToken) {
       return;
     }
@@ -138,7 +134,6 @@ class Refinery {
     }
 
     const { prefix, jpath: tokenPath } = rawToken;
-
 
     // TODO: smarter indentation detection per token
     // (using depth and leading whitespace in prefix)
@@ -204,10 +199,10 @@ class Refinery {
    * Adds the prefix to "value" tokens in a mapping. Most of the time
    * this will consist of a colon and white space.
    */
-  prefixValue(token: ValueToken, depth: number, jpath: JPath): void {
+  prefixValue(token, depth, jpath) {
     this.prefixToken(token, depth + 1, jpath.concat('value'));
 
-    const rawToken: ?TokenRawValue | ?TokenReference = crawler.findFirstValueToken(token);
+    const rawToken = crawler.findFirstValueToken(token);
 
     if(!rawToken) {
       return;
@@ -223,7 +218,7 @@ class Refinery {
   /**
    * Given a prefix collection, adds the color if it does not exist
    */
-  addColonPrefix(prefix: Array<TokenRawValue>) {
+  addColonPrefix(prefix) {
     if(prefix.every(t => t.value.indexOf(STR_COLON) === -1)) {
       let colon = STR_COLON;
 
@@ -238,17 +233,17 @@ class Refinery {
   /**
    * Given a TokenMapping (kind: 2), refines each token in the mappings array.
    */
-  prefixMapping(startToken: TokenMapping, depth: number, jpath: JPath) {
-    let isJSON: boolean = false;
-    let firstToken: TokenRawValue | TokenReference;
-    let mapNeedsClosing: boolean = false;
+  prefixMapping(startToken, depth, jpath) {
+    let isJSON = false;
+    let firstToken;
+    let mapNeedsClosing = false;
 
-    startToken.mappings.forEach((token: TokenKeyValue, i: number) => {
+    startToken.mappings.forEach((token, i) => {
       if (token === null) {
         return;
       }
 
-      const rawToken: ?TokenRawValue | ?TokenReference = crawler.findFirstValueToken(token);
+      const rawToken = crawler.findFirstValueToken(token);
 
       if(!rawToken) {
         return;
@@ -292,10 +287,10 @@ class Refinery {
   /**
    * Given a TokenCollection (kind: 3), refines each token in the items array.
    */
-  prefixCollection(startToken: TokenCollection, depth: number, jpath: JPath) {
-    let isJSON: boolean = false;
-    let firstToken: TokenRawValue | TokenReference;
-    let itemsNeedsClosing: boolean = false;
+  prefixCollection(startToken, depth, jpath) {
+    let isJSON = false;
+    let firstToken;
+    let itemsNeedsClosing = false;
 
     startToken.items.forEach((token, i) => {
       if(token === null) {
@@ -304,7 +299,7 @@ class Refinery {
 
       this.prefixToken(token, depth + 1, jpath.concat('items', i));
 
-      const rawToken: ?TokenRawValue | ?TokenReference = crawler.findFirstValueToken(token);
+      const rawToken = crawler.findFirstValueToken(token);
 
       if(!rawToken) {
         return;
@@ -329,7 +324,7 @@ class Refinery {
         }
       }
 
-      let delimeterIndex: number = rawToken.prefix.findIndex(t =>
+      let delimeterIndex = rawToken.prefix.findIndex(t =>
         this.isJSON
           ? REG_JSON_START.test(t.value) || REG_COMMA.test(t.value)
           : t.value.indexOf(STR_DASH) !== -1
@@ -365,8 +360,8 @@ class Refinery {
       const firstIndex = currentIndex;
 
       while(lastTwo[0] === 'items' && !isNaN(currentIndex) && currentIndex >= firstIndex) {
-        let separator: string = '';
-        let prefix: string;
+        let separator = '';
+        let prefix;
 
         if(this.isJSON) {
           if(currentIndex > 0) {
@@ -411,7 +406,7 @@ class Refinery {
     }
   }
 
-  reIndexToken(token: AnyToken, startPos: number): number {
+  reIndexToken(token, startPos) {
     if(token === null) {
       return startPos;
     }

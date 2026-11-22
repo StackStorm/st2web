@@ -1,14 +1,8 @@
 {
   "name": "@stackstorm/st2flow-canvas",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stackstorm/st2web.git"
@@ -18,45 +12,13 @@
     "url": "https://github.com/stackstorm/st2web/issues"
   },
   "homepage": "https://github.com/stackstorm/st2web#readme",
-  "browserify": {
-    "transform": [
-      "babelify",
-      [
-        "@stackstorm/browserify-postcss",
-        {
-          "extensions": [
-            ".css"
-          ],
-          "inject": "insert-css",
-          "modularize": {
-            "camelCase": true
-          },
-          "plugin": [
-            "postcss-import",
-            "postcss-nested",
-            "postcss-color-mod-function",
-            "postcss-preset-env"
-          ]
-        }
-      ]
-    ]
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "@stackstorm/st2flow-notifications": "^1.0.0",
-    "insert-css": "2.0.0",
-    "react-hotkeys": "^1.1.4"
-  },
-  "devDependencies": {
-    "@stackstorm/browserify-postcss": "0.3.4-patch.5",
-    "babelify": "10.0.0",
-    "classnames": "^2.2.6",
-    "postcss": "8.4.31",
-    "postcss-color-mod-function": "^3.0.3",
-    "postcss-import": "12.0.1",
-    "postcss-nested": "4.1.2",
-    "postcss-preset-env": "6.6.0"
+    "@stackstorm/module-api": "*",
+    "@stackstorm/st2flow-notifications": "*",
+    "classnames": "2.5.1",
+    "lodash": "4.18.1",
+    "react": "19.3.1",
+    "react-hotkeys-hook": "5.3.3",
+    "react-redux": "9.3.0"
   }
 }

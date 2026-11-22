@@ -12,11 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-global.document = {
-  ...global.document,
+import hasDom from './has-dom';
 
-  createElement: () => null,
-};
+if (!hasDom) {
+  global.document = {
+    ...global.document,
 
-global.btoa = (input) => Buffer.from(input).toString('base64');
-global.atob = (input) => Buffer.from(input, 'base64').toString();
+    createElement: () => null,
+  };
+
+  global.btoa = (input) => Buffer.from(input).toString('base64');
+  global.atob = (input) => Buffer.from(input, 'base64').toString();
+}
